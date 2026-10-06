@@ -56,7 +56,7 @@ Adaptar `JavaHome` a la ubicación local de Java 21. En este equipo se verificó
 - Código Laravel: aplicación, configuración, rutas y base de datos. React: `src` y servidor estático. También infraestructura. Incluye código histórico de esos directorios.
 - Pruebas identificadas aparte: backend, archivos Vitest y Cypress. No se analiza `vendor`, `node_modules`, medios ni documentos como código de aplicación.
 - El servicio histórico Python queda fuera de este análisis Laravel/React del Sprint 1; no se declara auditado el monorepo completo.
-- No hay informe Clover/LCOV configurado todavía. Pruebas aprobadas **no** significan cobertura medida; la primera línea base deberá declarar esa limitación.
+- Cobertura PHP: antes de cada análisis ejecutar `cd backend/api && composer test:sonar` (Pest con PCOV). Genera `backend/api/test-results/clover.xml` con rutas relativas a la raíz, que `sonar-project.properties` importa en `sonar.php.coverage.reportPaths`. No cambia umbrales ni reglas. La primera línea base (`8997de8`) se analizó **sin** cobertura; el frontend (LCOV de Vitest) sigue sin configurar. Pruebas aprobadas no significan cobertura medida.
 - Community Build: análisis local del proyecto, sin atribuirle decoración/bloqueo automático de PR ni análisis independiente de ramas. La ejecución se hace desde `codex/sprint-01`, pero no configura CI ni realiza push.
 - Esta tarea solicita registrar hallazgos, **sin corregirlos**.
 
