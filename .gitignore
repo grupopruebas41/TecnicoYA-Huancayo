@@ -34,6 +34,7 @@ __pycache__/
 # Entornos y secretos
 .env
 .env.local
+.env.testing
 .env.*.local
 *.pem
 *.key
@@ -72,3 +73,9 @@ backend/api/database/*.sqlite
 backend/api/.phpunit.result.cache
 .media-tools/
 output/
+
+# Artefactos de pruebas (evidencia se archiva aparte, según el plan de pruebas)
+frontend/web/cypress/screenshots/
+frontend/web/cypress/videos/
+backend/api/test-results/
+backend/api/coverage/

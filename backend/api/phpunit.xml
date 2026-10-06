@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php" colors="true"><testsuites><testsuite name="Marketplace"><directory>tests/Feature</directory></testsuite></testsuites><source><include><directory>app</directory></include></source><php><env name="APP_ENV" value="testing"/><env name="APP_KEY" value="base64:YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE="/><env name="DB_CONNECTION" value="sqlite"/><env name="DB_DATABASE" value=":memory:"/><env name="CACHE_STORE" value="array"/><env name="SESSION_DRIVER" value="array"/><env name="BCRYPT_ROUNDS" value="4"/></php></phpunit>
+<phpunit bootstrap="vendor/autoload.php" colors="true">
+  <testsuites>
+    <testsuite name="Unit"><directory>tests/Unit</directory></testsuite>
+    <testsuite name="Feature"><directory>tests/Feature</directory></testsuite>
+  </testsuites>
+  <source><include><directory>app</directory></include></source>
+  <php>
+    <env name="APP_ENV" value="testing"/>
+    <env name="APP_KEY" value="base64:YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE="/>
+    <!-- Base MySQL exclusiva de pruebas. La contraseña va en .env.testing (no versionado). -->
+    <env name="DB_CONNECTION" value="mysql"/>
+    <env name="DB_HOST" value="127.0.0.1"/>
+    <env name="DB_PORT" value="3306"/>
+    <env name="DB_DATABASE" value="tecnicoya_testing"/>
+    <env name="DB_USERNAME" value="tecnicoya_test"/>
+    <env name="CACHE_STORE" value="array"/>
+    <env name="SESSION_DRIVER" value="array"/>
+    <env name="BCRYPT_ROUNDS" value="4"/>
+  </php>
+</phpunit>
