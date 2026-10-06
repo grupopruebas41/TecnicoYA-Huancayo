@@ -191,7 +191,7 @@ La meta mínima es 60 IDs Pest distintos aprobados sin errores, además de cubri
 
 ### Ampliación · Módulo A, gestión de la solicitud (RF-01 a RF-05)
 
-[Casos completos, matriz de cobertura y pendientes](modulo-a/CASOS-Modulo-A-Gestion-Solicitud.md). Aprobados el 6 de octubre de 2026; cubren solo los vacíos de TC-001…TC-118 para RF-01 a RF-05. Se agrupan por módulo pero conservan el sprint de su HU. TC-122, TC-123 y TC-130 están bloqueados; TC-133 está condicionado.
+[Casos completos, matriz de cobertura y pendientes](modulo-a/CASOS-Modulo-A-Gestion-Solicitud.md). Aprobados por el equipo (Delgado, Mayhuasca y Pimentel) el 6 de octubre de 2026; cubren solo los vacíos de TC-001…TC-118 para RF-01 a RF-05. Se agrupan por módulo pero conservan el sprint de su HU. TC-122, TC-123 y TC-130 están bloqueados; TC-133 está condicionado.
 
 | ID | Sprint | Caso | HU | RF/RNF | Herramienta prevista | Pendiente / estado |
 |---|---|---|---|---|---|---|
@@ -215,7 +215,7 @@ La meta mínima es 60 IDs Pest distintos aprobados sin errores, además de cubri
 
 ### Ampliación · Cobertura RF/RNF (TC-136 a TC-140)
 
-[Matriz de cobertura de los 33 RF y 14 RNF](Matriz-RF-RNF-Cobertura.md). Aprobados por Pimentel el 6 de octubre de 2026. Cubren cinco requerimientos que tenían caso asignado pero no cubierto: RF-11, RNF-03, RNF-08, RNF-11 y RNF-14. TC-140 está bloqueado; TC-136 y TC-138 están condicionados.
+[Matriz de cobertura de los 33 RF y 14 RNF](Matriz-RF-RNF-Cobertura.md). Aprobados por el equipo (Delgado, Mayhuasca y Pimentel) el 6 de octubre de 2026. Cubren cinco requerimientos que tenían caso asignado pero no cubierto: RF-11, RNF-03, RNF-08, RNF-11 y RNF-14. TC-140 está bloqueado; TC-136 y TC-138 están condicionados.
 
 | ID | Sprint | Caso | HU | RF/RNF | Herramienta prevista | Pendiente / estado |
 |---|---|---|---|---|---|---|

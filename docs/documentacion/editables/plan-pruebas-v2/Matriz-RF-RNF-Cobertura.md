@@ -1,7 +1,7 @@
 # Matriz de cobertura RF/RNF → casos de prueba
 
 **Proyecto:** TécnicoYa Huancayo · **Fecha:** 6 de octubre de 2026.  
-**Estado:** matriz y casos nuevos TC-136 a TC-140 aprobados por Pimentel el 6 de octubre de 2026. **NO EJECUTADO.** Ningún caso está implementado ni ejecutado.
+**Estado:** matriz y casos nuevos TC-136 a TC-140 aprobados por el equipo (Delgado, Mayhuasca y Pimentel) el 6 de octubre de 2026. **NO EJECUTADO.** Ningún caso está implementado ni ejecutado.
 
 Base: [Matriz-Trazabilidad-TC.csv](Matriz-Trazabilidad-TC.csv) (TC-001 a TC-140) y las definiciones de RF/RNF del [análisis del MVP](../CANVAS-Analisis-MVP-TecnicoYa.md). Versión filtrable: [Matriz-RF-RNF-Cobertura.csv](Matriz-RF-RNF-Cobertura.csv).
 

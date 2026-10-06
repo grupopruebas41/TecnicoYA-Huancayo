@@ -1,7 +1,7 @@
 # Casos de prueba · Módulo A: Gestión de la solicitud
 
 **Proyecto:** TécnicoYa Huancayo · **Fecha:** 6 de octubre de 2026 · **Versión:** 2, sustituye la propuesta provisional del 5 de octubre.  
-**Estado:** matriz y casos aprobados por Pimentel el 6 de octubre de 2026. **NO EJECUTADO.** No se ha implementado ni corrido ninguna prueba.
+**Estado:** matriz y casos aprobados por el equipo (Delgado, Mayhuasca y Pimentel) el 6 de octubre de 2026. **NO EJECUTADO.** No se ha implementado ni corrido ninguna prueba.
 
 ## 1. Alcance y criterio de esta versión
 
