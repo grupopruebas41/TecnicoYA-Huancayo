@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MarketplaceController;
+use App\Modules\ARequests\Http\Controllers\ServiceRequestController;
 use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
@@ -36,6 +37,18 @@ Route::prefix('v1')->group(function () {
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
         Route::get('announcements', [AnnouncementController::class, 'index']);
+
+        // Solicitudes: el detalle valida la relación con la solicitud (titular; técnico notificado desde S4).
+        Route::get('requests/{serviceRequest}', [ServiceRequestController::class, 'show'])->whereNumber('serviceRequest');
+        Route::middleware('role:client')->group(function () {
+            Route::get('requests', [ServiceRequestController::class, 'index']);
+            Route::post('requests', [ServiceRequestController::class, 'store']);
+            Route::patch('requests/{serviceRequest}', [ServiceRequestController::class, 'update'])->whereNumber('serviceRequest');
+            Route::post('requests/{serviceRequest}/attachments', [ServiceRequestController::class, 'attach'])->whereNumber('serviceRequest');
+            Route::delete('requests/{serviceRequest}/attachments/{media}', [ServiceRequestController::class, 'detach'])
+                ->whereNumber(['serviceRequest', 'media']);
+            Route::post('requests/{serviceRequest}/submission', [ServiceRequestController::class, 'submit'])->whereNumber('serviceRequest');
+        });
 
         Route::prefix('technicians/me')->middleware('role:technician')->group(function () {
             Route::put('availability', [TechnicianProfileController::class, 'availability']);

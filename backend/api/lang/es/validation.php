@@ -22,6 +22,7 @@ return [
     'after' => 'El campo :attribute debe ser posterior a :date.',
     'distinct' => 'El campo :attribute tiene un valor repetido.',
     'present' => 'El campo :attribute debe estar presente.',
+    'accepted' => 'Debes aceptar :attribute.',
     'decimal' => 'El campo :attribute debe tener :decimal decimales.',
     'gte' => [
         'numeric' => 'El campo :attribute debe ser mayor o igual que :value.',
@@ -60,5 +61,10 @@ return [
         'pause.starts_at' => 'inicio de la pausa', 'pause.ends_at' => 'fin de la pausa', 'pause.reason' => 'motivo de la pausa',
         'services' => 'servicios', 'services.*.subcategory_id' => 'subcategoría del servicio',
         'services.*.reference_fee' => 'tarifa referencial del servicio', 'technician_id' => 'técnico',
+        // Sprint 3: solicitud en cinco pasos.
+        'district_id' => 'distrito', 'address' => 'dirección', 'mode' => 'modalidad',
+        'preferred_start_at' => 'inicio preferido', 'preferred_end_at' => 'fin preferido', 'source' => 'origen',
+        'target_technician_id' => 'técnico elegido', 'media_id' => 'foto', 'summary_confirmed' => 'el resumen de la solicitud',
+        'idempotency_key' => 'clave de idempotencia',
     ],
 ];

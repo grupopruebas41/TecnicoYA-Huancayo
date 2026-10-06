@@ -19,4 +19,11 @@ return [
     'media_not_allowed' => 'Solo puedes usar imágenes propias, revisadas y públicas; no documentos de verificación.',
     'district_inactive' => 'El distrito no está disponible.',
     'review_requirements' => 'No se puede aprobar: faltan requisitos de la revisión (:missing).',
+    'subcategory_unavailable' => 'La subcategoría elegida no está disponible. Elige otra del catálogo.',
+    'out_of_coverage' => 'El distrito está fuera de cobertura.',
+    'target_incompatible' => 'El técnico elegido no ofrece esa subcategoría o no está habilitado.',
+    'attachment_not_allowed' => 'Solo puedes adjuntar tus propias fotos privadas y revisadas que no estén en otra solicitud.',
+    'idempotency_key_required' => 'Falta la clave de idempotencia del envío.',
+    'scheduled_start_required' => 'Indica la fecha y hora de inicio para una atención programada.',
+    'scheduled_end_required' => 'Indica la fecha y hora de fin para una atención programada.',
 ];
