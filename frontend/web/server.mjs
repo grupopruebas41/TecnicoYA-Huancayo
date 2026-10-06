@@ -5,7 +5,7 @@ const root=path.resolve('dist');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.mp4':'video/mp4','.svg':'image/svg+xml'};
 http.createServer(async(req,res)=>{
  try {
-  if(req.url.startsWith('/api/')){
+  if((req.url.startsWith('/api/') || req.url.startsWith('/sanctum/'))){
    const upstream=http.request(new URL(req.url,process.env.API_URL||'http://127.0.0.1:3000'),{method:req.method,headers:req.headers},r=>{res.writeHead(r.statusCode,r.headers);r.pipe(res)});
    upstream.on('error',()=>{res.writeHead(502,{'content-type':'application/json'});res.end(JSON.stringify({error:'El servicio no está disponible. Intenta nuevamente.'}))});
    req.pipe(upstream);return;
