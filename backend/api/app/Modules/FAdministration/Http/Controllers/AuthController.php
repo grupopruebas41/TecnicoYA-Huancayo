@@ -6,6 +6,7 @@ use App\Modules\FAdministration\Application\RegisterAccount;
 use App\Modules\FAdministration\Http\Requests\LoginRequest;
 use App\Modules\FAdministration\Http\Requests\RegisterAccountRequest;
 use App\Modules\FAdministration\Http\Resources\AccountData;
+use App\Shared\Auth\EffectivePermissions;
 use App\Shared\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,6 +27,13 @@ final class AuthController
         abort_unless($request->hasSession(), 419, __('api.session_expired'));
         $credentials = $request->validated() + ['is_active' => true];
         if (! Auth::guard('web')->attempt($credentials)) {
+            return ApiResponse::error('INVALID_CREDENTIALS', __('api.invalid_credentials'), 401);
+        }
+        if (! app(EffectivePermissions::class)->accountEnabled(Auth::guard('web')->user())) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             return ApiResponse::error('INVALID_CREDENTIALS', __('api.invalid_credentials'), 401);
         }
         $request->session()->regenerate();

@@ -3,6 +3,7 @@
 namespace App\Modules\FAdministration\Http\Resources;
 
 use App\Models\User;
+use App\Shared\Auth\EffectivePermissions;
 use Illuminate\Support\Facades\DB;
 
 final class AccountData
@@ -13,6 +14,7 @@ final class AccountData
         $data = [
             'id' => (string) $user->id, 'name' => $user->name, 'phone' => $user->phone,
             'role' => ['code' => $role], 'version' => (int) $user->version,
+            'permissions' => app(EffectivePermissions::class)->codes($user),
         ];
         if ($role === 'technician') {
             $profile = DB::table('technician_profiles')->where('user_id', $user->id)

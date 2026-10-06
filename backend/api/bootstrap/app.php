@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\ApiToken;
+use App\Http\Middleware\EnsureAccountIsActive;
+use App\Http\Middleware\RequirePermission;
 use App\Shared\Http\ApiExceptionRenderer;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -11,7 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(api: __DIR__.'/../routes/api.php', commands: __DIR__.'/../routes/console.php', health: '/health')
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
-        $middleware->alias(['token' => ApiToken::class]);
+        $middleware->alias([
+            'token' => ApiToken::class,
+            'account.active' => EnsureAccountIsActive::class,
+            'permission' => RequirePermission::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(fn (Request $r, Throwable $e) => true);
