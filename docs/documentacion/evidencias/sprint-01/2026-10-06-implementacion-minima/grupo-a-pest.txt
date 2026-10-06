@@ -1,0 +1,216 @@
+
+   PASS  Tests\Feature\AnnouncementsTest
+  ✓ only admin can write announcements                                                                          27.25s  
+  ✓ audiences drafts archives and priority are filtered in api                                                   0.52s  
+  ✓ edit moves audience and archive removes publication                                                          0.37s  
+  ✓ validation rejects scripts invalid audiences and fake images                                                 0.20s  
+  ✓ image and link survive save and read                                                                         0.18s  
+
+   PASS  Tests\Feature\MarketplaceTest
+  ✓ api registration verification and revocable sessions                                                         1.13s  
+  ✓ authenticated lifecycle and rating                                                                           0.82s  
+  ✓ deadlines and three simultaneous offers                                                                      3.16s  
+  ✓ api refuses admin signup and other clients actions                                                           0.32s  
+  ✓ expired rating is rejected                                                                                   0.42s  
+  ✓ php fallback matches reference                                                                               0.03s  
+  ✓ technician updates only own terms and cannot self verify                                                     0.13s  
+  ✓ pending offers and assigned work lock service terms                                                          0.36s  
+  ✓ permission matrix denies every other role action                                                             0.36s  
+  ✓ suspension revokes sessions and reactivation requires new login                                              0.27s  
+  ✓ admin accounts are protected and accounts are private                                                        0.20s  
+  ✓ profile cannot escalate role or edit another account                                                         0.13s  
+  ✓ address is hidden until confirmation and other technicians cannot start                                      0.61s  
+  ✓ active work prevents suspension                                                                              0.20s  
+  ✓ subcategory validation persistence and matching                                                              0.47s  
+  ✓ matching rejects missing skills and keeps legacy requests                                                    0.04s  
+
+   FAIL  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ⨯ it TC-002: rechaza el correo duplicado normalizado sin crear otro usuario ni perfil                          0.64s  
+
+   FAIL  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ⨯ it TC-003: registra al técnico como pendiente de verificación y solo le deja editar datos básicos            0.08s  
+
+   FAIL  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ⨯ it TC-004: rechaza que el técnico se autoactive y conserva el estado persistido                              0.11s  
+
+   FAIL  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ⨯ it TC-006: invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie                      0.11s  
+
+   FAIL  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ⨯ it TC-007: deniega con 403 una ruta administrativa a un cliente autenticado                                  4.28s  
+
+   FAIL  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ⨯ it TC-008: rechaza el alta administrativa desde el registro público                                          0.11s  
+
+   FAIL  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ⨯ it TC-009: guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos                     0.13s  
+
+   FAIL  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ⨯ it TC-010: responde 409 ante una versión obsoleta y conserva la edición más reciente                         0.16s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it TC-011: repite la semilla del catálogo sin duplicados y con relaciones válidas                            0.97s  
+
+   FAIL  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ⨯ it TC-137: guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs                   0.10s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC002DuplicateEmailTest > it TC-002: rechaza el correo duplicado normalizado sin c…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+  at tests\Feature\Sprint01\TC002DuplicateEmailTest.php:18
+     14▕ 
+     15▕ it('TC-002: rechaza el correo duplicado normalizado sin crear otro usuario ni perfil', function () {
+     16▕     // Dado una cuenta ya registrada
+     17▕     $payload = Sprint01::registrationPayload();
+  ➜  18▕     $this->postJson('/api/v1/auth/register', $payload)->assertCreated();
+     19▕ 
+     20▕     // Cuando se registra otra cuenta con el mismo correo en mayúsculas y con espacios
+     21▕     $payload['email'] = '  '.strtoupper($payload['email']).'  ';
+     22▕     $response = $this->postJson('/api/v1/auth/register', $payload);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC003PendingTechnicianTest > it TC-003: registra al técnico como pendiente de veri…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+  at tests\Support\Sprint01.php:49
+     45▕     /** Registra por la API pública y devuelve el usuario persistido junto con el cuerpo enviado. */
+     46▕     public static function registerThroughApi(TestCase $test, string $accountType = 'client'): array
+     47▕     {
+     48▕         $payload = self::registrationPayload($accountType);
+  ➜  49▕         $test->postJson('/api/v1/auth/register', $payload)->assertCreated();
+     50▕ 
+     51▕         return [User::query()->where('email', $payload['email'])->firstOrFail(), $payload];
+     52▕     }
+     53▕
+
+  1   tests\Feature\Sprint01\TC003PendingTechnicianTest.php:18
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest > it TC-004: rechaza que el técnico se autoactive…    
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+  at tests\Support\Sprint01.php:49
+     45▕     /** Registra por la API pública y devuelve el usuario persistido junto con el cuerpo enviado. */
+     46▕     public static function registerThroughApi(TestCase $test, string $accountType = 'client'): array
+     47▕     {
+     48▕         $payload = self::registrationPayload($accountType);
+  ➜  49▕         $test->postJson('/api/v1/auth/register', $payload)->assertCreated();
+     50▕ 
+     51▕         return [User::query()->where('email', $payload['email'])->firstOrFail(), $payload];
+     52▕     }
+     53▕
+
+  1   tests\Feature\Sprint01\TC004SelfActivationRejectedTest.php:18
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest > it TC-006: invalida la sesión al cerrar sesión…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+  at tests\Support\Sprint01.php:49
+     45▕     /** Registra por la API pública y devuelve el usuario persistido junto con el cuerpo enviado. */
+     46▕     public static function registerThroughApi(TestCase $test, string $accountType = 'client'): array
+     47▕     {
+     48▕         $payload = self::registrationPayload($accountType);
+  ➜  49▕         $test->postJson('/api/v1/auth/register', $payload)->assertCreated();
+     50▕ 
+     51▕         return [User::query()->where('email', $payload['email'])->firstOrFail(), $payload];
+     52▕     }
+     53▕
+
+  1   tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest.php:25
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest > it TC-007: deniega con 403 una ruta administrat…  Error   
+  Class "Laravel\Sanctum\Sanctum" not found
+
+  at tests\Feature\Sprint01\TC007AdminRouteDeniedTest.php:26
+     22▕         ->get('/__tests/admin-access', fn () => ['private_marker' => 'restricted']);
+     23▕ 
+     24▕     // Dado un cliente autenticado
+     25▕     $client = UserFactory::new()->client()->create();
+  ➜  26▕     Sanctum::actingAs($client);
+     27▕     $permissionsBefore = DB::table('user_permissions')->count();
+     28▕ 
+     29▕     // Cuando consulta directamente la ruta administrativa
+     30▕     $response = $this->getJson('/__tests/admin-access');
+
+  1   tests\Feature\Sprint01\TC007AdminRouteDeniedTest.php:26
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest > it TC-008: rechaza el alta administrativa desde…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests\Support\Sprint01.php:60
+     56▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     57▕      */
+     58▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     59▕     {
+  ➜  60▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     61▕         foreach ($fields as $field) {
+     62▕             foreach ((array) $response->json("errors.$field") as $message) {
+     63▕                 self::assertSpanishText((string) $message, "errors.$field");
+     64▕             }
+
+  1   tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest.php:23
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC009OwnProfileEditTest > it TC-009: guarda nombre y teléfono propios e incrementa…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+  at tests\Support\Sprint01.php:49
+     45▕     /** Registra por la API pública y devuelve el usuario persistido junto con el cuerpo enviado. */
+     46▕     public static function registerThroughApi(TestCase $test, string $accountType = 'client'): array
+     47▕     {
+     48▕         $payload = self::registrationPayload($accountType);
+  ➜  49▕         $test->postJson('/api/v1/auth/register', $payload)->assertCreated();
+     50▕ 
+     51▕         return [User::query()->where('email', $payload['email'])->firstOrFail(), $payload];
+     52▕     }
+     53▕
+
+  1   tests\Feature\Sprint01\TC009OwnProfileEditTest.php:18
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC010StaleWriteConflictTest > it TC-010: responde 409 ante una versión obsoleta y…    
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+  at tests\Support\Sprint01.php:49
+     45▕     /** Registra por la API pública y devuelve el usuario persistido junto con el cuerpo enviado. */
+     46▕     public static function registerThroughApi(TestCase $test, string $accountType = 'client'): array
+     47▕     {
+     48▕         $payload = self::registrationPayload($accountType);
+  ➜  49▕         $test->postJson('/api/v1/auth/register', $payload)->assertCreated();
+     50▕ 
+     51▕         return [User::query()->where('email', $payload['email'])->firstOrFail(), $payload];
+     52▕     }
+     53▕
+
+  1   tests\Feature\Sprint01\TC010StaleWriteConflictTest.php:18
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest > it TC-137: guarda la contraseña con bcrypt y no la…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+  at tests\Feature\Sprint01\TC137PasswordNeverExposedTest.php:30
+     26▕     });
+     27▕ 
+     28▕     // Dado una cuenta registrada con una contraseña sintética conocida
+     29▕     $payload = Sprint01::registrationPayload();
+  ➜  30▕     $register = $this->postJson('/api/v1/auth/register', $payload)->assertCreated();
+     31▕     $user = App\Models\User::query()->where('email', $payload['email'])->firstOrFail();
+     32▕     $hash = $user->getRawOriginal('password');
+     33▕ 
+     34▕     // Entonces el valor almacenado es un hash bcrypt distinto de la contraseña
+
+
+  Tests:    9 failed, 22 passed (187 assertions)
+  Duration: 44.48s
+

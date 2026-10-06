@@ -1,0 +1,312 @@
+
+   PASS  Tests\Feature\AnnouncementsTest
+  ✓ only admin can write announcements                                                                          31.84s  
+  ✓ audiences drafts archives and priority are filtered in api                                                   0.32s  
+  ✓ edit moves audience and archive removes publication                                                          0.14s  
+  ✓ validation rejects scripts invalid audiences and fake images                                                 0.15s  
+  ✓ image and link survive save and read                                                                         0.11s  
+
+   PASS  Tests\Feature\MarketplaceTest
+  ✓ api registration verification and revocable sessions                                                         2.39s  
+  ✓ authenticated lifecycle and rating                                                                           0.33s  
+  ✓ deadlines and three simultaneous offers                                                                      0.37s  
+  ✓ api refuses admin signup and other clients actions                                                           0.20s  
+  ✓ expired rating is rejected                                                                                   0.25s  
+  ✓ php fallback matches reference                                                                               0.02s  
+  ✓ technician updates only own terms and cannot self verify                                                     0.10s  
+  ✓ pending offers and assigned work lock service terms                                                          0.38s  
+  ✓ permission matrix denies every other role action                                                             0.34s  
+  ✓ suspension revokes sessions and reactivation requires new login                                              0.21s  
+  ✓ admin accounts are protected and accounts are private                                                        0.16s  
+  ✓ profile cannot escalate role or edit another account                                                         0.12s  
+  ✓ address is hidden until confirmation and other technicians cannot start                                      0.84s  
+  ✓ active work prevents suspension                                                                              0.47s  
+  ✓ subcategory validation persistence and matching                                                              0.51s  
+  ✓ matching rejects missing skills and keeps legacy requests                                                    0.04s  
+
+   FAIL  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ⨯ it TC-002: rechaza el correo duplicado normalizado sin crear otro usuario ni perfil                          0.36s  
+
+   FAIL  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ⨯ it TC-003: registra al técnico como pendiente de verificación y solo le deja editar datos básicos            0.18s  
+
+   FAIL  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ⨯ it TC-004: rechaza que el técnico se autoactive y conserva el estado persistido                              0.20s  
+
+   FAIL  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ⨯ it TC-006: invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie                      0.21s  
+
+   FAIL  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ⨯ it TC-007: deniega con 403 una ruta administrativa a un cliente autenticado                                  0.19s  
+
+   FAIL  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ⨯ it TC-008: rechaza el alta administrativa desde el registro público                                          0.10s  
+
+   FAIL  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ⨯ it TC-009: guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos                     0.13s  
+
+   FAIL  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ⨯ it TC-010: responde 409 ante una versión obsoleta y conserva la edición más reciente                         0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it TC-011: repite la semilla del catálogo sin duplicados y con relaciones válidas                            0.32s  
+
+   FAIL  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ⨯ it TC-137: guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs                   0.16s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC002DuplicateEmailTest > it TC-002: rechaza el correo duplicado normalizado sin c…   
+  errors.email está en inglés: "The email has already been taken.".
+Failed asserting that 'The email has already been taken.' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Support\Sprint01.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC003PendingTechnicianTest > it TC-003: registra al técnico como pendiente de veri…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+The following errors occurred during the last request:
+
+{
+    "message": "api.not_found",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "api.not_found",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "45606241-1770-4da6-9d97-87c9813c4e55",
+        "server_time": "2026-10-06T09:26:05.688701Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:60
+     56▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     57▕      */
+     58▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     59▕     {
+  ➜  60▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     61▕         foreach ($fields as $field) {
+     62▕             foreach ((array) $response->json("errors.$field") as $message) {
+     63▕                 self::assertSpanishText((string) $message, "errors.$field");
+     64▕             }
+
+  1   tests\Feature\Sprint01\TC003PendingTechnicianTest.php:31
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest > it TC-004: rechaza que el técnico se autoactive…    
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+The following errors occurred during the last request:
+
+{
+    "message": "api.not_found",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "api.not_found",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "bf21c494-70ef-42bf-9525-f37a60f4f430",
+        "server_time": "2026-10-06T09:26:05.902207Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:60
+     56▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     57▕      */
+     58▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     59▕     {
+  ➜  60▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     61▕         foreach ($fields as $field) {
+     62▕             foreach ((array) $response->json("errors.$field") as $message) {
+     63▕                 self::assertSpanishText((string) $message, "errors.$field");
+     64▕             }
+
+  1   tests\Feature\Sprint01\TC004SelfActivationRejectedTest.php:32
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest > it TC-006: invalida la sesión al cerrar sesión…   
+  Expected response status code [401] but received 404.
+Failed asserting that 404 is identical to 401.
+
+The following errors occurred during the last request:
+
+{
+    "message": "api.not_found",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "api.not_found",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "a6a4fd45-5604-4b57-92a1-eae2ae8ab96d",
+        "server_time": "2026-10-06T09:26:06.124786Z"
+    }
+}
+
+  at tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest.php:45
+     41▕ 
+     42▕     // Entonces reutilizar la cookie anterior en /me devuelve 401 con mensaje en español
+     43▕     forgetSprint01Session();
+     44▕     $response = $this->withUnencryptedCookie($cookieName, $oldCookie)->getJson('/api/v1/me');
+  ➜  45▕     $response->assertUnauthorized();
+     46▕     Sprint01::assertSpanishText((string) $response->json('message'));
+     47▕ });
+     48▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest > it TC-007: deniega con 403…  BindingResolutionException   
+  Target class [account.active] does not exist.
+
+  at vendor\laravel\framework\src\Illuminate\Container\Container.php:1122
+    1118▕             }
+    1119▕         }
+    1120▕ 
+    1121▕         try {
+  ➜ 1122▕             $reflector = new ReflectionClass($concrete);
+    1123▕         } catch (ReflectionException $e) {
+    1124▕             throw new BindingResolutionException("Target class [$concrete] does not exist.", 0, $e);
+    1125▕         }
+    1126▕
+
+  1   vendor\laravel\framework\src\Illuminate\Container\Container.php:1122
+  2   vendor\laravel\framework\src\Illuminate\Container\Container.php:933
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest > it TC-008: rechaza el alta administrativa desde…   
+  errors.account_type está en inglés: "The selected account type is invalid.".
+Failed asserting that 'The selected account type is invalid.' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Support\Sprint01.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC009OwnProfileEditTest > it TC-009: guarda nombre y teléfono propios e incrementa…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+The following errors occurred during the last request:
+
+{
+    "message": "api.not_found",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "api.not_found",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "63ed4ca8-965a-46f0-ac60-4188747db9f2",
+        "server_time": "2026-10-06T09:26:06.581185Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:60
+     56▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     57▕      */
+     58▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     59▕     {
+  ➜  60▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     61▕         foreach ($fields as $field) {
+     62▕             foreach ((array) $response->json("errors.$field") as $message) {
+     63▕                 self::assertSpanishText((string) $message, "errors.$field");
+     64▕             }
+
+  1   tests\Feature\Sprint01\TC009OwnProfileEditTest.php:24
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC010StaleWriteConflictTest > it TC-010: responde 409 ante una versión obsoleta y…    
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "api.not_found",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "api.not_found",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "b1e87c89-3a74-4c35-a977-73b22be4f63e",
+        "server_time": "2026-10-06T09:26:06.719602Z"
+    }
+}
+
+  at tests\Feature\Sprint01\TC010StaleWriteConflictTest.php:22
+     18▕     [$client] = Sprint01::registerThroughApi($this);
+     19▕     Sanctum::actingAs($client);
+     20▕     $loadedVersion = $client->version;
+     21▕     $this->patchJson('/api/v1/me', ['name' => 'Edición vigente', 'expected_version' => $loadedVersion])
+  ➜  22▕         ->assertOk();
+     23▕ 
+     24▕     // Cuando se envía una edición con la versión anterior
+     25▕     $response = $this->patchJson('/api/v1/me', ['name' => 'Edición obsoleta', 'expected_version' => $loadedVersion]);
+     26▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest > it TC-137: guarda la contraseña con bcrypt y no la…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "api.not_found",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "api.not_found",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "0a3c1312-3367-4ce9-8ca3-7fb22bae5042",
+        "server_time": "2026-10-06T09:26:07.233043Z"
+    }
+}
+
+  at tests\Feature\Sprint01\TC137PasswordNeverExposedTest.php:45
+     41▕         'email' => $payload['email'],
+     42▕         'password' => $payload['password'],
+     43▕     ])->assertOk();
+     44▕     Sanctum::actingAs($user);
+  ➜  45▕     $me = $this->getJson('/api/v1/me')->assertOk();
+     46▕ 
+     47▕     // Entonces ni la contraseña ni el hash aparecen en ellas
+     48▕     foreach ([$register, $login, $me] as $response) {
+     49▕         expect($response->getContent())->not->toContain($payload['password'])->not->toContain($hash);
+
+
+  Tests:    9 failed, 22 passed (211 assertions)
+  Duration: 42.02s
+

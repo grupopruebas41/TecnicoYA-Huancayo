@@ -1,0 +1,210 @@
+
+   PASS  Tests\Feature\AnnouncementsTest
+  ✓ only admin can write announcements                                                                          39.66s  
+  ✓ audiences drafts archives and priority are filtered in api                                                   0.60s  
+  ✓ edit moves audience and archive removes publication                                                          0.28s  
+  ✓ validation rejects scripts invalid audiences and fake images                                                 0.18s  
+  ✓ image and link survive save and read                                                                         0.11s  
+
+   PASS  Tests\Feature\MarketplaceTest
+  ✓ api registration verification and revocable sessions                                                         1.02s  
+  ✓ authenticated lifecycle and rating                                                                           1.29s  
+  ✓ deadlines and three simultaneous offers                                                                      0.26s  
+  ✓ api refuses admin signup and other clients actions                                                           0.16s  
+  ✓ expired rating is rejected                                                                                   0.23s  
+  ✓ php fallback matches reference                                                                               0.03s  
+  ✓ technician updates only own terms and cannot self verify                                                     0.09s  
+  ✓ pending offers and assigned work lock service terms                                                          0.23s  
+  ✓ permission matrix denies every other role action                                                             0.46s  
+  ✓ suspension revokes sessions and reactivation requires new login                                              0.18s  
+  ✓ admin accounts are protected and accounts are private                                                        0.12s  
+  ✓ profile cannot escalate role or edit another account                                                         0.07s  
+  ✓ address is hidden until confirmation and other technicians cannot start                                      0.31s  
+  ✓ active work prevents suspension                                                                              0.14s  
+  ✓ subcategory validation persistence and matching                                                              0.49s  
+  ✓ matching rejects missing skills and keeps legacy requests                                                    0.05s  
+
+   FAIL  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ⨯ it TC-002: rechaza el correo duplicado normalizado sin crear otro usuario ni perfil                          0.38s  
+
+   FAIL  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ⨯ it TC-003: registra al técnico como pendiente de verificación y solo le deja editar datos básicos            0.19s  
+
+   FAIL  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ⨯ it TC-004: rechaza que el técnico se autoactive y conserva el estado persistido                              0.15s  
+
+   FAIL  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ⨯ it TC-006: invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie                      0.29s  
+
+   FAIL  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ⨯ it TC-007: deniega con 403 una ruta administrativa a un cliente autenticado                                  0.36s  
+
+   FAIL  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ⨯ it TC-008: rechaza el alta administrativa desde el registro público                                          0.18s  
+
+   FAIL  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ⨯ it TC-009: guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos                     0.19s  
+
+   FAIL  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ⨯ it TC-010: responde 409 ante una versión obsoleta y conserva la edición más reciente                         0.23s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it TC-011: repite la semilla del catálogo sin duplicados y con relaciones válidas                            0.49s  
+
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ✓ it TC-137: guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs                   0.18s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC002DuplicateEmailTest > it TC-002: rechaza el correo duplicado normalizado sin c…   
+  errors.email está en inglés: "The email has already been taken.".
+Failed asserting that 'The email has already been taken.' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Support\Sprint01.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC003PendingTechnicianTest > it TC-003: registra al técnico como pendiente de veri…   
+  errors.name está en inglés: "The name field is required.".
+Failed asserting that 'The name field is required.' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Support\Sprint01.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest > it TC-004: rechaza que el técnico se autoactive…    
+  errors.verification_status está en inglés: "The verification status field is prohibited.".
+Failed asserting that 'The verification status field is prohibited.' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Support\Sprint01.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest > it TC-006: invalida la sesión al cerrar sesión…   
+  message está en inglés: "api.unauthenticated".
+Failed asserting that 'api.unauthenticated' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest.php:46
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest > it TC-007: deniega con 403…  BindingResolutionException   
+  Target class [account.active] does not exist.
+
+  at vendor\laravel\framework\src\Illuminate\Container\Container.php:1122
+    1118▕             }
+    1119▕         }
+    1120▕ 
+    1121▕         try {
+  ➜ 1122▕             $reflector = new ReflectionClass($concrete);
+    1123▕         } catch (ReflectionException $e) {
+    1124▕             throw new BindingResolutionException("Target class [$concrete] does not exist.", 0, $e);
+    1125▕         }
+    1126▕
+
+  1   vendor\laravel\framework\src\Illuminate\Container\Container.php:1122
+  2   vendor\laravel\framework\src\Illuminate\Container\Container.php:933
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest > it TC-008: rechaza el alta administrativa desde…   
+  errors.account_type está en inglés: "The selected account type is invalid.".
+Failed asserting that 'The selected account type is invalid.' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Support\Sprint01.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC009OwnProfileEditTest > it TC-009: guarda nombre y teléfono propios e incrementa…   
+  errors.name está en inglés: "The name field is required.".
+Failed asserting that 'The name field is required.' does not match PCRE pattern "/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i".
+
+  at tests\Support\Sprint01.php:72
+     68▕     /** Comprueba que un texto visible para el usuario está en español. */
+     69▕     public static function assertSpanishText(string $message, string $where = 'message'): void
+     70▕     {
+     71▕         Assert::assertNotSame('', trim($message), "$where está vacío.");
+  ➜  72▕         Assert::assertDoesNotMatchRegularExpression(
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+
+  1   tests\Support\Sprint01.php:72
+  2   tests\Support\Sprint01.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\TC010StaleWriteConflictTest > it TC-010: responde 409 ante una versión obsoleta y…    
+  message no parece estar en español: "api.stale_version".
+Failed asserting that 'api.stale_version' matches PCRE pattern "/[áéíóúñ¿¡]|\b(el|la|los|las|campo|debe|ya|no|es|está|correo|tipo|cuenta|versión|valor|obligatorio|válido|permitido)\b/iu".
+
+  at tests\Support\Sprint01.php:77
+     73▕             '/\b(the|field|must|has already been taken|is invalid|is required|selected|unauthenticated|forbidden|conflict)\b/i',
+     74▕             $message,
+     75▕             "$where está en inglés: \"$message\"."
+     76▕         );
+  ➜  77▕         Assert::assertMatchesRegularExpression(
+     78▕             '/[áéíóúñ¿¡]|\b(el|la|los|las|campo|debe|ya|no|es|está|correo|tipo|cuenta|versión|valor|obligatorio|válido|permitido)\b/iu',
+     79▕             $message,
+     80▕             "$where no parece estar en español: \"$message\"."
+     81▕         );
+
+  1   tests\Support\Sprint01.php:77
+  2   tests\Feature\Sprint01\TC010StaleWriteConflictTest.php:29
+
+
+  Tests:    8 failed, 23 passed (243 assertions)
+  Duration: 50.20s
+
