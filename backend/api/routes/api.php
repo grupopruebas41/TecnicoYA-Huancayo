@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MarketplaceController;
+use App\Modules\FAdministration\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', fn () => ['status' => 'ok', 'service' => 'tecnicoya-laravel']);
@@ -22,4 +23,8 @@ Route::prefix('v1')->group(function () {
     });
     Route::post('auth/logout', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'logout'])
         ->middleware('auth:sanctum');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('me', [ProfileController::class, 'show']);
+        Route::patch('me', [ProfileController::class, 'update']);
+    });
 });
