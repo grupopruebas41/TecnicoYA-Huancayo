@@ -1,0 +1,29 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 10,
+    "total": 1
+  },
+  "analyses": [
+    {
+      "key": "dd83a926-5658-4b0b-972a-37353b1889a3",
+      "date": "2026-10-06T20:31:08+0000",
+      "events": [
+        {
+          "key": "3a3eba3b-ffb7-4f4f-a430-9ede361f80fd",
+          "category": "SQ_UPGRADE",
+          "name": "26.9.0.129388"
+        },
+        {
+          "key": "1cc82f9f-166b-4a9b-9149-db1048ce6e39",
+          "category": "VERSION",
+          "name": "sprint-01"
+        }
+      ],
+      "projectVersion": "sprint-01",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "8997de82108539a7c5010cb5d98484cff6f846fd",
+      "detectedCI": "undetected"
+    }
+  ]
+}
