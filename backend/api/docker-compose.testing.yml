@@ -1,0 +1,38 @@
+# MySQL 8.4 exclusivo para las pruebas automatizadas (Pest) de TécnicoYa.
+# No contiene secretos: la clave de tecnicoya_test se lee de .env.testing (no versionado).
+#
+# Desde backend/api:
+#   docker compose -f docker-compose.testing.yml --env-file .env.testing up -d --wait
+#   php artisan test
+#   docker compose -f docker-compose.testing.yml --env-file .env.testing down      # conserva el volumen
+#
+# Requiere el puerto 3306 libre (detener MySQL/MariaDB de XAMPP).
+name: tecnicoya-test
+
+services:
+  mysql-test:
+    image: mysql:8.4
+    container_name: tecnicoya-mysql-test
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      MYSQL_DATABASE: tecnicoya_testing
+      MYSQL_USER: tecnicoya_test
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD en backend/api/.env.testing}
+      # root recibe una clave aleatoria que solo aparece en el log del primer arranque.
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    command:
+      - --default-time-zone=+00:00
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - tecnicoya-mysql-test-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u\"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  tecnicoya-mysql-test-data:
+    name: tecnicoya-mysql-test-data
