@@ -3,6 +3,7 @@
 namespace App\Modules\FAdministration\Http\Controllers;
 
 use App\Modules\FAdministration\Application\Portfolio;
+use App\Modules\FAdministration\Application\PublicTechnicianProfile;
 use App\Modules\FAdministration\Application\ReviewTechnician;
 use App\Modules\FAdministration\Application\UpdateAvailability;
 use App\Modules\FAdministration\Application\UpdateServices;
@@ -28,6 +29,11 @@ final class TechnicianProfileController
     public function storePortfolio(StorePortfolioItemRequest $request, Portfolio $portfolio): JsonResponse
     {
         return ApiResponse::data(['id' => $portfolio->store($request->user(), $request->validated())], 201);
+    }
+
+    public function show(int $technician, PublicTechnicianProfile $profile): JsonResponse
+    {
+        return ApiResponse::data($profile->show($technician));
     }
 
     public function portfolio(int $technician, Portfolio $portfolio): JsonResponse

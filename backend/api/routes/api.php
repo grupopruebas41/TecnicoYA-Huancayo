@@ -38,6 +38,8 @@ Route::prefix('v1')->group(function () {
         Route::patch('me', [ProfileController::class, 'update']);
         Route::get('announcements', [AnnouncementController::class, 'index']);
 
+        Route::get('technicians/{technician}', [TechnicianProfileController::class, 'show'])->whereNumber('technician');
+
         // Solicitudes: el detalle valida la relación con la solicitud (titular; técnico notificado desde S4).
         Route::get('requests/{serviceRequest}', [ServiceRequestController::class, 'show'])->whereNumber('serviceRequest');
         Route::middleware('role:client')->group(function () {
