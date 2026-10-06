@@ -1,0 +1,132 @@
+E2E usa exclusivamente tecnicoya_testing. No ejecutar Pest hasta que termine.
+
+   INFO  Nothing to migrate.  
+
+
+   INFO  Seeding database.  
+
+  Database\Seeders\AuthorizationSeeder ....................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder ................................................................... 137 ms DONE  
+
+  Database\Seeders\CatalogSeeder ............................................................................. RUNNING  
+  Database\Seeders\CatalogSeeder ......................................................................... 484 ms DONE  
+
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.1.1                                                                         │
+  │ Browser:        Chrome 154 (headless)                                                          │
+  │ Node Version:   v24.19.0 (C:\nvm4w\nodejs\node.exe)                                            │
+  │ Specs:          3 found (catalog.cy.js, portals.cy.js, validation.cy.js)                       │
+  │ Searched:       cypress/e2e/sprint-01/**/*.cy.js                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  catalog.cy.js                                                                   (1 of 3)
+
+
+  Sprint 1: catálogo
+    √ TC-012 muestra el catálogo real servido por Laravel/MySQL (6265ms)
+    √ TC-012 informa un fallo realista sin inventar catálogo (1093ms)
+
+
+  2 passing (8s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     7 seconds                                                                        │
+  │ Spec Ran:     catalog.cy.js                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  portals.cy.js                                                                   (2 of 3)
+
+
+  Sprint 1: UI real con sesión
+    √ TC-001 registra un cliente mediante formulario (9504ms)
+    √ TC-005 inicia sesión real como client y mantiene identidad al recargar (9684ms)
+    √ TC-005 inicia sesión real como technician y mantiene identidad al recargar (18593ms)
+    √ TC-005 inicia sesión real como admin y mantiene identidad al recargar (17544ms)
+    √ TC-006 rechaza por HTTP la cookie de una sesión cerrada (5923ms)
+    √ S01-SEC-CSRF rechaza un login sin token CSRF en el servidor HTTP (643ms)
+
+
+  6 passing (1m)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        6                                                                                │
+  │ Passing:      6                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 2 seconds                                                              │
+  │ Spec Ran:     portals.cy.js                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  validation.cy.js                                                                (3 of 3)
+
+
+  Alertas y validación del incremento Sprint 1
+    √ TC-001 / TC-002: valida el registro en cliente y muestra el rechazo del correo duplicado del servidor (5938ms)
+    √ TC-005: muestra el error de credenciales del servidor en español (2685ms)
+    √ TC-009 / TC-010 / TC-137: valida el perfil, confirma el guardado y conserva una edición concurrente (8427ms)
+
+
+  3 passing (17s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     17 seconds                                                                       │
+  │ Spec Ran:     validation.cy.js                                                                 │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ √  catalog.cy.js                            00:07        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  portals.cy.js                            01:02        6        6        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  validation.cy.js                         00:17        3        3        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    √  All specs passed!                        01:27       11       11        -        -        -  
+

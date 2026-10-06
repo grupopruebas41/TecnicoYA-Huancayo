@@ -1,0 +1,67 @@
+
+   PASS  Tests\Feature\AnnouncementsTest
+  ✓ only admin can write announcements                                                                          14.54s  
+  ✓ audiences drafts archives and priority are filtered in api                                                   0.19s  
+  ✓ edit moves audience and archive removes publication                                                          0.13s  
+  ✓ validation rejects scripts invalid audiences and fake images                                                 0.17s  
+  ✓ image and link survive save and read                                                                         0.08s  
+
+   PASS  Tests\Feature\MarketplaceTest
+  ✓ api registration verification and revocable sessions                                                         0.60s  
+  ✓ authenticated lifecycle and rating                                                                           0.19s  
+  ✓ deadlines and three simultaneous offers                                                                      0.25s  
+  ✓ api refuses admin signup and other clients actions                                                           0.21s  
+  ✓ expired rating is rejected                                                                                   0.20s  
+  ✓ php fallback matches reference                                                                               0.03s  
+  ✓ technician updates only own terms and cannot self verify                                                     0.09s  
+  ✓ pending offers and assigned work lock service terms                                                          0.26s  
+  ✓ permission matrix denies every other role action                                                             0.28s  
+  ✓ suspension revokes sessions and reactivation requires new login                                              0.22s  
+  ✓ admin accounts are protected and accounts are private                                                        0.11s  
+  ✓ profile cannot escalate role or edit another account                                                         0.10s  
+  ✓ address is hidden until confirmation and other technicians cannot start                                      0.32s  
+  ✓ active work prevents suspension                                                                              0.10s  
+  ✓ subcategory validation persistence and matching                                                              0.23s  
+  ✓ matching rejects missing skills and keeps legacy requests                                                    0.03s  
+
+   PASS  Tests\Feature\Sprint01\ProvisionAdminTest
+  ✓ it S01-SEC-ADMIN: crea un administrador con secretos ocultos y auditoría atómica                             0.19s  
+  ✓ it S01-SEC-ADMIN: rechaza correo existente y confirmación incorrecta sin sobrescribir                        0.09s  
+  ✓ it S01-SEC-ADMIN: revierte el alta si no puede persistir la auditoría                                        0.07s  
+
+   PASS  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ✓ it TC-002: rechaza el correo duplicado normalizado sin crear otro usuario ni perfil                          0.15s  
+
+   PASS  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ✓ it TC-003: registra al técnico como pendiente de verificación y solo le deja editar datos básicos            0.17s  
+
+   PASS  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ✓ it TC-004: rechaza que el técnico se autoactive y conserva el estado persistido                              0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ✓ it TC-006: invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie                      0.17s  
+
+   PASS  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ✓ it TC-007: deniega con 403 una ruta administrativa a un cliente autenticado                                  0.10s  
+
+   PASS  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ✓ it TC-008: rechaza el alta administrativa desde el registro público                                          0.09s  
+
+   PASS  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ✓ it TC-009: guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos                     0.16s  
+
+   PASS  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ✓ it TC-010: responde 409 ante una versión obsoleta y conserva la edición más reciente                         0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it TC-011: repite la semilla del catálogo sin duplicados y con relaciones válidas                            0.26s  
+
+   PASS  Tests\Feature\Sprint01\TC012CatalogApiTest
+  ✓ it TC-012: sirve solo categorías activas y valida el filtro sin inventar resultados                          0.25s  
+
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ✓ it TC-137: guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs                   0.14s  
+
+  Tests:    35 passed (312 assertions)
+  Duration: 21.30s
+
