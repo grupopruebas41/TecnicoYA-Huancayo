@@ -1,0 +1,3025 @@
+[
+  {
+    "n": 1,
+    "title": "Base técnica, autenticación, roles y catálogo",
+    "scope": "RF-28, RF-33; registro e inicio de sesión por rol (cliente, técnico, administrador), RBAC, perfiles básicos, estado de verificación del técnico, catálogo semilla de 3 especialidades y ~30 subcategorías, conexión React–Laravel–MySQL y rutas protegidas.",
+    "objective": "Entregar acceso por identidad y permisos reales sobre la API y MySQL, con perfiles mínimos y catálogo inicial reproducible, para que los siguientes sprints trabajen sobre una base común.",
+    "dependencies": "La Iteración 0 debe haber dejado instalación, estructura y entorno local operativos. Revisar las diferencias del código histórico antes de migrar; no borrar datos. El administrador inicial se aprovisiona por mecanismo restringido; su gestión completa corresponde al Sprint 7.",
+    "pending": "P20: cuenta con un rol o varios; propuesta actual de un rol. P22: representación de revisión rechazada. P03/P16: catálogo de distritos y referencias económicas; no asignar valores de mercado inventados. Versiones compatibles y responsable del backlog P04 aún por registrar.",
+    "technical": [
+      [
+        "RT-01",
+        "Mantener frontend/web y backend/api. Mapear el código existente a src/features/administration y app/Modules/FAdministration; las carpetas de destino son propuestas del diseño, no carpetas ya implementadas."
+      ],
+      [
+        "RT-02",
+        "Conectar React al cliente HTTP común y Laravel a MySQL con migraciones/seeders versionados; verificar FK, unicidad de correo y relaciones de perfil con una BD de pruebas aislada."
+      ],
+      [
+        "RT-03",
+        "Aplicar la sesión SPA propuesta: cookie de sesión HttpOnly, CSRF, rotación al autenticar y cierre invalidante. No guardar tokens de sesión en localStorage; React consulta /me para rol y permisos."
+      ],
+      [
+        "RT-04",
+        "Contratos existentes del diseño: /sanctum/csrf-cookie, /api/v1/auth/register, /auth/login, /auth/logout, /me y /catalog/specialties|subcategories. Salvo CSRF, las rutas abreviadas llevan /api/v1."
+      ],
+      [
+        "RT-05",
+        "Tablas foco: roles, permissions, users, role_permissions, user_permissions, client_profiles, technician_profiles, specialties, subcategories y sesiones. Inicializar audit_entries para acciones sensibles sin adelantar su panel del Sprint 7."
+      ],
+      [
+        "RT-06",
+        "Semilla idempotente de tres rubros y 30 subcategorías de referencia (11/9/10); RNF-08/09/11/14. Probar build React, conexión, migraciones y permisos en CI; datos sintéticos y secretos fuera del repositorio."
+      ]
+    ],
+    "security": [
+      "Registro público limitado a cliente/técnico: rechazar role=admin, permisos y verificación enviados por el navegador.",
+      "Validación del servidor, contraseñas con bcrypt según RNF-08, límites de intentos configurados y error genérico de acceso.",
+      "Probar permisos tanto en navegación como en API; ocultar un botón no es autorización.",
+      "Sesiones, hashes y secretos no aparecen en respuestas ni logs. Cookie Secure cuando el entorno usa HTTPS; CSRF probado en mutaciones.",
+      "Revisión de dependencias y secretos en cada cambio; registrar acceso y aprovisionamiento privilegiado sin incluir contraseñas."
+    ],
+    "done": [
+      "Registro y acceso de cliente/técnico funcionan; acceso de administrador aprovisionado funciona sin alta pública privilegiada.",
+      "Una cuenta técnica nueva queda pendiente de verificación y solo puede completar su perfil autorizado.",
+      "API deniega rutas administrativas a otros roles y datos de otro propietario.",
+      "Migraciones y semillas se reproducen en MySQL aislado; la segunda ejecución de semillas no duplica el catálogo.",
+      "Los tres roles recorren UI→API→MySQL con sesión real. La demo localStorage no se acepta como evidencia de este incremento."
+    ],
+    "stories": [
+      {
+        "title": "Registro de cliente",
+        "base": "HU-01",
+        "rf": "RF-28",
+        "who": "cliente",
+        "want": "crear mi cuenta",
+        "benefit": "acceder a mis propios servicios",
+        "work": "FE: formulario con errores por campo; API: RegisterClient con validación y transacción; datos: users/client_profiles y correo único.",
+        "cases": [
+          {
+            "title": "Alta válida",
+            "given": "un correo sintético no registrado y datos de cliente válidos",
+            "when": "el visitante confirma el formulario de registro",
+            "then": "se crea exactamente un usuario cliente y su perfil, sin permisos administrativos",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-001",
+            "hu": "HU-S01-01",
+            "base": "HU-01",
+            "rf": "RF-28",
+            "sprint": 1,
+            "ac": "AC-S01-01-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Correo duplicado",
+            "given": "una cuenta ya registrada con el mismo correo normalizado",
+            "when": "se intenta registrar otra cuenta con ese correo",
+            "then": "la API rechaza el duplicado y no crea usuario ni perfil adicional",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-002",
+            "hu": "HU-S01-01",
+            "base": "HU-01",
+            "rf": "RF-28",
+            "sprint": 1,
+            "ac": "AC-S01-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S01-01"
+      },
+      {
+        "title": "Alta de técnico pendiente",
+        "base": "HU-01, HU-02",
+        "rf": "RF-28, RF-33",
+        "who": "técnico",
+        "want": "registrarme y completar mis datos iniciales",
+        "benefit": "solicitar posteriormente mi verificación",
+        "work": "FE: alta técnica y estado pendiente; API: RegisterTechnician; datos: perfil técnico con estado y verificación separados.",
+        "cases": [
+          {
+            "title": "Técnico nuevo",
+            "given": "datos de un técnico sin cuenta previa",
+            "when": "se completa el registro técnico",
+            "then": "el perfil queda Pendiente de verificación y permite editar únicamente sus datos básicos",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-003",
+            "hu": "HU-S01-02",
+            "base": "HU-01, HU-02",
+            "rf": "RF-28, RF-33",
+            "sprint": 1,
+            "ac": "AC-S01-02-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Autoactivación rechazada",
+            "given": "una cuenta técnica pendiente",
+            "when": "envía verificación aprobada, estado activo o permisos en la edición de perfil",
+            "then": "se rechazan los campos privilegiados y el estado persistido no cambia",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-004",
+            "hu": "HU-S01-02",
+            "base": "HU-01, HU-02",
+            "rf": "RF-28, RF-33",
+            "sprint": 1,
+            "ac": "AC-S01-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S01-02"
+      },
+      {
+        "title": "Sesión y cierre por rol",
+        "base": "HU-01",
+        "rf": "RF-28",
+        "who": "usuario de cualquiera de los tres roles",
+        "want": "iniciar y cerrar sesión",
+        "benefit": "acceder a mi panel con una identidad comprobada",
+        "work": "FE: cliente HTTP, rutas y /me; API: login/logout con sesión y CSRF; datos: sesiones del servidor, sin credenciales persistidas en React.",
+        "cases": [
+          {
+            "title": "Acceso de cada rol",
+            "given": "una cuenta activa de cliente, técnico o administrador aprovisionado",
+            "when": "inicia sesión con credenciales válidas y consulta /me",
+            "then": "recibe su identidad y permisos y se abre el panel correspondiente al rol",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-005",
+            "hu": "HU-S01-03",
+            "base": "HU-01",
+            "rf": "RF-28",
+            "sprint": 1,
+            "ac": "AC-S01-03-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Sesión cerrada",
+            "given": "una sesión válida abierta",
+            "when": "el usuario cierra sesión y reutiliza su cookie para consultar /me",
+            "then": "la sesión anterior es inválida y la API responde 401",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-006",
+            "hu": "HU-S01-03",
+            "base": "HU-01",
+            "rf": "RF-28",
+            "sprint": 1,
+            "ac": "AC-S01-03-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S01-03"
+      },
+      {
+        "title": "Autorización efectiva",
+        "base": "HU-24, HU-28",
+        "rf": "RF-33",
+        "who": "administrador responsable",
+        "want": "restringir cada operación a su rol y propietario",
+        "benefit": "evitar acceso o cambios no autorizados",
+        "work": "FE: guardas de rutas y limpieza de caché al cambiar cuenta; API: Policies/permissions; datos: concesiones mínimas y auditoría de operaciones privilegiadas.",
+        "cases": [
+          {
+            "title": "Ruta administrativa denegada",
+            "given": "un usuario cliente autenticado",
+            "when": "consulta directamente una ruta administrativa protegida",
+            "then": "recibe 403 sin datos ni cambios administrativos",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-007",
+            "hu": "HU-S01-04",
+            "base": "HU-24, HU-28",
+            "rf": "RF-33",
+            "sprint": 1,
+            "ac": "AC-S01-04-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Alta administrativa pública denegada",
+            "given": "un visitante sin sesión privilegiada",
+            "when": "solicita registro enviando account_type=admin",
+            "then": "el alta es rechazada y no se crea ninguna cuenta administrativa",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-008",
+            "hu": "HU-S01-04",
+            "base": "HU-24, HU-28",
+            "rf": "RF-33",
+            "sprint": 1,
+            "ac": "AC-S01-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S01-04"
+      },
+      {
+        "title": "Perfil básico propio",
+        "base": "HU-24, HU-29",
+        "rf": "RF-28, RF-33, RF-C06",
+        "who": "usuario",
+        "want": "consultar y editar mis datos básicos",
+        "benefit": "mantener mi información sin alterar mi rol",
+        "work": "FE: formulario Mi perfil; API: GET/PATCH /me con campos permitidos y expected_version; datos: actualización sin perder relación de perfil.",
+        "cases": [
+          {
+            "title": "Edición propia",
+            "given": "una cuenta con versión de perfil vigente",
+            "when": "actualiza nombre y teléfono permitidos",
+            "then": "se guardan esos campos y se incrementa la versión sin cambiar permisos",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-009",
+            "hu": "HU-S01-05",
+            "base": "HU-24, HU-29",
+            "rf": "RF-28, RF-33, RF-C06",
+            "sprint": 1,
+            "ac": "AC-S01-05-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Escritura obsoleta",
+            "given": "el perfil cambió después de cargar el formulario",
+            "when": "se envía una edición con expected_version anterior",
+            "then": "la API informa conflicto 409 y conserva la edición más reciente",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-010",
+            "hu": "HU-S01-05",
+            "base": "HU-24, HU-29",
+            "rf": "RF-28, RF-33, RF-C06",
+            "sprint": 1,
+            "ac": "AC-S01-05-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S01-05"
+      },
+      {
+        "title": "Catálogo inicial y conexión",
+        "base": "HU-05, HU-25",
+        "rf": "RF-C01, RF-28, RF-33",
+        "who": "usuario",
+        "want": "consultar el catálogo inicial desde la API",
+        "benefit": "usar las mismas especialidades en todos los módulos",
+        "work": "FE: consumo del catálogo y estados carga/error/vacío; API: lectura pública solo de activos; datos: semilla única 3/30 y migraciones verificadas.",
+        "cases": [
+          {
+            "title": "Semilla repetible",
+            "given": "una base MySQL de pruebas migrada",
+            "when": "se ejecuta dos veces la semilla inicial",
+            "then": "existen tres especialidades y treinta subcategorías sin duplicados y con relaciones válidas",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-011",
+            "hu": "HU-S01-06",
+            "base": "HU-05, HU-25",
+            "rf": "RF-C01, RF-28, RF-33",
+            "sprint": 1,
+            "ac": "AC-S01-06-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Lectura real del catálogo",
+            "given": "el entorno React–Laravel–MySQL está disponible",
+            "when": "el navegador consulta especialidades y subcategorías",
+            "then": "muestra el catálogo recibido por API y trata un fallo de red sin sustituirlo por datos ficticios silenciosos",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-012",
+            "hu": "HU-S01-06",
+            "base": "HU-05, HU-25",
+            "rf": "RF-C01, RF-28, RF-33",
+            "sprint": 1,
+            "ac": "AC-S01-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S01-06"
+      }
+    ]
+  },
+  {
+    "n": 2,
+    "title": "Landing, administración de catálogo y perfil del técnico",
+    "scope": "Landing de 10 secciones; administración de categorías/subcategorías y foto de carrusel, comunicados y verificación de técnicos; perfil y portafolio técnico, disponibilidad, zona, servicios ofrecidos, tarifas y pausa temporal (RF-05, RF-07).",
+    "objective": "Hacer visible la oferta del marketplace y permitir que el administrador y los técnicos preparen información verificable que alimentará la búsqueda y el matching.",
+    "dependencies": "Depende de identidad, RBAC y catálogo del Sprint 1. RF-07 se prepara aquí mediante datos de habilitación; su filtro integrado se valida en Sprint 4. No se incorpora todavía el motor de matching ni la búsqueda completa del Sprint 3.",
+    "pending": "P03 distritos; P05/P16 duración y compatibilidad de franjas; P17 límites y formatos de archivos; P18 efectos de suspensión; P19 cambios de catálogo sobre solicitudes futuras/activas; P22 rechazo de verificación. Resolver la política aplicable antes de aceptar cada historia afectada.",
+    "technical": [
+      [
+        "RT-01",
+        "Frontend: conservar paleta y carruseles existentes; features/administration para gestión y perfiles; src/components para campos, galería y estados reutilizables."
+      ],
+      [
+        "RT-02",
+        "Laravel: FAdministration para catálogo, revisión y comunicados; ARequests para disponibilidad/oferta profesional, con Policies en los controladores y reglas en casos de uso."
+      ],
+      [
+        "RT-03",
+        "Contratos de referencia: /admin/specialties, /admin/subcategories, /admin/districts, /admin/announcements, /admin/technicians/{id}/reviews; /technicians/me/profile|portfolio|documents|availability|services y /media."
+      ],
+      [
+        "RT-04",
+        "Tablas foco: technician_reviews, technician_documents, review_documents, media_files, portfolio_items/images, technician_services, service_rate_versions, technician_districts, availability_slots, technician_pauses, announcements/audiences."
+      ],
+      [
+        "RT-05",
+        "Diferenciar archivos privados de imágenes públicas aprobadas. Eliminar del CRUD de catálogo significa desactivar, conservando referencias; comunicado eliminado se retira con auditoría."
+      ],
+      [
+        "RT-06",
+        "RNF-03 y accesibilidad: móvil sin desbordamiento, teclado y foco visible, movimiento reducido y pausa de animaciones fuera de pantalla. Carrusel conserva intervalo aprobado de 2,5 s cuando la reproducción está habilitada."
+      ]
+    ],
+    "security": [
+      "Autorizar propiedad en toda edición técnica y permiso específico en verificación/catálogo; un técnico no se habilita a sí mismo.",
+      "Validar contenido real, tamaño y finalidad del archivo según política acordada; impedir ejecución, rutas de disco arbitrarias y descarga de documentos privados.",
+      "Escapar texto de bio/comunicados y permitir solo enlaces con esquemas aceptados; no interpretar HTML aportado como código.",
+      "Auditar revisión, cambios de estado y tarifas. Una suspensión no borra trabajos ni evidencia.",
+      "Marcar cifras y testimonios sintéticos como ejemplos académicos; no presentar reseñas o resultados ficticios como evidencia real."
+    ],
+    "done": [
+      "Las diez secciones de landing existen y sus CTA llevan al flujo disponible con teclado/móvil y movimiento reducido.",
+      "Administrador gestiona catálogo, fotos, comunicados y revisión técnica con permisos y trazabilidad.",
+      "Técnico gestiona únicamente su portafolio, disponibilidad, cobertura, servicios, tarifas y pausa.",
+      "Tarifas conservan versiones; documentos privados no se exponen en el perfil público.",
+      "Datos de elegibilidad quedan preparados para Sprint 4 sin afirmar matching implementado."
+    ],
+    "stories": [
+      {
+        "title": "Landing y carrusel",
+        "base": "HU-31",
+        "rf": "RF-C08",
+        "who": "visitante",
+        "want": "entender el servicio y navegar hacia registro o búsqueda",
+        "benefit": "identificar la especialidad que necesito",
+        "work": "FE: Header, Hero, Especialidades, Cómo funciona, Confianza, Testimonios, CTA técnicos, FAQ, CTA final y Footer; API: catálogo público; datos: solo contenido sintético rotulado.",
+        "cases": [
+          {
+            "title": "Diez secciones navegables",
+            "given": "un visitante abre la landing en móvil y escritorio",
+            "when": "recorre sus diez secciones y usa los CTA de acceso",
+            "then": "lee los títulos completos, llega a la cuenta correcta y no encuentra paneles privados dentro de la landing",
+            "level": "E2E / Cypress",
+            "pending": "",
+            "id": "TC-013",
+            "hu": "HU-S02-01",
+            "base": "HU-31",
+            "rf": "RF-C08",
+            "sprint": 2,
+            "ac": "AC-S02-01-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Carrusel accesible",
+            "given": "el carrusel está visible y el usuario ha solicitado movimiento reducido",
+            "when": "se carga la sección y navega con teclado",
+            "then": "la reproducción automática permanece pausada y los controles permiten cambiar de tarjeta con foco visible",
+            "level": "E2E / Cypress",
+            "pending": "",
+            "id": "TC-014",
+            "hu": "HU-S02-01",
+            "base": "HU-31",
+            "rf": "RF-C08",
+            "sprint": 2,
+            "ac": "AC-S02-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S02-01"
+      },
+      {
+        "title": "Catálogo administrable",
+        "base": "HU-25",
+        "rf": "RF-C01, RF-C02",
+        "who": "administrador de catálogo",
+        "want": "gestionar subcategorías y fotos",
+        "benefit": "mantener una oferta clara sin perder referencias",
+        "work": "FE: tablas/formularios/foto; API: altas y cambios autorizados; datos: relación rubro-subcategoría, imagen y activación lógica, distritos aprobados.",
+        "cases": [
+          {
+            "title": "Alta de subcategoría",
+            "given": "un administrador autorizado y una especialidad activa",
+            "when": "crea una subcategoría con imagen validada",
+            "then": "la subcategoría aparece en su especialidad y la foto aprobada se ofrece al carrusel",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-015",
+            "hu": "HU-S02-02",
+            "base": "HU-25",
+            "rf": "RF-C01, RF-C02",
+            "sprint": 2,
+            "ac": "AC-S02-02-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Desactivar conserva historial",
+            "given": "una subcategoría referenciada por un servicio de prueba",
+            "when": "el administrador la desactiva",
+            "then": "deja de ofrecerse para nuevos registros pero conserva su identidad y referencias anteriores",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-016",
+            "hu": "HU-S02-02",
+            "base": "HU-25",
+            "rf": "RF-C01, RF-C02",
+            "sprint": 2,
+            "ac": "AC-S02-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S02-02"
+      },
+      {
+        "title": "Comunicados por audiencia",
+        "base": "HU-27",
+        "rf": "RF-C04, RF-C09",
+        "who": "administrador de comunicaciones",
+        "want": "publicar avisos con audiencia y vigencia",
+        "benefit": "informar solo a los usuarios correspondientes",
+        "work": "FE: editor con vista previa, duplicar y retirar; API: validar audiencia/fechas/enlace; datos: announcements y audiencias sin publicación automática de duplicados.",
+        "cases": [
+          {
+            "title": "Audiencia vigente",
+            "given": "un comunicado vigente dirigido solo a técnicos",
+            "when": "un cliente y un técnico consultan sus comunicados",
+            "then": "solo el técnico recibe ese comunicado",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-017",
+            "hu": "HU-S02-03",
+            "base": "HU-27",
+            "rf": "RF-C04, RF-C09",
+            "sprint": 2,
+            "ac": "AC-S02-03-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Duplicado en borrador",
+            "given": "un comunicado publicado",
+            "when": "el administrador lo duplica",
+            "then": "se crea una copia en borrador que no aparece aún en ningún panel",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-018",
+            "hu": "HU-S02-03",
+            "base": "HU-27",
+            "rf": "RF-C04, RF-C09",
+            "sprint": 2,
+            "ac": "AC-S02-03-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S02-03"
+      },
+      {
+        "title": "Verificación administrativa",
+        "base": "HU-02",
+        "rf": "RF-07, RF-30, RF-33",
+        "who": "administrador verificador",
+        "want": "revisar los datos y evidencias del técnico",
+        "benefit": "habilitar solo perfiles revisados",
+        "work": "FE: bandeja pendiente/ficha/decisión/motivo; API: ReviewTechnician con versión y permiso; datos: revisión y vínculos documentales auditados.",
+        "cases": [
+          {
+            "title": "Aprobación documentada",
+            "given": "un perfil pendiente con los datos y evidencias exigidos por la política aprobada",
+            "when": "el administrador autorizado aprueba la revisión",
+            "then": "se registra la decisión, su autor y fecha y el perfil adquiere la habilitación prevista",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-019",
+            "hu": "HU-S02-04",
+            "base": "HU-02",
+            "rf": "RF-07, RF-30, RF-33",
+            "sprint": 2,
+            "ac": "AC-S02-04-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Documento ajeno denegado",
+            "given": "un técnico intenta consultar el documento privado de otro técnico",
+            "when": "solicita su URL por identificador",
+            "then": "se deniega la descarga sin revelar el contenido",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-020",
+            "hu": "HU-S02-04",
+            "base": "HU-02",
+            "rf": "RF-07, RF-30, RF-33",
+            "sprint": 2,
+            "ac": "AC-S02-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S02-04"
+      },
+      {
+        "title": "Perfil y portafolio",
+        "base": "HU-29",
+        "rf": "RF-C06, RF-33",
+        "who": "técnico",
+        "want": "publicar mi experiencia y trabajos autorizados",
+        "benefit": "presentar mi especialización a futuros clientes",
+        "work": "FE: bio y galería con estados; API: pertenencia y validación de archivos; datos: media privada/pública y portafolio separado de documentos.",
+        "cases": [
+          {
+            "title": "Trabajo publicado",
+            "given": "un técnico propietario de una imagen permitida para portafolio",
+            "when": "publica un trabajo con título y descripción",
+            "then": "el trabajo aparece en su galería pública sin incluir documentos de verificación",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-021",
+            "hu": "HU-S02-05",
+            "base": "HU-29",
+            "rf": "RF-C06, RF-33",
+            "sprint": 2,
+            "ac": "AC-S02-05-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Archivo no permitido",
+            "given": "un archivo cuyo contenido no cumple la política de imágenes aprobada",
+            "when": "se intenta subir como foto de portafolio",
+            "then": "se rechaza y no queda disponible para descarga pública",
+            "level": "API / Pest + MySQL",
+            "pending": "P17",
+            "id": "TC-022",
+            "hu": "HU-S02-05",
+            "base": "HU-29",
+            "rf": "RF-C06, RF-33",
+            "sprint": 2,
+            "ac": "AC-S02-05-02",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S02-05"
+      },
+      {
+        "title": "Disponibilidad, zona y pausa",
+        "base": "HU-06",
+        "rf": "RF-05, RF-07",
+        "who": "técnico",
+        "want": "configurar franjas y cobertura y pausar temporalmente mi oferta",
+        "benefit": "controlar cuándo puedo recibir solicitudes",
+        "work": "FE: editor de franjas/distritos/pausa; API: intervalos válidos y versión; datos: slots, cobertura y pausas, diferenciados del estado de verificación.",
+        "cases": [
+          {
+            "title": "Configuración válida",
+            "given": "un técnico habilitado y distritos de prueba aprobados",
+            "when": "guarda horarios y activa una pausa temporal válida",
+            "then": "se conservan horarios y zona y la pausa queda disponible para el filtro de elegibilidad",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-023",
+            "hu": "HU-S02-06",
+            "base": "HU-06",
+            "rf": "RF-05, RF-07",
+            "sprint": 2,
+            "ac": "AC-S02-06-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Intervalo inválido",
+            "given": "un técnico con horario previamente guardado",
+            "when": "envía una franja cuyo fin es anterior al inicio",
+            "then": "recibe validación de error y el horario anterior no se altera",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-024",
+            "hu": "HU-S02-06",
+            "base": "HU-06",
+            "rf": "RF-05, RF-07",
+            "sprint": 2,
+            "ac": "AC-S02-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S02-06"
+      },
+      {
+        "title": "Servicios y tarifas",
+        "base": "HU-05, HU-06",
+        "rf": "RF-05, RF-07, RF-C06",
+        "who": "técnico",
+        "want": "seleccionar las subcategorías que ofrezco y sus tarifas referenciales",
+        "benefit": "mostrar condiciones consistentes",
+        "work": "FE: selector por rubro y tarifa por servicio; API: categorías activas y ámbito verificado; datos: technician_services y service_rate_versions.",
+        "cases": [
+          {
+            "title": "Nueva versión de tarifa",
+            "given": "un servicio técnico con tarifa referencial de prueba 50 y versión 1",
+            "when": "su propietario cambia la referencia a 60",
+            "then": "se crea versión 2 y la versión 1 conserva el valor 50 sin sobrescritura",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-025",
+            "hu": "HU-S02-07",
+            "base": "HU-05, HU-06",
+            "rf": "RF-05, RF-07, RF-C06",
+            "sprint": 2,
+            "ac": "AC-S02-07-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Tarifa negativa",
+            "given": "un técnico editando su propio servicio",
+            "when": "envía una tarifa referencial negativa",
+            "then": "la API rechaza el valor y no crea una versión de tarifa",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-026",
+            "hu": "HU-S02-07",
+            "base": "HU-05, HU-06",
+            "rf": "RF-05, RF-07, RF-C06",
+            "sprint": 2,
+            "ac": "AC-S02-07-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S02-07"
+      }
+    ]
+  },
+  {
+    "n": 3,
+    "title": "Solicitud y búsqueda de técnicos",
+    "scope": "RF-01 a RF-04; Nueva solicitud en 5 pasos con evidencias y tarifa referencial; Buscar técnicos con filtros y perfil público; Solicitar servicio con técnico precargado; Mis solicitudes (estructura base).",
+    "objective": "Permitir que el cliente describa, revise y envíe su necesidad de forma segura y consulte técnicos por especialidad, conservando la distinción entre búsqueda automática y solicitud dirigida.",
+    "dependencies": "Requiere catálogo activo, perfiles, cobertura y tarifas de Sprint 2 y sesiones de Sprint 1. La emisión de ofertas, ranking y cronómetro se conectarán en Sprint 4; este incremento no debe mostrar asignaciones ficticias. Reseñas públicas se conectarán en Sprint 6, manteniendo estados vacíos honestos.",
+    "pending": "P03 cobertura; P05 franja inmediata; P10 máximo de solicitudes activas; P16 duración de citas y relación de tarifas; P17 política de evidencias; P22 estado Registrada/Enviada. No declarar aprobadas decisiones de negocio aún abiertas.",
+    "technical": [
+      [
+        "RT-01",
+        "React: features/requests y búsqueda/perfil en features/matching, formularios reutilizables y API común; separar estado de pasos de datos persistidos."
+      ],
+      [
+        "RT-02",
+        "Laravel: ARequests para CreateRequest/SubmitRequest y evidencias; BMatching solo consulta de técnicos en este sprint; no implementar ranking prematuramente."
+      ],
+      [
+        "RT-03",
+        "Contratos: POST /requests; POST/DELETE /requests/{id}/attachments; POST /requests/{id}/submission; GET /requests, /requests/{id}; GET /technicians y /technicians/{id}, bajo /api/v1."
+      ],
+      [
+        "RT-04",
+        "Tablas: service_requests, request_attachments, request_events y media_files; precargar source=profile y target_technician_id cuando corresponda. Validar relaciones en servidor."
+      ],
+      [
+        "RT-05",
+        "Cinco pasos exactos: especialidad; subcategoría; descripción/fotos; ubicación y modalidad/horario; resumen/envío. No añadir un sexto paso para agenda."
+      ],
+      [
+        "RT-06",
+        "Persistir envío e identificador idempotente para no duplicar por doble clic o reintento. Conexión futura a PrepareMatching documentada, sin marcar una búsqueda simulada como real. RNF-03/05: probar pasos/teclado y preparar medición de mediana ≤3 min con protocolo P21."
+      ]
+    ],
+    "security": [
+      "Propiedad de solicitud y archivos comprobada en cada acceso, no solo en el listado.",
+      "No serializar dirección exacta, teléfono ni documentos en búsquedas/perfiles públicos.",
+      "Validar subcategoría activa, coherencia con rubro, distrito permitido y técnico objetivo en backend.",
+      "Límites de archivos, nombres generados y almacenamiento privado; sin aceptar rutas arbitrarias ni vínculos a archivos de otra cuenta.",
+      "Consultas parametrizadas, filtros permitidos y paginación; idempotencia ligada al usuario, operación y contenido."
+    ],
+    "done": [
+      "Flujo de cinco pasos permite volver sin perder datos y revisar antes del envío.",
+      "Evidencias y tarifa referencial aparecen en el resumen y quedan asociadas al titular.",
+      "Listado y detalle muestran únicamente solicitudes propias; errores/carga/vacío son utilizables.",
+      "Búsqueda por rubro, subcategoría, zona y calificación mínima; sin reseñas se muestra ausencia de datos.",
+      "Solicitud dirigida conserva el técnico elegido para Sprint 4; el flujo de matching aún no se declara terminado."
+    ],
+    "stories": [
+      {
+        "title": "Solicitud en cinco pasos",
+        "base": "HU-03",
+        "rf": "RF-01, RF-02",
+        "who": "cliente",
+        "want": "registrar y revisar mi solicitud en cinco pasos",
+        "benefit": "explicar la falla sin omitir información",
+        "work": "FE: asistente y resumen editable; API: validación, creación y envío separados; datos: request y eventos con propietario de sesión.",
+        "cases": [
+          {
+            "title": "Recorrido con corrección",
+            "given": "un cliente autenticado y catálogo activo",
+            "when": "completa los cinco pasos, vuelve a corregir la descripción y confirma",
+            "then": "se guarda la descripción corregida y se envía una sola solicitud con resumen consistente",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-027",
+            "hu": "HU-S03-01",
+            "base": "HU-03",
+            "rf": "RF-01, RF-02",
+            "sprint": 3,
+            "ac": "AC-S03-01-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Datos obligatorios ausentes",
+            "given": "el cliente omite la subcategoría o la descripción requerida",
+            "when": "intenta enviar el resumen",
+            "then": "el sistema identifica los campos incompletos y no envía una solicitud inválida",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-028",
+            "hu": "HU-S03-01",
+            "base": "HU-03",
+            "rf": "RF-01, RF-02",
+            "sprint": 3,
+            "ac": "AC-S03-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S03-01"
+      },
+      {
+        "title": "Evidencias privadas",
+        "base": "HU-04",
+        "rf": "RF-03, RF-33",
+        "who": "cliente",
+        "want": "adjuntar fotos de la falla",
+        "benefit": "facilitar su evaluación sin exponerlas a terceros",
+        "work": "FE: selección, vista previa y retirar antes de enviar; API: finalidad/propiedad y tipo; datos: adjunto privado de solicitud.",
+        "cases": [
+          {
+            "title": "Foto propia vinculada",
+            "given": "una solicitud registrada propia y una imagen válida",
+            "when": "el cliente adjunta la imagen y consulta el resumen",
+            "then": "la foto queda vinculada solo a esa solicitud y visible al propietario autorizado",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-029",
+            "hu": "HU-S03-02",
+            "base": "HU-04",
+            "rf": "RF-03, RF-33",
+            "sprint": 3,
+            "ac": "AC-S03-02-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Referencia de archivo ajeno",
+            "given": "un archivo privado perteneciente a otro cliente",
+            "when": "se intenta vincular su identificador a una solicitud propia",
+            "then": "la API deniega la asociación y el archivo sigue privado",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-030",
+            "hu": "HU-S03-02",
+            "base": "HU-04",
+            "rf": "RF-03, RF-33",
+            "sprint": 3,
+            "ac": "AC-S03-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S03-02"
+      },
+      {
+        "title": "Tarifa y ubicación",
+        "base": "HU-03, HU-05",
+        "rf": "RF-01, RF-04, RF-C02",
+        "who": "cliente",
+        "want": "conocer la referencia económica y confirmar la zona y horario",
+        "benefit": "enviar una necesidad dentro de la cobertura",
+        "work": "FE: paso 4 con modalidad y franja; API: tarifa desde fuente autorizada y cobertura; datos: instantánea referencial y zona, no importe final de cobro.",
+        "cases": [
+          {
+            "title": "Tarifa referencial visible",
+            "given": "una subcategoría con tarifa referencial de prueba aprobada",
+            "when": "el cliente selecciona el servicio y revisa el resumen",
+            "then": "se muestra el monto como referencial y se conserva su procedencia sin tratarlo como pago",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-031",
+            "hu": "HU-S03-03",
+            "base": "HU-03, HU-05",
+            "rf": "RF-01, RF-04, RF-C02",
+            "sprint": 3,
+            "ac": "AC-S03-03-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Fuera de cobertura",
+            "given": "un distrito que no pertenece al catálogo activo",
+            "when": "el cliente intenta confirmar una solicitud para ese distrito",
+            "then": "se informa fuera de cobertura y no se envía la solicitud",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-032",
+            "hu": "HU-S03-03",
+            "base": "HU-03, HU-05",
+            "rf": "RF-01, RF-04, RF-C02",
+            "sprint": 3,
+            "ac": "AC-S03-03-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S03-03"
+      },
+      {
+        "title": "Búsqueda y perfil público",
+        "base": "HU-29, HU-05",
+        "rf": "RF-C06",
+        "who": "cliente",
+        "want": "filtrar técnicos y revisar sus perfiles públicos",
+        "benefit": "comparar especialidad, zona y experiencia",
+        "work": "FE: filtros combinables y tarjetas paginadas; API: GET technicians con proyección pública; datos: servicios activos, portafolio y medias de prueba o ausencia de historial.",
+        "cases": [
+          {
+            "title": "Filtros combinados",
+            "given": "técnicos de prueba con distintos rubros, zonas y calificaciones",
+            "when": "el cliente combina especialidad, subcategoría, distrito y calificación mínima",
+            "then": "recibe únicamente técnicos que cumplen todos los filtros y un estado vacío si no hay coincidencias",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-033",
+            "hu": "HU-S03-04",
+            "base": "HU-29, HU-05",
+            "rf": "RF-C06",
+            "sprint": 3,
+            "ac": "AC-S03-04-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Perfil sin datos privados",
+            "given": "un técnico con bio pública, documentos privados y teléfono de contacto",
+            "when": "un cliente consulta su perfil antes de asignación",
+            "then": "recibe bio y portafolio público pero no documentos privados ni WhatsApp",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-034",
+            "hu": "HU-S03-04",
+            "base": "HU-29, HU-05",
+            "rf": "RF-C06",
+            "sprint": 3,
+            "ac": "AC-S03-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S03-04"
+      },
+      {
+        "title": "Solicitud desde perfil",
+        "base": "HU-10, HU-29",
+        "rf": "RF-01, RF-02, RF-C06",
+        "who": "cliente",
+        "want": "solicitar a un técnico elegido desde su perfil",
+        "benefit": "mantener mi elección durante el registro",
+        "work": "FE: CTA con técnico precargado y opción clara de revisar; API: validar target_technician_id y servicio ofrecido; datos: source y objetivo persistidos.",
+        "cases": [
+          {
+            "title": "Origen dirigido preservado",
+            "given": "un cliente abre un técnico que ofrece la subcategoría seleccionada",
+            "when": "pulsa Solicitar servicio y confirma los cinco pasos",
+            "then": "la solicitud conserva source=profile y ese técnico objetivo sin generar una asignación automática",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-035",
+            "hu": "HU-S03-05",
+            "base": "HU-10, HU-29",
+            "rf": "RF-01, RF-02, RF-C06",
+            "sprint": 3,
+            "ac": "AC-S03-05-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Objetivo incompatible",
+            "given": "el técnico precargado no ofrece la subcategoría enviada",
+            "when": "se intenta enviar esa combinación manipulada",
+            "then": "la API rechaza la incompatibilidad sin sustituir silenciosamente al técnico",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-036",
+            "hu": "HU-S03-05",
+            "base": "HU-10, HU-29",
+            "rf": "RF-01, RF-02, RF-C06",
+            "sprint": 3,
+            "ac": "AC-S03-05-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S03-05"
+      },
+      {
+        "title": "Mis solicitudes y envío repetido",
+        "base": "HU-03, HU-12, HU-24",
+        "rf": "RF-01, RF-02, RF-33",
+        "who": "cliente",
+        "want": "ver mis solicitudes sin duplicados",
+        "benefit": "recuperar el estado después de una interrupción",
+        "work": "FE: listado base/detalle y manejo de reintento; API: filtro por titular e idempotencia; datos: evento único de envío y versión.",
+        "cases": [
+          {
+            "title": "Reintento del mismo envío",
+            "given": "una solicitud propia y una clave de idempotencia ya confirmada para su envío",
+            "when": "se repite el mismo comando tras perder la respuesta",
+            "then": "se obtiene el mismo resultado y no se duplica solicitud ni evento de envío",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-037",
+            "hu": "HU-S03-06",
+            "base": "HU-03, HU-12, HU-24",
+            "rf": "RF-01, RF-02, RF-33",
+            "sprint": 3,
+            "ac": "AC-S03-06-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Solicitud ajena",
+            "given": "dos clientes con solicitudes diferentes",
+            "when": "uno consulta por identificador el detalle de la solicitud del otro",
+            "then": "se deniega sin descripción privada, dirección ni evidencias",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-038",
+            "hu": "HU-S03-06",
+            "base": "HU-03, HU-12, HU-24",
+            "rf": "RF-01, RF-02, RF-33",
+            "sprint": 3,
+            "ac": "AC-S03-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S03-06"
+      }
+    ]
+  },
+  {
+    "n": 4,
+    "title": "Matching, notificación, SLA y reasignación",
+    "scope": "RF-06 a RF-18 y RF-29; parámetros y pesos del matching; algoritmo; notificación a 3 técnicos; SLA de 10 minutos; reasignación automática; Pendiente de disponibilidad de 24 h; Reverb/Echo; solicitudes entrantes con cronómetro.",
+    "objective": "Transformar una solicitud enviada en ofertas trazables y una asignación elegida por el cliente, respetando elegibilidad, límites temporales, concurrencia y recuperación de fallos.",
+    "dependencies": "Requiere Sprints 1–3 y datos de disponibilidad/tarifas. El historial real llegará en Sprint 6: usar tratamiento de técnico nuevo acordado y fixtures, sin inventar reseñas. La reserva mínima al asignar pertenece a este sprint para impedir dobles asignaciones; el calendario y gestión de citas completos permanecen en Sprint 5. Edición administrativa de reglas y reasignación manual quedan en Sprint 7.",
+    "pending": "P05/P16 franjas y duración; P11 momento y plazo de elección; P12 fronteras temporales, recuperación y avisos; P15 normalización/estimaciones/empate residual; P19 vigencia de reglas. Propuestas: oferta válida mientras now < deadline y reloj 24 h sin reinicio por job. No aprobar esos escenarios condicionados hasta ratificar sus decisiones.",
+    "technical": [
+      [
+        "RT-01",
+        "BMatching: elegibilidad, normalización, scorer y ranking con snapshot; COffers: rondas, respuestas y elección. Interfaces Clock y acceso a candidatos permiten pruebas sin esperar plazos reales."
+      ],
+      [
+        "RT-02",
+        "Tablas: rule_parameters/versions/values, matching_weights/runs/candidates, offer_rounds/offers, participations, appointments, notifications, outbox_events/deliveries e idempotency_records."
+      ],
+      [
+        "RT-03",
+        "Pesos iniciales 35/20/30/15 y suma 100; distancia aproximada por distrito; tiempo estimado según evidencia o referencia de subcategoría. No introducir geolocalización real ni un microservicio Python como dependencia nueva."
+      ],
+      [
+        "RT-04",
+        "Contratos: GET /offers y /requests/{id}/candidates; POST /offers/{id}/response, /requests/{id}/selection y /requests/{id}/alternative-searches. Ranking y apertura de rondas son casos de uso internos."
+      ],
+      [
+        "RT-05",
+        "Jobs PrepareMatching, OpenOfferRound, ExpireOfferRound, RetryPendingMatching, ExpirePendingRequest, DeliverNotification y PublishOutboxEvent. Worker-domain, worker-delivery y scheduler del diseño; cola inicial MySQL."
+      ],
+      [
+        "RT-06",
+        "Bloquear solicitud y técnicos en orden estable; comprobar versión y generación. Auditoría y outbox en transacción; publicar solo después del commit. Reintentos deben tener efecto único aunque el job se ejecute varias veces."
+      ],
+      [
+        "RT-07",
+        "Reverb transporta eventos mínimos por canales privados; Echo deduplica evento/versión y consulta API al reconectar. El cronómetro usa expires_at y server_time; nunca autoriza por el reloj del navegador."
+      ],
+      [
+        "RT-08",
+        "RNF-01/07/12: medir matching ≤3 s bajo protocolo; hasta 3 reintentos de entrega según fuente, distinguiendo intento inicial de reintento; cobertura ≥70% del alcance definido de matching/notificación. Probar MySQL y Reverb reales además de dobles unitarios."
+      ]
+    ],
+    "security": [
+      "No aceptar pesos, estados, score, identidad del destinatario ni deadlines confiando en React.",
+      "Canales privados autorizados por identidad y relación; minimizar payload y revalidar al consultar.",
+      "Un técnico solo responde su propia oferta; un cliente solo elige dentro de su propia solicitud.",
+      "Caducidad verificada al recibir el comando aun con worker atrasado; generación evita jobs obsoletos.",
+      "No transmitir dirección exacta antes de asignación. Notificaciones externas solo en sandbox; reintentos acotados y errores sin secretos.",
+      "Separar trabajadores de entrega para que un transporte caído no bloqueé vencimientos; registrar fallos recuperables."
+    ],
+    "done": [
+      "Ranking reproducible y explicación interna conservan reglas/datos; técnicos no elegibles nunca reciben oferta.",
+      "Máximo tres ofertas automáticas simultáneas; la ruta dirigida contacta solo al elegido antes de alternativas autorizadas.",
+      "Aceptación no asigna; elección del titular revalida disponibilidad y evita doble reserva.",
+      "Plazos 10 min/24 h y reintentos se verifican con reloj de pruebas y condiciones ratificadas.",
+      "Echo/Reverb real muestran cambios tras commit; reconexión recupera estado y no duplica avisos.",
+      "Jobs repetidos/atrasados y rollback no crean rondas, asignaciones ni eventos de éxito extra."
+    ],
+    "stories": [
+      {
+        "title": "Elegibilidad y subcategoría",
+        "base": "HU-06, HU-07",
+        "rf": "RF-06, RF-07, RF-10",
+        "who": "cliente",
+        "want": "recibir candidatos habilitados para mi necesidad",
+        "benefit": "evitar propuestas que no puedan atenderla",
+        "work": "FE: estados de búsqueda; API/dominio: filtrar categoría, verificación, estado, zona, franja y pausa; datos: snapshot de exclusiones.",
+        "cases": [
+          {
+            "title": "Elegible en su servicio",
+            "given": "un técnico verificado activo que ofrece la subcategoría y cubre zona/franja sin pausa",
+            "when": "se ejecuta el matching de esa solicitud",
+            "then": "el técnico queda elegible con snapshot y puede ser evaluado por el ranking",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-039",
+            "hu": "HU-S04-01",
+            "base": "HU-06, HU-07",
+            "rf": "RF-06, RF-07, RF-10",
+            "sprint": 4,
+            "ac": "AC-S04-01-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Mejor puntaje pero suspendido",
+            "given": "un técnico suspendido con un puntaje potencial mayor al de los activos",
+            "when": "se filtran los candidatos",
+            "then": "se excluye por suspensión y nunca recibe oferta",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-040",
+            "hu": "HU-S04-01",
+            "base": "HU-06, HU-07",
+            "rf": "RF-06, RF-07, RF-10",
+            "sprint": 4,
+            "ac": "AC-S04-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-01"
+      },
+      {
+        "title": "Puntuación y desempate",
+        "base": "HU-07",
+        "rf": "RF-06, RF-08, RF-09",
+        "who": "cliente",
+        "want": "obtener un orden de candidatos consistente",
+        "benefit": "comparar las mejores alternativas según reglas conocidas",
+        "work": "Dominio: fórmula y desempate; datos: pesos versionados/factores; pruebas: fixtures numéricos sin incertidumbre de normalización.",
+        "cases": [
+          {
+            "title": "Puntuación ponderada",
+            "given": "factores normalizados 1, 0.5, 0.8 y 0.4 con pesos 35, 20, 30 y 15",
+            "when": "se calcula el puntaje",
+            "then": "el resultado es 75 sobre 100 y conserva los cuatro aportes",
+            "level": "Unidad / Pest",
+            "pending": "",
+            "id": "TC-041",
+            "hu": "HU-S04-02",
+            "base": "HU-07",
+            "rf": "RF-06, RF-08, RF-09",
+            "sprint": 4,
+            "ac": "AC-S04-02-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Desempate por calificación",
+            "given": "dos candidatos elegibles con igual puntaje y promedios reales 4.8 y 4.2",
+            "when": "se ordena el ranking",
+            "then": "el candidato con promedio 4.8 precede al de 4.2",
+            "level": "Unidad / Pest",
+            "pending": "",
+            "id": "TC-042",
+            "hu": "HU-S04-02",
+            "base": "HU-07",
+            "rf": "RF-06, RF-08, RF-09",
+            "sprint": 4,
+            "ac": "AC-S04-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-02"
+      },
+      {
+        "title": "Estimaciones y técnico nuevo",
+        "base": "HU-08",
+        "rf": "RF-11, RF-12",
+        "who": "cliente y técnico",
+        "want": "distinguir estimaciones de datos reales",
+        "benefit": "interpretar distancia y experiencia sin falsa precisión",
+        "work": "FE: rótulos de aproximación/nuevo; dominio: política de datos ausentes; datos: referencia de distrito, duración y procedencia.",
+        "cases": [
+          {
+            "title": "Distancia aproximada por zona",
+            "given": "una matriz sintética aprobada de distancias entre distritos",
+            "when": "se calcula y muestra una distancia de un candidato",
+            "then": "se rotula distancia aproximada por zona y no se presenta como geolocalización exacta",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-043",
+            "hu": "HU-S04-03",
+            "base": "HU-08",
+            "rf": "RF-11, RF-12",
+            "sprint": 4,
+            "ac": "AC-S04-03-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Perfil sin historial",
+            "given": "un técnico elegible sin servicios ni calificaciones y la política de nuevos aprobada",
+            "when": "se evalúan historial y tiempo estimado",
+            "then": "se usa factor de historial neutro 0.5 y se muestra Nuevo y estimación general sin publicar una reseña ficticia",
+            "level": "API / Pest + MySQL",
+            "pending": "P15",
+            "id": "TC-044",
+            "hu": "HU-S04-03",
+            "base": "HU-08",
+            "rf": "RF-11, RF-12",
+            "sprint": 4,
+            "ac": "AC-S04-03-02",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-03"
+      },
+      {
+        "title": "Ronda y notificaciones",
+        "base": "HU-09, HU-20",
+        "rf": "RF-13, RF-15, RF-29",
+        "who": "técnico",
+        "want": "recibir una oferta persistida",
+        "benefit": "responder una necesidad dentro del plazo",
+        "work": "FE: bandeja entrante; aplicación: OpenOfferRound/outbox; datos: ofertas/destinatarios únicos y plazos persistidos.",
+        "cases": [
+          {
+            "title": "Tres ofertas como máximo",
+            "given": "cinco candidatos elegibles ordenados y una solicitud automática enviada",
+            "when": "se abre la primera ronda",
+            "then": "se generan exactamente tres ofertas a los tres primeros y ningún cuarto destinatario",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-045",
+            "hu": "HU-S04-04",
+            "base": "HU-09, HU-20",
+            "rf": "RF-13, RF-15, RF-29",
+            "sprint": 4,
+            "ac": "AC-S04-04-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Rollback no notifica éxito",
+            "given": "una apertura de ronda cuya transacción falla antes del commit",
+            "when": "el worker de entrega busca mensajes publicables",
+            "then": "no publica avisos de ofertas que no quedaron confirmadas en la base",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-046",
+            "hu": "HU-S04-04",
+            "base": "HU-09, HU-20",
+            "rf": "RF-13, RF-15, RF-29",
+            "sprint": 4,
+            "ac": "AC-S04-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-04"
+      },
+      {
+        "title": "Respuesta y límite del SLA",
+        "base": "HU-09",
+        "rf": "RF-15, RF-16",
+        "who": "técnico destinatario",
+        "want": "aceptar o rechazar una oferta a tiempo",
+        "benefit": "participar sin decisiones contradictorias",
+        "work": "FE: cronómetro/aceptar/rechazar; API: respuesta con versión/reloj; datos: estado de oferta separado de participación.",
+        "cases": [
+          {
+            "title": "Aceptación dentro de plazo",
+            "given": "una oferta propia pendiente cuyo plazo termina dentro de un minuto",
+            "when": "el técnico acepta",
+            "then": "la oferta pasa a aceptada sin asignación ni participación automática",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-047",
+            "hu": "HU-S04-05",
+            "base": "HU-09",
+            "rf": "RF-15, RF-16",
+            "sprint": 4,
+            "ac": "AC-S04-05-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Aceptación en el límite exacto",
+            "given": "una oferta propia pendiente y el reloj del servidor igual a expires_at",
+            "when": "el técnico intenta aceptar aunque el job no se ejecutó",
+            "then": "la API responde conflicto por vencimiento y no acepta la oferta",
+            "level": "API / Pest + MySQL",
+            "pending": "P12",
+            "id": "TC-048",
+            "hu": "HU-S04-05",
+            "base": "HU-09",
+            "rf": "RF-15, RF-16",
+            "sprint": 4,
+            "ac": "AC-S04-05-02",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-05"
+      },
+      {
+        "title": "Elección y concurrencia",
+        "base": "HU-10",
+        "rf": "RF-18",
+        "who": "cliente",
+        "want": "elegir una oferta aceptada válida",
+        "benefit": "confirmar un técnico disponible",
+        "work": "FE: candidatos aceptados y confirmación; aplicación: AssignTechnician con bloqueo/revalidación; datos: participación/cita única y eventos.",
+        "cases": [
+          {
+            "title": "Elección válida",
+            "given": "una oferta aceptada de mi solicitud y un técnico aún disponible",
+            "when": "confirmo mi elección",
+            "then": "se crea una participación principal y la reserva aplicable con tarifa notificada y estado Asignada",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-049",
+            "hu": "HU-S04-06",
+            "base": "HU-10",
+            "rf": "RF-18",
+            "sprint": 4,
+            "ac": "AC-S04-06-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Dos reservas incompatibles",
+            "given": "dos clientes eligen simultáneamente al mismo técnico para la misma franja incompatible",
+            "when": "ambas transacciones intentan confirmar",
+            "then": "solo una reserva se confirma y la otra informa conflicto sin doble ocupación",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-050",
+            "hu": "HU-S04-06",
+            "base": "HU-10",
+            "rf": "RF-18",
+            "sprint": 4,
+            "ac": "AC-S04-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-06"
+      },
+      {
+        "title": "Reasignación y ruta dirigida",
+        "base": "HU-09, HU-10",
+        "rf": "RF-16, RF-17",
+        "who": "cliente",
+        "want": "recibir alternativas cuando no hay respuesta",
+        "benefit": "continuar la búsqueda manteniendo mi decisión",
+        "work": "Dominio: ExpireOfferRound y ruta automática/directa; datos: generación/rondas históricas; FE: alternativas requieren autorización en ruta directa.",
+        "cases": [
+          {
+            "title": "Siguiente ronda única",
+            "given": "tres ofertas sin aceptación vencidas y otros tres candidatos válidos",
+            "when": "se ejecuta dos veces el job de expiración",
+            "then": "se abre una sola nueva ronda de hasta tres ofertas y se conserva el historial",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-051",
+            "hu": "HU-S04-07",
+            "base": "HU-09, HU-10",
+            "rf": "RF-16, RF-17",
+            "sprint": 4,
+            "ac": "AC-S04-07-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Fallo de solicitud directa",
+            "given": "una solicitud desde perfil cuyo único técnico no respondió dentro del SLA",
+            "when": "vence su oferta",
+            "then": "se ofrecen alternativas al cliente y no se contacta ni asigna a otro técnico sin su autorización",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-052",
+            "hu": "HU-S04-07",
+            "base": "HU-09, HU-10",
+            "rf": "RF-16, RF-17",
+            "sprint": 4,
+            "ac": "AC-S04-07-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-07"
+      },
+      {
+        "title": "Pendiente durante 24 horas",
+        "base": "HU-11",
+        "rf": "RF-14",
+        "who": "cliente",
+        "want": "conocer el resultado cuando no hay técnicos disponibles",
+        "benefit": "evitar una espera indefinida",
+        "work": "FE: aviso/fecha límite; dominio: RetryPendingMatching/ExpirePendingRequest; datos: pendienteVenceEn estable y generación.",
+        "cases": [
+          {
+            "title": "Agotamiento de candidatos",
+            "given": "una solicitud sin candidatos elegibles en ninguna ronda restante",
+            "when": "termina la búsqueda",
+            "then": "queda Pendiente de disponibilidad con su fecha límite de 24 horas registrada",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-053",
+            "hu": "HU-S04-08",
+            "base": "HU-11",
+            "rf": "RF-14",
+            "sprint": 4,
+            "ac": "AC-S04-08-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Expiración idempotente",
+            "given": "una solicitud aún pendiente que alcanzó su límite de 24 horas",
+            "when": "se repite el job de expiración",
+            "then": "se registra una sola transición a Expirada sin renovar el límite ni abrir nuevas rondas",
+            "level": "API / Pest + MySQL",
+            "pending": "P12",
+            "id": "TC-054",
+            "hu": "HU-S04-08",
+            "base": "HU-11",
+            "rf": "RF-14",
+            "sprint": 4,
+            "ac": "AC-S04-08-02",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-08"
+      },
+      {
+        "title": "Tiempo real y recuperación",
+        "base": "HU-20",
+        "rf": "RF-29",
+        "who": "usuario autorizado",
+        "want": "recibir cambios sin perder el estado tras desconexión",
+        "benefit": "seguir la solicitud de forma consistente",
+        "work": "FE: Echo con event_id/version y recuperación API; API: canales privados; infraestructura: Reverb real y outbox.",
+        "cases": [
+          {
+            "title": "Evento repetido tras reconexión",
+            "given": "un cliente autorizado reconecta y recibe dos copias del mismo evento confirmado",
+            "when": "Echo procesa ambas y consulta el estado actual",
+            "then": "muestra una sola notificación lógica y la versión vigente",
+            "level": "Integración / Cypress + Reverb real",
+            "pending": "",
+            "id": "TC-055",
+            "hu": "HU-S04-09",
+            "base": "HU-20",
+            "rf": "RF-29",
+            "sprint": 4,
+            "ac": "AC-S04-09-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Canal ajeno denegado",
+            "given": "un cliente sin relación con una solicitud",
+            "when": "intenta suscribirse a su canal privado",
+            "then": "Laravel deniega la autorización y no recibe eventos privados",
+            "level": "Integración / Pest + Reverb real",
+            "pending": "",
+            "id": "TC-056",
+            "hu": "HU-S04-09",
+            "base": "HU-20",
+            "rf": "RF-29",
+            "sprint": 4,
+            "ac": "AC-S04-09-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-09"
+      },
+      {
+        "title": "Entrega y reintentos controlados",
+        "base": "HU-09, HU-20",
+        "rf": "RF-15, RF-29; RNF-07",
+        "who": "operador del entorno de prueba",
+        "want": "recuperar entregas fallidas sin duplicarlas",
+        "benefit": "mantener trazabilidad de las ofertas",
+        "work": "Infraestructura: sender sandbox/inyección de fallos; datos: notification_attempts y claves de evento; scheduler recupera sin mover deadlines.",
+        "cases": [
+          {
+            "title": "Límite de reintentos",
+            "given": "una notificación sandbox cuya entrega falla siempre",
+            "when": "se ejecuta el intento inicial y hasta tres reintentos configurados",
+            "then": "se registra fallo definitivo sin un cuarto reintento y sin extender el SLA de la oferta",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-057",
+            "hu": "HU-S04-10",
+            "base": "HU-09, HU-20",
+            "rf": "RF-15, RF-29; RNF-07",
+            "sprint": 4,
+            "ac": "AC-S04-10-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Job antiguo",
+            "given": "una solicitud cuya generación cambió tras una operación confirmada",
+            "when": "se ejecuta un job de ronda con generación anterior",
+            "then": "no altera la generación vigente ni crea ofertas obsoletas",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-058",
+            "hu": "HU-S04-10",
+            "base": "HU-09, HU-20",
+            "rf": "RF-15, RF-29; RNF-07",
+            "sprint": 4,
+            "ac": "AC-S04-10-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S04-10"
+      }
+    ]
+  },
+  {
+    "n": 5,
+    "title": "Atención, agenda y seguimiento",
+    "scope": "RF-19 a RF-22; estados del servicio, Iniciar atención y Finalizar servicio, agenda técnica, reprogramación, coordinación de varios técnicos, línea de tiempo y WhatsApp tras asignación, cancelación.",
+    "objective": "Permitir ejecutar y seguir cada atención desde la asignación hasta su reporte final, preservando acuerdos de horario, privacidad y la independencia de cada participante.",
+    "dependencies": "Requiere asignaciones, reservas mínimas, eventos y reloj del Sprint 4. El Sprint 5 persiste completed_at y rating_due_at; la interfaz de calificación y su vencimiento se completan en Sprint 6. La reasignación automática consume el mecanismo del Sprint 4; la manual permanece en Sprint 7.",
+    "pending": "P05/P16 franjas y duraciones; P06 máximo de reprogramaciones; P13 aceptación y cierre global de dos técnicos; P14 cancelación/reprogramación en casos límite. No activar coordinación múltiple con reglas parciales sin resolver P13.",
+    "technical": [
+      [
+        "RT-01",
+        "DService: máquina de estados y casos StartParticipation, CompleteParticipation, RequestReschedule, RespondReschedule, ProposeAdditionalTechnician y CancelRequest; React features/service y requests."
+      ],
+      [
+        "RT-02",
+        "Tablas: participations, appointments, reschedule_requests/responses, service_reports/evidence, additional_technician_proposals, incidents/evidence, reassignment_records y request_events."
+      ],
+      [
+        "RT-03",
+        "Contratos: /appointments, /requests/{id}/timeline y /cancellation; /participations/{id}/start|completion|withdrawal; /requests/{id}/reschedules, /reschedules/{id}/response y propuestas de adicional, según diseño."
+      ],
+      [
+        "RT-04",
+        "Aceptación de reprogramación mueve reservas en transacción y vuelve a revisar conflictos. ExpireRescheduleProposal conserva fecha original al vencer 24 h sin respuesta; condiciones especiales según P14."
+      ],
+      [
+        "RT-05",
+        "Finalización por participación con reporte; completed_at del servidor y ventana individual de 48 h. El cliente no confirma el cierre. No finalizar automáticamente al segundo técnico."
+      ],
+      [
+        "RT-06",
+        "Agenda lista/calendario con rango acotado y zona America/Lima para presentación; persistir UTC. Eventos se emiten tras commit y el historial conserva actor, momento y motivo."
+      ]
+    ],
+    "security": [
+      "Solo el técnico asignado inicia/finaliza su propia participación; no confiar en id de actor del cuerpo.",
+      "Datos de contacto y dirección exacta únicamente según relación autorizada tras asignación; revocación y estados posteriores conforme política acordada.",
+      "Control de versión y transacción para evitar inicio/cancelación o reprogramaciones incompatibles simultáneas.",
+      "Reportes y evidencias validados y privados; registrar incidencias sin convertir una denuncia no revisada en sanción automática.",
+      "Técnico adicional necesita propuesta, autorización del cliente y aceptación definida; no permite autoasignarse terceros."
+    ],
+    "done": [
+      "Agenda y detalle reflejan reservas y eventos consistentes para cada identidad.",
+      "Inicio/finalización respetan transiciones válidas, persisten reporte y abren ventana individual sin pedir confirmación extra al cliente.",
+      "Reprogramación requiere a la contraparte; vencimiento 24 h conserva cita original según política ratificada.",
+      "Principal más un adicional como máximo; cada finalización independiente y estado global conforme P13 aprobado.",
+      "Cancelación, retiro e incidencia conservan historial y activan solo los efectos autorizados."
+    ],
+    "stories": [
+      {
+        "title": "Agenda personal",
+        "base": "HU-06, HU-12",
+        "rf": "RF-19",
+        "who": "técnico",
+        "want": "ver mis citas en calendario y lista",
+        "benefit": "organizar las atenciones asignadas",
+        "work": "FE: calendario/lista/filtros; API: consultas por titular y rango; datos: appointments y participations vigentes.",
+        "cases": [
+          {
+            "title": "Citas propias",
+            "given": "dos técnicos con citas diferentes en un mismo día",
+            "when": "uno consulta su agenda en lista y calendario",
+            "then": "ambas vistas muestran solo sus citas y los mismos horarios locales",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-059",
+            "hu": "HU-S05-01",
+            "base": "HU-06, HU-12",
+            "rf": "RF-19",
+            "sprint": 5,
+            "ac": "AC-S05-01-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Agenda ajena",
+            "given": "un técnico sin permiso sobre otra cuenta",
+            "when": "manipula el filtro para obtener citas del otro técnico",
+            "then": "la API no devuelve ninguna cita privada ajena",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-060",
+            "hu": "HU-S05-01",
+            "base": "HU-06, HU-12",
+            "rf": "RF-19",
+            "sprint": 5,
+            "ac": "AC-S05-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S05-01"
+      },
+      {
+        "title": "Inicio y finalización",
+        "base": "HU-15",
+        "rf": "RF-19, RF-22",
+        "who": "técnico asignado",
+        "want": "registrar el inicio y el trabajo realizado",
+        "benefit": "dejar constancia verificable de mi atención",
+        "work": "FE: acciones según estado y reporte; API: start/completion con versión; datos: reporte único, completed_at y rating_due_at.",
+        "cases": [
+          {
+            "title": "Atención finalizada",
+            "given": "una participación asignada al técnico autenticado",
+            "when": "inicia la atención y después finaliza con reporte válido",
+            "then": "queda finalizada con reporte y plazo de calificación a 48 horas del cierre individual, sin confirmación adicional del cliente",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-061",
+            "hu": "HU-S05-02",
+            "base": "HU-15",
+            "rf": "RF-19, RF-22",
+            "sprint": 5,
+            "ac": "AC-S05-02-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Finalización repetida",
+            "given": "una participación ya finalizada con reporte y fecha de cierre",
+            "when": "se repite el mismo comando de finalización",
+            "then": "no se duplica el reporte ni se renueva el plazo de calificación",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-062",
+            "hu": "HU-S05-02",
+            "base": "HU-15",
+            "rf": "RF-19, RF-22",
+            "sprint": 5,
+            "ac": "AC-S05-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S05-02"
+      },
+      {
+        "title": "Reprogramación por acuerdo",
+        "base": "HU-13",
+        "rf": "RF-20",
+        "who": "cliente o técnico participante",
+        "want": "proponer un nuevo horario a la otra parte",
+        "benefit": "cambiar la cita solo por acuerdo",
+        "work": "FE: propuesta/respuesta; dominio: validar franja y contraparte; datos: anterior/propuesta/respuestas y nueva reserva atómica.",
+        "cases": [
+          {
+            "title": "Aceptación por contraparte",
+            "given": "una cita vigente y una propuesta de nueva franja libre",
+            "when": "la contraparte acepta dentro del plazo",
+            "then": "se libera la reserva anterior y se confirma la nueva en la misma transacción",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-063",
+            "hu": "HU-S05-03",
+            "base": "HU-13",
+            "rf": "RF-20",
+            "sprint": 5,
+            "ac": "AC-S05-03-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Propuesta sin respuesta",
+            "given": "una propuesta pendiente durante 24 horas y una cita original futura",
+            "when": "el scheduler vence la propuesta",
+            "then": "la propuesta queda vencida y se mantiene la cita original sin nueva reserva",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-064",
+            "hu": "HU-S05-03",
+            "base": "HU-13",
+            "rf": "RF-20",
+            "sprint": 5,
+            "ac": "AC-S05-03-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S05-03"
+      },
+      {
+        "title": "Técnico adicional autorizado",
+        "base": "HU-14",
+        "rf": "RF-21",
+        "who": "cliente",
+        "want": "autorizar un segundo técnico propuesto",
+        "benefit": "coordinar un servicio que requiere apoyo",
+        "work": "FE: propuesta del principal/decisión del cliente; dominio: cupo y aceptación técnica; datos: additional_technician_proposals y participaciones distintas.",
+        "cases": [
+          {
+            "title": "Finalizaciones independientes",
+            "given": "una solicitud con principal y adicional autorizados y en atención",
+            "when": "el principal registra su finalización",
+            "then": "solo su participación finaliza y abre su plazo; el adicional continúa en atención",
+            "level": "API / Pest + MySQL",
+            "pending": "P13",
+            "id": "TC-065",
+            "hu": "HU-S05-04",
+            "base": "HU-14",
+            "rf": "RF-21",
+            "sprint": 5,
+            "ac": "AC-S05-04-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Tercer participante vigente",
+            "given": "una solicitud con principal y adicional vigentes",
+            "when": "se propone incorporar un tercer técnico simultáneo",
+            "then": "el sistema rechaza la incorporación y conserva las dos participaciones existentes",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-066",
+            "hu": "HU-S05-04",
+            "base": "HU-14",
+            "rf": "RF-21",
+            "sprint": 5,
+            "ac": "AC-S05-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S05-04"
+      },
+      {
+        "title": "Línea de tiempo y contacto",
+        "base": "HU-12, HU-24",
+        "rf": "RF-19, RF-33",
+        "who": "cliente titular",
+        "want": "seguir la atención y acceder al contacto cuando corresponda",
+        "benefit": "coordinar con el técnico asignado",
+        "work": "FE: timeline y enlace WhatsApp; API: proyecciones según estado y relación; datos: request_events sin exposición de motivos administrativos privados.",
+        "cases": [
+          {
+            "title": "Contacto tras asignación",
+            "given": "un cliente titular de una solicitud recién asignada",
+            "when": "abre su detalle",
+            "then": "ve la línea de tiempo autorizada y el WhatsApp del técnico asignado",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-067",
+            "hu": "HU-S05-05",
+            "base": "HU-12, HU-24",
+            "rf": "RF-19, RF-33",
+            "sprint": 5,
+            "ac": "AC-S05-05-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Contacto antes de asignación",
+            "given": "una oferta aceptada pero aún no elegida por el cliente",
+            "when": "se consulta el detalle permitido",
+            "then": "no se revela todavía el WhatsApp ni la dirección exacta al técnico",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-068",
+            "hu": "HU-S05-05",
+            "base": "HU-12, HU-24",
+            "rf": "RF-19, RF-33",
+            "sprint": 5,
+            "ac": "AC-S05-05-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S05-05"
+      },
+      {
+        "title": "Cancelación del cliente",
+        "base": "HU-12",
+        "rf": "RF-19",
+        "who": "cliente",
+        "want": "cancelar antes de iniciarse la atención",
+        "benefit": "detener una solicitud que ya no necesito",
+        "work": "FE: motivo/confirmación; dominio: transición permitida y reservas; datos: evento de cancelación sin borrado de solicitud.",
+        "cases": [
+          {
+            "title": "Cancelación antes de atender",
+            "given": "una solicitud Asignada cuya atención no ha empezado",
+            "when": "el titular confirma cancelar con motivo",
+            "then": "queda Cancelada, se liberan las reservas aplicables y se conserva el historial",
+            "level": "API / Pest + MySQL",
+            "pending": "P14",
+            "id": "TC-069",
+            "hu": "HU-S05-06",
+            "base": "HU-12",
+            "rf": "RF-19",
+            "sprint": 5,
+            "ac": "AC-S05-06-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Cancelación durante atención",
+            "given": "una solicitud con atención ya iniciada",
+            "when": "el cliente usa la cancelación ordinaria previa a atención",
+            "then": "la API informa conflicto y no marca la solicitud como cancelada",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-070",
+            "hu": "HU-S05-06",
+            "base": "HU-12",
+            "rf": "RF-19",
+            "sprint": 5,
+            "ac": "AC-S05-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S05-06"
+      },
+      {
+        "title": "Retiro e incidencia",
+        "base": "HU-13",
+        "rf": "RF-19, RF-20",
+        "who": "técnico o cliente afectado",
+        "want": "registrar impedimentos e inasistencias",
+        "benefit": "permitir una respuesta trazable",
+        "work": "FE: retiro con motivo/reportar incidencia; aplicación: diferencia retiro confirmado de denuncia; datos: incidents y vínculo a reasignación.",
+        "cases": [
+          {
+            "title": "Retiro del técnico asignado",
+            "given": "un técnico asignado antes de atención y una política de retiro aprobada",
+            "when": "registra su retiro con motivo",
+            "then": "se conserva la incidencia y se inicia la reasignación aplicable sin perder la participación anterior",
+            "level": "API / Pest + MySQL",
+            "pending": "P14",
+            "id": "TC-071",
+            "hu": "HU-S05-07",
+            "base": "HU-13",
+            "rf": "RF-19, RF-20",
+            "sprint": 5,
+            "ac": "AC-S05-07-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Reporte de inasistencia",
+            "given": "un cliente reporta que el técnico no asistió",
+            "when": "se registra el reporte",
+            "then": "queda una incidencia para revisión y no se suspende ni reemplaza automáticamente por la sola denuncia",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-072",
+            "hu": "HU-S05-07",
+            "base": "HU-13",
+            "rf": "RF-19, RF-20",
+            "sprint": 5,
+            "ac": "AC-S05-07-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S05-07"
+      }
+    ]
+  },
+  {
+    "n": 6,
+    "title": "Calificación, historial y apelaciones",
+    "scope": "RF-23 a RF-27; calificación en 48 h y edición, cierre sin calificar, reseñas públicas, historial, calificaciones recibidas, apelación y resolución administrativa, criterios de matching visibles.",
+    "objective": "Cerrar el ciclo de cada participación con una evaluación versionada y mecanismos de revisión, ofreciendo un historial confiable y criterios transparentes de asignación.",
+    "dependencies": "Depende de reportes/fechas individuales del Sprint 5 y matching versionado del Sprint 4. La pantalla administrativa de apelaciones se entrega aquí; no se retrasa hasta completar el panel en Sprint 7. Promedios válidos alimentan las nuevas evaluaciones, sin recalcular rankings históricos.",
+    "pending": "P07 plazo de apelación, calendario y efectos de anulación; P13 cierre global con dos técnicos; P17 moderación/respuestas; P23 anclaje de edición. Las 48 h desde primera calificación sin reinicio son propuesta pendiente de ratificación.",
+    "technical": [
+      [
+        "RT-01",
+        "ERatings y React features/ratings; separar envío, edición, respuesta, apelación y resolución. Consulta de historial reutiliza solicitudes/participaciones sin duplicar registros."
+      ],
+      [
+        "RT-02",
+        "Tablas: ratings, rating_versions, rating_replies, rating_appeals, appeal_evidence, rating_resolutions; participations.rating_status y deadlines individuales."
+      ],
+      [
+        "RT-03",
+        "Aplicar contratos del módulo E del CANVAS técnico para calificar, editar, apelar y resolver. Exigir autor/participación/versión; no convertir cambios de calificación en edición libre de filas."
+      ],
+      [
+        "RT-04",
+        "CloseUnratedParticipation es idempotente. Ediciones validan el reloj en cada petición aunque no exista un job que cierre la edición; la UI no decide vigencia."
+      ],
+      [
+        "RT-05",
+        "Resolución sobre versión vigente con control de concurrencia; conservar versión apelada, revisada y resultante. RefreshRatingSummary recalcula desde datos válidos tras commit."
+      ],
+      [
+        "RT-06",
+        "GET /technicians/me/matching-criteria muestra factores/pesos y tratamiento de ausencia de datos, sin exponer datos de competidores. RNF-12: cobertura ≥70% del alcance acordado de calificación; probar fronteras y jobs repetidos."
+      ]
+    ],
+    "security": [
+      "Solo cliente autor de la participación puede calificarla; solo técnico afectado puede responder/apelar.",
+      "Puntaje entero 1..5, contenido tratado como texto y adjuntos privados; controles anti-XSS en reseñas y respuestas.",
+      "Administrador resolutor necesita permiso, motivo y auditoría atómica; una apelación no modifica sola la nota.",
+      "Rechazar decisiones sobre versiones obsoletas; preservar evidencia y acceso restringido al historial de moderación.",
+      "No publicar datos privados en historial público ni transformar el factor neutro del matching en una calificación inventada."
+    ],
+    "done": [
+      "Envío y edición respetan sus ventanas distintas con reloj del servidor y decisiones ratificadas.",
+      "Calificación única por participación, versiones conservadas y cierre Sin calificar idempotente.",
+      "Reseñas, respuestas y promedios corresponden solo a datos válidos y políticas de moderación acordadas.",
+      "Apelaciones se resuelven con motivo, versión vigente y auditoría; conflictos obligan a recargar.",
+      "Historial y criterios de matching son accesibles por rol y propiedad sin modificar evaluaciones históricas."
+    ],
+    "stories": [
+      {
+        "title": "Calificar mi atención",
+        "base": "HU-16",
+        "rf": "RF-23",
+        "who": "cliente",
+        "want": "calificar de 1 a 5 con comentario",
+        "benefit": "compartir mi experiencia tras la atención",
+        "work": "FE: aviso/formulario; API: dueño y ventana; datos: calificación única y primera versión.",
+        "cases": [
+          {
+            "title": "Envío en ventana válida",
+            "given": "mi participación finalizó hace 24 horas y no tiene calificación",
+            "when": "envío puntaje 4 y comentario válido",
+            "then": "se registra una calificación con su primera versión y se marca la participación como calificada",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-073",
+            "hu": "HU-S06-01",
+            "base": "HU-16",
+            "rf": "RF-23",
+            "sprint": 6,
+            "ac": "AC-S06-01-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Nota fuera de rango",
+            "given": "una participación propia dentro de la ventana",
+            "when": "envío puntaje 6",
+            "then": "la API rechaza el valor sin crear calificación",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-074",
+            "hu": "HU-S06-01",
+            "base": "HU-16",
+            "rf": "RF-23",
+            "sprint": 6,
+            "ac": "AC-S06-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S06-01"
+      },
+      {
+        "title": "Editar conservando versiones",
+        "base": "HU-16",
+        "rf": "RF-23",
+        "who": "cliente autor",
+        "want": "corregir mi calificación dentro del plazo permitido",
+        "benefit": "ajustar mi opinión manteniendo el historial",
+        "work": "FE: editar con límite visible; dominio: editar con versión/Clock; datos: rating_versions y fecha inicial inmutable.",
+        "cases": [
+          {
+            "title": "Edición no renueva plazo",
+            "given": "una calificación creada hace 12 horas y política P23 ratificada",
+            "when": "su autor edita nota y comentario",
+            "then": "se agrega una versión y el límite sigue a 48 horas de la primera calificación",
+            "level": "API / Pest + MySQL",
+            "pending": "P23",
+            "id": "TC-075",
+            "hu": "HU-S06-02",
+            "base": "HU-16",
+            "rf": "RF-23",
+            "sprint": 6,
+            "ac": "AC-S06-02-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Edición vencida",
+            "given": "una calificación cuya ventana de edición ya terminó",
+            "when": "su autor intenta editar",
+            "then": "se rechaza sin nueva versión ni cambio del promedio",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-076",
+            "hu": "HU-S06-02",
+            "base": "HU-16",
+            "rf": "RF-23",
+            "sprint": 6,
+            "ac": "AC-S06-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S06-02"
+      },
+      {
+        "title": "Cerrar sin calificar",
+        "base": "HU-15",
+        "rf": "RF-24",
+        "who": "cliente",
+        "want": "ver el cierre cuando no califico a tiempo",
+        "benefit": "tener un estado final claro",
+        "work": "Aplicación: job CloseUnratedParticipation; FE: estado final; datos: rating_status independiente por participación.",
+        "cases": [
+          {
+            "title": "Vencimiento individual",
+            "given": "una participación finalizada sin nota que alcanzó su plazo de 48 horas",
+            "when": "se ejecuta dos veces el job de cierre",
+            "then": "queda Sin calificar una sola vez sin crear una nota automática ni afectar otra participación",
+            "level": "API / Pest + MySQL",
+            "pending": "P12, P13",
+            "id": "TC-077",
+            "hu": "HU-S06-03",
+            "base": "HU-15",
+            "rf": "RF-24",
+            "sprint": 6,
+            "ac": "AC-S06-03-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Ya fue calificada",
+            "given": "una participación calificada válidamente antes del vencimiento",
+            "when": "se ejecuta después un job atrasado de cierre sin calificar",
+            "then": "se conserva la calificación y no cambia a Sin calificar",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-078",
+            "hu": "HU-S06-03",
+            "base": "HU-15",
+            "rf": "RF-24",
+            "sprint": 6,
+            "ac": "AC-S06-03-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S06-03"
+      },
+      {
+        "title": "Reseñas y respuestas públicas",
+        "base": "HU-16, HU-18",
+        "rf": "RF-23, RF-25",
+        "who": "técnico",
+        "want": "ver mis reseñas y responder de forma identificada",
+        "benefit": "dar contexto a mis futuros clientes",
+        "work": "FE: reseñas/promedio/respuesta; API: técnico afectado y texto seguro; datos: ratings válidas y rating_replies según política.",
+        "cases": [
+          {
+            "title": "Promedio real",
+            "given": "un técnico tiene dos calificaciones activas de 4 y 5 y una anulada de 1",
+            "when": "se consulta el promedio bajo política aprobada de excluir anuladas",
+            "then": "se muestra 4.5 calculado solo de las dos notas activas",
+            "level": "API / Pest + MySQL",
+            "pending": "P07",
+            "id": "TC-079",
+            "hu": "HU-S06-04",
+            "base": "HU-16, HU-18",
+            "rf": "RF-23, RF-25",
+            "sprint": 6,
+            "ac": "AC-S06-04-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Texto no ejecutable",
+            "given": "una respuesta de reseña contiene etiquetas de script",
+            "when": "se muestra la respuesta en el perfil público",
+            "then": "el contenido no se ejecuta como código en el navegador",
+            "level": "E2E / Cypress",
+            "pending": "",
+            "id": "TC-080",
+            "hu": "HU-S06-04",
+            "base": "HU-16, HU-18",
+            "rf": "RF-23, RF-25",
+            "sprint": 6,
+            "ac": "AC-S06-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S06-04"
+      },
+      {
+        "title": "Apelar una calificación",
+        "base": "HU-17",
+        "rf": "RF-26",
+        "who": "técnico afectado",
+        "want": "presentar una apelación con motivo y evidencia",
+        "benefit": "solicitar revisión sin cambiar la nota por mi cuenta",
+        "work": "FE: motivo/evidencia/estado; API: titular, plazo y política de duplicados; datos: rating_appeals y versión cuestionada.",
+        "cases": [
+          {
+            "title": "Apelación admitida",
+            "given": "una reseña propia dentro del plazo de apelación ratificado",
+            "when": "el técnico presenta motivo y evidencia permitidos",
+            "then": "se crea una apelación vinculada a la versión de la reseña sin modificar su nota",
+            "level": "API / Pest + MySQL",
+            "pending": "P07, P17",
+            "id": "TC-081",
+            "hu": "HU-S06-05",
+            "base": "HU-17",
+            "rf": "RF-26",
+            "sprint": 6,
+            "ac": "AC-S06-05-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Apelación ajena",
+            "given": "un técnico intenta apelar la reseña de otro prestador",
+            "when": "envía el identificador de esa calificación",
+            "then": "la API deniega y no crea apelación",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-082",
+            "hu": "HU-S06-05",
+            "base": "HU-17",
+            "rf": "RF-26",
+            "sprint": 6,
+            "ac": "AC-S06-05-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S06-05"
+      },
+      {
+        "title": "Resolución motivada",
+        "base": "HU-17, HU-28",
+        "rf": "RF-26, RF-33",
+        "who": "administrador resolutor",
+        "want": "mantener, ajustar o anular una calificación con motivo",
+        "benefit": "resolver disputas dejando evidencia",
+        "work": "FE: comparar versión/revisar/decidir; aplicación: transacción, auditoría y recálculo; datos: rating_resolutions y versiones.",
+        "cases": [
+          {
+            "title": "Resolución válida",
+            "given": "una apelación abierta y la versión vigente revisada por un administrador autorizado",
+            "when": "resuelve mantener, ajustar o anular con motivo obligatorio",
+            "then": "se conserva la decisión y las versiones correspondientes con auditoría y se actualizan agregados según política aprobada",
+            "level": "API / Pest + MySQL",
+            "pending": "P07",
+            "id": "TC-083",
+            "hu": "HU-S06-06",
+            "base": "HU-17, HU-28",
+            "rf": "RF-26, RF-33",
+            "sprint": 6,
+            "ac": "AC-S06-06-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Reseña cambió al resolver",
+            "given": "el administrador cargó una versión que el cliente editó después",
+            "when": "intenta resolver usando la versión anterior",
+            "then": "recibe conflicto y debe revisar la versión vigente sin sobrescribirla",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-084",
+            "hu": "HU-S06-06",
+            "base": "HU-17, HU-28",
+            "rf": "RF-26, RF-33",
+            "sprint": 6,
+            "ac": "AC-S06-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S06-06"
+      },
+      {
+        "title": "Historial y criterios transparentes",
+        "base": "HU-18, HU-19",
+        "rf": "RF-25, RF-27",
+        "who": "cliente o técnico",
+        "want": "consultar mi historial y los criterios que me corresponden",
+        "benefit": "comprender los servicios y el proceso de selección",
+        "work": "FE: filtros por estado/fecha y pantalla criterios; API: proyecciones por rol; datos: joins de historial y versión de reglas aplicada.",
+        "cases": [
+          {
+            "title": "Historial propio filtrado",
+            "given": "un usuario con participaciones de distintos estados y periodos",
+            "when": "consulta su historial con filtros",
+            "then": "recibe únicamente sus registros coincidentes y sus calificaciones vinculadas",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-085",
+            "hu": "HU-S06-07",
+            "base": "HU-18, HU-19",
+            "rf": "RF-25, RF-27",
+            "sprint": 6,
+            "ac": "AC-S06-07-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Criterios sin datos de competidores",
+            "given": "un técnico autenticado consulta criterios de matching",
+            "when": "se devuelve la explicación",
+            "then": "ve pesos, elegibilidad y tratamiento sin historial sin direcciones, documentos ni puntajes privados de otros técnicos",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-086",
+            "hu": "HU-S06-07",
+            "base": "HU-18, HU-19",
+            "rf": "RF-25, RF-27",
+            "sprint": 6,
+            "ac": "AC-S06-07-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S06-07"
+      }
+    ]
+  },
+  {
+    "n": 7,
+    "title": "Panel administrador completo",
+    "scope": "RF-30 y RF-31; dashboard con métricas, gráficos y alertas; solicitudes con reasignación manual; clientes, soporte y bloqueo; reglas editables con historial; exportación Excel/PDF; cuentas de administrador y auditoría.",
+    "objective": "Completar la supervisión operativa y el gobierno de parámetros y accesos, permitiendo intervenciones justificadas y reportes verificables sin alterar el historial.",
+    "dependencies": "Consume los ciclos y datos de Sprints 1–6. Reutiliza catálogo/verificación/comunicados de Sprint 2 y apelaciones de Sprint 6. Backend y bandeja de soporte administrativo se completan aquí con tickets sintéticos; el acceso de ayuda/soporte del cliente y técnico se integra en Sprint 8.",
+    "pending": "P18 efectos de bloqueo/suspensión sobre sesiones y servicios abiertos; P19 aplicación temporal de cambios; P21 fórmulas de dashboard y alertas, criterios de exportación y capacidad. Definir protección del último administrador responsable sin añadir un cuarto rol.",
+    "technical": [
+      [
+        "RT-01",
+        "React features/administration; FAdministration para supervisión/reportes/reglas/permisos. Una intervención delega a COffers/DService, no modifica estados por SQL directo."
+      ],
+      [
+        "RT-02",
+        "Contratos: /admin/dashboard, /admin/requests, /admin/clients, /admin/rule-versions, /admin/reports, /admin/report-exports, /operations/{id}, /exports/{id}/download, /admin/accounts y /admin/audit."
+      ],
+      [
+        "RT-03",
+        "Reasignar: POST /admin/requests/{id}/reassignments con replacement_technician_id, reason y expected_version. La propuesta vigente espera respuesta del reemplazo y elección/autorización definida; no forzar disponibilidad ni sustituir participación en silencio."
+      ],
+      [
+        "RT-04",
+        "Tablas: reassignment_records, client_blocks, support_tickets/updates, rule_versions/values/weights, audit_entries, operations/export_files y permisos; preservar relaciones a eventos anteriores."
+      ],
+      [
+        "RT-05",
+        "Publicar parámetros crea versión nueva y conserva pesos aplicados. Validar suma 100, rangos y motivo; vigencia sobre trabajo abierto resuelta en P19 antes de habilitar edición."
+      ],
+      [
+        "RT-06",
+        "Exportar mediante cola de entrega con operación consultable, filtros persistidos y descarga privada. Reportes reproducibles: documentar fórmula, denominador, periodo y zona horaria; no deducir SLA de datos incompletos."
+      ],
+      [
+        "RT-07",
+        "Alertas de SLA reiterado/calificación baja requieren umbrales aprobados; pendientes mayores de 20 h según fuente. Una alerta no ejecuta automáticamente una sanción."
+      ]
+    ],
+    "security": [
+      "Permisos separados para reassign, rules.manage, reportes, soporte, admins.manage y audit.read; probar usuarios de administración sin cada concesión.",
+      "Toda acción sensible con actor, motivo, recurso, antes/después permitido y fecha; excluir contraseñas, cookies y archivos completos del log.",
+      "Auditoría obligatoria y cambio de negocio en una misma transacción: si falla el registro, no confirmar el cambio.",
+      "Exportaciones privadas con autorización vigente al descargar; neutralizar celdas interpretables como fórmulas y contenido activo en documentos.",
+      "Cuentas administrativas solo creadas por responsable; no contraseñas predeterminadas compartidas. Proteger último responsable operativo según política.",
+      "Filtrar/limitar consultas de auditoría y reportes; no ofrecer API de edición o borrado ordinario de auditoría."
+    ],
+    "done": [
+      "Dashboard, métricas/alertas y filtros coinciden con dataset y fórmulas aprobadas.",
+      "Reasignación manual valida elegibilidad, permisos, versión y generación y conserva al participante anterior.",
+      "Clientes y tickets se supervisan; bloqueo/desbloqueo conserva motivo e historial y respeta efectos acordados.",
+      "Reglas se versionan con validación y uso temporal explícito; pesos históricos permanecen intactos.",
+      "Excel/PDF coinciden con el reporte y solo los autorizados descargan.",
+      "Cuentas administrativas y consulta de auditoría funcionan sin escalamiento ni pérdida de trazabilidad."
+    ],
+    "stories": [
+      {
+        "title": "Dashboard y alertas",
+        "base": "HU-21",
+        "rf": "RF-30",
+        "who": "administrador supervisor",
+        "want": "consultar métricas por periodo, especialidad y zona",
+        "benefit": "identificar trabajo pendiente y problemas de atención",
+        "work": "FE: tarjetas/gráficos/alertas; API: agregaciones con filtros; datos: fixture con resultados manualmente calculados y fórmula aprobada.",
+        "cases": [
+          {
+            "title": "Métricas reproducibles",
+            "given": "un dataset sintético con conteos esperados y definición de cumplimiento de SLA aprobada",
+            "when": "el administrador aplica filtros de fecha y especialidad",
+            "then": "tarjetas y gráficos coinciden con los resultados esperados del mismo conjunto",
+            "level": "API / Pest + MySQL",
+            "pending": "P21",
+            "id": "TC-087",
+            "hu": "HU-S07-01",
+            "base": "HU-21",
+            "rf": "RF-30",
+            "sprint": 7,
+            "ac": "AC-S07-01-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Pendiente mayor de 20 horas",
+            "given": "una solicitud pendiente de 21 horas y otra de 19 horas",
+            "when": "se consulta el panel de alertas",
+            "then": "solo la primera aparece en la alerta de pendientes de más de 20 horas",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-088",
+            "hu": "HU-S07-01",
+            "base": "HU-21",
+            "rf": "RF-30",
+            "sprint": 7,
+            "ac": "AC-S07-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S07-01"
+      },
+      {
+        "title": "Reasignación manual controlada",
+        "base": "HU-21, HU-28",
+        "rf": "RF-30, RF-33",
+        "who": "administrador con permiso de reasignación",
+        "want": "intervenir una solicitud con motivo",
+        "benefit": "resolver incidencias conservando trazabilidad",
+        "work": "FE: ficha/selección/revisión del motivo; aplicación: nuevo intento y generación mediante módulo dueño; datos: intervención, participación anterior y auditoría.",
+        "cases": [
+          {
+            "title": "Intervención válida",
+            "given": "una solicitud reasignable, un reemplazo elegible y política de respuesta aprobada",
+            "when": "el administrador autorizado solicita reasignación con motivo y versión vigente",
+            "then": "se registra la intervención y nueva generación con ofertas autorizadas, sin forzar asignación ni borrar al técnico anterior",
+            "level": "API / Pest + MySQL",
+            "pending": "P11, P14",
+            "id": "TC-089",
+            "hu": "HU-S07-02",
+            "base": "HU-21, HU-28",
+            "rf": "RF-30, RF-33",
+            "sprint": 7,
+            "ac": "AC-S07-02-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Sin permiso de reasignación",
+            "given": "un administrador que no tiene requests.reassign",
+            "when": "invoca la operación manual",
+            "then": "recibe 403 y no cambian solicitud, ofertas ni participantes",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-090",
+            "hu": "HU-S07-02",
+            "base": "HU-21, HU-28",
+            "rf": "RF-30, RF-33",
+            "sprint": 7,
+            "ac": "AC-S07-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S07-02"
+      },
+      {
+        "title": "Clientes y bloqueos",
+        "base": "HU-21, HU-28",
+        "rf": "RF-30, RF-33, RF-C12",
+        "who": "administrador autorizado",
+        "want": "revisar historial y bloquear o desbloquear con motivo",
+        "benefit": "controlar abusos conforme una política conocida",
+        "work": "FE: ficha/listado y acciones motivadas; aplicación: acceso de cuenta y efectos aprobados; datos: client_blocks e historial sin borrado.",
+        "cases": [
+          {
+            "title": "Bloqueo conforme política",
+            "given": "un cliente y una política de bloqueo/sesión ratificada",
+            "when": "el administrador autorizado registra un bloqueo con motivo",
+            "then": "se impiden las acciones definidas por esa política y se conserva historial de servicio y auditoría",
+            "level": "API / Pest + MySQL",
+            "pending": "P18",
+            "id": "TC-091",
+            "hu": "HU-S07-03",
+            "base": "HU-21, HU-28",
+            "rf": "RF-30, RF-33, RF-C12",
+            "sprint": 7,
+            "ac": "AC-S07-03-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Bloqueo sin motivo",
+            "given": "un administrador autorizado selecciona un cliente",
+            "when": "solicita bloquearlo sin motivo",
+            "then": "se rechaza la operación sin cambiar acceso ni crear un bloqueo activo",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-092",
+            "hu": "HU-S07-03",
+            "base": "HU-21, HU-28",
+            "rf": "RF-30, RF-33, RF-C12",
+            "sprint": 7,
+            "ac": "AC-S07-03-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S07-03"
+      },
+      {
+        "title": "Soporte administrativo",
+        "base": "HU-30",
+        "rf": "RF-30, RF-C07",
+        "who": "administrador de soporte",
+        "want": "revisar y resolver tickets",
+        "benefit": "atender incidencias con seguimiento",
+        "work": "FE: bandeja de tickets sintéticos y resolución; API: permiso/versión; datos: support_tickets/updates y acceso al contexto autorizado.",
+        "cases": [
+          {
+            "title": "Resolución de ticket",
+            "given": "un ticket sintético abierto y un administrador con permiso de soporte",
+            "when": "registra una resolución válida",
+            "then": "el ticket queda resuelto con autor, fecha y actualización de historial",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-093",
+            "hu": "HU-S07-04",
+            "base": "HU-30",
+            "rf": "RF-30, RF-C07",
+            "sprint": 7,
+            "ac": "AC-S07-04-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Resolución no autorizada",
+            "given": "un usuario sin permiso de soporte administrativo",
+            "when": "intenta resolver un ticket",
+            "then": "la API deniega y el ticket permanece intacto",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-094",
+            "hu": "HU-S07-04",
+            "base": "HU-30",
+            "rf": "RF-30, RF-C07",
+            "sprint": 7,
+            "ac": "AC-S07-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S07-04"
+      },
+      {
+        "title": "Reglas e historial",
+        "base": "HU-26",
+        "rf": "RF-C03, RF-30",
+        "who": "administrador de reglas",
+        "want": "editar parámetros mediante nuevas versiones",
+        "benefit": "ajustar el negocio sin borrar decisiones previas",
+        "work": "FE: editor/rangos/suma/historial; dominio: validar y publicar; datos: versiones inmutables aplicadas al matching.",
+        "cases": [
+          {
+            "title": "Publicación de versión válida",
+            "given": "pesos 35, 20, 30 y 15 y plazos válidos con motivo",
+            "when": "el administrador publica una nueva versión bajo la política de vigencia acordada",
+            "then": "queda disponible la versión nueva y los rankings previos conservan la versión anterior",
+            "level": "API / Pest + MySQL",
+            "pending": "P19",
+            "id": "TC-095",
+            "hu": "HU-S07-05",
+            "base": "HU-26",
+            "rf": "RF-C03, RF-30",
+            "sprint": 7,
+            "ac": "AC-S07-05-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Pesos que suman 95",
+            "given": "una configuración vigente correcta",
+            "when": "se intenta publicar pesos cuya suma es 95",
+            "then": "la API rechaza y mantiene intacta la configuración vigente",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-096",
+            "hu": "HU-S07-05",
+            "base": "HU-26",
+            "rf": "RF-C03, RF-30",
+            "sprint": 7,
+            "ac": "AC-S07-05-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S07-05"
+      },
+      {
+        "title": "Reportes Excel y PDF",
+        "base": "HU-22",
+        "rf": "RF-31",
+        "who": "administrador de reportes",
+        "want": "exportar cobertura y desempeño",
+        "benefit": "entregar información verificable",
+        "work": "FE: filtros/estado de operación/descarga; aplicación: job de exportación con autor; datos: operations/export_files privados y métricas coherentes.",
+        "cases": [
+          {
+            "title": "Exportaciones equivalentes",
+            "given": "un reporte con filtros y resultados esperados aprobados",
+            "when": "se generan sus exportaciones XLSX y PDF",
+            "then": "ambas contienen el mismo periodo, filtros y cifras que la consulta y quedan vinculadas a su operación",
+            "level": "API / Pest + MySQL",
+            "pending": "P21",
+            "id": "TC-097",
+            "hu": "HU-S07-06",
+            "base": "HU-22",
+            "rf": "RF-31",
+            "sprint": 7,
+            "ac": "AC-S07-06-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Descarga ajena",
+            "given": "una exportación privada completada para un administrador",
+            "when": "otro usuario sin permiso intenta descargarla por identificador",
+            "then": "se deniega sin exponer el archivo ni una URL pública",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-098",
+            "hu": "HU-S07-06",
+            "base": "HU-22",
+            "rf": "RF-31",
+            "sprint": 7,
+            "ac": "AC-S07-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S07-06"
+      },
+      {
+        "title": "Administradores y auditoría",
+        "base": "HU-28",
+        "rf": "RF-C05, RF-33",
+        "who": "administrador responsable",
+        "want": "gestionar cuentas privilegiadas y revisar acciones sensibles",
+        "benefit": "mantener separación de funciones y rendición de cuentas",
+        "work": "FE: cuentas/permisos y auditoría de solo lectura; API: admins.manage/audit.read y transacción; datos: concesiones y registros inmutables para operaciones ordinarias.",
+        "cases": [
+          {
+            "title": "Alta por responsable",
+            "given": "un administrador con admins.manage y datos de una cuenta nueva",
+            "when": "crea otro administrador con permisos explícitos",
+            "then": "se crea la cuenta con esas concesiones y se registra quién autorizó el alta sin exponer su contraseña",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-099",
+            "hu": "HU-S07-07",
+            "base": "HU-28",
+            "rf": "RF-C05, RF-33",
+            "sprint": 7,
+            "ac": "AC-S07-07-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Fallo de auditoría",
+            "given": "una acción administrativa sensible cuya escritura de auditoría falla",
+            "when": "se intenta confirmar su transacción",
+            "then": "se revierte todo el cambio de negocio y no se emite un evento de éxito",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-100",
+            "hu": "HU-S07-07",
+            "base": "HU-28",
+            "rf": "RF-C05, RF-33",
+            "sprint": 7,
+            "ac": "AC-S07-07-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S07-07"
+      }
+    ]
+  },
+  {
+    "n": 8,
+    "title": "Pagos, notificaciones, endurecimiento y despliegue",
+    "scope": "RF-32; método de pago y comprobante simulado sin dinero real, historial y ganancias del técnico, preferencias de notificación, ayuda y soporte; endurecimiento; regresión y pruebas no funcionales; SonarQube con Quality Gate; despliegue en servidor.",
+    "objective": "Integrar los recorridos finales y demostrar un MVP desplegable y verificable, con simulación económica inequívoca, controles de seguridad revisados y evidencias reales de calidad.",
+    "dependencies": "Integra Sprints 1–7: participaciones/tarifas históricas, notificaciones desde Sprint 4 y soporte administrativo desde Sprint 7. No posponer aquí la seguridad básica: se endurecen controles ya construidos. Servidor de demostración académica, no operación comercial ni cobros reales.",
+    "pending": "P01 moneda; P02/P16 cálculo y procedencia de montos para ganancias simuladas y métodos; P08 retención/anonimización; P09 muestra/ventana de observación; P12 avisos obligatorios; P21 protocolo de carga, métricas de cobertura, defectos y fórmulas. El plan actual confirma historial/ganancias/comprobante simulados; no reactiva confirmación financiera ni validez tributaria de propuestas anteriores.",
+    "technical": [
+      [
+        "RT-01",
+        "FAdministration para métodos, registros simulados, preferencias y soporte; React paneles cliente/técnico. Documentar contratos faltantes de comprobante e historial simulado antes de implementarlos, sin atribuirlos al contrato anterior si no están allí."
+      ],
+      [
+        "RT-02",
+        "Tablas: payment_methods, user_payment_methods, request_payment_methods, simulated_payments/events/receipts, notification_preferences y support_tickets/updates/attachments. No guardar PAN/CVV ni activar una pasarela."
+      ],
+      [
+        "RT-03",
+        "Contratos existentes: /payment-methods, /requests/{id}/payment-method, /me/notification-preferences y /support-cases; completar consultas/descargas simuladas con Policies y trazabilidad."
+      ],
+      [
+        "RT-04",
+        "Compose de demostración: gateway HTTPS/WSS, api, mysql interno, worker-domain, worker-delivery, scheduler y reverb; imágenes identificadas y configuración del servidor separada de frontend-dev y test-runner."
+      ],
+      [
+        "RT-05",
+        "SonarQube en entorno de calidad restringido con almacenamiento compatible independiente. Quality Gate usa reportes reales de pruebas; no sustituye Pest, Cypress, pruebas de carga ni revisión de seguridad."
+      ],
+      [
+        "RT-06",
+        "RNF-01..14: protocolo P21 con hardware/dataset/carga y estadístico antes de medir; matching ≤3 s, 200 concurrentes, SUS ≥70, cinco pasos y mediana ≤3 min, disponibilidad 99% en ventana acordada y cobertura ≥70% en matching/notificación/calificación."
+      ],
+      [
+        "RT-07",
+        "Pipeline: revisión, detección de secretos/dependencias, build, Pest/MySQL, Cypress, informes y Quality Gate, artefactos identificados; no publicar un artefacto que falle controles obligatorios."
+      ],
+      [
+        "RT-08",
+        "Despliegue: copia recuperable, migración controlada, salud y humo por roles, jobs/vencimientos/Reverb, observación y reversión. No usar migrate:fresh en datos persistentes ni asumir que bajar esquema es una reversión segura."
+      ]
+    ],
+    "security": [
+      "TLS/WSS, sesión segura y CSRF, CORS/orígenes explícitos, depuración desactivada y errores sin trazas internas.",
+      "Secretos solo de servidor, sin inclusión en bundle React ni imágenes; MySQL no expuesto públicamente y usuario de ejecución con privilegios mínimos.",
+      "Comprobantes privados rotulados SIMULADO y SIN VALIDEZ TRIBUTARIA; ganancias rotuladas simuladas, no ingresos verificados.",
+      "Preferencias no desactivan avisos obligatorios sin la política P12; proveedores externos limitados a sandbox.",
+      "Regresión de acceso por rol/propiedad, archivos, XSS, escalamiento, concurrencia e idempotencia; revisar dependencias, imágenes y hallazgos de seguridad.",
+      "Respaldos y restauración probados, auditoría preservada, plan de incidente y observabilidad de colas, fallos, SLA y disponibilidad.",
+      "Retención/anonimización y grabaciones solo conforme decisiones aprobadas; citar normas como referencias de trabajo, sin afirmar certificación ni cumplimiento legal validado."
+    ],
+    "done": [
+      "Métodos, comprobantes e historial/ganancias simulados tienen trazabilidad por participación y rótulos inequívocos; no se procesa dinero.",
+      "Preferencias y soporte de cliente/técnico se integran con backend real y bandeja administrativa.",
+      "Regresión completa de casos aceptados de Sprints 1–8, resultados y defectos registrados; se cumple la exigencia de más de 60 casos ejecutados distintos, no solo redactados.",
+      "Quality Gate configurado y aprobado para el commit candidato; cobertura y hallazgos reportados con alcance y límites.",
+      "Pruebas RNF y evaluación de uso ejecutadas según protocolo aprobado; objetivos no alcanzados se reportan, no se marcan cumplidos por un build correcto.",
+      "Servidor académico con HTTPS/WSS, datos sintéticos, salud, recuperación, smoke por roles y evidencia de reversión. Ventana de disponibilidad observada antes de declarar su RNF cerrado."
+    ],
+    "stories": [
+      {
+        "title": "Métodos y comprobante simulado",
+        "base": "HU-23",
+        "rf": "RF-32, RF-C11",
+        "who": "cliente",
+        "want": "registrar un método y consultar una constancia simulada",
+        "benefit": "conservar el registro sin efectuar un pago real",
+        "work": "FE: selección/aviso/descarga; API: propietario e idempotencia; datos: método por solicitud, registro y comprobante simulado por participación.",
+        "cases": [
+          {
+            "title": "Constancia inequívoca",
+            "given": "una participación propia con registro económico sintético permitido",
+            "when": "el cliente selecciona método y obtiene el comprobante",
+            "then": "la selección se conserva y el archivo dice simulado y sin validez tributaria sin iniciar un cobro",
+            "level": "API / Pest + MySQL",
+            "pending": "P01, P02, P16",
+            "id": "TC-101",
+            "hu": "HU-S08-01",
+            "base": "HU-23",
+            "rf": "RF-32, RF-C11",
+            "sprint": 8,
+            "ac": "AC-S08-01-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Comprobante ajeno",
+            "given": "un comprobante privado de otro cliente",
+            "when": "se intenta descargar usando su identificador",
+            "then": "se deniega sin revelar montos ni archivo",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-102",
+            "hu": "HU-S08-01",
+            "base": "HU-23",
+            "rf": "RF-32, RF-C11",
+            "sprint": 8,
+            "ac": "AC-S08-01-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-01"
+      },
+      {
+        "title": "Historial y ganancias simuladas",
+        "base": "HU-23, HU-18",
+        "rf": "RF-32, RF-C11",
+        "who": "técnico",
+        "want": "consultar el resumen económico simulado por periodo",
+        "benefit": "demostrar la trazabilidad de mis atenciones",
+        "work": "FE: totales/historial/exportación propia; API: fórmula y estados aprobados; datos: registros simulados sin mezclar tarifas actuales con importes históricos.",
+        "cases": [
+          {
+            "title": "Total conforme fórmula",
+            "given": "registros sintéticos propios de 50 y 70 incluidos por la fórmula aprobada y otro de un tercero",
+            "when": "el técnico consulta su periodo",
+            "then": "el resumen muestra 120 como ganancia simulada y excluye al tercero",
+            "level": "API / Pest + MySQL",
+            "pending": "P02, P21",
+            "id": "TC-103",
+            "hu": "HU-S08-02",
+            "base": "HU-23, HU-18",
+            "rf": "RF-32, RF-C11",
+            "sprint": 8,
+            "ac": "AC-S08-02-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Tarifa actual no cambia historial",
+            "given": "una atención con importe simulado histórico 50 y tarifa actual actualizada a 80",
+            "when": "se consulta el historial de la atención",
+            "then": "se conserva el importe histórico 50 y no se presenta 80 como pago ocurrido",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-104",
+            "hu": "HU-S08-02",
+            "base": "HU-23, HU-18",
+            "rf": "RF-32, RF-C11",
+            "sprint": 8,
+            "ac": "AC-S08-02-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-02"
+      },
+      {
+        "title": "Preferencias y bandeja de avisos",
+        "base": "HU-20",
+        "rf": "RF-C09, RF-29",
+        "who": "usuario",
+        "want": "elegir preferencias y revisar mis avisos",
+        "benefit": "recibir información según las opciones permitidas",
+        "work": "FE: preferencias/bandeja/marcar leída; API: dueño y avisos obligatorios; datos: preferencias y entregas sandbox.",
+        "cases": [
+          {
+            "title": "Preferencia opcional respetada",
+            "given": "un usuario desactiva un canal opcional conforme política aprobada",
+            "when": "se genera una notificación opcional de ese canal",
+            "then": "no se entrega por el canal desactivado y se conserva el aviso interno aplicable",
+            "level": "API / Pest + MySQL",
+            "pending": "P12",
+            "id": "TC-105",
+            "hu": "HU-S08-03",
+            "base": "HU-20",
+            "rf": "RF-C09, RF-29",
+            "sprint": 8,
+            "ac": "AC-S08-03-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Aviso ajeno no editable",
+            "given": "una notificación dirigida a otro usuario",
+            "when": "se intenta marcarla como leída por identificador",
+            "then": "la API deniega y su estado no cambia",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-106",
+            "hu": "HU-S08-03",
+            "base": "HU-20",
+            "rf": "RF-C09, RF-29",
+            "sprint": 8,
+            "ac": "AC-S08-03-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-03"
+      },
+      {
+        "title": "Ayuda y soporte de usuarios",
+        "base": "HU-30",
+        "rf": "RF-C07",
+        "who": "cliente o técnico",
+        "want": "consultar ayuda y enviar un ticket propio",
+        "benefit": "recibir soporte sin un chat adicional",
+        "work": "FE: FAQ, contacto institucional y formulario; API: /support-cases con propiedad de solicitud; datos: tickets vinculados a la bandeja de Sprint 7.",
+        "cases": [
+          {
+            "title": "Ticket integrado",
+            "given": "un cliente autenticado con una solicitud propia",
+            "when": "envía un ticket válido y soporte lo resuelve",
+            "then": "puede consultar su ticket y la resolución registrada en la bandeja administrativa",
+            "level": "E2E / Cypress + API",
+            "pending": "",
+            "id": "TC-107",
+            "hu": "HU-S08-04",
+            "base": "HU-30",
+            "rf": "RF-C07",
+            "sprint": 8,
+            "ac": "AC-S08-04-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Solicitud ajena en soporte",
+            "given": "un usuario conoce el identificador de una solicitud ajena",
+            "when": "lo adjunta como contexto de un ticket",
+            "then": "se deniega el vínculo y no se revela información de esa solicitud",
+            "level": "API / Pest + MySQL",
+            "pending": "",
+            "id": "TC-108",
+            "hu": "HU-S08-04",
+            "base": "HU-30",
+            "rf": "RF-C07",
+            "sprint": 8,
+            "ac": "AC-S08-04-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-04"
+      },
+      {
+        "title": "Regresión y endurecimiento",
+        "base": "HU-24, HU-28, HU-32",
+        "rf": "RF-33; RNF-08, RNF-09, RNF-10",
+        "who": "equipo",
+        "want": "verificar el sistema integrado y sus límites de acceso",
+        "benefit": "entregar un incremento sin regresiones conocidas críticas",
+        "work": "QA: suite acumulada, matriz de abuso y archivos; infraestructura: configuración de seguridad; datos: sintéticos y evidencias por commit.",
+        "cases": [
+          {
+            "title": "Recorrido completo por roles",
+            "given": "un entorno integrado con cliente, técnico verificado y administrador de prueba",
+            "when": "se ejecuta solicitud, oferta, elección, atención, calificación y consulta administrativa",
+            "then": "cada etapa se persiste una sola vez y solo los roles autorizados pueden intervenir",
+            "level": "E2E / Cypress + API + Reverb",
+            "pending": "",
+            "id": "TC-109",
+            "hu": "HU-S08-05",
+            "base": "HU-24, HU-28, HU-32",
+            "rf": "RF-33; RNF-08, RNF-09, RNF-10",
+            "sprint": 8,
+            "ac": "AC-S08-05-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Configuración expuesta insegura",
+            "given": "el artefacto candidato y la configuración del servidor de demostración",
+            "when": "se inspeccionan bundle, imagen, puertos, depuración y cookies bajo HTTPS",
+            "then": "no contienen secretos, MySQL no es público, debug está desactivado y la sesión usa protecciones acordadas",
+            "level": "Automatización de seguridad / CI",
+            "pending": "",
+            "id": "TC-110",
+            "hu": "HU-S08-05",
+            "base": "HU-24, HU-28, HU-32",
+            "rf": "RF-33; RNF-08, RNF-09, RNF-10",
+            "sprint": 8,
+            "ac": "AC-S08-05-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-05"
+      },
+      {
+        "title": "Quality Gate y cobertura",
+        "base": "HU-32",
+        "rf": "RNF-11, RNF-12",
+        "who": "equipo",
+        "want": "evaluar el código y las pruebas con una puerta de calidad",
+        "benefit": "impedir la entrega de una versión que incumpla controles acordados",
+        "work": "CI: reportes Pest/Cypress y cobertura real, scanner y gate; datos: commit, configuración del gate y resultados archivados.",
+        "cases": [
+          {
+            "title": "Puerta de calidad válida",
+            "given": "un commit con suites obligatorias aprobadas e informes auténticos",
+            "when": "SonarQube evalúa los umbrales aprobados y cobertura del núcleo",
+            "then": "el pipeline solo habilita la entrega si el gate pasa y conserva métricas y alcance",
+            "level": "Automatización de calidad / CI",
+            "pending": "P21",
+            "id": "TC-111",
+            "hu": "HU-S08-06",
+            "base": "HU-32",
+            "rf": "RNF-11, RNF-12",
+            "sprint": 8,
+            "ac": "AC-S08-06-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Gate fallido bloquea entrega",
+            "given": "un análisis cuya puerta de calidad falla",
+            "when": "el pipeline intenta continuar al despliegue",
+            "then": "se bloquea la promoción del artefacto y se conserva el motivo del fallo",
+            "level": "Automatización de calidad / CI",
+            "pending": "",
+            "id": "TC-112",
+            "hu": "HU-S08-06",
+            "base": "HU-32",
+            "rf": "RNF-11, RNF-12",
+            "sprint": 8,
+            "ac": "AC-S08-06-02",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-06"
+      },
+      {
+        "title": "Rendimiento y concurrencia",
+        "base": "HU-32",
+        "rf": "RNF-01, RNF-02",
+        "who": "equipo",
+        "want": "medir tiempos bajo carga representativa",
+        "benefit": "contrastar los objetivos con datos reproducibles",
+        "work": "QA: herramienta de carga a seleccionar/documentar, dataset fijo y perfil de 200 usuarios; API: métricas separadas de duración de matching y transporte.",
+        "cases": [
+          {
+            "title": "Matching bajo carga",
+            "given": "un servidor, dataset, mezcla de operaciones y estadístico temporal aprobados",
+            "when": "se ejecuta el protocolo con 200 usuarios concurrentes y solicitudes de matching",
+            "then": "se registra la distribución completa y se verifica matching ≤3 s bajo el criterio acordado sin ocultar errores",
+            "level": "Carga automatizada / herramienta por fijar",
+            "pending": "P21",
+            "id": "TC-113",
+            "hu": "HU-S08-07",
+            "base": "HU-32",
+            "rf": "RNF-01, RNF-02",
+            "sprint": 8,
+            "ac": "AC-S08-07-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Carga no duplica reservas",
+            "given": "solicitudes concurrentes que compiten por franjas de técnicos de prueba",
+            "when": "se ejecuta la carga y se inspeccionan invariantes de MySQL",
+            "then": "no existen reservas incompatibles dobles ni ofertas activas por encima del límite",
+            "level": "Carga automatizada / herramienta por fijar",
+            "pending": "P16, P21",
+            "id": "TC-114",
+            "hu": "HU-S08-07",
+            "base": "HU-32",
+            "rf": "RNF-01, RNF-02",
+            "sprint": 8,
+            "ac": "AC-S08-07-02",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-07"
+      },
+      {
+        "title": "Usabilidad y beneficio académico",
+        "base": "HU-31, HU-32",
+        "rf": "RNF-03, RNF-04, RNF-05",
+        "who": "asesor y equipo",
+        "want": "evaluar experiencia y tiempo de búsqueda",
+        "benefit": "contrastar los objetivos sin inventar resultados",
+        "work": "QA: recorridos en Chrome/Edge/Firefox y tamaños acordados; evaluación con participantes aprobados, SUS, cronometraje y comparación informal/plataforma.",
+        "cases": [
+          {
+            "title": "Medición de uso",
+            "given": "participantes y protocolo aprobados, con autorización de evidencias",
+            "when": "completan la solicitud de cinco pasos y el cuestionario SUS",
+            "then": "se reportan SUS y tiempos y se verifica SUS ≥70 y mediana ≤3 min incluyendo fallos según protocolo",
+            "level": "Manual / estudio con participantes",
+            "pending": "P09, P21",
+            "id": "TC-115",
+            "hu": "HU-S08-08",
+            "base": "HU-31, HU-32",
+            "rf": "RNF-03, RNF-04, RNF-05",
+            "sprint": 8,
+            "ac": "AC-S08-08-01",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Protocolo manual; no automatizar la participación humana"
+          },
+          {
+            "title": "Reducción de búsqueda",
+            "given": "tres escenarios por especialidad y participantes aprobados con orden alternado",
+            "when": "se comparan búsquedas informales y en TécnicoYa hasta técnico confirmado",
+            "then": "se reportan medianas y limitaciones y se contrasta reducción ≥30% sin declararla alcanzada si falla",
+            "level": "Manual / estudio con participantes",
+            "pending": "P09, P21",
+            "id": "TC-116",
+            "hu": "HU-S08-08",
+            "base": "HU-31, HU-32",
+            "rf": "RNF-03, RNF-04, RNF-05",
+            "sprint": 8,
+            "ac": "AC-S08-08-02",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Protocolo manual; no automatizar la participación humana"
+          }
+        ],
+        "id": "HU-S08-08"
+      },
+      {
+        "title": "Despliegue, respaldo y recuperación",
+        "base": "HU-32",
+        "rf": "RNF-06, RNF-10, RNF-13, RNF-14",
+        "who": "operador del entorno académico",
+        "want": "desplegar y recuperar una versión identificable",
+        "benefit": "mantener una demostración controlada y verificable",
+        "work": "Infraestructura: Compose/healthchecks/TLS, copia, migración y smoke; QA: restauración aislada y monitoreo en ventana aprobada; datos: manifiesto y bitácora.",
+        "cases": [
+          {
+            "title": "Restauración y humo",
+            "given": "un respaldo de base/archivos de prueba y una imagen identificada compatible",
+            "when": "se restaura en entorno aislado y se ejecutan smoke de sesión, solicitud, jobs y Reverb",
+            "then": "los datos y relaciones esperadas se recuperan y el flujo básico funciona sin borrar la base de demostración",
+            "level": "Integración operativa / scripts + revisión",
+            "pending": "",
+            "id": "TC-117",
+            "hu": "HU-S08-09",
+            "base": "HU-32",
+            "rf": "RNF-06, RNF-10, RNF-13, RNF-14",
+            "sprint": 8,
+            "ac": "AC-S08-09-01",
+            "status": "NO EJECUTADO — previsto",
+            "automation": "Automatización prevista; todavía sin implementación"
+          },
+          {
+            "title": "Disponibilidad observada",
+            "given": "una ventana y horario de monitoreo ratificados y servidor desplegado",
+            "when": "se recopilan todas las observaciones de salud y fallos durante esa ventana",
+            "then": "se calcula disponibilidad con el protocolo acordado y solo se declara RNF cumplido si alcanza 99%",
+            "level": "Monitoreo automatizado / ventana real",
+            "pending": "P09, P21",
+            "id": "TC-118",
+            "hu": "HU-S08-09",
+            "base": "HU-32",
+            "rf": "RNF-06, RNF-10, RNF-13, RNF-14",
+            "sprint": 8,
+            "ac": "AC-S08-09-02",
+            "status": "NO EJECUTADO — diseño condicionado",
+            "automation": "Automatización prevista; todavía sin implementación"
+          }
+        ],
+        "id": "HU-S08-09"
+      }
+    ]
+  }
+]

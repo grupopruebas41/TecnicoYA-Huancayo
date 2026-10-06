@@ -1,0 +1,60 @@
+﻿id,epic,sprint,title,base,rf,rnf,points,priority,dependencies,pending
+HU-S01-01,EP-01,1,Registro de cliente,HU-01,RF-28,"RNF-08, RNF-09, RNF-11, RNF-14",9,Must,BT-BASE-01,
+HU-S01-02,EP-01,1,Alta de técnico pendiente,"HU-01, HU-02","RF-28, RF-33","RNF-08, RNF-09, RNF-11, RNF-14",8,Must,BT-BASE-01,
+HU-S01-03,EP-01,1,Sesión y cierre por rol,HU-01,RF-28,"RNF-03, RNF-08, RNF-09, RNF-10",10,Must,"HU-S01-01, HU-S01-02",
+HU-S01-04,EP-01,1,Autorización efectiva,"HU-24, HU-28",RF-33,"RNF-09, RNF-11",10,Must,HU-S01-03,
+HU-S01-05,EP-01,1,Perfil básico propio,"HU-24, HU-29","RF-28, RF-33, RF-C06","RNF-03, RNF-09, RNF-14",7,Must,HU-S01-04,
+HU-S01-06,EP-01,1,Catálogo inicial y conexión,"HU-05, HU-25","RF-C01, RF-28, RF-33","RNF-03, RNF-11, RNF-14",6,Must,BT-BASE-01,
+HU-S02-01,EP-02,2,Landing y carrusel,HU-31,RF-C08,"RNF-03, RNF-04",10,Should,"HU-S01-03, HU-S02-02",
+HU-S02-02,EP-02,2,Catálogo administrable,HU-25,"RF-C01, RF-C02","RNF-03, RNF-09, RNF-14",10,Must,"HU-S01-04, HU-S01-06, BT-BASE-02",
+HU-S02-03,EP-02,2,Comunicados por audiencia,HU-27,"RF-C04, RF-C09","RNF-03, RNF-09, RNF-14",10,Should,"HU-S01-04, BT-BASE-02",
+HU-S02-04,EP-02,2,Verificación administrativa,HU-02,"RF-07, RF-30, RF-33","RNF-09, RNF-14",11,Must,"HU-S01-02, HU-S01-04, BT-BASE-02",
+HU-S02-05,EP-02,2,Perfil y portafolio,HU-29,"RF-C06, RF-33","RNF-03, RNF-09, RNF-14",11,Should,"HU-S01-05, BT-BASE-02",P17
+HU-S02-06,EP-02,2,"Disponibilidad, zona y pausa",HU-06,"RF-05, RF-07","RNF-03, RNF-09, RNF-14",12,Must,"HU-S02-02, HU-S02-04",
+HU-S02-07,EP-02,2,Servicios y tarifas,"HU-05, HU-06","RF-05, RF-07, RF-C06","RNF-09, RNF-14",9,Must,"HU-S02-02, HU-S02-04",
+HU-S03-01,EP-03,3,Solicitud en cinco pasos,HU-03,"RF-01, RF-02","RNF-03, RNF-05, RNF-09, RNF-14",14,Must,"HU-S01-04, HU-S02-02",
+HU-S03-02,EP-03,3,Evidencias privadas,HU-04,"RF-03, RF-33","RNF-03, RNF-09, RNF-14",9,Must,"HU-S03-01, BT-BASE-02",
+HU-S03-03,EP-03,3,Tarifa y ubicación,"HU-03, HU-05","RF-01, RF-04, RF-C02","RNF-03, RNF-05, RNF-09",9,Must,"HU-S03-01, HU-S02-06, HU-S02-07",
+HU-S03-04,EP-03,3,Búsqueda y perfil público,"HU-29, HU-05",RF-C06,"RNF-03, RNF-09",10,Must,"HU-S02-04, HU-S02-05, HU-S02-06, HU-S02-07",
+HU-S03-05,EP-03,3,Solicitud desde perfil,"HU-10, HU-29","RF-01, RF-02, RF-C06","RNF-03, RNF-09",7,Must,"HU-S03-01, HU-S03-04",
+HU-S03-06,EP-03,3,Mis solicitudes y envío repetido,"HU-03, HU-12, HU-24","RF-01, RF-02, RF-33","RNF-03, RNF-09, RNF-11",11,Must,"HU-S03-01, HU-S03-02, HU-S03-03",
+HU-S04-01,EP-04,4,Elegibilidad y subcategoría,"HU-06, HU-07","RF-06, RF-07, RF-10","RNF-01, RNF-09, RNF-11, RNF-12",11,Must,"HU-S03-06, HU-S02-06, HU-S02-07, BT-BASE-04",
+HU-S04-02,EP-04,4,Puntuación y desempate,HU-07,"RF-06, RF-08, RF-09","RNF-01, RNF-11, RNF-12, RNF-14",13,Must,HU-S04-01,
+HU-S04-03,EP-04,4,Estimaciones y técnico nuevo,HU-08,"RF-11, RF-12","RNF-01, RNF-03, RNF-12",10,Must,HU-S04-02,P15
+HU-S04-04,EP-04,4,Ronda y notificaciones,"HU-09, HU-20","RF-13, RF-15, RF-29","RNF-07, RNF-09, RNF-12, RNF-14",14,Must,"HU-S04-02, HU-S04-03, BT-BASE-04",
+HU-S04-05,EP-04,4,Respuesta y límite del SLA,HU-09,"RF-15, RF-16","RNF-03, RNF-09, RNF-12",10,Must,HU-S04-04,P12
+HU-S04-06,EP-04,4,Elección y concurrencia,HU-10,RF-18,"RNF-02, RNF-09, RNF-12, RNF-14",16,Must,HU-S04-05,
+HU-S04-07,EP-04,4,Reasignación y ruta dirigida,"HU-09, HU-10","RF-16, RF-17","RNF-07, RNF-09, RNF-12",14,Must,"HU-S04-05, HU-S03-05",
+HU-S04-08,EP-04,4,Pendiente durante 24 horas,HU-11,RF-14,"RNF-07, RNF-12",10,Must,HU-S04-07,P12
+HU-S04-09,EP-04,4,Tiempo real y recuperación,HU-20,RF-29,"RNF-03, RNF-09, RNF-10, RNF-12",12,Must,"HU-S04-04, HU-S04-05, BT-BASE-04",
+HU-S04-10,EP-04,4,Entrega y reintentos controlados,"HU-09, HU-20","RF-15, RF-29; RNF-07","RNF-07, RNF-12",9,Must,"HU-S04-04, BT-BASE-04",
+HU-S05-01,EP-05,5,Agenda personal,"HU-06, HU-12",RF-19,"RNF-03, RNF-09",8,Must,HU-S04-06,
+HU-S05-02,EP-05,5,Inicio y finalización,HU-15,"RF-19, RF-22","RNF-03, RNF-09, RNF-14",11,Must,"HU-S04-06, HU-S05-01",
+HU-S05-03,EP-05,5,Reprogramación por acuerdo,HU-13,RF-20,"RNF-03, RNF-09, RNF-14",16,Must,HU-S05-01,
+HU-S05-04,EP-05,5,Técnico adicional autorizado,HU-14,RF-21,"RNF-09, RNF-11, RNF-14",16,Must,"HU-S05-02, HU-S04-07",P13
+HU-S05-05,EP-05,5,Línea de tiempo y contacto,"HU-12, HU-24","RF-19, RF-33","RNF-03, RNF-09",9,Must,"HU-S04-06, HU-S04-09, HU-S05-02",
+HU-S05-06,EP-05,5,Cancelación del cliente,HU-12,RF-19,"RNF-09, RNF-14",9,Must,"HU-S04-06, HU-S05-02",P14
+HU-S05-07,EP-05,5,Retiro e incidencia,HU-13,"RF-19, RF-20","RNF-09, RNF-14",10,Must,"HU-S05-02, HU-S04-07",P14
+HU-S06-01,EP-06,6,Calificar mi atención,HU-16,RF-23,"RNF-03, RNF-09, RNF-12, RNF-14",11,Must,HU-S05-02,
+HU-S06-02,EP-06,6,Editar conservando versiones,HU-16,RF-23,"RNF-09, RNF-12, RNF-14",10,Must,HU-S06-01,P23
+HU-S06-03,EP-06,6,Cerrar sin calificar,HU-15,RF-24,"RNF-09, RNF-12",9,Must,"HU-S06-01, HU-S05-04, BT-BASE-04","P12, P13"
+HU-S06-04,EP-06,6,Reseñas y respuestas públicas,"HU-16, HU-18","RF-23, RF-25","RNF-03, RNF-09, RNF-12",11,Should,"HU-S06-01, HU-S06-02",P07
+HU-S06-05,EP-06,6,Apelar una calificación,HU-17,RF-26,"RNF-09, RNF-12, RNF-14",12,Must,"HU-S06-02, BT-BASE-02","P07, P17"
+HU-S06-06,EP-06,6,Resolución motivada,"HU-17, HU-28","RF-26, RF-33","RNF-09, RNF-12, RNF-14",16,Must,HU-S06-05,P07
+HU-S06-07,EP-06,6,Historial y criterios transparentes,"HU-18, HU-19","RF-25, RF-27","RNF-03, RNF-09",9,Must,"HU-S06-01, HU-S04-03",
+HU-S07-01,EP-07,7,Dashboard y alertas,HU-21,RF-30,"RNF-03, RNF-09",13,Should,"HU-S04-08, HU-S05-02, HU-S06-01",P21
+HU-S07-02,EP-07,7,Reasignación manual controlada,"HU-21, HU-28","RF-30, RF-33","RNF-09, RNF-12, RNF-14",15,Must,"HU-S04-06, HU-S04-07, HU-S05-07","P11, P14"
+HU-S07-03,EP-07,7,Clientes y bloqueos,"HU-21, HU-28","RF-30, RF-33, RF-C12","RNF-09, RNF-14",11,Must,"HU-S01-04, HU-S05-06",P18
+HU-S07-04,EP-07,7,Soporte administrativo,HU-30,"RF-30, RF-C07","RNF-03, RNF-09, RNF-14",10,Should,"HU-S01-04, HU-S03-06",
+HU-S07-05,EP-07,7,Reglas e historial,HU-26,"RF-C03, RF-30","RNF-09, RNF-12, RNF-14",14,Must,"HU-S04-02, HU-S04-08",P19
+HU-S07-06,EP-07,7,Reportes Excel y PDF,HU-22,RF-31,"RNF-03, RNF-09, RNF-14",13,Should,"HU-S07-01, HU-S04-10",P21
+HU-S07-07,EP-07,7,Administradores y auditoría,HU-28,"RF-C05, RF-33","RNF-09, RNF-11, RNF-14",14,Must,"HU-S01-04, HU-S07-02, HU-S07-03, HU-S07-05",
+HU-S08-01,EP-08,8,Métodos y comprobante simulado,HU-23,"RF-32, RF-C11","RNF-03, RNF-09, RNF-14",12,Must,"HU-S05-02, HU-S01-04","P01, P02, P16"
+HU-S08-02,EP-08,8,Historial y ganancias simuladas,"HU-23, HU-18","RF-32, RF-C11","RNF-03, RNF-09",9,Should,"HU-S08-01, HU-S06-07","P02, P21"
+HU-S08-03,EP-08,8,Preferencias y bandeja de avisos,HU-20,"RF-C09, RF-29","RNF-03, RNF-07, RNF-09",10,Should,"HU-S04-09, HU-S04-10",P12
+HU-S08-04,EP-08,8,Ayuda y soporte de usuarios,HU-30,RF-C07,"RNF-03, RNF-09",8,Should,"HU-S07-04, BT-BASE-02",
+HU-S08-05,EP-08,8,Regresión y endurecimiento,"HU-24, HU-28, HU-32","RF-33; RNF-08, RNF-09, RNF-10","RNF-08, RNF-09, RNF-10, RNF-11",16,Must,"HU-S08-01, HU-S08-02, HU-S08-03, HU-S08-04, HU-S07-07, HU-S06-06",
+HU-S08-06,EP-08,8,Quality Gate y cobertura,HU-32,"RNF-11, RNF-12","RNF-11, RNF-12",10,Must,HU-S08-05,P21
+HU-S08-07,EP-08,8,Rendimiento y concurrencia,HU-32,"RNF-01, RNF-02","RNF-01, RNF-02, RNF-12",14,Must,HU-S08-05,"P16, P21"
+HU-S08-08,EP-08,8,Usabilidad y beneficio académico,"HU-31, HU-32","RNF-03, RNF-04, RNF-05","RNF-03, RNF-04, RNF-05",14,Must,HU-S08-05,"P09, P21"
+HU-S08-09,EP-08,8,"Despliegue, respaldo y recuperación",HU-32,"RNF-06, RNF-10, RNF-13, RNF-14","RNF-06, RNF-10, RNF-13, RNF-14",16,Must,"HU-S08-06, HU-S08-07, HU-S08-08","P09, P21"

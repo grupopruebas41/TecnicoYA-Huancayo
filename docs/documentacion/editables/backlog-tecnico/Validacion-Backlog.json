@@ -1,0 +1,28 @@
+{
+  "stories": 59,
+  "tasks": 239,
+  "task_points": 671,
+  "sprint_points": {
+    "1": 53,
+    "2": 78,
+    "3": 60,
+    "4": 124,
+    "5": 79,
+    "6": 78,
+    "7": 90,
+    "8": 109
+  },
+  "moscow": {
+    "Must": 49,
+    "Should": 10
+  },
+  "checks": [
+    "59 historias conservadas",
+    "8 sprints sin reasignación",
+    "RF-01..RF-33 y RNF-01..RNF-14",
+    "IDs únicos",
+    "Dependencias existentes, acíclicas y sin sprint futuro",
+    "Puntos de tarea válidos y totales sin doble conteo"
+  ],
+  "product_tests_executed": false
+}

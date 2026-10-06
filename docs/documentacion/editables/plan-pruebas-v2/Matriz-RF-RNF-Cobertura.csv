@@ -1,0 +1,48 @@
+﻿Requerimiento,Tipo,Descripción,Módulo,Casos_TC001_TC135,N_asignados_antes,Casos_nuevos_TC136_TC140,N_total,Cobertura_antes,Cobertura_actual,Pendientes,Observación
+RF-01,RF,"Registrar especialidad, descripción y ubicación dentro de cobertura; modalidad/horario en el paso 4.",A,TC-027 TC-028 TC-031 TC-032 TC-035 TC-036 TC-037 TC-038 TC-119 TC-120 TC-121 TC-122 TC-123,13,,13,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P10, P17",Módulo A; detalle en modulo-a/.
+RF-02,RF,Revisar resumen y confirmar envío en el quinto paso.,A,TC-027 TC-028 TC-035 TC-036 TC-037 TC-038 TC-119 TC-124 TC-125 TC-126,10,,10,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P22,Módulo A.
+RF-03,RF,Asociar evidencia fotográfica con control de acceso.,A,TC-029 TC-030 TC-127 TC-128 TC-129 TC-130,6,,6,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P17,Módulo A.
+RF-04,RF,"Mostrar tarifa referencial, sin compromiso de cobro.",A,TC-031 TC-032 TC-131 TC-134,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P01, P16",Módulo A.
+RF-05,RF,Declarar disponibilidad horaria y evitar solapamientos de citas.,A,TC-023 TC-024 TC-025 TC-026 TC-131 TC-132 TC-133 TC-134 TC-135,9,,9,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P05, P16",Módulo A.
+RF-06,RF,"Matching por cercanía, tarifa, historial y experiencia según pesos.",B,TC-039 TC-040 TC-041 TC-042,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P15,Normalización pendiente; TC-041 usa datos sintéticos.
+RF-07,RF,"Filtrar prestadores habilitados, activos, disponibles y compatibles.",B,TC-019 TC-020 TC-023 TC-024 TC-025 TC-026 TC-039 TC-040 TC-132,9,,9,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-08,RF,Ordenar candidatos según la puntuación obtenida.,B,TC-041 TC-042,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-09,RF,Desempatar por calificación promedio; empate persistente pendiente.,B,TC-041 TC-042,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P15,Empate persistente sin caso hasta que P15 lo defina.
+RF-10,RF,Afinar por subcategoría activa ofrecida por el técnico.,B,TC-039 TC-040,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-11,RF,"Mostrar tiempo estimado según experiencia/historial, o estimación general sin datos suficientes.",B,TC-043 TC-044,2,TC-140,3,"Asignado, cobertura aparente",Cubierto en diseño con TC-140 (bloqueado P15),P15,Antes solo se probaba la estimación general (TC-044).
+RF-12,RF,Mostrar distancia aproximada por zona.,B,TC-043 TC-044,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-13,RF,"Limitar ofertas simultáneas a tres, o parámetro vigente.",B,TC-045 TC-046,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-14,RF,Mantener Pendiente de disponibilidad y expirar al superar 24 h.,B,TC-053 TC-054,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P12,Límite exacto condicionado.
+RF-15,RF,Notificar ofertas al técnico autorizado.,C,TC-045 TC-046 TC-047 TC-048 TC-057 TC-058,6,,6,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-16,RF,Controlar plazo de respuesta y registrar vencimientos.,C,TC-047 TC-048 TC-051 TC-052,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P12,Límite exacto condicionado (TC-048).
+RF-17,RF,Reasignar según ruta automática o excepción de solicitud directa; registrar incidencias.,C,TC-051 TC-052,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-18,RF,Confirmar elección del cliente entre aceptaciones válidas.,C,TC-049 TC-050 TC-133,3,,3,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P11,
+RF-19,RF,"Consultar estados y trazabilidad, incluida cancelación.",D,TC-059 TC-060 TC-061 TC-062 TC-067 TC-068 TC-069 TC-070 TC-071 TC-072,10,,10,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P14,
+RF-20,RF,Reprogramar por acuerdo y conservar fecha si no se acepta en 24 h.,D,TC-063 TC-064 TC-071 TC-072,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P06, P14",
+RF-21,RF,Coordinar principal y un adicional autorizado por cliente.,D,TC-065 TC-066,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P13,
+RF-22,RF,Registrar reporte y finalización; efectuar cierre operativo.,D,TC-061 TC-062,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-23,RF,Calificar de 1 a 5 con comentario dentro de 48 h; editar dentro del plazo propio.,E,TC-073 TC-074 TC-075 TC-076 TC-079 TC-080,6,,6,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P23,
+RF-24,RF,Cerrar sin calificación al vencer su plazo.,E,TC-077 TC-078,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P12, P13",
+RF-25,RF,"Consultar historial de solicitudes, atenciones y calificaciones.",E,TC-079 TC-080 TC-085 TC-086,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P07,
+RF-26,RF,Presentar apelaciones y resolverlas con motivo e historial.,E,TC-081 TC-082 TC-083 TC-084,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P07, P17",
+RF-27,RF,Mostrar al técnico criterios del matching.,E,TC-085 TC-086,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-28,RF,"Registro e inicio de sesión por rol, sin alta administrativa pública.",F,TC-001 TC-002 TC-003 TC-004 TC-005 TC-006 TC-009 TC-010 TC-011 TC-012,10,,10,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,
+RF-29,RF,Notificaciones en tiempo real dentro del entorno autorizado de prueba.,Comunicación y simulación económica,TC-045 TC-046 TC-055 TC-056 TC-057 TC-058 TC-105 TC-106,8,,8,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P12,
+RF-30,RF,"Supervisión administrativa de solicitudes, técnicos, estados e incidencias.",F,TC-019 TC-020 TC-087 TC-088 TC-089 TC-090 TC-091 TC-092 TC-093 TC-094 TC-095 TC-096,12,,12,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P18, P19, P21",
+RF-31,RF,Reportes de cobertura y desempeño por zona/especialidad.,F,TC-097 TC-098,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P21,
+RF-32,RF,Seleccionar y registrar método de pago sin procesar dinero; detalle pendiente.,Comunicación y simulación económica,TC-101 TC-102 TC-103 TC-104,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P01, P02, P16",
+RF-33,RF,Proteger datos y aplicar permisos por rol y relación con el servicio.,F,TC-003 TC-004 TC-007 TC-008 TC-009 TC-010 TC-011 TC-012 TC-019 TC-020 TC-021 TC-022 TC-029 TC-030 TC-037 TC-038 TC-067 TC-068 TC-083 TC-084 TC-089 TC-090 TC-091 TC-092 TC-099 TC-100 TC-109 TC-110 TC-125 TC-126 TC-127 TC-129 TC-134,33,TC-137,34,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,Transversal.
+RNF-01,RNF,Matching en 3 segundos o menos.,Plataforma,TC-113 TC-114,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P21,
+RNF-02,RNF,200 usuarios concurrentes.,Plataforma,TC-113 TC-114,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P21,
+RNF-03,RNF,"Uso en Chrome, Edge y Firefox; adaptación a móvil/escritorio.",Plataforma,TC-115 TC-116,2,TC-136,3,"Asignado, cobertura aparente",Cubierto en diseño con TC-136 (condicionado),P21,TC-115/116 son estudios humanos y no ejecutan la compatibilidad.
+RNF-04,RNF,SUS de 70 o más.,Plataforma,TC-115 TC-116,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P09, P21",
+RNF-05,RNF,Cinco pasos y mediana de 3 minutos o menos para registrar solicitud.,Plataforma,TC-115 TC-116,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P09, P21",
+RNF-06,RNF,Disponibilidad del 99 %.,Plataforma,TC-117 TC-118,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,"P09, P21",
+RNF-07,RNF,Hasta tres reintentos de notificación.,Plataforma,TC-057 TC-058,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P12,
+RNF-08,RNF,Protección de contraseñas almacenadas.,Plataforma,TC-109 TC-110,2,TC-137,3,"Asignado, cobertura aparente",Cubierto en diseño con TC-137 (ejecutable),,TC-109/110 no comprueban el hash ni su ausencia en respuestas y auditoría.
+RNF-09,RNF,Control de acceso por rol.,Plataforma,TC-109 TC-110,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,Reforzado por todos los casos de RF-33.
+RNF-10,RNF,Protección de información en tránsito.,Plataforma,TC-109 TC-110 TC-117 TC-118,4,,4,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,TC-110 cubre HTTPS y cookies.
+RNF-11,RNF,Separación de responsabilidades de la solución.,Plataforma,TC-111 TC-112,2,TC-138,3,"Asignado, cobertura aparente",Cubierto en diseño con TC-138 (condicionado),Reglas de capas por fijar en el diseño,"TC-111/112 prueban el Quality Gate, no la separación en capas."
+RNF-12,RNF,"Cobertura de pruebas de al menos 70 % en matching, notificación y calificación.",Plataforma,TC-111 TC-112,2,,2,Asignado y cubierto en diseño,Asignado y cubierto en diseño,P21,
+RNF-13,RNF,Despliegue reproducible según restricción de F0.,Plataforma,TC-117 TC-118,2,TC-139,3,Asignado y cubierto en diseño,Asignado y cubierto en diseño,,TC-117 restaura una imagen identificada.
+RNF-14,RNF,Cambios de estructura de datos versionados.,Plataforma,TC-117 TC-118,2,TC-139,3,"Asignado, cobertura aparente",Cubierto en diseño con TC-139 (ejecutable),,Restaurar un respaldo (TC-117) no demuestra que las migraciones construyan el esquema.

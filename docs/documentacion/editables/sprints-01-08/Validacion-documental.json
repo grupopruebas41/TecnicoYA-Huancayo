@@ -1,0 +1,17 @@
+{
+  "sprints": 8,
+  "stories": 59,
+  "cases": 118,
+  "functional_requirements": 33,
+  "manual_cases": 2,
+  "checks": [
+    "IDs únicos",
+    "Cobertura documental RF-01..RF-33",
+    "HU fuente existentes",
+    "Enlaces locales resueltos en el proyecto",
+    "Escenarios y pasos Gherkin correlacionados con TC",
+    "Bloques de código equilibrados"
+  ],
+  "status": "documentary_checks_passed_not_product_tests",
+  "gherkin_note": "Verificación estructural de escenarios y pasos; no ejecución ni validación con un runner Gherkin."
+}

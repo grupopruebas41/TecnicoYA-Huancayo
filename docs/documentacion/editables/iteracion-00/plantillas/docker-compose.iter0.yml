@@ -1,0 +1,120 @@
+name: tecnicoya-iter0
+
+x-app: &app
+  image: tecnicoya-iter0-api:local
+  build:
+    context: ../backend/api
+    dockerfile: docker/Dockerfile.local
+  working_dir: /app
+  env_file:
+    - ../backend/api/.env
+  environment:
+    DB_CONNECTION: mysql
+    DB_HOST: mysql
+    DB_PORT: 3306
+    DB_DATABASE: tecnicoya_iter0
+    DB_USERNAME: tecnicoya
+    DB_PASSWORD: ${DB_PASSWORD:?Completar DB_PASSWORD en .env.docker}
+  volumes:
+    - ../backend/api:/app
+    - api_vendor:/app/vendor
+  depends_on:
+    mysql:
+      condition: service_healthy
+
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: tecnicoya_iter0
+      MYSQL_USER: tecnicoya
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Completar DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Completar MYSQL_ROOT_PASSWORD}
+    ports:
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  api:
+    <<: *app
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  frontend:
+    image: node:24-bookworm-slim
+    working_dir: /app
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173", "--strictPort"]
+    ports:
+      - "127.0.0.1:5173:5173"
+    volumes:
+      - ../frontend/web:/app
+      - web_modules:/app/node_modules
+
+  reverb:
+    <<: *app
+    profiles: ["realtime"]
+    command: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080"]
+    ports:
+      - "127.0.0.1:8080:8080"
+
+  worker:
+    <<: *app
+    profiles: ["async"]
+    command: ["php", "artisan", "queue:work", "--sleep=1", "--timeout=60", "--tries=1"]
+
+  scheduler:
+    <<: *app
+    profiles: ["async"]
+    command: ["php", "artisan", "schedule:work"]
+
+  sonar-db:
+    image: postgres:16
+    profiles: ["quality"]
+    environment:
+      POSTGRES_DB: sonar
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: ${SONAR_DB_PASSWORD:?Completar SONAR_DB_PASSWORD}
+    volumes:
+      - sonar_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonar -d sonar"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+
+  sonarqube:
+    image: ${SONAR_IMAGE:?Completar SONAR_IMAGE con etiqueta o digest verificado}
+    profiles: ["quality"]
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonar-db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: ${SONAR_DB_PASSWORD:?Completar SONAR_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:9000:9000"
+    volumes:
+      - sonar_data:/opt/sonarqube/data
+      - sonar_extensions:/opt/sonarqube/extensions
+      - sonar_logs:/opt/sonarqube/logs
+    ulimits:
+      nofile:
+        soft: 131072
+        hard: 131072
+      nproc: 8192
+    depends_on:
+      sonar-db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
+  api_vendor:
+  web_modules:
+  sonar_db:
+  sonar_data:
+  sonar_extensions:
+  sonar_logs:
