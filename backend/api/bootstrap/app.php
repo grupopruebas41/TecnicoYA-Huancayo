@@ -3,6 +3,7 @@
 use App\Http\Middleware\ApiToken;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\RequirePermission;
+use App\Http\Middleware\RequireRole;
 use App\Shared\Http\ApiExceptionRenderer;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'token' => ApiToken::class,
             'account.active' => EnsureAccountIsActive::class,
             'permission' => RequirePermission::class,
+            'role' => RequireRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -6,6 +6,7 @@ use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
 use App\Modules\FAdministration\Http\Controllers\ProfileController;
+use App\Modules\FAdministration\Http\Controllers\TechnicianProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', fn () => ['status' => 'ok', 'service' => 'tecnicoya-laravel']);
@@ -30,10 +31,17 @@ Route::prefix('v1')->group(function () {
         ->middleware('auth:sanctum');
     // Público: imágenes revisadas; los archivos privados exigen sesión y relación (MediaController).
     Route::get('media/{media}', [MediaController::class, 'show'])->whereNumber('media');
+    Route::get('technicians/{technician}/portfolio', [TechnicianProfileController::class, 'portfolio'])->whereNumber('technician');
     Route::middleware(['auth:sanctum', 'account.active'])->group(function () {
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
         Route::get('announcements', [AnnouncementController::class, 'index']);
+
+        Route::prefix('technicians/me')->middleware('role:technician')->group(function () {
+            Route::put('availability', [TechnicianProfileController::class, 'availability']);
+            Route::put('services', [TechnicianProfileController::class, 'services']);
+            Route::post('portfolio', [TechnicianProfileController::class, 'storePortfolio']);
+        });
 
         Route::prefix('admin')->group(function () {
             Route::middleware('permission:catalog.manage')->group(function () {
@@ -42,6 +50,8 @@ Route::prefix('v1')->group(function () {
             });
             Route::post('announcements/{announcement}/duplicates', [AnnouncementController::class, 'duplicate'])
                 ->middleware('permission:announcements.manage');
+            Route::post('technicians/{technician}/reviews', [TechnicianProfileController::class, 'review'])
+                ->whereNumber('technician')->middleware('permission:technicians.verify');
         });
     });
 });

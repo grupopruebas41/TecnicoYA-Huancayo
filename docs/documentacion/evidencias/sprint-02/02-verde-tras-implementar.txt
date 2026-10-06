@@ -1,0 +1,105 @@
+
+   WARN  Option --colors cannot be used more than once
+
+   PASS  Tests\Feature\AnnouncementsTest
+  ✓ only admin can write announcements                                                                           8.92s  
+  ✓ audiences drafts archives and priority are filtered in api                                                   0.15s  
+  ✓ edit moves audience and archive removes publication                                                          0.09s  
+  ✓ validation rejects scripts invalid audiences and fake images                                                 0.09s  
+  ✓ image and link survive save and read                                                                         0.05s  
+
+   PASS  Tests\Feature\MarketplaceTest
+  ✓ api registration verification and revocable sessions                                                         0.34s  
+  ✓ authenticated lifecycle and rating                                                                           0.15s  
+  ✓ deadlines and three simultaneous offers                                                                      0.12s  
+  ✓ api refuses admin signup and other clients actions                                                           0.11s  
+  ✓ expired rating is rejected                                                                                   0.14s  
+  ✓ php fallback matches reference                                                                               0.02s  
+  ✓ technician updates only own terms and cannot self verify                                                     0.06s  
+  ✓ pending offers and assigned work lock service terms                                                          0.17s  
+  ✓ permission matrix denies every other role action                                                             0.15s  
+  ✓ suspension revokes sessions and reactivation requires new login                                              0.09s  
+  ✓ admin accounts are protected and accounts are private                                                        0.07s  
+  ✓ profile cannot escalate role or edit another account                                                         0.05s  
+  ✓ address is hidden until confirmation and other technicians cannot start                                      0.18s  
+  ✓ active work prevents suspension                                                                              0.08s  
+  ✓ subcategory validation persistence and matching                                                              0.17s  
+  ✓ matching rejects missing skills and keeps legacy requests                                                    0.02s  
+
+   PASS  Tests\Feature\Sprint01\ProvisionAdminTest
+  ✓ it S01-SEC-ADMIN: crea un administrador con secretos ocultos y auditoría atómica                             0.11s  
+  ✓ it S01-SEC-ADMIN: rechaza correo existente y confirmación incorrecta sin sobrescribir                        0.07s  
+  ✓ it S01-SEC-ADMIN: revierte el alta si no puede persistir la auditoría                                        0.07s  
+
+   PASS  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ✓ it TC-002: rechaza el correo duplicado normalizado sin crear otro usuario ni perfil                          0.10s  
+
+   PASS  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ✓ it TC-003: registra al técnico como pendiente de verificación y solo le deja editar datos básicos            0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ✓ it TC-004: rechaza que el técnico se autoactive y conserva el estado persistido                              0.09s  
+
+   PASS  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ✓ it TC-006: invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie                      0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ✓ it TC-007: deniega con 403 una ruta administrativa a un cliente autenticado                                  0.10s  
+
+   PASS  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ✓ it TC-008: rechaza el alta administrativa desde el registro público                                          0.09s  
+
+   PASS  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ✓ it TC-009: guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos                     0.15s  
+
+   PASS  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ✓ it TC-010: responde 409 ante una versión obsoleta y conserva la edición más reciente                         0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it TC-011: repite la semilla del catálogo sin duplicados y con relaciones válidas                            0.24s  
+
+   PASS  Tests\Feature\Sprint01\TC012CatalogApiTest
+  ✓ it TC-012: sirve solo categorías activas y valida el filtro sin inventar resultados                          0.18s  
+
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ✓ it TC-137: guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs                   0.12s  
+
+   PASS  Tests\Feature\Sprint02\TC015CreateSubcategoryTest
+  ✓ it TC-015: crea una subcategoría con imagen revisada y la ofrece en su especialidad con la foto del carruse… 0.30s  
+
+   PASS  Tests\Feature\Sprint02\TC016DeactivateSubcategoryTest
+  ✓ it TC-016: desactiva una subcategoría usada sin borrar su identidad ni sus referencias                       0.28s  
+
+   PASS  Tests\Feature\Sprint02\TC017AnnouncementAudienceTest
+  ✓ it TC-017: entrega el comunicado vigente dirigido a técnicos solo al técnico                                 0.15s  
+
+   PASS  Tests\Feature\Sprint02\TC018DuplicateAnnouncementTest
+  ✓ it TC-018: duplica un comunicado publicado como borrador que no aparece en ningún panel                      0.21s  
+
+   PASS  Tests\Feature\Sprint02\TC019DocumentedApprovalTest
+  ✓ it TC-019: aprueba al técnico pendiente y registra la decisión, su autor y su fecha                          0.32s  
+
+   PASS  Tests\Feature\Sprint02\TC020ForeignDocumentDeniedTest
+  ✓ it TC-020: deniega a un técnico el documento privado de otro sin revelar su contenido                        0.13s  
+
+   PASS  Tests\Feature\Sprint02\TC021PublishedPortfolioWorkTest
+  ✓ it TC-021: publica un trabajo con su imagen en la galería pública sin documentos de verificación             0.13s  
+
+   PASS  Tests\Feature\Sprint02\TC023ValidAvailabilityTest
+  ✓ it TC-023: guarda horarios, zonas y una pausa válida que el filtro de elegibilidad reconoce                  0.18s  
+
+   PASS  Tests\Feature\Sprint02\TC024InvalidIntervalTest
+  ✓ it TC-024: rechaza en español una franja que termina antes de empezar y conserva el horario anterior         0.13s  
+
+   PASS  Tests\Feature\Sprint02\TC025NewRateVersionTest
+  ✓ it TC-025: crea la versión 2 de la tarifa y conserva la versión 1 sin sobrescribirla                         0.29s  
+
+   PASS  Tests\Feature\Sprint02\TC026NegativeRateTest
+  ✓ it TC-026: rechaza en español una tarifa negativa sin crear versión ni cambiar la vigente                    0.32s  
+
+   PASS  Tests\Feature\Sprint02\TC134ForeignAvailabilityOrRateTest
+  ✓ it TC-134: impide que otro técnico o un cliente cambien la disponibilidad o la tarifa ajena                  0.39s  
+
+  Tests:    47 passed (460 assertions)
+  Duration: 16.31s
+
