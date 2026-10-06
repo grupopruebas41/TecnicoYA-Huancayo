@@ -1,0 +1,54 @@
+
+   WARN  Option --colors cannot be used more than once
+
+   FAIL  Tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest
+  ⨯ it TC-034: muestra al cliente bio, servicios y portafolio del técnico sin documentos ni contacto privado    11.51s  
+
+   PASS  Tests\Feature\Sprint03\TC127PhotosHiddenFromUnnotifiedTechnicianTest
+  ✓ it TC-127: oculta fotos, descripción y dirección de una solicitud a un técnico no notificado                 0.70s  
+
+   PASS  Tests\Feature\Sprint03\TC129RemovePhotoByApiTest
+  ✓ it TC-129: solo el titular retira la foto de una solicitud no enviada; otro cliente es denegado              0.48s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest > it TC-034: muestra al cliente bio, serv…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "67d2456f-7b05-429a-b12d-039fb23434eb",
+        "server_time": "2026-10-06T21:32:52.969187Z"
+    }
+}
+
+  at tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest.php:41
+     37▕     $pending = TechnicianProfileFactory::new()->create();
+     38▕ 
+     39▕     // Cuando un cliente consulta su perfil antes de cualquier asignación
+     40▕     Sanctum::actingAs(ClientProfileFactory::new()->create()->user);
+  ➜  41▕     $response = $this->getJson("/api/v1/technicians/{$technician->id}")->assertOk();
+     42▕ 
+     43▕     // Entonces recibe bio, servicio con tarifa referencial y portafolio público
+     44▕     expect($response->json('data.bio'))->toBe('Especialista en placas de escritorio.')
+     45▕         ->and($response->json('data.services.0.subcategory_id'))->toBe($service->subcategory_id)
+
+
+  Tests:    1 failed, 2 passed (30 assertions)
+  Duration: 13.82s
+
+
+--- Nota (2026-10-07) ---
+TC-127 y TC-129 pasan antes de implementar el lote 2 porque el detalle limitado al titular y
+DELETE /requests/{id}/attachments/{media} se implementaron en el lote 1 (commit 82e1ed5), como
+parte del mismo contrato. Comprobación de no trivialidad: al quitar temporalmente el filtro de
+titular en ServiceRequestView y ManageServiceRequests, ambas pruebas fallaron (2 failed);
+al restaurar el código (sin diferencias en git) volvieron a pasar (2 passed).
