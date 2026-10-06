@@ -1,0 +1,31 @@
+especialidad,codigo_propuesto,subcategoria
+Cómputo,computo-hardware,Reparación de hardware
+Cómputo,computo-mantenimiento,Mantenimiento preventivo
+Cómputo,computo-software,Instalación y configuración de software
+Cómputo,computo-redes,Redes e infraestructura
+Cómputo,computo-datos,Recuperación de datos
+Cómputo,computo-seguridad,Eliminación de virus y seguridad informática
+Cómputo,computo-remoto,Soporte técnico remoto
+Cómputo,computo-impresoras,Reparación de impresoras y equipos de oficina
+Cómputo,computo-pos,Sistemas de punto de venta (POS)
+Cómputo,computo-cctv,Cámaras de seguridad / CCTV
+Cómputo,computo-facturacion,Software de facturación electrónica
+Refrigeración comercial,frio-domestico,Refrigeración doméstica
+Refrigeración comercial,frio-vitrinas,Refrigeración comercial (vitrinas)
+Refrigeración comercial,frio-camaras,Cámaras de frío
+Refrigeración comercial,frio-congeladores,Congeladores industriales
+Refrigeración comercial,frio-climatizacion,Aire acondicionado / climatización
+Refrigeración comercial,frio-refrigerante,Carga y recarga de gas refrigerante
+Refrigeración comercial,frio-compresores,Reparación de compresores
+Refrigeración comercial,frio-hielo,Máquinas de hielo y dispensadores
+Refrigeración comercial,frio-mantenimiento,Mantenimiento preventivo
+Electricidad,electricidad-residencial,Instalaciones residenciales
+Electricidad,electricidad-comercial,Instalaciones comerciales/industriales
+Electricidad,electricidad-tableros,Tableros eléctricos
+Electricidad,electricidad-iluminacion,Iluminación
+Electricidad,electricidad-tierra,Puesta a tierra
+Electricidad,electricidad-medidores,Certificación y medidores
+Electricidad,electricidad-solar,Energía solar / paneles fotovoltaicos
+Electricidad,electricidad-generadores,Grupos electrógenos / generadores
+Electricidad,electricidad-alarmas,Cercos eléctricos y alarmas
+Electricidad,electricidad-domotica,Automatización básica / domótica
