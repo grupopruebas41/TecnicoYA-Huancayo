@@ -17,6 +17,15 @@ return [
     'boolean' => 'El campo :attribute debe ser verdadero o falso.',
     'array' => 'El campo :attribute debe ser una lista.',
     'regex' => 'El formato de :attribute no es válido.',
+    'date' => 'El campo :attribute debe ser una fecha válida.',
+    'date_format' => 'El campo :attribute debe tener el formato :format.',
+    'after' => 'El campo :attribute debe ser posterior a :date.',
+    'distinct' => 'El campo :attribute tiene un valor repetido.',
+    'present' => 'El campo :attribute debe estar presente.',
+    'decimal' => 'El campo :attribute debe tener :decimal decimales.',
+    'gte' => [
+        'numeric' => 'El campo :attribute debe ser mayor o igual que :value.',
+    ],
     'min' => [
         'numeric' => 'El campo :attribute debe ser al menos :min.',
         'string' => 'El campo :attribute debe tener al menos :min caracteres.',
@@ -41,5 +50,15 @@ return [
         'version' => 'versión', 'user_id' => 'usuario', 'id' => 'identificador',
         'client_id' => 'cliente', 'email_verified_at' => 'verificación de correo',
         'anonymized_at' => 'anonimización',
+        // Sprint 2: catálogo, comunicados, revisión técnica, portafolio, disponibilidad y servicios.
+        'specialty_id' => 'especialidad', 'image_id' => 'imagen', 'reference_fee' => 'tarifa referencial',
+        'active' => 'estado activo', 'decision' => 'decisión', 'reason' => 'motivo',
+        'title' => 'título', 'description' => 'descripción', 'media_ids' => 'imágenes', 'media_ids.*' => 'imagen',
+        'subcategory_id' => 'subcategoría', 'slots' => 'franjas horarias', 'slots.*.weekday' => 'día de la franja',
+        'slots.*.start' => 'inicio de la franja', 'slots.*.end' => 'fin de la franja',
+        'district_ids' => 'distritos', 'district_ids.*' => 'distrito', 'pause' => 'pausa',
+        'pause.starts_at' => 'inicio de la pausa', 'pause.ends_at' => 'fin de la pausa', 'pause.reason' => 'motivo de la pausa',
+        'services' => 'servicios', 'services.*.subcategory_id' => 'subcategoría del servicio',
+        'services.*.reference_fee' => 'tarifa referencial del servicio', 'technician_id' => 'técnico',
     ],
 ];

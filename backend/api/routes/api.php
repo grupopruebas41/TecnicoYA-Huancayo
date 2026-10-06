@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MarketplaceController;
+use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
+use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
+use App\Modules\FAdministration\Http\Controllers\MediaController;
 use App\Modules\FAdministration\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +28,20 @@ Route::prefix('v1')->group(function () {
     });
     Route::post('auth/logout', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'logout'])
         ->middleware('auth:sanctum');
+    // Público: imágenes revisadas; los archivos privados exigen sesión y relación (MediaController).
+    Route::get('media/{media}', [MediaController::class, 'show'])->whereNumber('media');
     Route::middleware(['auth:sanctum', 'account.active'])->group(function () {
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
+        Route::get('announcements', [AnnouncementController::class, 'index']);
+
+        Route::prefix('admin')->group(function () {
+            Route::middleware('permission:catalog.manage')->group(function () {
+                Route::post('subcategories', [AdminCatalogController::class, 'storeSubcategory']);
+                Route::patch('subcategories/{subcategory}', [AdminCatalogController::class, 'updateSubcategory'])->whereNumber('subcategory');
+            });
+            Route::post('announcements/{announcement}/duplicates', [AnnouncementController::class, 'duplicate'])
+                ->middleware('permission:announcements.manage');
+        });
     });
 });

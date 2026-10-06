@@ -14,4 +14,9 @@ return [
     'request_failed' => 'No se pudo completar la solicitud.',
     'internal_error' => 'No pudimos completar la operación. Comunica el identificador de la solicitud a soporte.',
     'password_bytes' => 'La contraseña no debe superar 72 bytes.',
+    'image_not_reviewed' => 'La imagen debe existir, estar revisada y ser pública.',
+    'subcategory_inactive' => 'La subcategoría no está disponible para nuevos servicios.',
+    'media_not_allowed' => 'Solo puedes usar imágenes propias, revisadas y públicas; no documentos de verificación.',
+    'district_inactive' => 'El distrito no está disponible.',
+    'review_requirements' => 'No se puede aprobar: faltan requisitos de la revisión (:missing).',
 ];
