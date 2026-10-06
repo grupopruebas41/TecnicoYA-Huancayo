@@ -116,7 +116,7 @@ El [catálogo de 140 casos](plan-pruebas-v2/CATALOGO-TC.md) conserva TC-001…TC
 
 La meta mínima se calcula como **número de IDs únicos implementados en Pest y aprobados en la ejecución del incremento final**. No contar assertions, datasets del mismo ID, reruns, casos omitidos, vacíos, `todo`, tests que únicamente comprueban `true` ni pruebas Cypress como pruebas Pest. Una suite PHPUnit existente no satisface automáticamente la exigencia de Pest: registrar implementación real y runner.
 
-**Regla final:** mínimo 60 IDs Pest distintos aprobados; cero fallos, errores, pruebas incompletas o skips en los casos comprometidos; casos de alto riesgo y todos los requisitos obligatorios cubiertos/aprobados. Los 95 candidatos no autorizan escoger solo los 60 fáciles: el resto comprometido sigue exigible. Los casos condicionados se resuelven antes de aceptación; no eliminar el pendiente para obtener una cifra verde.
+**Regla final:** mínimo 60 IDs Pest distintos aprobados; cero fallos, errores, pruebas incompletas o skips en los casos comprometidos; casos de alto riesgo y todos los requisitos obligatorios cubiertos/aprobados. Los 111 candidatos no autorizan escoger solo los 60 fáciles: el resto comprometido sigue exigible. Los casos condicionados se resuelven antes de aceptación; no eliminar el pendiente para obtener una cifra verde.
 
 Nombre previsto: `test('TC-002 — rechaza correo duplicado sin crear otro usuario', ...)`. TC-002 es el identificador vigente equivalente al formato ilustrativo TC-02 solicitado; no se crea otro caso por cambiar ceros. Cada test conserva Dado/Cuando/Entonces como preparación/acción/aserciones. Una misma HU puede tener casos Pest y Cypress diferentes, enlazados por criterio.
 
@@ -352,19 +352,19 @@ La distribución de módulos A–F aún no está confirmada en P10. La tabla sig
 
 Fechas y duración no están aprobadas: se expresan por sprint y momento, sin inventar semanas. La meta académica de demostración hacia semana 12 sigue sujeta al calendario ratificado. BDD/diseño al refinar; unitarias/API/UI durante desarrollo; integración y Gate en cada PR; regresión y revisión antes de terminar el sprint.
 
-| Iteración | Foco de pruebas / dependencia | Pest de backend previsto nuevo / acumulado | Otras pruebas y salida |
-|---|---|---|---|
-| 0 | Instalación compatible, aislamiento, health y preparación de reportes. | 0 / 0 | Verificación del entorno; no contar salud de instalación como 60 casos de negocio. |
-| 1 | Registro, roles, perfiles, catálogo semilla; patrón de validación/alertas. | 9 / 9 | 3 E2E base; Gate S1 y primer inventario AL. |
-| 2 | Catálogo/comunicados, verificación, portafolio, disponibilidad y tarifas. | 12 / 21 | 2 E2E base más matriz CRUD; Gate S2. |
-| 3 | Cinco pasos, archivos, cobertura y búsqueda. | 10 / 31 | 2 E2E base más negativos de formularios; Gate S3. |
-| 4 | Matching, SLA, rondas, pendientes, concurrencia y eventos. | 18 / 49 | TC-055 y TC-056 híbrido; límites/reconexión; Gate S4. |
-| 5 | Agenda, atención, reprogramación y cierre. | 12 / 61 | 2 E2E base, integración con S4 y alertas; Gate S5. |
-| 6 | Calificación, edición, historial y apelaciones. | 13 / 74 | TC-080 y resto de UI aplicable; Gate S6. |
-| 7 | Reasignación manual, reglas, soporte, bloqueos, reportes y auditoría. | 14 / 88 | Extensión E2E de administración y pruebas CRUD; Gate S7. |
-| 8 | Simulación económica, preferencias, regresión y entrega. | 7 / 95 | Resto de campañas E2E, carga, aceptación, recuperación, disponibilidad y Gate final. |
+| Iteración | Foco de pruebas / dependencia | Candidatos Pest nuevo / acumulado | Ejecutables nuevo / acumulado | Otras pruebas y salida |
+|---|---|---|---|---|
+| 0 | Instalación compatible, aislamiento, health y preparación de reportes. | 0 / 0 | 0 / 0 | Verificación del entorno; no contar salud de instalación como 60 casos de negocio. |
+| 1 | Registro, roles, perfiles, catálogo semilla; patrón de validación/alertas. | 10 / 10 | 10 / 10 | 3 E2E base; Gate S1 y primer inventario AL. |
+| 2 | Catálogo/comunicados, verificación, portafolio, disponibilidad y tarifas. | 13 / 23 | 12 / 22 | 2 E2E base más matriz CRUD; Gate S2. |
+| 3 | Cinco pasos, archivos, cobertura y búsqueda. | 19 / 42 | 16 / 38 | 2 E2E base más negativos de formularios; Gate S3. |
+| 4 | Matching, SLA, rondas, pendientes, concurrencia y eventos. | 21 / 63 | 16 / 54 | TC-055 y TC-056 híbrido; límites/reconexión; Gate S4. |
+| 5 | Agenda, atención, reprogramación y cierre. | 12 / 75 | 9 / 63 | 2 E2E base, integración con S4 y alertas; Gate S5. |
+| 6 | Calificación, edición, historial y apelaciones. | 13 / 88 | 8 / 71 | TC-080 y resto de UI aplicable; Gate S6. |
+| 7 | Reasignación manual, reglas, soporte, bloqueos, reportes y auditoría. | 14 / 102 | 9 / 80 | Extensión E2E de administración y pruebas CRUD; Gate S7. |
+| 8 | Simulación económica, preferencias, regresión y entrega. | 9 / 111 | 5 / 85 | Resto de campañas E2E, carga, aceptación, recuperación, disponibilidad y Gate final. |
 
-Los 12 candidatos Pest del Módulo A (TC-119…TC-135) se suman a esta distribución: 1 en S2, 9 en S3 y 2 en S4. Los 4 de cobertura RF/RNF (TC-137…TC-140) se reparten 1 en S1, 1 en S4 y 2 en S8. Acumulado final 111. Las cifras son distribución documental de los candidatos, no compromiso de que ya pasen ni cuotas para fabricar pruebas. El total aumenta con escenarios CRUD/límite necesarios. TC-056 se reporta aparte para no contar una comprobación parcial como caso completo. Resolver dependencias Pxx y capacidad antes de comprometer pruebas; no mover sprints silenciosamente.
+Cifras calculadas desde la [matriz CSV](plan-pruebas-v2/Matriz-Trazabilidad-TC.csv) (TC-001…TC-140): 111 candidatos Pest, de los cuales 4 están bloqueados (TC-122, TC-123, TC-130, TC-140) y 22 condicionados por pendientes Pxx; quedan 85 ejecutables. Con los ejecutables, la meta de 60 se alcanza al cerrar S5 (63); con todos los candidatos, al cerrar S4 (63). Las cifras son distribución documental de los candidatos, no compromiso de que ya pasen ni cuotas para fabricar pruebas. El total aumenta con escenarios CRUD/límite necesarios. TC-056 se reporta aparte para no contar una comprobación parcial como caso completo. Resolver dependencias Pxx y capacidad antes de comprometer pruebas; no mover sprints silenciosamente.
 
 ## 16. Evidencias, informe de ejecución y conservación
 
