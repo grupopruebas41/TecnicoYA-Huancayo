@@ -15,7 +15,8 @@
     <env name="DB_DATABASE" value="tecnicoya_testing"/>
     <env name="DB_USERNAME" value="tecnicoya_test"/>
     <env name="CACHE_STORE" value="array"/>
-    <env name="SESSION_DRIVER" value="array"/>
+    <!-- TC-006 recrea el gestor de sesiones: el almacén debe sobrevivir entre peticiones. -->
+    <env name="SESSION_DRIVER" value="database"/>
     <env name="BCRYPT_ROUNDS" value="4"/>
   </php>
 </phpunit>
