@@ -8,7 +8,8 @@ FROM node:22-alpine
 WORKDIR /app
 ARG PORT=5173
 ENV PORT=${PORT}
-COPY --from=build /app/dist ./dist
-COPY server.mjs ./
+COPY --from=build --chown=node:node /app/dist ./dist
+COPY --chown=node:node server.mjs ./
+USER node
 EXPOSE ${PORT}
 CMD ["node", "server.mjs"]
