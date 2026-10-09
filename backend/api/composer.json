@@ -49,11 +49,11 @@
     ],
     "test:coverage": [
       "@php artisan config:clear",
-      "@php -d pcov.enabled=1 vendor/pestphp/pest/bin/pest --coverage"
+      "@php -d pcov.enabled=1 -d pcov.directory=. -d pcov.exclude=\"~(vendor|storage|bootstrap/cache)~\" vendor/pestphp/pest/bin/pest --coverage"
     ],
     "test:sonar": [
       "@php artisan config:clear",
-      "@php -d pcov.enabled=1 vendor/pestphp/pest/bin/pest --coverage-clover=test-results/clover.xml",
+      "@php -d pcov.enabled=1 -d pcov.directory=. -d pcov.exclude=\"~(vendor|storage|bootstrap/cache)~\" vendor/pestphp/pest/bin/pest --coverage-clover=test-results/clover.xml",
       "@php ../../scripts/normalizar-clover.php test-results/clover.xml"
     ],
     "post-autoload-dump": [

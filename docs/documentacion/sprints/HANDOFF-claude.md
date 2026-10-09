@@ -2,6 +2,86 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-09 · Sprint 0 · COV-01 aplicada: Quality Gate en verde
+
+- **Rama:** `feature/pimentel/f-administracion/s00-calidad`. El [PR #5](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/5) se actualiza con este push.
+- **Commits:**
+  - `4aaebe0` docs(s00): registra COV-01 (D-42)
+  - `5ab67a6` ci(s00): cobertura PHPUnit de database, routes y config
+  - `a2d7129` ci(s00): PCOV instrumenta todo backend/api salvo vendor, storage y caché
+  - docs(s00): reanálisis con D-42 y cierre de DEF-35
+  - este relevo
+- **D-42:** COV-01 opción A, decidida por Pimentel el 2026-10-09.
+- **Hallazgo:** ampliar `<source>` no bastaba. PCOV solo instrumenta `pcov.directory`, que por defecto es `app/`, así que el primer reanálisis (`5ab67a6`) siguió en rojo con 58,8 %. Su evidencia se conservó como `*-d42-intento1.txt`. Con `-d pcov.directory=.` en `composer test:sonar` y `test:coverage` quedó resuelto.
+- **Reanálisis de `a2d7129`:** las fuentes de producto son iguales a `main` `0f2d1cd`; la versión sigue siendo `sprint-00` y la línea base, `8997de8`.
+  - **Gate APROBADO (OK).**
+  - Cobertura de código nuevo **93,8 %** ✅.
+  - Duplicación 1,89 % ✅.
+  - Confiabilidad A ✅, seguridad A ✅ y mantenibilidad A ✅.
+  - Hotspots: 0, así que la condición no se evalúa.
+  - Cobertura total 78,3 % (`app` 96,3 %, `database` 89,2 %, `routes` 95 %, `config` 100 %, `frontend/web/src` 56,3 %).
+- **Pruebas:**
+  - Pest 62/62 (714 aserciones), slot A.
+  - Vitest 63/63.
+  - Cypress no se ejecutó; el bloqueo estuvo tomado mientras SonarQube estaba arriba.
+- **Registro:** DEF-35 cerrado.
+- **Entorno:** SonarQube detenido con `stop` y bloqueo de Cypress liberado.
+- **Evidencias:** `evidencias/sprint-00/calidad/sonar-d42/` y `2026-10-09-*-d42*.txt`. `calidad/QUALITY-GATE.md` tiene una §6 nueva.
+- **Incidente (DEF-17):**
+  - `88f4775` versionó y subió `sonar-d42/issues.json`, el exporte crudo con los correos de los autores. La regla `**/sonar/issues.json` no cubría la carpeta `sonar-d42`.
+  - Lo retiré del árbol en `33b299d` y amplié la regla a `**/sonar*/`.
+  - El archivo **sigue en el historial de la rama** y del PR #5. No reescribí historial (regla 5): purgarlo es decisión del equipo.
+
+**Qué falta:**
+1. La cobertura total del frontend (56,3 %) está por debajo del 70 % de la DoD. El Gate no la ve porque es código anterior a la línea base. Es un pedido a Codex para el cierre de S2 y S3.
+2. Los 32 code smells críticos se revisan en el cierre de cada sprint.
+3. TC-122, TC-123 y TC-130 se escriben en los pasos S3.1 y S3.2.
+4. Crear el workflow de GitHub Actions (D-39).
+
+**Bloqueos:** ninguno.
+
+## 2026-10-09 · Sprint 0 · paso 1.7: Quality Gate real en SonarQube
+
+- **Rama:** `feature/pimentel/f-administracion/s00-calidad`, base `main` `0f2d1cd` (PR #4 integrado).
+- **SonarQube:** Community Build 26.9.0.129388.
+  - Quality Gate «TecnicoYa» creado y asignado, con 6 condiciones sobre código nuevo.
+  - Periodo de código nuevo `PREVIOUS_VERSION`: la línea base es el análisis `8997de8` (versión `sprint-01`), así que el código nuevo es S2, S3 y S0.
+  - Se configura con `node scripts/configurar-quality-gate.mjs`, y está documentado en `calidad/QUALITY-GATE.md`.
+- **Análisis de main `0f2d1cd` (versión `sprint-00`): el Gate FALLA.**
+  - Cobertura de código nuevo **66,1 %**, por debajo del 70 % ❌.
+  - Duplicación 1,89 % ✅.
+  - Confiabilidad A ✅, seguridad A ✅ y mantenibilidad A ✅.
+  - Hotspots: 0, así que la condición no se evalúa.
+  - Medidas globales: cobertura total 58,8 % (antes 0 %), 0 bugs, 0 vulnerabilidades y 109 code smells (32 críticos).
+- **Causa del rojo (DEF-35):** `phpunit.xml` solo instrumenta `app/`, que tiene 97,8 % de cobertura nueva. `database/` (302 líneas), `routes/` y `config/` entran con 0 %. El frontend nuevo tiene 74,8 %. Queda la decisión **COV-01** en `DECISIONES.md`:
+  - A, recomendada: ampliar `<source>` de `phpunit.xml`.
+  - B: excluir esos directorios en Sonar.
+- **Pruebas:**
+  - `composer test:sonar` (slot A): Pest 62/62, 714 aserciones; Clover con 71 archivos.
+  - `npm run test:coverage`: Vitest 63/63; líneas al 61,82 %.
+  - `npm audit`: 0 vulnerabilidades.
+  - Cypress no se ejecutó: el bloqueo `tmp/e2e-cypress.lock` estuvo tomado mientras SonarQube estaba arriba.
+- **Registro de defectos:**
+  - Cerrados: DEF-07, DEF-08 (S9011 = 0), DEF-10 (sin regex en `forms.jsx`), DEF-13 (web con la evidencia de Codex; SonarQube no analiza los Dockerfile) y DEF-18.
+  - Abierto: DEF-35.
+- **Evidencias:** `docs/documentacion/evidencias/sprint-00/calidad/`. Incluyen `sonar/` con gate, measures, hotspots sin autores, analyses e `issues-anonimo.json`. El `issues.json` crudo está ignorado por Git.
+- **Entorno:**
+  - `vm.max_map_count` subió a 524288 (WSL, temporal) y SonarQube quedó detenido con `stop`.
+  - El MySQL de pruebas sigue arriba.
+  - Aviso del scanner: busca un `tsconfig` de `examples/backend/jsts-AdonisJS` fuera de `sonar.sources`; no afecta al análisis.
+
+**Qué falta:**
+1. **Decidir COV-01**, aplicarlo y repetir el análisis para dejar el Gate en verde. Si se reanaliza con la versión `sprint-00`, la línea base no se mueve.
+2. Los 32 code smells críticos se atienden en el cierre de cada sprint.
+3. TC-122, TC-123 y TC-130 se escriben en los pasos S3.1 y S3.2.
+4. Crear el workflow de GitHub Actions (D-39).
+
+**Bloqueos:** COV-01 bloqueaba el Gate en verde; quedó resuelto en la entrada de arriba.
+
+**Pedidos a Codex:**
+- La cobertura de `frontend/web/src` en código nuevo ya pasa el 70 %, pero la total es 56,3 %. Conviene subirla en las pantallas v1 de S2 y S3.
+- No lanzar Cypress mientras exista `tmp/e2e-cypress.lock`.
+
 ## 2026-10-09 · Sprint 0 · decisiones D-38 a D-41 (complemento del PR #4)
 
 - **Rama:** `feature/pimentel/f-administracion/s00-decisiones-registro`.

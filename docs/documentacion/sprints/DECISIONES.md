@@ -53,6 +53,7 @@
 | D-39 | CI-01 · Plataforma de CI | Opción A: GitHub Actions por ahora. Si el docente exige el GitLab del laboratorio, se cambia a la opción C (GitHub Actions y espejo al GitLab) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-40 | P04 · Nombre del responsable del backlog | Pimentel | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-41 | P07 · Número de apelaciones | Una sola apelación por reseña | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-42 | COV-01 · Cobertura de `database/`, `routes/` y `config/` (DEF-35) | Opción A: ampliar `<source>` de `backend/api/phpunit.xml` a `database`, `routes` y `config`; no se excluye nada en SonarQube | 2026-10-09 | Pimentel |
 
 ## Decisiones pendientes
 
