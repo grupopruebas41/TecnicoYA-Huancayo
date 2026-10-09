@@ -25,7 +25,8 @@ Route::prefix('v1')->group(function () {
     Route::get('catalog/specialties', [App\Modules\FAdministration\Http\Controllers\CatalogController::class, 'specialties']);
     Route::get('catalog/subcategories', [App\Modules\FAdministration\Http\Controllers\CatalogController::class, 'subcategories']);
     Route::middleware('throttle:spa-auth')->group(function () {
-        Route::post('auth/register', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'register']);
+        Route::post('auth/register', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'register'])
+            ->middleware('session.none'); // D-43
         Route::post('auth/login', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'login']);
     });
     Route::post('auth/logout', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'logout'])

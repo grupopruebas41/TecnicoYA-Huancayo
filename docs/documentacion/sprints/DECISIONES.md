@@ -54,6 +54,8 @@
 | D-40 | P04 · Nombre del responsable del backlog | Pimentel | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-41 | P07 · Número de apelaciones | Una sola apelación por reseña | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-42 | COV-01 · Cobertura de `database/`, `routes/` y `config/` (DEF-35) | Opción A: ampliar `<source>` de `backend/api/phpunit.xml` a `database`, `routes` y `config`; no se excluye nada en SonarQube | 2026-10-09 | Pimentel |
+| D-43 | S01-A · Registro con sesión abierta | Opción A: `POST /api/v1/auth/register` con una sesión activa se rechaza con 403 y el mensaje «Ya tienes una sesión activa. Cierra sesión para crear otra cuenta.»; no se crea usuario ni perfil y la sesión no cambia (S01-TC-086) | 2026-10-09 | Pimentel |
+| D-44 | S01-B · Auditoría de accesos | Opción A: se auditan en `audit_entries` los inicios de sesión exitosos y fallidos y los cierres de sesión de cuentas administradoras, sin contraseña ni datos de sesión (SEC-S01-05; S01-TC-087). Los demás roles no se auditan en S1 | 2026-10-09 | Pimentel |
 
 ## Decisiones pendientes
 

@@ -13,7 +13,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-004: rechaza que el técnico se autoactive y conserva el estado persistido', function () {
+it('S01-TC-003 rechaza que el técnico se autoactive y conserva el estado persistido [TC-004]', function () {
     // Dado una cuenta técnica pendiente
     [$technician] = Sprint01::registerThroughApi($this, 'technician');
     Sanctum::actingAs($technician);

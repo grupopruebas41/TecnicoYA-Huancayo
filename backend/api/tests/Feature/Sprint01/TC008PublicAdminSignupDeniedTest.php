@@ -12,7 +12,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-008: rechaza el alta administrativa desde el registro público', function () {
+it('S01-TC-006 rechaza el alta administrativa desde el registro público [TC-008]', function () {
     // Dado un visitante sin sesión privilegiada
     $payload = Sprint01::registrationPayload('admin');
 

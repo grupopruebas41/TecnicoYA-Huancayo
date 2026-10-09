@@ -20,7 +20,7 @@ function forgetSprint01Session(): void
     app()->forgetInstance('session.store');
 }
 
-it('TC-006: invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie', function () {
+it('S01-TC-004 invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie [TC-006]', function () {
     // Dado una sesión válida abierta mediante login real (sin actingAs)
     [, $payload] = Sprint01::registerThroughApi($this);
     $login = $this->postJson('/api/v1/auth/login', [

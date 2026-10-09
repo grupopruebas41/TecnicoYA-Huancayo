@@ -13,7 +13,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-010: responde 409 ante una versión obsoleta y conserva la edición más reciente', function () {
+it('S01-TC-008 responde 409 ante una versión obsoleta y conserva la edición más reciente [TC-010]', function () {
     // Dado un perfil que cambió después de cargar el formulario
     [$client] = Sprint01::registerThroughApi($this);
     Sanctum::actingAs($client);

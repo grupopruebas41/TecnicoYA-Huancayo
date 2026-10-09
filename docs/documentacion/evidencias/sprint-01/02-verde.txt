@@ -1,0 +1,207 @@
+# Evidencia S1.3 · Suite Pest completa en verde
+# Fecha: 2026-10-09 14:52 -0500 · Commit: 2e5b3d0 · Rama: feature/mayhuasca/f-administracion/s01
+# Comando: cd backend/api && composer test:junit (slot A, tecnicoya_testing)
+
+
+   INFO  Configuration cache cleared successfully.  
+
+
+   PASS  Tests\Feature\AnnouncementsTest
+  ✓ only admin can write announcements                                                                          34.26s  
+  ✓ audiences drafts archives and priority are filtered in api                                                   0.20s  
+  ✓ edit moves audience and archive removes publication                                                          0.14s  
+  ✓ validation rejects scripts invalid audiences and fake images                                                 0.11s  
+  ✓ image and link survive save and read                                                                         0.09s  
+
+   PASS  Tests\Feature\MarketplaceTest
+  ✓ api registration verification and revocable sessions                                                         0.46s  
+  ✓ authenticated lifecycle and rating                                                                           0.20s  
+  ✓ deadlines and three simultaneous offers                                                                      0.42s  
+  ✓ api refuses admin signup and other clients actions                                                           0.27s  
+  ✓ expired rating is rejected                                                                                   0.42s  
+  ✓ php fallback matches reference                                                                               0.03s  
+  ✓ technician updates only own terms and cannot self verify                                                     0.12s  
+  ✓ pending offers and assigned work lock service terms                                                          0.21s  
+  ✓ permission matrix denies every other role action                                                             0.24s  
+  ✓ suspension revokes sessions and reactivation requires new login                                              0.22s  
+  ✓ admin accounts are protected and accounts are private                                                        0.15s  
+  ✓ profile cannot escalate role or edit another account                                                         0.10s  
+  ✓ address is hidden until confirmation and other technicians cannot start                                      0.32s  
+  ✓ active work prevents suspension                                                                              0.12s  
+  ✓ subcategory validation persistence and matching                                                              0.27s  
+  ✓ matching rejects missing skills and keeps legacy requests                                                    0.02s  
+
+   PASS  Tests\Feature\Sprint01\AdminAccessAuditTest
+  ✓ it S01-TC-087 audita el inicio fallido, el inicio y el cierre de sesión de un administrador y no los de un…  0.53s  
+
+   PASS  Tests\Feature\Sprint01\AuthorizationMatrixTest
+  ✓ it S01-TC-055 responde 401 en español a GET /me sin sesión                                                   0.48s  
+  ✓ it S01-TC-056 responde 403 a GET /me de una cuenta suspendida sin exponer sus datos                          0.36s  
+  ✓ it S01-TC-057 responde 403 a PATCH /me de una cuenta suspendida sin cambiar el perfil                        0.30s  
+  ✓ it S01-TC-058 deniega con 403 la ruta administrativa a un técnico y audita el rechazo [TC-007]               0.38s  
+  ✓ it S01-TC-059 responde 401 a la ruta administrativa sin sesión [TC-007]                                      0.29s  
+  ✓ it S01-TC-060 deniega la ruta administrativa a un administrador suspendido aunque su rol tenga el permiso [… 0.28s  
+  ✓ it S01-TC-061 permite la ruta administrativa al administrador activo con catalog.manage [TC-007]             0.57s  
+  ✓ it S01-TC-062 devuelve en GET /me del cliente solo lo propio de su rol y ningún secreto [TC-005]             0.56s  
+  ✓ it S01-TC-063 devuelve en GET /me del administrador los permisos del rol y sus concesiones individuales [TC… 0.97s  
+  ✓ it S01-TC-071 sirve el mismo catálogo público a anónimo, cliente, técnico, administrador y cuenta suspendid… 0.53s  
+
+   PASS  Tests\Feature\Sprint01\ProfileBoundariesTest
+  ✓ it S01-TC-064 rechaza nombres de 1 y de 101 caracteres en el perfil sin cambiar la versión                   0.49s  
+  ✓ it S01-TC-065 acepta un teléfono de 20 caracteres con prefijo, espacios, paréntesis y guion                  0.17s  
+  ✓ it S01-TC-066 rechaza un teléfono de 21 caracteres                                                           0.21s  
+  ✓ it S01-TC-067 rechaza un teléfono con letras                                                                 0.24s  
+  ✓ it S01-TC-068 borra el teléfono cuando se envía nulo e incrementa la versión                                 0.27s  
+  ✓ it S01-TC-069 no permite cambiar correo, contraseña ni tipo de cuenta desde el perfil                        0.19s  
+  ✓ it S01-TC-070 rechaza la edición del perfil sin expected_version [TC-010]                                    0.21s  
+
+   PASS  Tests\Feature\Sprint01\ProvisionAdminTest
+  ✓ it S01-TC-012 crea un administrador con secretos ocultos y auditoría atómica                                 0.25s  
+  ✓ it S01-TC-013 rechaza correo existente y confirmación incorrecta sin sobrescribir                            0.14s  
+  ✓ it S01-TC-014 revierte el alta si no puede persistir la auditoría                                            0.12s  
+
+   PASS  Tests\Feature\Sprint01\RegisterWithSessionTest
+  ✓ it S01-TC-086 rechaza el registro con una sesión abierta sin crear la cuenta ni cambiar la sesión            0.26s  
+
+   PASS  Tests\Feature\Sprint01\RegistrationBoundariesTest
+  ✓ it S01-TC-034 acepta nombres de 2 y de 100 caracteres en el registro [TC-001]                                0.26s  
+  ✓ it S01-TC-035 rechaza nombres de 1 y de 101 caracteres sin crear usuario ni perfil                           0.16s  
+  ✓ it S01-TC-036 acepta una contraseña de 8 caracteres y otra de 72 bytes y ambas sirven para iniciar sesión    0.25s  
+  ✓ it S01-TC-037 rechaza una contraseña de 7 caracteres                                                         0.13s  
+  ✓ it S01-TC-038 rechaza una contraseña de más de 72 bytes aunque tenga menos de 72 caracteres                  0.18s  
+  ✓ it S01-TC-039 rechaza una confirmación de contraseña distinta                                                0.17s  
+  ✓ it S01-TC-040 acepta un correo de 254 caracteres y lo guarda completo                                        0.18s  
+  ✓ it S01-TC-041 rechaza un correo de 255 caracteres                                                            0.11s  
+  ✓ it S01-TC-042 normaliza el correo al guardarlo y permite iniciar sesión con otra capitalización [TC-002]     0.16s  
+  ✓ it S01-TC-043 rechaza al cliente sin tipo de cliente o con un tipo fuera del dominio                         0.12s  
+  ✓ it S01-TC-044 rechaza al técnico que envía tipo de cliente                                                   0.11s  
+  ✓ it S01-TC-045 responde al registro vacío con el mensaje general y errores por campo en español               0.12s  
+
+   PASS  Tests\Feature\Sprint01\SessionSecurityTest
+  ✓ it S01-TC-046 no deja iniciar sesión a una cuenta suspendida y responde con el mensaje genérico [TC-005]     0.57s  
+  ✓ it S01-TC-047 responde igual a un correo inexistente y a una contraseña incorrecta                           0.55s  
+  ✓ it S01-TC-048 regenera el identificador de sesión al iniciar sesión                                          0.11s  
+  ✓ it S01-TC-049 emite la cookie de sesión HttpOnly con SameSite=Lax y deja legible XSRF-TOKEN                  0.15s  
+  ✓ it S01-TC-050 responde 429 en español al intento siguiente al límite aunque las credenciales sean válidas    0.77s  
+  ✓ it S01-TC-051 restablece el límite de intentos después del minuto                                            0.77s  
+  ✓ it S01-TC-052 rechaza PATCH /me sin token CSRF y no cambia el perfil                                         0.10s  
+  ✓ it S01-TC-053 responde 401 en español al cerrar sesión sin sesión                                            0.10s  
+  ✓ it S01-TC-054 permite a una cuenta suspendida cerrar su sesión e invalida la cookie                          0.12s  
+
+   PASS  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ✓ it S01-TC-001 rechaza el correo duplicado normalizado sin crear otro usuario ni perfil [TC-002]              0.15s  
+
+   PASS  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ✓ it S01-TC-002 registra al técnico como pendiente de verificación y solo le deja editar datos básicos [TC-00… 0.19s  
+
+   PASS  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ✓ it S01-TC-003 rechaza que el técnico se autoactive y conserva el estado persistido [TC-004]                  0.16s  
+
+   PASS  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ✓ it S01-TC-004 invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie [TC-006]          0.18s  
+
+   PASS  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ✓ it S01-TC-005 deniega con 403 una ruta administrativa a un cliente autenticado [TC-007]                      0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ✓ it S01-TC-006 rechaza el alta administrativa desde el registro público [TC-008]                              0.09s  
+
+   PASS  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ✓ it S01-TC-007 guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos [TC-009]         0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ✓ it S01-TC-008 responde 409 ante una versión obsoleta y conserva la edición más reciente [TC-010]             0.15s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it S01-TC-009 repite la semilla del catálogo sin duplicados y con relaciones válidas [TC-011]                0.22s  
+
+   PASS  Tests\Feature\Sprint01\TC012CatalogApiTest
+  ✓ it S01-TC-010 sirve solo categorías activas y valida el filtro sin inventar resultados [TC-012]              0.26s  
+
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ✓ it S01-TC-011 guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs [TC-137]       0.17s  
+
+   PASS  Tests\Feature\Sprint02\TC015CreateSubcategoryTest
+  ✓ it TC-015: crea una subcategoría con imagen revisada y la ofrece en su especialidad con la foto del carruse… 0.45s  
+
+   PASS  Tests\Feature\Sprint02\TC016DeactivateSubcategoryTest
+  ✓ it TC-016: desactiva una subcategoría usada sin borrar su identidad ni sus referencias                       0.47s  
+
+   PASS  Tests\Feature\Sprint02\TC017AnnouncementAudienceTest
+  ✓ it TC-017: entrega el comunicado vigente dirigido a técnicos solo al técnico                                 0.16s  
+
+   PASS  Tests\Feature\Sprint02\TC018DuplicateAnnouncementTest
+  ✓ it TC-018: duplica un comunicado publicado como borrador que no aparece en ningún panel                      0.28s  
+
+   PASS  Tests\Feature\Sprint02\TC019DocumentedApprovalTest
+  ✓ it TC-019: aprueba al técnico pendiente y registra la decisión, su autor y su fecha                          0.65s  
+
+   PASS  Tests\Feature\Sprint02\TC020ForeignDocumentDeniedTest
+  ✓ it TC-020: deniega a un técnico el documento privado de otro sin revelar su contenido                        0.15s  
+
+   PASS  Tests\Feature\Sprint02\TC021PublishedPortfolioWorkTest
+  ✓ it TC-021: publica un trabajo con su imagen en la galería pública sin documentos de verificación             0.25s  
+
+   PASS  Tests\Feature\Sprint02\TC023ValidAvailabilityTest
+  ✓ it TC-023: guarda horarios, zonas y una pausa válida que el filtro de elegibilidad reconoce                  0.31s  
+
+   PASS  Tests\Feature\Sprint02\TC024InvalidIntervalTest
+  ✓ it TC-024: rechaza en español una franja que termina antes de empezar y conserva el horario anterior         0.27s  
+
+   PASS  Tests\Feature\Sprint02\TC025NewRateVersionTest
+  ✓ it TC-025: crea la versión 2 de la tarifa y conserva la versión 1 sin sobrescribirla                         0.47s  
+
+   PASS  Tests\Feature\Sprint02\TC026NegativeRateTest
+  ✓ it TC-026: rechaza en español una tarifa negativa sin crear versión ni cambiar la vigente                    0.40s  
+
+   PASS  Tests\Feature\Sprint02\TC134ForeignAvailabilityOrRateTest
+  ✓ it TC-134: impide que otro técnico o un cliente cambien la disponibilidad o la tarifa ajena                  0.51s  
+
+   PASS  Tests\Feature\Sprint03\TC029OwnPhotoLinkedTest
+  ✓ it TC-029: vincula la foto propia solo a su solicitud y la muestra al propietario en el resumen              1.56s  
+
+   PASS  Tests\Feature\Sprint03\TC030ForeignFileReferenceTest
+  ✓ it TC-030: deniega vincular el archivo privado de otro cliente y lo mantiene privado                         0.38s  
+
+   PASS  Tests\Feature\Sprint03\TC031ReferenceFeeVisibleTest
+  ✓ it TC-031: muestra la tarifa como referencial con su procedencia y conserva la fotografía al cambiar el cat… 0.37s  
+
+   PASS  Tests\Feature\Sprint03\TC032OutOfCoverageTest
+  ✓ it TC-032: informa fuera de cobertura y no registra la solicitud de un distrito fuera del catálogo activo    0.51s  
+
+   PASS  Tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest
+  ✓ it TC-034: muestra al cliente bio, servicios y portafolio del técnico sin documentos ni contacto privado     0.37s  
+
+   PASS  Tests\Feature\Sprint03\TC035DirectedOriginPreservedTest
+  ✓ it TC-035: conserva el origen desde perfil y el técnico elegido sin asignarlo automáticamente                0.36s  
+
+   PASS  Tests\Feature\Sprint03\TC036IncompatibleTargetTest
+  ✓ it TC-036: rechaza un técnico objetivo que no ofrece la subcategoría sin sustituirlo por otro                0.33s  
+
+   PASS  Tests\Feature\Sprint03\TC037IdempotentSubmissionTest
+  ✓ it TC-037: repite el mismo envío con su clave y obtiene el mismo resultado sin duplicar solicitud ni evento  0.40s  
+
+   PASS  Tests\Feature\Sprint03\TC038ForeignRequestTest
+  ✓ it TC-038: deniega el detalle de la solicitud de otro cliente sin descripción, dirección ni evidencias       0.35s  
+
+   PASS  Tests\Feature\Sprint03\TC119RequiredDataRejectedTest
+  ✓ it TC-119: rechaza en la API, sin React, una solicitud con datos obligatorios ausentes o inválidos           0.30s  
+
+   PASS  Tests\Feature\Sprint03\TC120InactiveSubcategoryTest
+  ✓ it TC-120: rechaza una subcategoría inactiva o de rubro inactivo identificándola y sin guardar la solicitud  0.31s  
+
+   PASS  Tests\Feature\Sprint03\TC121ScheduledWithoutDateTest
+  ✓ it TC-121: rechaza en español la modalidad programada sin fecha u hora y acepta la completa                  0.38s  
+
+   PASS  Tests\Feature\Sprint03\TC126SubmittedRequestImmutableTest
+  ✓ it TC-126: rechaza modificar o eliminar una solicitud ya enviada y conserva solicitud, evidencias y eventos  0.66s  
+
+   PASS  Tests\Feature\Sprint03\TC127PhotosHiddenFromUnnotifiedTechnicianTest
+  ✓ it TC-127: oculta fotos, descripción y dirección de una solicitud a un técnico no notificado                 0.39s  
+
+   PASS  Tests\Feature\Sprint03\TC129RemovePhotoByApiTest
+  ✓ it TC-129: solo el titular retira la foto de una solicitud no enviada; otro cliente es denegado              0.51s  
+
+  Tests:    102 passed (1038 assertions)
+  Duration: 65.66s
+
