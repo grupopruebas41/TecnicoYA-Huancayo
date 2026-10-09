@@ -1,0 +1,91 @@
+Fecha: 2026-10-09; commit: 152e145; version final del Dockerfile. Intento inicial detenido por el agente tras descargar la base para aplicar CYPRESS_INSTALL_BINARY=0.
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 386B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine
+#2 DONE 13.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 66B 0.1s done
+#3 DONE 0.3s
+
+#4 [internal] load build context
+#4 ...
+
+#5 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#5 resolve docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402 0.5s done
+#5 DONE 0.5s
+
+#6 [build 2/6] WORKDIR /app
+#6 CACHED
+
+#4 [internal] load build context
+#4 transferring context: 56.77kB 0.6s done
+#4 DONE 0.7s
+
+#7 [build 3/6] COPY package*.json ./
+#7 CACHED
+
+#8 [build 4/6] RUN CYPRESS_INSTALL_BINARY=0 npm ci
+#8 38.00 npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+#8 57.38
+#8 57.38 added 281 packages, and audited 282 packages in 26s
+#8 57.38
+#8 57.38 74 packages are looking for funding
+#8 57.38   run `npm fund` for details
+#8 57.38
+#8 57.38 found 0 vulnerabilities
+#8 57.39 npm notice
+#8 57.39 npm notice New major version of npm available! 10.9.9 -> 12.2.0
+#8 57.39 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#8 57.39 npm notice To update run: npm install -g npm@12.2.0
+#8 57.39 npm notice
+#8 DONE 58.8s
+
+#9 [build 5/6] COPY . .
+#9 DONE 13.8s
+
+#10 [build 6/6] RUN npm run build
+#10 2.955
+#10 2.955 > tecnicoya-web@1.0.0 build
+#10 2.955 > vite build
+#10 2.955
+#10 4.296 vite v8.3.4 building client environment for production...
+#10 4.873 transforming...
+#10 9.884 ✓ 41 modules transformed.
+#10 18.30 rendering chunks...
+#10 19.83 computing gzip size...
+#10 19.85 dist/index.html                   1.07 kB │ gzip:  0.65 kB
+#10 19.85 dist/assets/index-BYcuWjwY.css   38.98 kB │ gzip:  9.15 kB
+#10 19.85 dist/assets/index-CHTkpeLk.js   229.19 kB │ gzip: 69.59 kB
+#10 19.85
+#10 19.85 ✓ built in 15.55s
+#10 19.87 [33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 5.4s of this 15.0s build (36%).
+#10 19.87 The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+#10 19.87   - plugin vite:prepare-out-dir renderStart (32%, 4.7s, 1 call)
+#10 19.87 Additional callback time came from callbacks under 1s.
+#10 19.87 See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+#10 19.87
+#10 DONE 20.1s
+
+#11 [stage-1 3/4] COPY --from=build --chown=node:node /app/dist ./dist
+#11 DONE 6.2s
+
+#12 [stage-1 4/4] COPY --chown=node:node server.mjs ./
+#12 DONE 0.4s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 16.5s done
+#13 exporting manifest sha256:cdff92ceedd7385af39ebdce014a45d695cfeb41d0fecc2b668e06ae7d634a20 0.1s done
+#13 exporting config sha256:909ece6304ee069652da5a4079b4a031c8a45ee1e9192086aef9c29a71559011 0.1s done
+#13 exporting attestation manifest sha256:4df065079ae26dc955303fa0a4d72b6b6e01fc05aba3e45cffd3d4df40d1c632 0.1s done
+#13 exporting manifest list sha256:bd4a9771c7fd11c51c688aa972e31294dedd9270b9271f8d207d5c509e97f67d 0.1s done
+#13 naming to docker.io/library/tecnicoya-web-s00:frontend 0.0s done
+#13 unpacking to docker.io/library/tecnicoya-web-s00:frontend
+#13 unpacking to docker.io/library/tecnicoya-web-s00:frontend 11.4s done
+#13 DONE 28.5s
+Exit code: 0

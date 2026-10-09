@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Fecha: 2026-10-09; commit: b188cb0; rutas de usuario anonimizadas. -->
+<testsuites name="vitest tests" tests="63" failures="0" errors="0" time="4.4043624">
+    <testsuite name="src/Announcements.test.jsx" timestamp="2026-10-09T17:24:50.626Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="1.1725735">
+        <testcase classname="src/Announcements.test.jsx" name="feed hides other audiences and drafts and lets users navigate" time="0.3182439">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="unsafe links never render" time="0.0168683">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="administrator creates a targeted draft and can publish an edit" time="0.3593549">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="failed save keeps the draft for retry" time="0.1304852">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="demo persists edits and refuses non-administrators" time="0.0194607">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="image upload enforces exact dimensions 1600 x 420" time="0.1096388">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="image upload enforces exact dimensions 1200 x 420" time="0.10922">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="image upload enforces exact dimensions 1600 x 600" time="0.1068976">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/ServiceCarousel.test.jsx" timestamp="2026-10-09T17:24:50.649Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.840677">
+        <testcase classname="src/ServiceCarousel.test.jsx" name="carousel wraps, changes its catalog and preserves the selected specialty on the request link" time="0.6981031">
+        </testcase>
+        <testcase classname="src/ServiceCarousel.test.jsx" name="automatic deck advances and pauses on interaction" time="0.1406836">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/TechnicianProfile.test.jsx" timestamp="2026-10-09T17:24:50.650Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.4508053">
+        <testcase classname="src/TechnicianProfile.test.jsx" name="technician can update their coverage and fee without granting verification" time="0.3712587">
+        </testcase>
+        <testcase classname="src/TechnicianProfile.test.jsx" name="pending offers prevent changing service terms in the UI and demo" time="0.0775709">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/VideoExperience.test.jsx" timestamp="2026-10-09T17:24:50.652Z" hostname="DESKTOP-BQM4VE8" tests="3" failures="0" errors="0" skipped="0" time="0.2235365">
+        <testcase classname="src/VideoExperience.test.jsx" name="shows only the video until the cue, then keeps the content through subsequent loops" time="0.1650202">
+        </testcase>
+        <testcase classname="src/VideoExperience.test.jsx" name="reduced motion immediately exposes the page and pauses playback" time="0.0355671">
+        </testcase>
+        <testcase classname="src/VideoExperience.test.jsx" name="video failure does not trap visitors on an empty page" time="0.0213004">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/access.test.jsx" timestamp="2026-10-09T17:24:50.653Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="1.0368825">
+        <testcase classname="src/access.test.jsx" name="unknown roles and foreign operations are denied" time="0.0057">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="suspended demo technician cannot accept operations" time="0.0026268">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="account search and suspension confirmation target the correct user" time="0.4057304">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="profile shows only permissions belonging to the actor" time="0.0229474">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="expired sessions clear local credentials and emit logout event" time="0.0203536">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="a delayed account response cannot replace the demo actor" time="0.2422586">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="registration returns to login without signing in and clears password" time="0.1608265">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="logout clears the session and returns to login for another account" time="0.1740033">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/domain/marketplace.test.js" timestamp="2026-10-09T17:24:50.661Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="0.019933">
+        <testcase classname="src/domain/marketplace.test.js" name="matching shared contract &gt; same ranking and scores as Python and PHP" time="0.0041303">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="matching shared contract &gt; filters unavailable, unverified and uncovered technicians" time="0.0007921">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="matching shared contract &gt; ties prioritize rating" time="0.0005834">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="complete service lifecycle, role controls and no duplicate rating" time="0.0064237">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="offers expire exactly at ten minutes and unassigned closes at 24 hours" time="0.0009535">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="new availability triggers matching and rating closes exactly at 48 hours" time="0.0028859">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="subcategory filters fail closed for unrelated, missing, inactive and unknown skills" time="0.000841">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="demo rejects cross-specialty skills and requests" time="0.000919">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/forms.test.jsx" timestamp="2026-10-09T17:24:50.682Z" hostname="DESKTOP-BQM4VE8" tests="16" failures="0" errors="0" skipped="0" time="0.043718">
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 admite correo de 253 caracteres" time="0.0028541">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 admite correo de 254 caracteres" time="0.0003974">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza correo de 255 caracteres antes de analizarlo" time="0.000277">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza correo de 100000 caracteres antes de analizarlo" time="0.000236">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido " time="0.0009319">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a@b" time="0.0001852">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido @b.pe" time="0.0001837">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a@@b.pe" time="0.0001332">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a@.pe" time="0.0002246">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido [CORREO SINTETICO]" time="0.0002716">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido [CORREO SINTETICO]." time="0.0001829">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a [CORREO SINTETICO]" time="0.0000862">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido [CORREO SINTETICO]
+" time="0.0001007">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido undefined" time="0.0000913">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 acepta subdominios y alias" time="0.0001126">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 limita el campo de correo en la pantalla" time="0.0358552">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/labels.test.js" timestamp="2026-10-09T17:24:50.698Z" hostname="DESKTOP-BQM4VE8" tests="9" failures="0" errors="0" skipped="0" time="0.0061308">
+        <testcase classname="src/features/administration/labels.test.js" name="traduce estado approved" time="0.0022739">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce estado rejected" time="0.000308">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce estado pending" time="0.0002061">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce estado unknown" time="0.0001712">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce permiso announcements.manage" time="0.0002721">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce permiso technicians.verify" time="0.0001433">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce permiso catalog.manage" time="0.0001207">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce permiso unknown" time="0.0001383">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="traduce errores estándar y conserva mensajes del servidor en español" time="0.0004962">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/forms.test.jsx" timestamp="2026-10-09T17:24:50.702Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.29472">
+        <testcase classname="src/forms.test.jsx" name="request form passes specialty, zone, address and description" time="0.1109215">
+        </testcase>
+        <testcase classname="src/forms.test.jsx" name="changing specialty clears subcategory and only exposes relevant options" time="0.1808204">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/scroll/scroll.test.jsx" timestamp="2026-10-09T17:24:50.703Z" hostname="DESKTOP-BQM4VE8" tests="5" failures="0" errors="0" skipped="0" time="0.3153858">
+        <testcase classname="src/scroll/scroll.test.jsx" name="the supplied timecodes map to the exact source frames at 24 fps" time="0.0043202">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="scroll mapping is continuous, reversible and bounded at both ends" time="0.0010684">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="portrait cover fills the viewport without stretching the image" time="0.0005813">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="reduced motion exposes all three sections and keeps the service links functional" time="0.3031463">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="cache limits concurrent loads, pauses prefetch and discards decoded frames on disposal" time="0.0029397">
+        </testcase>
+    </testsuite>
+</testsuites>

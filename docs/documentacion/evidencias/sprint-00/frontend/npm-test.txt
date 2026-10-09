@@ -1,0 +1,43 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.3 [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ✓ src/VideoExperience.test.jsx (3 tests) 546ms
+   ✓ shows only the video until the cue, then keeps the content through subsequent loops 477ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 448ms
+   ✓ reduced motion exposes all three sections and keeps the service links functional 424ms
+ ✓ src/forms.test.jsx (2 tests) 571ms
+   ✓ changing specialty clears subcategory and only exposes relevant options 409ms
+ ✓ src/TechnicianProfile.test.jsx (2 tests) 625ms
+   ✓ technician can update their coverage and fee without granting verification 419ms
+ ✓ src/ServiceCarousel.test.jsx (2 tests) 1312ms
+   ✓ carousel wraps, changes its catalog and preserves the selected specialty on the request link 851ms
+   ✓ automatic deck advances and pauses on interaction 458ms
+ ✓ src/Announcements.test.jsx (8 tests) 1788ms
+   ✓ feed hides other audiences and drafts and lets users navigate 337ms
+   ✓ administrator creates a targeted draft and can publish an edit 451ms
+   ✓ failed save keeps the draft for retry 336ms
+   ✓ image upload enforces exact dimensions 1600 x 600 301ms
+ ✓ src/access.test.jsx (8 tests) 2588ms
+   ✓ account search and suspension confirmation target the correct user 543ms
+   ✓ a delayed account response cannot replace the demo actor 596ms
+   ✓ registration returns to login without signing in and clears password 589ms
+   ✓ logout clears the session and returns to login for another account 553ms
+ ✓ src/features/administration/labels.test.js (9 tests) 8ms
+ ✓ src/domain/marketplace.test.js (8 tests) 22ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 88ms
+
+ Test Files  10 passed (10)
+      Tests  63 passed (63)
+   Start at  03:15:56
+   Duration  16.96s (environment 73%, tests 8%, transform 7%, setup 6%, import 6%)
+
+Environment  jsdom was created 10 times · 71.27s total, 73% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+Exit code: 0

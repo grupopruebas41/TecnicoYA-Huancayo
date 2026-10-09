@@ -1,0 +1,4 @@
+Fecha: 2026-10-09; commit: b1d467b
+d361c63133e82ad481ebc4f5d019214923fec6a8	refs/heads/main
+Already up to date.
+AGENTS.md en worktree: False; scripts/run-e2e.mjs: False; .env.testing presente: False; vendor presente: False

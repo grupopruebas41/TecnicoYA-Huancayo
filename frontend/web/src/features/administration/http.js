@@ -1,3 +1,4 @@
+import {apiMessage} from './labels';
 const origin = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 export class ApiError extends Error {
@@ -20,7 +21,7 @@ async function send(path, options = {}) {
   }
   if (response.status === 204) return null;
   const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new ApiError(body.message || body.error?.message || 'El servicio no está disponible.', response.status, body.errors || body.error?.fields);
+  if (!response.ok) throw new ApiError(apiMessage(body.message || body.error?.message || 'El servicio no está disponible.'), response.status, body.errors || body.error?.fields);
   return body;
 }
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fecha: 2026-10-09; commit: b188cb0; rutas de usuario anonimizadas. -->
+<testsuites name="Mocha Tests" time="6.505" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-09T17:25:47" tests="0" file="cypress\e2e\sprint-01\catalog.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Sprint 1: catálogo" timestamp="2026-10-09T17:25:47" tests="2" time="6.501" failures="0">
+    <testcase name="Sprint 1: catálogo TC-012 muestra el catálogo real servido por Laravel/MySQL" time="5.412" classname="TC-012 muestra el catálogo real servido por Laravel/MySQL">
+    </testcase>
+    <testcase name="Sprint 1: catálogo TC-012 informa un fallo realista sin inventar catálogo" time="0.870" classname="TC-012 informa un fallo realista sin inventar catálogo">
+    </testcase>
+  </testsuite>
+</testsuites>
