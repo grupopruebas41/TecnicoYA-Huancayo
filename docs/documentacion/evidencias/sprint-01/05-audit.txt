@@ -1,0 +1,6 @@
+# Evidencia S1.3 · composer audit
+# Fecha: 2026-10-09 14:56 -0500 · Commit: 2e5b3d0
+# Comando: cd backend/api && composer audit
+
+No security vulnerability advisories found.
+# Código de salida: 0
