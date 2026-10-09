@@ -2,6 +2,43 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-09 · Sprint 1 · pasos S1.1 a S1.3 (catálogo, contrato, Pest y D-43/D-44)
+
+- **Rama:** `feature/mayhuasca/f-administracion/s01`, base `main` `6dfec52` (PR #5 integrado por squash). **PR:** [#6](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/6), abierto.
+- **Commits:**
+  - `768fa75` test(s01): renombra las pruebas existentes a S01-TC-NNN (Pest, Cypress y Vitest; solo descripciones)
+  - `66da984` docs(s01): catálogo de 87 casos, contrato de API y decisiones D-43 y D-44
+  - `93a11ff` test(s01): 38 casos Pest nuevos y casos de D-43 y D-44 en rojo
+  - `10986ab` docs(s01): evidencia del rojo
+  - `2e5b3d0` feat(s01): registro sin sesión (D-43) y auditoría de accesos de administradores (D-44)
+  - `faa9046` docs(s01): evidencias 02 a 05, avance de Mayhuasca y DEF-37
+  - este relevo
+- **Documentos:** `plan-pruebas-v3/sprint-01/CATALOGO-S01.csv` (87 casos: 54 Pest, 17 Cypress y 16 Vitest) y `CONTRATO-API.md`.
+- **Decisiones:** D-43 (registro con sesión abierta → 403 `SESSION_ACTIVE`) y D-44 (auditoría de accesos de administradores), decididas por Pimentel.
+- **Defectos:** DEF-36 abierto (4 botones sin `type`, Codex) y DEF-37 cerrado (falsa puntuación de mutación en Windows).
+- **Pruebas:**
+  - Rojo: Pest Sprint01 52/54. Los 38 nuevos de 034 a 071 pasaron desde el inicio (regresión de código existente); fallaron 086 y 087; 0 omitidos.
+  - Verde: suite completa 102/102 (1038 aserciones).
+  - Cobertura: total 94,6 %; FAdministration 95,7 %.
+  - Mutación: 12 clases del S1, 254 mutantes, **92,52 %** (9 sobrevivientes en `CatalogController` y 10 sin cubrir).
+  - `composer audit` limpio. Vitest de administración 25/25 tras el renombrado.
+  - Cypress no se ejecutó en esta tarea (los specs solo cambian de nombre; `node --check` correcto).
+- **Mutación en Windows (DEF-37):** invocar `'vendor\bin\pest'` con `C:\xampp\php` en el PATH y `--clear-cache`. Con `vendor/bin/pest` los procesos de mutante no arrancan y todos cuentan como eliminados. `--covered-only` genera 0 mutantes (las rutas de cobertura no casan); usar `--everything --path=…`.
+
+**Qué falta:**
+1. S1.6: mutación del módulo completo (848 mutantes, unas 2,8 h, con la base del slot A ocupada); matar los 9 sobrevivientes de `CatalogController`; cubrir la rama de rol inactivo de `AuthController::login` y la carrera de `RegisterAccount`.
+2. S1.6: regresión completa con Cypress, conteo con `contar-pruebas-sprint.mjs`, SonarQube con Gate sobre el commit integrado, `npm audit` e `INFORME-SPRINT-01.md`.
+3. Crear el workflow de GitHub Actions (D-39).
+
+**Bloqueos:** ninguno.
+
+**Pedidos a Codex** (detalle en `CONTRATO-API.md` §4):
+- Vitest S01-TC-078 a 085 y Cypress S01-TC-072 a 077 según el catálogo.
+- DEF-36: `type="button"` en 3 botones de `AccountApp.jsx` y 1 de `Catalog.jsx`.
+- D-43: no ofrecer «Crear una cuenta» con sesión abierta y mostrar `error.message` ante `SESSION_ACTIVE`.
+- Mostrar el 429 en español y reactivar el botón.
+- En `portals.cy.js`, el bucle de TC-005 ahora asigna un ID por rol (016 a 018); no volver al formato anterior.
+
 ## 2026-10-09 · Sprint 0 · COV-01 aplicada: Quality Gate en verde
 
 - **Rama:** `feature/pimentel/f-administracion/s00-calidad`. El [PR #5](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/5) se actualiza con este push.

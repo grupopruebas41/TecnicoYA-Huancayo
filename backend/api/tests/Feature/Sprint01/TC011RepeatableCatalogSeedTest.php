@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
-it('TC-011: repite la semilla del catálogo sin duplicados y con relaciones válidas', function () {
+it('S01-TC-009 repite la semilla del catálogo sin duplicados y con relaciones válidas [TC-011]', function () {
     // Dado una base MySQL de pruebas migrada y una primera ejecución de la semilla
     $this->seed(CatalogSeeder::class);
     $idsBefore = DB::table('subcategories')->orderBy('code')->pluck('id', 'code')->all();

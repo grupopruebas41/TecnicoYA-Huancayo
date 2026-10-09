@@ -1,0 +1,335 @@
+# Evidencia S1.3 · Pruebas de mutación (pest --mutate)
+# Fecha: 2026-10-09 · Commit: 2e5b3d0 · Rama: feature/mayhuasca/f-administracion/s01 · slot A
+# Comando (desde backend/api, con C:\xampp\php en el PATH):
+#   php -d pcov.enabled=1 -d pcov.directory=. -d "pcov.exclude=~(vendor|storage|bootstrap/cache)~" 'vendor\bin\pest' tests/Feature/Sprint01 --mutate --everything --clear-cache --path=<12 clases del Sprint 1>
+# Alcance: clases del Sprint 1 en app/Modules/FAdministration (AuthController, ProfileController, CatalogController, AuditAdminAccess, RegisterAccount, UpdateProfile, ProvisionAdministrator, AccountData y las 4 Form Requests de cuenta). ProfileController no generó mutantes.
+# No es el módulo completo: con ~12 s por mutante, sus 848 mutantes llevarían unas 2,8 h; queda pendiente para S1.6.
+# DEF-37: una primera corrida con 'vendor/bin/pest' dio 95,05 % FALSO (los procesos de mutante no arrancaban en Windows y contaban como eliminados). Se descartó.
+# Resultado: 254 mutantes · 234 eliminados · 1 timeout · 9 sobrevivientes (CatalogController) · 10 sin cubrir (AuthController 36-41, RegisterAccount 38-39) · puntuación 92,52 %
+
+
+  ......................................................
+
+  Tests:    54 passed (462 assertions)
+  Duration: 46.40s
+
+  Mutating application files...
+  254 Mutations for 11 Files created
+
+   RUN  app\Modules\FAdministration\Http\Controllers\AuthController.php
+  ✓ Line 21: DecrementInteger
+  ✓ Line 21: IncrementInteger
+  ✓ Line 21: RemoveFunctionCall
+  ✓ Line 23: DecrementInteger
+  ✓ Line 23: IncrementInteger
+  ✓ Line 28: DecrementInteger
+  ✓ Line 28: IncrementInteger
+  ✓ Line 28: RemoveFunctionCall
+  ✓ Line 29: PlusToMinus
+  ✓ Line 29: TrueToFalse
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 30: IfNegated
+  ✓ Line 30: RemoveNot
+  ✓ Line 31: RemoveMethodCall
+  ✓ Line 33: DecrementInteger
+  ✓ Line 33: IncrementInteger
+  ✓ Line 33: RemoveEarlyReturn
+  ✓ Line 35: IfNegated
+  ✓ Line 35: RemoveNot
+  - Line 36: RemoveMethodCall
+  - Line 37: RemoveMethodCall
+  - Line 38: RemoveMethodCall
+  - Line 39: RemoveMethodCall
+  - Line 41: DecrementInteger
+  - Line 41: IncrementInteger
+  - Line 41: RemoveEarlyReturn
+  ✓ Line 43: RemoveMethodCall
+  ✓ Line 44: RemoveMethodCall
+  ✓ Line 51: RemoveMethodCall
+  ✓ Line 52: RemoveMethodCall
+  ✓ Line 53: RemoveMethodCall
+  ✓ Line 54: RemoveMethodCall
+
+   RUN  app\Modules\FAdministration\Http\Controllers\CatalogController.php
+  ✓ Line 14: DecrementInteger
+  ✓ Line 14: IncrementInteger
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ⨯ Line 20: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 22: DecrementInteger
+  ✓ Line 22: DecrementInteger
+  ⨯ Line 22: IncrementInteger
+  ⨯ Line 22: IncrementInteger
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ⨯ Line 30: TernaryNegated
+  t Line 30: RemoveArrayItem
+
+   RUN  app\Modules\FAdministration\Application\AuditAdminAccess.php
+  ✓ Line 19: IfNegated
+  ✓ Line 20: RemoveMethodCall
+  ✓ Line 28: IfNegated
+  ✓ Line 28: BooleanAndToBooleanOr
+  ✓ Line 29: RemoveMethodCall
+  ✓ Line 36: IfNegated
+  ✓ Line 36: BooleanAndToBooleanOr
+  ✓ Line 37: RemoveMethodCall
+  ✓ Line 43: IdenticalToNotIdentical
+
+   RUN  app\Modules\FAdministration\Application\RegisterAccount.php
+  ✓ Line 16: DecrementInteger
+  ✓ Line 16: IncrementInteger
+  ✓ Line 17: DecrementInteger
+  ✓ Line 17: IncrementInteger
+  ✓ Line 17: RemoveFunctionCall
+  ✓ Line 20: RemoveMethodCall
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 22: TrueToFalse
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 25: IfNegated
+  ✓ Line 25: IdenticalToNotIdentical
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveMethodCall
+  ✓ Line 28: RemoveMethodCall
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 30: FalseToTrue
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  - Line 38: IfNegated
+  - Line 39: RemoveArrayItem
+  - Line 39: RemoveArrayItem
+
+   RUN  app\Modules\FAdministration\Application\UpdateProfile.php
+  ✓ Line 15: DecrementInteger
+  ✓ Line 15: IncrementInteger
+  ✓ Line 15: RemoveFunctionCall
+  ✓ Line 16: RemoveIntegerCast
+  ✓ Line 16: IdenticalToNotIdentical
+  ✓ Line 16: DecrementInteger
+  ✓ Line 16: IncrementInteger
+  ✓ Line 16: RemoveFunctionCall
+  ✓ Line 18: ForeachEmptyIterable
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 19: IfNegated
+  ✓ Line 20: RemoveMethodCall
+  ✓ Line 23: PostIncrementToPostDecrement
+  ✓ Line 24: RemoveMethodCall
+
+   RUN  app\Modules\FAdministration\Application\ProvisionAdministrator.php
+  ✓ Line 15: DecrementInteger
+  ✓ Line 15: IncrementInteger
+  ✓ Line 16: IfNegated
+  ✓ Line 16: BooleanOrToBooleanAnd
+  ✓ Line 16: RemoveNot
+  ✓ Line 20: RemoveMethodCall
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 22: TrueToFalse
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 24: RemoveMethodCall
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 29: RemoveStringCast
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+
+   RUN  app\Modules\FAdministration\Http\Resources\AccountData.php
+  ✓ Line 15: RemoveStringCast
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 16: RemoveIntegerCast
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 17: RemoveArrayItem
+  ✓ Line 19: IfNegated
+  ✓ Line 19: IdenticalToNotIdentical
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 22: TernaryNegated
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 24: RemoveBooleanCast
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 28: AlwaysReturnEmptyArray
+
+   RUN  app\Modules\FAdministration\Http\Requests\AccountRequest.php
+  ✓ Line 11: TrueToFalse
+  ✓ Line 16: IfNegated
+  ✓ Line 17: RemoveArrayItem
+  ✓ Line 17: RemoveMethodCall
+  ✓ Line 17: UnwrapTrim
+  ✓ Line 23: AlwaysReturnEmptyArray
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+
+   RUN  app\Modules\FAdministration\Http\Requests\RegisterAccountRequest.php
+  ✓ Line 12: RemoveMethodCall
+  ✓ Line 17: PlusToMinus
+  ✓ Line 17: AlwaysReturnEmptyArray
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 22: IfNegated
+  ✓ Line 22: GreaterToGreaterOrEqual
+  ✓ Line 22: GreaterToSmallerOrEqual
+  ✓ Line 22: BooleanAndToBooleanOr
+  ✓ Line 22: DecrementInteger
+  ✓ Line 22: IncrementInteger
+  ✓ Line 23: RemoveFunctionCall
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+
+   RUN  app\Modules\FAdministration\Http\Requests\LoginRequest.php
+  ✓ Line 9: RemoveMethodCall
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: AlwaysReturnEmptyArray
+
+   RUN  app\Modules\FAdministration\Http\Requests\UpdateProfileRequest.php
+  ✓ Line 9: PlusToMinus
+  ✓ Line 9: AlwaysReturnEmptyArray
+  ✓ Line 10: RemoveArrayItem
+  ✓ Line 10: RemoveArrayItem
+  ✓ Line 10: RemoveArrayItem
+  ✓ Line 10: RemoveArrayItem
+  ✓ Line 10: RemoveArrayItem
+  ✓ Line 10: RemoveArrayItem
+  ✓ Line 11: RemoveArrayItem
+  ✓ Line 11: RemoveArrayItem
+  ✓ Line 11: RemoveArrayItem
+  ✓ Line 11: RemoveArrayItem
+  ✓ Line 11: RemoveArrayItem
+  ✓ Line 11: RemoveArrayItem
+  ✓ Line 12: RemoveArrayItem
+  ✓ Line 12: RemoveArrayItem
+  ✓ Line 12: RemoveArrayItem
+  ✓ Line 12: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+   UNCOVERED  app\Modules\FAdministration\Http\Controllers\AuthController.php  > Line 36: RemoveMethodCall - ID: 5dda23b7625b4d2e
+
+   UNCOVERED  app\Modules\FAdministration\Http\Controllers\AuthController.php  > Line 37: RemoveMethodCall - ID: c65f9176ed1dc374
+
+   UNCOVERED  app\Modules\FAdministration\Http\Controllers\AuthController.php  > Line 38: RemoveMethodCall - ID: 32e2ec73a309895a
+
+   UNCOVERED  app\Modules\FAdministration\Http\Controllers\AuthController.php  > Line 39: RemoveMethodCall - ID: 4e4ae90e250be68b
+
+   UNCOVERED  app\Modules\FAdministration\Http\Controllers\AuthController.php  > Line 41: DecrementInteger - ID: 73618e1a802117ad
+
+   UNCOVERED  app\Modules\FAdministration\Http\Controllers\AuthController.php  > Line 41: IncrementInteger - ID: 4a2471de9151b4f7
+
+   UNCOVERED  app\Modules\FAdministration\Http\Controllers\AuthController.php  > Line 41: RemoveEarlyReturn - ID: 0f619f57ca89d7e1
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 20: RemoveArrayItem - ID: 416d70b9549409c9
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 22: IncrementInteger - ID: d861ca35f2d43eb1
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 22: IncrementInteger - ID: 69c61b057d27813e
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 28: RemoveArrayItem - ID: 97288ed7a0211b7e
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 28: RemoveArrayItem - ID: aaf66dc19288ddd9
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 28: RemoveArrayItem - ID: 4b991caa1f01a056
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 29: RemoveArrayItem - ID: 35a3024efb6da65e
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 29: RemoveArrayItem - ID: 69bb0ac91635283c
+
+   UNTESTED  app\Modules\FAdministration\Http\Controllers\CatalogController.php  > Line 30: TernaryNegated - ID: 353568d1f7411405
+
+   UNCOVERED  app\Modules\FAdministration\Application\RegisterAccount.php  > Line 38: IfNegated - ID: ecc74482b50056f9
+
+   UNCOVERED  app\Modules\FAdministration\Application\RegisterAccount.php  > Line 39: RemoveArrayItem - ID: 0d7b41c092b415c2
+
+   UNCOVERED  app\Modules\FAdministration\Application\RegisterAccount.php  > Line 39: RemoveArrayItem - ID: 6f1e4316a08d8634
+
+  Mutations: 9 untested, 10 uncovered, 1 timeout, 234 tested
+  Score:     92.52%
+  Duration:  1,152.55s
+

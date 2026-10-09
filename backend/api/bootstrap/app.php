@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\ApiToken;
 use App\Http\Middleware\EnsureAccountIsActive;
+use App\Http\Middleware\RejectActiveSession;
 use App\Http\Middleware\RequirePermission;
 use App\Http\Middleware\RequireRole;
 use App\Shared\Http\ApiExceptionRenderer;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'account.active' => EnsureAccountIsActive::class,
             'permission' => RequirePermission::class,
             'role' => RequireRole::class,
+            'session.none' => RejectActiveSession::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

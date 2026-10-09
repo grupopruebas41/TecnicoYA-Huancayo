@@ -13,7 +13,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-003: registra al técnico como pendiente de verificación y solo le deja editar datos básicos', function () {
+it('S01-TC-002 registra al técnico como pendiente de verificación y solo le deja editar datos básicos [TC-003]', function () {
     // Dado un técnico sin cuenta previa que completa el registro
     [$technician] = Sprint01::registerThroughApi($this, 'technician');
 

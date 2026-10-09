@@ -18,7 +18,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-137: guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs', function () {
+it('S01-TC-011 guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs [TC-137]', function () {
     // Se capturan los logs del flujo para revisarlos al final
     $logged = [];
     Event::listen(MessageLogged::class, function (MessageLogged $event) use (&$logged) {

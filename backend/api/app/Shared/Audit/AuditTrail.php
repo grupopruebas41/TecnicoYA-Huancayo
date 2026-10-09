@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\DB;
  */
 final class AuditTrail
 {
-    public function record(User $actor, string $action, ?string $permission, string $subjectType, ?int $subjectId,
+    public function record(?User $actor, string $action, ?string $permission, string $subjectType, ?int $subjectId,
         string $reason, array $before = [], array $after = []): void
     {
         DB::table('audit_entries')->insert([
-            'actor_id' => $actor->id,
+            'actor_id' => $actor?->id,
             'actor_kind' => 'user',
             'action' => $action,
             'permission_used' => $permission,

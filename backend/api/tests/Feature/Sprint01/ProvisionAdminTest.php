@@ -13,7 +13,7 @@ beforeEach(function () {
     $this->seed(AuthorizationSeeder::class);
 });
 
-it('S01-SEC-ADMIN: crea un administrador con secretos ocultos y auditoría atómica', function () {
+it('S01-TC-012 crea un administrador con secretos ocultos y auditoría atómica', function () {
     // Dado un servidor autorizado con roles sembrados y contraseña sintética.
     $password = Str::password(32);
     // Cuando el operador usa únicamente opciones no secretas y responde los prompts.
@@ -29,7 +29,7 @@ it('S01-SEC-ADMIN: crea un administrador con secretos ocultos y auditoría atóm
     $this->assertDatabaseCount('user_permissions', 0);
 });
 
-it('S01-SEC-ADMIN: rechaza correo existente y confirmación incorrecta sin sobrescribir', function () {
+it('S01-TC-013 rechaza correo existente y confirmación incorrecta sin sobrescribir', function () {
     $password = Str::password(32);
     $user = User::create(['name' => 'Cliente', 'email' => 'existing@example.test', 'password' => $password, 'role' => 'client']);
     $this->artisan('tecnicoya:provision-admin', ['--email' => $user->email, '--name' => 'Otro'])->assertFailed();
@@ -40,7 +40,7 @@ it('S01-SEC-ADMIN: rechaza correo existente y confirmación incorrecta sin sobre
     expect($user->fresh()->role)->toBe('client');
 });
 
-it('S01-SEC-ADMIN: revierte el alta si no puede persistir la auditoría', function () {
+it('S01-TC-014 revierte el alta si no puede persistir la auditoría', function () {
     // Simular indisponibilidad de auditoría antes de su INSERT, sin DDL (MySQL haría commit implícito).
     $password = Str::password(32);
     DB::connection()->beforeExecuting(function (string $query) {

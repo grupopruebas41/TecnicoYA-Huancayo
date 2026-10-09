@@ -12,7 +12,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-002: rechaza el correo duplicado normalizado sin crear otro usuario ni perfil', function () {
+it('S01-TC-001 rechaza el correo duplicado normalizado sin crear otro usuario ni perfil [TC-002]', function () {
     // Dado una cuenta ya registrada
     $payload = Sprint01::registrationPayload();
     $this->postJson('/api/v1/auth/register', $payload)->assertCreated();
