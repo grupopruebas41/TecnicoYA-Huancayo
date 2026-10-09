@@ -1,0 +1,174 @@
+15:30:50.102 INFO  Scanner configuration file: C:\Users\<usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\tmp\sonar-cli\sonar-scanner-8.1.0.6389\bin\..\conf\sonar-scanner.properties
+15:30:50.108 INFO  Project root configuration file: C:\Users\<usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\sonar-project.properties
+15:30:50.147 INFO  SonarScanner CLI 8.1.0.6389
+15:30:50.147 INFO  Windows 11 10.0 amd64
+15:30:56.039 INFO  Communicating with SonarQube Community Build 26.9.0.129388
+15:30:56.040 INFO  JRE provisioning is disabled
+15:30:56.040 INFO  Using the java executable 'C:\Program Files\Android\Android Studio\jbr\bin\java.exe' from JAVA_HOME
+15:31:01.654 INFO  SONAR_SCANNER_JAVA_OPTS=-Xmx512m
+15:31:02.266 INFO  Starting SonarScanner Engine...
+15:31:02.267 INFO  Java 21.0.10 JetBrains s.r.o. (64-bit)
+15:31:05.614 INFO  Load global settings
+15:31:06.249 INFO  Load global settings (done) | time=631ms
+15:31:06.259 INFO  Server id: 303924D4-AaES3Q_hyWCRqXEU4MJM
+15:31:06.278 INFO  Loading required plugins
+15:31:06.278 INFO  Load plugins index
+15:31:06.685 INFO  Load plugins index (done) | time=406ms
+15:31:06.687 INFO  Load/download plugins
+15:31:07.768 INFO  Load/download plugins (done) | time=1082ms
+15:31:08.434 INFO  Process project properties
+15:31:08.471 INFO  Process project properties (done) | time=36ms
+15:31:08.496 INFO  Project key: tecnicoya-huancayo
+15:31:08.497 INFO  Base dir: C:\Users\<usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo
+15:31:08.497 INFO  Working dir: C:\Users\<usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\tmp\sonar-work
+15:31:08.523 INFO  Load project settings for component key: 'tecnicoya-huancayo'
+15:31:08.700 INFO  Load project settings for component key: 'tecnicoya-huancayo' (done) | time=177ms
+15:31:08.739 INFO  Load quality profiles
+15:31:10.382 INFO  Load quality profiles (done) | time=1639ms
+15:31:10.467 INFO  Load active rules
+15:31:11.474 INFO  Load active rules (done) | time=1007ms
+15:31:11.495 INFO  Load analysis cache
+15:31:11.583 INFO  Load analysis cache (404) | time=89ms
+15:31:12.034 INFO  Preprocessing files...
+15:31:12.703 INFO  5 languages detected in 133 preprocessed files (done) | time=668ms
+15:31:12.704 INFO  43 files ignored because of inclusion/exclusion patterns
+15:31:12.704 INFO  2 files ignored because of scm ignore settings
+15:31:12.707 INFO  Loading plugins for detected languages
+15:31:12.707 INFO  Load/download plugins
+15:31:20.062 INFO  Load/download plugins (done) | time=7354ms
+15:31:20.418 INFO  Load project repositories
+15:31:21.089 INFO  Load project repositories (done) | time=672ms
+15:31:21.135 INFO  Indexing files...
+15:31:21.135 INFO  Project configuration:
+15:31:21.135 INFO    Excluded sources: **/*.test.js, **/*.test.jsx, **/test-setup.js, backend/api/tests/**, frontend/web/src/**/*.test.js, frontend/web/src/**/*.test.jsx, frontend/web/src/test-setup.js, frontend/web/cypress/**
+15:31:21.135 INFO    Included tests: backend/api/tests/**, frontend/web/src/**/*.test.js, frontend/web/src/**/*.test.jsx, frontend/web/src/test-setup.js, frontend/web/cypress/**
+15:31:21.388 INFO  133 files indexed (done) | time=254ms
+15:31:21.398 INFO  Quality profile for css: Sonar way
+15:31:21.400 INFO  Quality profile for js: Sonar way
+15:31:21.400 INFO  Quality profile for json: Sonar way
+15:31:21.400 INFO  Quality profile for php: Sonar way
+15:31:21.400 INFO  Quality profile for yaml: Sonar way
+15:31:21.400 INFO  ------------- Run sensors on module TecnicoYa Huancayo
+15:31:21.485 INFO  Load metrics repository
+15:31:21.585 INFO  Load metrics repository (done) | time=98ms
+15:31:22.688 INFO  Reflections took 112 ms to scan 1 urls, producing 30 keys and 295 values
+15:31:22.847 INFO  Sensor IaC YAML File Type Classification Sensor [iac]
+15:31:22.876 INFO  Sensor IaC YAML File Type Classification Sensor [iac] (done) | time=28ms
+15:31:22.877 INFO  Sensor PHP sensor [php]
+15:31:22.904 INFO  Starting PHP symbol indexer
+15:31:22.913 INFO  75 source files to be analyzed
+15:31:24.350 INFO  75/75 source files have been analyzed
+15:31:24.351 INFO  Cached information of global symbols will be used for 0 out of 75 files. Global symbols were recomputed for the remaining files.
+15:31:24.421 INFO  Starting PHP rules
+15:31:24.437 INFO  75 source files to be analyzed
+15:31:28.796 INFO  75/75 source files have been analyzed
+15:31:28.796 INFO  The PHP analyzer was able to leverage cached data from previous analyses for 0 out of 75 files. These files were not parsed.
+15:31:28.797 INFO  Sensor PHP sensor [php] (done) | time=5919ms
+15:31:28.797 INFO  Sensor Analyzer for "php.ini" files [php]
+15:31:28.800 INFO  Sensor Analyzer for "php.ini" files [php] (done) | time=3ms
+15:31:28.800 INFO  Sensor PHPUnit report sensor [php]
+15:31:28.802 INFO  No PHPUnit tests reports provided (see 'sonar.php.tests.reportPath' property)
+15:31:28.802 INFO  No PHPUnit coverage reports provided (see 'sonar.php.coverage.reportPaths' property)
+15:31:28.803 INFO  Sensor PHPUnit report sensor [php] (done) | time=2ms
+15:31:28.803 INFO  Sensor IaC CloudFormation Sensor [iac]
+15:31:28.803 INFO  There are no files to be analyzed for the CloudFormation language
+15:31:28.804 INFO  Sensor IaC CloudFormation Sensor [iac] (done) | time=1ms
+15:31:28.804 INFO  Sensor IaC cfn-lint report Sensor [iac]
+15:31:28.805 INFO  Sensor IaC cfn-lint report Sensor [iac] (done) | time=0ms
+15:31:28.805 INFO  Sensor IaC Kustomization Sensor [iac]
+15:31:28.806 INFO  Sensor IaC Kustomization Sensor [iac] (done) | time=1ms
+15:31:28.806 INFO  Sensor IaC hadolint report Sensor [iac]
+15:31:28.807 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=0ms
+15:31:28.807 INFO  Sensor IaC Azure Resource Manager Sensor [iac]
+15:31:28.807 INFO  There are no files to be analyzed for the Azure Resource Manager language
+15:31:28.808 INFO  Sensor IaC Azure Resource Manager Sensor [iac] (done) | time=1ms
+15:31:28.808 INFO  Sensor Java Config Sensor [iac]
+15:31:28.808 INFO  There are no files to be analyzed for the Java language
+15:31:28.808 INFO  Sensor Java Config Sensor [iac] (done) | time=1ms
+15:31:28.808 INFO  Sensor IaC Docker Sensor [iac]
+15:31:28.814 INFO  There are no files to be analyzed for the Docker language
+15:31:28.814 INFO  Sensor IaC Docker Sensor [iac] (done) | time=5ms
+15:31:28.814 INFO  Sensor HTML [web]
+15:31:28.937 INFO  Sensor HTML [web] (done) | time=123ms
+15:31:28.937 INFO  Sensor IaC Kubernetes Sensor [iac]
+15:31:29.028 INFO  There are no files to be analyzed for the Kubernetes language
+15:31:29.028 INFO  Sensor IaC Kubernetes Sensor [iac] (done) | time=85ms
+15:31:29.028 INFO  Sensor TextAndSecretsSensor [text]
+15:31:29.075 INFO  Available processors: 8
+15:31:29.075 INFO  Using 8 threads for analysis.
+15:31:29.561 INFO  Start fetching files for the text and secrets analysis
+15:31:29.776 INFO  Using Git CLI to retrieve dirty files
+15:31:29.866 INFO  Retrieving language associated files and files included via "sonar.text.inclusions" that are tracked by git
+15:31:29.867 INFO  Starting the text and secrets analysis
+15:31:29.872 INFO  125 source files to be analyzed for the text and secrets analysis
+15:31:30.025 INFO  125/125 source files have been analyzed for the text and secrets analysis
+15:31:30.030 INFO  Sensor TextAndSecretsSensor [text] (done) | time=1006ms
+15:31:30.034 INFO  ------------- Run sensors on project
+15:31:30.505 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+15:31:32.948 INFO  Detected os: Windows 11 arch: amd64 alpine: false. Platform: WIN_X64
+15:31:32.950 INFO  Deploy location C:\Users\<usuario>\.sonar\js\node-runtime, tagetRuntime: C:\Users\<usuario>\.sonar\js\node-runtime\node.exe,  version: C:\Users\<usuario>\.sonar\js\node-runtime\version.txt
+15:31:40.102 INFO  Using embedded Node.js runtime.
+15:31:40.103 INFO  Using Node.js executable: 'C:\Users\<usuario>\.sonar\js\node-runtime\node.exe'.
+15:31:49.243 INFO  Memory configuration: OS (7975 MB), Node.js (2240 MB).
+15:31:49.270 INFO  gRPC analyze-project server listening on 127.0.0.1:56417
+15:31:49.697 INFO  Plugin version: [13.8.0.44569]
+15:31:57.011 INFO  Found 8 tsconfig.json file(s): [C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-AdonisJS/tsconfig.json, C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-Express/tsconfig.json, C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-Fastify/tsconfig.json, C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-NestJS/tsconfig.json, C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/angular/tsconfig.json, C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/nextjs/tsconfig.json, C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.json, C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.json]
+15:32:15.284 INFO  37 source files to be analyzed
+15:32:15.290 WARN  Could not find tsconfig.json: C:/node_modules/@adonisjs/tsconfig/tsconfig.app.json/tsconfig.json; falling back to an empty configuration.
+15:32:15.294 WARN  C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-AdonisJS/tsconfig.json extends a configuration that was not found. Please run 'npm install' for a more complete analysis.
+15:32:15.294 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-AdonisJS/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+15:32:15.294 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-AdonisJS/tsconfig.json
+15:32:15.296 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-Express/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+15:32:15.296 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-Express/tsconfig.json
+15:32:15.296 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-Fastify/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+15:32:15.296 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-Fastify/tsconfig.json
+15:32:15.296 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-NestJS/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+15:32:15.298 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/backend/jsts-NestJS/tsconfig.json
+15:32:15.298 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/angular/tsconfig.json [lib: lib.es2022.d.ts, lib.dom.d.ts]
+15:32:15.299 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/angular/tsconfig.json
+15:32:15.302 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/nextjs/tsconfig.json [lib: lib.dom.d.ts, lib.dom.iterable.d.ts, lib.esnext.d.ts]
+15:32:15.302 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/nextjs/tsconfig.json
+15:32:15.302 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+15:32:15.303 INFO  Discovered referenced tsconfig: C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.app.json
+15:32:15.304 INFO  Discovered referenced tsconfig: C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.node.json
+15:32:15.307 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.json
+15:32:15.445 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+15:32:15.472 INFO  Discovered referenced tsconfig: C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.app.json
+15:32:15.473 INFO  Discovered referenced tsconfig: C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.node.json
+15:32:15.481 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.json
+15:32:15.481 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.app.json [lib: lib.es2020.d.ts, lib.dom.d.ts, lib.dom.iterable.d.ts]
+15:32:15.483 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.app.json
+15:32:15.485 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.node.json [lib: lib.es2023.d.ts]
+15:32:15.485 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/react/tsconfig.node.json
+15:32:15.485 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.app.json [lib: lib.es2022.d.ts, lib.dom.d.ts, lib.dom.iterable.d.ts]
+15:32:15.485 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.app.json
+15:32:15.485 INFO  Creating TypeScript(6.0.3) program with configuration file C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.node.json [lib: lib.es2023.d.ts]
+15:32:15.487 INFO  No files to analyze from tsconfig C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/examples/frontend/vue/tsconfig.node.json
+15:32:15.487 INFO  Analyzing 37 file(s) using merged compiler options [lib: lib.esnext.d.ts, lib.dom.d.ts]
+15:32:15.487 INFO  37/37 source files have been analyzed
+15:32:15.487 INFO  Hit the cache for 0 out of 37
+15:32:15.489 INFO  Miss the cache for 37 out of 37: ANALYSIS_MODE_INELIGIBLE [37/37]
+15:32:15.489 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=44848ms
+15:32:15.489 INFO  Sensor IaC Project Sensor [iac]
+15:32:15.489 INFO  Sensor IaC Project Sensor [iac] (done) | time=48ms
+15:32:15.489 INFO  Sensor Zero Coverage Sensor
+15:32:15.699 INFO  Sensor Zero Coverage Sensor (done) | time=282ms
+15:32:15.700 INFO  ------------- Gather SCA dependencies on project
+15:32:15.801 INFO  Dependency analysis skipped
+15:32:15.811 INFO  SCM Publisher SCM provider for this project is: git
+15:32:15.817 INFO  SCM Publisher 119 source files to be analyzed
+15:32:19.080 INFO  SCM Publisher 119/119 source files have been analyzed (done) | time=3267ms
+15:32:19.125 INFO  CPD Executor 12 files had no CPD blocks
+15:32:19.128 INFO  CPD Executor Calculating CPD for 71 files
+15:32:19.350 INFO  CPD Executor CPD calculation finished (done) | time=220ms
+15:32:19.393 INFO  SCM revision ID '8997de82108539a7c5010cb5d98484cff6f846fd'
+15:32:20.070 INFO  Analysis report generated in 635ms, dir size=1.2 MB
+15:32:20.667 INFO  Analysis report compressed in 598ms, zip size=630.9 kB
+15:32:23.706 INFO  Analysis report uploaded in 3038ms
+15:32:23.718 INFO  ------------- Check Quality Gate status
+15:32:23.719 INFO  Waiting for the analysis report to be processed (max 300s)
+15:32:45.575 INFO  QUALITY GATE STATUS: PASSED - View details on http://127.0.0.1:9000/dashboard?id=tecnicoya-huancayo
+15:32:47.405 INFO  Analysis total time: 1:39.499 s
+15:32:47.416 INFO  SonarScanner Engine completed successfully
+15:32:47.481 INFO  EXECUTION SUCCESS
+15:32:47.517 INFO  Total time: 1:57.396s

@@ -1,7 +1,7 @@
 project:
   name: tecnicoya-huancayo
   version: 1.0.0
-  description: Marketplace de tecnicos independientes: React, Laravel, FastAPI y PostgreSQL
+  description: Marketplace de tecnicos independientes: React, Laravel y MySQL 8.4
 
 authors:
   - Equipo

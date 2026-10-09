@@ -1,21 +1,2 @@
-import {defineConfig} from 'cypress';
-
-export default defineConfig({
-  video: false,
-  screenshotOnRunFailure: false,
-  defaultCommandTimeout: 20000,
-  requestTimeout: 20000,
-  env: {E2E_PASSWORD: process.env.TECNICOYA_E2E_PASSWORD},
-  e2e: {
-    baseUrl: 'http://127.0.0.1:5174',
-    specPattern: 'cypress/e2e/sprint-01/**/*.cy.js',
-    supportFile: false,
-    testIsolation: true,
-    setupNodeEvents(on) {
-      on('before:browser:launch', (browser, options) => {
-        if (browser.family === 'chromium' && browser.name !== 'electron') options.args.push('--force-prefers-reduced-motion');
-        return options;
-      });
-    },
-  },
-});
+// Compatibilidad: el Sprint 1 usa la configuración común de scripts/run-e2e.mjs.
+export {default} from './cypress.e2e.config.js';

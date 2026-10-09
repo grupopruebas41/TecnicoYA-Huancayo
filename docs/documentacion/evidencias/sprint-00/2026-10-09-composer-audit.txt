@@ -1,0 +1,14 @@
+# composer audit (backend/api)
+# Fecha: 2026-10-09 03:42 -0500 | Commit: a8c886d
+# Comando: cd backend/api && composer audit
+
+No security vulnerability advisories found.
+
+# Versiones de los paquetes de DEF-11 y DEF-14 (composer show --no-ansi)
+name     : laravel/framework
+versions : * v12.69.3
+names    : laravel/framework, psr/container-implementation, psr/log-implementation, psr/simple-cache-implementation, illuminate/auth, illuminate/broadcasting, illuminate/bus, illuminate/cache, illuminate/collections, illuminate/concurrency, illuminate/conditionable, illuminate/config, illuminate/console, illuminate/container, illuminate/contracts, illuminate/cookie, illuminate/database, illuminate/encryption, illuminate/events, illuminate/filesystem, illuminate/hashing, illuminate/http, illuminate/json-schema, illuminate/log, illuminate/macroable, illuminate/mail, illuminate/notifications, illuminate/pagination, illuminate/pipeline, illuminate/process, illuminate/queue, illuminate/redis, illuminate/reflection, illuminate/routing, illuminate/session, illuminate/support, illuminate/testing, illuminate/translation, illuminate/validation, illuminate/view, spatie/once
+name     : league/commonmark
+versions : * 2.10.3
+names    : league/commonmark
+firebase/php-jwt: no instalado

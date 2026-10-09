@@ -1,0 +1,70 @@
+{
+  "gate": {
+    "status": "OK",
+    "conditions": [],
+    "ignoredConditions": false,
+    "caycStatus": "compliant"
+  },
+  "measures": [
+    {
+      "metric": "coverage",
+      "value": "0.0",
+      "bestValue": false
+    },
+    {
+      "metric": "bugs",
+      "value": "7",
+      "bestValue": false
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "3.0",
+      "bestValue": false
+    },
+    {
+      "metric": "alert_status",
+      "value": "OK"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0",
+      "bestValue": true
+    },
+    {
+      "metric": "code_smells",
+      "value": "107",
+      "bestValue": false
+    },
+    {
+      "metric": "security_rating",
+      "value": "1.0",
+      "bestValue": true
+    },
+    {
+      "metric": "ncloc",
+      "value": "2521"
+    },
+    {
+      "metric": "vulnerabilities",
+      "value": "0",
+      "bestValue": true
+    },
+    {
+      "metric": "security_hotspots",
+      "value": "0",
+      "bestValue": true
+    },
+    {
+      "metric": "sqale_index",
+      "value": "754",
+      "bestValue": false
+    },
+    {
+      "metric": "sqale_rating",
+      "value": "1.0",
+      "bestValue": true
+    }
+  ],
+  "issues": 114,
+  "hotspots": 0
+}

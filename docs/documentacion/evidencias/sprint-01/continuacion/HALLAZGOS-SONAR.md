@@ -51,7 +51,7 @@ El alcance se limita a las rutas de `sonar-project.properties`; el servicio Pyth
 ## Evidencia
 
 - `sonar/gate.json`, `sonar/measures.json`: gate y medidas.
-- `sonar/issues.json`: detalle completo de las 114 incidencias, con reglas, archivos y líneas.
+- `sonar/issues-anonimo.json`: detalle de las 114 incidencias (reglas, archivos, líneas y mensajes), sin autores ni correos. Se genera con `node scripts/exportar-sonar-anonimo.mjs`. El exporte crudo `issues.json` contenía correos y ya no se versiona (DEF-17).
 - `sonar/hotspots.json`, `sonar/analyses.json`: revisión de hotspots e identificación del análisis.
 - `sprint01-next-4-sonar-analysis.txt`: salida íntegra del scanner.
 

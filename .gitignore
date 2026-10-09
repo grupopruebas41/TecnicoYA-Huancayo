@@ -78,4 +78,13 @@ output/
 frontend/web/cypress/screenshots/
 frontend/web/cypress/videos/
 backend/api/test-results/
+frontend/web/test-results/
 backend/api/coverage/
+
+# Exportes crudos de SonarQube: incluyen autores (correos) de los commits (DEF-17).
+# Versionar solo el resumen de scripts/exportar-sonar-anonimo.mjs (issues-anonimo.json).
+**/sonar/issues.json
+**/sonar/*-crudo.json
+
+# Word con códigos de alumno retirado del repositorio (DEF-17, decisión D-07).
+docs/documentacion/informe-final/Proyecto-final-TecnicoYa-capitulos-01-al-13.docx
