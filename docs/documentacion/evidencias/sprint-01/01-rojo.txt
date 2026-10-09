@@ -1,0 +1,141 @@
+# Evidencia S1.2 · Pest en rojo
+# Fecha: 2026-10-09 14:49 -0500 · Commit: 93a11ff · Rama: feature/mayhuasca/f-administracion/s01
+# Comando: cd backend/api && php vendor/bin/pest tests/Feature/Sprint01 (slot A, tecnicoya_testing)
+# Esperado: 52 aprobadas (14 existentes + 38 nuevas de regresión), 2 fallidas (S01-TC-086 D-43 y S01-TC-087 D-44), 0 omitidas
+
+
+   FAIL  Tests\Feature\Sprint01\AdminAccessAuditTest
+  ⨯ it S01-TC-087 audita el inicio fallido, el inicio y el cierre de sesión de un administrador y no los de un… 43.34s  
+
+   PASS  Tests\Feature\Sprint01\AuthorizationMatrixTest
+  ✓ it S01-TC-055 responde 401 en español a GET /me sin sesión                                                   0.48s  
+  ✓ it S01-TC-056 responde 403 a GET /me de una cuenta suspendida sin exponer sus datos                          0.43s  
+  ✓ it S01-TC-057 responde 403 a PATCH /me de una cuenta suspendida sin cambiar el perfil                        0.48s  
+  ✓ it S01-TC-058 deniega con 403 la ruta administrativa a un técnico y audita el rechazo [TC-007]               0.48s  
+  ✓ it S01-TC-059 responde 401 a la ruta administrativa sin sesión [TC-007]                                      0.55s  
+  ✓ it S01-TC-060 deniega la ruta administrativa a un administrador suspendido aunque su rol tenga el permiso [… 0.50s  
+  ✓ it S01-TC-061 permite la ruta administrativa al administrador activo con catalog.manage [TC-007]             0.60s  
+  ✓ it S01-TC-062 devuelve en GET /me del cliente solo lo propio de su rol y ningún secreto [TC-005]             0.46s  
+  ✓ it S01-TC-063 devuelve en GET /me del administrador los permisos del rol y sus concesiones individuales [TC… 0.54s  
+  ✓ it S01-TC-071 sirve el mismo catálogo público a anónimo, cliente, técnico, administrador y cuenta suspendid… 0.58s  
+
+   PASS  Tests\Feature\Sprint01\ProfileBoundariesTest
+  ✓ it S01-TC-064 rechaza nombres de 1 y de 101 caracteres en el perfil sin cambiar la versión                   0.22s  
+  ✓ it S01-TC-065 acepta un teléfono de 20 caracteres con prefijo, espacios, paréntesis y guion                  0.21s  
+  ✓ it S01-TC-066 rechaza un teléfono de 21 caracteres                                                           0.18s  
+  ✓ it S01-TC-067 rechaza un teléfono con letras                                                                 0.17s  
+  ✓ it S01-TC-068 borra el teléfono cuando se envía nulo e incrementa la versión                                 0.25s  
+  ✓ it S01-TC-069 no permite cambiar correo, contraseña ni tipo de cuenta desde el perfil                        0.17s  
+  ✓ it S01-TC-070 rechaza la edición del perfil sin expected_version [TC-010]                                    0.12s  
+
+   PASS  Tests\Feature\Sprint01\ProvisionAdminTest
+  ✓ it S01-TC-012 crea un administrador con secretos ocultos y auditoría atómica                                 0.15s  
+  ✓ it S01-TC-013 rechaza correo existente y confirmación incorrecta sin sobrescribir                            0.11s  
+  ✓ it S01-TC-014 revierte el alta si no puede persistir la auditoría                                            0.12s  
+
+   FAIL  Tests\Feature\Sprint01\RegisterWithSessionTest
+  ⨯ it S01-TC-086 rechaza el registro con una sesión abierta sin crear la cuenta ni cambiar la sesión            0.20s  
+
+   PASS  Tests\Feature\Sprint01\RegistrationBoundariesTest
+  ✓ it S01-TC-034 acepta nombres de 2 y de 100 caracteres en el registro [TC-001]                                0.21s  
+  ✓ it S01-TC-035 rechaza nombres de 1 y de 101 caracteres sin crear usuario ni perfil                           0.15s  
+  ✓ it S01-TC-036 acepta una contraseña de 8 caracteres y otra de 72 bytes y ambas sirven para iniciar sesión    0.26s  
+  ✓ it S01-TC-037 rechaza una contraseña de 7 caracteres                                                         0.12s  
+  ✓ it S01-TC-038 rechaza una contraseña de más de 72 bytes aunque tenga menos de 72 caracteres                  0.17s  
+  ✓ it S01-TC-039 rechaza una confirmación de contraseña distinta                                                0.13s  
+  ✓ it S01-TC-040 acepta un correo de 254 caracteres y lo guarda completo                                        0.15s  
+  ✓ it S01-TC-041 rechaza un correo de 255 caracteres                                                            0.28s  
+  ✓ it S01-TC-042 normaliza el correo al guardarlo y permite iniciar sesión con otra capitalización [TC-002]     0.14s  
+  ✓ it S01-TC-043 rechaza al cliente sin tipo de cliente o con un tipo fuera del dominio                         0.11s  
+  ✓ it S01-TC-044 rechaza al técnico que envía tipo de cliente                                                   0.11s  
+  ✓ it S01-TC-045 responde al registro vacío con el mensaje general y errores por campo en español               0.11s  
+
+   PASS  Tests\Feature\Sprint01\SessionSecurityTest
+  ✓ it S01-TC-046 no deja iniciar sesión a una cuenta suspendida y responde con el mensaje genérico [TC-005]     1.05s  
+  ✓ it S01-TC-047 responde igual a un correo inexistente y a una contraseña incorrecta                           0.67s  
+  ✓ it S01-TC-048 regenera el identificador de sesión al iniciar sesión                                          0.28s  
+  ✓ it S01-TC-049 emite la cookie de sesión HttpOnly con SameSite=Lax y deja legible XSRF-TOKEN                  0.13s  
+  ✓ it S01-TC-050 responde 429 en español al intento siguiente al límite aunque las credenciales sean válidas    0.79s  
+  ✓ it S01-TC-051 restablece el límite de intentos después del minuto                                            0.78s  
+  ✓ it S01-TC-052 rechaza PATCH /me sin token CSRF y no cambia el perfil                                         0.13s  
+  ✓ it S01-TC-053 responde 401 en español al cerrar sesión sin sesión                                            0.10s  
+  ✓ it S01-TC-054 permite a una cuenta suspendida cerrar su sesión e invalida la cookie                          0.19s  
+
+   PASS  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ✓ it S01-TC-001 rechaza el correo duplicado normalizado sin crear otro usuario ni perfil [TC-002]              0.14s  
+
+   PASS  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ✓ it S01-TC-002 registra al técnico como pendiente de verificación y solo le deja editar datos básicos [TC-00… 0.18s  
+
+   PASS  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ✓ it S01-TC-003 rechaza que el técnico se autoactive y conserva el estado persistido [TC-004]                  0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ✓ it S01-TC-004 invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie [TC-006]          0.17s  
+
+   PASS  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ✓ it S01-TC-005 deniega con 403 una ruta administrativa a un cliente autenticado [TC-007]                      0.13s  
+
+   PASS  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ✓ it S01-TC-006 rechaza el alta administrativa desde el registro público [TC-008]                              0.11s  
+
+   PASS  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ✓ it S01-TC-007 guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos [TC-009]         0.19s  
+
+   PASS  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ✓ it S01-TC-008 responde 409 ante una versión obsoleta y conserva la edición más reciente [TC-010]             0.14s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it S01-TC-009 repite la semilla del catálogo sin duplicados y con relaciones válidas [TC-011]                0.35s  
+
+   PASS  Tests\Feature\Sprint01\TC012CatalogApiTest
+  ✓ it S01-TC-010 sirve solo categorías activas y valida el filtro sin inventar resultados [TC-012]              0.26s  
+
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ✓ it S01-TC-011 guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs [TC-137]       0.17s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\AdminAccessAuditTest > it S01-TC-087 audita el inicio fallido, el inicio y el cier…   
+  Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+-Array &0 [
+-    0 => 'auth.login_failed',
+-    1 => 'auth.login',
+-    2 => 'auth.logout',
+-]
++Array &0 []
+
+  at tests\Feature\Sprint01\AdminAccessAuditTest.php:35
+     31▕     $this->postJson('/api/v1/auth/login', ['email' => $client->email, 'password' => $password])->assertOk();
+     32▕ 
+     33▕     // Entonces quedan las tres acciones del administrador, en orden y sobre su cuenta
+     34▕     $entries = DB::table('audit_entries')->where('id', '>', $before)->orderBy('id')->get();
+  ➜  35▕     expect($entries->pluck('action')->all())->toBe(['auth.login_failed', 'auth.login', 'auth.logout'])
+     36▕         ->and($entries->pluck('subject_type')->unique()->all())->toBe(['user'])
+     37▕         ->and($entries->pluck('subject_id')->unique()->all())->toBe([$admin->id])
+     38▕         ->and($entries[0]->actor_id)->toBeNull()
+     39▕         ->and($entries[1]->actor_id)->toBe($admin->id)
+
+  1   tests\Feature\Sprint01\AdminAccessAuditTest.php:35
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint01\RegisterWithSessionTest > it S01-TC-086 rechaza el registro con una sesión abierta…   
+  Expected response status code [403] but received 201.
+Failed asserting that 201 is identical to 403.
+
+  at tests\Feature\Sprint01\RegisterWithSessionTest.php:32
+     28▕     $response = $this->withUnencryptedCookie($cookieName, $cookie)
+     29▕         ->postJson('/api/v1/auth/register', Sprint01::registrationPayload('technician'));
+     30▕ 
+     31▕     // Entonces recibe 403 SESSION_ACTIVE en español y no se crea nada
+  ➜  32▕     $response->assertForbidden()->assertJsonPath('error.code', 'SESSION_ACTIVE')
+     33▕         ->assertJsonPath('message', 'Ya tienes una sesión activa. Cierra sesión para crear otra cuenta.');
+     34▕     expect(DB::table('users')->count())->toBe($users)
+     35▕         ->and(DB::table('technician_profiles')->count())->toBe(0);
+     36▕
+
+
+  Tests:    2 failed, 52 passed (447 assertions)
+  Duration: 59.34s
+
