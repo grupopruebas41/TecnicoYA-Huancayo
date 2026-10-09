@@ -2,6 +2,29 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-09 · Sprint 0 · hoja de decisiones
+
+- **Rama:** `feature/pimentel/f-administracion/s00-decisiones`, base `main` `9c64fb6`.
+- **Integrado en `main`:** el PR #2 (`feature/pimentel/f-administracion/s00`, entrada de abajo) y el PR #1 de Codex (`codex/s00-frontend`). El pedido 1 a Codex está cumplido: su relevo ya está en `docs/documentacion/sprints/HANDOFF-codex.md`.
+- **PR abierto:** [#3](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/3), pendiente de revisión e integración.
+- **Commits:**
+  - `42be842` docs(s00): hoja de decisiones
+  - este relevo
+- **Entregado:** `docs/documentacion/sprints/HOJA-DE-DECISIONES.md`, con 29 filas: P01 a P23 (P07 en dos partes) más MOD-01, META-01, PERM-01, CI-01, MATCH-01 y PROTO-01. Tiene tres bloques: cierre de S1 a S3, Sprint 4 y el resto. Cada fila trae opciones, recomendación y la columna «Decisión del equipo» vacía. No registra decisiones ni fija valores de mercado; los límites de ejemplo están marcados «sin fuente».
+- **Pruebas:** no se ejecutaron porque el cambio es solo documental y no toca código.
+
+**Qué falta:**
+1. **Paso 1.7:** pendiente, según el equipo.
+2. **Decisiones:** la reunión del equipo con la hoja. Después, Claude Code pasa cada fila decidida a «Decisiones tomadas» de `DECISIONES.md`, con la fecha y quién decidió. Las más urgentes son MOD-01, META-01, P17, P10 y P22.
+3. Siguen pendientes los puntos 1, 2, 4 y 5 de la entrada de abajo. El 3 (DEF-13 web) lo entregó Codex en el PR #1, pero falta cerrarlo en `REGISTRO-DEFECTOS.csv`.
+
+**Bloqueos:**
+- MOD-01, que define las ramas por módulo para S1 a S3.
+- P10, P17 y P22, que bloquean TC-122, TC-123 y TC-130.
+- Calendario sin fechas.
+
+**Pedidos a Codex:** ninguno nuevo.
+
 ## 2026-10-09 · Sprint 0 · puesta en orden (reglas, entorno paralelo, deuda y plan v3)
 
 - **Rama:** `feature/pimentel/f-administracion/s00` (configuración común), base `main` `d361c63`. PR pendiente de crear: `gh` no está instalado.
