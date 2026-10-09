@@ -2,6 +2,34 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-09 · Sprint 0 · decisiones D-38 a D-41 (complemento del PR #4)
+
+- **Rama:** `feature/pimentel/f-administracion/s00-decisiones-registro`.
+- **PR:** [#4](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/4), abierto; este push lo actualiza.
+- **Commits:**
+  - docs(s00): registra MOD-01, CI-01, P04 y P07 (D-38 a D-41)
+  - este relevo
+- **Decisiones registradas:**
+  - **D-38, MOD-01:** Mayhuasca `a-solicitudes` y `b-matching`; Pimentel `c-notificaciones` y `f-administracion`; Delgado `d-atencion` y `e-calificaciones`. El dueño responde y otro integrante revisa. Las ramas siguen la capa (regla 5).
+  - **D-39, CI-01:** opción A (GitHub Actions); cambia a C si el docente exige su GitLab.
+  - **D-40, P04:** el responsable del backlog es Pimentel.
+  - **D-41, P07:** una sola apelación por reseña.
+- **Archivos:**
+  - `DECISIONES.md`: las cuatro filas nuevas; D-17 y D-31 remiten a D-40 y D-41.
+  - Reglas de negocio §9 y §10.
+  - AGENTS.md, regla 10.
+  - `docs/avances/README.md`, con la tabla del reparto.
+- **Única pendiente:** P17-S6, los límites de contenido de S6.
+- **Pruebas:** no se ejecutaron porque el cambio es solo documental.
+
+**Qué falta:**
+1. **TC-122, TC-123 y TC-130:** se escriben en los pasos S3.1 y S3.2 del plan, junto con el catálogo de 60 casos de S3, por decisión del usuario del 2026-10-09. No se adelantan.
+2. **Cierre de S1 a S3:** paso N.1 de S1, con el catálogo de 60 casos y el contrato de API.
+3. **Paso 1.7:** su contenido sigue sin identificar en el repositorio.
+4. **CI:** crear el workflow de GitHub Actions (D-39). Pertenece al módulo común; falta acordar en qué sprint.
+
+**Bloqueos:** ninguno de decisión para S1 a S4.
+
 ## 2026-10-09 · Sprint 0 · registro de las decisiones del equipo
 
 - **Rama:** `feature/pimentel/f-administracion/s00-decisiones-registro`, base `main` `93388b7` (PR #3 ya integrado).
@@ -22,7 +50,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Pruebas:** no se ejecutaron porque el cambio es solo documental. Se pidió quitar el `skip` de TC-122, TC-123 y TC-130, pero **esas pruebas no existen** (no hay ningún `skip` en `backend/api/tests`): hay que escribirlas.
 
 **Qué falta:**
-1. **TC-122, TC-123 y TC-130 en Pest**, con ciclo TDD en una rama de backend (`feature/mayhuasca/a-solicitudes/s03`):
+1. **TC-122, TC-123 y TC-130 en Pest** (reprogramado para S3.1 y S3.2, ver la entrada de arriba), con ciclo TDD en una rama de backend (`feature/mayhuasca/a-solicitudes/s03`):
    - `test(s03)` en rojo y después `feat(s03)` en verde;
    - el límite de 3 solicitudes activas al enviar;
    - la validación de la descripción y de las fotos.
