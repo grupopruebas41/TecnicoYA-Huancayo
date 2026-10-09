@@ -37,7 +37,7 @@ export default function ProfileForm({user, onUpdate, onExpired}) {
   return <form className="profile-form" onSubmit={submit} noValidate aria-busy={busy}>
     <h2>Mi perfil</h2><Field name="name" label="Nombre completo" errors={errors} data-cy="profile-name" value={name} onChange={e => setName(e.target.value)} autoComplete="name"/>
     <Field name="phone" label="Teléfono" errors={errors} data-cy="profile-phone" type="tel" value={phone} onChange={e => setPhone(e.target.value)} autoComplete="tel"/>
-    <Notice error={error} success={success}/><button className="button primary" disabled={busy} data-cy="profile-submit">{busy ? 'Guardando…' : 'Guardar perfil'}</button>
+    <Notice error={error} success={success}/><button type="submit" className="button primary" disabled={busy} data-cy="profile-submit">{busy ? 'Guardando…' : 'Guardar perfil'}</button>
     {conflict && <button className="button outline" type="button" disabled={busy} onClick={reload}>Recargar perfil y descartar mis cambios</button>}
   </form>;
 }

@@ -50,7 +50,7 @@ export default function SessionForm({onLogin}) {
       <Field name="email" label="Correo" errors={errors} type="email" autoComplete="email" data-cy={`${prefix}-email`} value={email} onChange={e => setEmail(e.target.value)}/>
       <Field name="password" label="Contraseña" errors={errors} type="password" autoComplete={register ? 'new-password' : 'current-password'} data-cy={`${prefix}-password`}/>
       {register && <Field name="password_confirmation" label="Confirmar contraseña" errors={errors} type="password" autoComplete="new-password" data-cy="register-password-confirmation"/>}
-      <Notice error={error}/><button className="button primary submit" data-cy={`${prefix}-submit`} disabled={busy}>{busy ? 'Conectando…' : register ? 'Registrarme' : 'Ingresar'}</button>
+      <Notice error={error}/><button type="submit" className="button primary submit" data-cy={`${prefix}-submit`} disabled={busy}>{busy ? 'Conectando…' : register ? 'Registrarme' : 'Ingresar'}</button>
       <button className="text-button" type="button" data-cy={register ? 'show-login' : 'show-register'} disabled={busy} onClick={changeMode}>{register ? 'Iniciar sesión' : 'Crear una cuenta'}</button>
     </form></div>
   </div>;
