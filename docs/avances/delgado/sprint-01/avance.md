@@ -37,3 +37,9 @@ La revisión técnica y ejecución automática realizadas por IA no sustituyen l
 ## Pendiente
 
 Integrar el backend S1, actualizar desde main y ejecutar Cypress en slot B durante S1.5. Verificar accesibilidad real, cookies Sanctum y flujos completos con ese backend. Revisión humana y análisis Sonar en el cierre. Claude Code debe registrar la comprobación final de DEF-36 y la decisión D-43 al integrar sus documentos.
+
+## S1.5 · 2026-10-09 · integración backend pendiente
+
+Sobre da68664 se ejecutaron git fetch origin y git merge origin/main (sin cambios; main=6dfec52e), Vitest 92/92 y build aprobado. GitHub todavía informa PR #6 abierto y merged=false. MySQL está healthy y los bloqueos global/slot B estaban libres. No se ejecutó Cypress, no se modificaron backend ni pruebas y no se levantaron contenedores. Se espera confirmación de integración del PR #6 para probar los 17 casos con el backend correcto.
+
+[Evidencia de esta comprobación](../../../documentacion/evidencias/sprint-01/cypress/README.md). Uso de IA: Codex, continuación de verificación y documentación; no se aceptó la suposición de PR integrado frente al estado real de GitHub. Revisor humano: [PENDIENTE].

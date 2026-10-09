@@ -21,6 +21,17 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-09 · Sprint 01 · S1.5 pendiente de PR #6
+
+- Rama feature/delgado/f-administracion/s01; código probado da68664, slot B.
+- Fetch aprobado. Merge origin/main: Already up to date; main sigue en 6dfec52e. Sin conflictos.
+- GitHub confirma PR #6 abierto, merged=false (head 5b9126b). Se pidió al usuario aviso tras integrarlo; no se fusiona por cuenta propia.
+- npm test: 92/92 (17 archivos); npm run build: salida 0. MySQL healthy, bloqueos global/slot B libres; no se modificaron.
+- Cypress NO EJECUTADO: faltó la precondición de backend integrado. Los 17 casos S01-TC-015–025 y 072–077 siguen pendientes.
+- Evidencia: docs/documentacion/evidencias/sprint-01/cypress/. Avance actualizado. No se editaron frontend/backend ni pruebas en este paso.
+- Continuar con fetch/merge cuando PR #6 esté integrado; volver a verificar Vitest/build, MySQL y bloqueo, ejecutar node scripts/run-e2e.mjs --sprint 01 --slot B --junit.
+
+
 ## 2026-10-09 · Sprint 01 · S1.4 frontend
 
 - **Rama:** feature/delgado/f-administracion/s01. **Base:** origin/main 6dfec52e. Worktree TecnicoYa-cx, slot B.
