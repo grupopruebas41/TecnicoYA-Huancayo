@@ -21,6 +21,22 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-09 · Sprint 01 · S1.4 frontend
+
+- **Rama:** feature/delgado/f-administracion/s01. **Base:** origin/main 6dfec52e. Worktree TecnicoYa-cx, slot B.
+- **Commits:** 9e184da (tests en rojo); 72872a8 (implementación verde y Cypress preparado); evidencia/relevo en commit documental posterior.
+- **PR:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/7
+- **Fuentes:** AGENTS, ambos handoffs, DECISIONES, contrato y catálogo S1 leídos. Solo los dos documentos S1 se importaron desde Mayhuasca 5b9126b; nada de backend.
+- **Pruebas:** rojo 75/92; verde **92/92**, 17 archivos. Módulo administración 96,27 % líneas; global frontend 82,97 %. Build salida 0; npm audit 0 vulnerabilidades. Un trabajador Vitest, sin concurrencia de suites.
+- **IDs planificados Vitest:** S01-TC-026–033 y 078–085 (16 únicos). Hay complementos unitarios de IDs Cypress que NO acreditan E2E ni se suman a esos 16.
+- **Cypress:** S01-TC-072–077 preparados, más los 11 anteriores con nombres alineados al CSV. **NO EJECUTADO**, solo node --check. Docker, Pest y SonarQube NO ejecutados.
+- **Entrega:** registro cliente/técnico, pending visible, login/logout, rutas #cuenta/{cliente,tecnico,administrador} resueltas con /me, perfil versionado/409, recuperación de resultado incierto, CSRF, 429 español, rechazo D-43 y catálogo honesto. DEF-36 corregido; no se modificó registro central de defectos.
+- **Evidencias:** docs/documentacion/evidencias/sprint-01/frontend/README.md; logs, JUnit y LCOV anonimizados. Avance: docs/avances/delgado/sprint-01/avance.md; revisor [PENDIENTE].
+- **Qué falta:** S1.5 tras integrar backend en main: actualizar rama y ejecutar node scripts/run-e2e.mjs --sprint 01 --slot B. Sonar/Quality Gate y revisión humana en cierre. No se declara cerrado S1.
+- **Pedidos a Claude Code:** integrar contrato/implementación backend, registrar D-43/D-44 desde su rama y reanalizar DEF-36 en Sonar. Mantener backend separado de este PR. Los títulos antiguos seguían en main: se alinearon al catálogo sin cambiar las aserciones de las pruebas anteriores.
+- **Bloqueos:** ninguno para S1.4; integración E2E pendiente por orden explícita del usuario.
+
+
 ## 2026-10-09 · Sprint 00 · integración, Cypress slot B y DEF-13 web
 
 - Rama: codex/s00-frontend. Main integrado: 1660d8b. Merge: b188cb0, sin conflictos.

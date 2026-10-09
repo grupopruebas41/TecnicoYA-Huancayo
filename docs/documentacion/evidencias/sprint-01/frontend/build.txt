@@ -1,0 +1,22 @@
+Fecha: 2026-10-09 | Código: 72872a8918cf63fe7189bd0ebfba3009fea1b43f | Salida: 0
+
+> tecnicoya-web@1.0.0 build
+> vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 41 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.07 kB │ gzip:  0.65 kB
+dist/assets/index-BrbJAf_g.css   39.16 kB │ gzip:  9.17 kB
+dist/assets/index-BbF9qeh3.js   231.60 kB │ gzip: 70.19 kB
+
+✓ built in 7.89s
+[33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 6.7s of this 7.7s build (88%).
+The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+  - plugin vite:prepare-out-dir renderStart (67%, 5.2s, 1 call)
+  - plugin vite:build-html transform (16%, 1.2s, 1 call)
+Additional callback time came from callbacks under 1s.
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+
