@@ -1,0 +1,12 @@
+Fecha: 2026-10-09; commit: 152e145
+Usuario configurado: node
+UID efectivo: 1000
+Contenedor temporal detenido y eliminado (--rm).
+Primera comprobacion HTTP desde PowerShell: fallo ResponseEnded (respuesta terminada prematuramente). UID 1000 verificado; no se dio por aprobada la comprobacion HTTP.
+Diagnostico: nueva instancia en puerto fijo 5186; curl --noproxy devolvio 200. El fetch interno inmediato fallo durante el arranque; se conserva el fallo inicial.
+1000
+GET / (sin proxy) -> HTTP 200
+GET /assets/index-CHTkpeLk.js -> HTTP 200; bytes: 229191
+HTTP interno: 200 UID: 1000
+Verificacion final: APROBADA; USER node, UID 1000, HTML y bundle HTTP 200.
+Contenedor temporal retirado.
