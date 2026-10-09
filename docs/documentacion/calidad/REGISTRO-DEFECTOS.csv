@@ -9,13 +9,13 @@ DEF-07,2026-10-06,Informe Word cap. 13; CONTEXTO-COMPLETO §7.d,SonarQube con co
 DEF-08,2026-10-06,SonarQube javascript:S9011,7 botones dentro de formularios sin type,Media,Pendiente (frontend: Codex),Abierto,
 DEF-09,2026-10-06,SonarQube,Complejidad cognitiva alta,Media,Pendiente,Abierto,
 DEF-10,2026-10-06,SonarQube,Regex del correo en forms.jsx:18 con posible retroceso superlineal,Media,Pendiente (frontend: Codex),Abierto,
-DEF-11,2026-10-06,composer audit,3 avisos: laravel/framework < 12.69 (bajo) y league/commonmark <= 2.10.1 (alto y medio),Alta,Actualizar sin -W,Abierto,
-DEF-12,2026-10-06,Auditoría,Motor de BD inconsistente: pruebas en MySQL 8.4; compose; .env.example; config/database.php y Dockerfile de la API en PostgreSQL,Alta,Unificar MySQL 8.4,Abierto,
-DEF-13,2026-10-06,Auditoría,Contenedores como root (matching y web; la API ya usaba www-data),Media,Usuario no root en los Dockerfile,Abierto,
-DEF-14,2026-10-06,Auditoría,firebase/php-jwt declarado y sin uso,Baja,Retirar la dependencia,Abierto,
+DEF-11,2026-10-06,composer audit,3 avisos: laravel/framework < 12.69 (bajo) y league/commonmark <= 2.10.1 (alto y medio),Alta,composer update de laravel/framework (12.69.3) y league/commonmark (2.10.3) sin -W; composer audit sin avisos,Cerrado,08db8e3
+DEF-12,2026-10-06,Auditoría,Motor de BD inconsistente: pruebas en MySQL 8.4; compose; .env.example; config/database.php y Dockerfile de la API en PostgreSQL,Alta,MySQL 8.4 en infrastructure/docker-compose.yml; .env.example; config/database.php y Dockerfile (pdo_mysql). Falta ajustar el .env local de cada integrante,Cerrado,508eb4b
+DEF-13,2026-10-06,Auditoría,Contenedores como root (matching y web; la API ya usaba www-data),Media,matching con usuario no root (uid 10001); la API ya usaba www-data. Falta el contenedor web (frontend: Codex),Abierto (parcial),a8c886d
+DEF-14,2026-10-06,Auditoría,firebase/php-jwt declarado y sin uso,Baja,Retirado con composer remove; sin referencias en el código,Cerrado,985f971
 DEF-15,2026-10-06,Auditoría,Commits de los Sprints 1 a 3 sin publicar,Media,Se publicaron al renombrar codex/sprint-01 a main (sin PR),Cerrado,d361c63
 DEF-16,2026-10-06,Auditoría,Matriz de trazabilidad sin registrar los casos de S2 y S3 que pasan,Baja,Actualizar Matriz-Trazabilidad-TC.csv,Abierto,
-DEF-17,2026-10-06,Auditoría,Datos personales publicados en el repositorio público (correo en sonar/issues.json; códigos de alumno en un PDF y un Word),Alta,Retirar del árbol; preparar purga del historial,Abierto,
+DEF-17,2026-10-06,Auditoría,Datos personales publicados en el repositorio público (correo en sonar/issues.json; códigos de alumno en un PDF y un Word),Alta,issues.json retirado del árbol e ignorado; resumen anónimo; purga preparada en PURGA-HISTORIAL.md. Pendiente: PDF y Word con códigos y la purga del historial,Abierto (parcial),3b52cff
 DEF-18,2026-10-06,npm audit,7 vulnerabilidades npm (2 críticas; 2 altas; 3 moderadas) en herramientas de desarrollo,Alta,Pendiente (frontend: Codex),Abierto,
 DEF-19,2026-10-09,CONTEXTO-COMPLETO NEW-01,Arrancador E2E terminaba con 0xC000001D; la causa era ELECTRON_RUN_AS_NODE=1 heredada de VS Code (no PHP),Alta,run-e2e.mjs retira la variable; diagnóstico en DIAGNOSTICO-E2E-2026-10-09.md,Cerrado,fa6de02
 DEF-20,2026-10-09,CONTEXTO-COMPLETO NEW-02,Códigos de alumno en fuentes/proyecto-final.pdf e informe-final/*.docx,Alta,Se trata dentro de DEF-17,Duplicado de DEF-17,
