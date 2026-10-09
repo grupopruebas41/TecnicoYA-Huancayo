@@ -1,0 +1,75 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 10,
+    "total": 4
+  },
+  "analyses": [
+    {
+      "key": "45f29868-d0ea-4bd1-9850-21477f1067bc",
+      "date": "2026-10-09T19:14:41+0000",
+      "events": [
+        {
+          "key": "a0e2737f-9cd2-471f-96f6-5af561289990",
+          "category": "QUALITY_GATE",
+          "name": "Passed",
+          "description": ""
+        },
+        {
+          "key": "d6dbcffc-0e52-4a99-b0d6-3e195b4fde6e",
+          "category": "VERSION",
+          "name": "sprint-00"
+        }
+      ],
+      "projectVersion": "sprint-00",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "a2d71299e0b96e73a3d3697d7216e0a78e0c389e",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "4e88d559-ae04-4edc-825b-32e436378cb4",
+      "date": "2026-10-09T19:08:20+0000",
+      "events": [],
+      "projectVersion": "sprint-00",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "5ab67a6ee9bef9e3bf7f3915783063a70c77abd3",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "dbf31f30-995c-4b4f-9909-2f3acfe082ef",
+      "date": "2026-10-09T18:50:52+0000",
+      "events": [
+        {
+          "key": "1bbf73a2-d78d-49d7-9faf-584ba0acf56c",
+          "category": "QUALITY_GATE",
+          "name": "Failed",
+          "description": "Coverage on New Code < 70"
+        }
+      ],
+      "projectVersion": "sprint-00",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "0f2d1cdb2bc3a9f5aa0bea34aa6ce73c114e811f",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "dd83a926-5658-4b0b-972a-37353b1889a3",
+      "date": "2026-10-06T20:31:08+0000",
+      "events": [
+        {
+          "key": "3a3eba3b-ffb7-4f4f-a430-9ede361f80fd",
+          "category": "SQ_UPGRADE",
+          "name": "26.9.0.129388"
+        },
+        {
+          "key": "1cc82f9f-166b-4a9b-9149-db1048ce6e39",
+          "category": "VERSION",
+          "name": "sprint-01"
+        }
+      ],
+      "projectVersion": "sprint-01",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "8997de82108539a7c5010cb5d98484cff6f846fd",
+      "detectedCI": "undetected"
+    }
+  ]
+}

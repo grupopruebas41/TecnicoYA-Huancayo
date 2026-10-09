@@ -57,7 +57,7 @@ node scripts/configurar-quality-gate.mjs
 
 Desde la raíz del repositorio:
 
-1. **Cobertura del backend:** `cd backend/api && composer test:sonar`. Necesita MySQL de pruebas, slot A. Genera `test-results/clover.xml` con rutas relativas a la raíz.
+1. **Cobertura del backend:** `cd backend/api && composer test:sonar`. Necesita MySQL de pruebas, slot A. Genera `test-results/clover.xml` con rutas relativas a la raíz. Desde D-42 instrumenta `app`, `database`, `routes` y `config` con `-d pcov.directory=.`; sin esa opción, PCOV solo mide `app/` y los demás archivos aparecen con `count=0`.
 2. **Cobertura del frontend:** `cd frontend/web && npm run test:coverage`. Genera `coverage/lcov.info`, que `posttest:coverage` normaliza.
 3. **Arrancar SonarQube:** `wsl -d docker-desktop -u root -- sysctl -w vm.max_map_count=524288` y luego `docker compose -f infrastructure/docker-compose.quality.yml --env-file infrastructure/.env.quality.local --profile quality up -d sonarqube`. Esperar `api/system/status = UP`.
 4. **Bloquear Cypress:** crear `tmp/e2e-cypress.lock` (regla 12b) para que ninguna corrida E2E arranque mientras SonarQube está arriba.
@@ -65,9 +65,9 @@ Desde la raíz del repositorio:
 6. **Exportar:** `node scripts/report-quality.mjs <carpeta>/sonar` y después `node scripts/exportar-sonar-anonimo.mjs <carpeta>/sonar/issues.json <carpeta>/sonar/issues-anonimo.json`. El `issues.json` crudo no se versiona.
 7. **Parar:** `docker compose … --profile quality stop`, nunca `down -v`. Borrar el bloqueo de Cypress.
 
-## 5. Resultado del 2026-10-09 (main `0f2d1cd`, versión `sprint-00`)
+## 5. Primer resultado del 2026-10-09 (main `0f2d1cd`, versión `sprint-00`)
 
-**Gate: FALLA (ERROR).** Evidencias en [`evidencias/sprint-00/calidad/`](../evidencias/sprint-00/calidad/).
+**Gate: FALLA (ERROR).** Superado por el §6. Evidencias en [`evidencias/sprint-00/calidad/`](../evidencias/sprint-00/calidad/).
 
 | Condición | Valor | Estado |
 |---|---|---|
@@ -99,3 +99,45 @@ Desde la raíz del repositorio:
 - `phpunit.xml` limita la cobertura a `<source><include><directory>app</directory>`.
 - Las migraciones, los seeders, las rutas y la configuración se ejecutan en cada prueba, pero PCOV no los instrumenta y SonarQube los cuenta como no cubiertos.
 - Hay dos maneras de corregirlo y las dos cambian qué se mide, así que quedan como decisión **COV-01** en `DECISIONES.md`. No se cambió el Gate ni se excluyó nada para hacerlo pasar.
+
+## 6. Reanálisis con D-42 (commit `a2d7129`, versión `sprint-00`) · **Gate: APROBADO (OK)**
+
+**Decisión aplicada:** D-42, COV-01 opción A, decidida por Pimentel el 2026-10-09. Se aplicó en dos pasos:
+1. `5ab67a6` amplía `<source>` de `phpunit.xml` a `database`, `routes` y `config`.
+2. `a2d7129` agrega `-d pcov.directory=.` y excluye `vendor`, `storage` y `bootstrap/cache` en `composer test:sonar` y `test:coverage`.
+
+**Primer reanálisis, solo con el paso 1:**
+- El Gate siguió en rojo, con la cobertura de código nuevo en **58,8 %**.
+- PCOV seguía instrumentando solo `app/` y los demás archivos entraban al Clover con `count=0`, incluso `config/app.php`.
+- Evidencia: `2026-10-09-sonar-scanner-d42-intento1.txt`.
+
+El código de producto analizado es el mismo de `main` `0f2d1cd`: solo cambian `phpunit.xml` y `composer.json`. La línea base sigue siendo el análisis `8997de8` (`sprint-01`). Evidencias en [`evidencias/sprint-00/calidad/sonar-d42/`](../evidencias/sprint-00/calidad/sonar-d42/) y `2026-10-09-*-d42.txt`.
+
+| Condición | Valor | Estado |
+|---|---|---|
+| Cobertura de código nuevo ≥ 70 % | **93,8 %** | ✅ OK |
+| Duplicación de código nuevo ≤ 3 % | 1,89 % | ✅ OK |
+| Confiabilidad de código nuevo | A | ✅ OK |
+| Seguridad de código nuevo | A | ✅ OK |
+| Mantenibilidad de código nuevo | A | ✅ OK |
+| Hotspots revisados = 100 % | sin valor (0 hotspots) | no evaluada |
+
+**Medidas globales:**
+- Cobertura total 78,3 %.
+- 0 bugs, 0 vulnerabilidades y 0 hotspots.
+- 109 code smells: 32 críticos, 62 mayores y 15 menores.
+- Duplicación 1,5 %.
+
+**Cobertura por directorio:**
+
+| Directorio | Líneas nuevas por cubrir | Cobertura nueva | Cobertura total |
+|---|---|---|---|
+| `backend/api/app` | 638 | 97,8 % | 96,3 % |
+| `backend/api/database` | 430 | 93,7 % | 89,2 % |
+| `backend/api/routes` | 29 | 100 % | 95,0 % |
+| `backend/api/config` | 5 | 100 % | 100 % |
+| `frontend/web/src` | 24 | 74,8 % | 56,3 % |
+
+**A tener en cuenta:**
+- La cobertura total del frontend (56,3 %) sigue por debajo del 70 % de la DoD. El Gate no la ve porque es código anterior a la línea base.
+- Los 32 code smells críticos tampoco bloquean: son anteriores al código nuevo o no bajan la calificación de mantenibilidad de A.
