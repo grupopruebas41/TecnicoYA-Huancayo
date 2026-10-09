@@ -80,7 +80,7 @@
    - Para pruebas, usa solo bases que terminen en `_testing`. No toques el MySQL/MariaDB de XAMPP.
    - No actualices dependencias con `composer -W` ni `npm audit fix --force` sin permiso.
 
-10. **Decisiones:** P01 a P23 están decididas desde el 2026-10-09 (D-10 a D-37 en `DECISIONES.md`); aplícalas tal como están registradas. Para lo que siga pendiente (MOD-01, CI-01 y las de la tabla de pendientes) o surja después: no inventes valores, propón dos opciones con tu recomendación, espera la decisión y regístrala en `DECISIONES.md` con la fecha y quién decidió.
+10. **Decisiones:** P01 a P23, el reparto de módulos (MOD-01) y la CI (CI-01) están decididos desde el 2026-10-09 (D-10 a D-41 en `DECISIONES.md`); aplícalos tal como están registrados. Para lo que siga pendiente en esa tabla o surja después: no inventes valores, propón dos opciones con tu recomendación, espera la decisión y regístrala en `DECISIONES.md` con la fecha y quién decidió.
 
 11. **Evidencias:**
     - **Pruebas:** `docs/documentacion/evidencias/sprint-NN/` (rojo, verde, cobertura, mutación, vitest, cypress, calidad, audit). Cada archivo lleva la fecha y el hash del commit.

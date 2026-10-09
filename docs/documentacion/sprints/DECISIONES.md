@@ -6,7 +6,7 @@
 - `editables/CANVAS-Analisis-MVP-TecnicoYa.md`, pendientes P01–P23.
 - `editables/REGLAS-DE-NEGOCIO-FORMALIZADAS-TecnicoYa.md` §9.
 - La columna «Pendiente» de `editables/plan-pruebas-v2/Matriz-Trazabilidad-TC.csv`.
-- [HOJA-DE-DECISIONES.md](HOJA-DE-DECISIONES.md): opciones, efectos y recomendaciones de D-10 a D-37.
+- [HOJA-DE-DECISIONES.md](HOJA-DE-DECISIONES.md): opciones, efectos y recomendaciones de D-10 a D-41.
 
 ## Decisiones tomadas
 
@@ -28,7 +28,7 @@
 | D-14 | P20 · Persona con varios roles | Opción A: un rol por cuenta (`users.role_id`) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-15 | P03 · Distritos de cobertura | Opción A: Huancayo, El Tambo y Chilca como semilla, ampliables por el administrador (`/admin/districts`). `rules.json` no prevalece | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-16 | PERM-01 · Nombres de permisos | Opción A: `announcements.manage` y `technicians.verify` tal como están en `AuthorizationSeeder` | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
-| D-17 | P04 · Responsable del backlog | Opción A: una persona fija. **Nombre por confirmar** (ver pendientes) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-17 | P04 · Responsable del backlog | Opción A: una persona fija; la persona se nombra en D-40 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-18 | P07 (parte S3) · Promedio para el filtro de búsqueda | Opción A: promedio de las calificaciones vigentes (excluye las anuladas por apelación); un técnico sin calificaciones no pasa un filtro de calificación mínima | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-19 | MATCH-01 · Dónde se programa el matching | Opción A: PHP dentro de Laravel (módulo `BMatching`); el servicio Python no se usa | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-20 | P15 · Normalización, técnico sin historial y empate | Opción A: normalización relativa por ejecución (`Dref` = mayor distancia y `Aref` = mayor experiencia entre los elegibles de esa ejecución); con 3 o más servicios y ninguna reseña, H = 0,50; el empate persistente se muestra como empate; el tiempo estimado sale de las duraciones reales del técnico con historial suficiente y, si no lo tiene, se muestra «Nuevo, sin estimación». Desbloquea TC-140 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
@@ -42,22 +42,22 @@
 | D-28 | P14 · Cancelación y reprogramación | Opción A: no se cancela durante la atención (se registra una incidencia); una cita que vence sin respuesta mantiene la original; las reservas se liberan al cancelar | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-29 | P06 · Reprogramaciones | Opción A: 2 cambios aceptados por solicitud, en total aunque haya dos técnicos | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-30 | P23 · Edición de la calificación | Opción A: `first_rated_at + 48 h`, sin reinicio al editar | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
-| D-31 | P07 (resto) · Plazo de apelación | Opción B: 5 días **calendario** | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-31 | P07 (resto) · Plazo de apelación | Opción B: 5 días **calendario**; el número de apelaciones está en D-41 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-32 | P18 · Sanciones | Opción A: solo manuales, con motivo y auditoría; al bloquear se cierran las sesiones y no se aceptan nuevas solicitudes, y las atenciones en curso siguen | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-33 | P21 · Protocolo de calidad y carga | Opción A: k6 con escenarios sintéticos; Chrome, Edge y Firefox actuales; cobertura en líneas por módulo ≥ 70 %. Umbrales: los de **RNF-01** (matching ≤ 3 s) y **RNF-02** (200 usuarios concurrentes) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-34 | P08 · Retención y cierre de cuenta | Opción A: 12 meses desde el cierre, con anonimización; no se cierra una cuenta con servicios abiertos. Sin validación legal | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-35 | P09 · Demostración | Opción A: 10 participantes; 7 días de 07:00 a 22:00 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-36 | P01 · Moneda | Opción A: soles (S/), sin conversión | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 | D-37 | P02 · Pagos y comprobante | Opción A: solo método de pago y comprobante simulados, con aviso claro de simulación | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-38 | MOD-01 · Dueño de cada módulo | Opción A, dos módulos fijos por integrante: **Mayhuasca** `a-solicitudes` y `b-matching`; **Pimentel** `c-notificaciones` y `f-administracion`; **Delgado** `d-atencion` y `e-calificaciones`. El dueño responde por su módulo y otro integrante revisa sus PR. Las ramas siguen la regla 5 de AGENTS.md (backend `mayhuasca`, frontend `delgado`, común `pimentel`) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-39 | CI-01 · Plataforma de CI | Opción A: GitHub Actions por ahora. Si el docente exige el GitLab del laboratorio, se cambia a la opción C (GitHub Actions y espejo al GitLab) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-40 | P04 · Nombre del responsable del backlog | Pimentel | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-41 | P07 · Número de apelaciones | Una sola apelación por reseña | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 
 ## Decisiones pendientes
 
 | ID | Decisión | Opción elegida | Fecha | Quién decidió |
 |---|---|---|---|---|
-| MOD-01 | Dueño y revisor de cada módulo A–F (adenda P10). La reunión del 2026-10-09 aprobó la opción A (dos módulos fijos por integrante), pero el reparto acordado **no se ha transcrito** | pendiente | — | — |
-| CI-01 | Plataforma de CI: A (GitHub Actions) o C (GitHub Actions y espejo al GitLab del laboratorio), **según lo que diga el docente** | pendiente | — | — |
-| P04-N | Nombre de la persona responsable del backlog (D-17) | pendiente | — | — |
-| P07-N | Número de apelaciones por reseña (D-31 fija solo el plazo) | pendiente | — | — |
 | P17-S6 | Límites de portafolio, documentos, comentarios de calificación y respuestas a reseñas | pendiente | — | — |
 
 **Para registrar una decisión:**

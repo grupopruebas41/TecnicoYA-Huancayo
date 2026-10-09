@@ -434,7 +434,7 @@ Para registrar valores iniciales todavía no calculables, usar un borrador: no p
 
 Esta lista no impide formalizar los valores confirmados ni diseñar pruebas candidatas. Impide declarar que los casos ambiguos ya tienen aprobación o que un algoritmo con constantes inventadas implementa las fuentes.
 
-**Estado al 9 de octubre de 2026:** todas las filas de esta tabla quedaron resueltas (ver §10), salvo los límites de contenido de S6 de P17 y el número de apelaciones de P07.
+**Estado al 9 de octubre de 2026:** todas las filas de esta tabla quedaron resueltas (ver §10), salvo los límites de contenido de S6 de P17.
 
 ## 10. Decisiones aprobadas (9 de octubre de 2026)
 
@@ -447,7 +447,7 @@ Decididas por el equipo (Delgado, Mayhuasca y Pimentel). El detalle y la fecha e
 | P22 (D-13) | `registered` (editable) → `sent` (no se modifica ni se elimina). El rechazo de verificación es una decisión con motivo en la revisión. | Sin estado `draft`. |
 | P20 (D-14) | Un rol por cuenta. | — |
 | P03 (D-15) | Huancayo, El Tambo y Chilca como semilla, ampliables por el administrador. | Prevalece sobre las 5 zonas de `rules.json`. |
-| P07 (D-18, D-31) | El «promedio real» usa solo calificaciones vigentes; un técnico sin calificaciones no pasa un filtro de mínimo. Plazo de apelación: 5 días calendario. | RN-07 y §4.2 (historial) usan ese promedio. Falta el número de apelaciones por reseña. |
+| P07 (D-18, D-31, D-41) | El «promedio real» usa solo calificaciones vigentes; un técnico sin calificaciones no pasa un filtro de mínimo. Plazo de apelación: 5 días calendario; una sola apelación por reseña. | RN-07 y §4.2 (historial) usan ese promedio. |
 | P15 (D-20) | Normalización relativa por ejecución: `Dref` y `Aref` son los máximos de distancia y experiencia entre los elegibles. Con 3 o más servicios y sin reseñas, H = 0,50. El empate persistente se presenta como empate. Tiempo estimado solo con historial suficiente, desde las duraciones reales del técnico. | §4.2: `Cᵢ = clamp(1 − dᵢ/Dref)` y `Eᵢ = clamp(aᵢ/Aref)` con esas referencias. Si `Dref` o `Aref` es 0 (todos iguales), el factor es el mismo para todos y no se divide por cero; el método concreto se fija en las pruebas de S4. |
 | P12 (D-21) | Se aprueba la semántica temporal de §3 tal cual. | Las etiquetas `@propuesta_P12` pasan a ser aceptación. |
 | P11 (D-22) | El cliente elige cuando se cierra la ronda; no hay plazo nuevo; se revalida la disponibilidad al elegir. | §5.3 (`awaiting_choice`) queda confirmado. |
