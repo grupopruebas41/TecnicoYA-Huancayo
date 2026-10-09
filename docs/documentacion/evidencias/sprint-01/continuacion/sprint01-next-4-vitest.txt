@@ -1,0 +1,30 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v2.1.9 C:/Users/<usuario>/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+
+ ✓ src/domain/marketplace.test.js (8 tests) 24ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 697ms
+   ✓ shows only the video until the cue, then keeps the content through subsequent loops 323ms
+ ✓ src/TechnicianProfile.test.jsx (2 tests) 906ms
+   ✓ technician can update their coverage and fee without granting verification 818ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 749ms
+   ✓ reduced motion exposes all three sections and keeps the service links functional 695ms
+ ✓ src/forms.test.jsx (2 tests) 974ms
+   ✓ changing specialty clears subcategory and only exposes relevant options 701ms
+ ✓ src/ServiceCarousel.test.jsx (2 tests) 1678ms
+   ✓ carousel wraps, changes its catalog and preserves the selected specialty on the request link 1506ms
+ ✓ src/Announcements.test.jsx (8 tests) 1884ms
+   ✓ feed hides other audiences and drafts and lets users navigate 699ms
+   ✓ administrator creates a targeted draft and can publish an edit 808ms
+ ✓ src/access.test.jsx (8 tests) 1883ms
+   ✓ account search and suspension confirmation target the correct user 1035ms
+   ✓ a delayed account response cannot replace the demo actor 432ms
+
+ Test Files  8 passed (8)
+      Tests  38 passed (38)
+   Start at  10:03:53
+   Duration  42.54s (transform 2.57s, setup 42.55s, collect 18.13s, tests 8.79s, environment 198.86s, prepare 13.50s)
+
