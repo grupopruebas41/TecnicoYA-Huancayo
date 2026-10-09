@@ -51,6 +51,24 @@ final class Sprint01
         return [User::query()->where('email', $payload['email'])->firstOrFail(), $payload];
     }
 
+    /** Inicia sesión por la API y devuelve el valor crudo de la cookie de sesión para reutilizarla. */
+    public static function loginThroughApi(TestCase $test, string $email, string $password): string
+    {
+        $login = $test->postJson('/api/v1/auth/login', ['email' => $email, 'password' => $password])->assertOk();
+        $cookie = collect($login->headers->getCookies())->first(fn ($c) => $c->getName() === config('session.cookie'));
+        Assert::assertNotNull($cookie, 'El login no devolvió la cookie de sesión.');
+
+        return $cookie->getValue();
+    }
+
+    /** Olvida la sesión y la identidad en memoria para que la siguiente petición dependa solo de la cookie. */
+    public static function forgetSession(): void
+    {
+        app('auth')->forgetGuards();
+        app('session')->forgetDrivers();
+        app()->forgetInstance('session.store');
+    }
+
     /**
      * Comprueba que cada campo indicado tiene un mensaje de validación en español.
      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
