@@ -1,8 +1,8 @@
 # Reglas de negocio formalizadas · TécnicoYa Huancayo
 
-**Versión:** 1.0 · **Fecha:** 5 de octubre de 2026  
+**Versión:** 1.1 · **Fecha:** 9 de octubre de 2026 (1.0 del 5 de octubre)  
 **Alcance:** matching, ofertas, vencimientos, calificaciones, sanciones y configuración versionada.  
-**Estado:** especificación documental; no modifica código, parámetros vigentes ni decisiones pendientes.
+**Estado:** especificación documental. La versión 1.1 incorpora las decisiones D-10 a D-37 del equipo (9 de octubre de 2026, [DECISIONES.md](../sprints/DECISIONES.md)); ver §10. Donde el texto de §2 a §9 diga «propuesta» o «pendiente» para un tema resuelto, prevalece §10.
 
 ## 1. Fuentes, identificadores y grado de definición
 
@@ -304,9 +304,10 @@ Los escenarios dependientes de precisiones nuevas se etiquetan `@propuesta_P12`,
 | `rating_edit_hours` | integer / horas | 48 | No por defecto; confirmar facultad de edición del plazo |
 | `new_technician_history_factor` | decimal / factor | 0.50 | No por defecto; valor confirmado por el usuario |
 | `history_real_after_completed_services` | integer / servicios | 3 | No por defecto; caso sin reseñas sigue pendiente |
-| `proximity_reference_km` | decimal / km | Sin valor aprobado | Definición propuesta; publicación bloqueada si el cálculo la requiere |
-| `experience_reference_years` | decimal / años | Sin valor aprobado | Definición propuesta; publicación bloqueada si el cálculo la requiere |
-| `equal_price_factor` | decimal / factor | 0.50 propuesto | Validar P15; no marcar como semilla aprobada |
+| `proximity_reference_km` | — | No se usa | D-20: `Dref` es la mayor distancia entre los elegibles de cada ejecución; no hay valor fijo |
+| `experience_reference_years` | — | No se usa | D-20: `Aref` es la mayor experiencia entre los elegibles de cada ejecución; no hay valor fijo |
+| `max_active_requests_per_client` | integer / solicitudes | 3 | D-11; >0. Cuentan las solicitudes desde `sent` hasta el cierre o la cancelación |
+| `equal_price_factor` | decimal / factor | 0.50 | D-20 aprueba la normalización propuesta |
 | `normalization_policy_code` | string / identificador de política | `matching_v1` propuesto | No editable libremente; identifica una implementación probada, no código ejecutable en BD |
 
 Los pesos 35/20/30/15 se guardan exclusivamente en `matching_weights`; no se duplican como filas en `rule_values`. El SLA de diez minutos es distinto del máximo de tres reintentos de notificación de RNF-07.
@@ -432,3 +433,32 @@ Para registrar valores iniciales todavía no calculables, usar un borrador: no p
 | P11/P13/P14/P07 | Elección del cliente, efectos globales con dos técnicos, cancelación/reasignación y reseñas anuladas que afecten reputación. |
 
 Esta lista no impide formalizar los valores confirmados ni diseñar pruebas candidatas. Impide declarar que los casos ambiguos ya tienen aprobación o que un algoritmo con constantes inventadas implementa las fuentes.
+
+**Estado al 9 de octubre de 2026:** todas las filas de esta tabla quedaron resueltas (ver §10), salvo los límites de contenido de S6 de P17 y el número de apelaciones de P07.
+
+## 10. Decisiones aprobadas (9 de octubre de 2026)
+
+Decididas por el equipo (Delgado, Mayhuasca y Pimentel). El detalle y la fecha están en [DECISIONES.md](../sprints/DECISIONES.md); las opciones descartadas, en [HOJA-DE-DECISIONES.md](../sprints/HOJA-DE-DECISIONES.md).
+
+| Pendiente | Decisión | Efecto en esta especificación |
+|---|---|---|
+| P10 (D-11) | Máximo **3** solicitudes activas por cliente; cuentan desde `sent` hasta el cierre o la cancelación. | Parámetro `max_active_requests_per_client` en §7. Al enviar la cuarta, se rechaza con mensaje en español y no cambia nada. |
+| P17, parte S3 (D-12) | Descripción de 20 a 1000 caracteres; fotos JPG, PNG o WebP de hasta 5 MB y como máximo 5 por solicitud. | Validación en cliente y servidor; no son parámetros editables. Siguen pendientes los límites de portafolio, documentos, comentario de calificación (RN-19.1) y respuestas. |
+| P22 (D-13) | `registered` (editable) → `sent` (no se modifica ni se elimina). El rechazo de verificación es una decisión con motivo en la revisión. | Sin estado `draft`. |
+| P20 (D-14) | Un rol por cuenta. | — |
+| P03 (D-15) | Huancayo, El Tambo y Chilca como semilla, ampliables por el administrador. | Prevalece sobre las 5 zonas de `rules.json`. |
+| P07 (D-18, D-31) | El «promedio real» usa solo calificaciones vigentes; un técnico sin calificaciones no pasa un filtro de mínimo. Plazo de apelación: 5 días calendario. | RN-07 y §4.2 (historial) usan ese promedio. Falta el número de apelaciones por reseña. |
+| P15 (D-20) | Normalización relativa por ejecución: `Dref` y `Aref` son los máximos de distancia y experiencia entre los elegibles. Con 3 o más servicios y sin reseñas, H = 0,50. El empate persistente se presenta como empate. Tiempo estimado solo con historial suficiente, desde las duraciones reales del técnico. | §4.2: `Cᵢ = clamp(1 − dᵢ/Dref)` y `Eᵢ = clamp(aᵢ/Aref)` con esas referencias. Si `Dref` o `Aref` es 0 (todos iguales), el factor es el mismo para todos y no se divide por cero; el método concreto se fija en las pruebas de S4. |
+| P12 (D-21) | Se aprueba la semántica temporal de §3 tal cual. | Las etiquetas `@propuesta_P12` pasan a ser aceptación. |
+| P11 (D-22) | El cliente elige cuando se cierra la ronda; no hay plazo nuevo; se revalida la disponibilidad al elegir. | §5.3 (`awaiting_choice`) queda confirmado. |
+| P05 (D-23) | Atención inmediata: técnico sin citas en las próximas 2 h. | — |
+| P19 (D-24) | Cada solicitud conserva su versión de reglas. | Las etiquetas `@propuesta_P19` pasan a ser aceptación. |
+| P16 (D-25) | Tarifa declarada por el técnico por subcategoría, versionada; el catálogo no fija precio; duración de franjas definida por el técnico; métodos de pago simulados cargados por el administrador. | — |
+| P13 (D-27) | Participaciones independientes; el servicio se cierra cuando todas están cerradas o sin calificar. | RN-31: la proyección global sigue esta regla. |
+| P14 (D-28) | Sin cancelación durante la atención (se registra una incidencia); la cita original se mantiene si la reprogramación vence; las reservas se liberan al cancelar. | — |
+| P06 (D-29) | 2 reprogramaciones aceptadas por solicitud, en total. | — |
+| P23 (D-30) | Edición hasta `first_rated_at + 48 h`, sin reinicio. | Las etiquetas `@propuesta_P23` pasan a ser aceptación. |
+| P18 (D-32) | Solo sanciones manuales, con motivo y auditoría; al bloquear se cierran las sesiones y no se aceptan nuevas solicitudes, y las atenciones en curso siguen. | RN-25 y RN-32 confirmados. |
+| P21 (D-33) | k6; Chrome, Edge y Firefox; cobertura ≥ 70 % por módulo; umbrales de RNF-01 (matching ≤ 3 s) y RNF-02 (200 usuarios concurrentes). | — |
+| P08, P09, P01, P02 (D-34 a D-37) | 12 meses con anonimización; demostración con 10 participantes en 7 días de 07:00 a 22:00; soles sin conversión; pagos y comprobante simulados. | — |
+
