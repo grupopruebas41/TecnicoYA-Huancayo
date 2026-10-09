@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {request} from './http';
-import {Field, Notice, validateAccount} from './forms';
+import {Field, Notice, validateAccount, EMAIL_MAX_LENGTH} from './forms';
 import '../../auth.css';
 
 export default function SessionForm({onLogin}) {
@@ -47,7 +47,7 @@ export default function SessionForm({onLogin}) {
         {type === 'client' && <Field name="client_type" label="Tipo de cliente" errors={errors}><select name="client_type" data-cy="register-client-type"><option value="household">Hogar</option><option value="mype">MYPE</option></select></Field>}
         {type === 'technician' && <p className="muted">Tu perfil quedará pendiente de verificación. Podrás completar tus datos básicos.</p>}
       </>}
-      <Field name="email" label="Correo" errors={errors} type="email" autoComplete="email" data-cy={`${prefix}-email`} value={email} onChange={e => setEmail(e.target.value)}/>
+      <Field name="email" label="Correo" errors={errors} type="email" maxLength={EMAIL_MAX_LENGTH} autoComplete="email" data-cy={`${prefix}-email`} value={email} onChange={e => setEmail(e.target.value)}/>
       <Field name="password" label="Contraseña" errors={errors} type="password" autoComplete={register ? 'new-password' : 'current-password'} data-cy={`${prefix}-password`}/>
       {register && <Field name="password_confirmation" label="Confirmar contraseña" errors={errors} type="password" autoComplete="new-password" data-cy="register-password-confirmation"/>}
       <Notice error={error}/><button type="submit" className="button primary submit" data-cy={`${prefix}-submit`} disabled={busy}>{busy ? 'Conectando…' : register ? 'Registrarme' : 'Ingresar'}</button>

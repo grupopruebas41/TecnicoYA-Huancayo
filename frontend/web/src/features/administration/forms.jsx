@@ -12,10 +12,21 @@ export function Notice({error, success}) {
   return <>{error && <p className="error" role="alert">{error}</p>}{success && <p className="notice" role="status">{success}</p>}</>;
 }
 
+export const EMAIL_MAX_LENGTH = 254;
+
+// Acota el trabajo antes de validar; Laravel sigue siendo la autoridad del formato.
+export function isValidEmail(email) {
+  if (typeof email !== 'string' || email.length > EMAIL_MAX_LENGTH || /\s/.test(email)) return false;
+  const parts = email.split('@');
+  if (parts.length !== 2 || !parts[0]) return false;
+  const labels = parts[1].split('.');
+  return labels.length > 1 && labels.every(label => label.length > 0);
+}
+
 export function validateAccount(data, registering) {
   const errors = {};
   const invalid = (name, message) => { errors[name] = [message]; };
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) invalid('email', 'Ingresa un correo válido.');
+  if (!isValidEmail(data.email)) invalid('email', 'Ingresa un correo válido.');
   if (!data.password) invalid('password', 'La contraseña es obligatoria.');
   if (registering) {
     if (data.name.trim().length < 2 || data.name.length > 100) invalid('name', 'El nombre debe tener entre 2 y 100 caracteres.');
