@@ -1,14 +1,14 @@
 # Purga del historial: datos personales (DEF-17)
 
-> **Preparado, no ejecutado.** La purga reescribe el historial publicado, es **irreversible** para los clones que no se actualicen y obliga a todos los integrantes a clonar de nuevo. AGENTS.md prohíbe a los agentes el `push --force` y reescribir historial publicado: **lo ejecuta una persona del equipo** (Pimentel, integración), con acuerdo previo de los tres.
+> **Preparado, no ejecutado** (decisión D-09: no purgar por ahora). La purga reescribe el historial publicado, es **irreversible** para los clones que no se actualicen y obliga a todos los integrantes a clonar de nuevo. AGENTS.md prohíbe a los agentes el `push --force` y reescribir historial publicado: **lo ejecuta una persona del equipo** (Pimentel, integración), con acuerdo previo de los tres.
 
 ## Qué se purga
 
 | Archivo | Dato personal | Commit que lo introdujo | Situación en la rama s00 |
 |---|---|---|---|
 | `docs/documentacion/evidencias/sprint-01/continuacion/sonar/issues.json` | Correo institucional (autor de commits en el exporte de SonarQube) | `d361c63` | Retirado del árbol e ignorado (`**/sonar/issues.json`); reemplazado por `issues-anonimo.json` |
-| `docs/documentacion/fuentes/proyecto-final.pdf` | Códigos de alumno en la portada | `04c3e2d` | **Sigue en el árbol**, pendiente de tu decisión: retirarlo o reemplazarlo |
-| `docs/documentacion/informe-final/Proyecto-final-TecnicoYa-capitulos-01-al-13.docx` | Códigos de alumno | `ed41073` | **Sigue en el árbol**, pendiente de tu decisión |
+| `docs/documentacion/fuentes/proyecto-final.pdf` | Códigos de alumno en la portada | `04c3e2d` | **Sigue en el árbol** hasta recibir la versión sin códigos (decisión D-08) |
+| `docs/documentacion/informe-final/Proyecto-final-TecnicoYa-capitulos-01-al-13.docx` | Códigos de alumno | `ed41073` | Retirado del árbol e ignorado (decisión D-07) |
 
 **Antes de purgar, decide qué pasa con el PDF y el Word en el árbol actual.** `filter-repo` borra la ruta en **todos** los commits, también en el último. Si quieres conservar una versión sin códigos, súbela **después** de la purga con otro nombre, por ejemplo `proyecto-final-sin-codigos.pdf`.
 
