@@ -42,6 +42,11 @@
       "@php artisan config:clear",
       "@php artisan test"
     ],
+    "test:junit": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php artisan config:clear",
+      "@php artisan test --log-junit test-results/junit.xml"
+    ],
     "test:coverage": [
       "@php artisan config:clear",
       "@php -d pcov.enabled=1 vendor/pestphp/pest/bin/pest --coverage"

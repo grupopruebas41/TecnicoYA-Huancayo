@@ -78,6 +78,7 @@ output/
 frontend/web/cypress/screenshots/
 frontend/web/cypress/videos/
 backend/api/test-results/
+frontend/web/test-results/
 backend/api/coverage/
 
 # Exportes crudos de SonarQube: incluyen autores (correos) de los commits (DEF-17).

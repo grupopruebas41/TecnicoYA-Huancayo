@@ -1,12 +1,15 @@
 // Arrancador E2E por sprint y slot: migra y siembra la base aislada del slot, levanta
 // Laravel y Vite en los puertos del slot y ejecuta Cypress contra ellos.
 //
-//   node scripts/run-e2e.mjs --sprint 01 [--slot A|B] [--browser chrome]
+//   node scripts/run-e2e.mjs --sprint 01 [--slot A|B] [--browser chrome] [--junit]
+//
+// --junit: reporte JUnit en frontend/web/test-results/cypress/sprint-NN-*.xml (reporter junit
+// incluido en Cypress) para scripts/contar-pruebas-sprint.mjs; reemplaza los del mismo sprint.
 //
 // Slot: --slot, si no la variable TECNICOYA_SLOT, si no la clave TECNICOYA_SLOT de
 // backend/api/.env.testing, si no A. Ver docs/documentacion/sprints/ENTORNO-PARALELO.md.
 import {spawn, spawnSync} from 'node:child_process';
-import {readFileSync, existsSync, mkdirSync, openSync, closeSync, writeSync, unlinkSync} from 'node:fs';
+import {readFileSync, existsSync, mkdirSync, openSync, closeSync, writeSync, unlinkSync, readdirSync} from 'node:fs';
 import {randomBytes} from 'node:crypto';
 import {parseEnv, parseArgs} from 'node:util';
 import {fileURLToPath} from 'node:url';
@@ -23,7 +26,7 @@ const frontend = path.join(root, 'frontend/web');
 const php = process.env.PHP_BINARY || (process.platform === 'win32' ? 'C:/xampp/php/php.exe' : 'php');
 
 const {values: options} = parseArgs({options: {
-  sprint: {type: 'string'}, slot: {type: 'string'}, browser: {type: 'string'},
+  sprint: {type: 'string'}, slot: {type: 'string'}, browser: {type: 'string'}, junit: {type: 'boolean', default: false},
 }});
 const sprint = (options.sprint || '').padStart(2, '0');
 if (!/^0[1-8]$/.test(sprint)) {
@@ -162,8 +165,15 @@ try {
   const cypressLock = path.join(tmp, 'e2e-cypress.lock');
   await lockOrWait(cypressLock, 'Cypress', 30);
   try {
+    const reporte = [];
+    if (options.junit) {
+      const carpeta = path.join(frontend, 'test-results/cypress');
+      mkdirSync(carpeta, {recursive: true});
+      for (const viejo of readdirSync(carpeta).filter(n => n.startsWith(`sprint-${sprint}-`) && n.endsWith('.xml'))) unlinkSync(path.join(carpeta, viejo));
+      reporte.push('--reporter', 'junit', '--reporter-options', `mochaFile=test-results/cypress/sprint-${sprint}-[hash].xml,toConsole=false`);
+    }
     await run(process.execPath, ['node_modules/cypress/bin/cypress', 'run', '--e2e', '--browser', options.browser || process.env.E2E_BROWSER || 'chrome',
-      '--config-file', 'cypress.e2e.config.js'], frontend, 'Cypress');
+      '--config-file', 'cypress.e2e.config.js', ...reporte], frontend, 'Cypress');
   } finally {
     release(cypressLock);
   }
