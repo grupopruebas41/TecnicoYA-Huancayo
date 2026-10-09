@@ -17,7 +17,23 @@ function login(role) {
 }
 
 describe('Sprint 1: UI real con sesión', () => {
-  it('TC-001 registra un cliente mediante formulario', () => {
+  it('S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior', () => {
+    login('client');
+    cy.get('[data-cy=profile-name]').invoke('val').then(clientName => {
+      cy.get('[data-cy=logout]').click();
+      cy.get('[data-cy=login-submit]').should('be.visible');
+      login('technician');
+      cy.get('[data-cy=portal-client]').should('not.exist');
+      cy.get('[data-cy=portal-technician]').should('not.contain', clientName);
+      cy.request({url: `${api}/api/v1/me`, headers: {Origin: site}}).then(({body}) => {
+        cy.get('[data-cy=profile-name]').should('have.value', body.data.name);
+        cy.get('[data-cy=profile-phone]').should('have.value', body.data.phone || '');
+      });
+      cy.get('[data-cy=logout]').click();
+      cy.get('[data-cy=login-submit]').should('be.visible');
+    });
+  });
+  it('S01-TC-015 [TC-001] registra un cliente mediante formulario', () => {
     cy.intercept('POST', `${api}/api/v1/auth/register`).as('register');
     cy.visit('/#cuenta');
     cy.get('[data-cy=show-register]').click();
@@ -33,7 +49,7 @@ describe('Sprint 1: UI real con sesión', () => {
   });
 
   for (const role of ['client', 'technician', 'admin']) {
-    it(`TC-005 inicia sesión real como ${role} y mantiene identidad al recargar`, () => {
+    it(`S01-TC-${{client: '016', technician: '017', admin: '018'}[role]} [TC-005] inicia sesión real como ${role} y mantiene identidad al recargar`, () => {
       cy.intercept('POST', `${api}/api/v1/auth/login`).as('login');
       login(role);
       cy.wait('@login').its('response.statusCode').should('eq', 200);
@@ -46,7 +62,7 @@ describe('Sprint 1: UI real con sesión', () => {
     });
   }
 
-  it('TC-006 rechaza por HTTP la cookie de una sesión cerrada', () => {
+  it('S01-TC-019 [TC-006] rechaza por HTTP la cookie de una sesión cerrada', () => {
     login('client');
     cy.getCookie(Cypress.expose('sessionCookie'), { log: false }).then((cookie) => {
       expect(cookie).not.to.be.null;
@@ -60,7 +76,7 @@ describe('Sprint 1: UI real con sesión', () => {
     });
   });
 
-  it('S01-SEC-CSRF rechaza un login sin token CSRF en el servidor HTTP', () => {
+  it('S01-TC-020 rechaza un login sin token CSRF en el servidor HTTP', () => {
     cy.clearCookies({ log: false });
     cy.request({
       method: 'POST', url: `${api}/api/v1/auth/login`, failOnStatusCode: false, log: false,
