@@ -14,6 +14,8 @@ it('S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter', () =
   cy.press(Cypress.Keyboard.Keys.TAB); // Crear una cuenta.
   focusOn('.auth-switch');
   cy.press(Cypress.Keyboard.Keys.ENTER);
+  // Enter cambia de formulario: esperar el render observable antes del siguiente Tab.
+  cy.get('[data-cy=register-name]').should('be.visible');
   cy.press(Cypress.Keyboard.Keys.TAB);
   focusOn('[data-cy=register-name]'); cy.focused().type('Cliente teclado');
   cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-account-type]');
