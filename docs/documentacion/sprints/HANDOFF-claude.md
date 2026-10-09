@@ -27,6 +27,10 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Registro:** DEF-35 cerrado.
 - **Entorno:** SonarQube detenido con `stop` y bloqueo de Cypress liberado.
 - **Evidencias:** `evidencias/sprint-00/calidad/sonar-d42/` y `2026-10-09-*-d42*.txt`. `calidad/QUALITY-GATE.md` tiene una §6 nueva.
+- **Incidente (DEF-17):**
+  - `88f4775` versionó y subió `sonar-d42/issues.json`, el exporte crudo con los correos de los autores. La regla `**/sonar/issues.json` no cubría la carpeta `sonar-d42`.
+  - Lo retiré del árbol en `33b299d` y amplié la regla a `**/sonar*/`.
+  - El archivo **sigue en el historial de la rama** y del PR #5. No reescribí historial (regla 5): purgarlo es decisión del equipo.
 
 **Qué falta:**
 1. La cobertura total del frontend (56,3 %) está por debajo del 70 % de la DoD. El Gate no la ve porque es código anterior a la línea base. Es un pedido a Codex para el cierre de S2 y S3.
