@@ -4,6 +4,7 @@ import SessionForm from './SessionForm';
 import ProfileForm from './ProfileForm';
 import {Notice} from './forms';
 import './account.css';
+import {permissionLabel, verificationLabel} from './labels';
 
 const roles = {client: 'Cliente', technician: 'Especialista técnico', admin: 'Administrador'};
 export default function AccountApp() {
@@ -32,8 +33,8 @@ export default function AccountApp() {
   if (!roles[role]) return <section className="session-page"><Notice error="Tu cuenta no tiene un rol habilitado."/><button className="button primary" onClick={logout}>Cerrar sesión</button></section>;
   return <section className="session-page" data-cy={`portal-${role}`}>
     <div className="session-heading"><div><span className="kicker">{roles[role]}</span><h1>Hola, <em>{user.name}</em></h1><p>Tu cuenta, tus datos y tu acceso en un solo lugar.</p></div><button className="button outline" data-cy="logout" disabled={busy} onClick={logout}>Cerrar sesión</button></div>
-    <Notice error={error}/>{role === 'technician' && <p className="notice">Estado de verificación: {user.technician_profile?.verification_status === 'pending' ? 'Pendiente de verificación' : user.technician_profile?.verification_status}. La disponibilidad se habilita después de la revisión.</p>}
+    <Notice error={error}/>{role === 'technician' && <p className="notice">Estado de verificación: {verificationLabel(user.technician_profile?.verification_status)}. La disponibilidad se habilita después de la revisión.</p>}
     <div className="session-grid"><ProfileForm user={user} onUpdate={setUser} onExpired={() => { setUser(null); setError('Tu sesión venció. Inicia sesión nuevamente.'); }}/>
-      <aside className="session-details"><h2>Tu acceso</h2><p>{roles[role]}</p>{user.permissions?.length ? <ul>{user.permissions.map(code => <li key={code}>{code === 'catalog.manage' ? 'Administrar el catálogo' : code}</li>)}</ul> : <p>Acceso a tu perfil personal.</p>}<a className="button glass" href="#catalogo">Explorar especialidades ↗</a></aside></div>
+      <aside className="session-details"><h2>Tu acceso</h2><p>{roles[role]}</p>{user.permissions?.length ? <ul>{user.permissions.map(code => <li key={code}>{permissionLabel(code)}</li>)}</ul> : <p>Acceso a tu perfil personal.</p>}<a className="button glass" href="#catalogo">Explorar especialidades ↗</a></aside></div>
   </section>;
 }
