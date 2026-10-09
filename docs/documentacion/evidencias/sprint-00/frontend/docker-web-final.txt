@@ -31,12 +31,12 @@ Fecha: 2026-10-09; commit: 152e145; version final del Dockerfile. Intento inicia
 
 #8 [build 4/6] RUN CYPRESS_INSTALL_BINARY=0 npm ci
 #8 38.00 npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
-#8 57.38 
+#8 57.38
 #8 57.38 added 281 packages, and audited 282 packages in 26s
-#8 57.38 
+#8 57.38
 #8 57.38 74 packages are looking for funding
 #8 57.38   run `npm fund` for details
-#8 57.38 
+#8 57.38
 #8 57.38 found 0 vulnerabilities
 #8 57.39 npm notice
 #8 57.39 npm notice New major version of npm available! 10.9.9 -> 12.2.0
@@ -49,10 +49,10 @@ Fecha: 2026-10-09; commit: 152e145; version final del Dockerfile. Intento inicia
 #9 DONE 13.8s
 
 #10 [build 6/6] RUN npm run build
-#10 2.955 
+#10 2.955
 #10 2.955 > tecnicoya-web@1.0.0 build
 #10 2.955 > vite build
-#10 2.955 
+#10 2.955
 #10 4.296 vite v8.3.4 building client environment for production...
 #10 4.873 transforming...
 #10 9.884 ✓ 41 modules transformed.
@@ -61,14 +61,14 @@ Fecha: 2026-10-09; commit: 152e145; version final del Dockerfile. Intento inicia
 #10 19.85 dist/index.html                   1.07 kB │ gzip:  0.65 kB
 #10 19.85 dist/assets/index-BYcuWjwY.css   38.98 kB │ gzip:  9.15 kB
 #10 19.85 dist/assets/index-CHTkpeLk.js   229.19 kB │ gzip: 69.59 kB
-#10 19.85 
+#10 19.85
 #10 19.85 ✓ built in 15.55s
 #10 19.87 [33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 5.4s of this 15.0s build (36%).
 #10 19.87 The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
 #10 19.87   - plugin vite:prepare-out-dir renderStart (32%, 4.7s, 1 call)
 #10 19.87 Additional callback time came from callbacks under 1s.
 #10 19.87 See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
-#10 19.87 
+#10 19.87
 #10 DONE 20.1s
 
 #11 [stage-1 3/4] COPY --from=build --chown=node:node /app/dist ./dist

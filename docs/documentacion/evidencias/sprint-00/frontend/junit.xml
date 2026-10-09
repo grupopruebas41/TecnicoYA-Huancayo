@@ -93,13 +93,13 @@
         </testcase>
         <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a@.pe" time="0.0002367">
         </testcase>
-        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a@b..pe" time="0.0001672">
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido [CORREO SINTETICO]" time="0.0001672">
         </testcase>
-        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a@b.pe." time="0.0001571">
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido [CORREO SINTETICO]." time="0.0001571">
         </testcase>
-        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a b@c.pe" time="0.0006456">
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a [CORREO SINTETICO]" time="0.0006456">
         </testcase>
-        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido a@b.pe
+        <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido [CORREO SINTETICO]
 " time="0.0002032">
         </testcase>
         <testcase classname="src/features/administration/forms.test.jsx" name="DEF-10 rechaza formato inválido undefined" time="0.0003573">

@@ -3,7 +3,7 @@
 > vitest run
 
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+ RUN  v5.0.3 [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web
 
  ✓ src/VideoExperience.test.jsx (3 tests) 546ms
    ✓ shows only the video until the cue, then keeps the content through subsequent loops 477ms
@@ -39,5 +39,5 @@ Environment  jsdom was created 10 times · 71.27s total, 73% of tracked time
              create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
              learn more: https://vitest.dev/guide/improving-performance#test-environments
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+JUNIT report written to [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
 Exit code: 0

@@ -18,3 +18,7 @@
 ## Uso de IA
 
 Codex, modelo no expuesto en esta sesión, 2026-10-09. Cambio propuesto: ejecutar Node sin root. Aceptado técnicamente para revisión: usuario node de la imagen oficial; revisión humana [PENDIENTE]. Se corrigió la expectativa de integración: los commits citados por el usuario están en la rama de integración local, no en origin/main. No se sustituyó ni reescribió trabajo de Claude Code.
+
+## Cierre de esta tarea después de integrar main
+
+Main 1660d8b integrado sin conflictos (b188cb0). npm ci aprobado; Vitest 63/63; build aprobado; npm audit 0; Cypress slot B 11/11. DEF-13 web verificado mediante UID 1000 y HTTP 200 para HTML y JS. Bloqueos anteriores resueltos. Revisor y aprobación humana [PENDIENTE]. SonarQube no ejecutado. Evidencias finales postmerge-* y docker-web-runtime.txt.

@@ -10,3 +10,4 @@ GET /assets/index-CHTkpeLk.js -> HTTP 200; bytes: 229191
 HTTP interno: 200 UID: 1000
 Verificacion final: APROBADA; USER node, UID 1000, HTML y bundle HTTP 200.
 Contenedor temporal retirado.
+Diferencias en entradas de runtime entre imagen verificada 152e145 y merge b188cb0: exit code 0 (0 = sin diferencias).

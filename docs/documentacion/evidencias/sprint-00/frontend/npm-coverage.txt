@@ -3,7 +3,7 @@
 > vitest run --coverage
 
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+ RUN  v5.0.3 [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web
       Coverage enabled with v8
 
  ✓ src/VideoExperience.test.jsx (3 tests) 457ms
@@ -36,39 +36,39 @@ Environment  jsdom was created 10 times · 29.02s total, 50% of tracked time
              create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
              learn more: https://vitest.dev/guide/improving-performance#test-environments
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+JUNIT report written to [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
  % Coverage report from v8
 -------------------|---------|----------|---------|---------|-------------------
-File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 -------------------|---------|----------|---------|---------|-------------------
-All files          |   54.84 |     52.3 |    51.4 |   61.82 |                   
- src               |   62.37 |     57.2 |   50.21 |   81.42 |                   
-  AccountPanel.jsx |   66.66 |    54.54 |   57.14 |    92.3 | 23                
-  ...uncements.jsx |   76.63 |    85.88 |   72.72 |   96.29 | 41                
-  App.jsx          |       0 |        0 |       0 |       0 | 8-17              
-  Auth.jsx         |   66.66 |    88.88 |      50 |     100 | 5                 
-  Marketplace.jsx  |   49.27 |    36.22 |   31.86 |   56.81 | ...40,46-47,55-75 
-  ...eCarousel.jsx |   86.15 |    81.81 |   75.86 |     100 | 32-36,47          
-  ...anProfile.jsx |   68.18 |     64.7 |   53.33 |     100 | 7-10,22-23        
-  ...xperience.jsx |   74.35 |    53.33 |   66.66 |   82.08 | ...51,57-58,88-89 
-  main.jsx         |       0 |      100 |     100 |       0 | 8                 
-  ...tplace-api.js |   83.33 |    69.56 |     100 |     100 | 4-9               
- src/domain        |   83.84 |    77.67 |   81.03 |   92.55 |                   
-  announcements.js |     100 |       75 |     100 |     100 | 3                 
-  demo.js          |   80.97 |     75.7 |   76.92 |   90.14 | 16,48-49,71,84-86 
-  matching.js      |   92.59 |    89.28 |   84.61 |     100 | 7,17              
-  permissions.js   |     100 |    83.33 |     100 |     100 | 8                 
- ...administration |   16.87 |     21.5 |    19.6 |   20.77 |                   
-  AccountApp.jsx   |       0 |        0 |       0 |       0 | 9-38              
-  Catalog.jsx      |       0 |        0 |       0 |       0 | 6-34              
-  ProfileForm.jsx  |       0 |        0 |       0 |       0 | 6-39              
-  SessionForm.jsx  |    22.5 |    31.57 |      20 |   31.03 | 14-32,46-50       
-  forms.jsx        |   65.62 |    45.45 |     100 |   76.19 | 32-36             
-  http.js          |       4 |     8.33 |       0 |    5.26 | 6-37              
- src/scroll        |   45.76 |    29.89 |   55.31 |   55.75 |                   
-  FrameCache.js    |   77.96 |    80.95 |   83.33 |   95.83 | 9                 
-  ...lServices.jsx |   26.62 |     4.47 |   35.71 |   33.78 | ...2-79,92,99-107 
-  timeline.js      |    91.3 |      100 |   85.71 |     100 |                   
+All files          |   54.84 |     52.3 |    51.4 |   61.82 |
+ src               |   62.37 |     57.2 |   50.21 |   81.42 |
+  AccountPanel.jsx |   66.66 |    54.54 |   57.14 |    92.3 | 23
+  ...uncements.jsx |   76.63 |    85.88 |   72.72 |   96.29 | 41
+  App.jsx          |       0 |        0 |       0 |       0 | 8-17
+  Auth.jsx         |   66.66 |    88.88 |      50 |     100 | 5
+  Marketplace.jsx  |   49.27 |    36.22 |   31.86 |   56.81 | ...40,46-47,55-75
+  ...eCarousel.jsx |   86.15 |    81.81 |   75.86 |     100 | 32-36,47
+  ...anProfile.jsx |   68.18 |     64.7 |   53.33 |     100 | 7-10,22-23
+  ...xperience.jsx |   74.35 |    53.33 |   66.66 |   82.08 | ...51,57-58,88-89
+  main.jsx         |       0 |      100 |     100 |       0 | 8
+  ...tplace-api.js |   83.33 |    69.56 |     100 |     100 | 4-9
+ src/domain        |   83.84 |    77.67 |   81.03 |   92.55 |
+  announcements.js |     100 |       75 |     100 |     100 | 3
+  demo.js          |   80.97 |     75.7 |   76.92 |   90.14 | 16,48-49,71,84-86
+  matching.js      |   92.59 |    89.28 |   84.61 |     100 | 7,17
+  permissions.js   |     100 |    83.33 |     100 |     100 | 8
+ ...administration |   16.87 |     21.5 |    19.6 |   20.77 |
+  AccountApp.jsx   |       0 |        0 |       0 |       0 | 9-38
+  Catalog.jsx      |       0 |        0 |       0 |       0 | 6-34
+  ProfileForm.jsx  |       0 |        0 |       0 |       0 | 6-39
+  SessionForm.jsx  |    22.5 |    31.57 |      20 |   31.03 | 14-32,46-50
+  forms.jsx        |   65.62 |    45.45 |     100 |   76.19 | 32-36
+  http.js          |       4 |     8.33 |       0 |    5.26 | 6-37
+ src/scroll        |   45.76 |    29.89 |   55.31 |   55.75 |
+  FrameCache.js    |   77.96 |    80.95 |   83.33 |   95.83 | 9
+  ...lServices.jsx |   26.62 |     4.47 |   35.71 |   33.78 | ...2-79,92,99-107
+  timeline.js      |    91.3 |      100 |   85.71 |     100 |
 -------------------|---------|----------|---------|---------|-------------------
 
 =============================== Coverage summary ===============================

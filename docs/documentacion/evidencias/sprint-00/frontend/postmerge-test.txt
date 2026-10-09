@@ -1,0 +1,36 @@
+Fecha: 2026-10-09; commit: b188cb0; comando: npm test
+
+> tecnicoya-web@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.3 [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ✓ src/domain/marketplace.test.js (8 tests) 20ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 224ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 315ms
+   ✓ reduced motion exposes all three sections and keeps the service links functional 303ms
+ ✓ src/TechnicianProfile.test.jsx (2 tests) 451ms
+   ✓ technician can update their coverage and fee without granting verification 371ms
+ ✓ src/ServiceCarousel.test.jsx (2 tests) 841ms
+   ✓ carousel wraps, changes its catalog and preserves the selected specialty on the request link 698ms
+ ✓ src/access.test.jsx (8 tests) 1037ms
+   ✓ account search and suspension confirmation target the correct user 406ms
+ ✓ src/Announcements.test.jsx (8 tests) 1173ms
+   ✓ feed hides other audiences and drafts and lets users navigate 318ms
+   ✓ administrator creates a targeted draft and can publish an edit 359ms
+ ✓ src/features/administration/labels.test.js (9 tests) 6ms
+ ✓ src/forms.test.jsx (2 tests) 295ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 44ms
+
+ Test Files  10 passed (10)
+      Tests  63 passed (63)
+   Start at  12:24:45
+   Duration  5.35s (environment 54%, tests 17%, setup 13%, transform 10%, import 7%)
+
+Environment  jsdom was created 10 times · 13.81s total, 54% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to [USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+Exit code: 0

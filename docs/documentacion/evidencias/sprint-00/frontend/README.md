@@ -44,3 +44,22 @@ pending, catalog.manage y los roles ya tenían etiquetas en español y se conser
 ## Límites de verificación
 
 No se ejecutó E2E, contenedor de build ni SonarQube. npm advirtió que el postinstall de Cypress no fue aprobado: no se instaló un navegador ni se modificaron sus specs. Build y Vitest sí fueron ejecutados. La integración con el cambio de backend en feature/pimentel/f-administracion/s00 queda para revisión del PR; esta rama parte de main y no incorpora cambios ajenos.
+
+
+## 2026-10-09 · Sprint 00 · integración, Cypress slot B y DEF-13 web
+
+- Rama: codex/s00-frontend. Main integrado: 1660d8b. Merge: b188cb0, sin conflictos.
+- Commits de código: b1d467b (USER node, COPY --chown); 152e145 (no descargar binario Cypress en build de producción).
+- Se leyeron AGENTS.md, ENTORNO-PARALELO.md y ambos handoffs. Specs y configuración de Cypress idénticas a origin/main, comprobado con git diff.
+- Validación después del merge: npm ci salida 0; npm test 63/63 (10 archivos), salida 0; npm run build salida 0; npm audit 0 vulnerabilidades, salida 0.
+- E2E: node scripts/run-e2e.mjs --sprint 01 --slot B --junit, salida 0, Cypress 16.1.1 / Chrome 156, 11/11: catálogo 2, portales 6, validación 3. Base tecnicoya_b_testing, API 8002, web 5175. Sin Pest concurrente ni cambios en slot A.
+- DEF-13 web: imagen tecnicoya-web-s00:frontend construida; USER node, UID efectivo 1000; HTML y bundle JS HTTP 200 (229191 bytes), HTTP interno 200. Contenedores temporales retirados. La imagen probada usa el código 152e145; los inputs de runtime no cambiaron en b188cb0 (diff comprobado).
+- Incidencias preservadas: E2E previo al merge no arrancó por script ausente; primer build detenido tras descarga para aplicar omisión del binario Cypress; primer sondeo HTTP falló (ResponseEnded), diagnóstico posterior sin proxy e instancia arrancada aprobado. No se borraron esas evidencias ni se cambiaron pruebas para pasarlas.
+- Evidencias: docs/documentacion/evidencias/sprint-00/frontend/postmerge-*.txt y XML; docker-web-final.txt y docker-web-runtime.txt. No contienen secretos.
+- IDs: pruebas de regresión existentes, sin crear ni renumerar IDs SNN-TC-NNN; 63 y 11 son pruebas ejecutadas, no cuotas acreditadas del plan v3.
+- PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/1
+- Pendiente: revisión humana e integración del PR; SonarQube y cierre formal del registro por Claude Code. No se afirma Quality Gate aprobado ni sprint terminado.
+- Bloqueos de esta tarea: resueltos. Pedidos a Claude Code: confirmar cierre de DEF-13 web en el registro con estas evidencias; reanalizar DEF-08 y DEF-10 y registrar DEF-18.
+
+
+Los bloqueos descritos en las comprobaciones previas quedaron resueltos después de publicar main y preparar el slot B. El handoff vigente está en docs/documentacion/sprints/HANDOFF-codex.md; se retiró el duplicado de la raíz.

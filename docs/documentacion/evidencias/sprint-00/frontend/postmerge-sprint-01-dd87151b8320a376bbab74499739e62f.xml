@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fecha: 2026-10-09; commit: b188cb0; rutas de usuario anonimizadas. -->
+<testsuites name="Mocha Tests" time="39.721" tests="6" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-09T17:25:57" tests="0" file="cypress\e2e\sprint-01\portals.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Sprint 1: UI real con sesión" timestamp="2026-10-09T17:25:57" tests="6" time="38.824" failures="0">
+    <testcase name="Sprint 1: UI real con sesión TC-001 registra un cliente mediante formulario" time="7.078" classname="TC-001 registra un cliente mediante formulario">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión TC-005 inicia sesión real como client y mantiene identidad al recargar" time="8.233" classname="TC-005 inicia sesión real como client y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión TC-005 inicia sesión real como technician y mantiene identidad al recargar" time="8.286" classname="TC-005 inicia sesión real como technician y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión TC-005 inicia sesión real como admin y mantiene identidad al recargar" time="7.586" classname="TC-005 inicia sesión real como admin y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión TC-006 rechaza por HTTP la cookie de una sesión cerrada" time="7.288" classname="TC-006 rechaza por HTTP la cookie de una sesión cerrada">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-SEC-CSRF rechaza un login sin token CSRF en el servidor HTTP" time="0.501" classname="S01-SEC-CSRF rechaza un login sin token CSRF en el servidor HTTP">
+    </testcase>
+  </testsuite>
+</testsuites>
