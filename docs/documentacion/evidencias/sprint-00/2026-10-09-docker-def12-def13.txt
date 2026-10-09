@@ -1,0 +1,23 @@
+# Verificación de imágenes Docker (DEF-12 y DEF-13)
+# Fecha: 2026-10-09 03:43 -0500 | Commit: a8c886d
+
+## Matching (python/api/Dockerfile)
+$ docker build -t tecnicoya-matching:def13 python/api && docker run --rm tecnicoya-matching:def13 id
+uid=10001(matching) gid=999(matching) groups=999(matching)
+$ GET /health (contenedor en 127.0.0.1:18000)
+{"status":"ok","rulesVersion":2}
+
+## API (backend/api/Dockerfile)
+$ docker build -t tecnicoya-api:def13 backend/api && docker run --rm --entrypoint sh tecnicoya-api:def13 -c "id; php -m | grep -i pdo_"
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+pdo_mysql
+pdo_sqlite
+
+$ php artisan migrate:status contra MySQL 8.4 de pruebas (red tecnicoya-test_default, base tecnicoya_testing; solo lectura)
+  2026_10_07_000015_create_verification_and_portfolio ................ [1] Ran  
+  2026_10_07_000016_extend_announcements_for_v1 ...................... [1] Ran  
+  2026_10_07_000017_create_service_requests .......................... [1] Ran  
+
+
+$ DB_PASSWORD=x APP_KEY=x docker compose -f infrastructure/docker-compose.yml config --quiet
+compose válido (servicio database: mysql:8.4)

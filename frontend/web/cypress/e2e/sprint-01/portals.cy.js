@@ -1,6 +1,6 @@
 // Requiere el contrato de selectores y usuarios E2E descrito en la guía.
-const api = 'http://127.0.0.1:8001';
-const site = 'http://127.0.0.1:5174';
+const api = Cypress.expose('apiUrl');
+const site = Cypress.config('baseUrl');
 let fixturePassword;
 before(() => cy.env(['E2E_PASSWORD'], {log: false}).then(({E2E_PASSWORD}) => {
   if (!E2E_PASSWORD) throw new Error('Falta la contraseña sintética del entorno E2E.');
@@ -48,7 +48,7 @@ describe('Sprint 1: UI real con sesión', () => {
 
   it('TC-006 rechaza por HTTP la cookie de una sesión cerrada', () => {
     login('client');
-    cy.getCookie('tecnicoya_sprint01_session', { log: false }).then((cookie) => {
+    cy.getCookie(Cypress.expose('sessionCookie'), { log: false }).then((cookie) => {
       expect(cookie).not.to.be.null;
       cy.get('[data-cy=logout]').click();
       cy.get('[data-cy=login-submit]').should('be.visible');

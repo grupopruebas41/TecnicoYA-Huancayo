@@ -10,7 +10,6 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
-    "firebase/php-jwt": "^7.1",
     "laravel/framework": "^12.0",
     "laravel/sanctum": "^4.0",
     "laravel/tinker": "^2.10.1"
@@ -42,6 +41,11 @@
     "test": [
       "@php artisan config:clear",
       "@php artisan test"
+    ],
+    "test:junit": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php artisan config:clear",
+      "@php artisan test --log-junit test-results/junit.xml"
     ],
     "test:coverage": [
       "@php artisan config:clear",

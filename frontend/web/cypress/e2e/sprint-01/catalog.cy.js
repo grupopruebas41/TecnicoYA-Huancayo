@@ -1,4 +1,4 @@
-const api = 'http://127.0.0.1:8001';
+const api = Cypress.expose('apiUrl');
 
 describe('Sprint 1: catálogo', () => {
   it('TC-012 muestra el catálogo real servido por Laravel/MySQL', () => {

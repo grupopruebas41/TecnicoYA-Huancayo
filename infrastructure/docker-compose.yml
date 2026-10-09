@@ -1,16 +1,22 @@
 services:
+  # Motor del producto: MySQL 8.4 (DEF-12). Solo en la red interna; sin puerto publicado.
   database:
-    image: postgres:16-alpine
+    image: mysql:8.4
     environment:
-      POSTGRES_DB: tecnicoya
-      POSTGRES_USER: tecnicoya
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in your environment}
+      MYSQL_DATABASE: tecnicoya
+      MYSQL_USER: tecnicoya
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in your environment}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    command:
+      - --default-time-zone=+00:00
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - marketplace-db:/var/lib/postgresql/data
+      - marketplace-mysql:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tecnicoya"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u\"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" --silent"]
       interval: 5s
-      retries: 10
+      retries: 30
   matching:
     build: ../python/api
     environment:
@@ -26,11 +32,11 @@ services:
       APP_DEBUG: "false"
       CACHE_STORE: file
       SESSION_DRIVER: file
-      DB_CONNECTION: pgsql
+      DB_CONNECTION: mysql
       DB_HOST: database
-      DB_PORT: 5432
-      DB_NAME: tecnicoya
-      DB_USER: tecnicoya
+      DB_PORT: 3306
+      DB_DATABASE: tecnicoya
+      DB_USERNAME: tecnicoya
       DB_PASSWORD: ${DB_PASSWORD}
       PYTHON_URL: http://matching:8000
       PORT: 3000
@@ -42,4 +48,4 @@ services:
       API_URL: http://api:3000
       PORT: 5173
 volumes:
-  marketplace-db:
+  marketplace-mysql:

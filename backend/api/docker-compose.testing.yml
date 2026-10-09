@@ -7,6 +7,13 @@
 #   docker compose -f docker-compose.testing.yml --env-file .env.testing down      # conserva el volumen
 #
 # Requiere el puerto 3306 libre (detener MySQL/MariaDB de XAMPP).
+#
+# Dos slots en un solo contenedor (ahorra memoria):
+#   slot A (Claude Code, carpeta principal): base tecnicoya_testing
+#   slot B (Codex, ..\TecnicoYa-cx):        base tecnicoya_b_testing (database/testing/initdb)
+# Levantar el contenedor SOLO desde la carpeta principal: desde otro worktree la ruta del
+# montaje cambia y Compose recrearía el contenedor en medio de las pruebas del otro slot.
+# Los scripts de initdb solo corren al crear el volumen; ver ENTORNO-PARALELO.md.
 name: tecnicoya-test
 
 services:
@@ -27,6 +34,7 @@ services:
       - --collation-server=utf8mb4_unicode_ci
     volumes:
       - tecnicoya-mysql-test-data:/var/lib/mysql
+      - ./database/testing/initdb:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u\"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" --silent"]
       interval: 5s
