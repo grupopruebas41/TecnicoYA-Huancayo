@@ -1,0 +1,1054 @@
+Fecha: 2026-10-09 | Base: 6dfec52e356f62c724469c6309980618face55b3 | Estado: pruebas nuevas sin implementación | Salida: 1
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 --no-file-parallelism
+
+
+ RUN  v5.0.3 C:/Users/[USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ❯ src/features/administration/ProfileForm.test.jsx (5 tests | 4 failed) 1212ms
+   × S01-TC-081 teléfono inválido sin petición: 111111111111111111111 102ms
+   × S01-TC-081 teléfono inválido sin petición: 064-ABC 17ms
+   ✓ S01-TC-025 [TC-009, TC-010, TC-137] complemento unitario: PATCH versionado, éxito confirmado, conflicto y recarga explícita 59ms
+   × S01-TC-074 complemento unitario: resultado incierto consulta identidad, sin repetir PATCH ni afirmar éxito 1017ms
+   × S01-TC-077 complemento unitario: sesión caducada y nombre inválido no producen falso éxito 15ms
+ ❯ src/features/administration/Catalog.test.jsx (2 tests | 1 failed) 1202ms
+   ✓ S01-TC-085 [TC-012] error, reintento real y subcategorías desde API 186ms
+   × S01-TC-085 [TC-012] catálogo: especialidades vacías se comunican sin inventar datos 1014ms
+ ❯ src/features/administration/SessionForm.test.jsx (3 tests | 1 failed) 263ms
+   × S01-TC-083 429 en español sin éxito y botón habilitado nuevamente 133ms
+   ✓ S01-TC-083 contrato D-43: registro rechazado por sesión activa conserva el formulario y no afirma creación 62ms
+   ✓ S01-TC-072 [TC-003] complemento unitario: registro técnico sin client_type, creación confirmada sin iniciar sesión 67ms
+ ❯ src/features/administration/accessibility.test.jsx (4 tests | 4 failed) 218ms
+   × S01-TC-084 AccountApp: botones explícitos con rol client 106ms
+   × S01-TC-084 AccountApp: botones explícitos con rol unknown 41ms
+   × S01-TC-084 AccountApp: botones explícitos al fallar la sesión 41ms
+   × S01-TC-084 Catalog: reintento con type explícito 27ms
+ ❯ src/features/administration/http.test.js (2 tests | 1 failed) 24ms
+   ✓ S01-TC-082 CSRF previo, cookie decodificada y sesión incluida; sin cookie no hay PATCH 14ms
+   × S01-TC-082 contrato: prioriza error.message, código y campos; red sin respuesta es incierta 9ms
+ ❯ src/features/administration/validateAccount.test.js (8 tests | 1 failed) 12ms
+   ✓ S01-TC-078 nombre de 1 caracteres 2ms
+   ✓ S01-TC-078 nombre de 2 caracteres 0ms
+   ✓ S01-TC-078 nombre de 100 caracteres 0ms
+   ✓ S01-TC-078 nombre de 101 caracteres 0ms
+   ✓ S01-TC-079 límite UTF-8 de contraseña 0ms
+   ✓ S01-TC-079 límite UTF-8 de contraseña 0ms
+   ✓ S01-TC-079 límite UTF-8 de contraseña 0ms
+   × S01-TC-080 tipo de cliente requerido para cliente y prohibido para técnico 6ms
+ ✓ src/access.test.jsx (8 tests) 380ms
+ ✓ src/Announcements.test.jsx (8 tests) 965ms
+   ✓ demo persists edits and refuses non-administrators 305ms
+ ❯ src/features/administration/AccountApp.test.jsx (5 tests | 5 failed) 3335ms
+   × S01-TC-016 [TC-005] complemento unitario: portal client desde identidad del servidor 1129ms
+   × S01-TC-017 [TC-005] complemento unitario: portal technician desde identidad del servidor 1032ms
+   × S01-TC-018 [TC-005] complemento unitario: portal admin desde identidad del servidor 74ms
+   × S01-TC-077 complemento unitario: ruta protegida anónima regresa al acceso 25ms
+   × S01-TC-076 complemento unitario: login consulta /me y logout incierto reconcilia sin falso éxito 1074ms
+ ✓ src/TechnicianProfile.test.jsx (2 tests) 124ms
+ ✓ src/ServiceCarousel.test.jsx (2 tests) 287ms
+ ✓ src/forms.test.jsx (2 tests) 155ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 101ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 100ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 36ms
+ ✓ src/domain/marketplace.test.js (8 tests) 10ms
+ ✓ src/features/administration/labels.test.js (9 tests) 4ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/administration/accessibility.test.jsx > S01-TC-084 AccountApp: botones explícitos con rol client
+ FAIL  src/features/administration/accessibility.test.jsx > S01-TC-084 AccountApp: botones explícitos con rol unknown
+AssertionError: expected [ 'button', 'submit', 'reset' ] to include null
+ ❯ src/features/administration/accessibility.test.jsx:9:114
+      7| vi.mock('./http', () => ({request: vi.fn()}));
+      8| afterEach(() => {cleanup(); vi.resetAllMocks();});
+      9| const checkButtons = () => screen.getAllByRole('button').forEach(butto…
+       |                                                                                                                  ^
+     10| test.each(['client', 'unknown'])('S01-TC-084 AccountApp: botones explí…
+     11|   request.mockResolvedValue({data: {name: 'Cuenta sintética', role: {c…
+ ❯ checkButtons src/features/administration/accessibility.test.jsx:9:58
+ ❯ src/features/administration/accessibility.test.jsx:13:63
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  src/features/administration/accessibility.test.jsx > S01-TC-084 AccountApp: botones explícitos al fallar la sesión
+AssertionError: expected [ 'button', 'submit', 'reset' ] to include null
+ ❯ src/features/administration/accessibility.test.jsx:9:114
+      7| vi.mock('./http', () => ({request: vi.fn()}));
+      8| afterEach(() => {cleanup(); vi.resetAllMocks();});
+      9| const checkButtons = () => screen.getAllByRole('button').forEach(butto…
+       |                                                                                                                  ^
+     10| test.each(['client', 'unknown'])('S01-TC-084 AccountApp: botones explí…
+     11|   request.mockResolvedValue({data: {name: 'Cuenta sintética', role: {c…
+ ❯ checkButtons src/features/administration/accessibility.test.jsx:9:58
+ ❯ src/features/administration/accessibility.test.jsx:17:92
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  src/features/administration/accessibility.test.jsx > S01-TC-084 Catalog: reintento con type explícito
+AssertionError: expected [ 'button', 'submit', 'reset' ] to include null
+ ❯ src/features/administration/accessibility.test.jsx:9:114
+      7| vi.mock('./http', () => ({request: vi.fn()}));
+      8| afterEach(() => {cleanup(); vi.resetAllMocks();});
+      9| const checkButtons = () => screen.getAllByRole('button').forEach(butto…
+       |                                                                                                                  ^
+     10| test.each(['client', 'unknown'])('S01-TC-084 AccountApp: botones explí…
+     11|   request.mockResolvedValue({data: {name: 'Cuenta sintética', role: {c…
+ ❯ checkButtons src/features/administration/accessibility.test.jsx:9:58
+ ❯ src/features/administration/accessibility.test.jsx:21:80
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  src/features/administration/AccountApp.test.jsx > S01-TC-016 [TC-005] complemento unitario: portal client desde identidad del servidor
+AssertionError: expected '#cuenta/administrador' to be '#cuenta/cliente' // Object.is equality
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"session-page"[39m
+        [33mdata-cy[39m=[32m"portal-client"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"session-heading"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"kicker"[39m
+            [36m>[39m
+              [0mCliente[0m
+            [36m</span>[39m
+            [36m<h1>[39m
+              [0mHola, [0m
+              [36m<em>[39m
+                [0mCuenta sintética[0m
+              [36m</em>[39m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTu cuenta, tus datos y tu acceso en un solo lugar.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button outline"[39m
+            [33mdata-cy[39m=[32m"logout"[39m
+          [36m>[39m
+            [0mCerrar sesión[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"session-grid"[39m
+        [36m>[39m
+          [36m<form[39m
+            [33maria-busy[39m=[32m"false"[39m
+            [33mclass[39m=[32m"profile-form"[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<h2>[39m
+              [0mMi perfil[0m
+            [36m</h2>[39m
+            [36m<label>[39m
+              [0mNombre completo[0m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"name"[39m
+                [33mdata-cy[39m=[32m"profile-name"[39m
+                [33mname[39m=[32m"name"[39m
+                [33mvalue[39m=[32m"Cuenta sintética"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0mTeléfono[0m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"tel"[39m
+                [33mdata-cy[39m=[32m"profile-phone"[39m
+                [33mname[39m=[32m"phone"[39m
+                [33mtype[39m=[32m"tel"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button primary"[39m
+              [33mdata-cy[39m=[32m"profile-submit"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mGuardar perfil[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<aside[39m
+            [33mclass[39m=[32m"session-details"[39m
+          [36m>[39m
+            [36m<h2>[39m
+              [0mTu acceso[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0mCliente[0m
+            [36m</p>[39m
+            [36m<ul>[39m
+              [36m<li>[39m
+                [0mAdministrar el catálogo[0m
+              [36m</li>[39m
+            [36m</ul>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button glass"[39m
+              [33mhref[39m=[32m"#catalogo"[39m
+            [36m>[39m
+              [0mExplorar especialidades ↗[0m
+            [36m</a>[39m
+          [36m</aside>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+Expected: "#cuenta/cliente"
+Received: "#cuenta/administrador"
+
+ ❯ src/features/administration/AccountApp.test.jsx:14:52
+     12|   render(<AccountApp/>);
+     13|   await screen.findByRole('button', {name: 'Cerrar sesión'});
+     14|   await waitFor(() => expect(window.location.hash).toBe(`#cuenta/${rou…
+       |                                                    ^
+     15|   expect(document.querySelector(`[data-cy=portal-${role}]`)).toBeInThe…
+     16|   if (role === 'technician') expect(screen.getByText(/Estado de verifi…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  src/features/administration/AccountApp.test.jsx > S01-TC-017 [TC-005] complemento unitario: portal technician desde identidad del servidor
+AssertionError: expected '#cuenta/administrador' to be '#cuenta/tecnico' // Object.is equality
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"session-page"[39m
+        [33mdata-cy[39m=[32m"portal-technician"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"session-heading"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"kicker"[39m
+            [36m>[39m
+              [0mEspecialista técnico[0m
+            [36m</span>[39m
+            [36m<h1>[39m
+              [0mHola, [0m
+              [36m<em>[39m
+                [0mCuenta sintética[0m
+              [36m</em>[39m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTu cuenta, tus datos y tu acceso en un solo lugar.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button outline"[39m
+            [33mdata-cy[39m=[32m"logout"[39m
+          [36m>[39m
+            [0mCerrar sesión[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"notice"[39m
+        [36m>[39m
+          [0mEstado de verificación: [0m
+          [0mPendiente de verificación[0m
+          [0m. La disponibilidad se habilita después de la revisión.[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"session-grid"[39m
+        [36m>[39m
+          [36m<form[39m
+            [33maria-busy[39m=[32m"false"[39m
+            [33mclass[39m=[32m"profile-form"[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<h2>[39m
+              [0mMi perfil[0m
+            [36m</h2>[39m
+            [36m<label>[39m
+              [0mNombre completo[0m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"name"[39m
+                [33mdata-cy[39m=[32m"profile-name"[39m
+                [33mname[39m=[32m"name"[39m
+                [33mvalue[39m=[32m"Cuenta sintética"[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<label>[39m
+              [0mTeléfono[0m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"tel"[39m
+                [33mdata-cy[39m=[32m"profile-phone"[39m
+                [33mname[39m=[32m"phone"[39m
+                [33mtype[39m=[32m"tel"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</label>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button primary"[39m
+              [33mdata-cy[39m=[32m"profile-submit"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mGuardar perfil[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<aside[39m
+            [33mclass[39m=[32m"session-details"[39m
+          [36m>[39m
+            [36m<h2>[39m
+              [0mTu acceso[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0mEspecialista técnico[0m
+            [36m</p>[39m
+            [36m<ul>[39m
+              [36m<li>[39m
+                [0mAdministrar el catálogo[0m
+              [36m</li>[39m
+            [36m</ul>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button glass"[39m
+              [33mhref[39m=[32m"#catalogo"[39m
+            [36m>[39m
+              [0mExplorar especialidades ↗[0m
+            [36m</a>[39m
+          [36m</aside>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+Expected: "#cuenta/tecnico"
+Received: "#cuenta/administrador"
+
+ ❯ src/features/administration/AccountApp.test.jsx:14:52
+     12|   render(<AccountApp/>);
+     13|   await screen.findByRole('button', {name: 'Cerrar sesión'});
+     14|   await waitFor(() => expect(window.location.hash).toBe(`#cuenta/${rou…
+       |                                                    ^
+     15|   expect(document.querySelector(`[data-cy=portal-${role}]`)).toBeInThe…
+     16|   if (role === 'technician') expect(screen.getByText(/Estado de verifi…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+ FAIL  src/features/administration/AccountApp.test.jsx > S01-TC-018 [TC-005] complemento unitario: portal admin desde identidad del servidor
+AssertionError: expected '#cuenta/administrador' to be '#cuenta' // Object.is equality
+
+Expected: "#cuenta"
+Received: "#cuenta/administrador"
+
+ ❯ src/features/administration/AccountApp.test.jsx:20:32
+     18|   fireEvent.click(screen.getByRole('button', {name: 'Cerrar sesión'}));
+     19|   await screen.findByRole('button', {name: 'Ingresar'});
+     20|   expect(window.location.hash).toBe('#cuenta');
+       |                                ^
+     21|   expect(screen.queryByText('Cuenta sintética')).not.toBeInTheDocument…
+     22| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/17]⎯
+
+ FAIL  src/features/administration/AccountApp.test.jsx > S01-TC-077 complemento unitario: ruta protegida anónima regresa al acceso
+AssertionError: expected '#cuenta/administrador' to be '#cuenta' // Object.is equality
+
+Expected: "#cuenta"
+Received: "#cuenta/administrador"
+
+ ❯ src/features/administration/AccountApp.test.jsx:28:32
+     26|   render(<AccountApp/>);
+     27|   await screen.findByRole('button', {name: 'Ingresar'});
+     28|   expect(window.location.hash).toBe('#cuenta');
+       |                                ^
+     29|   expect(document.querySelector('[data-cy=portal-admin]')).not.toBeInT…
+     30| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/17]⎯
+
+ FAIL  src/features/administration/AccountApp.test.jsx > S01-TC-076 complemento unitario: login consulta /me y logout incierto reconcilia sin falso éxito
+TestingLibraryElementError: Unable to find role="button" and name "Ingresar"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"session-page"[39m
+      [33mdata-cy[39m=[32m"portal-client"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"session-heading"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"kicker"[39m
+          [36m>[39m
+            [0mCliente[0m
+          [36m</span>[39m
+          [36m<h1>[39m
+            [0mHola, [0m
+            [36m<em>[39m
+              [0mCliente sintético[0m
+            [36m</em>[39m
+          [36m</h1>[39m
+          [36m<p>[39m
+            [0mTu cuenta, tus datos y tu acceso en un solo lugar.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button outline"[39m
+          [33mdata-cy[39m=[32m"logout"[39m
+        [36m>[39m
+          [0mCerrar sesión[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"error"[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0mNo pudimos confirmar el resultado.[0m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"session-grid"[39m
+      [36m>[39m
+        [36m<form[39m
+          [33maria-busy[39m=[32m"false"[39m
+          [33mclass[39m=[32m"profile-form"[39m
+          [33mnovalidate[39m=[32m""[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0mMi perfil[0m
+          [36m</h2>[39m
+          [36m<label>[39m
+            [0mNombre completo[0m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mautocomplete[39m=[32m"name"[39m
+              [33mdata-cy[39m=[32m"profile-name"[39m
+              [33mname[39m=[32m"name"[39m
+              [33mvalue[39m=[32m"Cliente sintético"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0mTeléfono[0m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mautocomplete[39m=[32m"tel"[39m
+              [33mdata-cy[39m=[32m"profile-phone"[39m
+              [33mname[39m=[32m"phone"[39m
+              [33mtype[39m=[32m"tel"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button primary"[39m
+            [33mdata-cy[39m=[32m"profile-submit"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m>[39m
+            [0mGuardar perfil[0m
+          [36m</button>[39m
+        [36m</form>[39m
+        [36m<aside[39m
+          [33mclass[39m=[32m"session-details"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0mTu acceso[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mCliente[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mAcceso a tu perfil personal.[0m
+          [36m</p>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button glass"[39m
+            [33mhref[39m=[32m"#catalogo"[39m
+          [36m>[39m
+            [0mExplorar especialidades ↗[0m
+          [36m</a>[39m
+        [36m</aside>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"session-page"[39m
+      [33mdata-cy[39m=[32m"portal-client"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"session-heading"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"kicker"[39m
+          [36m>[39m
+            [0mCliente[0m
+          [36m</span>[39m
+          [36m<h1>[39m
+            [0mHola, [0m
+            [36m<em>[39m
+              [0mCliente sintético[0m
+            [36m</em>[39m
+          [36m</h1>[39m
+          [36m<p>[39m
+            [0mTu cuenta, tus datos y tu acceso en un solo lugar.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button outline"[39m
+          [33mdata-cy[39m=[32m"logout"[39m
+        [36m>[39m
+          [0mCerrar sesión[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"error"[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0mNo pudimos confirmar el resultado.[0m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"session-grid"[39m
+      [36m>[39m
+        [36m<form[39m
+          [33maria-busy[39m=[32m"false"[39m
+          [33mclass[39m=[32m"profile-form"[39m
+          [33mnovalidate[39m=[32m""[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0mMi perfil[0m
+          [36m</h2>[39m
+          [36m<label>[39m
+            [0mNombre completo[0m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mautocomplete[39m=[32m"name"[39m
+              [33mdata-cy[39m=[32m"profile-name"[39m
+              [33mname[39m=[32m"name"[39m
+              [33mvalue[39m=[32m"Cliente sintético"[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0mTeléfono[0m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mautocomplete[39m=[32m"tel"[39m
+              [33mdata-cy[39m=[32m"profile-phone"[39m
+              [33mname[39m=[32m"phone"[39m
+              [33mtype[39m=[32m"tel"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button primary"[39m
+            [33mdata-cy[39m=[32m"profile-submit"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m>[39m
+            [0mGuardar perfil[0m
+          [36m</button>[39m
+        [36m</form>[39m
+        [36m<aside[39m
+          [33mclass[39m=[32m"session-details"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0mTu acceso[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mCliente[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mAcceso a tu perfil personal.[0m
+          [36m</p>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button glass"[39m
+            [33mhref[39m=[32m"#catalogo"[39m
+          [36m>[39m
+            [0mExplorar especialidades ↗[0m
+          [36m</a>[39m
+        [36m</aside>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/administration/AccountApp.test.jsx:41:16
+     39|   request.mockRejectedValueOnce({status: 0, message: 'No pudimos confi…
+     40|   fireEvent.click(screen.getByRole('button', {name: 'Cerrar sesión'}));
+     41|   await screen.findByRole('button', {name: 'Ingresar'});
+       |                ^
+     42|   expect(screen.getByRole('alert')).toHaveTextContent('No pudimos conf…
+     43| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/17]⎯
+
+ FAIL  src/features/administration/Catalog.test.jsx > S01-TC-085 [TC-012] catálogo: especialidades vacías se comunican sin inventar datos
+TestingLibraryElementError: Unable to find an element with the text: No hay especialidades disponibles.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"session-page"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"kicker"[39m
+      [36m>[39m
+        [0mESPECIALIDADES[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mEncuentra tu [0m
+        [36m<em>[39m
+          [0mespecialidad.[0m
+        [36m</em>[39m
+      [36m</h1>[39m
+      [36m<label>[39m
+        [0mEspecialidad[0m
+        [36m<select[39m
+          [33mdata-cy[39m=[32m"specialty-select"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0mSelecciona una especialidad[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button primary"[39m
+        [33mhref[39m=[32m"#cuenta"[39m
+      [36m>[39m
+        [0mIr a mi cuenta ↗[0m
+      [36m</a>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"session-page"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"kicker"[39m
+      [36m>[39m
+        [0mESPECIALIDADES[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mEncuentra tu [0m
+        [36m<em>[39m
+          [0mespecialidad.[0m
+        [36m</em>[39m
+      [36m</h1>[39m
+      [36m<label>[39m
+        [0mEspecialidad[0m
+        [36m<select[39m
+          [33mdata-cy[39m=[32m"specialty-select"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0mSelecciona una especialidad[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</label>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button primary"[39m
+        [33mhref[39m=[32m"#cuenta"[39m
+      [36m>[39m
+        [0mIr a mi cuenta ↗[0m
+      [36m</a>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/administration/Catalog.test.jsx:22:16
+     20| test('S01-TC-085 [TC-012] catálogo: especialidades vacías se comunican…
+     21|   request.mockResolvedValue({data: []}); render(<Catalog/>);
+     22|   await screen.findByText('No hay especialidades disponibles.');
+       |                ^
+     23|   expect(screen.getAllByRole('option')).toHaveLength(1);
+     24| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/17]⎯
+
+ FAIL  src/features/administration/http.test.js > S01-TC-082 contrato: prioriza error.message, código y campos; red sin respuesta es incierta
+AssertionError: expected Error: Forbidden { status: 403, …(1) } to match object { status: 403, …(3) }
+
+- Expected
++ Received
+
+- {
+-   "code": "SESSION_ACTIVE",
++ ApiError {
+    "fields": {
+      "email": [
+        "Revisa el correo.",
+      ],
+    },
+-   "message": "Ya tienes una sesión activa.",
+    "status": 403,
+  }
+
+ ❯ src/features/administration/http.test.js:20:31
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/17]⎯
+
+ FAIL  src/features/administration/ProfileForm.test.jsx > S01-TC-081 teléfono inválido sin petición: 111111111111111111111
+TestingLibraryElementError: Unable to find a label with the text of: Teléfono
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<form[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33mclass[39m=[32m"profile-form"[39m
+      [33mnovalidate[39m=[32m""[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0mMi perfil[0m
+      [36m</h2>[39m
+      [36m<label>[39m
+        [0mNombre completo[0m
+        [36m<input[39m
+          [33maria-invalid[39m=[32m"false"[39m
+          [33mautocomplete[39m=[32m"name"[39m
+          [33mdata-cy[39m=[32m"profile-name"[39m
+          [33mname[39m=[32m"name"[39m
+          [33mvalue[39m=[32m"Cliente sintético"[39m
+        [36m/>[39m
+      [36m</label>[39m
+      [36m<label>[39m
+        [0mTeléfono[0m
+        [36m<input[39m
+          [33maria-describedby[39m=[32m"phone-error"[39m
+          [33maria-invalid[39m=[32m"true"[39m
+          [33mautocomplete[39m=[32m"tel"[39m
+          [33mdata-cy[39m=[32m"profile-phone"[39m
+          [33mname[39m=[32m"phone"[39m
+          [33mtype[39m=[32m"tel"[39m
+          [33mvalue[39m=[32m"111111111111111111111"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"field-error"[39m
+          [33mid[39m=[32m"phone-error"[39m
+        [36m>[39m
+          [0mIngresa un teléfono válido de hasta 20 caracteres.[0m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"error"[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0mRevisa los campos indicados.[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"button primary"[39m
+        [33mdata-cy[39m=[32m"profile-submit"[39m
+        [33mtype[39m=[32m"submit"[39m
+      [36m>[39m
+        [0mGuardar perfil[0m
+      [36m</button>[39m
+    [36m</form>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/administration/ProfileForm.test.jsx:15:17
+     13|   fireEvent.change(screen.getByLabelText('Teléfono'), {target: {value:…
+     14|   submit();
+     15|   expect(screen.getByLabelText('Teléfono')).toHaveAttribute('aria-inva…
+       |                 ^
+     16|   expect(screen.getByRole('alert')).toHaveTextContent('Revisa los camp…
+     17|   expect(request).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/17]⎯
+
+ FAIL  src/features/administration/ProfileForm.test.jsx > S01-TC-081 teléfono inválido sin petición: 064-ABC
+TestingLibraryElementError: Unable to find a label with the text of: Teléfono
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<form[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33mclass[39m=[32m"profile-form"[39m
+      [33mnovalidate[39m=[32m""[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0mMi perfil[0m
+      [36m</h2>[39m
+      [36m<label>[39m
+        [0mNombre completo[0m
+        [36m<input[39m
+          [33maria-invalid[39m=[32m"false"[39m
+          [33mautocomplete[39m=[32m"name"[39m
+          [33mdata-cy[39m=[32m"profile-name"[39m
+          [33mname[39m=[32m"name"[39m
+          [33mvalue[39m=[32m"Cliente sintético"[39m
+        [36m/>[39m
+      [36m</label>[39m
+      [36m<label>[39m
+        [0mTeléfono[0m
+        [36m<input[39m
+          [33maria-describedby[39m=[32m"phone-error"[39m
+          [33maria-invalid[39m=[32m"true"[39m
+          [33mautocomplete[39m=[32m"tel"[39m
+          [33mdata-cy[39m=[32m"profile-phone"[39m
+          [33mname[39m=[32m"phone"[39m
+          [33mtype[39m=[32m"tel"[39m
+          [33mvalue[39m=[32m"064-ABC"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"field-error"[39m
+          [33mid[39m=[32m"phone-error"[39m
+        [36m>[39m
+          [0mIngresa un teléfono válido de hasta 20 caracteres.[0m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"error"[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0mRevisa los campos indicados.[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"button primary"[39m
+        [33mdata-cy[39m=[32m"profile-submit"[39m
+        [33mtype[39m=[32m"submit"[39m
+      [36m>[39m
+        [0mGuardar perfil[0m
+      [36m</button>[39m
+    [36m</form>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/administration/ProfileForm.test.jsx:15:17
+     13|   fireEvent.change(screen.getByLabelText('Teléfono'), {target: {value:…
+     14|   submit();
+     15|   expect(screen.getByLabelText('Teléfono')).toHaveAttribute('aria-inva…
+       |                 ^
+     16|   expect(screen.getByRole('alert')).toHaveTextContent('Revisa los camp…
+     17|   expect(request).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/17]⎯
+
+ FAIL  src/features/administration/ProfileForm.test.jsx > S01-TC-074 complemento unitario: resultado incierto consulta identidad, sin repetir PATCH ni afirmar éxito
+AssertionError: expected last "vi.fn()" call to have been called with [ '/me' ]
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<form[39m
+        [33maria-busy[39m=[32m"false"[39m
+        [33mclass[39m=[32m"profile-form"[39m
+        [33mnovalidate[39m=[32m""[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mMi perfil[0m
+        [36m</h2>[39m
+        [36m<label>[39m
+          [0mNombre completo[0m
+          [36m<input[39m
+            [33maria-invalid[39m=[32m"false"[39m
+            [33mautocomplete[39m=[32m"name"[39m
+            [33mdata-cy[39m=[32m"profile-name"[39m
+            [33mname[39m=[32m"name"[39m
+            [33mvalue[39m=[32m"Cliente sintético"[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0mTeléfono[0m
+          [36m<input[39m
+            [33maria-invalid[39m=[32m"false"[39m
+            [33mautocomplete[39m=[32m"tel"[39m
+            [33mdata-cy[39m=[32m"profile-phone"[39m
+            [33mname[39m=[32m"phone"[39m
+            [33mtype[39m=[32m"tel"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"error"[39m
+          [33mrole[39m=[32m"alert"[39m
+        [36m>[39m
+          [0mNo pudimos confirmar el resultado.[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button primary"[39m
+          [33mdata-cy[39m=[32m"profile-submit"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [0mGuardar perfil[0m
+        [36m</button>[39m
+      [36m</form>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+- Expected
++ Received
+
+  [
+    "/me",
++   {
++     "expected_version": 2,
++     "name": "Cliente sintético",
++     "phone": null,
++   },
++   "PATCH",
+  ]
+
+ ❯ src/features/administration/ProfileForm.test.jsx:40:39
+     38|   render(<ProfileForm user={user} onUpdate={onUpdate} onExpired={vi.fn…
+     39|   submit();
+     40|   await waitFor(() => expect(request).toHaveBeenLastCalledWith('/me'));
+       |                                       ^
+     41|   expect(onUpdate).toHaveBeenCalledWith({...user, version: 3});
+     42|   expect(screen.getByRole('alert')).toHaveTextContent('No pudimos conf…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/17]⎯
+
+ FAIL  src/features/administration/ProfileForm.test.jsx > S01-TC-077 complemento unitario: sesión caducada y nombre inválido no producen falso éxito
+TestingLibraryElementError: Unable to find a label with the text of: Nombre completo
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<form[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33mclass[39m=[32m"profile-form"[39m
+      [33mnovalidate[39m=[32m""[39m
+    [36m>[39m
+      [36m<h2>[39m
+        [0mMi perfil[0m
+      [36m</h2>[39m
+      [36m<label>[39m
+        [0mNombre completo[0m
+        [36m<input[39m
+          [33maria-describedby[39m=[32m"name-error"[39m
+          [33maria-invalid[39m=[32m"true"[39m
+          [33mautocomplete[39m=[32m"name"[39m
+          [33mdata-cy[39m=[32m"profile-name"[39m
+          [33mname[39m=[32m"name"[39m
+          [33mvalue[39m=[32m"A"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"field-error"[39m
+          [33mid[39m=[32m"name-error"[39m
+        [36m>[39m
+          [0mEl nombre debe tener entre 2 y 100 caracteres.[0m
+        [36m</span>[39m
+      [36m</label>[39m
+      [36m<label>[39m
+        [0mTeléfono[0m
+        [36m<input[39m
+          [33maria-invalid[39m=[32m"false"[39m
+          [33mautocomplete[39m=[32m"tel"[39m
+          [33mdata-cy[39m=[32m"profile-phone"[39m
+          [33mname[39m=[32m"phone"[39m
+          [33mtype[39m=[32m"tel"[39m
+          [33mvalue[39m=[32m""[39m
+        [36m/>[39m
+      [36m</label>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"error"[39m
+        [33mrole[39m=[32m"alert"[39m
+      [36m>[39m
+        [0mRevisa los campos indicados.[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"button primary"[39m
+        [33mdata-cy[39m=[32m"profile-submit"[39m
+        [33mtype[39m=[32m"submit"[39m
+      [36m>[39m
+        [0mGuardar perfil[0m
+      [36m</button>[39m
+    [36m</form>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/administration/ProfileForm.test.jsx:52:27
+     50|   submit();
+     51|   expect(request).not.toHaveBeenCalled();
+     52|   fireEvent.change(screen.getByLabelText('Nombre completo'), {target: …
+       |                           ^
+     53|   submit();
+     54|   await waitFor(() => expect(onExpired).toHaveBeenCalledOnce());
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/17]⎯
+
+ FAIL  src/features/administration/SessionForm.test.jsx > S01-TC-083 429 en español sin éxito y botón habilitado nuevamente
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Hay demasiados intentos
+Received:
+  Demasiados intentos. Espera un momento antes de volver a intentarlo.
+ ❯ src/features/administration/SessionForm.test.jsx:16:44
+     14|   const onLogin = vi.fn(); render(<SessionForm onLogin={onLogin}/>); f…
+     15|   fireEvent.click(screen.getByRole('button', {name: 'Ingresar'}));
+     16|   expect(await screen.findByRole('alert')).toHaveTextContent('Hay dema…
+       |                                            ^
+     17|   expect(screen.getByRole('button', {name: 'Ingresar'})).toBeEnabled();
+     18|   expect(onLogin).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/17]⎯
+
+ FAIL  src/features/administration/validateAccount.test.js > S01-TC-080 tipo de cliente requerido para cliente y prohibido para técnico
+AssertionError: expected {} to have property "client_type"
+ ❯ src/features/administration/validateAccount.test.js:14:72
+     12|   expect(validateAccount(account({client_type: undefined}), true)).toH…
+     13|   expect(validateAccount(account({account_type: 'technician', client_t…
+     14|   expect(validateAccount(account({account_type: 'technician'}), true))…
+       |                                                                        ^
+     15| });
+     16|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/17]⎯
+
+
+ Test Files  7 failed | 10 passed (17)
+      Tests  17 failed | 75 passed (92)
+   Start at  15:23:18
+   Duration  32.46s (environment 47%, tests 30%, setup 11%, import 6%, transform 5%)
+
+Environment  jsdom was created 17 times · 13.13s total, 47% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to C:/Users/[USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
