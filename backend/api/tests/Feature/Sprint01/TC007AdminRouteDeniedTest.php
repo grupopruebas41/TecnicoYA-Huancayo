@@ -16,7 +16,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-007: deniega con 403 una ruta administrativa a un cliente autenticado', function () {
+it('S01-TC-005 deniega con 403 una ruta administrativa a un cliente autenticado [TC-007]', function () {
     // Ruta registrada solo en esta prueba: verifica los middleware reales sin adelantar el panel del Sprint 7.
     Route::middleware(['api', 'auth:sanctum', 'account.active', 'permission:catalog.manage'])
         ->get('/__tests/admin-access', fn () => ['private_marker' => 'restricted']);

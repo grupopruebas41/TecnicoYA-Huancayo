@@ -13,7 +13,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-009: guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos', function () {
+it('S01-TC-007 guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos [TC-009]', function () {
     // Dado una cuenta con versión de perfil vigente
     [$client] = Sprint01::registerThroughApi($this);
     Sanctum::actingAs($client);

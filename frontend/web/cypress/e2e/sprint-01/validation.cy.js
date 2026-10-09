@@ -12,7 +12,7 @@ function login() {
 }
 
 describe('Alertas y validación del incremento Sprint 1', () => {
-  it('TC-001 / TC-002: valida el registro en cliente y muestra el rechazo del correo duplicado del servidor', () => {
+  it('S01-TC-023 valida el registro en cliente y muestra el rechazo del correo duplicado del servidor [TC-001] [TC-002]', () => {
     let submitted = 0;
     cy.intercept('POST', `${api}/api/v1/auth/register`, req => { submitted++; req.continue(); }).as('register');
     cy.visit('/#cuenta');
@@ -31,7 +31,7 @@ describe('Alertas y validación del incremento Sprint 1', () => {
     cy.get('[data-cy=register-success]').should('not.exist');
   });
 
-  it('TC-005: muestra el error de credenciales del servidor en español', () => {
+  it('S01-TC-024 muestra el error de credenciales del servidor en español [TC-005]', () => {
     cy.intercept('POST', `${api}/api/v1/auth/login`).as('login');
     cy.visit('/#cuenta');
     cy.get('[data-cy=login-email]').type('no-existe@example.test');
@@ -41,7 +41,7 @@ describe('Alertas y validación del incremento Sprint 1', () => {
     cy.get('[role=alert]').should('contain', 'El correo o la contraseña no son válidos');
   });
 
-  it('TC-009 / TC-010 / TC-137: valida el perfil, confirma el guardado y conserva una edición concurrente', () => {
+  it('S01-TC-025 valida el perfil, confirma el guardado y conserva una edición concurrente [TC-009] [TC-010] [TC-137]', () => {
     login();
     cy.get('[data-cy=profile-name]').clear().type('A');
     cy.get('[data-cy=profile-submit]').click();

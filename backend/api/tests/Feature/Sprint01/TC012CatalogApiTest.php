@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
-it('TC-012: sirve solo categorías activas y valida el filtro sin inventar resultados', function () {
+it('S01-TC-010 sirve solo categorías activas y valida el filtro sin inventar resultados [TC-012]', function () {
     $this->seed(CatalogSeeder::class);
     $specialty = DB::table('specialties')->orderBy('display_order')->first();
     $this->getJson('/api/v1/catalog/specialties')->assertOk()->assertJsonCount(3, 'data');
