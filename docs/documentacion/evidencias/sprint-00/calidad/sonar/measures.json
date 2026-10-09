@@ -1,0 +1,114 @@
+{
+  "component": {
+    "key": "tecnicoya-huancayo",
+    "name": "TecnicoYa Huancayo",
+    "qualifier": "TRK",
+    "measures": [
+      {
+        "metric": "coverage",
+        "value": "58.8",
+        "bestValue": false
+      },
+      {
+        "metric": "reliability_rating",
+        "value": "1.0",
+        "bestValue": true
+      },
+      {
+        "metric": "duplicated_lines_density",
+        "value": "1.5",
+        "bestValue": false
+      },
+      {
+        "metric": "code_smells",
+        "value": "109",
+        "bestValue": false
+      },
+      {
+        "metric": "new_lines",
+        "period": {
+          "index": 1,
+          "value": "3964"
+        }
+      },
+      {
+        "metric": "new_reliability_rating",
+        "period": {
+          "index": 1,
+          "value": "1.0",
+          "bestValue": true
+        }
+      },
+      {
+        "metric": "security_rating",
+        "value": "1.0",
+        "bestValue": true
+      },
+      {
+        "metric": "new_coverage",
+        "period": {
+          "index": 1,
+          "value": "66.1",
+          "bestValue": false
+        }
+      },
+      {
+        "metric": "new_security_rating",
+        "period": {
+          "index": 1,
+          "value": "1.0",
+          "bestValue": true
+        }
+      },
+      {
+        "metric": "security_hotspots",
+        "value": "0",
+        "bestValue": true
+      },
+      {
+        "metric": "sqale_index",
+        "value": "794",
+        "bestValue": false
+      },
+      {
+        "metric": "sqale_rating",
+        "value": "1.0",
+        "bestValue": true
+      },
+      {
+        "metric": "bugs",
+        "value": "0",
+        "bestValue": true
+      },
+      {
+        "metric": "alert_status",
+        "value": "ERROR"
+      },
+      {
+        "metric": "ncloc",
+        "value": "4344"
+      },
+      {
+        "metric": "vulnerabilities",
+        "value": "0",
+        "bestValue": true
+      },
+      {
+        "metric": "new_maintainability_rating",
+        "period": {
+          "index": 1,
+          "value": "1.0",
+          "bestValue": true
+        }
+      },
+      {
+        "metric": "new_duplicated_lines_density",
+        "period": {
+          "index": 1,
+          "value": "1.89203",
+          "bestValue": false
+        }
+      }
+    ]
+  }
+}
