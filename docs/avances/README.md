@@ -16,7 +16,7 @@ Las carpetas `sprint-NN` se crean **cuando existe avance real**, nunca vacías n
 
 ## Asignación de módulos
 
-Pendiente de decisión: MOD-01 en [DECISIONES.md](../documentacion/sprints/DECISIONES.md). No se deduce del rol de usuario. Mientras no se decida, el reparto es por capa (regla 1 de AGENTS.md): Delgado frontend, Mayhuasca backend, Pimentel base de datos, Docker e integración.
+Pendiente de transcribir: MOD-01 en [DECISIONES.md](../documentacion/sprints/DECISIONES.md). El equipo aprobó el 2026-10-09 que cada integrante tenga dos módulos fijos, pero el reparto todavía no está registrado. No se deduce del rol de usuario. Mientras no se decida, el reparto es por capa (regla 1 de AGENTS.md): Delgado frontend, Mayhuasca backend, Pimentel base de datos, Docker e integración.
 
 ## Ramas
 

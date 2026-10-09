@@ -3,10 +3,11 @@
 1. **Proyecto:** marketplace web que conecta clientes (MYPES y hogares de Huancayo) con técnicos de cómputo, refrigeración comercial y electricidad. Curso Pruebas y Calidad de Software, Universidad Continental. Equipo: Delgado (frontend), Mayhuasca (backend), Pimentel (base de datos, Docker e integración).
 
 2. **Stack vigente:** React 18 + Vite 5 (`frontend/web`); Laravel 12 con API `/api/v1` y sesión Sanctum (`backend/api`); MySQL 8.4; Pest 3, Vitest 2.1 y Cypress 16.1; SonarQube.
-   **Congelado** (no se amplía; solo se mantienen sus pruebas hasta retirarlo en el Sprint 8):
+   **Congelado** (no se amplía; solo se mantienen sus pruebas hasta retirarlo según D-26, cuando las pantallas v1 de S2 y S3 pasen sus pruebas Cypress):
    - la API `/api/*` con token, **salvo `GET /api/health`**, que se mantiene porque el arrancador E2E la usa para saber si la API está lista;
    - la demo `localStorage` (`#demo`);
-   - el servicio Python;
+   - los comandos `marketplace:tick` y `marketplace:admin`;
+   - el servicio Python y pytest (el matching va en PHP, D-19);
    - PostgreSQL;
    - el plan histórico de 10 iteraciones de los PDF 08 a 17.
 
@@ -79,7 +80,7 @@
    - Para pruebas, usa solo bases que terminen en `_testing`. No toques el MySQL/MariaDB de XAMPP.
    - No actualices dependencias con `composer -W` ni `npm audit fix --force` sin permiso.
 
-10. **Decisiones pendientes (P01 a P23):** no inventes valores. Propón dos opciones con tu recomendación, espera la decisión y regístrala en `DECISIONES.md` con la fecha y quién decidió.
+10. **Decisiones:** P01 a P23 están decididas desde el 2026-10-09 (D-10 a D-37 en `DECISIONES.md`); aplícalas tal como están registradas. Para lo que siga pendiente (MOD-01, CI-01 y las de la tabla de pendientes) o surja después: no inventes valores, propón dos opciones con tu recomendación, espera la decisión y regístrala en `DECISIONES.md` con la fecha y quién decidió.
 
 11. **Evidencias:**
     - **Pruebas:** `docs/documentacion/evidencias/sprint-NN/` (rojo, verde, cobertura, mutación, vitest, cypress, calidad, audit). Cada archivo lleva la fecha y el hash del commit.
