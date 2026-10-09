@@ -2,11 +2,71 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-09 · Sprint 0 · decisiones D-38 a D-41 (complemento del PR #4)
+
+- **Rama:** `feature/pimentel/f-administracion/s00-decisiones-registro`.
+- **PR:** [#4](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/4), abierto; este push lo actualiza.
+- **Commits:**
+  - docs(s00): registra MOD-01, CI-01, P04 y P07 (D-38 a D-41)
+  - este relevo
+- **Decisiones registradas:**
+  - **D-38, MOD-01:** Mayhuasca `a-solicitudes` y `b-matching`; Pimentel `c-notificaciones` y `f-administracion`; Delgado `d-atencion` y `e-calificaciones`. El dueño responde y otro integrante revisa. Las ramas siguen la capa (regla 5).
+  - **D-39, CI-01:** opción A (GitHub Actions); cambia a C si el docente exige su GitLab.
+  - **D-40, P04:** el responsable del backlog es Pimentel.
+  - **D-41, P07:** una sola apelación por reseña.
+- **Archivos:**
+  - `DECISIONES.md`: las cuatro filas nuevas; D-17 y D-31 remiten a D-40 y D-41.
+  - Reglas de negocio §9 y §10.
+  - AGENTS.md, regla 10.
+  - `docs/avances/README.md`, con la tabla del reparto.
+- **Única pendiente:** P17-S6, los límites de contenido de S6.
+- **Pruebas:** no se ejecutaron porque el cambio es solo documental.
+
+**Qué falta:**
+1. **TC-122, TC-123 y TC-130:** se escriben en los pasos S3.1 y S3.2 del plan, junto con el catálogo de 60 casos de S3, por decisión del usuario del 2026-10-09. No se adelantan.
+2. **Cierre de S1 a S3:** paso N.1 de S1, con el catálogo de 60 casos y el contrato de API.
+3. **Paso 1.7:** su contenido sigue sin identificar en el repositorio.
+4. **CI:** crear el workflow de GitHub Actions (D-39). Pertenece al módulo común; falta acordar en qué sprint.
+
+**Bloqueos:** ninguno de decisión para S1 a S4.
+
+## 2026-10-09 · Sprint 0 · registro de las decisiones del equipo
+
+- **Rama:** `feature/pimentel/f-administracion/s00-decisiones-registro`, base `main` `93388b7` (PR #3 ya integrado).
+- **Commits:**
+  - `788351f` docs(s00): registra las decisiones D-10 a D-37 del equipo
+  - `bd8fa0e` docs(s00): alinea AGENTS, README y avances con las decisiones
+  - este relevo
+- **Entregado:**
+  - `DECISIONES.md`: D-10 a D-37, «decidido por el equipo (Delgado, Mayhuasca y Pimentel)», con fecha 2026-10-09.
+  - Reglas de negocio 1.1, con una §10 nueva y la §7 actualizada: `max_active_requests_per_client = 3`; `Dref` y `Aref` relativos.
+  - AGENTS.md (reglas 2 y 10), `README.md` y `docs/avances/README.md`.
+- **Valores aplicados:** P10 N = 3; P17 descripción de 20 a 1000 caracteres y fotos JPG, PNG o WebP de hasta 5 MB, con un máximo de 5; P21 con RNF-01 (≤ 3 s) y RNF-02 (200 concurrentes); PROTO-01 B, retiro cuando las pantallas v1 de S2 y S3 pasen Cypress.
+- **No registrado** (el pedido traía marcadores sin rellenar):
+  - CI-01 `[A o C, según lo que diga el docente]`;
+  - MOD-01 `[el reparto que acordaron]`.
+
+  Quedan en «Decisiones pendientes» junto con el nombre del responsable del backlog (P04-N), el número de apelaciones (P07-N) y los límites de contenido de S6 (P17-S6).
+- **Pruebas:** no se ejecutaron porque el cambio es solo documental. Se pidió quitar el `skip` de TC-122, TC-123 y TC-130, pero **esas pruebas no existen** (no hay ningún `skip` en `backend/api/tests`): hay que escribirlas.
+
+**Qué falta:**
+1. **TC-122, TC-123 y TC-130 en Pest** (reprogramado para S3.1 y S3.2, ver la entrada de arriba), con ciclo TDD en una rama de backend (`feature/mayhuasca/a-solicitudes/s03`):
+   - `test(s03)` en rojo y después `feat(s03)` en verde;
+   - el límite de 3 solicitudes activas al enviar;
+   - la validación de la descripción y de las fotos.
+2. **Pedido a Codex:** la validación de cliente de P17 y del límite de P10 (doble validación) y la parte Cypress de TC-130.
+3. **Paso 1.7:** sigue pendiente; su contenido está sin identificar en el repositorio.
+4. **MOD-01 y CI-01:** transcribir el reparto y la respuesta del docente.
+
+**Bloqueos:**
+- Ninguno de negocio para S3.
+- MOD-01 sigue pendiente para nombrar las ramas por dueño.
+
 ## 2026-10-09 · Sprint 0 · hoja de decisiones
 
 - **Rama:** `feature/pimentel/f-administracion/s00-decisiones`, base `main` `9c64fb6`.
 - **Integrado en `main`:** el PR #2 (`feature/pimentel/f-administracion/s00`, entrada de abajo) y el PR #1 de Codex (`codex/s00-frontend`). El pedido 1 a Codex está cumplido: su relevo ya está en `docs/documentacion/sprints/HANDOFF-codex.md`.
-- **PR abierto:** [#3](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/3), pendiente de revisión e integración.
+- **PR:** [#3](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/3), integrado el 2026-10-09.
 - **Commits:**
   - `42be842` docs(s00): hoja de decisiones
   - este relevo

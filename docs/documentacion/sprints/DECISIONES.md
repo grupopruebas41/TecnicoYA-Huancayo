@@ -6,6 +6,7 @@
 - `editables/CANVAS-Analisis-MVP-TecnicoYa.md`, pendientes P01–P23.
 - `editables/REGLAS-DE-NEGOCIO-FORMALIZADAS-TecnicoYa.md` §9.
 - La columna «Pendiente» de `editables/plan-pruebas-v2/Matriz-Trazabilidad-TC.csv`.
+- [HOJA-DE-DECISIONES.md](HOJA-DE-DECISIONES.md): opciones, efectos y recomendaciones de D-10 a D-41.
 
 ## Decisiones tomadas
 
@@ -20,36 +21,44 @@
 | D-07 | DEF-17, Word con códigos de alumno | Retirar `informe-final/Proyecto-final-TecnicoYa-capitulos-01-al-13.docx` del repositorio | 2026-10-09 | Pimentel |
 | D-08 | DEF-17, PDF con códigos de alumno | Reemplazar `fuentes/proyecto-final.pdf` por una versión sin códigos que entregará el equipo; hasta entonces sigue en el árbol | 2026-10-09 | Pimentel |
 | D-09 | DEF-17, purga del historial | **No ejecutarla por ahora.** Queda preparada en `PURGA-HISTORIAL.md` | 2026-10-09 | Pimentel |
+| D-10 | META-01 · Meta de pruebas | Opción A: se ratifica D-03, ≥ 60 IDs por sprint (≥ 36 Pest, ≥ 14 Cypress, ≥ 10 Vitest) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-11 | P10 · Solicitudes activas por cliente | Opción A con **N = 3**. Cuentan desde `sent` hasta el cierre o la cancelación; `registered` no cuenta. N se guarda como parámetro de reglas versionado. Desbloquea TC-122 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-12 | P17 · Contenido de la solicitud (parte S3) | Opción A: descripción de **20 a 1000 caracteres**; fotos **JPG, PNG o WebP**, **hasta 5 MB** cada una y **como máximo 5 por solicitud**. Desbloquea TC-123 y TC-130. Portafolio, documentos y respuestas a reseñas siguen pendientes (P17-S6) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-13 | P22 · Estados iniciales y verificación | Opción A: `registered` es la solicitud guardada y editable; `sent`, la enviada, que no se modifica ni se elimina. El rechazo de verificación se registra como decisión «rechazada» con motivo en la revisión y el técnico sigue sin recibir ofertas | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-14 | P20 · Persona con varios roles | Opción A: un rol por cuenta (`users.role_id`) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-15 | P03 · Distritos de cobertura | Opción A: Huancayo, El Tambo y Chilca como semilla, ampliables por el administrador (`/admin/districts`). `rules.json` no prevalece | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-16 | PERM-01 · Nombres de permisos | Opción A: `announcements.manage` y `technicians.verify` tal como están en `AuthorizationSeeder` | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-17 | P04 · Responsable del backlog | Opción A: una persona fija; la persona se nombra en D-40 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-18 | P07 (parte S3) · Promedio para el filtro de búsqueda | Opción A: promedio de las calificaciones vigentes (excluye las anuladas por apelación); un técnico sin calificaciones no pasa un filtro de calificación mínima | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-19 | MATCH-01 · Dónde se programa el matching | Opción A: PHP dentro de Laravel (módulo `BMatching`); el servicio Python no se usa | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-20 | P15 · Normalización, técnico sin historial y empate | Opción A: normalización relativa por ejecución (`Dref` = mayor distancia y `Aref` = mayor experiencia entre los elegibles de esa ejecución); con 3 o más servicios y ninguna reseña, H = 0,50; el empate persistente se muestra como empate; el tiempo estimado sale de las duraciones reales del técnico con historial suficiente y, si no lo tiene, se muestra «Nuevo, sin estimación». Desbloquea TC-140 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-21 | P12 · Relojes, rondas y notificaciones | Opción A: intervalo [inicio, vencimiento); el SLA empieza cuando la oferta está en la bandeja aunque falle el correo; el reloj de 24 h no se reinicia por un job | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-22 | P11 · Elección del cliente | Opción A: el cliente elige al cerrarse la ronda; no hay un plazo nuevo y la disponibilidad se revalida al elegir | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-23 | P05 · Atención inmediata | Opción A: técnico sin citas en las próximas 2 h | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-24 | P19 · Vigencia de cambios administrativos | Opción A: cada solicitud conserva la versión de reglas con la que se envió | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-25 | P16 · Tarifas, citas y métodos de pago | Opción A: el técnico declara su tarifa por subcategoría (versionada) y el catálogo no fija precio; el técnico define la duración de sus franjas; el administrador carga los métodos de pago simulados; no se guardan datos bancarios | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-26 | PROTO-01 · Retiro del prototipo histórico | Opción B **con ajuste**: se retiran `/api/*` con token (salvo `GET /api/health`), la demo `#demo`, `marketplace:tick`, `marketplace:admin`, el servicio Python y pytest **solo cuando las pantallas v1 de S2 y S3 pasen sus pruebas Cypress**. Hasta entonces siguen congelados. El código queda en el historial de Git con una etiqueta | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-27 | P13 · Dos técnicos | Opción A: cada participación es independiente y el servicio se cierra cuando todas están cerradas o sin calificar | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-28 | P14 · Cancelación y reprogramación | Opción A: no se cancela durante la atención (se registra una incidencia); una cita que vence sin respuesta mantiene la original; las reservas se liberan al cancelar | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-29 | P06 · Reprogramaciones | Opción A: 2 cambios aceptados por solicitud, en total aunque haya dos técnicos | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-30 | P23 · Edición de la calificación | Opción A: `first_rated_at + 48 h`, sin reinicio al editar | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-31 | P07 (resto) · Plazo de apelación | Opción B: 5 días **calendario**; el número de apelaciones está en D-41 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-32 | P18 · Sanciones | Opción A: solo manuales, con motivo y auditoría; al bloquear se cierran las sesiones y no se aceptan nuevas solicitudes, y las atenciones en curso siguen | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-33 | P21 · Protocolo de calidad y carga | Opción A: k6 con escenarios sintéticos; Chrome, Edge y Firefox actuales; cobertura en líneas por módulo ≥ 70 %. Umbrales: los de **RNF-01** (matching ≤ 3 s) y **RNF-02** (200 usuarios concurrentes) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-34 | P08 · Retención y cierre de cuenta | Opción A: 12 meses desde el cierre, con anonimización; no se cierra una cuenta con servicios abiertos. Sin validación legal | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-35 | P09 · Demostración | Opción A: 10 participantes; 7 días de 07:00 a 22:00 | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-36 | P01 · Moneda | Opción A: soles (S/), sin conversión | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-37 | P02 · Pagos y comprobante | Opción A: solo método de pago y comprobante simulados, con aviso claro de simulación | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-38 | MOD-01 · Dueño de cada módulo | Opción A, dos módulos fijos por integrante: **Mayhuasca** `a-solicitudes` y `b-matching`; **Pimentel** `c-notificaciones` y `f-administracion`; **Delgado** `d-atencion` y `e-calificaciones`. El dueño responde por su módulo y otro integrante revisa sus PR. Las ramas siguen la regla 5 de AGENTS.md (backend `mayhuasca`, frontend `delgado`, común `pimentel`) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-39 | CI-01 · Plataforma de CI | Opción A: GitHub Actions por ahora. Si el docente exige el GitLab del laboratorio, se cambia a la opción C (GitHub Actions y espejo al GitLab) | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-40 | P04 · Nombre del responsable del backlog | Pimentel | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
+| D-41 | P07 · Número de apelaciones | Una sola apelación por reseña | 2026-10-09 | Decidido por el equipo (Delgado, Mayhuasca y Pimentel) |
 
 ## Decisiones pendientes
 
 | ID | Decisión | Opción elegida | Fecha | Quién decidió |
 |---|---|---|---|---|
-| MOD-01 | Asignación de los módulos A–F a cada integrante (adenda P10): `a-solicitudes`, `b-matching`, `c-notificaciones`, `d-atencion`, `e-calificaciones` y `f-administracion` | pendiente | — | — |
-| P01 | Moneda. Propuesta vigente: S/ sin conversión. Bloquea TC-101 (S8) | pendiente | — | — |
-| P02 | Alcance de pagos y comprobante. Propuesta: método y comprobante **simulados**, sin dinero real. Bloquea TC-101 y TC-103 (S8) | pendiente | — | — |
-| P03 | Distritos de cobertura. Propuesta: Huancayo, El Tambo y Chilca (`rules.json` usa 5 zonas). Afecta S1–S4 | pendiente | — | — |
-| P04 | Responsable del backlog | pendiente | — | — |
-| P05 | Margen de atención inmediata. Propuesta: técnico sin citas en las próximas 2 h. Condiciona TC-133 (S4) | pendiente | — | — |
-| P06 | Máximo de reprogramaciones. Propuesta: 2 por solicitud. Afecta HU-S05-03 | pendiente | — | — |
-| P07 | Apelaciones y promedio real. Propuesta: 5 días hábiles (provisional). Condiciona TC-079, 081, 083 (S6) y TC-033 (S3) | pendiente | — | — |
-| P08 | Privacidad, retención y cierre de cuenta. Propuesta: 12 meses (provisional). Afecta S8 | pendiente | — | — |
-| P09 | Muestra y ventana de demostración. Propuesta: 10 participantes; 7 días de 07:00 a 22:00. Condiciona TC-115, 116, 118 (S8) | pendiente | — | — |
-| P10 | Solicitudes activas simultáneas por cliente; sin valor propuesto. **Bloquea TC-122 (S3)** | pendiente | — | — |
-| P11 | Elección de candidatos y asignación (momento y plazo del cliente). Condiciona TC-089 (S7) y S4 | pendiente | — | — |
-| P12 | Relojes, rondas y notificaciones. Propuesta: intervalo [inicio, vencimiento) y el reloj de 24 h no se reinicia por un job. Condiciona TC-048, 054 (S4), 077 (S6) y 105 (S8) | pendiente | — | — |
-| P13 | Reglas de dos técnicos. Condiciona TC-065 (S5) y TC-077 (S6) | pendiente | — | — |
-| P14 | Cancelación y reprogramación en casos límite. Condiciona TC-069, 071 (S5) y TC-089 (S7) | pendiente | — | — |
-| P15 | Normalización del matching, técnico sin historial y empate. Propuesta: pesos 35/20/30/15; técnico nuevo H = 0,50; umbral de 3 servicios; Dref y Aref sin valor (`rules.json` fija 10 años y 0,5). **Bloquea TC-140**; condiciona TC-044 (S4) y TC-033 | pendiente | — | — |
-| P16 | Tarifas, métodos y franjas. Condiciona TC-101, 114 (S8) y TC-133 (S4) | pendiente | — | — |
-| P17 | Política de contenido y archivos. **Bloquea TC-123 y TC-130 (S3)**; condiciona TC-022 (S2) y TC-081 (S6) | pendiente | — | — |
-| P18 | Umbrales y efectos de sanciones (sin sanción automática). Condiciona TC-091 (S7) | pendiente | — | — |
-| P19 | Vigencia de cambios administrativos. Propuesta: congelar la versión de las reglas por solicitud. Condiciona TC-095 (S7) | pendiente | — | — |
-| P20 | Persona con varios roles. Propuesta: un rol por cuenta (el código ya usa `users.role_id`) | pendiente | — | — |
-| P21 | Protocolo de calidad, carga y reportes. Condiciona TC-087, 097, 103, 111, 113, 114, 115, 116, 118 y 136 | pendiente | — | — |
-| P22 | Estados iniciales y verificación. El código ya usa `registered` → `sent` al enviar. Afecta TC-037 y TC-126 | pendiente | — | — |
-| P23 | Anclaje de la edición de la calificación. Propuesta: `first_rated_at + 48 h`, sin reinicio. Condiciona TC-075 (S6) | pendiente | — | — |
-| PERM-01 | Nombres de permisos `announcements.manage` y `technicians.verify` (propuestos en `AuthorizationSeeder`). Afecta TC-018 y TC-019 | pendiente | — | — |
+| P17-S6 | Límites de portafolio, documentos, comentarios de calificación y respuestas a reseñas | pendiente | — | — |
 
 **Para registrar una decisión:**
 1. Pasar la fila a «Decisiones tomadas».

@@ -16,7 +16,17 @@ Las carpetas `sprint-NN` se crean **cuando existe avance real**, nunca vacías n
 
 ## Asignación de módulos
 
-Pendiente de decisión: MOD-01 en [DECISIONES.md](../documentacion/sprints/DECISIONES.md). No se deduce del rol de usuario. Mientras no se decida, el reparto es por capa (regla 1 de AGENTS.md): Delgado frontend, Mayhuasca backend, Pimentel base de datos, Docker e integración.
+Decisión D-38 (MOD-01) en [DECISIONES.md](../documentacion/sprints/DECISIONES.md), tomada por el equipo el 2026-10-09:
+
+| Integrante | Módulos de los que es dueño |
+|---|---|
+| Mayhuasca | `a-solicitudes`, `b-matching` |
+| Pimentel | `c-notificaciones`, `f-administracion` |
+| Delgado | `d-atencion`, `e-calificaciones` |
+
+- El dueño responde por su módulo en todas las capas y otro integrante revisa sus PR.
+- **Las ramas no siguen al dueño, sino a la capa** (regla 5 de AGENTS.md): backend `feature/mayhuasca/…`, frontend `feature/delgado/…` y configuración común `feature/pimentel/…`, siempre con el módulo del trabajo. Por ejemplo, el backend de `d-atencion` va en `feature/mayhuasca/d-atencion/s05` y su dueño, Delgado, responde por él.
+- Responsable del backlog: Pimentel (D-40).
 
 ## Ramas
 

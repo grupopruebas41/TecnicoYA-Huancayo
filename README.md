@@ -15,7 +15,7 @@ Reglas de trabajo (personas y agentes): **[AGENTS.md](AGENTS.md)** · Plan vigen
 
 ## Histórico congelado
 
-No se amplía; solo se mantienen sus pruebas como regresión hasta retirarlo en el Sprint 8:
+No se amplía; solo se mantienen sus pruebas como regresión hasta retirarlo cuando las pantallas v1 de S2 y S3 pasen sus pruebas Cypress (D-26):
 - la API `/api/*` con token propio, salvo `GET /api/health`, que usa el arrancador E2E;
 - la demo `localStorage` (`#demo` en la SPA);
 - el servicio Python de matching (`python/api`) y `domain/rules.json`, sincronizado con `scripts/sync-rules.py`;
