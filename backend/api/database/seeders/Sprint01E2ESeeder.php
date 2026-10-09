@@ -13,8 +13,11 @@ final class Sprint01E2ESeeder extends Seeder
     {
         $connection = config('database.connections.mysql');
         // Las cuentas sintéticas jamás se crean en la base de desarrollo o producción.
+        // Solo las bases de los slots de prueba A y B (ver ENTORNO-PARALELO.md).
+        $database = (string) $connection['database'];
         if (!app()->environment('testing') || config('database.default') !== 'mysql'
-            || $connection['host'] !== '127.0.0.1' || $connection['database'] !== 'tecnicoya_testing'
+            || $connection['host'] !== '127.0.0.1' || !str_ends_with($database, '_testing')
+            || !in_array($database, ['tecnicoya_testing', 'tecnicoya_b_testing'], true)
             || $connection['username'] !== 'tecnicoya_test') {
             throw new RuntimeException('Fixtures E2E permitidos solo en la base aislada.');
         }

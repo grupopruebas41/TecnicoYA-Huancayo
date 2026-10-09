@@ -1,5 +1,5 @@
-const api = 'http://127.0.0.1:8001';
-const site = 'http://127.0.0.1:5174';
+const api = Cypress.expose('apiUrl');
+const site = Cypress.config('baseUrl');
 let password;
 before(() => cy.env(['E2E_PASSWORD'], {log: false}).then(values => { password = values.E2E_PASSWORD; }));
 
@@ -71,7 +71,7 @@ describe('Alertas y validación del incremento Sprint 1', () => {
       expect(stored.includes(password), 'sin contraseña persistida').to.eq(false);
       expect(win.localStorage.getItem('tecnicoya.api-session')).to.eq(null);
       expect(win.sessionStorage.getItem('tecnicoya.api-session')).to.eq(null);
-      expect(win.document.cookie.includes('tecnicoya_sprint01_session=')).to.eq(false);
+      expect(win.document.cookie.includes(`${Cypress.expose('sessionCookie')}=`)).to.eq(false);
     });
     cy.get('[data-cy=logout]').click();
   });

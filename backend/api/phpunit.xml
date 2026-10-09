@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php" colors="true">
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
   <testsuites>
     <testsuite name="Unit"><directory>tests/Unit</directory></testsuite>
     <testsuite name="Feature"><directory>tests/Feature</directory></testsuite>
@@ -8,11 +8,13 @@
   <php>
     <env name="APP_ENV" value="testing"/>
     <env name="APP_KEY" value="base64:YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE="/>
-    <!-- Base MySQL exclusiva de pruebas. La contraseña va en .env.testing (no versionado). -->
+    <!-- Base MySQL exclusiva de pruebas. La contraseña va en .env.testing (no versionado).
+         Ningún <env> lleva force="true": el entorno del proceso puede sobrescribirlos.
+         DB_DATABASE la elige tests/bootstrap.php según TECNICOYA_SLOT (A: tecnicoya_testing,
+         B: tecnicoya_b_testing). -->
     <env name="DB_CONNECTION" value="mysql"/>
     <env name="DB_HOST" value="127.0.0.1"/>
     <env name="DB_PORT" value="3306"/>
-    <env name="DB_DATABASE" value="tecnicoya_testing"/>
     <env name="DB_USERNAME" value="tecnicoya_test"/>
     <env name="CACHE_STORE" value="array"/>
     <!-- TC-006 recrea el gestor de sesiones: el almacén debe sobrevivir entre peticiones. -->
