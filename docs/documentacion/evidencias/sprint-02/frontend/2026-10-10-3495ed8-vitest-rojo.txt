@@ -1,0 +1,114 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1
+
+
+ RUN  v5.0.3 <WORKSPACE>/frontend/web
+
+ ✓ src/Announcements.test.jsx (8 tests) 498ms
+ ✓ src/access.test.jsx (8 tests) 551ms
+ ❯ src/features/administration/sprint02.test.jsx (0 test)
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 396ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 345ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 226ms
+ ❯ src/Sprint02Landing.test.jsx (3 tests | 3 failed) 118ms
+   × S02-TC-084 carrusel reducido y teclado 46ms
+   × S02-TC-085 carrusel 2500 ms y pausas 28ms
+   × S02-TC-089 diez secciones de landing en orden 43ms
+ ✓ src/ServiceCarousel.test.jsx (2 tests) 275ms
+ ✓ src/forms.test.jsx (2 tests) 239ms
+ ✓ src/features/administration/accessibility.test.jsx (4 tests) 266ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 159ms
+ ✓ src/TechnicianProfile.test.jsx (2 tests) 188ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 140ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 118ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 42ms
+ ✓ src/features/administration/http.test.js (2 tests) 16ms
+ ✓ src/domain/marketplace.test.js (8 tests) 11ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 6ms
+ ✓ src/features/administration/labels.test.js (9 tests) 6ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/administration/sprint02.test.jsx [ src/features/administration/sprint02.test.jsx ]
+Error: Failed to resolve import "./sprint02Validation" from "src/features/administration/sprint02.test.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: <WORKSPACE>/frontend/web/src/features/administration/sprint02.test.jsx:4:127
+  2  |  import { test, expect, vi, afterEach } from "vitest";
+  3  |  import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
+  4  |  ...ate, validatePause, validateUpload, technicianState } from "./sprint02Validation";
+     |                                                                 ^
+  5  |  import { AnnouncementPreview, ReviewForm, MutationForm } from "./Sprint02Common";
+  6  |  import ConfirmDialog from "../../components/ConfirmDialog";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-084 carrusel reducido y teclado
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Primero
+Received:
+  Reparación de hardware
+ ❯ src/Sprint02Landing.test.jsx:12:331
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-085 carrusel 2500 ms y pausas
+AssertionError: expected 'Reparación de hardware' to be 'Primero' // Object.is equality
+
+Expected: "Primero"
+Received: "Reparación de hardware"
+
+ ❯ src/Sprint02Landing.test.jsx:13:263
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 diez secciones de landing en orden
+AssertionError: expected [] to deeply equal [ 'Header', 'Hero', …(8) ]
+
+- Expected
++ Received
+
+- [
+-   "Header",
+-   "Hero",
+-   "Especialidades",
+-   "Cómo funciona",
+-   "Confianza",
+-   "Testimonios",
+-   "CTA técnicos",
+-   "FAQ",
+-   "CTA final",
+-   "Footer",
+- ]
++ []
+
+ ❯ src/Sprint02Landing.test.jsx:14:235
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 17 passed (19)
+      Tests  3 failed | 92 passed (95)
+   Start at  02:14:45
+   Duration  32.40s (environment 62%, setup 13%, tests 13%, import 7%, transform 4%, worker 1%)
+
+Environment  jsdom was created 19 times · 17.03s total, 62% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to <WORKSPACE>/frontend/web/test-results/junit.xml

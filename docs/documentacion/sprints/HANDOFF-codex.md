@@ -21,6 +21,20 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-10 · Sprint 02 · S2.4 frontend
+
+- Rama feature/delgado/f-administracion/s02, slot B, base origin/main 1bfb8f4. Solo docs del sprint importados desde rama Mayhuasca 2140555; backend intacto.
+- Commits: 3495ed8 pruebas Vitest en rojo; 4a35589 implementación verde. PR #10: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10
+- Landing con 10 secciones, catálogo/carrusel v1 sin datos demo; panel admin de catálogo, comunicados y verificación; panel técnico con perfil/documentos/portafolio, disponibilidad, zonas, pausa y tarifas; comunicados al inicio de roles. Confirmaciones, versiones, errores y lectura tras resultado incierto.
+- Vitest: 112/112, salida 0; 14 IDs S02-TC-076–089 exactos, seis complementos sin inflar IDs. Líneas administración 86,40 %, global 82,66 %. Build salida 0. npm audit salida 0, 0 vulnerabilidades.
+- Cypress: 17 casos S02-TC-059–075 preparados, node --check correcto. NO EJECUTADO, como Docker/Pest/SonarQube. S02-TC-067 usa 500 simulado porque el CSV lo prescribe. No se acredita integración ni cierre del sprint.
+- Evidencias: docs/documentacion/evidencias/sprint-02/frontend/. Avance: docs/avances/delgado/sprint-02/avance.md. Revisor [PENDIENTE].
+- Ajustes de pruebas: S1 conserva aserciones y aísla el componente nuevo del portal; carrusel legado conservado para regresión D-26; S02-TC-083 comprueba descripción accesible para evitar selector ambiguo de errores.
+- Pendiente S2.5: integrar backend S2.3, merge sin rebase, ejecutar Cypress con bloqueo global y slot B. No se ejecutó todavía ni se modificó el arrancador.
+- Pedidos a Claude Code: completar/confirmar Sprint02E2ESeeder (no existía en 2140555), cuentas sintéticas y contraseña vía arrancador; pendiente completo para aprobación, otro para rechazo, al menos dos subcategorías con foto del mismo rubro para teclado. Confirmar límites de tarifa orientativa y reglas completas de subcategory_id/performed_on del portafolio: contrato §5.5/§7.4 incompleto. D-46 a D-52 leídas en la rama backend y aplicadas según contrato, sin copiar DECISIONES por fuera del alcance autorizado.
+- Bloqueo de cierre: integración real/API y revisión humana pendientes, no de la compilación frontend.
+
+
 ## 2026-10-10 · Sprint 02 · CI GitHub Actions (D-39)
 
 - Rama feature/pimentel/f-administracion/s02-ci desde origin/main 30f130e; solo configuración común y documentación.

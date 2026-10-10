@@ -1,0 +1,99 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run --coverage --maxWorkers=1
+
+
+ RUN  v5.0.3 <WORKSPACE>/frontend/web
+      Coverage enabled with v8
+
+ ✓ src/features/administration/sprint02Panels.test.jsx (6 tests) 2842ms
+   ✓ S02-TC-076 complemento: catálogo guarda y cambia estado con versión 1012ms
+   ✓ S02-TC-078 complemento: comunicado borrador publicación duplicación y retiro 452ms
+   ✓ S02-TC-081 complemento: técnico guarda bio tarifa disponibilidad y pausa 826ms
+   ✓ S02-TC-079 complemento: portafolio cancela y retira trabajo 367ms
+ ✓ src/access.test.jsx (8 tests) 497ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 528ms
+ ✓ src/Announcements.test.jsx (8 tests) 508ms
+ ✓ src/forms.test.jsx (2 tests) 201ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 241ms
+ ✓ src/Sprint02Landing.test.jsx (3 tests) 260ms
+ ✓ src/features/administration/accessibility.test.jsx (4 tests) 246ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 452ms
+   ✓ S01-TC-083 429 en español sin éxito y botón habilitado nuevamente 308ms
+ ✓ src/ServiceCarousel.test.jsx (2 tests) 422ms
+   ✓ carousel wraps, changes its catalog and preserves the selected specialty on the request link 347ms
+ ✓ src/TechnicianProfile.test.jsx (2 tests) 161ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 295ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 133ms
+ ✓ src/features/administration/sprint02.test.jsx (11 tests) 270ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 223ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 52ms
+ ✓ src/features/administration/http.test.js (2 tests) 36ms
+ ✓ src/domain/marketplace.test.js (8 tests) 25ms
+ ✓ src/features/administration/labels.test.js (9 tests) 13ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 12ms
+
+ Test Files  20 passed (20)
+      Tests  112 passed (112)
+   Start at  11:00:56
+   Duration  61.28s (environment 45%, setup 20%, tests 15%, import 11%, transform 6%, worker 3%)
+
+Environment  jsdom was created 20 times · 22.30s total, 45% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to <WORKSPACE>/frontend/web/test-results/junit.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   73.32 |    67.31 |   69.23 |   82.66 |                   
+ src               |   68.71 |    60.11 |    56.7 |   84.39 |                   
+  AccountPanel.jsx |   66.66 |    54.54 |   57.14 |    92.3 | 23                
+  ...uncements.jsx |   76.63 |    85.88 |   72.72 |   96.29 | 41                
+  App.jsx          |   94.11 |     37.5 |     100 |   93.33 | 30                
+  Auth.jsx         |   66.66 |    88.88 |      50 |     100 | 5                 
+  ...eCarousel.jsx |   86.15 |    81.81 |   75.86 |     100 | 32-36,47          
+  Marketplace.jsx  |   49.27 |    36.22 |   31.86 |   56.81 | ...40,46-47,55-75 
+  ...eCarousel.jsx |   84.28 |    81.39 |   72.41 |   85.48 | ...95-113,132,170 
+  ...anProfile.jsx |   68.18 |     64.7 |   53.33 |     100 | 7-10,22-23        
+  ...xperience.jsx |   74.35 |    53.33 |   66.66 |   82.08 | ...51,57-58,88-89 
+  main.jsx         |       0 |      100 |     100 |       0 | 8                 
+  ...tplace-api.js |   83.33 |    69.56 |     100 |     100 | 4-9               
+ src/components    |   52.63 |     37.5 |     100 |   47.05 |                   
+  ...irmDialog.jsx |   52.63 |     37.5 |     100 |   47.05 | 17-27             
+ src/domain        |   83.84 |    77.67 |   81.03 |   92.55 |                   
+  announcements.js |     100 |       75 |     100 |     100 | 3                 
+  demo.js          |   80.97 |     75.7 |   76.92 |   90.14 | 16,48-49,71,84-86 
+  matching.js      |   92.59 |    89.28 |   84.61 |     100 | 7,17              
+  permissions.js   |     100 |    83.33 |     100 |     100 | 8                 
+ ...administration |   83.33 |    75.34 |   81.49 |    86.4 |                   
+  AccountApp.jsx   |   89.18 |    77.27 |   86.66 |   97.72 | 66                
+  ...entsAdmin.jsx |   85.36 |    61.66 |      88 |    87.5 | 14-15,83,128      
+  ...ityEditor.jsx |      75 |       50 |   67.85 |      80 | ...98,170,193-200 
+  Catalog.jsx      |   95.23 |    74.07 |   93.33 |   96.15 | 27                
+  CatalogAdmin.jsx |   90.56 |    81.05 |   85.71 |   89.13 | 31,79,95-110      
+  ProfileForm.jsx  |      90 |    86.84 |     100 |   94.11 | 18,39             
+  RetireButton.jsx |   78.26 |    57.14 |     100 |   85.71 | 27-29             
+  ...uncements.jsx |     100 |       75 |     100 |     100 | 13                
+  ...cesEditor.jsx |      68 |    41.66 |   68.75 |   76.19 | 50-52,66,93       
+  SessionForm.jsx  |    82.6 |    85.71 |     100 |   96.77 | 35                
+  ...t02Common.jsx |   72.72 |     74.5 |   85.18 |   76.34 | ...74-189,229-230 
+  ...t02Portal.jsx |     100 |    83.33 |     100 |     100 | 21                
+  ...cianPanel.jsx |   67.16 |     62.5 |   61.53 |   69.84 | ...98,206,260-282 
+  ...tionAdmin.jsx |   86.36 |    63.63 |   83.33 |   85.71 | 43,79-80          
+  forms.jsx        |   91.66 |    89.28 |     100 |     100 | 31,33,35-37       
+  http.js          |    87.5 |    83.78 |   66.66 |   91.66 | 32-40             
+  ...Validation.js |    88.4 |    83.15 |     100 |   90.62 | ...7,19,28,51,112 
+ src/scroll        |   45.76 |    29.89 |   55.31 |   55.75 |                   
+  FrameCache.js    |   77.96 |    80.95 |   83.33 |   95.83 | 9                 
+  ...lServices.jsx |   26.62 |     4.47 |   35.71 |   33.78 | ...2-79,92,99-107 
+  timeline.js      |    91.3 |      100 |   85.71 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 73.32% ( 1383/1886 )
+Branches     : 67.31% ( 1067/1585 )
+Functions    : 69.23% ( 432/624 )
+Lines        : 82.66% ( 911/1102 )
+================================================================================
