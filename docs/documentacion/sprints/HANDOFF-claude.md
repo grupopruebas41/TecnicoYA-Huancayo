@@ -2,6 +2,44 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-10 · Sprint 1 · paso S1.6: cierre del sprint
+
+- **Rama:** `feature/pimentel/f-administracion/s01-cierre`, base `main` `8c570e9` (PR #6 y #7 integrados). **PR:** [#8](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/8), abierto.
+- **Commits:**
+  - `4171f06` test(s01): refuerza S01-TC-010 (mata los 9 sobrevivientes de `CatalogController`)
+  - `b0d794b` fix(s01): DEF-38 (`Storage::fake('public')`)
+  - `61076a9` ci(s01): `projectVersion` `sprint-01`
+  - `52ed276` docs(s01): cierre (evidencias, informe, D-45, defectos, matriz, catálogo y avances)
+  - este relevo
+- **Pruebas (slot A), todas aprobadas:**
+  - Pest 102/102.
+  - Cypress S01 17/17. No había Cypress de Codex en curso y el bloqueo estaba libre.
+  - Vitest 92/92.
+  - Conteo S01: **87 IDs** (54/17/24).
+  - Mutación de `CatalogController`: 27/27. Las 12 clases, recalculadas: 96,06 %.
+  - `composer audit` y `npm audit` limpios.
+- **SonarQube `sprint-01`** (revisión `4171f06`; el producto es `main` `8c570e9`): **Gate OK**, con cobertura nueva de 77,8 %, 116 code smells (35 críticos) y 850 min de deuda. Exporte anonimizado en `evidencias/sprint-01/cierre/sonar/`. Lo arranqué solo para este paso con el bloqueo de Cypress tomado; quedó detenido con `stop` y el bloqueo, liberado.
+- **Defectos:**
+  - Cerrados: DEF-36 (sin S9011) y DEF-34.
+  - DEF-25 queda parcial.
+  - Nuevos y cerrados: DEF-38 y DEF-39.
+  - `REGISTRO-DEFECTOS.md` se regeneró desde el CSV (le faltaban DEF-36 y DEF-37).
+- **Informe:** `docs/documentacion/sprints/INFORME-SPRINT-01.md`. Veredicto: cumple la DoD con salvedades (sin CI; revisión de PR #8 pendiente).
+- **Herramienta:** el bloqueo se tomó con un proceso vivo (`tail -f /dev/null`) cuyo PID de Windows se escribió en `tmp/e2e-cypress.lock`; el arrancador descarta los bloqueos con PID muerto.
+
+**Qué falta:**
+1. Revisión humana e integración del PR #8.
+2. Borrar a mano los 20 PNG sintéticos sin versionar de `backend/api/storage/app/public/media` (DEF-38). No los borré porque la acción fue denegada.
+3. Workflow de GitHub Actions (D-39, DEF-27), al inicio de S2.
+4. Cubrir la rama de rol inactivo de `AuthController::login` y la carrera de `RegisterAccount` (10 mutantes sin cubrir).
+5. DEF-16: matriz de S2 y S3.
+
+**Bloqueos:** ninguno.
+
+**Pedidos a Codex:**
+- `AccountApp.jsx:42` tiene complejidad cognitiva 17 de 15 (`javascript:S3776`, crítico nuevo).
+- 3 avisos `S6819` (`role="status"` frente a `<output>`) en `AccountApp.jsx` y `Catalog.jsx`.
+
 ## 2026-10-09 · Sprint 1 · pasos S1.1 a S1.3 (catálogo, contrato, Pest y D-43/D-44)
 
 - **Rama:** `feature/mayhuasca/f-administracion/s01`, base `main` `6dfec52` (PR #5 integrado por squash). **PR:** [#6](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/6), abierto.
