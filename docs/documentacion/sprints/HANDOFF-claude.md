@@ -2,6 +2,44 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-10 · Sprint 2 · paso S2.3: backend en verde y precisiones de Codex
+
+- **Rama:** `feature/mayhuasca/f-administracion/s02`. **PR:** ver abajo (pedido del usuario; revisión humana [PENDIENTE]).
+- **Commits:**
+  - `f501a95` feat(s02): backend en verde.
+  - `522862b` fix(s02): precisiones de Codex (contrato v1.1).
+  - commit de evidencias, avance y este relevo.
+- **Pruebas:**
+  - Pest 148/148 (1547 aserciones); Sprint02 58/58.
+  - Cobertura: FAdministration 96,74 %; clases de S2 97,14 %.
+  - `composer audit` limpio.
+  - Mutación de las 37 clases de S2: **82,91 %** (176 sobrevivientes, sobre todo campos de respuesta y de auditoría sin aserción). Detalle en `evidencias/sprint-02/pest/04-mutacion.txt`.
+- **Respuesta a las precisiones de Codex (HANDOFF-codex S2.4):**
+  1. **`Sprint02E2ESeeder`.** Existe desde `f501a95` (no estaba en `2140555`) y se amplió en `522862b`. Ver contrato §10.
+     - Cuentas, todas con `TECNICOYA_E2E_PASSWORD`, la contraseña que genera el arrancador:
+       - `e2e-admin@`, `e2e-client@` y `e2e-technician@` (pendiente e incompleto, de S1);
+       - `e2e-technician-ready@`, pendiente y completo, para aprobar (S02-TC-069);
+       - `e2e-technician-reject@`, pendiente y completo, para rechazar (S02-TC-070);
+       - `e2e-technician-active@`, activo, con servicio, franja, zona y un trabajo publicado.
+     - Carrusel: dos subcategorías de Cómputo con foto (`computo-hardware` y `computo-mantenimiento`).
+     - Comunicados: uno publicado y uno en borrador.
+     - Es idempotente; se probó dos veces en el slot A.
+  2. **Límites de la tarifa orientativa (`subcategories.reference_fee`).** **Se corrigió el backend:** ahora exige 2 decimales como máximo; antes MySQL redondeaba sin avisar. Lo prueba S02-TC-017. El rango sigue de 0 a 100 000: no es la tarifa del técnico, así que no aplican los límites de D-48. Ver contrato §7.4.
+  3. **`subcategory_id` del portafolio.** **Solo se aclaró el contrato:** el backend ya exigía una subcategoría existente, aunque esté inactiva. Ver §5.5.
+  4. **`performed_on` del portafolio.** **Se corrigió el backend:** ya no acepta fechas posteriores a hoy (reloj UTC del servidor) y responde «La fecha del trabajo no puede ser futura.». Lo prueba S02-TC-042. La validación del cliente debe imitarla.
+
+**Qué falta:**
+- Revisión e integración del PR.
+- Codex: S2.5 (Cypress 059–075 en el slot B tras integrar).
+- Reforzar las aserciones de las clases con sobrevivientes y repetir su mutación.
+- Cierre S2.6: SonarQube, conteo e informe.
+
+**Bloqueos:** ninguno.
+
+**Notas:**
+- La mutación tardó unas 4,5 h de reloj y ocupó el slot A.
+- `backend/api/storage/` sigue sin `.gitignore`: los 20 PNG de DEF-38 siguen en el disco, sin versionar.
+
 ## 2026-10-10 · Sprint 2 · paso S2.2: Pest en rojo
 
 - **Rama:** `feature/mayhuasca/f-administracion/s02`.
