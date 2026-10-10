@@ -2,6 +2,29 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-10 · Sprint 2 · paso S2.2: Pest en rojo
+
+- **Rama:** `feature/mayhuasca/f-administracion/s02`.
+- **Commits:**
+  - `93f448c` test(s02): 46 casos nuevos (013–058); 8 archivos en `tests/Feature/Sprint02/`, helpers en `tests/Support/Sprint02.php` y fixtures en `tests/fixtures/sprint02`.
+  - el siguiente commit marca los fixtures como binarios (`backend/api/.gitattributes`).
+  - `ad89d4d` evidencia `evidencias/sprint-02/pest/01-rojo.txt`.
+- **Rojo:** 36 fallan y 22 pasan.
+  - Pasan los 12 renombrados y, por código existente: 016, 017, 029, 033, 047, 050, 052, 056 y 057.
+  - **S02-TC-043 pasa en falso:** la ruta no existe y devuelve el 404 esperado. Hay que revisarla tras S2.3.
+- **Catálogo:** 050 y 051 se reformularon para no duplicar aserciones de S02-TC-008.
+
+**Qué falta:** S2.3 (verde). Orden previsto:
+1. migración `media_files.purpose` y `POST /media` con `ImageSanitizer` en PHP puro;
+2. `DistrictSeeder` y `/catalog/districts`;
+3. carrusel;
+4. especialidades y distritos admin;
+5. comunicados;
+6. verificación (bandeja, ficha, reject, suspensión y reactivación, verification-request);
+7. perfil propio, documentos y PATCH/DELETE de portafolio;
+8. reglas de D-49 y D-48 y auditoría de tarifa;
+9. `Sprint02E2ESeeder`.
+
 ## 2026-10-10 · Sprint 2 · paso S2.1: brechas, catálogo, contrato y decisiones
 
 - **Rama:** `feature/mayhuasca/f-administracion/s02`, base `main` `1bfb8f4` (PR #9 integrado), publicada en origin.
