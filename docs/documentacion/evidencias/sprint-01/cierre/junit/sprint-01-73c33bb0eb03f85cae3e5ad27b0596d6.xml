@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="5.677" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-10T05:05:43" tests="1" file="cypress\e2e\sprint-01\accessibility.cy.js" time="5.672" failures="0">
+    <testcase name="S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter" time="5.599" classname="S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter">
+    </testcase>
+  </testsuite>
+</testsuites>

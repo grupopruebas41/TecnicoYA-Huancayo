@@ -5,7 +5,7 @@
 - Responsable del avance: Delgado. Dueño de módulo según MOD-01: Pimentel; no se altera el reparto.
 - Rama: `feature/delgado/f-administracion/s01`, desde origin/main `6dfec52e`.
 - PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/7
-- Revisor humano: **[PENDIENTE]**.
+- Revisor humano: **Pimentel (revisó e integró el PR #7 el 2026-10-09)**.
 - HU/RF: HU-S01-01 a HU-S01-06; RF-28, RF-C01 y RF-C06; RNF-04, RNF-08 y RNF-09 según CATALOGO-S01.csv.
 - Fuentes: [decisiones](../../../documentacion/sprints/DECISIONES.md), [contrato](../../../documentacion/plan-pruebas-v3/sprint-01/CONTRATO-API.md), [catálogo](../../../documentacion/plan-pruebas-v3/sprint-01/CATALOGO-S01.csv). D-43 se aplica por instrucción expresa y contrato; su incorporación al registro de main corresponde al PR backend.
 
@@ -23,14 +23,14 @@ Archivos principales: `frontend/web/src/features/administration/*`, ajuste míni
 - Cobertura de líneas del módulo: 96,27 % (181/188). Global frontend: 82,97 %.
 - Build: salida 0. npm audit: salida 0, ninguna vulnerabilidad.
 - Cypress: 17 casos preparados en total; 6 nuevos (072–077). Solo se verificó sintaxis. **No ejecutado** por instrucción del usuario y restricción de memoria; reservado a S1.5.
-- Docker/Pest/SonarQube: no ejecutados. Enlace a análisis Sonar del sprint: **[PENDIENTE]**; no se reutiliza como aprobación el análisis de S00.
+- Docker/Pest/SonarQube: no ejecutados. Análisis Sonar del sprint: Quality Gate APROBADO en el cierre S1.6 (`sprint-01`, 2026-10-10; ver [INFORME-SPRINT-01.md](../../../documentacion/sprints/INFORME-SPRINT-01.md)).
 - [Evidencias completas](../../../documentacion/evidencias/sprint-01/frontend/README.md).
 
 ## Uso de IA
 
 | Herramienta/modelo | Fecha | Trabajo aceptado | Ajustes realizados durante la revisión técnica | Revisión humana |
 |---|---|---|---|---|
-| Codex, basado en GPT-6 (variante exacta no expuesta) | 2026-10-09 | Borradores de tests, implementación React, preparación Cypress y documentación de evidencia | IDs anteriores alineados al CSV; errores separados del label; distinción entre sesión vencida y acceso 403; reconfirmación por GET sin repetir escritura; diferenciación de pruebas unitarias y E2E no ejecutado | [PENDIENTE] |
+| Codex, basado en GPT-6 (variante exacta no expuesta) | 2026-10-09 | Borradores de tests, implementación React, preparación Cypress y documentación de evidencia | IDs anteriores alineados al CSV; errores separados del label; distinción entre sesión vencida y acceso 403; reconfirmación por GET sin repetir escritura; diferenciación de pruebas unitarias y E2E no ejecutado | Pimentel (PR #7, 2026-10-09) |
 
 La revisión técnica y ejecución automática realizadas por IA no sustituyen la revisión humana ni el Quality Gate.
 
@@ -42,7 +42,7 @@ Integrar el backend S1, actualizar desde main y ejecutar Cypress en slot B duran
 
 Sobre da68664 se ejecutaron git fetch origin y git merge origin/main (sin cambios; main=6dfec52e), Vitest 92/92 y build aprobado. GitHub todavía informa PR #6 abierto y merged=false. MySQL está healthy y los bloqueos global/slot B estaban libres. No se ejecutó Cypress, no se modificaron backend ni pruebas y no se levantaron contenedores. Se espera confirmación de integración del PR #6 para probar los 17 casos con el backend correcto.
 
-[Evidencia de esta comprobación](../../../documentacion/evidencias/sprint-01/cypress/README.md). Uso de IA: Codex, continuación de verificación y documentación; no se aceptó la suposición de PR integrado frente al estado real de GitHub. Revisor humano: [PENDIENTE].
+[Evidencia de esta comprobación](../../../documentacion/evidencias/sprint-01/cypress/README.md). Uso de IA: Codex, continuación de verificación y documentación; no se aceptó la suposición de PR integrado frente al estado real de GitHub. Revisor humano: Pimentel (revisó e integró el PR #7 el 2026-10-09).
 
 ## S1.5 completado · 2026-10-09
 
@@ -54,4 +54,4 @@ El PR #6 ya está integrado en origin/main a04b677. Merge sin rebase: 9b0714a. S
 - MySQL ya healthy; no se recrearon contenedores. Bloqueos global/B gestionados por arrancador y liberados al terminar. Sin Pest ni SonarQube.
 - [Evidencias y diagnóstico](../../../documentacion/evidencias/sprint-01/cypress/README.md). PR #7 actualizado mediante push y comentario.
 
-Uso de IA: Codex (GPT-6, variante exacta no expuesta), 2026-10-09: resolución de merge, ejecuciones y diagnóstico. Se corrigió la hipótesis inicial de retraso React al constatar que esperar no abrió el formulario; se contrastó el código oficial de Cypress y se verificó el evento nativo en Chrome. No se relajaron las aserciones. Revisor humano: **[PENDIENTE]**. S1.6, SonarQube y cierre global quedan pendientes.
+Uso de IA: Codex (GPT-6, variante exacta no expuesta), 2026-10-09: resolución de merge, ejecuciones y diagnóstico. Se corrigió la hipótesis inicial de retraso React al constatar que esperar no abrió el formulario; se contrastó el código oficial de Cypress y se verificó el evento nativo en Chrome. No se relajaron las aserciones. Revisor humano: **Pimentel (revisó e integró el PR #7 el 2026-10-09)**. S1.6 (SonarQube y cierre) lo hizo Claude Code en `feature/pimentel/f-administracion/s01-cierre`.
