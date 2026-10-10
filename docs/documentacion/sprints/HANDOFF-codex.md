@@ -21,6 +21,14 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-10 · Sprint 02 · CI GitHub Actions (D-39)
+
+- Rama feature/pimentel/f-administracion/s02-ci desde origin/main 30f130e; solo configuración común y documentación.
+- Workflow PHP 8.2/PCOV/MySQL 8.4 + Node 24, Pest/Vitest, build, auditorías, artefactos y conteo informativo de JUnit frescos.
+- Cypress y SonarQube permanecen locales en el cierre; CI verde no sustituye la DoD.
+- Validación remota, PR y resultados: pendientes de la primera ejecución. No se ejecutan suites ni Docker locales.
+- Revisión humana: [PENDIENTE].
+
 ## 2026-10-09 · Sprint 01 · S1.5 completado
 
 - Rama feature/delgado/f-administracion/s01, slot B. origin/main a04b677 (PR #6 integrado); merge 9b0714a, sin rebase.
