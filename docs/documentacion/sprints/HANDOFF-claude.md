@@ -2,6 +2,36 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-10 · Sprint 2 · paso S2.1: brechas, catálogo, contrato y decisiones
+
+- **Rama:** `feature/mayhuasca/f-administracion/s02`, base `main` `1bfb8f4` (PR #9 integrado), publicada en origin.
+- **Commits:**
+  - `500187b` test(s02): renombra las 12 Pest a S02-TC-001…012 con su `[TC-0xx]` (solo descripciones).
+  - `fee8f84` docs(s02): `plan-pruebas-v3/sprint-02/CATALOGO-S02.csv` (89 casos: 58 Pest, 17 Cypress y 14 Vitest), `CONTRATO-API.md` y D-46 a D-52.
+- **Pruebas:** Pest Sprint02 12/12 (148 aserciones) tras el renombrado.
+- **Decisiones (Pimentel, 2026-10-10):**
+  - D-46 (P17-S2): archivos JPG, PNG o WebP de hasta 5 MB y 5 por trabajo; documentos PDF, JPG o PNG, 5 vigentes.
+  - D-47 (MEDIA-01): revisión automática y sin EXIF.
+  - D-48 (TARIFA-01): tarifa de S/ 1 a S/ 5000, con 2 decimales.
+  - D-49 (FRANJA-01): sin solapes, contiguas permitidas, ≥ 30 min.
+  - D-50 (VERIF-01): rechazo → `rejected` y nueva solicitud; suspensión solo en backend en S2.
+  - D-51 (COM-01): solo se editan borradores.
+  - D-52 (CAT-01): `reference_fee` orientativa.
+- **Brechas principales:**
+  - no hay `POST /media`;
+  - falta el CRUD de especialidades, distritos y comunicados;
+  - faltan la bandeja, la ficha, el rechazo y la suspensión;
+  - faltan los distritos semilla (D-15) y el perfil propio del técnico;
+  - no hay ninguna pantalla v1;
+  - la landing tiene 3 de 10 secciones.
+- **Observación técnica:** el PHP de XAMPP no tiene GD (`php_gd.dll` existe pero no está cargado), y la CI instala solo `pdo_mysql`. El EXIF se quitará en PHP puro, sin depender de GD.
+
+**Qué falta:** S2.2 (Pest 013–058 en rojo) y S2.3 (backend en verde, empezando por `POST /media`).
+
+**Bloqueos:** ninguno.
+
+**Pedidos a Codex:** S2.4 con el contrato (§11). La landing tiene 10 secciones (S02-TC-089). No hay pantalla de suspensión en S2.
+
 ## 2026-10-10 · Sprint 1 · paso S1.6: cierre del sprint
 
 - **Rama:** `feature/pimentel/f-administracion/s01-cierre`, base `main` `8c570e9` (PR #6 y #7 integrados). **PR:** [#8](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/8), abierto.
