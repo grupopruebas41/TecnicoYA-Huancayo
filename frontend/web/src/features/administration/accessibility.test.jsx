@@ -4,6 +4,8 @@ import {cleanup, render, screen} from '@testing-library/react';
 import AccountApp from './AccountApp';
 import Catalog from './Catalog';
 import {request} from './http';
+// Estas pruebas aíslan sesión/RBAC; los módulos S2 se prueban por separado.
+vi.mock('./Sprint02Portal', () => ({default: () => null}));
 vi.mock('./http', () => ({request: vi.fn()}));
 afterEach(() => {cleanup(); vi.resetAllMocks();});
 const checkButtons = () => screen.getAllByRole('button').forEach(button => expect(['button', 'submit', 'reset']).toContain(button.getAttribute('type')));

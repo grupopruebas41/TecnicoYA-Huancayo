@@ -1,0 +1,8 @@
+export const api=()=>Cypress.expose('apiUrl');
+export function login(role){cy.env(['E2E_PASSWORD'],{log:false}).then(({E2E_PASSWORD})=>{expect(E2E_PASSWORD,'Contraseña sintética de S2.5').to.be.a('string');cy.visit('/#cuenta');cy.get('[data-cy=login-email]').type('e2e-'+role+'@example.test');cy.get('[data-cy=login-password]').type(E2E_PASSWORD,{log:false});cy.get('[data-cy=login-submit]').click();cy.get('[data-cy=portal-'+role+']').should('be.visible')})}
+export function admin(tab){login('admin');cy.get('nav[aria-label="Administración"]').contains('button',tab).click()}
+export function technician(tab){login('technician');cy.get('nav[aria-label="Gestión del técnico"]').contains('button',tab).click()}
+export function field(label,value){cy.contains('label',label).then($label=>{const id=$label.attr('for');if(id)cy.get('#'+CSS.escape(id)).clear().type(value,{parseSpecialCharSequences:false});else cy.wrap($label).find('input,textarea').clear().type(value,{parseSpecialCharSequences:false})})}
+export function image(){const bytes=Cypress.Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=','base64');cy.get('.s02-panel input[type=file]').first().selectFile({contents:bytes,fileName:'evidencia.png',mimeType:'image/png'})}
+export function announcement(){cy.contains('button','Crear comunicado').click();field('Título','Aviso '+Date.now());field('Contenido','Texto <img src=x onerror=alert(1)> de prueba');cy.contains('label','Clientes').find('input').check();field('Inicio de vigencia','2030-01-01T08:00');field('Fin de vigencia','2030-01-02T08:00')}
+export function observe(method,path,alias){cy.intercept(method,api()+'/api/v1'+path).as(alias)}

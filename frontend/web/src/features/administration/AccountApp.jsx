@@ -1,3 +1,4 @@
+import Sprint02Portal from './Sprint02Portal';
 import React, {useEffect, useState} from 'react';
 import {request} from './http';
 import SessionForm from './SessionForm';
@@ -62,7 +63,7 @@ export default function AccountApp() {
   return <section className="session-page" data-cy={'portal-' + role}>
     <div className="session-heading"><div><span className="kicker">{roles[role]}</span><h1>Hola, <em>{user.name}</em></h1><p>Tu cuenta, tus datos y tu acceso en un solo lugar.</p></div><button type="button" className="button outline" data-cy="logout" disabled={busy} onClick={logout}>Cerrar sesión</button></div>
     <Notice error={error}/>{role === 'technician' && <p className="notice">Estado de verificación: {verificationLabel(user.technician_profile?.verification_status)}. La disponibilidad se habilita después de la revisión.</p>}
-    <div className="session-grid"><ProfileForm key={user.id} user={user} onUpdate={setUser} onExpired={failure => { clearSession(); setBlocked(failure.status === 403); setError(failure.status === 403 ? failure.message : 'Tu sesión venció. Inicia sesión nuevamente.'); }}/>
+    <Sprint02Portal user={user}/><div className="session-grid"><ProfileForm key={user.id} user={user} onUpdate={setUser} onExpired={failure => { clearSession(); setBlocked(failure.status === 403); setError(failure.status === 403 ? failure.message : 'Tu sesión venció. Inicia sesión nuevamente.'); }}/>
       <aside className="session-details"><h2>Tu acceso</h2><p>{roles[role]}</p>{user.permissions?.length ? <ul>{user.permissions.map(code => <li key={code}>{permissionLabel(code)}</li>)}</ul> : <p>Acceso a tu perfil personal.</p>}<a className="button glass" href="#catalogo">Explorar especialidades ↗</a></aside></div>
   </section>;
 }
