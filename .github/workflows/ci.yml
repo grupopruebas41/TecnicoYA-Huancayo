@@ -1,0 +1,168 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# D-39: Cypress y SonarQube se ejecutan localmente al cierre del sprint.
+# Esta CI no sustituye sus evidencias ni el Quality Gate de SonarQube.
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend/api
+        shell: bash
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: tecnicoya_ci_testing
+      DB_USERNAME: tecnicoya_test
+      # Exclusiva del servicio efímero de este job; no es una credencial real.
+      DB_PASSWORD: ci-ephemeral-only
+      TECNICOYA_SLOT: A
+      CACHE_STORE: array
+      SESSION_DRIVER: database
+      QUEUE_CONNECTION: sync
+      MAIL_MAILER: array
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: tecnicoya_ci_testing
+          MYSQL_USER: tecnicoya_test
+          MYSQL_PASSWORD: ci-ephemeral-only
+          MYSQL_ROOT_PASSWORD: ci-root-ephemeral-only
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci-root-ephemeral-only --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql
+          coverage: pcov
+          tools: composer:v2
+      - name: Preparar entorno de pruebas aislado
+        run: |
+          mkdir -p test-results storage/framework/{cache/data,sessions,views} bootstrap/cache
+          # Dotenv requiere un archivo presente; los valores vienen del entorno del job.
+          touch .env.testing
+          echo "APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));')" >> "$GITHUB_ENV"
+      - name: Instalar dependencias bloqueadas
+        id: install
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Pest completo, JUnit y cobertura PCOV
+        run: |
+          set -o pipefail
+          php artisan config:clear
+          php -d pcov.enabled=1 -d pcov.directory=. -d 'pcov.exclude=~(vendor|storage|bootstrap/cache)~' vendor/bin/pest --log-junit test-results/junit.xml --coverage-clover test-results/clover.xml --coverage --display-warnings --fail-on-warning | tee test-results/pest.txt
+      - name: Auditoría Composer
+        if: always() && steps.install.outcome == 'success'
+        run: |
+          set -o pipefail
+          composer audit --no-interaction --format=json | tee test-results/composer-audit.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: backend-reportes
+          path: backend/api/test-results/
+          retention-days: 14
+
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend/web
+        shell: bash
+    env:
+      # Se instala el paquete bloqueado, pero no el binario E2E que esta CI no usa.
+      CYPRESS_INSTALL_BINARY: '0'
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/web/package-lock.json
+      - name: Instalar dependencias bloqueadas
+        id: install
+        run: npm ci
+      - name: Vitest completo, JUnit y cobertura
+        run: |
+          mkdir -p test-results
+          set -o pipefail
+          npm test -- --coverage | tee test-results/vitest.txt
+      - name: Compilar frontend
+        if: always() && steps.install.outcome == 'success'
+        run: |
+          mkdir -p test-results
+          set -o pipefail
+          npm run build | tee test-results/build.txt
+      - name: Auditoría npm
+        if: always() && steps.install.outcome == 'success'
+        run: |
+          mkdir -p test-results
+          set -o pipefail
+          npm audit --json | tee test-results/npm-audit.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: frontend-reportes
+          path: |
+            frontend/web/test-results/
+            frontend/web/coverage/
+          retention-days: 14
+
+  conteo:
+    needs: [backend, frontend]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: backend-reportes
+          path: reportes/backend
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: frontend-reportes
+          path: reportes/frontend
+      - name: Contar únicamente los JUnit de esta ejecución
+        shell: bash
+        run: |
+          set -o pipefail
+          test -s reportes/backend/junit.xml
+          test -s reportes/frontend/test-results/junit.xml
+          mkdir -p reportes/conteo reportes/cypress-no-ejecutado
+          args=(--pest reportes/backend/junit.xml --vitest reportes/frontend/test-results/junit.xml --cypress reportes/cypress-no-ejecutado)
+          # Sin --estricto: la cuota Cypress se verifica localmente, no se inventa.
+          node scripts/contar-pruebas-sprint.mjs "${args[@]}" | tee reportes/conteo/conteo.txt
+          node scripts/contar-pruebas-sprint.mjs "${args[@]}" --json > reportes/conteo/conteo.json
+          cat reportes/conteo/conteo.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: conteo-reportes
+          path: reportes/conteo/
+          retention-days: 14

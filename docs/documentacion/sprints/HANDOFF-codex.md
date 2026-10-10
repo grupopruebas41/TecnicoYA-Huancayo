@@ -21,6 +21,17 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-10 · Sprint 02 · CI GitHub Actions (D-39)
+
+- Rama feature/pimentel/f-administracion/s02-ci desde origin/main 30f130e; solo configuración común y documentación.
+- Workflow PHP 8.2/PCOV/MySQL 8.4 + Node 24, Pest/Vitest, build, auditorías, artefactos y conteo informativo de JUnit frescos.
+- Cypress y SonarQube permanecen locales en el cierre; CI verde no sustituye la DoD.
+- Commits: 3d28cd7 (workflow/documentación), 352288b (dotenv efímero y fallo ante advertencias). PR #9: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/9
+- Validación remota: https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38028328415, tres jobs aprobados. Pest 102/102 (1047 aserciones), Vitest 92/92, build aprobado, ambas auditorías sin vulnerabilidades. Conteo S01 78 IDs CI, sin Cypress; no acredita cierre completo.
+- Evidencias: docs/documentacion/evidencias/sprint-02/ci/2026-10-10-352288b-resultado.md. Advertencias iniciales dotenv resueltas sin tocar pruebas. No se ejecutaron suites ni Docker locales.
+- Pendiente: revisión/integración por el equipo. Cypress y Quality Gate siguen locales; sin bloqueos.
+- Revisión humana: [PENDIENTE].
+
 ## 2026-10-09 · Sprint 01 · S1.5 completado
 
 - Rama feature/delgado/f-administracion/s01, slot B. origin/main a04b677 (PR #6 integrado); merge 9b0714a, sin rebase.

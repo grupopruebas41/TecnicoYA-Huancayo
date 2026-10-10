@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "total": 60,
+    "Pest": 36,
+    "Cypress": 14,
+    "Vitest": 10
+  },
+  "fuentes": {
+    "Pest": [
+      "reportes/backend/junit.xml"
+    ],
+    "Cypress": "no encontrado (reportes/cypress-no-ejecutado)",
+    "Vitest": [
+      "reportes/frontend/test-results/junit.xml"
+    ]
+  },
+  "pruebasSinId": {
+    "Pest": 21,
+    "Cypress": 0,
+    "Vitest": 38
+  },
+  "idsHeredados": true,
+  "sprints": [
+    {
+      "sprint": "01",
+      "porHerramienta": {
+        "Pest": {
+          "aprobados": 54,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        },
+        "Cypress": {
+          "aprobados": 0,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        },
+        "Vitest": {
+          "aprobados": 24,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        }
+      },
+      "aprobadosDistintos": 78,
+      "cumple": false
+    },
+    {
+      "sprint": "02",
+      "porHerramienta": {
+        "Pest": {
+          "aprobados": 12,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        },
+        "Cypress": {
+          "aprobados": 0,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        },
+        "Vitest": {
+          "aprobados": 0,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        }
+      },
+      "aprobadosDistintos": 12,
+      "cumple": false
+    },
+    {
+      "sprint": "03",
+      "porHerramienta": {
+        "Pest": {
+          "aprobados": 15,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        },
+        "Cypress": {
+          "aprobados": 0,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        },
+        "Vitest": {
+          "aprobados": 0,
+          "fallidos": 0,
+          "omitidos": 0,
+          "fallidosIds": []
+        }
+      },
+      "aprobadosDistintos": 15,
+      "cumple": false
+    }
+  ]
+}
