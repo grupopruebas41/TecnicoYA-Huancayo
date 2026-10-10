@@ -41,5 +41,6 @@ return [
     'rate_decimals' => 'La tarifa admite como máximo 2 decimales.',
     'announcement_not_editable' => 'Solo se pueden editar comunicados en borrador. Retíralo o duplícalo.',
     'announcement_expired' => 'La vigencia ya terminó.',
+    'performed_on_future' => 'La fecha del trabajo no puede ser futura.',
     'link_scheme' => 'El enlace debe empezar con http:// o https://.',
 ];

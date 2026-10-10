@@ -11,9 +11,11 @@ use Illuminate\Support\Str;
 /**
  * Datos E2E del Sprint 2 (contrato S2 §10). Sprint01E2ESeeder aplica la guarda de base aislada y crea las cuentas
  * e2e-client, e2e-technician (pendiente e incompleto) y e2e-admin. Aquí se agregan, de forma idempotente:
- * - e2e-technician-ready@example.test: pendiente con la checklist completa (para aprobar o rechazar);
+ * - e2e-technician-ready@example.test y e2e-technician-reject@example.test: pendientes con la checklist completa
+ *   (uno para aprobar y otro para rechazar, S02-TC-069 y 070);
  * - e2e-technician-active@example.test: activo, con servicio, franja, zona y un trabajo publicado;
- * - distritos semilla, un comunicado publicado y un borrador, y una subcategoría con foto para el carrusel.
+ * - distritos semilla, un comunicado publicado y un borrador, y dos subcategorías de Cómputo con foto para
+ *   navegar el carrusel con teclado (S02-TC-060).
  * Todas las cuentas usan TECNICOYA_E2E_PASSWORD. Datos sintéticos.
  */
 final class Sprint02E2ESeeder extends Seeder
@@ -26,15 +28,19 @@ final class Sprint02E2ESeeder extends Seeder
             $district = (int) DB::table('districts')->where('code', 'HUANCAYO')->value('id');
             $subcategory = (int) DB::table('subcategories')->where('code', 'computo-hardware')->value('id');
 
-            DB::table('subcategories')->where('id', $subcategory)
-                ->update(['carousel_media_id' => $this->media($admin->id, 'e2e-s02-carrusel.png', 'catalog')]);
+            foreach (['computo-hardware' => 'e2e-s02-carrusel.png', 'computo-mantenimiento' => 'e2e-s02-carrusel-2.png'] as $code => $file) {
+                DB::table('subcategories')->where('code', $code)
+                    ->update(['carousel_media_id' => $this->media($admin->id, $file, 'catalog')]);
+            }
 
-            $ready = $this->technician('ready', 'Técnico E2E listo', 'pending_verification', 'pending');
-            $this->offer($ready, $subcategory, $district);
-            DB::table('technician_documents')->updateOrInsert(
-                ['media_id' => $this->media($ready->user_id, 'e2e-s02-documento.pdf', 'document')],
-                ['technician_id' => $ready->id, 'document_type' => 'Certificado técnico', 'review_status' => 'pending'],
-            );
+            foreach (['ready' => 'Técnico E2E listo', 'reject' => 'Técnico E2E por rechazar'] as $suffix => $name) {
+                $pending = $this->technician($suffix, $name, 'pending_verification', 'pending');
+                $this->offer($pending, $subcategory, $district);
+                DB::table('technician_documents')->updateOrInsert(
+                    ['media_id' => $this->media($pending->user_id, "e2e-s02-documento-$suffix.pdf", 'document')],
+                    ['technician_id' => $pending->id, 'document_type' => 'Certificado técnico', 'review_status' => 'pending'],
+                );
+            }
 
             $active = $this->technician('active', 'Técnico E2E activo', 'active', 'approved');
             $this->offer($active, $subcategory, $district);

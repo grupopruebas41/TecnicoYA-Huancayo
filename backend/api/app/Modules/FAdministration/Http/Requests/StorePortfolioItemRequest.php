@@ -21,11 +21,16 @@ final class StorePortfolioItemRequest extends FormRequest
             'title' => [...$required, 'string', 'min:2', 'max:160'],
             'description' => ['nullable', 'string', 'max:2000'],
             'subcategory_id' => ['nullable', 'integer', Rule::exists('subcategories', 'id')],
-            'performed_on' => ['nullable', 'date'],
+            'performed_on' => ['nullable', 'date', 'before_or_equal:today'],
             'status' => [...$required, Rule::in(['draft', 'published'])],
             'media_ids' => [...$required, 'array', 'min:1', 'max:5'],
             'media_ids.*' => ['integer', 'distinct', new PortfolioImage((int) $this->user()->id)],
             'expected_version' => $this->isMethod('patch') ? ['required', 'integer', 'min:1'] : ['prohibited'],
         ];
+    }
+
+    public function messages(): array
+    {
+        return ['performed_on.before_or_equal' => __('api.performed_on_future')];
     }
 }

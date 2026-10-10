@@ -115,6 +115,10 @@ it('S02-TC-017 VAL-02 rechaza una subcategoría con especialidad inactiva, nombr
     Sprint01::assertSpanishValidation($this->postJson('/api/v1/admin/subcategories', [
         'specialty_id' => Sprint02::specialtyId('computo'), 'name' => 'Redes domésticas nuevas', 'image_id' => $pending->id,
     ]), ['image_id']);
+    // Precisión v1.1 del contrato (§7.4): la referencia orientativa admite como máximo 2 decimales.
+    Sprint01::assertSpanishValidation($this->postJson('/api/v1/admin/subcategories', [
+        'specialty_id' => Sprint02::specialtyId('computo'), 'name' => 'Redes domésticas nuevas', 'reference_fee' => '45.555',
+    ]), ['reference_fee']);
 
     expect(DB::table('subcategories')->count())->toBe($before);
 });

@@ -1,6 +1,6 @@
 # Contrato de API · Sprint 2
 
-**Versión:** 1.0 · **Fecha:** 2026-10-10 · **Autor:** Claude Code (paso S2.1) · **Revisor:** [PENDIENTE]
+**Versión:** 1.1 · **Fecha:** 2026-10-10 · **Autor:** Claude Code (S2.1; v1.1 responde a las precisiones de Codex tras S2.4: §5.5, §7.4 y §10) · **Revisor:** [PENDIENTE]
 **Base:** `backend/api` en la rama `feature/mayhuasca/f-administracion/s02`. Catálogo de casos: [CATALOGO-S02.csv](CATALOGO-S02.csv) (89: 58 Pest, 17 Cypress y 14 Vitest).
 **Decisiones aplicadas:** D-13, D-15, D-16, D-21, D-25, D-32 y **D-46 a D-52** (2026-10-10).
 
@@ -157,7 +157,9 @@ Sin cuerpo, salvo `{ "expected_version": 8 }`. Solo si `verification_status = re
   "performed_on": "2026-09-30", "status": "published", "media_ids": [31, 32] }
 ```
 
-- `title`: de 2 a 160 caracteres. `description`: hasta 2000. `status`: `draft` o `published`.
+- `title`: de 2 a 160 caracteres. `description`: opcional, hasta 2000 o `null`. `status`: `draft` o `published`.
+- `subcategory_id`: opcional o `null`; id de una subcategoría **existente**, aunque esté inactiva, porque un trabajo pasado puede citar una subcategoría retirada después. Si el id no existe: 422.
+- `performed_on`: opcional o `null`; fecha `AAAA-MM-DD` **no posterior a hoy** (reloj del servidor, UTC). Si es futura: 422 «La fecha del trabajo no puede ser futura.» (precisión v1.1).
 - `media_ids`: **de 1 a 5** (D-46), propias, de `purpose=portfolio`, públicas y revisadas.
 - **201:** `{ "id": 5, "status": "published", "version": 1 }`.
 
@@ -244,6 +246,13 @@ Incluye las inactivas, con sus subcategorías (también las inactivas).
 ```
 
 **201** / **200** con la subcategoría como en §7.1. Errores: 422 si la especialidad está inactiva, el nombre está repetido en la especialidad o la imagen no está revisada; 409 con versión vieja.
+
+**Reglas de campos (precisión v1.1):**
+- `name`: de 2 a 180 caracteres, único dentro de su especialidad.
+- `description`: opcional, hasta 2000 o `null`.
+- `reference_fee`: opcional o `null`; de **0,00 a 100 000,00** con **2 decimales como máximo**. Es la referencia orientativa de D-52, **no** la tarifa del técnico; los límites de D-48 (S/ 1 a 5000) no se aplican aquí. Con 3 decimales: 422.
+- `image_id`: imagen pública y revisada o `null`.
+- `specialty_id` y `code` no se pueden cambiar en `PATCH` (422).
 
 ### 7.5 `GET`, `POST /admin/districts` y `PATCH /admin/districts/{id}`
 
@@ -369,11 +378,13 @@ La checklist indica si el dato existe, sin mostrar el teléfono. El documento se
 En S2.3 se agrega `Database\Seeders\Sprint02E2ESeeder`, que el arrancador E2E llama con `--sprint 02`. Contiene:
 - la semilla de autorización, el catálogo y los distritos;
 - un administrador con los tres permisos;
-- un técnico **pendiente con la checklist completa**, otro pendiente incompleto y uno **activo** con servicio, franja y un trabajo publicado;
+- dos técnicos **pendientes con la checklist completa**: `e2e-technician-ready@example.test` (para aprobar, S02-TC-069) y `e2e-technician-reject@example.test` (para rechazar, S02-TC-070);
+- `e2e-technician@example.test`, pendiente e incompleto (de S1);
+- `e2e-technician-active@example.test`, **activo**, con servicio, franja, zona y un trabajo publicado;
 - un comunicado publicado y un borrador;
-- una subcategoría con foto revisada para el carrusel.
+- **dos** subcategorías de Cómputo con foto revisada (`computo-hardware` y `computo-mantenimiento`), para navegar el carrusel con teclado (S02-TC-060).
 
-Todo con datos sintéticos; correos `@example.test`. Las credenciales se documentan en el seeder, como en S1.
+Todo con datos sintéticos; correos `@example.test`. Las cuentas usan la contraseña aleatoria que el arrancador genera en `TECNICOYA_E2E_PASSWORD` y entrega a Cypress, como en S1. El seeder es idempotente: cada corrida devuelve a los técnicos pendientes a `pending` y vuelve a crear los archivos.
 
 ## 11. Pedidos a Codex (S2.4 y S2.5)
 
