@@ -1,0 +1,36 @@
+Fecha: 2026-10-09 | Commit: 9b0714a | Salida: 0
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 --no-file-parallelism
+
+
+ RUN  v5.0.3 C:/Users/[USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ✓ src/Announcements.test.jsx (8 tests) 426ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 312ms
+ ✓ src/access.test.jsx (8 tests) 318ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 235ms
+ ✓ src/ServiceCarousel.test.jsx (2 tests) 246ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 212ms
+ ✓ src/forms.test.jsx (2 tests) 241ms
+ ✓ src/features/administration/accessibility.test.jsx (4 tests) 174ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 170ms
+ ✓ src/TechnicianProfile.test.jsx (2 tests) 124ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 98ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 91ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 39ms
+ ✓ src/features/administration/http.test.js (2 tests) 20ms
+ ✓ src/domain/marketplace.test.js (8 tests) 14ms
+ ✓ src/features/administration/labels.test.js (9 tests) 5ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 11ms
+
+ Test Files  17 passed (17)
+      Tests  92 passed (92)
+   Start at  18:13:56
+   Duration  21.66s (environment 58%, tests 15%, setup 13%, import 9%, transform 4%, worker 1%)
+
+Environment  jsdom was created 17 times · 10.38s total, 58% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to C:/Users/[USUARIO]/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml

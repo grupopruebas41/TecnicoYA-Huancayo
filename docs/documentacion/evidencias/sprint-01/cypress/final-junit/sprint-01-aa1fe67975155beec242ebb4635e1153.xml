@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fecha: 2026-10-09; commit: abb2b7b; Cypress slot B, corrida final. -->
+<testsuites name="Mocha Tests" time="14.291" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-10T04:21:33" tests="1" file="cypress\e2e\sprint-01\technician-signup.cy.js" time="14.291" failures="0">
+    <testcase name="S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificación al ingresar" time="13.444" classname="S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificación al ingresar">
+    </testcase>
+  </testsuite>
+</testsuites>

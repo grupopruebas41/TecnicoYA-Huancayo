@@ -43,3 +43,15 @@ Integrar el backend S1, actualizar desde main y ejecutar Cypress en slot B duran
 Sobre da68664 se ejecutaron git fetch origin y git merge origin/main (sin cambios; main=6dfec52e), Vitest 92/92 y build aprobado. GitHub todavía informa PR #6 abierto y merged=false. MySQL está healthy y los bloqueos global/slot B estaban libres. No se ejecutó Cypress, no se modificaron backend ni pruebas y no se levantaron contenedores. Se espera confirmación de integración del PR #6 para probar los 17 casos con el backend correcto.
 
 [Evidencia de esta comprobación](../../../documentacion/evidencias/sprint-01/cypress/README.md). Uso de IA: Codex, continuación de verificación y documentación; no se aceptó la suposición de PR integrado frente al estado real de GitHub. Revisor humano: [PENDIENTE].
+
+## S1.5 completado · 2026-10-09
+
+El PR #6 ya está integrado en origin/main a04b677. Merge sin rebase: 9b0714a. Se resolvieron cuatro conflictos de nombres solo en frontend, conservando IDs y aserciones, incluido S01-TC-076; backend coincide con main.
+
+- Vitest: 92/92, salida 0; build: salida 0, ambos sobre 9b0714a.
+- Cypress slot B: 16/17 en primer y segundo intento; S01-TC-075 falló por Enter nativo incompleto. ab71db2 agregó sincronización de render (insuficiente); abb2b7b corrigió la tecla por CDP en Chromium y verificó isTrusted=true, sin click ni respuestas HTTP inventadas.
+- Corrida final: **17/17**, sin fallos ni omitidos. IDs 015–025 y 072–077 cotejados con CSV; seis JUnit preservados. Los dos intentos fallidos también se conservan.
+- MySQL ya healthy; no se recrearon contenedores. Bloqueos global/B gestionados por arrancador y liberados al terminar. Sin Pest ni SonarQube.
+- [Evidencias y diagnóstico](../../../documentacion/evidencias/sprint-01/cypress/README.md). PR #7 actualizado mediante push y comentario.
+
+Uso de IA: Codex (GPT-6, variante exacta no expuesta), 2026-10-09: resolución de merge, ejecuciones y diagnóstico. Se corrigió la hipótesis inicial de retraso React al constatar que esperar no abrió el formulario; se contrastó el código oficial de Cypress y se verificó el evento nativo en Chrome. No se relajaron las aserciones. Revisor humano: **[PENDIENTE]**. S1.6, SonarQube y cierre global quedan pendientes.

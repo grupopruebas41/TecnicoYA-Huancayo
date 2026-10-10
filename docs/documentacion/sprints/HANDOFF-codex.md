@@ -21,6 +21,18 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-09 · Sprint 01 · S1.5 completado
+
+- Rama feature/delgado/f-administracion/s01, slot B. origin/main a04b677 (PR #6 integrado); merge 9b0714a, sin rebase.
+- Cuatro conflictos de títulos resueltos solo en frontend con IDs del catálogo y aserciones intactas. Backend coincide con origin/main.
+- Vitest sobre merge: 92/92 (17 archivos), salida 0. Build: salida 0.
+- Cypress: 16/17 en 9b0714a y ab71db2; fallo único S01-TC-075. Sincronizar render no bastó. abb2b7b completa Enter por CDP en Chromium, comprueba isTrusted=true y conserva recorrido por teclado/POST real.
+- **Final abb2b7b: 17/17, salida 0**, seis specs; IDs S01-TC-015–025 y 072–077 cotejados con CSV. Sin omitidos/reintentos automáticos/respuestas de servidor fabricadas. Producto no cambió después del merge.
+- MySQL ya healthy; no se levantó/recreó. Bloqueo global respetado, global y B liberados al final. No se ejecutó Pest ni SonarQube.
+- Evidencias: docs/documentacion/evidencias/sprint-01/cypress/README.md (tres logs, tres conjuntos JUnit, diagnóstico); avance de Delgado actualizado. PR #7: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/7
+- Pendiente: revisión humana [PENDIENTE], S1.6 y Quality Gate/cierre de sprint. Sin bloqueos de S1.5.
+
+
 ## 2026-10-09 · Sprint 01 · S1.5 pendiente de PR #6
 
 - Rama feature/delgado/f-administracion/s01; código probado da68664, slot B.
