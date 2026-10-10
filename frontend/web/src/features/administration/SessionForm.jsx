@@ -20,7 +20,7 @@ export default function SessionForm({onLogin}) {
     data.email = data.email.trim().toLowerCase();
     const invalid = validateAccount(data, register);
     setErrors(invalid); setSuccess(''); setError('');
-    if (Object.keys(invalid).length) { setError('Revisa los campos indicados.'); return; }
+    if (Object.keys(invalid).length) { setError('Revisa los campos indicados.'); form.elements.namedItem(Object.keys(invalid)[0])?.focus(); return; }
     setBusy(true);
     try {
       await request(register ? '/auth/register' : '/auth/login', data);
@@ -28,7 +28,14 @@ export default function SessionForm({onLogin}) {
       if (register) {
         setEmail(data.email); setRegister(false); setSuccess('Cuenta creada correctamente. Inicia sesión para continuar.');
       } else onLogin((await request('/me')).data);
-    } catch (failure) { setError(failure.message); setErrors(failure.fields || {}); }
+    } catch (failure) {
+      setError(failure.message); setErrors(failure.fields || {});
+      if (failure.status === 0) {
+        // Una respuesta perdida puede haber creado la sesión. Nunca reenviamos el POST.
+        try { const current = await request('/me'); if (!register) onLogin(current.data, failure.message); }
+        catch { /* El aviso incierto permanece; no se afirma que la operación falló. */ }
+      }
+    }
     finally { setBusy(false); }
   }
   const prefix = register ? 'register' : 'login';

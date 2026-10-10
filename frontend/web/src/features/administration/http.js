@@ -2,10 +2,11 @@ import {apiMessage} from './labels';
 const origin = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 export class ApiError extends Error {
-  constructor(message, status, fields = {}) {
+  constructor(message, status, fields = {}, code) {
     super(message);
     this.status = status;
     this.fields = fields;
+    this.code = code;
   }
 }
 
@@ -20,9 +21,23 @@ async function send(path, options = {}) {
     throw new ApiError('No pudimos confirmar el resultado. Revisa tu conexión y consulta el estado antes de repetir la operación.', 0);
   }
   if (response.status === 204) return null;
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new ApiError(apiMessage(body.message || body.error?.message || 'El servicio no está disponible.'), response.status, body.errors || body.error?.fields);
+  const body = await response.json().catch(() => null);
+  if (!response.ok) throw new ApiError(apiMessage(body?.error?.message || body?.message || statusMessage(response.status)), response.status, body?.error?.fields || body?.errors, body?.error?.code);
+  // Un 200 ilegible no confirma una operación: consultamos el estado sin repetir la escritura.
+  if (!body || typeof body !== 'object' || !('data' in body)) throw new ApiError('No pudimos confirmar el resultado. Revisa tu conexión y consulta el estado antes de repetir la operación.', 0);
   return body;
+}
+
+function statusMessage(status) {
+  const messages = {
+    401: 'Tu sesión no está activa. Inicia sesión nuevamente.',
+    403: 'No tienes permiso para realizar esta acción.',
+    409: 'La información cambió. Actualiza y vuelve a intentarlo.',
+    419: 'Tu sesión venció. Actualiza la página e inicia sesión nuevamente.',
+    422: 'Revisa los campos indicados.',
+    429: 'Hay demasiados intentos. Espera antes de volver a intentarlo.',
+  };
+  return messages[status] || 'El servicio no está disponible. Inténtalo nuevamente más tarde.';
 }
 
 export async function request(path, body, method = body ? 'POST' : 'GET') {

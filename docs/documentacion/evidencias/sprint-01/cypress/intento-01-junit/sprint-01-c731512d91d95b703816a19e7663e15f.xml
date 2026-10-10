@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fecha: 2026-10-09; commit: 9b0714a; intento fallido preservado. -->
+<testsuites name="Mocha Tests" time="53.400" tests="7" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-09T23:15:48" tests="0" file="cypress\e2e\sprint-01\portals.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Sprint 1: UI real con sesión" timestamp="2026-10-09T23:15:49" tests="7" time="52.532" failures="0">
+    <testcase name="Sprint 1: UI real con sesión S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior" time="15.495" classname="S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-015 [TC-001] registra un cliente mediante formulario" time="3.740" classname="S01-TC-015 [TC-001] registra un cliente mediante formulario">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-016 [TC-005] inicia sesión real como client y mantiene identidad al recargar" time="9.359" classname="S01-TC-016 [TC-005] inicia sesión real como client y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-017 [TC-005] inicia sesión real como technician y mantiene identidad al recargar" time="6.362" classname="S01-TC-017 [TC-005] inicia sesión real como technician y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-018 [TC-005] inicia sesión real como admin y mantiene identidad al recargar" time="9.819" classname="S01-TC-018 [TC-005] inicia sesión real como admin y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-019 [TC-006] rechaza por HTTP la cookie de una sesión cerrada" time="7.002" classname="S01-TC-019 [TC-006] rechaza por HTTP la cookie de una sesión cerrada">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-020 rechaza un login sin token CSRF en el servidor HTTP" time="1.097" classname="S01-TC-020 rechaza un login sin token CSRF en el servidor HTTP">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fecha: 2026-10-09; commit: ab71db2; intento fallido preservado. -->
+<testsuites name="Mocha Tests" time="24.906" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-09T23:20:51" tests="0" file="cypress\e2e\sprint-01\validation.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Alertas y validación del incremento Sprint 1" timestamp="2026-10-09T23:20:52" tests="3" time="24.256" failures="0">
+    <testcase name="Alertas y validación del incremento Sprint 1 S01-TC-023 [TC-001, TC-002]: valida el registro en cliente y muestra el rechazo del correo duplicado del servidor" time="6.839" classname="S01-TC-023 [TC-001, TC-002]: valida el registro en cliente y muestra el rechazo del correo duplicado del servidor">
+    </testcase>
+    <testcase name="Alertas y validación del incremento Sprint 1 S01-TC-024 [TC-005]: muestra el error de credenciales del servidor en español" time="4.894" classname="S01-TC-024 [TC-005]: muestra el error de credenciales del servidor en español">
+    </testcase>
+    <testcase name="Alertas y validación del incremento Sprint 1 S01-TC-025 [TC-009, TC-010, TC-137]: valida el perfil, confirma el guardado y conserva una edición concurrente" time="12.969" classname="S01-TC-025 [TC-009, TC-010, TC-137]: valida el perfil, confirma el guardado y conserva una edición concurrente">
+    </testcase>
+  </testsuite>
+</testsuites>

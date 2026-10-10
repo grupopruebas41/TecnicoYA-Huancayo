@@ -1,7 +1,7 @@
 const api = Cypress.expose('apiUrl');
 
 describe('Sprint 1: catálogo', () => {
-  it('S01-TC-021 muestra el catálogo real servido por Laravel/MySQL [TC-012]', () => {
+  it('S01-TC-021 [TC-012] muestra el catálogo real servido por Laravel/MySQL', () => {
     cy.intercept('GET', `${api}/api/v1/catalog/specialties*`).as('specialties');
     cy.intercept('GET', `${api}/api/v1/catalog/subcategories*`).as('subcategories');
     cy.visit('/#catalogo');
@@ -22,7 +22,7 @@ describe('Sprint 1: catálogo', () => {
     });
   });
 
-  it('S01-TC-022 informa un fallo realista sin inventar catálogo [TC-012]', () => {
+  it('S01-TC-022 [TC-012] informa un fallo realista sin inventar catálogo', () => {
     // Variante de fallo controlado; la variante anterior no sustituye la API.
     cy.intercept('GET', `${api}/api/v1/catalog/specialties*`, { forceNetworkError: true }).as('failed');
     cy.visit('/#catalogo');

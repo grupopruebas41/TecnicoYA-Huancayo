@@ -17,7 +17,23 @@ function login(role) {
 }
 
 describe('Sprint 1: UI real con sesión', () => {
-  it('S01-TC-015 registra un cliente mediante formulario [TC-001]', () => {
+  it('S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior', () => {
+    login('client');
+    cy.get('[data-cy=profile-name]').invoke('val').then(clientName => {
+      cy.get('[data-cy=logout]').click();
+      cy.get('[data-cy=login-submit]').should('be.visible');
+      login('technician');
+      cy.get('[data-cy=portal-client]').should('not.exist');
+      cy.get('[data-cy=portal-technician]').should('not.contain', clientName);
+      cy.request({url: `${api}/api/v1/me`, headers: {Origin: site}}).then(({body}) => {
+        cy.get('[data-cy=profile-name]').should('have.value', body.data.name);
+        cy.get('[data-cy=profile-phone]').should('have.value', body.data.phone || '');
+      });
+      cy.get('[data-cy=logout]').click();
+      cy.get('[data-cy=login-submit]').should('be.visible');
+    });
+  });
+  it('S01-TC-015 [TC-001] registra un cliente mediante formulario', () => {
     cy.intercept('POST', `${api}/api/v1/auth/register`).as('register');
     cy.visit('/#cuenta');
     cy.get('[data-cy=show-register]').click();
@@ -32,8 +48,8 @@ describe('Sprint 1: UI real con sesión', () => {
     cy.get('[data-cy=register-success]').should('be.visible');
   });
 
-  for (const [role, id] of [['client', 'S01-TC-016'], ['technician', 'S01-TC-017'], ['admin', 'S01-TC-018']]) {
-    it(`${id} inicia sesión real como ${role} y mantiene identidad al recargar [TC-005]`, () => {
+  for (const role of ['client', 'technician', 'admin']) {
+    it(`S01-TC-${{client: '016', technician: '017', admin: '018'}[role]} [TC-005] inicia sesión real como ${role} y mantiene identidad al recargar`, () => {
       cy.intercept('POST', `${api}/api/v1/auth/login`).as('login');
       login(role);
       cy.wait('@login').its('response.statusCode').should('eq', 200);
@@ -46,7 +62,7 @@ describe('Sprint 1: UI real con sesión', () => {
     });
   }
 
-  it('S01-TC-019 rechaza por HTTP la cookie de una sesión cerrada [TC-006]', () => {
+  it('S01-TC-019 [TC-006] rechaza por HTTP la cookie de una sesión cerrada', () => {
     login('client');
     cy.getCookie(Cypress.expose('sessionCookie'), { log: false }).then((cookie) => {
       expect(cookie).not.to.be.null;

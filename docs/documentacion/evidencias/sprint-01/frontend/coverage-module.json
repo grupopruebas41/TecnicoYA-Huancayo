@@ -1,0 +1,10 @@
+{
+  "fecha": "2026-10-09",
+  "commit": "72872a8918cf63fe7189bd0ebfba3009fea1b43f",
+  "modulo": "frontend/web/src/features/administration",
+  "lineas_cubiertas": 181,
+  "lineas_totales": 188,
+  "cobertura_lineas": 96.27659574468085,
+  "cypress": "NO EJECUTADO: paso S1.5",
+  "sonarqube": "NO EJECUTADO: cierre del sprint"
+}
