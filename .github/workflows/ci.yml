@@ -63,6 +63,8 @@ jobs:
       - name: Preparar entorno de pruebas aislado
         run: |
           mkdir -p test-results storage/framework/{cache/data,sessions,views} bootstrap/cache
+          # Dotenv requiere un archivo presente; los valores vienen del entorno del job.
+          touch .env.testing
           echo "APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));')" >> "$GITHUB_ENV"
       - name: Instalar dependencias bloqueadas
         id: install
@@ -71,7 +73,7 @@ jobs:
         run: |
           set -o pipefail
           php artisan config:clear
-          php -d pcov.enabled=1 -d pcov.directory=. -d 'pcov.exclude=~(vendor|storage|bootstrap/cache)~' vendor/bin/pest --log-junit test-results/junit.xml --coverage-clover test-results/clover.xml --coverage | tee test-results/pest.txt
+          php -d pcov.enabled=1 -d pcov.directory=. -d 'pcov.exclude=~(vendor|storage|bootstrap/cache)~' vendor/bin/pest --log-junit test-results/junit.xml --coverage-clover test-results/clover.xml --coverage --display-warnings --fail-on-warning | tee test-results/pest.txt
       - name: Auditoría Composer
         if: always() && steps.install.outcome == 'success'
         run: |
