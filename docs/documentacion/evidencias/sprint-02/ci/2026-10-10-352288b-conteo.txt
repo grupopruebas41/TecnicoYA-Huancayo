@@ -1,0 +1,16 @@
+Reportes JUnit:
+  Pest    reportes/backend/junit.xml
+  Cypress no encontrado (reportes/cypress-no-ejecutado)
+  Vitest  reportes/frontend/test-results/junit.xml
+
+Meta por sprint: ≥ 60 IDs aprobados distintos (Pest ≥ 36, Cypress ≥ 14, Vitest ≥ 10).
+Columnas por herramienta: aprobados / fallidos / omitidos (IDs distintos).
+
+Sprint | Pest        | Cypress     | Vitest      | Aprobados | ¿Llega a 60?
+-------|-------------|-------------|-------------|-----------|-------------
+S01    | 54 / 0 / 0  | 0 / 0 / 0   | 24 / 0 / 0  | 78        | No (faltan Pest 0, Cypress 14, Vitest 0; total 0)
+S02    | 12 / 0 / 0  | 0 / 0 / 0   | 0 / 0 / 0   | 12        | No (faltan Pest 24, Cypress 14, Vitest 10; total 48)
+S03    | 15 / 0 / 0  | 0 / 0 / 0   | 0 / 0 / 0   | 15        | No (faltan Pest 21, Cypress 14, Vitest 10; total 45)
+
+Pruebas sin ID (no cuentan): Pest 21, Cypress 0, Vitest 38.
+Aviso: hay IDs heredados TC-NNN (sprint deducido del catálogo). Renombrar a SNN-TC-NNN [TC-0xx] (AGENTS.md, regla 7).

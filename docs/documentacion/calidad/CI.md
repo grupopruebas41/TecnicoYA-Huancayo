@@ -21,3 +21,7 @@ El conteo es informativo y no usa --estricto: la cuota del proyecto incluye Cypr
 Permiso de GitHub limitado a contents: read; acciones fijadas por SHA. No se usa pull_request_target ni secretos de despliegue. Las contraseñas visibles de MySQL solo sirven al contenedor efímero del job y no se reutilizan fuera de CI. APP_KEY se genera en cada ejecución, no se versiona. La base termina en _testing y las pruebas mantienen su protección contra bases de desarrollo. No se leen archivos .env locales ni se conecta a XAMPP o a los slots del equipo.
 
 Las auditorías bloquean el trabajo si encuentran vulnerabilidades; corregir dependencias mediante un PR revisado. La configuración de protección de main y la revisión humana son tareas administrativas separadas: este workflow no cambia permisos del repositorio.
+
+## Primera validación
+
+Commit 352288b: [ejecución aprobada](https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38028328415), Pest 102/102 sin advertencias, Vitest 92/92, build y auditorías aprobados. El runner crea un .env.testing vacío: los valores se inyectan por entorno. Pest bloquea advertencias con --fail-on-warning. Evidencia conservada en ../evidencias/sprint-02/ci/.

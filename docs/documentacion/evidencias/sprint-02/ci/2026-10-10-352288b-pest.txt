@@ -1,0 +1,321 @@
+
+   PASS  Tests\Feature\AnnouncementsTest
+  ✓ only admin can write announcements                                   7.97s  
+  ✓ audiences drafts archives and priority are filtered in api           0.12s  
+  ✓ edit moves audience and archive removes publication                  0.08s  
+  ✓ validation rejects scripts invalid audiences and fake images         0.06s  
+  ✓ image and link survive save and read                                 0.03s  
+
+   PASS  Tests\Feature\MarketplaceTest
+  ✓ api registration verification and revocable sessions                 0.17s  
+  ✓ authenticated lifecycle and rating                                   0.05s  
+  ✓ deadlines and three simultaneous offers                              0.10s  
+  ✓ api refuses admin signup and other clients actions                   0.06s  
+  ✓ expired rating is rejected                                           0.12s  
+  ✓ php fallback matches reference                                       0.01s  
+  ✓ technician updates only own terms and cannot self verify             0.04s  
+  ✓ pending offers and assigned work lock service terms                  0.08s  
+  ✓ permission matrix denies every other role action                     0.09s  
+  ✓ suspension revokes sessions and reactivation requires new login      0.06s  
+  ✓ admin accounts are protected and accounts are private                0.04s  
+  ✓ profile cannot escalate role or edit another account                 0.03s  
+  ✓ address is hidden until confirmation and other technicians cannot s… 0.16s  
+  ✓ active work prevents suspension                                      0.04s  
+  ✓ subcategory validation persistence and matching                      0.09s  
+  ✓ matching rejects missing skills and keeps legacy requests            0.01s  
+
+   PASS  Tests\Feature\Sprint01\AdminAccessAuditTest
+  ✓ it S01-TC-087 audita el inicio fallido, el inicio y el cierre de se… 0.37s  
+
+   PASS  Tests\Feature\Sprint01\AuthorizationMatrixTest
+  ✓ it S01-TC-055 responde 401 en español a GET /me sin sesión           0.11s  
+  ✓ it S01-TC-056 responde 403 a GET /me de una cuenta suspendida sin e… 0.10s  
+  ✓ it S01-TC-057 responde 403 a PATCH /me de una cuenta suspendida sin… 0.12s  
+  ✓ it S01-TC-058 deniega con 403 la ruta administrativa a un técnico y… 0.13s  
+  ✓ it S01-TC-059 responde 401 a la ruta administrativa sin sesión [TC-… 0.10s  
+  ✓ it S01-TC-060 deniega la ruta administrativa a un administrador sus… 0.15s  
+  ✓ it S01-TC-061 permite la ruta administrativa al administrador activ… 0.10s  
+  ✓ it S01-TC-062 devuelve en GET /me del cliente solo lo propio de su…  0.10s  
+  ✓ it S01-TC-063 devuelve en GET /me del administrador los permisos de… 0.16s  
+  ✓ it S01-TC-071 sirve el mismo catálogo público a anónimo, cliente, t… 0.12s  
+
+   PASS  Tests\Feature\Sprint01\ProfileBoundariesTest
+  ✓ it S01-TC-064 rechaza nombres de 1 y de 101 caracteres en el perfil… 0.05s  
+  ✓ it S01-TC-065 acepta un teléfono de 20 caracteres con prefijo, espa… 0.04s  
+  ✓ it S01-TC-066 rechaza un teléfono de 21 caracteres                   0.04s  
+  ✓ it S01-TC-067 rechaza un teléfono con letras                         0.04s  
+  ✓ it S01-TC-068 borra el teléfono cuando se envía nulo e incrementa l… 0.04s  
+  ✓ it S01-TC-069 no permite cambiar correo, contraseña ni tipo de cuen… 0.04s  
+  ✓ it S01-TC-070 rechaza la edición del perfil sin expected_version [T… 0.04s  
+
+   PASS  Tests\Feature\Sprint01\ProvisionAdminTest
+  ✓ it S01-TC-012 crea un administrador con secretos ocultos y auditorí… 0.05s  
+  ✓ it S01-TC-013 rechaza correo existente y confirmación incorrecta si… 0.03s  
+  ✓ it S01-TC-014 revierte el alta si no puede persistir la auditoría    0.04s  
+
+   PASS  Tests\Feature\Sprint01\RegisterWithSessionTest
+  ✓ it S01-TC-086 rechaza el registro con una sesión abierta sin crear…  0.07s  
+
+   PASS  Tests\Feature\Sprint01\RegistrationBoundariesTest
+  ✓ it S01-TC-034 acepta nombres de 2 y de 100 caracteres en el registr… 0.05s  
+  ✓ it S01-TC-035 rechaza nombres de 1 y de 101 caracteres sin crear us… 0.04s  
+  ✓ it S01-TC-036 acepta una contraseña de 8 caracteres y otra de 72 by… 0.08s  
+  ✓ it S01-TC-037 rechaza una contraseña de 7 caracteres                 0.04s  
+  ✓ it S01-TC-038 rechaza una contraseña de más de 72 bytes aunque teng… 0.04s  
+  ✓ it S01-TC-039 rechaza una confirmación de contraseña distinta        0.04s  
+  ✓ it S01-TC-040 acepta un correo de 254 caracteres y lo guarda comple… 0.04s  
+  ✓ it S01-TC-041 rechaza un correo de 255 caracteres                    0.04s  
+  ✓ it S01-TC-042 normaliza el correo al guardarlo y permite iniciar se… 0.05s  
+  ✓ it S01-TC-043 rechaza al cliente sin tipo de cliente o con un tipo…  0.05s  
+  ✓ it S01-TC-044 rechaza al técnico que envía tipo de cliente           0.04s  
+  ✓ it S01-TC-045 responde al registro vacío con el mensaje general y e… 0.03s  
+
+   PASS  Tests\Feature\Sprint01\SessionSecurityTest
+  ✓ it S01-TC-046 no deja iniciar sesión a una cuenta suspendida y resp… 0.45s  
+  ✓ it S01-TC-047 responde igual a un correo inexistente y a una contra… 0.44s  
+  ✓ it S01-TC-048 regenera el identificador de sesión al iniciar sesión  0.05s  
+  ✓ it S01-TC-049 emite la cookie de sesión HttpOnly con SameSite=Lax y… 0.04s  
+  ✓ it S01-TC-050 responde 429 en español al intento siguiente al límit… 0.65s  
+  ✓ it S01-TC-051 restablece el límite de intentos después del minuto    0.66s  
+  ✓ it S01-TC-052 rechaza PATCH /me sin token CSRF y no cambia el perfi… 0.03s  
+  ✓ it S01-TC-053 responde 401 en español al cerrar sesión sin sesión    0.03s  
+  ✓ it S01-TC-054 permite a una cuenta suspendida cerrar su sesión e in… 0.05s  
+
+   PASS  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ✓ it S01-TC-001 rechaza el correo duplicado normalizado sin crear otr… 0.06s  
+
+   PASS  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ✓ it S01-TC-002 registra al técnico como pendiente de verificación y…  0.06s  
+
+   PASS  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ✓ it S01-TC-003 rechaza que el técnico se autoactive y conserva el es… 0.05s  
+
+   PASS  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ✓ it S01-TC-004 invalida la sesión al cerrar sesión y responde 401 si… 0.06s  
+
+   PASS  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ✓ it S01-TC-005 deniega con 403 una ruta administrativa a un cliente…  0.04s  
+
+   PASS  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ✓ it S01-TC-006 rechaza el alta administrativa desde el registro públ… 0.04s  
+
+   PASS  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ✓ it S01-TC-007 guarda nombre y teléfono propios e incrementa la vers… 0.06s  
+
+   PASS  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ✓ it S01-TC-008 responde 409 ante una versión obsoleta y conserva la…  0.06s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it S01-TC-009 repite la semilla del catálogo sin duplicados y con r… 0.07s  
+
+   PASS  Tests\Feature\Sprint01\TC012CatalogApiTest
+  ✓ it S01-TC-010 sirve solo categorías activas y valida el filtro sin…  0.12s  
+
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ✓ it S01-TC-011 guarda la contraseña con bcrypt y no la expone en res… 0.06s  
+
+   PASS  Tests\Feature\Sprint02\TC015CreateSubcategoryTest
+  ✓ it TC-015: crea una subcategoría con imagen revisada y la ofrece en… 0.11s  
+
+   PASS  Tests\Feature\Sprint02\TC016DeactivateSubcategoryTest
+  ✓ it TC-016: desactiva una subcategoría usada sin borrar su identidad… 0.14s  
+
+   PASS  Tests\Feature\Sprint02\TC017AnnouncementAudienceTest
+  ✓ it TC-017: entrega el comunicado vigente dirigido a técnicos solo a… 0.07s  
+
+   PASS  Tests\Feature\Sprint02\TC018DuplicateAnnouncementTest
+  ✓ it TC-018: duplica un comunicado publicado como borrador que no apa… 0.07s  
+
+   PASS  Tests\Feature\Sprint02\TC019DocumentedApprovalTest
+  ✓ it TC-019: aprueba al técnico pendiente y registra la decisión, su…  0.13s  
+
+   PASS  Tests\Feature\Sprint02\TC020ForeignDocumentDeniedTest
+  ✓ it TC-020: deniega a un técnico el documento privado de otro sin re… 0.06s  
+
+   PASS  Tests\Feature\Sprint02\TC021PublishedPortfolioWorkTest
+  ✓ it TC-021: publica un trabajo con su imagen en la galería pública s… 0.08s  
+
+   PASS  Tests\Feature\Sprint02\TC023ValidAvailabilityTest
+  ✓ it TC-023: guarda horarios, zonas y una pausa válida que el filtro…  0.08s  
+
+   PASS  Tests\Feature\Sprint02\TC024InvalidIntervalTest
+  ✓ it TC-024: rechaza en español una franja que termina antes de empez… 0.06s  
+
+   PASS  Tests\Feature\Sprint02\TC025NewRateVersionTest
+  ✓ it TC-025: crea la versión 2 de la tarifa y conserva la versión 1 s… 0.10s  
+
+   PASS  Tests\Feature\Sprint02\TC026NegativeRateTest
+  ✓ it TC-026: rechaza en español una tarifa negativa sin crear versión… 0.09s  
+
+   PASS  Tests\Feature\Sprint02\TC134ForeignAvailabilityOrRateTest
+  ✓ it TC-134: impide que otro técnico o un cliente cambien la disponib… 0.13s  
+
+   PASS  Tests\Feature\Sprint03\TC029OwnPhotoLinkedTest
+  ✓ it TC-029: vincula la foto propia solo a su solicitud y la muestra…  0.17s  
+
+   PASS  Tests\Feature\Sprint03\TC030ForeignFileReferenceTest
+  ✓ it TC-030: deniega vincular el archivo privado de otro cliente y lo… 0.14s  
+
+   PASS  Tests\Feature\Sprint03\TC031ReferenceFeeVisibleTest
+  ✓ it TC-031: muestra la tarifa como referencial con su procedencia y…  0.11s  
+
+   PASS  Tests\Feature\Sprint03\TC032OutOfCoverageTest
+  ✓ it TC-032: informa fuera de cobertura y no registra la solicitud de… 0.10s  
+
+   PASS  Tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest
+  ✓ it TC-034: muestra al cliente bio, servicios y portafolio del técni… 0.11s  
+
+   PASS  Tests\Feature\Sprint03\TC035DirectedOriginPreservedTest
+  ✓ it TC-035: conserva el origen desde perfil y el técnico elegido sin… 0.11s  
+
+   PASS  Tests\Feature\Sprint03\TC036IncompatibleTargetTest
+  ✓ it TC-036: rechaza un técnico objetivo que no ofrece la subcategorí… 0.10s  
+
+   PASS  Tests\Feature\Sprint03\TC037IdempotentSubmissionTest
+  ✓ it TC-037: repite el mismo envío con su clave y obtiene el mismo re… 0.13s  
+
+   PASS  Tests\Feature\Sprint03\TC038ForeignRequestTest
+  ✓ it TC-038: deniega el detalle de la solicitud de otro cliente sin d… 0.11s  
+
+   PASS  Tests\Feature\Sprint03\TC119RequiredDataRejectedTest
+  ✓ it TC-119: rechaza en la API, sin React, una solicitud con datos ob… 0.11s  
+
+   PASS  Tests\Feature\Sprint03\TC120InactiveSubcategoryTest
+  ✓ it TC-120: rechaza una subcategoría inactiva o de rubro inactivo id… 0.10s  
+
+   PASS  Tests\Feature\Sprint03\TC121ScheduledWithoutDateTest
+  ✓ it TC-121: rechaza en español la modalidad programada sin fecha u h… 0.11s  
+
+   PASS  Tests\Feature\Sprint03\TC126SubmittedRequestImmutableTest
+  ✓ it TC-126: rechaza modificar o eliminar una solicitud ya enviada y…  0.17s  
+
+   PASS  Tests\Feature\Sprint03\TC127PhotosHiddenFromUnnotifiedTechnicianTest
+  ✓ it TC-127: oculta fotos, descripción y dirección de una solicitud a… 0.10s  
+
+   PASS  Tests\Feature\Sprint03\TC129RemovePhotoByApiTest
+  ✓ it TC-129: solo el titular retira la foto de una solicitud no envia… 0.13s  
+
+  Tests:    102 passed (1047 assertions)
+  Duration: 18.24s
+
+  app/Console/Commands/ProvisionAdmin [90m.................................[39m [32m100.0%[39m  
+  app/Http/Controllers/AuthController [90m.................................[39m [32m100.0%[39m  
+  app/Http/Controllers/Controller [90m.....................................[39m [32m100.0%[39m  
+  app/Http/Controllers/MarketplaceController [90m......................[39m [33m22[39m[33m [39m[90m/[39m[33m 93.8%[39m  
+  app/Http/Middleware/ApiToken [90m........................................[39m [32m100.0%[39m  
+  app/Http/Middleware/EnsureAccountIsActive [90m...........................[39m [32m100.0%[39m  
+  app/Http/Middleware/RejectActiveSession [90m.............................[39m [32m100.0%[39m  
+  app/Http/Middleware/RequirePermission [90m...............................[39m [32m100.0%[39m  
+  app/Http/Middleware/RequireRole [90m.....................................[39m [32m100.0%[39m  
+  app/Models/Announcement [90m.............................................[39m [32m100.0%[39m  
+  app/Models/ClientProfile [90m............................................[39m [32m100.0%[39m  
+  app/Models/District [90m.................................................[39m [32m100.0%[39m  
+  app/Models/MediaFile [90m................................................[39m [32m100.0%[39m  
+  app/Models/ServiceRateVersion [90m.......................................[39m [32m100.0%[39m  
+  app/Models/ServiceRequest [90m...........................................[39m [32m100.0%[39m  
+  app/Models/TechnicianDocument [90m.......................................[39m [32m100.0%[39m  
+  app/Models/TechnicianProfile [90m................................[39m [33m25..30[39m[33m [39m[90m/[39m[33m 50.0%[39m  
+  app/Models/TechnicianService [90m........................................[39m [32m100.0%[39m  
+  app/Models/User [90m.....................................................[39m [32m100.0%[39m  
+  app/Modules/ARequests/Application/ManageServiceRequests [90m.............[39m [32m100.0%[39m  
+  app/Modules/ARequests/Application/RequestTimeline [90m...................[39m [32m100.0%[39m  
+  app/Modules/ARequests/Application/ServiceRequestView [90m................[39m [32m100.0%[39m  
+  app/Modules/ARequests/Domain/AttachableEvidence [90m.....................[39m [32m100.0%[39m  
+  app/Modules/ARequests/Domain/TargetTechnicianOffers [90m.................[39m [32m100.0%[39m  
+  app/Modules/ARequests/Http/Controllers/ServiceRequestController [90m.....[39m [32m100.0%[39m  
+  app/Modules/ARequests/Http/Requests/AttachEvidenceRequest [90m...........[39m [32m100.0%[39m  
+  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest [90m......[39m [32m100.0%[39m  
+  app/Modules/ARequests/Http/Requests/SubmitServiceRequestRequest [90m.[39m [33m23[39m[33m [39m[90m/[39m[33m 85.7%[39m  
+  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest [90m.....[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/Announcements [90m...............[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/AuditAdminAccess [90m............[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/ManageSubcategories [90m.....[39m [33m66[39m[33m [39m[90m/[39m[33m 97.2%[39m  
+  app/Modules/FAdministration/Application/OwnTechnicianProfile [90m........[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/Portfolio [90m...................[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/ProvisionAdministrator [90m..[39m [33m17[39m[33m [39m[90m/[39m[33m 94.7%[39m  
+  app/Modules/FAdministration/Application/PublicTechnicianProfile [90m.....[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/RegisterAccount [90m.....[39m [33m36..41[39m[33m [39m[90m/[39m[33m 80.0%[39m  
+  app/Modules/FAdministration/Application/ReviewTechnician [90m........[39m [33m27[39m[33m [39m[90m/[39m[33m 97.1%[39m  
+  app/Modules/FAdministration/Application/UpdateAvailability [90m..........[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/UpdateProfile [90m...............[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Application/UpdateServices [90m..[39m [33m36..41, 38[39m[33m [39m[90m/[39m[33m 83.3%[39m  
+  app/Modules/FAdministration/Domain/ActiveSubcategory [90m................[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Domain/PortfolioImage [90m...................[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Domain/ReviewedImage [90m....................[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Domain/TechnicianAvailability [90m...........[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Controllers/AdminCatalogController [90m.[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Controllers/AnnouncementController [90m.[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Controllers/AuthController [90m.[39m [33m36..41[39m[33m [39m[90m/[39m[33m 76.2%[39m  
+  app/Modules/FAdministration/Http/Controllers/CatalogController [90m......[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Controllers/MediaController  [33m34, 37[39m[33m [39m[90m/[39m[33m 85.7%[39m  
+  app/Modules/FAdministration/Http/Controllers/ProfileController [90m......[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Controllers/TechnicianProfileContr…  [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/AccountRequest [90m............[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/CreateSubcategoryRequest [90m..[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/LoginRequest [90m..............[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/RegisterAccountRequest [90m....[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/ReviewTechnicianRequest [90m...[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/StorePortfolioItemRequest [90m.[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/UpdateAvailabilityRequest [90m.[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/UpdateProfileRequest [90m......[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/UpdateServicesRequest [90m.....[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Requests/UpdateSubcategoryRequest [90m..[39m [32m100.0%[39m  
+  app/Modules/FAdministration/Http/Resources/AccountData [90m..........[39m [33m25[39m[33m [39m[90m/[39m[33m 92.9%[39m  
+  app/Providers/AppServiceProvider [90m....................................[39m [32m100.0%[39m  
+  app/Services/Announcements [90m..........................................[39m [32m100.0%[39m  
+  app/Services/Marketplace [90m....................................[39m [33m79, 88[39m[33m [39m[90m/[39m[33m 97.0%[39m  
+  app/Services/Matching [90m.......................................[39m [33m20..23[39m[33m [39m[90m/[39m[33m 75.0%[39m  
+  app/Services/Permissions [90m............................................[39m [32m100.0%[39m  
+  app/Shared/Audit/AuditTrail [90m.........................................[39m [32m100.0%[39m  
+  app/Shared/Auth/EffectivePermissions [90m............................[39m [33m20[39m[33m [39m[90m/[39m[33m 93.3%[39m  
+  app/Shared/Http/ApiExceptionRenderer [90m........................[39m [33m33, 40[39m[33m [39m[90m/[39m[33m 89.5%[39m  
+  app/Shared/Http/ApiResponse [90m.........................................[39m [32m100.0%[39m  
+  app/Shared/Http/Idempotency [90m.........................................[39m [32m100.0%[39m  
+  config/app [90m..........................................................[39m [32m100.0%[39m  
+  config/auth [90m.........................................................[39m [32m100.0%[39m  
+  config/cache [90m........................................................[39m [32m100.0%[39m  
+  config/cors [90m.........................................................[39m [32m100.0%[39m  
+  config/database [90m.....................................................[39m [32m100.0%[39m  
+  config/filesystems [90m..................................................[39m [32m100.0%[39m  
+  config/logging [90m......................................................[39m [32m100.0%[39m  
+  config/mail [90m.........................................................[39m [32m100.0%[39m  
+  config/marketplace [90m..................................................[39m [32m100.0%[39m  
+  config/queue [90m........................................................[39m [32m100.0%[39m  
+  config/sanctum [90m......................................................[39m [32m100.0%[39m  
+  config/security [90m.....................................................[39m [32m100.0%[39m  
+  config/services [90m.....................................................[39m [32m100.0%[39m  
+  config/session [90m......................................................[39m [32m100.0%[39m  
+  database/factories/AnnouncementFactory [90m..............................[39m [32m100.0%[39m  
+  database/factories/ClientProfileFactory [90m.............................[39m [32m100.0%[39m  
+  database/factories/DistrictFactory [90m..................................[39m [32m100.0%[39m  
+  database/factories/MediaFileFactory [90m.................................[39m [32m100.0%[39m  
+  database/factories/ServiceRequestFactory [90m............................[39m [32m100.0%[39m  
+  database/factories/TechnicianDocumentFactory [90m........................[39m [32m100.0%[39m  
+  database/factories/TechnicianProfileFactory [90m.........................[39m [32m100.0%[39m  
+  database/factories/TechnicianServiceFactory [90m.........................[39m [32m100.0%[39m  
+  database/factories/UserFactory [90m......................................[39m [32m100.0%[39m  
+  database/migrations/2026_09_22_000001_create_marketplace [90m........[39m [33m13[39m[33m [39m[90m/[39m[33m 87.5%[39m  
+  database/migrations/2026_09_28_000002_add_account_access [90m........[39m [33m10[39m[33m [39m[90m/[39m[33m 83.3%[39m  
+  database/migrations/2026_09_28_000003_create_announcements [90m......[39m [33m16[39m[33m [39m[90m/[39m[33m 90.9%[39m  
+  database/migrations/2026_10_04_000004_add_subcategories [90m.....[39m [33m11..12[39m[33m [39m[90m/[39m[33m 66.7%[39m  
+  database/migrations/2026_10_06_000005_create_roles_and_permissions_…  [33m37..38[39m[33m [39m[90m/[39m[33m 90.9%[39m  
+  database/migrations/2026_10_06_000006_extend_users_for_sprint01  [33m28..30[39m[33m [39m[90m/[39m[33m 76.5%[39m  
+  database/migrations/2026_10_06_000007_create_permission_pivots  [33m31..32[39m[33m [39m[90m/[39m[33m 88.9%[39m  
+  database/migrations/2026_10_06_000008_create_basic_profiles [90m.[39m [33m54..55[39m[33m [39m[90m/[39m[33m 94.7%[39m  
+  database/migrations/2026_10_06_000009_create_initial_catalog  [33m52..53[39m[33m [39m[90m/[39m[33m 94.4%[39m  
+  database/migrations/2026_10_06_000010_create_sessions_table [90m.....[39m [33m24[39m[33m [39m[90m/[39m[33m 91.7%[39m  
+  database/migrations/2026_10_06_000011_create_audit_entries_table  [33m39[39m[33m [39m[90m/[39m[33m 95.8%[39m  
+  database/migrations/2026_10_07_000012_create_districts_and_media_fi…  [33m49..50[39m[33m [39m[90m/[39m[33m 94.1%[39m  
+  database/migrations/2026_10_07_000013_add_catalog_media [90m.....[39m [33m23..24[39m[33m [39m[90m/[39m[33m 81.8%[39m  
+  database/migrations/2026_10_07_000014_create_technician_services_an…  [33m104..108[39m[33m [39m[90m/[39m[33m 94.0%[39m  
+  database/migrations/2026_10_07_000015_create_verification_and_portf…  [33m79..83[39m[33m [39m[90m/[39m[33m 92.1%[39m  
+  database/migrations/2026_10_07_000016_extend_announcements_for_v1  [33m34..37[39m[33m [39m[90m/[39m[33m 78.3%[39m  
+  database/migrations/2026_10_07_000017_create_service_requests  [33m102..105[39m[33m [39m[90m/[39m[33m 95.1%[39m  
+  database/seeders/AuthorizationSeeder [90m....................[39m [33m36..37, 46[39m[33m [39m[90m/[39m[33m 90.3%[39m  
+  database/seeders/CatalogSeeder [90m..............................[39m [33m15, 35[39m[33m [39m[90m/[39m[33m 92.0%[39m  
+  database/seeders/Sprint01E2ESeeder [90m....................................[39m [31m0.0%[39m  
+  routes/api [90m..........................................................[39m [32m100.0%[39m  
+  routes/console [90m...............................................[39m [33m9..11[39m[33m [39m[90m/[39m[33m 57.1%[39m  
+  [90m────────────────────────────────────────────────────────────────────────────[39m  
+                                                                 [1mTotal: 94.6 %[22m  
+
