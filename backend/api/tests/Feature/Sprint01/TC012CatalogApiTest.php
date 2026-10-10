@@ -5,6 +5,7 @@ use Database\Seeders\AuthorizationSeeder;
 use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Tests\Support\Sprint02;
 
 uses(RefreshDatabase::class);
@@ -21,6 +22,7 @@ function s01CatalogExpectedRow(object $row): array
 
 it('S01-TC-010 sirve solo categorías activas y valida el filtro sin inventar resultados [TC-012]', function () {
     $this->seed([AuthorizationSeeder::class, CatalogSeeder::class]);
+    Storage::fake('public');
     $specialty = DB::table('specialties')->orderBy('display_order')->first();
     $this->getJson('/api/v1/catalog/specialties')->assertOk()->assertJsonCount(3, 'data');
     $this->getJson('/api/v1/catalog/subcategories?specialty_id=inválido')->assertUnprocessable();
