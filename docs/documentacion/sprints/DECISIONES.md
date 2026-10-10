@@ -56,6 +56,7 @@
 | D-42 | COV-01 · Cobertura de `database/`, `routes/` y `config/` (DEF-35) | Opción A: ampliar `<source>` de `backend/api/phpunit.xml` a `database`, `routes` y `config`; no se excluye nada en SonarQube | 2026-10-09 | Pimentel |
 | D-43 | S01-A · Registro con sesión abierta | Opción A: `POST /api/v1/auth/register` con una sesión activa se rechaza con 403 y el mensaje «Ya tienes una sesión activa. Cierra sesión para crear otra cuenta.»; no se crea usuario ni perfil y la sesión no cambia (S01-TC-086) | 2026-10-09 | Pimentel |
 | D-44 | S01-B · Auditoría de accesos | Opción A: se auditan en `audit_entries` los inicios de sesión exitosos y fallidos y los cierres de sesión de cuentas administradoras, sin contraseña ni datos de sesión (SEC-S01-05; S01-TC-087). Los demás roles no se auditan en S1 | 2026-10-09 | Pimentel |
+| D-45 | S01-C · Alcance de la mutación en el cierre de S1 | No se corre la mutación del módulo `FAdministration` completo (848 mutantes, unas 2,8 h). Basta la de las 12 clases del Sprint 1 (`04-mutacion.txt`) y, tras reforzar S01-TC-010, una nueva corrida solo de `CatalogController` (27/27). La rama de cierre es `feature/pimentel/f-administracion/s01-cierre` | 2026-10-09 | Pimentel |
 
 ## Decisiones pendientes
 

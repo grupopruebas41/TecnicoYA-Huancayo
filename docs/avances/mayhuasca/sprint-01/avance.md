@@ -27,8 +27,8 @@
   - DEF-37: la primera corrida de `pest --mutate` dio un 95,05 % falso porque en Windows los procesos de mutante no arrancaban y contaban como eliminados. Se descartó y se repitió invocando `vendor\bin\pest`.
   - `composer audit`: sin avisos. [05-audit.txt](../../../documentacion/evidencias/sprint-01/05-audit.txt)
   - Cypress y Vitest nuevos (072 a 085): a cargo de Codex (N.4 y N.5).
-- **SonarQube:** no se ejecuta en este paso (regla 12b); se analiza en el cierre S1.6 sobre el commit integrado. Quality Gate: [PENDIENTE].
-- **Revisor:** [PENDIENTE]
+- **SonarQube:** no se ejecuta en este paso (regla 12b); se analiza en el cierre S1.6 sobre el commit integrado. Quality Gate: APROBADO en el cierre S1.6 (análisis `sprint-01`, 2026-10-10; ver [INFORME-SPRINT-01.md](../../../documentacion/sprints/INFORME-SPRINT-01.md)).
+- **Revisor:** Pimentel (revisó e integró el PR #6 el 2026-10-09)
 - **Fecha:** 2026-10-09
 - **Pendientes y bloqueos:**
   - Codex: Vitest 078 a 085 (incluido 084, que falla hasta corregir DEF-36) y Cypress 072 a 077.
@@ -40,4 +40,4 @@
 
 | Herramienta y modelo | Fecha | Qué se aceptó | Qué se corrigió | Quién lo revisó |
 |---|---|---|---|---|
-| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | 2026-10-09 | Tabla de brechas, catálogo de 87 casos, contrato de API, propuesta de las decisiones S01-A y S01-B (el equipo eligió la opción A de ambas), 40 pruebas Pest y la implementación de D-43 y D-44 | S01-TC-063 falló en el primer intento por un error de la propia prueba (faltaban `granted_by` y `granted_at` al insertar la concesión individual); se corrigió antes del commit de rojo. El ejemplo de teléfono del catálogo tenía 19 caracteres y se ajustó a 20. La primera puntuación de mutación (95,05 %) era falsa (DEF-37); Claude Code la detectó por su duración (806 mutantes en 53 s), la comprobó con Symfony Process y repitió la ejecución | [PENDIENTE] |
+| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | 2026-10-09 | Tabla de brechas, catálogo de 87 casos, contrato de API, propuesta de las decisiones S01-A y S01-B (el equipo eligió la opción A de ambas), 40 pruebas Pest y la implementación de D-43 y D-44 | S01-TC-063 falló en el primer intento por un error de la propia prueba (faltaban `granted_by` y `granted_at` al insertar la concesión individual); se corrigió antes del commit de rojo. El ejemplo de teléfono del catálogo tenía 19 caracteres y se ajustó a 20. La primera puntuación de mutación (95,05 %) era falsa (DEF-37); Claude Code la detectó por su duración (806 mutantes en 53 s), la comprobó con Symfony Process y repitió la ejecución | Pimentel (PR #6, 2026-10-09) |

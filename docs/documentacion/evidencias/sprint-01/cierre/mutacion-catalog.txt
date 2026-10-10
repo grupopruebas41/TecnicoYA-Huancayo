@@ -1,0 +1,49 @@
+# Evidencia S1.6 · Mutación de CatalogController tras reforzar S01-TC-010
+# Fecha: 2026-10-09/10 · Base: main 8c570e9 + prueba reforzada (commit test(s01) de esta rama) · Rama: feature/pimentel/f-administracion/s01-cierre · slot A
+# Comando (PowerShell, desde backend/api, con C:\xampp\php en el PATH; forma de DEF-37):
+#   php -d pcov.enabled=1 -d pcov.directory=. -d "pcov.exclude=~(vendor|storage|bootstrap/cache)~" 'vendor\bin\pest' tests/Feature/Sprint01 --mutate --everything --clear-cache --path=app/Modules/FAdministration/Http/Controllers/CatalogController.php
+# Antes (04-mutacion.txt, 2e5b3d0): 27 mutantes en CatalogController, 17 eliminados, 1 timeout y 9 sobrevivientes (líneas 20, 22 x2, 28 x3, 29 x2 y 30).
+# Ahora: 27/27 eliminados, puntuación 100 %. Duración 637,7 s (~23,6 s por mutante; tiempo coherente con procesos reales, no el falso positivo de DEF-37).
+# Puntuación recalculada de las 12 clases del Sprint 1 (no es una nueva corrida de las 12): 254 mutantes, 244 eliminados (incluido el timeout ahora eliminado), 10 sin cubrir (AuthController 36-41 y RegisterAccount 38-39) => 96,06 %.
+
+﻿
+  ......................................................
+
+  Tests:    54 passed (471 assertions)
+  Duration: 45.88s
+
+  Mutating application files...
+  27 Mutations for 1 Files created
+
+   RUN  <raiz>/backend\api\app\Modules\FAdministration\Http\Controllers\CatalogController.php
+  ✓ Line 14: DecrementInteger
+  ✓ Line 14: IncrementInteger
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 22: DecrementInteger
+  ✓ Line 22: DecrementInteger
+  ✓ Line 22: IncrementInteger
+  ✓ Line 22: IncrementInteger
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 30: TernaryNegated
+  ✓ Line 30: RemoveArrayItem
+  Mutations: 27 tested
+  Score:     100.00%
+  Duration:  637.70s
+

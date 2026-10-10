@@ -1,0 +1,20 @@
+# S1.6 · Conteo de IDs por sprint
+# Fecha: 2026-10-10 · JUnit de Pest y Cypress en 4171f06 y de Vitest en 8c570e9 (copias en junit/)
+# Comando: node scripts/contar-pruebas-sprint.mjs
+
+Reportes JUnit:
+  Pest    backend\api\test-results\junit.xml
+  Cypress frontend\web\test-results\cypress\sprint-01-012f74f84ab102687500ecdf46b34a3b.xml, frontend\web\test-results\cypress\sprint-01-3e5a6dff0d9186bfcea8baae952cadfb.xml, frontend\web\test-results\cypress\sprint-01-4358f29927f9ef07ad196cccfe4b29b9.xml, frontend\web\test-results\cypress\sprint-01-73c33bb0eb03f85cae3e5ad27b0596d6.xml, frontend\web\test-results\cypress\sprint-01-b2fdfad8c08ac31a2b85b50156a476a4.xml, frontend\web\test-results\cypress\sprint-01-f08cff57e52b483027eb7b1e2e29bb9f.xml
+  Vitest  frontend\web\test-results\junit.xml
+
+Meta por sprint: ≥ 60 IDs aprobados distintos (Pest ≥ 36, Cypress ≥ 14, Vitest ≥ 10).
+Columnas por herramienta: aprobados / fallidos / omitidos (IDs distintos).
+
+Sprint | Pest        | Cypress     | Vitest      | Aprobados | ¿Llega a 60?
+-------|-------------|-------------|-------------|-----------|-------------
+S01    | 54 / 0 / 0  | 17 / 0 / 0  | 24 / 0 / 0  | 87        | Sí
+S02    | 12 / 0 / 0  | 0 / 0 / 0   | 0 / 0 / 0   | 12        | No (faltan Pest 24, Cypress 14, Vitest 10; total 48)
+S03    | 15 / 0 / 0  | 0 / 0 / 0   | 0 / 0 / 0   | 15        | No (faltan Pest 21, Cypress 14, Vitest 10; total 45)
+
+Pruebas sin ID (no cuentan): Pest 21, Cypress 0, Vitest 38.
+Aviso: hay IDs heredados TC-NNN (sprint deducido del catálogo). Renombrar a SNN-TC-NNN [TC-0xx] (AGENTS.md, regla 7).

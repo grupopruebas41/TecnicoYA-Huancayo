@@ -1,0 +1,3 @@
+# composer audit · 2026-10-09 · base main 8c570e9 · backend/api
+No security vulnerability advisories found.
+exit 0
