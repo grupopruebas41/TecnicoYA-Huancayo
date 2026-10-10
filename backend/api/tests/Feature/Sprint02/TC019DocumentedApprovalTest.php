@@ -24,7 +24,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-019: aprueba al técnico pendiente y registra la decisión, su autor y su fecha', function () {
+it('S02-TC-005 aprueba al técnico pendiente y registra la decisión, su autor y su fecha [TC-019]', function () {
     // Dado un perfil pendiente con teléfono, servicio con tarifa, zona y evidencia
     $technician = TechnicianProfileFactory::new()->create();
     TechnicianServiceFactory::new()->create(['technician_id' => $technician->id]);

@@ -19,7 +19,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-134: impide que otro técnico o un cliente cambien la disponibilidad o la tarifa ajena', function () {
+it('S02-TC-012 impide que otro técnico o un cliente cambien la disponibilidad o la tarifa ajena [TC-134]', function () {
     // Dado un técnico con horario y tarifa vigentes
     $service = TechnicianServiceFactory::new()->create(['reference_fee' => '50.00']);
     $owner = $service->technician;

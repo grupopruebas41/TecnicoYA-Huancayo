@@ -17,7 +17,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-026: rechaza en español una tarifa negativa sin crear versión ni cambiar la vigente', function () {
+it('S02-TC-011 rechaza en español una tarifa negativa sin crear versión ni cambiar la vigente [TC-026]', function () {
     // Dado un técnico editando su propio servicio con tarifa 50
     $service = TechnicianServiceFactory::new()->create(['reference_fee' => '50.00']);
     $technician = $service->technician;

@@ -19,7 +19,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-018: duplica un comunicado publicado como borrador que no aparece en ningún panel', function () {
+it('S02-TC-004 duplica un comunicado publicado como borrador que no aparece en ningún panel [TC-018]', function () {
     // Dado un comunicado publicado para ambos roles
     $published = AnnouncementFactory::new()->forRoles(['client', 'technician'])->create(['title' => 'Mantenimiento programado']);
     $admin = Sprint02::admin();
