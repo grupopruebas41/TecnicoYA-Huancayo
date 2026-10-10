@@ -66,5 +66,10 @@ return [
         'preferred_start_at' => 'inicio preferido', 'preferred_end_at' => 'fin preferido', 'source' => 'origen',
         'target_technician_id' => 'técnico elegido', 'media_id' => 'foto', 'summary_confirmed' => 'el resumen de la solicitud',
         'idempotency_key' => 'clave de idempotencia',
+        // Sprint 2: archivos, comunicados, perfil técnico y documentos.
+        'file' => 'archivo', 'purpose' => 'finalidad', 'audiences' => 'audiencias', 'audiences.*' => 'audiencia',
+        'starts_at' => 'inicio de la vigencia', 'ends_at' => 'fin de la vigencia', 'link_url' => 'enlace',
+        'link_label' => 'texto del enlace', 'body' => 'texto', 'priority' => 'prioridad', 'bio' => 'biografía',
+        'experience_years' => 'años de experiencia', 'document_type' => 'tipo de documento', 'performed_on' => 'fecha del trabajo',
     ],
 ];

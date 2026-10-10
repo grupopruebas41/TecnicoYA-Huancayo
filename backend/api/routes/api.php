@@ -3,8 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MarketplaceController;
 use App\Modules\ARequests\Http\Controllers\ServiceRequestController;
+use App\Modules\FAdministration\Http\Controllers\AdminAnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
+use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
+use App\Modules\FAdministration\Http\Controllers\CatalogController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
 use App\Modules\FAdministration\Http\Controllers\ProfileController;
 use App\Modules\FAdministration\Http\Controllers\TechnicianProfileController;
@@ -22,8 +25,10 @@ Route::middleware(['token', 'throttle:120,1'])->group(function () {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::get('catalog/specialties', [App\Modules\FAdministration\Http\Controllers\CatalogController::class, 'specialties']);
-    Route::get('catalog/subcategories', [App\Modules\FAdministration\Http\Controllers\CatalogController::class, 'subcategories']);
+    Route::get('catalog/specialties', [CatalogController::class, 'specialties']);
+    Route::get('catalog/subcategories', [CatalogController::class, 'subcategories']);
+    Route::get('catalog/carousel', [CatalogController::class, 'carousel']);
+    Route::get('catalog/districts', [CatalogController::class, 'districts']);
     Route::middleware('throttle:spa-auth')->group(function () {
         Route::post('auth/register', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'register'])
             ->middleware('session.none'); // D-43
@@ -38,6 +43,7 @@ Route::prefix('v1')->group(function () {
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
         Route::get('announcements', [AnnouncementController::class, 'index']);
+        Route::post('media', [MediaController::class, 'store']); // D-46 y D-47; StoreMediaRequest autoriza por finalidad.
 
         Route::get('technicians/{technician}', [TechnicianProfileController::class, 'show'])->whereNumber('technician');
 
@@ -54,20 +60,44 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('technicians/me')->middleware('role:technician')->group(function () {
+            Route::get('profile', [TechnicianProfileController::class, 'profile']);
+            Route::patch('profile', [TechnicianProfileController::class, 'updateProfile']);
+            Route::post('verification-request', [TechnicianProfileController::class, 'requestVerification']); // D-50
+            Route::post('documents', [TechnicianProfileController::class, 'storeDocument']);
             Route::put('availability', [TechnicianProfileController::class, 'availability']);
             Route::put('services', [TechnicianProfileController::class, 'services']);
             Route::post('portfolio', [TechnicianProfileController::class, 'storePortfolio']);
+            Route::patch('portfolio/{item}', [TechnicianProfileController::class, 'updatePortfolio'])->whereNumber('item');
+            Route::delete('portfolio/{item}', [TechnicianProfileController::class, 'retirePortfolio'])->whereNumber('item');
         });
 
         Route::prefix('admin')->group(function () {
             Route::middleware('permission:catalog.manage')->group(function () {
+                Route::get('specialties', [AdminCatalogController::class, 'specialties']);
+                Route::post('specialties', [AdminCatalogController::class, 'storeSpecialty']);
+                Route::patch('specialties/{specialty}', [AdminCatalogController::class, 'updateSpecialty'])->whereNumber('specialty');
                 Route::post('subcategories', [AdminCatalogController::class, 'storeSubcategory']);
                 Route::patch('subcategories/{subcategory}', [AdminCatalogController::class, 'updateSubcategory'])->whereNumber('subcategory');
+                Route::get('districts', [AdminCatalogController::class, 'districts']);
+                Route::post('districts', [AdminCatalogController::class, 'storeDistrict']);
+                Route::patch('districts/{district}', [AdminCatalogController::class, 'updateDistrict'])->whereNumber('district');
             });
-            Route::post('announcements/{announcement}/duplicates', [AnnouncementController::class, 'duplicate'])
-                ->middleware('permission:announcements.manage');
-            Route::post('technicians/{technician}/reviews', [TechnicianProfileController::class, 'review'])
-                ->whereNumber('technician')->middleware('permission:technicians.verify');
+            Route::middleware('permission:announcements.manage')->group(function () {
+                Route::get('announcements', [AdminAnnouncementController::class, 'index']);
+                Route::post('announcements', [AdminAnnouncementController::class, 'store']);
+                Route::patch('announcements/{announcement}', [AdminAnnouncementController::class, 'update']);
+                Route::post('announcements/{announcement}/publication', [AdminAnnouncementController::class, 'publish']);
+                Route::delete('announcements/{announcement}', [AdminAnnouncementController::class, 'retire']);
+                Route::post('announcements/{announcement}/duplicates', [AnnouncementController::class, 'duplicate']);
+            });
+            Route::prefix('technicians')->middleware('permission:technicians.verify')->group(function () {
+                Route::get('/', [AdminTechnicianController::class, 'index']);
+                Route::get('{technician}', [AdminTechnicianController::class, 'show'])->whereNumber('technician');
+                Route::post('{technician}/reviews', [AdminTechnicianController::class, 'review'])->whereNumber('technician');
+                // D-32 y D-50: suspensión y reactivación con motivo; sin pantalla hasta el Sprint 7.
+                Route::post('{technician}/suspension', [AdminTechnicianController::class, 'suspend'])->whereNumber('technician');
+                Route::post('{technician}/reactivation', [AdminTechnicianController::class, 'reactivate'])->whereNumber('technician');
+            });
         });
     });
 });

@@ -80,6 +80,7 @@ it('S02-TC-057 VAL-02 rechaza una subcategoría inactiva o de una especialidad i
     $this->assertDatabaseCount('technician_services', 0);
 });
 
+// MySQL guarda JSON con las claves reordenadas: se compara sin orden (toEqual).
 it('S02-TC-058 audita el cambio de tarifa con el valor anterior y el nuevo', function () {
     $service = TechnicianServiceFactory::new()->create(['technician_id' => $this->technician->id, 'subcategory_id' => $this->subcategory]);
 
@@ -89,6 +90,6 @@ it('S02-TC-058 audita el cambio de tarifa con el valor anterior y el nuevo', fun
     expect($entry->actor_id)->toBe($this->technician->user_id)
         ->and($entry->subject_type)->toBe('technician_service')
         ->and($entry->subject_id)->toBe($service->id)
-        ->and(json_decode($entry->before_values, true))->toBe(['reference_fee' => '50.00', 'rate_version' => 1])
-        ->and(json_decode($entry->after_values, true))->toBe(['reference_fee' => '60.00', 'rate_version' => 2]);
+        ->and(json_decode($entry->before_values, true))->toEqual(['reference_fee' => '50.00', 'rate_version' => 1])
+        ->and(json_decode($entry->after_values, true))->toEqual(['reference_fee' => '60.00', 'rate_version' => 2]);
 });
