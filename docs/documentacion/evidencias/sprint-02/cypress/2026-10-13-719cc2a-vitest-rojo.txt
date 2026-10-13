@@ -1,0 +1,34 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 src/features/administration/sprint025.test.js
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/features/administration/sprint025.test.js (2 tests | 2 failed) 8ms
+   × S02-TC-076 referencia orientativa: límites y decimales v1.1 5ms
+   × S02-TC-088 fecha de portafolio opcional y no futura UTC 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/administration/sprint025.test.js > S02-TC-076 referencia orientativa: límites y decimales v1.1
+TypeError: validateReferenceFee is not a function
+ ❯ src/features/administration/sprint025.test.js:2:121
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/administration/sprint025.test.js > S02-TC-088 fecha de portafolio opcional y no futura UTC
+TypeError: validatePerformedOn is not a function
+ ❯ src/features/administration/sprint025.test.js:3:146
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  08:02:17
+   Duration  1.58s (environment 74%, setup 19%, transform 6%, worker 1%, tests 1%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml

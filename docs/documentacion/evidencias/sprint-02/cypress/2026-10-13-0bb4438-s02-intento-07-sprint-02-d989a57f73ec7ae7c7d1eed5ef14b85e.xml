@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="116.713" tests="5" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-13T18:25:45" tests="0" file="cypress\e2e\sprint-02\technician.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Técnico S2" timestamp="2026-10-13T18:25:45" tests="5" time="116.707" failures="1">
+    <testcase name="Técnico S2 S02-TC-071 subir y publicar portafolio" time="28.190" classname="S02-TC-071 subir y publicar portafolio">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-072 cancelar y confirmar retiro de trabajo" time="15.761" classname="S02-TC-072 cancelar y confirmar retiro de trabajo">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-073 franjas solapadas y persistencia" time="0.000" classname="S02-TC-073 franjas solapadas y persistencia">
+      <failure message="Timed out retrying after 20000ms: Expected to find element: `[data-cy=portal-technician]`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Expected to find element: `[data-cy=portal-technician]`, but never found it.
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-02/helpers.js:2:431)
+    at getRet (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:120751:20)
+    at tryCatcher (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1780:23)
+    at Promise.attempt.Promise.try (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:4288:29)
+    at Context.thenFn (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:120763:66)
+    at Context.then (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:121014:21)
+    at wrapped (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:146077:19)]]></failure>
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-074 tarifa inválida y actualización" time="25.475" classname="S02-TC-074 tarifa inválida y actualización">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-075 activar y quitar pausa" time="20.935" classname="S02-TC-075 activar y quitar pausa">
+    </testcase>
+  </testsuite>
+</testsuites>

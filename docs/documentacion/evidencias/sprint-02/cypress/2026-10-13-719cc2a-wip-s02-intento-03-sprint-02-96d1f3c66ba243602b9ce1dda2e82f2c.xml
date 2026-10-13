@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="159.060" tests="5" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-13T13:17:25" tests="0" file="cypress\e2e\sprint-02\technician.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Técnico S2" timestamp="2026-10-13T13:17:25" tests="5" time="159.057" failures="1">
+    <testcase name="Técnico S2 S02-TC-071 subir y publicar portafolio" time="38.225" classname="S02-TC-071 subir y publicar portafolio">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-072 cancelar y confirmar retiro de trabajo" time="25.245" classname="S02-TC-072 cancelar y confirmar retiro de trabajo">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-073 franjas solapadas y persistencia" time="0.000" classname="S02-TC-073 franjas solapadas y persistencia">
+      <failure message="Timed out retrying after 20000ms: Expected to find content: &apos;Cambios guardados.&apos; but never did." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Expected to find content: 'Cambios guardados.' but never did.
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-02/technician.cy.js:5:796)]]></failure>
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-074 tarifa inválida y actualización" time="17.930" classname="S02-TC-074 tarifa inválida y actualización">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-075 activar y quitar pausa" time="45.751" classname="S02-TC-075 activar y quitar pausa">
+    </testcase>
+  </testsuite>
+</testsuites>
