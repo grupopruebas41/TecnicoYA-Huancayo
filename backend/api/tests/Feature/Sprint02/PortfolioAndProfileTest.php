@@ -7,6 +7,7 @@ use Database\Factories\TechnicianDocumentFactory;
 use Database\Factories\TechnicianProfileFactory;
 use Database\Factories\UserFactory;
 use Database\Seeders\AuthorizationSeeder;
+use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +67,30 @@ it('S02-TC-042 CRUD-01 edita y retira un trabajo propio: sale de la galería y s
     $this->assertDatabaseHas('portfolio_items', ['id' => $item, 'status' => 'retired', 'version' => 3, 'updated_at' => '2026-10-12 12:05:00']);
     $this->assertDatabaseHas('portfolio_images', ['portfolio_id' => $item, 'media_id' => $images[0]]);
     $this->assertDatabaseHas('media_files', ['id' => $images[0], 'retired_at' => null]);
+});
+
+it('S02-TC-090 devuelve subcategory_id del trabajo en el perfil propio y al editarlo, aunque la subcategoría esté inactiva [DEF-40]', function () {
+    $this->seed(CatalogSeeder::class);
+    $technician = TechnicianProfileFactory::new()->approved()->create();
+    [$item] = s02PortfolioItem($technician);
+    $active = Sprint02::subcategoryId();
+    $inactive = (int) DB::table('subcategories')->where('id', '!=', $active)->value('id');
+    DB::table('subcategories')->where('id', $inactive)->update(['active' => false]);
+    Sanctum::actingAs($technician->user);
+    $url = "/api/v1/technicians/me/portfolio/$item";
+    $ownItem = fn () => Sprint02::itemsWith($this->getJson('/api/v1/technicians/me/profile')->assertOk()->json('data.portfolio'), 'id', $item)[0];
+
+    $this->patchJson($url, ['subcategory_id' => $active, 'expected_version' => 1])->assertOk()->assertJsonPath('data.subcategory_id', $active);
+    expect($ownItem())->toHaveKey('subcategory_id', $active);
+    $this->patchJson($url, ['subcategory_id' => $inactive, 'expected_version' => 2])->assertOk()->assertJsonPath('data.subcategory_id', $inactive);
+    expect($ownItem())->toHaveKey('subcategory_id', $inactive);
+    $this->patchJson($url, ['subcategory_id' => null, 'expected_version' => 3])->assertOk();
+    expect($ownItem())->toHaveKey('subcategory_id', null);
+
+    // La galería pública no cambia de forma (DEF-40 solo amplía el portafolio propio).
+    Sprint01::forgetSession();
+    expect(array_keys($this->getJson("/api/v1/technicians/{$technician->id}/portfolio")->assertOk()->json('data.0')))
+        ->toBe(['id', 'title', 'description', 'performed_on', 'images']);
 });
 
 it('S02-TC-043 AUTH-01 no deja editar ni retirar el trabajo de otro técnico', function () {
