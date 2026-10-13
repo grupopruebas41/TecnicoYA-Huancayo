@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 class CatalogSeeder extends Seeder
 {
@@ -12,7 +11,7 @@ class CatalogSeeder extends Seeder
     {
         $file = fopen(database_path('seeders/data/catalog.csv'), 'r');
         if ($file === false) {
-            throw new RuntimeException('No se pudo leer el catálogo semilla.');
+            throw new SeedingRefused('No se pudo leer el catálogo semilla.');
         }
 
         try {
@@ -32,7 +31,7 @@ class CatalogSeeder extends Seeder
                 while (($row = fgetcsv($file, escape: '')) !== false) {
                     [$specialtyName, $code, $name] = $row;
                     if (! isset($specialties[$specialtyName])) {
-                        throw new RuntimeException('Especialidad semilla desconocida.');
+                        throw new SeedingRefused('Especialidad semilla desconocida.');
                     }
                     $order++;
                     // No sobrescribir nombres, precios o estados administrados posteriormente.

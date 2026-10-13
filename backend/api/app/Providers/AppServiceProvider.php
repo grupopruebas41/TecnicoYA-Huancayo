@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        // Sin registros propios: los servicios de la aplicación se resuelven por inyección automática.
     }
 
     public function boot(): void
