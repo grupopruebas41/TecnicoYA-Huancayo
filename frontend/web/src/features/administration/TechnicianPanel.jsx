@@ -8,7 +8,7 @@ import {
   useSubcategories,
   ResourceState,
 } from "./Sprint02Common";
-import { technicianState } from "./sprint02Validation";
+import { technicianState, validatePerformedOn } from "./sprint02Validation";
 import RetireButton from "./RetireButton";
 import AvailabilityEditor from "./AvailabilityEditor";
 import ServicesEditor from "./ServicesEditor";
@@ -117,8 +117,7 @@ function PortfolioEditor({ item = {}, reload, subcategories }) {
       e.description = ["Máximo 2000 caracteres."];
     if (images.length < 1 || images.length > 5)
       e.media_ids = ["Adjunta entre 1 y 5 imágenes."];
-    if (!v.subcategory_id) e.subcategory_id = ["Selecciona una subcategoría."];
-    if (!v.performed_on) e.performed_on = ["Indica la fecha del trabajo."];
+    if(validatePerformedOn(v.performed_on)) e.performed_on=[validatePerformedOn(v.performed_on)];
     return e;
   }
   return (
@@ -130,7 +129,8 @@ function PortfolioEditor({ item = {}, reload, subcategories }) {
           "/technicians/me/portfolio" + (item.id ? "/" + item.id : ""),
           {
             ...v,
-            subcategory_id: +v.subcategory_id,
+            subcategory_id: v.subcategory_id ? +v.subcategory_id : null,
+            performed_on: v.performed_on || null,
             media_ids: images.map((m) => m.media_id || m.id),
             ...(item.id ? { expected_version: item.version } : {}),
           },
@@ -176,6 +176,7 @@ function PortfolioEditor({ item = {}, reload, subcategories }) {
               onChange={(e) => update("subcategory_id", e.target.value)}
             >
               <option value="">Selecciona</option>
+              {item.subcategory_id && !subcategories.some(s=>s.id===item.subcategory_id) && <option value={item.subcategory_id}>Subcategoría anterior (inactiva)</option>}
               {subcategories.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}

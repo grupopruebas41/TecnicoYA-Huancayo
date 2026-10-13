@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { request } from "./http";
-import { Field } from "./forms";
+import { Field, Notice } from "./forms";
 import RetireButton from "./RetireButton";
 import {
   MutationForm,
@@ -111,7 +111,7 @@ function Editor({ item = {}, reload }) {
     </MutationForm>
   );
 }
-function AnnouncementRow({ item, reload, onEdit }) {
+function AnnouncementRow({ item, reload, onEdit, onRetired }) {
   return (
     <article className="s02-card">
       <h3>{item.title}</h3>
@@ -156,6 +156,7 @@ function AnnouncementRow({ item, reload, onEdit }) {
       {!item.retired_at && (
         <RetireButton
           label="Eliminar comunicado"
+          onRetired={onRetired}
           path={"/admin/announcements/" + item.id}
           reload={reload}
         />
@@ -166,10 +167,12 @@ function AnnouncementRow({ item, reload, onEdit }) {
 export default function AnnouncementsAdmin() {
   const r = useResource("/admin/announcements");
   const [edit, setEdit] = useState(null);
+  const [notice, setNotice] = useState("");
   const reload = async () => {const rows=await r.reload();setEdit(prev=>prev?.id?rows?.find(x=>x.id===prev.id)||prev:prev);return rows};
   return (
     <section className="s02-panel">
       <h2>Administrar comunicados</h2>
+      <Notice success={notice} />
       <ResourceState resource={r} />
       <button type="button" onClick={() => setEdit({})}>
         Crear comunicado
@@ -193,6 +196,7 @@ export default function AnnouncementsAdmin() {
           item={x}
           reload={reload}
           onEdit={setEdit}
+          onRetired={() => setNotice("Contenido retirado.")}
         />
       ))}
     </section>

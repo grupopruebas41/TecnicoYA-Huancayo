@@ -92,7 +92,7 @@ export default function VideoExperience({children, revealAt}) {
 
   return <div className={`video-experience ${revealed ? 'content-visible' : 'intro-playing'}`}>
     <div className="background">
-      <video ref={videoRef} src="/media/habitacion.mp4" autoPlay muted loop playsInline aria-hidden="true" />
+      <video ref={videoRef} src="/media/habitacion.mp4" autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1} />
       <div />
     </div>
     {revealed && <div className="page-content">{children}</div>}

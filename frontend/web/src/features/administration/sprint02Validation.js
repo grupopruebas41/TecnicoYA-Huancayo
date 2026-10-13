@@ -132,3 +132,20 @@ export const technicianState = (s) =>
     active: "Activo",
     suspended: "Suspendido",
   })[s] || "Estado no disponible";
+
+export function validateReferenceFee(value) {
+  if (value === '' || value == null) return '';
+  const valid = /^\d+(\.\d{1,2})?$/.test(String(value)) && Number(value) <= 100000;
+  return valid ? '' : 'La referencia debe estar entre S/ 0 y S/ 100 000, con 2 decimales como máximo.';
+}
+
+export function validatePerformedOn(value) {
+  if (!value) return '';
+  const date = new Date(value + 'T00:00:00Z');
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value) {
+    return 'Indica una fecha válida.';
+  }
+  return value > new Date().toISOString().slice(0, 10)
+    ? 'La fecha del trabajo no puede ser futura.'
+    : '';
+}

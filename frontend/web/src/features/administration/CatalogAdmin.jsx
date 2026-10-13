@@ -7,7 +7,7 @@ import {
   useResource,
   ResourceState,
 } from "./Sprint02Common";
-import { validateSubcategory } from "./sprint02Validation";
+import { validateSubcategory, validateReferenceFee } from "./sprint02Validation";
 function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
   const [v, set] = useState({
     name: item.name || "",
@@ -23,12 +23,7 @@ function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
       ...v,
       specialty_id: kind === "subcategories" ? v.specialty_id : 1,
     });
-    if (
-      kind === "subcategories" &&
-      v.reference_fee !== "" &&
-      (!Number.isFinite(+v.reference_fee) || +v.reference_fee < 0)
-    )
-      e.reference_fee = ["Indica una referencia no negativa."];
+    if(kind==='subcategories'&&validateReferenceFee(v.reference_fee)) e.reference_fee=[validateReferenceFee(v.reference_fee)];
     return e;
   };
   return (

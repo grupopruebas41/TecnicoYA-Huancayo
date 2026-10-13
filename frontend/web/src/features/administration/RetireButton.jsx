@@ -19,7 +19,8 @@ export default function RetireButton({
     setSuccess("");
     try {
       await request(path, undefined, "DELETE");
-      setSuccess("Contenido retirado.");
+      // El panel conserva el aviso cuando la recarga desmonta este botón.
+      if (!onRetired) setSuccess("Contenido retirado.");
       setOpen(false);
       onRetired?.();
       await reload();
