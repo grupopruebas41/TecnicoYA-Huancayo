@@ -65,8 +65,7 @@ metadata/reports/
 metadata/history/
 .runtime-python/
 
-backend/api/storage/logs/*
-backend/api/storage/framework/*
+# backend/api/storage usa los .gitignore estándar de Laravel dentro de cada carpeta
 backend/api/bootstrap/cache/*
 !backend/api/bootstrap/cache/.gitignore
 backend/api/database/*.sqlite
