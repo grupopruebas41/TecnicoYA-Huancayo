@@ -2,6 +2,41 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-13 · Sprint 2 · cierre S2.6, parte liviana (en espera del PR #10 y de S2.5)
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`, creada desde `origin/main` `f7c524e`. Solo local: sin push ni PR, como pidió el usuario.
+- **Estado de `main`:** contiene solo el PR #11 (backend). El PR #10 de Codex (frontend S2.4) sigue **abierto** y no hay Cypress de S2.5. Por eso el usuario pidió hacer ahora solo lo liviano y esperar su aviso.
+- **Commits:**
+  - `9896b40` chore(s02): `.gitignore` estándar de Laravel en `backend/api/storage/` (app, app/private, app/public, framework y sus subcarpetas, logs). Se quitaron de la raíz `storage/logs/*` y `storage/framework/*`, que los tapaban. Los 20 PNG de DEF-38 y los logs quedan ignorados.
+  - `670a1cb` test(s02): refuerzo de aserciones, sin cambiar IDs ni resultados esperados:
+    - ManageAnnouncements: S02-TC-026, 027 y 028;
+    - Portfolio: S02-TC-007 y 042 (S02-TC-007 ahora siembra `CatalogSeeder`);
+    - TechnicianDirectory: S02-TC-032 y 034;
+    - UpdateTechnicianProfileRequest: S02-TC-045.
+  - `439aac3` refactor(s02): nueva `CatalogEntries` con el alta y la edición versionada comunes a `ManageDistricts`, `ManageSpecialties` y `ManageSubcategories`. La API y las acciones auditadas no cambian.
+  - commit de este relevo.
+- **Pruebas** (solo los archivos tocados, slot A):
+  - las 4 de Sprint02 reforzadas: 19/19 (380 aserciones);
+  - las de las rutas del catálogo administrativo: 21/21 (202 aserciones);
+  - Pint: sin cambios.
+  - Comprobación manual: se inyectó un mutante por clase (filtro `published`, versión +2 al retirar, `bio` fuera de la ficha, sin `min:0`). Los cuatro hicieron fallar su prueba y luego se revirtieron con `git checkout`.
+- **No se ejecutó**, por pedido del usuario, para no coincidir con el Cypress S2.5 de Codex en el slot B: mutación, suite completa, Vitest, Cypress, conteo, cobertura, SonarQube ni auditorías.
+
+**Qué falta (tras el aviso del usuario de que #10 y S2.5 están en `main`):**
+1. Fusionar `origin/main` en esta rama, sin rebase.
+2. Mutación **solo** de ManageAnnouncements, UpdateTechnicianProfileRequest, TechnicianDirectory y Portfolio.
+   - Las líneas de constantes (`FIELDS`, `EDITABLE`, `FILTERS`) salen UNCOVERED porque PCOV no las registra: no se pueden matar.
+   - Los `RemoveIntegerCast` sobre versiones que ya llegan como `int` son equivalentes.
+3. Regresión en el slot A: Pest, Vitest, pytest y Cypress de todos los sprints, con el bloqueo global.
+4. Conteo, cobertura, `scripts/run-quality.ps1` y Quality Gate. Marcar como Safe el hotspot php:S5693 de `StoreMediaRequest` L33 (D-46, 5 MB). Exportar con `exportar-sonar-anonimo.mjs`. `composer audit` y `npm audit`.
+5. Trazabilidad, REGISTRO-DEFECTOS, DECISIONES, avance de Pimentel (revisor del avance S2 de Mayhuasca: Pimentel Chumbes James, indicado por el usuario), `INFORME-SPRINT-02.md`, commit «docs(s02): cierre del Sprint 2», push y PR.
+
+**Bloqueos:** PR #10 y S2.5 de Codex.
+
+**Notas:**
+- `CatalogEntries` es una clase nueva. Entra en la mutación de cierre solo si el usuario lo pide.
+- El contenedor `tecnicoya-quality-sonar-db-1` ya estaba arriba al empezar; no lo toqué.
+
 ## 2026-10-10 · Sprint 2 · paso S2.3: backend en verde y precisiones de Codex
 
 - **Rama:** `feature/mayhuasca/f-administracion/s02`. **PR:** ver abajo (pedido del usuario; revisión humana [PENDIENTE]).
