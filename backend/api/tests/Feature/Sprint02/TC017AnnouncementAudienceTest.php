@@ -17,7 +17,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-017: entrega el comunicado vigente dirigido a técnicos solo al técnico', function () {
+it('S02-TC-003 entrega el comunicado vigente dirigido a técnicos solo al técnico [TC-017]', function () {
     // Dado un comunicado vigente solo para técnicos y otro vigente para ambos roles
     $forTechnicians = AnnouncementFactory::new()->forRoles(['technician'])->create(['title' => 'Solo para técnicos']);
     $general = AnnouncementFactory::new()->forRoles(['client', 'technician'])->create(['title' => 'Para todos']);

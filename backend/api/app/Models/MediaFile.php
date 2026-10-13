@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MediaFile extends Model
 {
-    protected $fillable = ['owner_id', 'disk', 'storage_key', 'original_name', 'mime_type', 'byte_size', 'sha256', 'visibility', 'scan_status'];
+    protected $fillable = ['owner_id', 'disk', 'storage_key', 'original_name', 'mime_type', 'byte_size', 'sha256', 'visibility', 'scan_status', 'purpose'];
 
     protected $hidden = ['storage_key', 'disk', 'sha256'];
 

@@ -1,0 +1,5 @@
+# Evidencia S2.3 · composer audit
+# Fecha: 2026-10-10 01:59 -0500 · Commit: f501a95
+# Comando: cd backend/api && composer audit
+
+No security vulnerability advisories found.

@@ -19,7 +19,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-016: desactiva una subcategoría usada sin borrar su identidad ni sus referencias', function () {
+it('S02-TC-002 desactiva una subcategoría usada sin borrar su identidad ni sus referencias [TC-016]', function () {
     // Dado una subcategoría referenciada por un servicio de prueba
     $subcategoryId = Sprint02::subcategoryId('computo-redes');
     $service = TechnicianServiceFactory::new()->create(['subcategory_id' => $subcategoryId]);

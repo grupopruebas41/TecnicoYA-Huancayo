@@ -57,12 +57,19 @@
 | D-43 | S01-A · Registro con sesión abierta | Opción A: `POST /api/v1/auth/register` con una sesión activa se rechaza con 403 y el mensaje «Ya tienes una sesión activa. Cierra sesión para crear otra cuenta.»; no se crea usuario ni perfil y la sesión no cambia (S01-TC-086) | 2026-10-09 | Pimentel |
 | D-44 | S01-B · Auditoría de accesos | Opción A: se auditan en `audit_entries` los inicios de sesión exitosos y fallidos y los cierres de sesión de cuentas administradoras, sin contraseña ni datos de sesión (SEC-S01-05; S01-TC-087). Los demás roles no se auditan en S1 | 2026-10-09 | Pimentel |
 | D-45 | S01-C · Alcance de la mutación en el cierre de S1 | No se corre la mutación del módulo `FAdministration` completo (848 mutantes, unas 2,8 h). Basta la de las 12 clases del Sprint 1 (`04-mutacion.txt`) y, tras reforzar S01-TC-010, una nueva corrida solo de `CatalogController` (27/27). La rama de cierre es `feature/pimentel/f-administracion/s01-cierre` | 2026-10-09 | Pimentel |
+| D-46 | P17-S2 · Archivos de portafolio y documentos | Opción A, igual que D-12: imágenes de portafolio y de catálogo **JPG, PNG o WebP de hasta 5 MB**, **como máximo 5 por trabajo**; documentos de verificación **PDF, JPG o PNG de hasta 5 MB**, **como máximo 5 vigentes por técnico**. Desbloquea TC-022 (S02-TC-039) | 2026-10-10 | Pimentel |
+| D-47 | MEDIA-01 · Revisión de imágenes públicas | Opción A: revisión automática al subir. Se comprueba el tipo real por contenido (`finfo`) y la estructura de la imagen, y se quitan los metadatos EXIF; el archivo queda `scan_status = clean`. Las imágenes de portafolio y catálogo son públicas; los documentos, privados. Sin bandeja de moderación en S2 | 2026-10-10 | Pimentel |
+| D-48 | TARIFA-01 · Límites de la tarifa referencial del técnico | Opción A: de **S/ 1,00 a S/ 5 000,00**, ambos incluidos, con **2 decimales como máximo** | 2026-10-10 | Pimentel |
+| D-49 | FRANJA-01 · Franjas y pausa | Opción A: las franjas de un mismo día **no se solapan**; las **contiguas** (fin de una = inicio de otra) se permiten; cada franja dura **al menos 30 minutos** y no cruza la medianoche. La pausa empieza en el minuto actual o después; su fin, si existe, es posterior al inicio | 2026-10-10 | Pimentel |
+| D-50 | VERIF-01 · Rechazo y suspensión del técnico | Opción A: el rechazo deja `status = pending_verification` y `verification_status = rejected`, con motivo; el técnico corrige y pide una nueva revisión, que vuelve a `pending`. La suspensión (D-32) solo se aplica a un técnico activo y se levanta a mano, con motivo, volviendo a `active`. En S2 solo backend; la pantalla de suspensión es del Sprint 7 | 2026-10-10 | Pimentel |
+| D-51 | COM-01 · Edición de comunicados publicados | Opción A: solo se editan los borradores; un comunicado publicado se retira o se duplica, para conservar lo que vieron los usuarios | 2026-10-10 | Pimentel |
+| D-52 | CAT-01 · `subcategories.reference_fee` | Opción A: se mantiene como **referencia orientativa no vinculante**, coherente con la Fuente 0 y RF-04 (S03-TC-031). No contradice D-25: el precio lo declara el técnico por subcategoría y el catálogo no fija precio | 2026-10-10 | Pimentel |
 
 ## Decisiones pendientes
 
 | ID | Decisión | Opción elegida | Fecha | Quién decidió |
 |---|---|---|---|---|
-| P17-S6 | Límites de portafolio, documentos, comentarios de calificación y respuestas a reseñas | pendiente | — | — |
+| P17-S6 | Límites de comentarios de calificación y respuestas a reseñas (portafolio y documentos quedaron en D-46) | pendiente | — | — |
 
 **Para registrar una decisión:**
 1. Pasar la fila a «Decisiones tomadas».

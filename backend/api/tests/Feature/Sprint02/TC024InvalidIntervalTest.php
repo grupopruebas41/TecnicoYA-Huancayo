@@ -16,7 +16,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-024: rechaza en español una franja que termina antes de empezar y conserva el horario anterior', function () {
+it('S02-TC-009 rechaza en español una franja que termina antes de empezar y conserva el horario anterior [TC-024]', function () {
     // Dado un técnico con un horario ya guardado
     $technician = TechnicianProfileFactory::new()->approved()->create();
     $district = DistrictFactory::new()->create();

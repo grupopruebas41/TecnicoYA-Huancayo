@@ -1,0 +1,127 @@
+# Evidencia S2.2 · Pest en rojo
+# Fecha: 2026-10-10 01:37 -0500 · Commit de pruebas: 93f448c · Rama: feature/mayhuasca/f-administracion/s02
+# Comando: cd backend/api && php vendor/bin/pest tests/Feature/Sprint02 (slot A, tecnicoya_testing)
+# Resultado: 36 fallidas, 22 aprobadas (265 aserciones), 0 omitidas.
+# Aprobadas por código existente: los 12 renombrados (001-012) y 016, 017, 029, 033, 047, 050, 052, 056 y 057 (regresión).
+# S02-TC-043 aprueba en FALSO: espera 404 y lo recibe porque PATCH/DELETE /technicians/me/portfolio/{id} aún no existen.
+
+   FAIL  Tests\Feature\Sprint02\AnnouncementAdminTest
+  ⨯ it S02-TC-024 CRUD-01 crea un comunicado en borrador con audiencias y vigencia, sin mostrarlo en paneles    34.39s  
+  ⨯ it S02-TC-025 VAL-02 rechaza fechas invertidas, audiencia vacía y un enlace javascript: sin guardar nada     0.08s  
+  ⨯ it S02-TC-026 CRUD-02 edita un borrador con su versión, rechaza la versión vieja y no edita uno publicado    0.07s  
+  ⨯ it S02-TC-027 CRUD-01 publica un borrador vigente para su audiencia y no publica uno ya vencido              0.10s  
+  ⨯ it S02-TC-028 CRUD-01 elimina un comunicado retirándolo de los paneles, con auditoría y sin borrar la fila   0.15s  
+  ✓ it S02-TC-029 muestra el comunicado desde su inicio exacto y lo oculta exactamente al terminar [inicio, fin… 0.14s  
+  ⨯ it S02-TC-030 AUTH-01 niega a cliente y técnico toda la administración de comunicados sin cambiar nada       0.15s  
+   FAIL  Tests\Feature\Sprint02\AvailabilityBoundariesTest
+  ⨯ it S02-TC-046 VAL-02 rechaza dos franjas solapadas del mismo día y conserva el horario anterior              0.22s  
+  ✓ it S02-TC-047 acepta franjas contiguas y una franja de exactamente 30 minutos                                0.18s  
+  ⨯ it S02-TC-048 VAL-02 rechaza una franja de 29 minutos, días 0 y 8 y la hora 24:00 sin guardar nada           0.15s  
+  ⨯ it S02-TC-049 VAL-02 rechaza una pausa invertida y una que empieza antes del minuto actual                   0.15s  
+  ✓ it S02-TC-050 mantiene pausado al técnico con una pausa sin fin y lo libera al quitarla                      0.18s  
+  ⨯ it S02-TC-051 VAL-02 conserva un distrito desactivado que el técnico ya tenía y rechaza uno inactivo nuevo   0.18s  
+  ✓ it S02-TC-052 CRUD-02 rechaza con 409 un horario enviado con una versión vieja                               0.17s  
+   FAIL  Tests\Feature\Sprint02\CarouselTest
+  ⨯ it S02-TC-022 sirve sin sesión solo las subcategorías activas con imagen pública revisada [TC-013]           0.43s  
+  ⨯ it S02-TC-023 excluye del carrusel la imagen retirada, la subcategoría inactiva y la especialidad inactiva   0.30s  
+   FAIL  Tests\Feature\Sprint02\DistrictsTest
+  ⨯ it S02-TC-020 siembra Huancayo, El Tambo y Chilca una sola vez y no pisa lo que cambió el administrador      0.08s  
+  ⨯ it S02-TC-021 CRUD-01 crea y desactiva un distrito con auditoría; el inactivo sale del catálogo público      0.09s  
+   FAIL  Tests\Feature\Sprint02\MediaUploadTest
+  ⨯ it S02-TC-038 CRUD-01 sube imágenes de portafolio JPG, PNG y WebP como públicas, revisadas y sin EXIF [TC-0… 0.14s  
+  ⨯ it S02-TC-039 VAL-02 rechaza en español un texto con extensión .jpg, un GIF y un propósito ajeno al rol, si… 0.15s  
+  ⨯ it S02-TC-040 acepta una imagen de exactamente 5 MB (5 242 880 bytes)                                        0.15s  
+  ⨯ it S02-TC-041 VAL-02 rechaza una imagen de 5 MB más un byte sin guardar nada                                 0.18s  
+   FAIL  Tests\Feature\Sprint02\PortfolioAndProfileTest
+  ⨯ it S02-TC-042 CRUD-01 edita y retira un trabajo propio: sale de la galería y se conservan filas e imágenes   0.20s  
+  ✓ it S02-TC-043 AUTH-01 no deja editar ni retirar el trabajo de otro técnico                                   0.19s  
+  ⨯ it S02-TC-044 CRUD-01 guarda documentos privados: solo el dueño y el verificador los descargan y hay un máx… 0.27s  
+  ⨯ it S02-TC-045 CRUD-01 lee el perfil técnico propio completo y edita bio y experiencia con versión            0.16s  
+   FAIL  Tests\Feature\Sprint02\RateBoundariesTest
+  ⨯ it S02-TC-053 VAL-02 acepta la tarifa mínima de S/ 1,00 y rechaza S/ 0,99 sin crear versión                  0.51s  
+  ⨯ it S02-TC-054 VAL-02 acepta la tarifa máxima de S/ 5 000,00 y rechaza S/ 5 000,01                            0.30s  
+  ⨯ it S02-TC-055 VAL-02 rechaza una tarifa con tres decimales sin crear el servicio                             0.44s  
+  ✓ it S02-TC-056 no crea una versión nueva cuando se reenvía la misma tarifa                                    0.43s  
+  ✓ it S02-TC-057 VAL-02 rechaza una subcategoría inactiva o de una especialidad inactiva sin crear servicio     0.31s  
+  ⨯ it S02-TC-058 audita el cambio de tarifa con el valor anterior y el nuevo                                    0.27s  
+   FAIL  Tests\Feature\Sprint02\SpecialtyCatalogTest
+  ⨯ it S02-TC-013 CRUD-01 crea una especialidad con foto revisada, código estable y auditoría                    0.26s  
+  ⨯ it S02-TC-014 VAL-02 rechaza en español una especialidad sin nombre o con un nombre repetido, sin escribir…  0.27s  
+  ⨯ it S02-TC-015 CRUD-01 desactiva una especialidad: sale del catálogo público y del carrusel y conserva subca… 0.33s  
+  ✓ it S02-TC-016 CRUD-01 reactiva una subcategoría: vuelve al catálogo y el técnico puede ofrecerla             0.32s  
+  ✓ it S02-TC-017 VAL-02 rechaza una subcategoría con especialidad inactiva, nombre repetido o imagen no revisa… 0.35s  
+  ⨯ it S02-TC-018 CRUD-02 rechaza con 409 la edición de una especialidad o subcategoría con versión vieja        0.24s  
+  ⨯ it S02-TC-019 AUTH-01 niega el catálogo administrativo a cliente, técnico y administrador sin catalog.manag… 0.28s  
+   PASS  Tests\Feature\Sprint02\TC015CreateSubcategoryTest
+  ✓ it S02-TC-001 crea una subcategoría con imagen revisada y la ofrece en su especialidad con la foto del carr… 0.33s  
+   PASS  Tests\Feature\Sprint02\TC016DeactivateSubcategoryTest
+  ✓ it S02-TC-002 desactiva una subcategoría usada sin borrar su identidad ni sus referencias [TC-016]           0.34s  
+   PASS  Tests\Feature\Sprint02\TC017AnnouncementAudienceTest
+  ✓ it S02-TC-003 entrega el comunicado vigente dirigido a técnicos solo al técnico [TC-017]                     0.14s  
+   PASS  Tests\Feature\Sprint02\TC018DuplicateAnnouncementTest
+  ✓ it S02-TC-004 duplica un comunicado publicado como borrador que no aparece en ningún panel [TC-018]          0.24s  
+   PASS  Tests\Feature\Sprint02\TC019DocumentedApprovalTest
+  ✓ it S02-TC-005 aprueba al técnico pendiente y registra la decisión, su autor y su fecha [TC-019]              0.38s  
+   PASS  Tests\Feature\Sprint02\TC020ForeignDocumentDeniedTest
+  ✓ it S02-TC-006 deniega a un técnico el documento privado de otro sin revelar su contenido [TC-020]            0.15s  
+   PASS  Tests\Feature\Sprint02\TC021PublishedPortfolioWorkTest
+  ✓ it S02-TC-007 publica un trabajo con su imagen en la galería pública sin documentos de verificación [TC-021… 0.18s  
+   PASS  Tests\Feature\Sprint02\TC023ValidAvailabilityTest
+  ✓ it S02-TC-008 guarda horarios, zonas y una pausa válida que el filtro de elegibilidad reconoce [TC-023]      0.15s  
+   PASS  Tests\Feature\Sprint02\TC024InvalidIntervalTest
+  ✓ it S02-TC-009 rechaza en español una franja que termina antes de empezar y conserva el horario anterior [TC… 0.13s  
+   PASS  Tests\Feature\Sprint02\TC025NewRateVersionTest
+  ✓ it S02-TC-010 crea la versión 2 de la tarifa y conserva la versión 1 sin sobrescribirla [TC-025]             0.59s  
+   PASS  Tests\Feature\Sprint02\TC026NegativeRateTest
+  ✓ it S02-TC-011 rechaza en español una tarifa negativa sin crear versión ni cambiar la vigente [TC-026]        0.32s  
+   PASS  Tests\Feature\Sprint02\TC134ForeignAvailabilityOrRateTest
+  ✓ it S02-TC-012 impide que otro técnico o un cliente cambien la disponibilidad o la tarifa ajena [TC-134]      0.34s  
+   FAIL  Tests\Feature\Sprint02\TechnicianVerificationTest
+  ⨯ it S02-TC-031 lista la bandeja de técnicos por estado sin correo, teléfono ni contraseña                     0.28s  
+  ⨯ it S02-TC-032 muestra la ficha con checklist, servicios, zonas y documentos sin exponer el archivo ni datos… 0.26s  
+  ✓ it S02-TC-033 VAL-02 no aprueba a un técnico con requisitos faltantes y lista en español lo que falta        0.28s  
+  ⨯ it S02-TC-034 CRUD-01 rechaza con motivo sin habilitar y deja que el técnico pida una nueva revisión         0.38s  
+  ⨯ it S02-TC-035 suspende con motivo cerrando sesiones y conservando el portafolio, y lo reactiva con motivo    0.30s  
+  ⨯ it S02-TC-036 rechaza con 409 las transiciones de verificación no permitidas sin cambiar estado ni versión   0.27s  
+  ⨯ it S02-TC-037 AUTH-01 impide la autoaprobación y la verificación a un administrador sin technicians.verify   0.31s  
+   FAILED  Tests\Feature\Sprint02\AnnouncementAdminTest > it S02-TC-024 CRUD-01 crea un comunicado en borrador con a…   
+   FAILED  Tests\Feature\Sprint02\AnnouncementAdminTest > it S02-TC-025 VAL-02 rechaza fechas invertidas, audiencia…    
+   FAILED  Tests\Feature\Sprint02\AnnouncementAdminTest > it S02-TC-026 CRUD-02 edita un borrador con su versión, re…   
+   FAILED  Tests\Feature\Sprint02\AnnouncementAdminTest > it S02-TC-027 CRUD-01 publica un borrador vigente para su…    
+   FAILED  Tests\Feature\Sprint02\AnnouncementAdminTest > it S02-TC-028 CRUD-01 elimina un comunicado retirándolo de…   
+   FAILED  Tests\Feature\Sprint02\AnnouncementAdminTest > it S02-TC-030 AUTH-01 niega a cliente y técnico toda la ad…   
+   FAILED  Tests\Feature\Sprint02\AvailabilityBoundariesTest > it S02-TC-046 VAL-02 rechaza dos franjas solapadas de…   
+   FAILED  Tests\Feature\Sprint02\AvailabilityBoundariesTest > it S02-TC-048 VAL-02 rechaza una franja de 29 minutos…   
+   FAILED  Tests\Feature\Sprint02\AvailabilityBoundariesTest > it S02-TC-049 VAL-02 rechaza una pausa invertida y un…   
+   FAILED  Tests\Feature\Sprint02\AvailabilityBoundariesTest > it S02-TC-051 VAL-02 conserva un distrito desactivado…   
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint02\CarouselTest > it S02-TC-022 sirve sin sesión solo las subcategorías activas con i…   
+   FAILED  Tests\Feature\Sprint02\CarouselTest > it S02-TC-023 excluye del carrusel la imagen retirada, la subcatego…   
+   FAILED  Tests\Feature\Sprint02\DistrictsTest > it S02-TC-020 siembra Huancayo, El Tam…  BindingResolutionException   
+   FAILED  Tests\Feature\Sprint02\DistrictsTest > it S02-TC-021 CRUD-01 crea y desactiva un distrito con auditoría;…    
+   FAILED  Tests\Feature\Sprint02\MediaUploadTest > it S02-TC-038 CRUD-01 sube imágenes de portafolio JPG, PNG y Web…   
+   FAILED  Tests\Feature\Sprint02\MediaUploadTest > it S02-TC-039 VAL-02 rechaza en español un texto con extensión .…   
+   FAILED  Tests\Feature\Sprint02\MediaUploadTest > it S02-TC-040 acepta una imagen de exactamente 5 MB (5 242 880 b…   
+   FAILED  Tests\Feature\Sprint02\MediaUploadTest > it S02-TC-041 VAL-02 rechaza una imagen de 5 MB más un byte sin…    
+   FAILED  Tests\Feature\Sprint02\PortfolioAndProfileTest > it S02-TC-042 CRUD-01 edita y retira un trabajo propio:…    
+   FAILED  Tests\Feature\Sprint02\PortfolioAndProfileTest > it S02-TC-044 CRUD-01 guarda documentos privados: solo e…   
+   FAILED  Tests\Feature\Sprint02\PortfolioAndProfileTest > it S02-TC-045 CRUD-01 lee el perfil técnico propio compl…   
+   FAILED  Tests\Feature\Sprint02\RateBoundariesTest > it S02-TC-053 VAL-02 acepta la tarifa mínima de S/ 1,00 y rec…   
+   FAILED  Tests\Feature\Sprint02\RateBoundariesTest > it S02-TC-054 VAL-02 acepta la tarifa máxima de S/ 5 000,00 y…   
+   FAILED  Tests\Feature\Sprint02\RateBoundariesTest > it S02-TC-055 VAL-02 rechaza una tarifa con tres decimales si…   
+   FAILED  Tests\Feature\Sprint02\RateBoundariesTest > it S02-TC-058 audita el cambio de t…  RecordsNotFoundException   
+   FAILED  Tests\Feature\Sprint02\SpecialtyCatalogTest > it S02-TC-013 CRUD-01 crea una especialidad con foto revisa…   
+   FAILED  Tests\Feature\Sprint02\SpecialtyCatalogTest > it S02-TC-014 VAL-02 rechaza en español una especialidad si…   
+   FAILED  Tests\Feature\Sprint02\SpecialtyCatalogTest > it S02-TC-015 CRUD-01 desactiva una especialidad: sale del…    
+   FAILED  Tests\Feature\Sprint02\SpecialtyCatalogTest > it S02-TC-018 CRUD-02 rechaza con 409 la edición de una esp…   
+   FAILED  Tests\Feature\Sprint02\SpecialtyCatalogTest > it S02-TC-019 AUTH-01 niega el catálogo administrativo a cl…   
+   FAILED  Tests\Feature\Sprint02\TechnicianVerificationTest > it S02-TC-031 lista la bandeja de técnicos por estado…   
+   FAILED  Tests\Feature\Sprint02\TechnicianVerificationTest > it S02-TC-032 muestra la ficha con checklist, servici…   
+   FAILED  Tests\Feature\Sprint02\TechnicianVerificationTest > it S02-TC-034 CRUD-01 rechaza con motivo sin habilita…   
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint02\TechnicianVerificationTest > it S02-TC-035 suspende con motivo cerrando sesiones y…   
+   FAILED  Tests\Feature\Sprint02\TechnicianVerificationTest > it S02-TC-036 rechaza con 409 las transiciones de ver…   
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint02\TechnicianVerificationTest > it S02-TC-037 AUTH-01 impide la autoaprobación y la v…   
+  Tests:    36 failed, 22 passed (265 assertions)
+  Duration: 48.99s

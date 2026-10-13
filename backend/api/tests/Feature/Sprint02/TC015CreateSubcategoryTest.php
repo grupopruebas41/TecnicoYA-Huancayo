@@ -20,7 +20,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-015: crea una subcategoría con imagen revisada y la ofrece en su especialidad con la foto del carrusel', function () {
+it('S02-TC-001 crea una subcategoría con imagen revisada y la ofrece en su especialidad con la foto del carrusel [TC-015]', function () {
     // Dado un administrador autorizado, una especialidad activa y una imagen revisada
     $admin = Sprint02::admin();
     Sanctum::actingAs($admin);

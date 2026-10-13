@@ -18,7 +18,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-020: deniega a un técnico el documento privado de otro sin revelar su contenido', function () {
+it('S02-TC-006 deniega a un técnico el documento privado de otro sin revelar su contenido [TC-020]', function () {
     // Dado el documento privado de un técnico y otro técnico autenticado
     $document = TechnicianDocumentFactory::new()->create();
     $media = $document->media;

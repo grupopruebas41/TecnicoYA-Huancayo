@@ -4,7 +4,11 @@ namespace App\Modules\FAdministration\Http\Controllers;
 
 use App\Models\MediaFile;
 use App\Models\User;
+use App\Modules\FAdministration\Application\StoreMedia;
+use App\Modules\FAdministration\Http\Requests\StoreMediaRequest;
 use App\Shared\Auth\EffectivePermissions;
+use App\Shared\Http\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -17,6 +21,16 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 final class MediaController
 {
     public function __construct(private readonly EffectivePermissions $permissions) {}
+
+    public function store(StoreMediaRequest $request, StoreMedia $media): JsonResponse
+    {
+        $file = $media->store($request->user(), $request->file('file'), $request->validated('purpose'));
+
+        return ApiResponse::data([
+            'id' => $file->id, 'purpose' => $file->purpose, 'visibility' => $file->visibility,
+            'mime_type' => $file->mime_type, 'byte_size' => $file->byte_size, 'url' => url("/api/v1/media/{$file->id}"),
+        ], 201);
+    }
 
     public function show(int $media): StreamedResponse
     {

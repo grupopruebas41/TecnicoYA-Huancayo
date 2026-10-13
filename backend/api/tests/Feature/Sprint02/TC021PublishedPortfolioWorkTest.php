@@ -21,7 +21,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-021: publica un trabajo con su imagen en la galería pública sin documentos de verificación', function () {
+it('S02-TC-007 publica un trabajo con su imagen en la galería pública sin documentos de verificación [TC-021]', function () {
     // Dado un técnico propietario de una imagen apta y de un documento de verificación
     $technician = TechnicianProfileFactory::new()->approved()->create();
     $image = MediaFileFactory::new()->publicImage()->create(['owner_id' => $technician->user_id]);

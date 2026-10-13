@@ -22,7 +22,7 @@ beforeEach(function () {
 
 afterEach(fn () => Carbon::setTestNow());
 
-it('TC-023: guarda horarios, zonas y una pausa válida que el filtro de elegibilidad reconoce', function () {
+it('S02-TC-008 guarda horarios, zonas y una pausa válida que el filtro de elegibilidad reconoce [TC-023]', function () {
     // Dado un técnico habilitado y distritos de prueba activos
     $technician = TechnicianProfileFactory::new()->approved()->create();
     [$north, $south] = DistrictFactory::new()->count(2)->create();

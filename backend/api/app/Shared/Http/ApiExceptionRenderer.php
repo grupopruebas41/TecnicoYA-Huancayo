@@ -3,18 +3,22 @@
 namespace App\Shared\Http;
 
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 final class ApiExceptionRenderer
 {
-    public function __invoke(Throwable $error, Request $request): ?JsonResponse
+    public function __invoke(Throwable $error, Request $request): ?Response
     {
         if (! $request->is('api/v1/*')) {
             return null; // Conservar el contrato de las rutas históricas.
+        }
+        if ($error instanceof HttpResponseException) {
+            return $error->getResponse(); // Respuesta ya construida con su código propio (p. ej. ANNOUNCEMENT_NOT_EDITABLE).
         }
         if ($error instanceof ValidationException) {
             return ApiResponse::error('VALIDATION_FAILED', __('api.validation_failed'), 422, $error->errors());

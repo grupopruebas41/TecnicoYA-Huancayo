@@ -19,6 +19,15 @@ final class OwnTechnicianProfile
         return $profile;
     }
 
+    /** Id del perfil técnico de la sesión, solo para lectura. */
+    public function idFor(User $user): int
+    {
+        $id = DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
+        abort_unless($id, 403, __('api.forbidden'));
+
+        return (int) $id;
+    }
+
     public function bumpVersion(object $profile): int
     {
         $next = (int) $profile->version + 1;
