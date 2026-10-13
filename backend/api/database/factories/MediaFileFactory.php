@@ -46,6 +46,7 @@ class MediaFileFactory extends Factory
         return $this->state(fn () => [
             'disk' => 'local', 'storage_key' => 'documents/'.Str::uuid().'.pdf',
             'original_name' => 'documento-sintetico.pdf', 'mime_type' => 'application/pdf', 'visibility' => 'private',
+            'purpose' => 'document',
         ]);
     }
 

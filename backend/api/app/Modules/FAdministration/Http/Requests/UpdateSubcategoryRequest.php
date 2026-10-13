@@ -12,7 +12,7 @@ final class UpdateSubcategoryRequest extends FormRequest
         return [
             'name' => ['sometimes', 'required', 'string', 'min:2', 'max:180'],
             'description' => ['sometimes', 'nullable', 'string', 'max:2000'],
-            'reference_fee' => ['sometimes', 'nullable', 'numeric', 'min:0', 'max:100000'],
+            'reference_fee' => ['sometimes', 'nullable', 'numeric', 'decimal:0,2', 'min:0', 'max:100000'], // Referencia orientativa (D-52).
             'image_id' => ['sometimes', 'nullable', 'integer', new ReviewedImage],
             'active' => ['sometimes', 'required', 'boolean'],
             'expected_version' => ['required', 'integer', 'min:1'],

@@ -17,7 +17,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-025: crea la versión 2 de la tarifa y conserva la versión 1 sin sobrescribirla', function () {
+it('S02-TC-010 crea la versión 2 de la tarifa y conserva la versión 1 sin sobrescribirla [TC-025]', function () {
     // Dado un servicio con tarifa referencial 50 en su versión 1
     $service = TechnicianServiceFactory::new()->create(['reference_fee' => '50.00']);
     $technician = $service->technician;

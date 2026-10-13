@@ -1,0 +1,103 @@
+# Evidencia S2.3 · Cobertura PCOV
+# Fecha: 2026-10-10 01:59 -0500 · Commit: f501a95 · slot A
+# Comando: cd backend/api && composer test:coverage (y --coverage-clover para el agregado)
+# Meta: >= 70 % en el módulo del sprint (app/Modules/FAdministration).
+# Resultado: total 92,7 %; FAdministration 951/983 líneas = 96,74 %; clases nuevas o modificadas en S2: 712/733 = 97,14 %.
+
+  Tests:    148 passed (1535 assertions)
+  app/Console/Commands\ProvisionAdmin ......................................................................... 100.0%  
+  app/Http/Controllers\AuthController ......................................................................... 100.0%  
+  app/Http/Controllers\Controller ............................................................................. 100.0%  
+  app/Http/Controllers\MarketplaceController .............................................................. 22 / 93.8%  
+  app/Http/Middleware\ApiToken ................................................................................ 100.0%  
+  app/Http/Middleware\EnsureAccountIsActive ................................................................... 100.0%  
+  app/Http/Middleware\RejectActiveSession ..................................................................... 100.0%  
+  app/Http/Middleware\RequirePermission ....................................................................... 100.0%  
+  app/Http/Middleware\RequireRole ............................................................................. 100.0%  
+  app/Models\Announcement ..................................................................................... 100.0%  
+  app/Models\ClientProfile .................................................................................... 100.0%  
+  app/Models\District ......................................................................................... 100.0%  
+  app/Models\MediaFile ........................................................................................ 100.0%  
+  app/Models\ServiceRateVersion ............................................................................... 100.0%  
+  app/Models\ServiceRequest ................................................................................... 100.0%  
+  app/Models\TechnicianDocument ............................................................................... 100.0%  
+  app/Models\TechnicianProfile ........................................................................ 25..30 / 50.0%  
+  app/Models\TechnicianService ................................................................................ 100.0%  
+  app/Models\User ............................................................................................. 100.0%  
+  app/Modules/ARequests/Application\ManageServiceRequests ..................................................... 100.0%  
+  app/Modules/ARequests/Application\RequestTimeline ........................................................... 100.0%  
+  app/Modules/ARequests/Application\ServiceRequestView ........................................................ 100.0%  
+  app/Modules/ARequests/Domain\AttachableEvidence ............................................................. 100.0%  
+  app/Modules/ARequests/Domain\TargetTechnicianOffers ......................................................... 100.0%  
+  app/Modules/ARequests/Http/Controllers\ServiceRequestController ............................................. 100.0%  
+  app/Modules/ARequests/Http/Requests\AttachEvidenceRequest ................................................... 100.0%  
+  app/Modules/ARequests/Http/Requests\StoreServiceRequestRequest .............................................. 100.0%  
+  app/Modules/ARequests/Http/Requests\SubmitServiceRequestRequest ......................................... 23 / 85.7%  
+  app/Modules/ARequests/Http/Requests\UpdateServiceRequestRequest ............................................. 100.0%  
+  app/Modules/FAdministration/Application\Announcements ....................................................... 100.0%  
+  app/Modules/FAdministration/Application\AuditAdminAccess .................................................... 100.0%  
+  app/Modules/FAdministration/Application\CatalogCode ..................................................... 15 / 88.9%  
+  app/Modules/FAdministration/Application\ManageAnnouncements ............................. 59..60, 67..68, 61 / 93.4%  
+  app/Modules/FAdministration/Application\ManageDistricts ..................................................... 100.0%  
+  app/Modules/FAdministration/Application\ManageSpecialties ................................................... 100.0%  
+  app/Modules/FAdministration/Application\ManageSubcategories ................................................. 100.0%  
+  app/Modules/FAdministration/Application\OwnProfileView ...................................................... 100.0%  
+  app/Modules/FAdministration/Application\OwnTechnicianProfile ................................................ 100.0%  
+  app/Modules/FAdministration/Application\Portfolio ........................................................... 100.0%  
+  app/Modules/FAdministration/Application\ProvisionAdministrator .......................................... 17 / 94.7%  
+  app/Modules/FAdministration/Application\PublicTechnicianProfile ............................................. 100.0%  
+  app/Modules/FAdministration/Application\RegisterAccount ............................................. 36..41 / 80.0%  
+  app/Modules/FAdministration/Application\ReviewTechnician .................................................... 100.0%  
+  app/Modules/FAdministration/Application\StoreMedia .............................................. 31, 45..47 / 78.9%  
+  app/Modules/FAdministration/Application\TechnicianDirectory ................................................. 100.0%  
+  app/Modules/FAdministration/Application\TechnicianDocuments ................................................. 100.0%  
+  app/Modules/FAdministration/Application\TechnicianStatus .................................................... 100.0%  
+  app/Modules/FAdministration/Application\UpdateAvailability .................................................. 100.0%  
+  app/Modules/FAdministration/Application\UpdateProfile ....................................................... 100.0%  
+  app/Modules/FAdministration/Application\UpdateServices ...................................................... 100.0%  
+  app/Modules/FAdministration/Application\UpdateTechnicianProfile ............................................. 100.0%  
+  app/Modules/FAdministration/Application\VersionedUpdate ..................................................... 100.0%  
+  app/Modules/FAdministration/Domain\ActiveSubcategory ........................................................ 100.0%  
+  app/Modules/FAdministration/Domain\DocumentFile ............................................................. 100.0%  
+  app/Modules/FAdministration/Domain\ImageSanitizer ............. 30, 36, 45, 55, 62, 70, 81, 89, 98, 103, 111 / 82.5%  
+  app/Modules/FAdministration/Domain\PortfolioImage ........................................................... 100.0%  
+  app/Modules/FAdministration/Domain\ReviewedImage ............................................................ 100.0%  
+  app/Modules/FAdministration/Domain\TechnicianAvailability ................................................... 100.0%  
+  app/Modules/FAdministration/Domain\VerificationChecklist .................................................... 100.0%  
+  app/Modules/FAdministration/Http/Controllers\AdminAnnouncementController .................................... 100.0%  
+  app/Modules/FAdministration/Http/Controllers\AdminCatalogController ......................................... 100.0%  
+  app/Modules/FAdministration/Http/Controllers\AdminTechnicianController ...................................... 100.0%  
+  app/Modules/FAdministration/Http/Controllers\AnnouncementController ......................................... 100.0%  
+  app/Modules/FAdministration/Http/Controllers\AuthController ......................................... 36..41 / 76.2%  
+  app/Modules/FAdministration/Http/Controllers\CatalogController .............................................. 100.0%  
+  app/Modules/FAdministration/Http/Controllers\MediaController ................................................ 100.0%  
+  app/Modules/FAdministration/Http/Controllers\ProfileController .............................................. 100.0%  
+  app/Modules/FAdministration/Http/Controllers\TechnicianProfileController .................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\AccountRequest .................................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\AnnouncementRequest ............................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\CreateSubcategoryRequest .......................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\DistrictRequest ................................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\LoginRequest ...................................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\RegisterAccountRequest ............................................ 100.0%  
+  app/Modules/FAdministration/Http/Requests\ReviewTechnicianRequest ........................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\SpecialtyRequest .................................................. 100.0%  
+  app/Modules/FAdministration/Http/Requests\StoreDocumentRequest .............................................. 100.0%  
+  app/Modules/FAdministration/Http/Requests\StoreMediaRequest ................................................. 100.0%  
+  app/Modules/FAdministration/Http/Requests\StorePortfolioItemRequest ......................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\UpdateAvailabilityRequest ......................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\UpdateProfileRequest .............................................. 100.0%  
+  app/Modules/FAdministration/Http/Requests\UpdateServicesRequest ............................................. 100.0%  
+  app/Modules/FAdministration/Http/Requests\UpdateSubcategoryRequest .......................................... 100.0%  
+  app/Modules/FAdministration/Http/Requests\UpdateTechnicianProfileRequest .................................... 100.0%  
+  app/Modules/FAdministration/Http/Resources\AccountData .................................................. 25 / 92.9%  
+  app/Providers\AppServiceProvider ............................................................................ 100.0%  
+  app/Services\Announcements .................................................................................. 100.0%  
+  app/Services\Marketplace ............................................................................ 79, 88 / 97.0%  
+  app/Services\Matching ............................................................................... 20..23 / 75.0%  
+  app/Services\Permissions .................................................................................... 100.0%  
+  app/Shared/Audit\AuditTrail ................................................................................. 100.0%  
+  app/Shared/Auth\EffectivePermissions .................................................................... 20 / 93.3%  
+  app/Shared/Http\ApiExceptionRenderer ............................................................ 21, 37, 44 / 85.7%  
+  app/Shared/Http\ApiResponse ................................................................................. 100.0%  
+  app/Shared/Http\Idempotency ................................................................................. 100.0%  
+                                                                                                         Total: 92.7 %  

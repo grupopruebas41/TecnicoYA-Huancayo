@@ -2,6 +2,97 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-10 · Sprint 2 · paso S2.3: backend en verde y precisiones de Codex
+
+- **Rama:** `feature/mayhuasca/f-administracion/s02`. **PR:** ver abajo (pedido del usuario; revisión humana [PENDIENTE]).
+- **Commits:**
+  - `f501a95` feat(s02): backend en verde.
+  - `522862b` fix(s02): precisiones de Codex (contrato v1.1).
+  - commit de evidencias, avance y este relevo.
+- **Pruebas:**
+  - Pest 148/148 (1547 aserciones); Sprint02 58/58.
+  - Cobertura: FAdministration 96,74 %; clases de S2 97,14 %.
+  - `composer audit` limpio.
+  - Mutación de las 37 clases de S2: **82,91 %** (176 sobrevivientes, sobre todo campos de respuesta y de auditoría sin aserción). Detalle en `evidencias/sprint-02/pest/04-mutacion.txt`.
+- **Respuesta a las precisiones de Codex (HANDOFF-codex S2.4):**
+  1. **`Sprint02E2ESeeder`.** Existe desde `f501a95` (no estaba en `2140555`) y se amplió en `522862b`. Ver contrato §10.
+     - Cuentas, todas con `TECNICOYA_E2E_PASSWORD`, la contraseña que genera el arrancador:
+       - `e2e-admin@`, `e2e-client@` y `e2e-technician@` (pendiente e incompleto, de S1);
+       - `e2e-technician-ready@`, pendiente y completo, para aprobar (S02-TC-069);
+       - `e2e-technician-reject@`, pendiente y completo, para rechazar (S02-TC-070);
+       - `e2e-technician-active@`, activo, con servicio, franja, zona y un trabajo publicado.
+     - Carrusel: dos subcategorías de Cómputo con foto (`computo-hardware` y `computo-mantenimiento`).
+     - Comunicados: uno publicado y uno en borrador.
+     - Es idempotente; se probó dos veces en el slot A.
+  2. **Límites de la tarifa orientativa (`subcategories.reference_fee`).** **Se corrigió el backend:** ahora exige 2 decimales como máximo; antes MySQL redondeaba sin avisar. Lo prueba S02-TC-017. El rango sigue de 0 a 100 000: no es la tarifa del técnico, así que no aplican los límites de D-48. Ver contrato §7.4.
+  3. **`subcategory_id` del portafolio.** **Solo se aclaró el contrato:** el backend ya exigía una subcategoría existente, aunque esté inactiva. Ver §5.5.
+  4. **`performed_on` del portafolio.** **Se corrigió el backend:** ya no acepta fechas posteriores a hoy (reloj UTC del servidor) y responde «La fecha del trabajo no puede ser futura.». Lo prueba S02-TC-042. La validación del cliente debe imitarla.
+
+**Qué falta:**
+- Revisión e integración del PR.
+- Codex: S2.5 (Cypress 059–075 en el slot B tras integrar).
+- Reforzar las aserciones de las clases con sobrevivientes y repetir su mutación.
+- Cierre S2.6: SonarQube, conteo e informe.
+
+**Bloqueos:** ninguno.
+
+**Notas:**
+- La mutación tardó unas 4,5 h de reloj y ocupó el slot A.
+- `backend/api/storage/` sigue sin `.gitignore`: los 20 PNG de DEF-38 siguen en el disco, sin versionar.
+
+## 2026-10-10 · Sprint 2 · paso S2.2: Pest en rojo
+
+- **Rama:** `feature/mayhuasca/f-administracion/s02`.
+- **Commits:**
+  - `93f448c` test(s02): 46 casos nuevos (013–058); 8 archivos en `tests/Feature/Sprint02/`, helpers en `tests/Support/Sprint02.php` y fixtures en `tests/fixtures/sprint02`.
+  - el siguiente commit marca los fixtures como binarios (`backend/api/.gitattributes`).
+  - `ad89d4d` evidencia `evidencias/sprint-02/pest/01-rojo.txt`.
+- **Rojo:** 36 fallan y 22 pasan.
+  - Pasan los 12 renombrados y, por código existente: 016, 017, 029, 033, 047, 050, 052, 056 y 057.
+  - **S02-TC-043 pasa en falso:** la ruta no existe y devuelve el 404 esperado. Hay que revisarla tras S2.3.
+- **Catálogo:** 050 y 051 se reformularon para no duplicar aserciones de S02-TC-008.
+
+**Qué falta:** S2.3 (verde). Orden previsto:
+1. migración `media_files.purpose` y `POST /media` con `ImageSanitizer` en PHP puro;
+2. `DistrictSeeder` y `/catalog/districts`;
+3. carrusel;
+4. especialidades y distritos admin;
+5. comunicados;
+6. verificación (bandeja, ficha, reject, suspensión y reactivación, verification-request);
+7. perfil propio, documentos y PATCH/DELETE de portafolio;
+8. reglas de D-49 y D-48 y auditoría de tarifa;
+9. `Sprint02E2ESeeder`.
+
+## 2026-10-10 · Sprint 2 · paso S2.1: brechas, catálogo, contrato y decisiones
+
+- **Rama:** `feature/mayhuasca/f-administracion/s02`, base `main` `1bfb8f4` (PR #9 integrado), publicada en origin.
+- **Commits:**
+  - `500187b` test(s02): renombra las 12 Pest a S02-TC-001…012 con su `[TC-0xx]` (solo descripciones).
+  - `fee8f84` docs(s02): `plan-pruebas-v3/sprint-02/CATALOGO-S02.csv` (89 casos: 58 Pest, 17 Cypress y 14 Vitest), `CONTRATO-API.md` y D-46 a D-52.
+- **Pruebas:** Pest Sprint02 12/12 (148 aserciones) tras el renombrado.
+- **Decisiones (Pimentel, 2026-10-10):**
+  - D-46 (P17-S2): archivos JPG, PNG o WebP de hasta 5 MB y 5 por trabajo; documentos PDF, JPG o PNG, 5 vigentes.
+  - D-47 (MEDIA-01): revisión automática y sin EXIF.
+  - D-48 (TARIFA-01): tarifa de S/ 1 a S/ 5000, con 2 decimales.
+  - D-49 (FRANJA-01): sin solapes, contiguas permitidas, ≥ 30 min.
+  - D-50 (VERIF-01): rechazo → `rejected` y nueva solicitud; suspensión solo en backend en S2.
+  - D-51 (COM-01): solo se editan borradores.
+  - D-52 (CAT-01): `reference_fee` orientativa.
+- **Brechas principales:**
+  - no hay `POST /media`;
+  - falta el CRUD de especialidades, distritos y comunicados;
+  - faltan la bandeja, la ficha, el rechazo y la suspensión;
+  - faltan los distritos semilla (D-15) y el perfil propio del técnico;
+  - no hay ninguna pantalla v1;
+  - la landing tiene 3 de 10 secciones.
+- **Observación técnica:** el PHP de XAMPP no tiene GD (`php_gd.dll` existe pero no está cargado), y la CI instala solo `pdo_mysql`. El EXIF se quitará en PHP puro, sin depender de GD.
+
+**Qué falta:** S2.2 (Pest 013–058 en rojo) y S2.3 (backend en verde, empezando por `POST /media`).
+
+**Bloqueos:** ninguno.
+
+**Pedidos a Codex:** S2.4 con el contrato (§11). La landing tiene 10 secciones (S02-TC-089). No hay pantalla de suspensión en S2.
+
 ## 2026-10-10 · Sprint 1 · paso S1.6: cierre del sprint
 
 - **Rama:** `feature/pimentel/f-administracion/s01-cierre`, base `main` `8c570e9` (PR #6 y #7 integrados). **PR:** [#8](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/8), abierto.
