@@ -46,4 +46,4 @@ Los diagnósticos limitados usaron CYPRESS_excludeSpecPattern únicamente para o
 
 TECNICOYA_SLOT=B; ejecuciones seriales con el bloqueo global del arrancador. No se levantó MySQL desde el worktree, ni se ejecutó Pest local. RAM libre observada durante la investigación: 303–893 MB; se registra como condición del entorno, no como causa probada. Datos sintéticos; rutas personales sustituidas por [WORKSPACE]/[USERPROFILE]. No se incluyen contraseñas, cookies, claves ni archivos .env. Los medios creados en backend/api/storage no se versionan.
 
-CI: se verificará sobre el commit publicado; resultado en HANDOFF y en el PR. Revisión humana: [PENDIENTE].
+CI automatiza backend, frontend y conteo; estado de la última ejecución publicada: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10/checks. No ejecuta Cypress ni SonarQube. Revisión humana: [PENDIENTE].

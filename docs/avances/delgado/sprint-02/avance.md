@@ -25,7 +25,7 @@ Codex (modelo no expuesto por la sesión), 2026-10-10. Se incorporaron pruebas a
 - Solo una corrida Cypress a la vez, bloqueo global del arrancador, TECNICOYA_SLOT=B y tecnicoya_b_testing. No se levantó MySQL desde este worktree, no se ejecutó Pest local ni SonarQube.
 - DEF-40 para Claude Code: falta subcategory_id en respuesta del portafolio propio; contrato y prueba Pest de ida/vuelta pendientes. Backend sin modificaciones propias; almacenamiento sintético generado por el runner sin versionar.
 - Evidencias: ../../../documentacion/evidencias/sprint-02/cypress/README.md. Decisiones: ../../../documentacion/sprints/DECISIONES.md.
-- SonarQube: [PENDIENTE], corresponde a S2.6. Revisor: [PENDIENTE]. CI y push: pendientes de registrar tras publicar evidencias.
+- SonarQube: [PENDIENTE], corresponde a S2.6. Revisor: [PENDIENTE]. Push realizado (a9574f5 diagnóstico, c05f61e evidencias). CI iniciada; estado actualizado: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10/checks. La CI no sustituye los E2E fallidos ni el Quality Gate.
 
 ### Uso de IA en S2.5
 

@@ -32,7 +32,7 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - **Pedido adicional a Claude Code, DEF-42:** revisar preflight y recepción multipart/trazas de la API para /media. RAM libre observada 303–893 MB; no se afirma que sea la causa. S2.5 no está aprobado: resolver subidas y repetir los 17.
 - Evidencias: docs/documentacion/evidencias/sprint-02/cypress/README.md, salidas, JUnit y lcov; todos los intentos retenidos y rutas anonimizadas. Detalles de cada corrección de pruebas en el README.
 - Sin MySQL iniciado desde worktree, sin Pest o SonarQube local. Archivos sintéticos en backend/api/storage sin versionar. Quality Gate y revisión humana [PENDIENTE] para S2.6.
-- CI/push: pendiente de registrar la ejecución del commit publicado.
+- Push realizado a feature/delgado/f-administracion/s02, nunca a main. a9574f5 conserva diagnóstico/fixture; c05f61e publica evidencias. CI de GitHub Actions iniciada tras el push; estado actualizado en https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10/checks. La CI no ejecuta Cypress ni SonarQube y no cierra DEF-42.
 
 ## 2026-10-10 · Sprint 02 · S2.4 frontend
 
