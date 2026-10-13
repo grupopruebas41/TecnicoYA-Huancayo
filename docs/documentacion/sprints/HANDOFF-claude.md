@@ -2,6 +2,57 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-13 · Sprint 2 · cierre S2.6: DEF-40 e incidencias de SonarQube (en espera del aviso)
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`. Solo local: sin push ni PR.
+- **Commits:**
+  - `989761e` test(s02): S02-TC-090 en rojo («null is identical to 1» en la respuesta del PATCH) y su fila en `CATALOGO-S02.csv`, que pasa a 90 casos (59 Pest).
+  - `86a65aa` fix(s02): `Portfolio::present` devuelve `subcategory_id`, también si la subcategoría está inactiva o es null. La galería pública y el 201 del POST no cambian.
+  - `3b9e6d8` docs(s02): `CONTRATO-API.md` v1.2 (§5.1 y §5.6) y DEF-40 cerrado en `REGISTRO-DEFECTOS.csv` y `.md`.
+  - `1c58b45` refactor(s02): incidencias seguras de SonarQube (ver abajo).
+  - commit de este relevo.
+- **Pruebas** (solo los archivos tocados, slot A):
+  - PortfolioAndProfileTest y TC021PublishedPortfolioWorkTest: 6/6 (198 aserciones);
+  - ProvisionAdminTest, TC011 y TC012: 5/5 (44 aserciones);
+  - `php -l` sin errores.
+  - Pint pasa en los archivos tocados, con LF. En la copia de trabajo (CRLF por `core.autocrlf=true`) Pint marca `line_ending` en archivos que nadie tocó. Siguen fallando, desde antes, la migración `add_account_access` (prototipo compacto) y `Sprint01E2ESeeder` (`not_operator_with_successor_space`).
+- **No se ejecutó:** suite completa, mutación ni análisis nuevo de SonarQube.
+
+**SonarQube: incidencias abiertas de Reliability y Maintainability, consultadas por la API**
+- Son las del último análisis guardado. El token no deja leer `project_analyses`, así que no se sabe de qué commit es; incluye `features/administration`.
+- En total hay 116: 55 de `backend/api` y 61 de `frontend/`.
+- **Corregidas en backend (7):**
+  - php:S112 ×5: `SeedingRefused` y `AdministratorProvisioningRefused`, subclases de `RuntimeException` con los mismos mensajes;
+  - php:S1186: `AppServiceProvider::register`;
+  - php:S113: la migración `add_account_access`.
+- **No corregidas en backend (48), con su motivo:**
+  - **Prototipo congelado (AGENTS §2, D-26), se retira y no se toca (41):**
+    - `app/Http/Controllers/AuthController.php` (4) y `MarketplaceController.php` (6);
+    - `app/Services/Marketplace.php` (14), `Matching.php` (12) y `Announcements.php` (4, servicio histórico);
+    - migración `create_marketplace` (1).
+    - Las S2681 («solo la primera sentencia es condicional») de estos archivos son las de más riesgo y deben revisarse al retirar el prototipo, no antes.
+  - **php:S107**, 8 parámetros, en `AuditTrail::record` y `RequestTimeline`: cambiar la firma afecta a todas las llamadas; no es pequeño.
+  - **php:S1142**, más de 3 `return`, en `MediaController`, `ApiExceptionRenderer` y el comando `ProvisionAdmin`: es un refactor de flujo y no aporta seguridad.
+  - **php:S1172**, `$attribute` sin usar en `RegisterAccountRequest`: Laravel pasa los argumentos de la regla closure por posición, así que el parámetro es obligatorio.
+  - **php:S1192** en `config/logging.php`: es la configuración estándar de Laravel; se deja como viene para facilitar las actualizaciones.
+- **Frontend (61), para Codex; no se tocaron:**
+  - S2681 ×14, sentencias de una línea sin llaves: `Marketplace.jsx` 5, `domain/demo.js` 3, `Announcements.jsx` 2, `App.jsx` 2, `ServiceCarousel.jsx` 1 y `marketplace-api.js` 1.
+  - S3358 ×11, ternarios anidados: `ServiceCarousel` 3, `Marketplace` 3, `AccountPanel`, `Announcements`, `App`, `Auth` y `SessionForm`.
+  - S6819 ×12, `role="group"` en lugar de `<fieldset>`/`<details>`: `Marketplace` 3, `Catalog` 2, `AccountApp`, `forms.jsx`, `SessionForm`, `AccountPanel`, `Announcements`, `Auth` y `TechnicianProfile`.
+  - S7718 ×9, el parámetro de `catch` debe llamarse `error_`: `AccountApp` 3, `ProfileForm` 3, `Catalog` 2 y `SessionForm`.
+  - S3776 ×5, complejidad cognitiva de 16 a 17: `AccountApp`, `ProfileForm`, `forms.jsx`, `Marketplace` y `demo.js`.
+  - S7723 ×6, `new Error()`: `demo.js` 3, `marketplace-api.js` 2 y `Marketplace`.
+  - S6479 ×2, índice como `key`: `App` y `Marketplace`.
+  - S6825 ×1, `aria-hidden` en un elemento enfocable: `VideoExperience`.
+  - S1788 ×1, parámetro por defecto que no va al final: `features/administration/http.js`.
+  - `Marketplace.jsx`, `demo.js` y `marketplace-api.js` son de la demo congelada.
+
+**Pedidos a Codex:**
+1. DEF-40 está cerrado en esta rama (`86a65aa`). En tu `REGISTRO-DEFECTOS.csv` local, DEF-40 sigue «Abierto». Al integrar habrá conflicto en las últimas filas: conserva la fila DEF-40 cerrada de esta rama y tu DEF-41. Ya puedes precargar `subcategory_id` desde `GET /technicians/me/profile` (contrato v1.2 §5.1).
+2. Revisa las incidencias de frontend de arriba que no sean de la demo congelada; S6819 y S6825 afectan a la accesibilidad (DoD).
+
+**Qué falta:** lo mismo de la entrada siguiente (mutación de las 4 clases, regresión, conteo, SonarQube y PR), tras el aviso del usuario.
+
 ## 2026-10-13 · Sprint 2 · cierre S2.6, parte liviana (en espera del PR #10 y de S2.5)
 
 - **Rama:** `feature/pimentel/f-administracion/s02-cierre`, creada desde `origin/main` `f7c524e`. Solo local: sin push ni PR, como pidió el usuario.
