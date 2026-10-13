@@ -11,3 +11,22 @@ test('S02-TC-083 complemento: ficha aprueba con motivo y versión',async()=>{ren
 test('S02-TC-081 complemento: técnico guarda bio tarifa disponibilidad y pausa',async()=>{render(<TechnicianPanel/>);await screen.findByLabelText('Biografía');fill('Biografía','Nueva trayectoria');fireEvent.click(screen.getAllByRole('button',{name:'Guardar'})[0]);await waitFor(()=>expect(request).toHaveBeenCalledWith('/technicians/me/profile',expect.objectContaining({bio:'Nueva trayectoria',expected_version:2}),'PATCH'));click('Servicios y tarifas');await screen.findByLabelText('Tarifa de Redes (S/)');fill('Tarifa de Redes (S/)','60.00');click('Guardar');await waitFor(()=>expect(request).toHaveBeenCalledWith('/technicians/me/services',{services:[{subcategory_id:2,reference_fee:'60.00'}],expected_version:2},'PUT'));click('Disponibilidad y zona');await screen.findByLabelText('Inicio 1');fireEvent.click(screen.getByLabelText('Activar pausa'));fill('Motivo de pausa','Descanso');click('Guardar');await waitFor(()=>expect(request).toHaveBeenCalledWith('/technicians/me/availability',expect.objectContaining({pause:expect.objectContaining({reason:'Descanso'}),expected_version:2}),'PUT'));click('Añadir franja');click('Quitar franja 2')});
 test('S02-TC-079 complemento: portafolio cancela y retira trabajo',async()=>{render(<TechnicianPanel/>);await screen.findByLabelText('Biografía');click('Portafolio');await screen.findByText('Trabajo existente');click('Editar trabajo');fill('Título del trabajo','Trabajo actualizado');click('Guardar');await waitFor(()=>expect(request).toHaveBeenCalledWith('/technicians/me/portfolio/5',expect.objectContaining({title:'Trabajo actualizado',expected_version:1}),'PATCH'));click('Retirar trabajo');click('Cancelar');expect(request).not.toHaveBeenCalledWith('/technicians/me/portfolio/5',undefined,'DELETE');click('Retirar trabajo');click('Confirmar');await screen.findByText('Trabajo retirado correctamente.');expect(request).toHaveBeenCalledWith('/technicians/me/portfolio/5',undefined,'DELETE')});
 test('S02-TC-087 complemento: menú solo muestra permisos concedidos',async()=>{render(<Sprint02Portal user={{id:1,role:{code:'admin'},permissions:['catalog.manage']}}/>);await screen.findByText('No hay comunicados vigentes para tu cuenta.');expect(screen.getByRole('button',{name:'Catálogo'})).toBeInTheDocument();expect(screen.queryByRole('button',{name:'Verificación'})).not.toBeInTheDocument();click('Catálogo');await screen.findByRole('heading',{name:'Administrar catálogo'})});
+
+test('S02-TC-088 complemento v1.1: conserva subcategoría inactiva y permite fecha vacía',async()=>{profile.portfolio[0].subcategory_id=999;profile.portfolio[0].performed_on=null;render(<TechnicianPanel/>);await screen.findByLabelText('Biografía');click('Portafolio');await screen.findByText('Trabajo existente');click('Editar trabajo');expect(screen.getByLabelText('Subcategoría del trabajo')).toHaveValue('999');click('Guardar');await waitFor(()=>expect(request).toHaveBeenCalledWith('/technicians/me/portfolio/5',expect.objectContaining({subcategory_id:999,performed_on:null}),'PATCH'))});
+
+
+test('S02-TC-079 complemento: el aviso de retiro persiste al desmontar el botón', async () => {
+  announcements = announcements.slice(0, 1);
+  const original = request.getMockImplementation();
+  request.mockImplementation(async (path, body, method) => {
+    if (method === 'DELETE') { announcements = [{...announcements[0], retired_at: '2026-10-13T12:00:00Z'}]; return null; }
+    return original(path, body, method);
+  });
+  render(<AnnouncementsAdmin/>);
+  await screen.findByText('Aviso publicado', {selector: 'article > h3'});
+  click('Eliminar comunicado');
+  click('Confirmar');
+  await screen.findByText('Retirado');
+  expect(screen.queryByRole('button', {name: 'Eliminar comunicado'})).not.toBeInTheDocument();
+  expect(screen.getByText('Contenido retirado.')).toBeVisible();
+});
