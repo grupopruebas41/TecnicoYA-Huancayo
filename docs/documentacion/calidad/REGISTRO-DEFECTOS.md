@@ -7,7 +7,7 @@ Fuente de verdad: [REGISTRO-DEFECTOS.csv](REGISTRO-DEFECTOS.csv). Este archivo e
 
 Cada defecto se cierra con el commit que lo corrige. Un defecto nuevo se agrega al final con el siguiente número.
 
-**Resumen por estado (2026-10-10):** Cerrado: 23 · Abierto: 13 · Duplicado: 3 (Abierto incluye los parciales DEF-17 y DEF-25)
+**Resumen por estado (2026-10-13):** Cerrado: 24 · Abierto: 13 · Duplicado: 3 (Abierto incluye los parciales DEF-17 y DEF-25)
 
 | ID | Fecha | Origen | Descripción | Severidad | Acción | Estado | Commit |
 |---|---|---|---|---|---|---|---|
@@ -50,3 +50,4 @@ Cada defecto se cierra con el commit que lo corrige. Un defecto nuevo se agrega 
 | DEF-37 | 2026-10-09 | S1.3, pest --mutate (Claude Code) | En Windows, pest-plugin-mutate lanza cada mutante con el argv original (vendor/bin/pest), que cmd no puede ejecutar («"vendor" no se reconoce…»). El proceso sale con 1 y el plugin cuenta el mutante como eliminado: la primera corrida dio 95,05 % (806/848) falso | Alta | Invocar Pest como php -d pcov.enabled=1 … vendor\bin\pest (resuelve a pest.bat) con PHP en el PATH y --clear-cache. Comprobado con Symfony Process. La evidencia 04-mutacion.txt usa esta forma | Cerrado | — |
 | DEF-38 | 2026-10-10 | S1.6, regresión (Claude Code) | La versión reforzada de S01-TC-010 (4171f06) creaba la imagen de carrusel en el disco público real: 20 PNG sintéticos sin versionar en backend/api/storage/app/public/media tras la mutación y la regresión | Baja | Cerrado: Storage::fake('public') en la prueba, como en TC-015; aserciones sin cambios; reejecutada sin crear archivos. Los 20 PNG ya generados quedan para borrado manual (no versionados) | Cerrado | b0d794b |
 | DEF-39 | 2026-10-09 | S1.5, Cypress slot B (Codex) | S01-TC-075 falló 2 veces (16/17): cy.press(Enter) no activaba el botón en Chromium porque el evento de tecla nativo llegaba incompleto. Defecto de la prueba, no del producto | Media | Cerrado: Enter nativo completo por CDP con isTrusted=true, sin click ni respuestas fabricadas (abb2b7b); 17/17 en slot B y en la regresión S1.6 del slot A | Cerrado | abb2b7b |
+| DEF-40 | 2026-10-13 | S2.5, revisión del contrato v1.1 (Codex) | Portfolio::present omitía subcategory_id en GET /technicians/me/profile y en el PATCH del trabajo: al editar no se recuperaba la subcategoría guardada (tampoco una inactiva) | Media | Cerrado: present() devuelve subcategory_id (también inactivo o null); galería pública y 201 del POST sin cambios. S02-TC-090 en rojo (989761e) y verde; contrato v1.2 §5.1 y §5.6 | Cerrado | 86a65aa |

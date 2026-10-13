@@ -1,7 +1,7 @@
 # Contrato de API · Sprint 2
 
-**Versión:** 1.1 · **Fecha:** 2026-10-10 · **Autor:** Claude Code (S2.1; v1.1 responde a las precisiones de Codex tras S2.4: §5.5, §7.4 y §10) · **Revisor:** [PENDIENTE]
-**Base:** `backend/api` en la rama `feature/mayhuasca/f-administracion/s02`. Catálogo de casos: [CATALOGO-S02.csv](CATALOGO-S02.csv) (89: 58 Pest, 17 Cypress y 14 Vitest).
+**Versión:** 1.2 · **Fecha:** 2026-10-13 · **Autor:** Claude Code (S2.1; v1.1 responde a las precisiones de Codex tras S2.4: §5.5, §7.4 y §10; v1.2 corrige DEF-40: §5.1 y §5.6) · **Revisor:** [PENDIENTE]
+**Base:** `backend/api` en la rama `feature/mayhuasca/f-administracion/s02` (v1.2: `feature/pimentel/f-administracion/s02-cierre`). Catálogo de casos: [CATALOGO-S02.csv](CATALOGO-S02.csv) (90: 59 Pest, 17 Cypress y 14 Vitest).
 **Decisiones aplicadas:** D-13, D-15, D-16, D-21, D-25, D-32 y **D-46 a D-52** (2026-10-10).
 
 > Estado: las rutas marcadas **[existe]** ya responden en `main`; las demás se implementan en S2.3. Hasta que el PR de S2.3 se integre, Codex trabaja con este contrato (S2.4) y deja Cypress para S2.5.
@@ -116,13 +116,15 @@ Perfil propio completo: incluye borradores, documentos y estado de verificación
   "services": [ { "subcategory_id": 4, "subcategory_name": "Mantenimiento de laptops", "reference_fee": "60.00", "currency": "PEN", "rate_version": 2, "active": true } ],
   "availability": { "slots": [ { "weekday": 1, "start": "08:00", "end": "12:00" } ], "district_ids": [1, 2],
     "pause": { "starts_at": "2026-10-11T13:00:00.000000Z", "ends_at": "2026-10-12T13:00:00.000000Z", "reason": "Viaje" } },
-  "portfolio": [ { "id": 5, "title": "Cambio de compresor", "description": "…", "performed_on": "2026-09-30", "status": "draft", "version": 1,
+  "portfolio": [ { "id": 5, "title": "Cambio de compresor", "description": "…", "subcategory_id": 9, "performed_on": "2026-09-30", "status": "draft", "version": 1,
     "images": [ { "media_id": 31, "position": 0, "url": "…/api/v1/media/31" } ] } ],
   "documents": [ { "id": 3, "document_type": "Certificado técnico", "review_status": "pending", "media_id": 40, "url": "…/api/v1/media/40" } ]
 }, "meta": { … } }
 ```
 
 `pause` es `null` si no hay una pausa vigente o futura. `last_review` es `null` si nunca fue revisado.
+
+`portfolio[].subcategory_id` (v1.2, DEF-40): la subcategoría guardada en el trabajo, aunque esté inactiva, o `null`. Sirve para precargar el formulario de edición. La galería pública (§3.5) no lo incluye.
 
 ### 5.2 `PATCH /technicians/me/profile`
 
@@ -165,7 +167,7 @@ Sin cuerpo, salvo `{ "expected_version": 8 }`. Solo si `verification_status = re
 
 ### 5.6 `PATCH /technicians/me/portfolio/{id}`
 
-Mismos campos que §5.5, todos opcionales, más `expected_version`. Si se envía `media_ids`, reemplaza las imágenes. **200** con el trabajo como en §5.1. Trabajo de otro técnico o retirado: **404**.
+Mismos campos que §5.5, todos opcionales, más `expected_version`. Si se envía `media_ids`, reemplaza las imágenes. **200** con el trabajo como en §5.1, incluido `subcategory_id` (v1.2). Trabajo de otro técnico o retirado: **404**. Lo prueba S02-TC-090.
 
 ### 5.7 `DELETE /technicians/me/portfolio/{id}`
 
