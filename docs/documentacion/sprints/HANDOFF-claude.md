@@ -4,7 +4,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 
 ## 2026-10-15 · Sprint 3 · S3.3 completado (backend en verde y PR)
 
-- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada. Commit `20dcc34` feat(s03) y luego el commit de documentación. PR: ver abajo.
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada. Commit `20dcc34` feat(s03) y `5f10884` docs. **PR #14:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/14
 - **Implementado:**
   - `POST /media` con `purpose=evidence` (solo clientes, privada);
   - límites de descripción, dirección e inicio programado (D-12, D-55, D-56);

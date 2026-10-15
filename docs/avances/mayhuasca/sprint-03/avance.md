@@ -39,7 +39,7 @@
   | `acebacc` | test(s03): S03-TC-016 a 051 (21 en rojo y 30 ya en verde) |
   | `20dcc34` | feat(s03): backend en verde |
 
-  PR: ver HANDOFF-claude.md.
+  PR #14: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/14
 - **Pruebas previstas:** S03-TC-001 a 081 (`CATALOGO-S03.csv`). A cargo de Claude Code: Pest 001 a 051.
 - **Pruebas ejecutadas** (slot A):
   - **Rojo** (`acebacc`): Sprint03 con 21 en rojo y 30 en verde (431 aserciones). [01-rojo](../../../documentacion/evidencias/sprint-03/01-rojo-antes-de-implementar.txt)
