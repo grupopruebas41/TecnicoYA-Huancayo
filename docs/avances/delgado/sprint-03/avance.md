@@ -34,3 +34,14 @@ Uso de IA: Codex (modelo no expuesto), 2026-10-15. Se aplicó implementación Re
 ## 2026-10-15 · Actualización CI S3.4
 
 Commit comprobado: 7103c44. Ejecución: https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38734429455. Frontend aprobado (Vitest, build y npm audit); Pest aprobado. Backend falla en composer audit: symfony/http-foundation (PKSA-xmwy-rmx5-m7h4, CVE-2026-108082) y symfony/yaml (PKSA-xz3r-9gp4-4m1z, CVE-2026-109413), según el reporte de CI. Conteo omitido por dependencia fallida. No se modificó backend ni se reintentó para ocultar el fallo. Pedido a Claude Code: revisar y actualizar las dependencias afectadas en su rama, validar Pest/audit y publicar la corrección. La ejecución anterior aprobada no acredita el estado actual. Revisión humana: [PENDIENTE].
+
+
+## 2026-10-15 · S3.5 · Merge completo; pausa por RAM
+
+- Rama: feature/delgado/a-solicitudes/s03, slot B. Merge e91e6bb de origin/main c1918f4 sin conflictos; incluye PR #14 y #16 (DEF-43).
+- Leídos AGENTS, ambos HANDOFF y ENTORNO-PARALELO. Contrato S3 conservado.
+- Comprobación previa con os.freemem(): 0,82 GiB libres, inferior al umbral de 1 GiB del arrancador. Se avisó al usuario y no se inició Cypress, por su instrucción explícita.
+- Pendiente: comprobar memoria de nuevo y dependencias locales contra composer.lock actualizado; ejecutar S03 (17 casos), S01 y S02 secuencialmente; Vitest/cobertura, build y audit; evidencias, push y CI PR #15. No se levantó Docker ni se modificó backend manualmente.
+- No se atribuyen resultados anteriores al merge. Revisor: [PENDIENTE].
+
+Uso de IA: Codex; inspección, merge y registro de pausa; revisión humana [PENDIENTE].
