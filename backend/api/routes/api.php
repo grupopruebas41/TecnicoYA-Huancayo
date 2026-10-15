@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MarketplaceController;
 use App\Modules\ARequests\Http\Controllers\ServiceRequestController;
+use App\Modules\BMatching\Http\Controllers\TechnicianSearchController;
 use App\Modules\FAdministration\Http\Controllers\AdminAnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
 use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
@@ -45,6 +46,8 @@ Route::prefix('v1')->group(function () {
         Route::get('announcements', [AnnouncementController::class, 'index']);
         Route::post('media', [MediaController::class, 'store']); // D-46 y D-47; StoreMediaRequest autoriza por finalidad.
 
+        // Búsqueda (D-57: sin técnicos en pausa); el perfil por enlace sigue disponible.
+        Route::get('technicians', [TechnicianSearchController::class, 'index']);
         Route::get('technicians/{technician}', [TechnicianProfileController::class, 'show'])->whereNumber('technician');
 
         // Solicitudes: el detalle valida la relación con la solicitud (titular; técnico notificado desde S4).
