@@ -24,7 +24,8 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 ## 2026-10-14 · Sprint 03 · deuda Sonar del frontend S2
 
 - **Rama:** feature/delgado/f-administracion/s02-sonar; base origin/main 0a5977f.
-- **Commits:** 226e04c (3 pruebas en rojo); 0d282d0 (refactor en verde); documentación/evidencias en el siguiente commit.
+- **Commits:** 226e04c (3 pruebas en rojo); 0d282d0 (refactor en verde); e0d009b (documentación/evidencias).
+- **PR:** [#12](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/12), abierto hacia main. [CI vigente](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/12/checks): en ejecución al publicar este relevo; consultar el resultado del último SHA.
 - **Alcance:** solo administration/ y components/. S6819: 6 ubicaciones; S3776: 3; S3358: 9; S7718: 15; S1788: 1. S6825: ninguna dentro del alcance.
 - **Pruebas:** Vitest 119/119, 21 archivos; build aprobado. Cobertura líneas administración 86,75 %, global 82,93 %. Sin Cypress, Docker ni SonarQube local, según instrucción.
 - **Evidencias:** docs/documentacion/evidencias/sprint-03/sonar-frontend/ (fecha/hash, JUnit, lcov, rojo, verde, build y comprobación estática).
