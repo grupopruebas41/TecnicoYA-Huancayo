@@ -8,8 +8,12 @@
 //
 // Slot: --slot, si no la variable TECNICOYA_SLOT, si no la clave TECNICOYA_SLOT de
 // backend/api/.env.testing, si no A. Ver docs/documentacion/sprints/ENTORNO-PARALELO.md.
+//
+// La salida de la API (una línea por petición) queda en tmp/e2e-api-<slot>.log para diagnosticar
+// fallos de transporte (DEF-42). Se informa la RAM libre y, por debajo de 1 GB, se avisa.
 import {spawn, spawnSync} from 'node:child_process';
 import {readFileSync, existsSync, mkdirSync, openSync, closeSync, writeSync, unlinkSync, readdirSync} from 'node:fs';
+import {freemem} from 'node:os';
 import {randomBytes} from 'node:crypto';
 import {parseEnv, parseArgs} from 'node:util';
 import {fileURLToPath} from 'node:url';
@@ -153,10 +157,13 @@ try {
   held.push(path.join(tmp, `e2e-slot-${slotName}.lock`));
   await ensurePortsFree();
   console.log(`Sprint ${sprint}, slot ${slotName}: base ${slot.database}, API ${apiUrl}, web ${webUrl}. No ejecutar Pest de este slot hasta que termine.`);
+  const freeMb = Math.round(freemem() / 1048576);
+  console.log(`RAM libre: ${freeMb} MB.${freeMb < 1024 ? ' Aviso: DEF-42 (subidas sin respuesta en Chrome) se observó con poca memoria libre; si falla una subida, revisar tmp/e2e-api-' + slotName + '.log y repetir con más memoria.' : ''}`);
 
   await run(php, ['artisan', 'migrate', '--force', '--no-ansi'], backend, 'migrate');
   await run(php, ['artisan', 'db:seed', `--class=${seeder}`, '--force', '--no-ansi'], backend, seeder);
-  services.push(command(php, ['artisan', 'serve', '--host=127.0.0.1', `--port=${slot.api}`, '--no-reload'], backend, 'ignore'));
+  const apiLog = openSync(path.join(tmp, `e2e-api-${slotName}.log`), 'w');
+  services.push(command(php, ['artisan', 'serve', '--host=127.0.0.1', `--port=${slot.api}`, '--no-reload'], backend, ['ignore', apiLog, apiLog]));
   services.push(command(process.execPath, ['node_modules/vite/bin/vite.js', '--host=127.0.0.1', `--port=${slot.web}`, '--strictPort'], frontend, 'ignore'));
   await waitReady(`${apiUrl}/api/health`);
   await waitReady(webUrl);
