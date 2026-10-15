@@ -84,7 +84,7 @@ export function apiWrite(method, path, body) {
         method,
         url: api() + "/api/v1" + path,
         body,
-        headers: { "X-XSRF-TOKEN": decodeURIComponent(cookie.value) },
+        headers: { "X-XSRF-TOKEN": decodeURIComponent(cookie.value), Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json" },
         log: false,
       }),
     );

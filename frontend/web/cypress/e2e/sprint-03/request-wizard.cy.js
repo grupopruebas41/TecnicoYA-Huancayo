@@ -75,25 +75,25 @@ describe("S3 asistente", () => {
   it("S03-TC-063 recorrido por teclado", () => {
     cy.get('nav[aria-label="Gestión del cliente"]')
       .contains("button", "Nueva solicitud")
-      .focus()
-      .type("{enter}");
+      .focus();
+    cy.press(Cypress.Keyboard.Keys.ENTER);
     cy.focused().should("contain", "Paso 1");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().should("have.attr", "name", "specialty_id").select(1);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().type("{enter}");
+    cy.press(Cypress.Keyboard.Keys.ENTER);
     cy.focused().should("contain", "Paso 2");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().select(1);
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().type("{enter}");
+    cy.press(Cypress.Keyboard.Keys.ENTER);
     cy.focused().should("contain", "Paso 3");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().type("Descripción sintética suficientemente larga.");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().type("{enter}");
+    cy.press(Cypress.Keyboard.Keys.ENTER);
     cy.focused().should("contain", "Paso 4");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().select(1);
@@ -102,13 +102,13 @@ describe("S3 asistente", () => {
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().type("{enter}");
+    cy.press(Cypress.Keyboard.Keys.ENTER);
     wizard().contains("h2", "Paso 5").should("be.focused");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().should("have.attr", "type", "checkbox").type(" ");
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().type("{enter}");
+    cy.press(Cypress.Keyboard.Keys.ENTER);
     wizard().contains("Solicitud enviada correctamente.").should("be.visible");
   });
 });
