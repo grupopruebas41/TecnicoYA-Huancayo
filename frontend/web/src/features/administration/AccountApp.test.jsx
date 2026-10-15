@@ -3,6 +3,8 @@ import {afterEach, expect, test, vi} from 'vitest';
 import {cleanup, fireEvent, render, screen, waitFor} from '@testing-library/react';
 import AccountApp from './AccountApp';
 import {request} from './http';
+// Estas pruebas aíslan sesión/RBAC; los módulos S2 se prueban por separado.
+vi.mock('./Sprint02Portal', () => ({default: () => null}));
 vi.mock('./http', () => ({request: vi.fn()}));
 afterEach(() => {cleanup(); vi.resetAllMocks(); window.history.replaceState(null, '', '/');});
 // Comprobaciones unitarias complementarias: no sustituyen ni acreditan los casos Cypress.

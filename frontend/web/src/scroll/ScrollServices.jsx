@@ -84,7 +84,7 @@ export default function ScrollServices({sequence,onSelect}) {
     const visibility=()=>{cache.setActive(active&&!document.hidden);if(document.hidden&&raf){cancelAnimationFrame(raf);raf=0}else schedule()};
     window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',measure);
     document.addEventListener('visibilitychange',visibility);
-    document.fonts?.ready.then(()=>{if(!disposed)measure()});
+    document.fonts?.ready.then(()=>{if(!disposed)measure()}).catch(()=>{});
     measure();
     return()=>{disposed=true;cancelAnimationFrame(raf);observer.disconnect();resize.disconnect();cache.dispose();window.removeEventListener('scroll',schedule);window.removeEventListener('resize',measure);document.removeEventListener('visibilitychange',visibility)};
   },[sequence,staticMode]);

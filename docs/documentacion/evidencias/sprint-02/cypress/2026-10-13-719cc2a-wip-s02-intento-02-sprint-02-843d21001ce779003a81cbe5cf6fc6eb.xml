@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="53.685" tests="4" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-13T13:09:13" tests="0" file="cypress\e2e\sprint-02\announcements.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Comunicados S2" timestamp="2026-10-13T13:09:13" tests="4" time="53.678" failures="1">
+    <testcase name="Comunicados S2 S02-TC-065 crear y publicar con vista previa escapada" time="0.000" classname="S02-TC-065 crear y publicar con vista previa escapada">
+      <failure message="Timed out retrying after 20000ms: Expected to find content: &apos;Publicado&apos; within the element: &lt;article.s02-card&gt; but never did." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Expected to find content: 'Publicado' within the element: <article.s02-card> but never did.
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-02/announcements.cy.js:3:524)
+    at withinFn (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:133896:8)
+    at <unknown> (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:133977:16)
+    at __WEBPACK_DEFAULT_EXPORT__ (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:131807:10)
+    at Context.within (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:133963:67)
+    at wrapped (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:146077:19)]]></failure>
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-066 cancelar retiro no envía DELETE" time="6.699" classname="S02-TC-066 cancelar retiro no envía DELETE">
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-067 error 500 conserva formulario y referencia" time="6.368" classname="S02-TC-067 error 500 conserva formulario y referencia">
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-068 duplicar genera borrador" time="6.185" classname="S02-TC-068 duplicar genera borrador">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -21,6 +21,33 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-13 · Sprint 02 · S2.5 integración slot B
+
+- Rama feature/delgado/f-administracion/s02; TECNICOYA_SLOT=B. Merge 6cadc8b de origin/main f7c524e (PR #11), sin rebase; conflicto del contrato resuelto con v1.1 exacto de main.
+- Commits: 719cc2a pruebas v1.1 en rojo; cce69aa reproducción roja del aviso de retiro; 0bb4438 implementación verde; 1651099 observación de login/identidad. PR #10: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10.
+- Implementado: referencia orientativa 0–100000/máximo 2 decimales; fecha opcional no futura UTC; subcategoría opcional/inactiva; manejo del rechazo de fuentes; video decorativo fuera de tabulación; aviso de retiro persistente (DEF-41 cerrado).
+- **Cypress S2: 15/17**, último intento completo 08, salida 1; fallan **S02-TC-061 y 071** (subidas). Diagnósticos con Buffer y archivo PNG físico: 7/9, mismos fallos. CSRF responde 204; después hay aviso de resultado incierto y no se observa POST /api/v1/media. **DEF-42 abierto**, causa todavía sin atribuir. Las pruebas no simulan éxito ni tienen reintentos para ocultarlo. Solo S02-TC-067 simula 500 porque lo exige el CSV.
+- **Regresión S1: 17/17**, salida 0, sin cambios en sus pruebas. **Vitest 116/116**; líneas administración 86,77 %, global 82,89 %. Build salida 0; npm audit salida 0, sin vulnerabilidades. 14 IDs Vitest S2 distintos; los complementos no agregan IDs.
+- **DEF-40 abierto para Claude Code:** Portfolio::present omite subcategory_id. Devolverlo en portafolio propio, documentar contrato y comprobar ida/vuelta e id inactivo con Pest. Codex no modificó backend.
+- **Pedido adicional a Claude Code, DEF-42:** revisar preflight y recepción multipart/trazas de la API para /media. RAM libre observada 303–893 MB; no se afirma que sea la causa. S2.5 no está aprobado: resolver subidas y repetir los 17.
+- Evidencias: docs/documentacion/evidencias/sprint-02/cypress/README.md, salidas, JUnit y lcov; todos los intentos retenidos y rutas anonimizadas. Detalles de cada corrección de pruebas en el README.
+- Sin MySQL iniciado desde worktree, sin Pest o SonarQube local. Archivos sintéticos en backend/api/storage sin versionar. Quality Gate y revisión humana [PENDIENTE] para S2.6.
+- Push realizado a feature/delgado/f-administracion/s02, nunca a main. a9574f5 conserva diagnóstico/fixture; c05f61e publica evidencias. CI de GitHub Actions iniciada tras el push; estado actualizado en https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10/checks. La CI no ejecuta Cypress ni SonarQube y no cierra DEF-42.
+
+## 2026-10-10 · Sprint 02 · S2.4 frontend
+
+- Rama feature/delgado/f-administracion/s02, slot B, base origin/main 1bfb8f4. Solo docs del sprint importados desde rama Mayhuasca 2140555; backend intacto.
+- Commits: 3495ed8 pruebas Vitest en rojo; 4a35589 implementación verde. PR #10: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10
+- Landing con 10 secciones, catálogo/carrusel v1 sin datos demo; panel admin de catálogo, comunicados y verificación; panel técnico con perfil/documentos/portafolio, disponibilidad, zonas, pausa y tarifas; comunicados al inicio de roles. Confirmaciones, versiones, errores y lectura tras resultado incierto.
+- Vitest: 112/112, salida 0; 14 IDs S02-TC-076–089 exactos, seis complementos sin inflar IDs. Líneas administración 86,40 %, global 82,66 %. Build salida 0. npm audit salida 0, 0 vulnerabilidades.
+- Cypress: 17 casos S02-TC-059–075 preparados, node --check correcto. NO EJECUTADO, como Docker/Pest/SonarQube. S02-TC-067 usa 500 simulado porque el CSV lo prescribe. No se acredita integración ni cierre del sprint.
+- Evidencias: docs/documentacion/evidencias/sprint-02/frontend/. Avance: docs/avances/delgado/sprint-02/avance.md. Revisor [PENDIENTE].
+- Ajustes de pruebas: S1 conserva aserciones y aísla el componente nuevo del portal; carrusel legado conservado para regresión D-26; S02-TC-083 comprueba descripción accesible para evitar selector ambiguo de errores.
+- Pendiente S2.5: integrar backend S2.3, merge sin rebase, ejecutar Cypress con bloqueo global y slot B. No se ejecutó todavía ni se modificó el arrancador.
+- Pedidos a Claude Code: completar/confirmar Sprint02E2ESeeder (no existía en 2140555), cuentas sintéticas y contraseña vía arrancador; pendiente completo para aprobación, otro para rechazo, al menos dos subcategorías con foto del mismo rubro para teclado. Confirmar límites de tarifa orientativa y reglas completas de subcategory_id/performed_on del portafolio: contrato §5.5/§7.4 incompleto. D-46 a D-52 leídas en la rama backend y aplicadas según contrato, sin copiar DECISIONES por fuera del alcance autorizado.
+- Bloqueo de cierre: integración real/API y revisión humana pendientes, no de la compilación frontend.
+
+
 ## 2026-10-10 · Sprint 02 · CI GitHub Actions (D-39)
 
 - Rama feature/pimentel/f-administracion/s02-ci desde origin/main 30f130e; solo configuración común y documentación.

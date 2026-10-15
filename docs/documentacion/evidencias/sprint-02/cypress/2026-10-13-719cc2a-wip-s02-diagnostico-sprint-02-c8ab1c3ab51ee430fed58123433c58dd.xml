@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="82.776" tests="5" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-13T18:05:14" tests="0" file="cypress\e2e\sprint-02\technician.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Técnico S2" timestamp="2026-10-13T18:05:14" tests="5" time="82.767" failures="1">
+    <testcase name="Técnico S2 S02-TC-071 subir y publicar portafolio" time="20.745" classname="S02-TC-071 subir y publicar portafolio">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-072 cancelar y confirmar retiro de trabajo" time="9.822" classname="S02-TC-072 cancelar y confirmar retiro de trabajo">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-073 franjas solapadas y persistencia" time="0.000" classname="S02-TC-073 franjas solapadas y persistencia">
+      <failure message="Timed out retrying after 20000ms: Validación de disponibilidad: expected &apos;La franja se solapa con otra del mismo día.Revisa los campos indicados.La franja se solapa con otra del mismo día.&apos; to equal &apos;&apos;" type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Validación de disponibilidad: expected 'La franja se solapa con otra del mismo día.Revisa los campos indicados.La franja se solapa con otra del mismo día.' to equal ''
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-02/technician.cy.js:5:1028)
+    at <unknown> (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:120161:17)
+    at tryCatcher (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1780:23)
+    at Promise.attempt.Promise.try (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:4288:29)
+    at Context.shouldFnWithCallback (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:120158:66)
+    at Context.shouldFn (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:120201:37)]]></failure>
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-074 tarifa inválida y actualización" time="10.964" classname="S02-TC-074 tarifa inválida y actualización">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-075 activar y quitar pausa" time="14.556" classname="S02-TC-075 activar y quitar pausa">
+    </testcase>
+  </testsuite>
+</testsuites>
