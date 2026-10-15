@@ -19,7 +19,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-031: muestra la tarifa como referencial con su procedencia y conserva la fotografía al cambiar el catálogo', function () {
+it('S03-TC-003 muestra la tarifa como referencial con su procedencia y conserva la fotografía al cambiar el catálogo [TC-031]', function () {
     // Dado una subcategoría con tarifa referencial de prueba aprobada
     $subcategoryId = (int) DB::table('subcategories')->where('code', 'computo-hardware')->value('id');
     DB::table('subcategories')->where('id', $subcategoryId)->update(['reference_fee' => '45.00']);

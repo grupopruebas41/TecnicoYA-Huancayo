@@ -2,6 +2,105 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 3 · DEF-43: composer audit (PR #16)
+
+- **Rama:** `feature/pimentel/infra/s03-composer-audit`, desde `main` `5814a5d` (con el PR #14).
+- **PR #16:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/16. CI con backend, frontend y conteo en verde.
+- **Causa:** la CI del PR #15 (Codex) fallaba en `composer audit` por dos avisos, CVE-2026-108082 y CVE-2026-109413. También afectaba a `main`.
+- **Cambio:** `composer update symfony/http-foundation symfony/yaml --with-dependencies`, sin `-W`.
+  - `symfony/http-foundation` y `symfony/yaml`: 7.4.17 → 7.4.21.
+  - `symfony/polyfill-mbstring`, `polyfill-php80` y `polyfill-php83`: → 1.43.0.
+  - Solo cambia `composer.lock`.
+- **Verificación:** `composer audit` limpio; Pest 185/185 en el slot A. DEF-43 registrado y cerrado (`b69b637`).
+
+**Para Codex:** cuando se integre el PR #16, fusionar `main` en la rama del PR #15 para que su CI pase.
+
+## 2026-10-15 · Sprint 3 · S3.3 completado (backend en verde y PR)
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada. Commit `20dcc34` feat(s03) y `5f10884` docs. **PR #14:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/14
+- **Implementado:**
+  - `POST /media` con `purpose=evidence` (solo clientes, privada);
+  - límites de descripción, dirección e inicio programado (D-12, D-55, D-56);
+  - máximo de 5 fotos;
+  - `SubmissionPolicy`: revalida al enviar y aplica el máximo de 3 activas con `rule_version_id` (D-11, D-24, D-58);
+  - tablas `rule_*` y `RuleBook`;
+  - `GET /technicians` en `BMatching` (D-18, D-57);
+  - `Sprint03E2ESeeder`.
+- **Resultados** (slot A):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest | **185/185** (2100 aserciones); Sprint03 51/51 |
+  | Cobertura | Total 90,5 %; clases del sprint al 100 % |
+  | Mutación de las 10 clases | **93,05 %**: 375/403, 0 sobrevivientes y 28 constantes sin cubrir. Corrió con `tmp/e2e-cypress.lock` tomado, que se liberó al terminar |
+  | `composer audit` | Limpio |
+  | Seeder E2E | Idempotente |
+
+- **Evidencias:** `evidencias/sprint-03/01` (rojo), `02` (verde), `04` (mutación) y `05` (audit). Avance en `docs/avances/mayhuasca/sprint-03/avance.md`.
+- **Aviso:**
+  - una primera prueba del seeder sin las variables del slot apuntó a la base `tecnicoya`; MySQL rechazó el acceso y no cambió nada;
+  - para sembrar a mano, usar las variables del arrancador (`DB_DATABASE=tecnicoya_testing`, `DB_USERNAME=tecnicoya_test`, `APP_ENV=testing`).
+
+**Para Codex (S3.4 y S3.5):**
+- El backend del contrato ya responde en esta rama.
+- Para Cypress, esperar a que el PR esté en `main`. `node scripts/run-e2e.mjs --sprint 03 --slot B` usará `Sprint03E2ESeeder`, con cuentas `e2e-client-limit`, `e2e-client-mixed`, `e2e-technician-frio` y `e2e-technician-paused` (`@example.test`).
+
+**Qué falta:** revisión e integración del PR; S3.4 y S3.5 de Codex; cierre S3.6.
+
+## 2026-10-15 · Sprint 3 · S3.2 completado (Pest en rojo)
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`. Commit `acebacc`: test(s03) S03-TC-016 a 051.
+- **Resultado:** Pest Sprint03 con **21 en rojo y 30 en verde** (431 aserciones), slot A. Detalle y motivo de cada fallo en `evidencias/sprint-03/01-rojo-antes-de-implementar.txt`.
+- **Ya pasan con el código existente**, sin tocar el producto, y se conservan como regresión:
+  - 001 a 015 (las 15 renombradas);
+  - 023 a 026 y 031 a 041.
+  - La 020 se endureció: exige un único error en `file`, para que no pase solo porque `purpose=evidence` aún no existe.
+- **Qué falta:** S3.3 (backend en verde).
+
+## 2026-10-15 · Sprint 3 · S3.1 completado: CONTRATO LISTO PARA CODEX
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada en origin.
+- **Contrato:** `docs/documentacion/plan-pruebas-v3/sprint-03/CONTRATO-API.md` v1.0, con un ejemplo JSON por endpoint, la tabla rol × ruta, los 5 pasos y la idempotencia del envío.
+- **Catálogo:** `docs/documentacion/plan-pruebas-v3/sprint-03/CATALOGO-S03.csv`, 81 casos ejecutables.
+  - **Pest (51):** 001 a 051; del 001 al 015 ya existen.
+  - **Cypress (17):** 052 a 068.
+  - **Vitest (13):** 069 a 081.
+- **Decisiones:**
+  - El usuario confirmó que se aplican D-11, D-12, D-13, D-15, D-23 y D-25.
+  - Nuevas, de Pimentel (2026-10-15):
+    - D-55: inicio programado ≥ hora del servidor;
+    - D-56: dirección de 5 a 255;
+    - D-57: técnico en pausa fuera de la búsqueda;
+    - D-58: tablas `rule_*` con la versión 1 y N=3.
+
+**Para Codex (S3.4):**
+- Pantallas en `features/requests` (asistente, resumen y Mis solicitudes) y `features/matching` (búsqueda y perfil), con Vitest S03-TC-069 a 081, según el contrato.
+- Los nombres de archivo del catálogo son propuestos: puedes cambiarlos si mantienes los IDs.
+- Cypress 052 a 068 después de que se integre el PR de S3.3 (seeder E2E en §7 del contrato).
+
+## 2026-10-15 · Sprint 3 · S3.1 en curso (en espera de confirmación)
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, creada desde `main` `af074b5` (con los PR #12 y #13). Solo local: sin push.
+- **Commits:**
+  - `40c615a` docs(s02): D-53, `php:S5693` como falso positivo; D-54, TC-131 → S02-TC-074 y TC-135 → S02-TC-073 en `Matriz-Trazabilidad-TC.csv`.
+  - `15a5df8` test(s03): las 15 Pest del S3 pasan a `S03-TC-001..015 … [TC-0xx]`, solo renombradas; 15/15 en el slot A (254 aserciones).
+- **Presentado al usuario, sin escribir todavía:**
+  - tabla de brechas;
+  - resumen del catálogo (S03-TC-016 en adelante);
+  - decisiones.
+- **Conflicto de fuentes pendiente:** el prompt pide opciones para P03, P05, P10, P16, P17 y P22, pero `DECISIONES.md` ya las decidió (D-15, D-23, D-11, D-25, D-12 y D-13). Hay que esperar la respuesta del usuario.
+- **Brechas clave halladas:**
+  - `POST /media` no admite evidencias de solicitud (`purpose` solo `portfolio`, `catalog` y `document`).
+  - Faltan en el servidor:
+    - la descripción de 20 a 1000 caracteres (D-12);
+    - el máximo de 5 fotos por solicitud;
+    - el límite de 3 activas (D-11);
+    - la revalidación de subcategoría, distrito y técnico al enviar.
+  - `address` es `text` y no tiene límite.
+  - No existe `GET /technicians`.
+  - No hay tablas de reglas (`rule_*`) ni de calificaciones.
+- **Qué falta:** con la confirmación, escribir `plan-pruebas-v3/sprint-03/CATALOGO-S03.csv` y `CONTRATO-API.md` y registrar las decisiones nuevas.
+
 ## 2026-10-15 · Sprint 2 · cierre S2.6 completado
 
 - **Rama:** `feature/pimentel/f-administracion/s02-cierre`. `origin/main` `0a5977f` (PR #10) se fusionó en `8730a13`, sin rebase. El conflicto de `REGISTRO-DEFECTOS.csv` se resolvió conservando DEF-40 a 42 cerradas.

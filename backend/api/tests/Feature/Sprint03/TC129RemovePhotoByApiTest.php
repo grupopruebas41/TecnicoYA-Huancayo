@@ -21,7 +21,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-129: solo el titular retira la foto de una solicitud no enviada; otro cliente es denegado', function () {
+it('S03-TC-015 solo el titular retira la foto de una solicitud no enviada; otro cliente es denegado [TC-129]', function () {
     // Dado una solicitud no enviada con una foto
     $owner = ClientProfileFactory::new()->create();
     Sanctum::actingAs($owner->user);

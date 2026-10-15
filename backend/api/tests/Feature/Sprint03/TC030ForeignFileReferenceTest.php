@@ -20,7 +20,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-030: deniega vincular el archivo privado de otro cliente y lo mantiene privado', function () {
+it('S03-TC-002 deniega vincular el archivo privado de otro cliente y lo mantiene privado [TC-030]', function () {
     // Dado un archivo privado de otro cliente
     $owner = ClientProfileFactory::new()->create();
     $foreign = MediaFileFactory::new()->create(['owner_id' => $owner->user_id]);

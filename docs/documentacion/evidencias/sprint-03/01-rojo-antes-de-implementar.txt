@@ -1,0 +1,696 @@
+Sprint 3 · S3.2 · Pest en rojo antes de implementar
+Fecha: 2026-10-15 · Base: d7bfe92 (feature/mayhuasca/a-solicitudes/s03) + pruebas de este commit
+Entorno: slot A (tecnicoya_testing), PHP de XAMPP, MySQL 8.4 en Docker
+Comando: php vendor/bin/pest tests/Feature/Sprint03
+Resultado: 21 fallan y 30 pasan (431 aserciones)
+
+Rojo (21, falta la regla o la ruta; motivo del fallo):
+  016, 017  descripción 20-1000 (D-12): 201 en vez de 422
+  018, 019, 022  POST /media purpose=evidence no existe: 422 en purpose
+  020  la evidencia falla también en purpose (se exige solo el error de file)
+  021  no hay máximo de 5 fotos: la sexta da 201
+  027, 028, 029  el envío no revalida subcategoría, distrito ni técnico: 202
+  030  no hay límite de 3 activas (D-11) ni rule_versions (D-58): 202
+  049, 050  inicio programado pasado (D-55) y dirección 5-255 (D-56): 201
+  042-048, 051  GET /technicians no existe: 404
+
+Ya pasan con el código existente (30), sin cambios en el producto:
+  001-015  pruebas previas renombradas (15a5df8)
+  023, 024  la descarga privada (MediaController::canRead) y el bloqueo de solicitudes enviadas ya existían
+  025, 026, 032-037  versión esperada e idempotencia (Idempotency, lockOwnRegistered) ya existían
+  031  el reintento idempotente ya no cuenta doble; protege que el límite de 030 no rompa la repetición
+  038-041  exclude_unless del objetivo, listado propio, account.active y RequestTimeline ya existían
+  Se mantienen porque fijan comportamiento que el S3.3 tocará (envío, adjuntos, eventos).
+
+---- Salida del runner ----
+
+   FAIL  Tests\Feature\Sprint03\ActiveRequestLimitTest
+  ⨯ it S03-TC-030 rechaza la cuarta solicitud activa, no cuenta las registradas y guarda la versión de reglas…  10.05s  
+  ✓ it S03-TC-031 el reintento del tercer envío con su clave no cuenta dos veces [TC-122]                        0.41s  
+
+   PASS  Tests\Feature\Sprint03\RequestConcurrencyTest
+  ✓ it S03-TC-025 rechaza adjuntar con la versión que otra pestaña ya cambió                                     0.31s  
+  ✓ it S03-TC-026 conserva la primera corrección cuando otra llega con la misma versión [TC-027]                 0.25s  
+
+   FAIL  Tests\Feature\Sprint03\RequestDescriptionLimitsTest
+  ⨯ it S03-TC-016 rechaza una descripción de 19 caracteres, también rodeada de espacios, y acepta 20 [TC-123]    0.24s  
+  ⨯ it S03-TC-017 acepta 1000 caracteres, rechaza 1001 al registrar y al corregir sin cambiar versión ni texto…  0.27s  
+
+   FAIL  Tests\Feature\Sprint03\RequestEvidenceUploadTest
+  ⨯ it S03-TC-018 guarda la evidencia del cliente como privada, revisada y sin EXIF [TC-130]                     0.26s  
+  ⨯ it S03-TC-019 acepta una evidencia de 5 MB exactos y rechaza 5 MB más 1 KB sin guardar nada [TC-130]         0.24s  
+  ⨯ it S03-TC-020 rechaza por su contenido un PDF y un GIF renombrados como JPG [TC-130]                         0.23s  
+  ⨯ it S03-TC-021 admite la quinta foto y rechaza la sexta sin cambiar adjuntos ni versión [TC-130]              0.43s  
+  ⨯ it S03-TC-022 solo el cliente sube evidencias: técnico y administrador 403 y anónimo 401                     0.29s  
+
+   PASS  Tests\Feature\Sprint03\RequestEvidenceVisibilityTest
+  ✓ it S03-TC-023 solo el titular descarga la foto de su solicitud; los demás reciben 404 [TC-127]               0.41s  
+  ✓ it S03-TC-024 no retira la foto de una solicitud enviada y no registra evento [TC-129]                       0.33s  
+
+   PASS  Tests\Feature\Sprint03\RequestIdempotencyTest
+  ✓ it S03-TC-032 el doble clic con dos claves distintas envía una sola vez [TC-037]                             0.28s  
+  ✓ it S03-TC-033 la misma clave con otro cuerpo no altera la respuesta guardada ni la solicitud [TC-037]        0.30s  
+  ✓ it S03-TC-034 exige una clave de 1 a 255 caracteres                                                          0.36s  
+  ✓ it S03-TC-035 no envía con el resumen marcado como no confirmado [TC-028]                                    0.38s  
+  ✓ it S03-TC-036 otro cliente no puede enviar la solicitud ajena ni consumir una clave [TC-038]                 0.33s  
+  ✓ it S03-TC-037 la misma clave en dos clientes produce dos envíos independientes [TC-037]                      0.32s  
+
+   PASS  Tests\Feature\Sprint03\RequestListAndAccessTest
+  ✓ it S03-TC-038 la búsqueda automática no guarda un técnico objetivo enviado por el cliente [TC-035]           0.26s  
+  ✓ it S03-TC-039 Mis solicitudes lista solo las propias, de la más nueva a la más antigua y sin datos privados  0.38s  
+  ✓ it S03-TC-040 una cuenta de cliente suspendida no registra ni envía solicitudes                              0.29s  
+  ✓ it S03-TC-041 registra un evento por cambio con actor, estados y versión correlativa sin datos privados      0.37s  
+
+   FAIL  Tests\Feature\Sprint03\RequestScheduleAndAddressTest
+  ⨯ it S03-TC-049 rechaza un inicio programado anterior a la hora del servidor, acepta el exacto y revalida al…  0.25s  
+  ⨯ it S03-TC-050 acepta direcciones de 5 y 255 caracteres y rechaza 4 y 256 al registrar y al corregir          0.25s  
+
+   FAIL  Tests\Feature\Sprint03\RequestSubmissionRevalidationTest
+  ⨯ it S03-TC-027 no envía si la subcategoría se desactivó después del registro [TC-120]                         0.31s  
+  ⨯ it S03-TC-028 no envía si el distrito quedó fuera de cobertura después del registro [TC-032]                 0.30s  
+  ⨯ it S03-TC-029 no envía si el técnico elegido se suspendió o dejó de ofrecer el servicio, sin sustituirlo [T… 0.31s  
+
+   PASS  Tests\Feature\Sprint03\TC029OwnPhotoLinkedTest
+  ✓ it S03-TC-001 vincula la foto propia solo a su solicitud y la muestra al propietario en el resumen [TC-029]  0.37s  
+
+   PASS  Tests\Feature\Sprint03\TC030ForeignFileReferenceTest
+  ✓ it S03-TC-002 deniega vincular el archivo privado de otro cliente y lo mantiene privado [TC-030]             0.28s  
+
+   PASS  Tests\Feature\Sprint03\TC031ReferenceFeeVisibleTest
+  ✓ it S03-TC-003 muestra la tarifa como referencial con su procedencia y conserva la fotografía al cambiar el…  0.24s  
+
+   PASS  Tests\Feature\Sprint03\TC032OutOfCoverageTest
+  ✓ it S03-TC-004 informa fuera de cobertura y no registra la solicitud de un distrito fuera del catálogo activ… 0.28s  
+
+   PASS  Tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest
+  ✓ it S03-TC-005 muestra al cliente bio, servicios y portafolio del técnico sin documentos ni contacto privado… 0.48s  
+
+   PASS  Tests\Feature\Sprint03\TC035DirectedOriginPreservedTest
+  ✓ it S03-TC-006 conserva el origen desde perfil y el técnico elegido sin asignarlo automáticamente [TC-035]    0.33s  
+
+   PASS  Tests\Feature\Sprint03\TC036IncompatibleTargetTest
+  ✓ it S03-TC-007 rechaza un técnico objetivo que no ofrece la subcategoría sin sustituirlo por otro [TC-036]    0.33s  
+
+   PASS  Tests\Feature\Sprint03\TC037IdempotentSubmissionTest
+  ✓ it S03-TC-008 repite el mismo envío con su clave y obtiene el mismo resultado sin duplicar solicitud ni eve… 0.32s  
+
+   PASS  Tests\Feature\Sprint03\TC038ForeignRequestTest
+  ✓ it S03-TC-009 deniega el detalle de la solicitud de otro cliente sin descripción, dirección ni evidencias [… 0.30s  
+
+   PASS  Tests\Feature\Sprint03\TC119RequiredDataRejectedTest
+  ✓ it S03-TC-010 rechaza en la API, sin React, una solicitud con datos obligatorios ausentes o inválidos [TC-1… 0.27s  
+
+   PASS  Tests\Feature\Sprint03\TC120InactiveSubcategoryTest
+  ✓ it S03-TC-011 rechaza una subcategoría inactiva o de rubro inactivo identificándola y sin guardar la solici… 0.28s  
+
+   PASS  Tests\Feature\Sprint03\TC121ScheduledWithoutDateTest
+  ✓ it S03-TC-012 rechaza en español la modalidad programada sin fecha u hora y acepta la completa [TC-121]      0.30s  
+
+   PASS  Tests\Feature\Sprint03\TC126SubmittedRequestImmutableTest
+  ✓ it S03-TC-013 rechaza modificar o eliminar una solicitud ya enviada y conserva solicitud, evidencias y even… 0.33s  
+
+   PASS  Tests\Feature\Sprint03\TC127PhotosHiddenFromUnnotifiedTechnicianTest
+  ✓ it S03-TC-014 oculta fotos, descripción y dirección de una solicitud a un técnico no notificado [TC-127]     0.30s  
+
+   PASS  Tests\Feature\Sprint03\TC129RemovePhotoByApiTest
+  ✓ it S03-TC-015 solo el titular retira la foto de una solicitud no enviada; otro cliente es denegado [TC-129]  0.33s  
+
+   FAIL  Tests\Feature\Sprint03\TechnicianSearchTest
+  ⨯ it S03-TC-042 combina especialidad, subcategoría y distrito y devuelve vacío si nada coincide [TC-033]       0.39s  
+  ⨯ it S03-TC-043 solo muestra técnicos activos y verificados con un servicio y rubro activos [TC-033]           0.44s  
+  ⨯ it S03-TC-044 sin calificaciones el técnico aparece sin promedio y no pasa un filtro de calificación mínima… 0.25s  
+  ⨯ it S03-TC-045 cada tarjeta trae solo la proyección pública, sin contacto ni documentos [TC-034]              0.26s  
+  ⨯ it S03-TC-046 rechaza en español los parámetros de búsqueda inválidos sin errores del servidor               0.30s  
+  ⨯ it S03-TC-047 pagina de forma estable por nombre visible e id                                                0.53s  
+  ⨯ it S03-TC-048 la búsqueda exige sesión activa                                                                0.26s  
+  ⨯ it S03-TC-051 excluye de la búsqueda al técnico con pausa vigente pero mantiene su perfil por enlace [TC-03… 0.26s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\ActiveRequestLimitTest > it S03-TC-030 rechaza la cuarta solicitud activa, no cuen…   
+  Expected response status code [409] but received 202.
+Failed asserting that 202 is identical to 409.
+
+  at tests\Feature\Sprint03\ActiveRequestLimitTest.php:30
+     26▕     $sent = [Sprint03::sent($this, $this->districtId), Sprint03::sent($this, $this->districtId), Sprint03::sent($this, $this->districtId)];
+     27▕ 
+     28▕     $fourth = Sprint03::submit($this, $registered[0]['id'], $registered[0]['version']);
+     29▕ 
+  ➜  30▕     $fourth->assertConflict()->assertJsonPath('error.code', 'ACTIVE_REQUEST_LIMIT');
+     31▕     Sprint01::assertSpanishText($fourth->json('message'));
+     32▕     expect($fourth->json('message'))->toContain('3');
+     33▕     expect(DB::table('service_requests')->where('id', $registered[0]['id'])->value('status'))->toBe('registered')
+     34▕         ->and(DB::table('service_requests')->where('status', 'sent')->count())->toBe(3);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestDescriptionLimitsTest > it S03-TC-016 rechaza una descripción de 19 caracte…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestDescriptionLimitsTest.php:28
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestDescriptionLimitsTest > it S03-TC-017 acepta 1000 caracteres, rechaza 1001…    
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestDescriptionLimitsTest.php:41
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestEvidenceUploadTest > it S03-TC-018 guarda la evidencia del cliente como pri…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "purpose": [
+            "El valor de finalidad no está permitido."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "purpose": [
+                "El valor de finalidad no está permitido."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "784aecda-808c-4939-9e2e-cac4b4752b78",
+        "server_time": "2026-10-15T05:53:19.711978Z"
+    }
+}
+
+  at tests\Feature\Sprint03\RequestEvidenceUploadTest.php:32
+     28▕ it('S03-TC-018 guarda la evidencia del cliente como privada, revisada y sin EXIF [TC-130]', function () {
+     29▕     Sanctum::actingAs($this->client);
+     30▕ 
+     31▕     $response = $this->post('/api/v1/media', ['purpose' => 'evidence', 'file' => Sprint02::upload('foto-con-exif.jpg')])
+  ➜  32▕         ->assertCreated();
+     33▕ 
+     34▕     expect($response->json('data'))->toMatchArray(['purpose' => 'evidence', 'visibility' => 'private', 'mime_type' => 'image/jpeg']);
+     35▕     $row = DB::table('media_files')->find($response->json('data.id'));
+     36▕     expect($row->owner_id)->toBe($this->client->id)
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestEvidenceUploadTest > it S03-TC-019 acepta una evidencia de 5 MB exactos y r…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "purpose": [
+            "El valor de finalidad no está permitido."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "purpose": [
+                "El valor de finalidad no está permitido."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "9deb409c-19f4-4388-8cb1-cb798e9bbaca",
+        "server_time": "2026-10-15T05:53:19.952662Z"
+    }
+}
+
+  at tests\Feature\Sprint03\RequestEvidenceUploadTest.php:48
+     44▕ 
+     45▕ it('S03-TC-019 acepta una evidencia de 5 MB exactos y rechaza 5 MB más 1 KB sin guardar nada [TC-130]', function () {
+     46▕     Sanctum::actingAs($this->client);
+     47▕ 
+  ➜  48▕     $this->post('/api/v1/media', ['purpose' => 'evidence', 'file' => Sprint02::jpegOfSize(5120 * 1024)])->assertCreated();
+     49▕     $tooLarge = $this->post('/api/v1/media', ['purpose' => 'evidence', 'file' => Sprint02::jpegOfSize(5121 * 1024)]);
+     50▕ 
+     51▕     Sprint01::assertSpanishValidation($tooLarge, ['file']);
+     52▕     expect($tooLarge->json('errors.file.0'))->toBe('El archivo no debe superar 5 MB.');
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestEvidenceUploadTest > it S03-TC-020 rechaza por su contenido un PDF y un GIF…   
+  Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => 'file',
++    0 => 'purpose',
++    1 => 'file',
+ ]
+
+  at tests\Feature\Sprint03\RequestEvidenceUploadTest.php:63
+     59▕ 
+     60▕     foreach ([Sprint02::upload('documento.pdf', 'falla.jpg'), Sprint02::upload('foto.gif', 'falla.jpg')] as $file) {
+     61▕         $response = $this->post('/api/v1/media', ['purpose' => 'evidence', 'file' => $file]);
+     62▕         Sprint01::assertSpanishValidation($response, ['file']);
+  ➜  63▕         expect(array_keys($response->json('errors')))->toBe(['file'])
+     64▕             ->and($response->json('errors.file.0'))->toBe('El archivo debe ser una imagen JPG, PNG o WebP.');
+     65▕     }
+     66▕     $this->assertDatabaseCount('media_files', 0);
+     67▕     expect(Storage::disk('local')->allFiles())->toBe([]);
+
+  1   tests\Feature\Sprint03\RequestEvidenceUploadTest.php:63
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestEvidenceUploadTest > it S03-TC-021 admite la quinta foto y rechaza la sexta…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestEvidenceUploadTest.php:82
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestEvidenceUploadTest > it S03-TC-022 solo el cliente sube evidencias: técnico…   
+  Expected response status code [403] but received 422.
+Failed asserting that 422 is identical to 403.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "purpose": [
+            "El valor de finalidad no está permitido."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "purpose": [
+                "El valor de finalidad no está permitido."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "d077b2c3-677d-44c4-9206-01cf8779eb8d",
+        "server_time": "2026-10-15T05:53:20.899493Z"
+    }
+}
+
+  at tests\Feature\Sprint03\RequestEvidenceUploadTest.php:92
+     88▕ it('S03-TC-022 solo el cliente sube evidencias: técnico y administrador 403 y anónimo 401', function () {
+     89▕     $this->post('/api/v1/media', ['purpose' => 'evidence', 'file' => Sprint02::upload('foto.png')])->assertUnauthorized();
+     90▕ 
+     91▕     Sanctum::actingAs(TechnicianProfileFactory::new()->approved()->create()->user);
+  ➜  92▕     $this->post('/api/v1/media', ['purpose' => 'evidence', 'file' => Sprint02::upload('foto.png')])->assertForbidden();
+     93▕ 
+     94▕     Sanctum::actingAs(Sprint02::admin());
+     95▕     $this->post('/api/v1/media', ['purpose' => 'evidence', 'file' => Sprint02::upload('foto.png')])->assertForbidden();
+     96▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestScheduleAndAddressTest > it S03-TC-049 rechaza un inicio programado anterio…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestScheduleAndAddressTest.php:31
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestScheduleAndAddressTest > it S03-TC-050 acepta direcciones de 5 y 255 caract…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestScheduleAndAddressTest.php:43
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestSubmissionRevalidationTest > it S03-TC-027 no envía si la subcategoría se d…   
+  Expected response status code [422] but received 202.
+Failed asserting that 202 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestSubmissionRevalidationTest.php:38
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestSubmissionRevalidationTest > it S03-TC-028 no envía si el distrito quedó fu…   
+  Expected response status code [422] but received 202.
+Failed asserting that 202 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestSubmissionRevalidationTest.php:48
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\RequestSubmissionRevalidationTest > it S03-TC-029 no envía si el técnico elegido s…   
+  Expected response status code [422] but received 202.
+Failed asserting that 202 is identical to 422.
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\RequestSubmissionRevalidationTest.php:59
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-042 combina especialidad, subcategoría y distrito…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "b06e231f-800c-46c9-aba5-5e0d504cc649",
+        "server_time": "2026-10-15T05:53:31.633768Z"
+    }
+}
+
+  at tests\Support\Sprint03.php:83
+     79▕ 
+     80▕     /** Ids de los técnicos de una respuesta de GET /technicians. */
+     81▕     public static function ids(TestResponse $response): array
+     82▕     {
+  ➜  83▕         return array_column($response->assertOk()->json('data.items'), 'id');
+     84▕     }
+     85▕ }
+     86▕
+
+  1   tests\Feature\Sprint03\TechnicianSearchTest.php:41
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-043 solo muestra técnicos activos y verificados c…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "e9baa011-ed80-453f-9744-e1723196d7f8",
+        "server_time": "2026-10-15T05:53:32.078792Z"
+    }
+}
+
+  at tests\Support\Sprint03.php:83
+     79▕ 
+     80▕     /** Ids de los técnicos de una respuesta de GET /technicians. */
+     81▕     public static function ids(TestResponse $response): array
+     82▕     {
+  ➜  83▕         return array_column($response->assertOk()->json('data.items'), 'id');
+     84▕     }
+     85▕ }
+     86▕
+
+  1   tests\Feature\Sprint03\TechnicianSearchTest.php:62
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-044 sin calificaciones el técnico aparece sin pro…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "d9839d2e-53d9-406a-afb9-b4fcfff8b7fd",
+        "server_time": "2026-10-15T05:53:32.327461Z"
+    }
+}
+
+  at tests\Feature\Sprint03\TechnicianSearchTest.php:69
+     65▕ it('S03-TC-044 sin calificaciones el técnico aparece sin promedio y no pasa un filtro de calificación mínima [TC-033]', function () {
+     66▕     Sprint03::searchableTechnician();
+     67▕     Sprint03::searchableTechnician();
+     68▕ 
+  ➜  69▕     $items = $this->getJson('/api/v1/technicians')->assertOk()->json('data.items');
+     70▕     expect($items)->toHaveCount(2);
+     71▕     foreach ($items as $item) {
+     72▕         expect($item['rating'])->toBe(['average' => null, 'count' => 0]);
+     73▕     }
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-045 cada tarjeta trae solo la proyección pública,…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "44808733-8ac4-4cb6-9b32-7886fcb7efd8",
+        "server_time": "2026-10-15T05:53:32.591027Z"
+    }
+}
+
+  at tests\Feature\Sprint03\TechnicianSearchTest.php:85
+     81▕     $technician = Sprint03::searchableTechnician('computo-hardware', [$this->huancayo], ['whatsapp' => '+51987654321']);
+     82▕     TechnicianDocumentFactory::new()->create(['technician_id' => $technician->id]);
+     83▕     $email = DB::table('users')->where('id', $technician->user_id)->value('email');
+     84▕ 
+  ➜  85▕     $response = $this->getJson('/api/v1/technicians')->assertOk();
+     86▕     $item = $response->json('data.items.0');
+     87▕ 
+     88▕     expect(array_keys($item))->toEqualCanonicalizing(['id', 'display_name', 'provider_type', 'experience_years', 'services', 'districts', 'rating'])
+     89▕         ->and(array_keys($item['services'][0]))->toEqualCanonicalizing(['subcategory_id', 'subcategory_name', 'reference_fee', 'currency'])
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-046 rechaza en español los parámetros de búsqueda…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "1ff29fb3-e932-478c-9725-057ddfa1b95f",
+        "server_time": "2026-10-15T05:53:32.886119Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:78
+     74▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     75▕      */
+     76▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     77▕     {
+  ➜  78▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     79▕         foreach ($fields as $field) {
+     80▕             foreach ((array) $response->json("errors.$field") as $message) {
+     81▕                 self::assertSpanishText((string) $message, "errors.$field");
+     82▕             }
+
+  1   tests\Feature\Sprint03\TechnicianSearchTest.php:105
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-047 pagina de forma estable por nombre visible e…    
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "d3e21391-3165-402e-be06-322c038bf1e1",
+        "server_time": "2026-10-15T05:53:33.413237Z"
+    }
+}
+
+  at tests\Feature\Sprint03\TechnicianSearchTest.php:119
+    115▕     foreach ($names as $name) {
+    116▕         Sprint03::searchableTechnician(profile: ['display_name' => $name]);
+    117▕     }
+    118▕ 
+  ➜ 119▕     $first = $this->getJson('/api/v1/technicians?per_page=12&page=1')->assertOk();
+    120▕     $second = $this->getJson('/api/v1/technicians?per_page=12&page=2')->assertOk();
+    121▕     $all = $this->getJson('/api/v1/technicians?per_page=50')->assertOk();
+    122▕ 
+    123▕     $paged = array_merge(array_column($first->json('data.items'), 'display_name'), array_column($second->json('data.items'), 'display_name'));
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-048 la búsqueda exige sesión activa                  
+  Expected response status code [403] but received 404.
+Failed asserting that 404 is identical to 403.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "23b10976-480a-4ec6-a287-122df6756995",
+        "server_time": "2026-10-15T05:53:33.676675Z"
+    }
+}
+
+  at tests\Feature\Sprint03\TechnicianSearchTest.php:136
+    132▕ 
+    133▕ it('S03-TC-048 la búsqueda exige sesión activa', function () {
+    134▕     Sprint03::searchableTechnician();
+    135▕     DB::table('users')->where('id', $this->client->id)->update(['is_active' => false]);
+  ➜ 136▕     $this->getJson('/api/v1/technicians')->assertForbidden();
+    137▕ 
+    138▕     Sprint01::forgetSession();
+    139▕     $this->getJson('/api/v1/technicians')->assertUnauthorized();
+    140▕ });
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\TechnicianSearchTest > it S03-TC-051 excluye de la búsqueda al técnico con pausa v…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "42ef5907-d46f-412b-9ccd-cf708382fdcb",
+        "server_time": "2026-10-15T15:00:00.000000Z"
+    }
+}
+
+  at tests\Support\Sprint03.php:83
+     79▕ 
+     80▕     /** Ids de los técnicos de una respuesta de GET /technicians. */
+     81▕     public static function ids(TestResponse $response): array
+     82▕     {
+  ➜  83▕         return array_column($response->assertOk()->json('data.items'), 'id');
+     84▕     }
+     85▕ }
+     86▕
+
+  1   tests\Feature\Sprint03\TechnicianSearchTest.php:153
+
+
+  Tests:    21 failed, 30 passed (431 assertions)
+  Duration: 26.42s
+

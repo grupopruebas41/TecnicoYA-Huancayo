@@ -17,7 +17,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-038: deniega el detalle de la solicitud de otro cliente sin descripción, dirección ni evidencias', function () {
+it('S03-TC-009 deniega el detalle de la solicitud de otro cliente sin descripción, dirección ni evidencias [TC-038]', function () {
     // Dado dos clientes con solicitudes diferentes
     $mine = ServiceRequestFactory::new()->create(['description' => 'Mi impresora no imprime en color.']);
     $theirs = ServiceRequestFactory::new()->create([

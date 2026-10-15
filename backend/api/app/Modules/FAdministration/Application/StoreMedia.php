@@ -13,11 +13,13 @@ use Throwable;
 
 /**
  * Guarda un archivo ya validado (D-46, D-47): las imágenes pasan por ImageSanitizer (sin EXIF) y quedan
- * revisadas; portafolio y catálogo son públicos y los documentos, privados. Si falla el registro, se borra el
- * archivo para no dejar huérfanos en el disco.
+ * revisadas; portafolio y catálogo son públicos, y los documentos y las evidencias de solicitud, privados.
+ * Si falla el registro, se borra el archivo para no dejar huérfanos en el disco.
  */
 final class StoreMedia
 {
+    private const PRIVATE_PURPOSES = ['document', 'evidence'];
+
     private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
 
     public function __construct(private readonly ImageSanitizer $images) {}
@@ -30,7 +32,7 @@ final class StoreMedia
             $content = $this->images->clean($mimeType, $content)
                 ?? throw ValidationException::withMessages(['file' => __('api.image_invalid')]);
         }
-        $public = $purpose !== 'document';
+        $public = ! in_array($purpose, self::PRIVATE_PURPOSES, true);
         $disk = $public ? 'public' : 'local';
         $key = 'media/'.Str::uuid().'.'.self::EXTENSIONS[$mimeType];
         Storage::disk($disk)->put($key, $content);

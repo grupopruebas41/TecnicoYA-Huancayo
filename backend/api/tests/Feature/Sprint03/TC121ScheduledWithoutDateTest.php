@@ -18,7 +18,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-121: rechaza en español la modalidad programada sin fecha u hora y acepta la completa', function () {
+it('S03-TC-012 rechaza en español la modalidad programada sin fecha u hora y acepta la completa [TC-121]', function () {
     // Dado una solicitud con modalidad programada
     Sanctum::actingAs(ClientProfileFactory::new()->create()->user);
     $base = Sprint03::requestPayload(DistrictFactory::new()->create()->id, ['mode' => 'scheduled']);
