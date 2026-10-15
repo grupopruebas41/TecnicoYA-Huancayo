@@ -2,6 +2,38 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 3 · S3.3 completado (backend en verde y PR)
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada. Commit `20dcc34` feat(s03) y luego el commit de documentación. PR: ver abajo.
+- **Implementado:**
+  - `POST /media` con `purpose=evidence` (solo clientes, privada);
+  - límites de descripción, dirección e inicio programado (D-12, D-55, D-56);
+  - máximo de 5 fotos;
+  - `SubmissionPolicy`: revalida al enviar y aplica el máximo de 3 activas con `rule_version_id` (D-11, D-24, D-58);
+  - tablas `rule_*` y `RuleBook`;
+  - `GET /technicians` en `BMatching` (D-18, D-57);
+  - `Sprint03E2ESeeder`.
+- **Resultados** (slot A):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest | **185/185** (2100 aserciones); Sprint03 51/51 |
+  | Cobertura | Total 90,5 %; clases del sprint al 100 % |
+  | Mutación de las 10 clases | **93,05 %**: 375/403, 0 sobrevivientes y 28 constantes sin cubrir. Corrió con `tmp/e2e-cypress.lock` tomado, que se liberó al terminar |
+  | `composer audit` | Limpio |
+  | Seeder E2E | Idempotente |
+
+- **Evidencias:** `evidencias/sprint-03/01` (rojo), `02` (verde), `04` (mutación) y `05` (audit). Avance en `docs/avances/mayhuasca/sprint-03/avance.md`.
+- **Aviso:**
+  - una primera prueba del seeder sin las variables del slot apuntó a la base `tecnicoya`; MySQL rechazó el acceso y no cambió nada;
+  - para sembrar a mano, usar las variables del arrancador (`DB_DATABASE=tecnicoya_testing`, `DB_USERNAME=tecnicoya_test`, `APP_ENV=testing`).
+
+**Para Codex (S3.4 y S3.5):**
+- El backend del contrato ya responde en esta rama.
+- Para Cypress, esperar a que el PR esté en `main`. `node scripts/run-e2e.mjs --sprint 03 --slot B` usará `Sprint03E2ESeeder`, con cuentas `e2e-client-limit`, `e2e-client-mixed`, `e2e-technician-frio` y `e2e-technician-paused` (`@example.test`).
+
+**Qué falta:** revisión e integración del PR; S3.4 y S3.5 de Codex; cierre S3.6.
+
 ## 2026-10-15 · Sprint 3 · S3.2 completado (Pest en rojo)
 
 - **Rama:** `feature/mayhuasca/a-solicitudes/s03`. Commit `acebacc`: test(s03) S03-TC-016 a 051.

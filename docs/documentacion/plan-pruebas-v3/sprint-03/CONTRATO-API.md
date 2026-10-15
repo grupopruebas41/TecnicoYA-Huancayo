@@ -1,6 +1,7 @@
 # Contrato de API · Sprint 3
 
 **Versión:** 1.0 · **Fecha:** 2026-10-15 · **Autor:** Claude Code (S3.1) · **Revisor:** [PENDIENTE]
+**Implementación:** las rutas [cambia] y [nuevo] ya responden en la rama desde `20dcc34` (S3.3), sin cambios en el contrato. Llegarán a `main` con el PR de S3.3.
 **Base:** `backend/api` en la rama `feature/mayhuasca/a-solicitudes/s03`.
 **Catálogo de casos:** [CATALOGO-S03.csv](CATALOGO-S03.csv), con 81 casos (51 Pest, 17 Cypress y 13 Vitest).
 **Decisiones aplicadas:** D-11, D-12, D-13, D-15, D-18, D-23, D-24, D-25, D-32, D-46, D-47, D-52 y **D-55 a D-58** (2026-10-15).
