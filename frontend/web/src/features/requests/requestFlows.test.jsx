@@ -86,6 +86,7 @@ test("S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el 
   await stepFour();
   fireEvent.click(screen.getByText("Siguiente"));
   await screen.findByText("Resumen · Solicitud #31");
+  expect(screen.getByText("Solicitud registrada. Revisa el resumen antes de enviarla.").tagName).toBe("OUTPUT");
   fireEvent.click(screen.getByText("Atrás"));
   fireEvent.click(screen.getByText("Atrás"));
   fireEvent.change(screen.getByLabelText("Descripción de la falla"), {
@@ -94,6 +95,7 @@ test("S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el 
   fireEvent.click(screen.getByText("Siguiente"));
   fireEvent.click(screen.getByText("Siguiente"));
   await screen.findByText("Descripción corregida del computador");
+  expect(screen.getByText("Solicitud actualizada.").tagName).toBe("OUTPUT");
   expect(request.mock.calls.filter(([p]) => p === "/requests")).toHaveLength(1);
   expect(request).toHaveBeenCalledWith(
     "/requests/31",
