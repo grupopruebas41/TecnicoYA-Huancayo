@@ -64,6 +64,12 @@
 | D-50 | VERIF-01 · Rechazo y suspensión del técnico | Opción A: el rechazo deja `status = pending_verification` y `verification_status = rejected`, con motivo; el técnico corrige y pide una nueva revisión, que vuelve a `pending`. La suspensión (D-32) solo se aplica a un técnico activo y se levanta a mano, con motivo, volviendo a `active`. En S2 solo backend; la pantalla de suspensión es del Sprint 7 | 2026-10-10 | Pimentel |
 | D-51 | COM-01 · Edición de comunicados publicados | Opción A: solo se editan los borradores; un comunicado publicado se retira o se duplica, para conservar lo que vieron los usuarios | 2026-10-10 | Pimentel |
 | D-52 | CAT-01 · `subcategories.reference_fee` | Opción A: se mantiene como **referencia orientativa no vinculante**, coherente con la Fuente 0 y RF-04 (S03-TC-031). No contradice D-25: el precio lo declara el técnico por subcategoría y el catálogo no fija precio | 2026-10-10 | Pimentel |
+| D-53 | SONAR-01 · `php:S5693` en `StoreMediaRequest` | El equipo confirma la incidencia como **False Positive**: el límite de 5 MB es explícito por D-46 y lo prueban S02-TC-040 y 041. Se mantiene la marca hecha en el cierre del Sprint 2 (Gate `sprint-02` OK) | 2026-10-15 | Pimentel |
+| D-54 | TRAZ-S02 · TC-131 y TC-135 sin caso S02 | Se vinculan en la matriz de trazabilidad: **TC-131 → S02-TC-074** (editor de tarifas) y **TC-135 → S02-TC-073** (editor de franjas), ambos aprobados en el cierre S2.6. Las pruebas no se renombran | 2026-10-15 | Pimentel |
+| D-55 | SOL-01 · Inicio de la franja programada | Opción A: en `mode=scheduled`, `preferred_start_at` debe ser **igual o posterior a la hora del servidor** (UTC) al registrar y se revalida al enviar; el fin sigue siendo posterior al inicio | 2026-10-15 | Pimentel |
+| D-56 | SOL-02 · Longitud de la dirección | Opción A: `address` de **5 a 255 caracteres** (sin contar espacios de los extremos), en cliente y servidor | 2026-10-15 | Pimentel |
+| D-57 | BUSQ-01 · Técnico en pausa en la búsqueda | Opción A: el técnico con una pausa vigente **se excluye de `GET /technicians`**; su perfil público sigue accesible por enlace (`GET /technicians/{id}`) | 2026-10-15 | Pimentel |
+| D-58 | PARAM-01 · Dónde vive N de D-11 | Opción A: tablas mínimas `rule_parameters`, `rule_versions` y `rule_values` (§8.1 a §8.3 de las reglas formalizadas) con la **versión 1 sembrada** y `max_active_requests_per_client = 3`; solo lectura hasta S7. La solicitud guarda `rule_version_id` al enviarse (D-24) | 2026-10-15 | Pimentel |
 
 ## Decisiones pendientes
 
