@@ -64,6 +64,8 @@
 | D-50 | VERIF-01 · Rechazo y suspensión del técnico | Opción A: el rechazo deja `status = pending_verification` y `verification_status = rejected`, con motivo; el técnico corrige y pide una nueva revisión, que vuelve a `pending`. La suspensión (D-32) solo se aplica a un técnico activo y se levanta a mano, con motivo, volviendo a `active`. En S2 solo backend; la pantalla de suspensión es del Sprint 7 | 2026-10-10 | Pimentel |
 | D-51 | COM-01 · Edición de comunicados publicados | Opción A: solo se editan los borradores; un comunicado publicado se retira o se duplica, para conservar lo que vieron los usuarios | 2026-10-10 | Pimentel |
 | D-52 | CAT-01 · `subcategories.reference_fee` | Opción A: se mantiene como **referencia orientativa no vinculante**, coherente con la Fuente 0 y RF-04 (S03-TC-031). No contradice D-25: el precio lo declara el técnico por subcategoría y el catálogo no fija precio | 2026-10-10 | Pimentel |
+| D-53 | SONAR-01 · `php:S5693` en `StoreMediaRequest` | El equipo confirma la incidencia como **False Positive**: el límite de 5 MB es explícito por D-46 y lo prueban S02-TC-040 y 041. Se mantiene la marca hecha en el cierre del Sprint 2 (Gate `sprint-02` OK) | 2026-10-15 | Pimentel |
+| D-54 | TRAZ-S02 · TC-131 y TC-135 sin caso S02 | Se vinculan en la matriz de trazabilidad: **TC-131 → S02-TC-074** (editor de tarifas) y **TC-135 → S02-TC-073** (editor de franjas), ambos aprobados en el cierre S2.6. Las pruebas no se renombran | 2026-10-15 | Pimentel |
 
 ## Decisiones pendientes
 
