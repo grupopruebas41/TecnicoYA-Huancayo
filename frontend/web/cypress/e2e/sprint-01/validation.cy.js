@@ -50,7 +50,7 @@ describe('Alertas y validación del incremento Sprint 1', () => {
     cy.get('[data-cy=profile-name]').clear().type('Cliente actualizado');
     cy.get('[data-cy=profile-submit]').click();
     cy.wait('@save').its('response.statusCode').should('eq', 200);
-    cy.get('[role=status]').should('contain', 'Cambios guardados correctamente');
+    cy.get('.profile-form output').should('be.visible').and('contain', 'Cambios guardados correctamente');
     // Otra pestaña guarda primero: se comprueba una carrera real, sin simular un 409.
     cy.request({url: `${api}/api/v1/me`, headers: {Origin: site}}).then(({body}) => {
       cy.getCookie('XSRF-TOKEN', {log: false}).then(cookie => {
