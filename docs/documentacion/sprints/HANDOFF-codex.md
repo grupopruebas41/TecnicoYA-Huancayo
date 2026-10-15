@@ -192,3 +192,8 @@ AGENTS.md no encontrado. ENTORNO-PARALELO.md leído en carpeta principal. La ind
 - DEF-13: Dockerfile cambiado a USER node. La comprobación de construcción y HTTP se añadirá al terminar docker-web.txt.
 - No se ejecutó SonarQube; no se declara Quality Gate ni compatibilidad E2E aprobada.
 Verificacion Docker final (commit 152e145): build aprobado; usuario node, UID 1000; HTTP 200 para HTML y bundle (229191 bytes); HTTP interno 200. Se preservo el fallo inicial ResponseEnded y se verifico sin proxy despues del arranque. Contenedores temporales retirados.
+
+
+## 2026-10-15 · Actualización CI S3.4
+
+Commit comprobado: 7103c44. Ejecución: https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38734429455. Frontend aprobado (Vitest, build y npm audit); Pest aprobado. Backend falla en composer audit: symfony/http-foundation (PKSA-xmwy-rmx5-m7h4, CVE-2026-108082) y symfony/yaml (PKSA-xz3r-9gp4-4m1z, CVE-2026-109413), según el reporte de CI. Conteo omitido por dependencia fallida. No se modificó backend ni se reintentó para ocultar el fallo. Pedido a Claude Code: revisar y actualizar las dependencias afectadas en su rama, validar Pest/audit y publicar la corrección. La ejecución anterior aprobada no acredita el estado actual. Revisión humana: [PENDIENTE].

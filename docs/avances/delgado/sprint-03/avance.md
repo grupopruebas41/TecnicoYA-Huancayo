@@ -29,3 +29,8 @@ Pruebas previstas/ejecutadas: 13 IDs Vitest S3 en rojo/verde y regresión comple
 Limitaciones: incertidumbre al crear sin clave de creación y archivos privados sin vínculo; pedidos documentados en el relevo. S3.5 pendiente tras integrar backend #14. Decisiones: ../../../documentacion/sprints/DECISIONES.md.
 
 Uso de IA: Codex (modelo no expuesto), 2026-10-15. Se aplicó implementación React, pruebas y documentación; se corrigió un escape de expresión en pruebas, se separaron responsabilidades y se reforzaron alertas CRUD. Se verificaron IDs contra CSV, comandos y diferencias. Aceptación/revisor humano: [PENDIENTE].
+
+
+## 2026-10-15 · Actualización CI S3.4
+
+Commit comprobado: 7103c44. Ejecución: https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38734429455. Frontend aprobado (Vitest, build y npm audit); Pest aprobado. Backend falla en composer audit: symfony/http-foundation (PKSA-xmwy-rmx5-m7h4, CVE-2026-108082) y symfony/yaml (PKSA-xz3r-9gp4-4m1z, CVE-2026-109413), según el reporte de CI. Conteo omitido por dependencia fallida. No se modificó backend ni se reintentó para ocultar el fallo. Pedido a Claude Code: revisar y actualizar las dependencias afectadas en su rama, validar Pest/audit y publicar la corrección. La ejecución anterior aprobada no acredita el estado actual. Revisión humana: [PENDIENTE].
