@@ -22,7 +22,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-127: oculta fotos, descripción y dirección de una solicitud a un técnico no notificado', function () {
+it('S03-TC-014 oculta fotos, descripción y dirección de una solicitud a un técnico no notificado [TC-127]', function () {
     // Dado una solicitud con foto privada y un técnico habilitado sin oferta ni asignación
     $request = ServiceRequestFactory::new()->create([
         'description' => 'Descripción privada de la falla.', 'address' => 'Dirección exacta privada 789',

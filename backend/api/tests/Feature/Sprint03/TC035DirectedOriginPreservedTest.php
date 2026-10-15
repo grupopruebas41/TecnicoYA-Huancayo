@@ -19,7 +19,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-035: conserva el origen desde perfil y el técnico elegido sin asignarlo automáticamente', function () {
+it('S03-TC-006 conserva el origen desde perfil y el técnico elegido sin asignarlo automáticamente [TC-035]', function () {
     // Dado un técnico habilitado que ofrece la subcategoría seleccionada
     $technician = TechnicianProfileFactory::new()->approved()->create();
     $service = TechnicianServiceFactory::new()->create(['technician_id' => $technician->id]);

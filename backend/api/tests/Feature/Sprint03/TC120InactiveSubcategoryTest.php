@@ -20,7 +20,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-120: rechaza una subcategoría inactiva o de rubro inactivo identificándola y sin guardar la solicitud', function () {
+it('S03-TC-011 rechaza una subcategoría inactiva o de rubro inactivo identificándola y sin guardar la solicitud [TC-120]', function () {
     // Dado una subcategoría desactivada y otra cuyo rubro está desactivado
     $inactive = (int) DB::table('subcategories')->where('code', 'computo-redes')->value('id');
     DB::table('subcategories')->where('id', $inactive)->update(['active' => 0]);

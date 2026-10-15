@@ -18,7 +18,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-032: informa fuera de cobertura y no registra la solicitud de un distrito fuera del catálogo activo', function () {
+it('S03-TC-004 informa fuera de cobertura y no registra la solicitud de un distrito fuera del catálogo activo [TC-032]', function () {
     // Dado un distrito que no pertenece al catálogo activo y otro inexistente
     $closed = DistrictFactory::new()->inactive()->create();
     Sanctum::actingAs(ClientProfileFactory::new()->create()->user);

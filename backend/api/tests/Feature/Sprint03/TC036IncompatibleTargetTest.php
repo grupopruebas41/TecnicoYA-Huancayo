@@ -20,7 +20,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-036: rechaza un técnico objetivo que no ofrece la subcategoría sin sustituirlo por otro', function () {
+it('S03-TC-007 rechaza un técnico objetivo que no ofrece la subcategoría sin sustituirlo por otro [TC-036]', function () {
     // Dado un técnico precargado que ofrece hardware pero no redes, y otro que sí ofrece redes
     $target = TechnicianProfileFactory::new()->approved()->create();
     TechnicianServiceFactory::new()->create(['technician_id' => $target->id]);
