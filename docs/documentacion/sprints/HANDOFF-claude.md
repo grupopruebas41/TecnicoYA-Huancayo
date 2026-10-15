@@ -2,6 +2,27 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 3 · S3.1 completado: CONTRATO LISTO PARA CODEX
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada en origin.
+- **Contrato:** `docs/documentacion/plan-pruebas-v3/sprint-03/CONTRATO-API.md` v1.0, con un ejemplo JSON por endpoint, la tabla rol × ruta, los 5 pasos y la idempotencia del envío.
+- **Catálogo:** `docs/documentacion/plan-pruebas-v3/sprint-03/CATALOGO-S03.csv`, 81 casos ejecutables.
+  - **Pest (51):** 001 a 051; del 001 al 015 ya existen.
+  - **Cypress (17):** 052 a 068.
+  - **Vitest (13):** 069 a 081.
+- **Decisiones:**
+  - El usuario confirmó que se aplican D-11, D-12, D-13, D-15, D-23 y D-25.
+  - Nuevas, de Pimentel (2026-10-15):
+    - D-55: inicio programado ≥ hora del servidor;
+    - D-56: dirección de 5 a 255;
+    - D-57: técnico en pausa fuera de la búsqueda;
+    - D-58: tablas `rule_*` con la versión 1 y N=3.
+
+**Para Codex (S3.4):**
+- Pantallas en `features/requests` (asistente, resumen y Mis solicitudes) y `features/matching` (búsqueda y perfil), con Vitest S03-TC-069 a 081, según el contrato.
+- Los nombres de archivo del catálogo son propuestos: puedes cambiarlos si mantienes los IDs.
+- Cypress 052 a 068 después de que se integre el PR de S3.3 (seeder E2E en §7 del contrato).
+
 ## 2026-10-15 · Sprint 3 · S3.1 en curso (en espera de confirmación)
 
 - **Rama:** `feature/mayhuasca/a-solicitudes/s03`, creada desde `main` `af074b5` (con los PR #12 y #13). Solo local: sin push.
