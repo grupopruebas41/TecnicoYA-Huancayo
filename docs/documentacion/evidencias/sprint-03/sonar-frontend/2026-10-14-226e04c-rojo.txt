@@ -1,0 +1,94 @@
+Fecha: 2026-10-14
+Commit: 226e04c
+Comando: npm test -- --maxWorkers=1 src/features/administration/accessibility.test.jsx src/features/administration/sprint02.test.jsx
+Salida: 1
+
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 src/features/administration/accessibility.test.jsx src/features/administration/sprint02.test.jsx
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/features/administration/accessibility.test.jsx (6 tests | 2 failed) 175ms
+   ✓ S01-TC-084 AccountApp: botones explícitos con rol client 104ms
+   ✓ S01-TC-084 AccountApp: botones explícitos con rol unknown 17ms
+   ✓ S01-TC-084 AccountApp: botones explícitos al fallar la sesión 21ms
+   ✓ S01-TC-084 Catalog: reintento con type explícito 14ms
+   × S01-TC-084 complemento: carga de sesión con salida semántica 8ms
+   × S01-TC-084 complemento: catálogo vacío con salida semántica 10ms
+ ❯ src/features/administration/sprint02.test.jsx (12 tests | 1 failed) 201ms
+   ✓ S02-TC-076 validación de subcategoría 3ms
+   ✓ S02-TC-077 validación de comunicado 3ms
+   ✓ S02-TC-078 vista previa escapa HTML 28ms
+   ✓ S02-TC-079 diálogo cancela y devuelve foco 65ms
+   ✓ S02-TC-080 validación de franjas 1ms
+   ✓ S02-TC-081 límites de tarifa 1ms
+   ✓ S02-TC-082 pausa con reloj controlado 2ms
+   ✓ S02-TC-083 revisión exige motivo antes de API 40ms
+   ✓ S02-TC-086 error 500 y resultado incierto nunca dan éxito 43ms
+   ✓ S02-TC-087 estados distintos en español 1ms
+   ✓ S02-TC-088 validación de archivo 0ms
+   × S02-TC-079 complemento: diálogo nativo mantiene nombre y bloqueo de confirmación 12ms
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 15 passed (18)
+   Start at  23:30:01
+   Duration  20.05s (environment 66%, setup 19%, import 11%, transform 2%, tests 2%)
+
+Environment  jsdom was created 2 times · 12.66s total, 66% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/administration/accessibility.test.jsx > S01-TC-084 complemento: carga de sesión con salida semántica
+AssertionError: expected 'SECTION' to be 'OUTPUT' // Object.is equality
+
+Expected: "OUTPUT"
+Received: "SECTION"
+
+ ❯ src/features/administration/accessibility.test.jsx:30:46
+     28|   request.mockReturnValue(new Promise(() => {}));
+     29|   render(<AccountApp/>);
+     30|   expect(screen.getByRole('status').tagName).toBe('OUTPUT');
+       |                                              ^
+     31| });
+     32| test('S01-TC-084 complemento: catálogo vacío con salida semántica', as…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/features/administration/accessibility.test.jsx > S01-TC-084 complemento: catálogo vacío con salida semántica
+AssertionError: expected 'P' to be 'OUTPUT' // Object.is equality
+
+Expected: "OUTPUT"
+Received: "P"
+
+ ❯ src/features/administration/accessibility.test.jsx:35:83
+     33|   request.mockResolvedValue({data: []});
+     34|   render(<Catalog/>);
+     35|   expect((await screen.findByText('No hay especialidades disponibles.'…
+       |                                                                                   ^
+     36| });
+     37|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/features/administration/sprint02.test.jsx > S02-TC-079 complemento: diálogo nativo mantiene nombre y bloqueo de confirmación
+AssertionError: expected 'DIV' to be 'DIALOG' // Object.is equality
+
+Expected: "DIALOG"
+Received: "DIV"
+
+ ❯ src/features/administration/sprint02.test.jsx:25:26
+     23|   render(<ConfirmDialog busy onCancel={cancel} onConfirm={confirm}/>);
+     24|   const dialog=screen.getByRole('dialog', {name:'Confirmar retiro'});
+     25|   expect(dialog.tagName).toBe('DIALOG');
+       |                          ^
+     26|   expect(screen.getByRole('button', {name:'Confirmar'})).toBeDisabled(…
+     27|   fireEvent.keyDown(dialog, {key:'Escape'});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml

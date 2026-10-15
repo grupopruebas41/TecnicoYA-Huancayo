@@ -24,10 +24,10 @@ export default function RetireButton({
       setOpen(false);
       onRetired?.();
       await reload();
-    } catch (e) {
+    } catch (error) {
       setOpen(false);
-      setError(e.message);
-      if (e.status === 0) await reload();
+      setError(error.message);
+      if (error.status === 0) await reload();
     } finally {
       setBusy(false);
     }

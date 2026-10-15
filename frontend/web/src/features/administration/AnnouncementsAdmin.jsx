@@ -111,16 +111,16 @@ function Editor({ item = {}, reload }) {
     </MutationForm>
   );
 }
+function announcementStatus(item) {
+  if (item.retired_at) return "Retirado";
+  return item.status === "draft" ? "Borrador" : "Publicado";
+}
 function AnnouncementRow({ item, reload, onEdit, onRetired }) {
   return (
     <article className="s02-card">
       <h3>{item.title}</h3>
       <p>
-        {item.retired_at
-          ? "Retirado"
-          : item.status === "draft"
-            ? "Borrador"
-            : "Publicado"}
+        {announcementStatus(item)}
       </p>
       <AnnouncementPreview value={item} />
       {!item.retired_at && item.status === "draft" && (

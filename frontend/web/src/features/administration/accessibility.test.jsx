@@ -22,3 +22,15 @@ test('S01-TC-084 Catalog: reintento con type explícito', async () => {
   request.mockRejectedValue({message: 'No se pudo conectar.'});
   render(<Catalog/>); await screen.findByRole('button', {name: 'Reintentar'}); checkButtons();
 });
+
+
+test('S01-TC-084 complemento: carga de sesión con salida semántica', () => {
+  request.mockReturnValue(new Promise(() => {}));
+  render(<AccountApp/>);
+  expect(screen.getByRole('status').tagName).toBe('OUTPUT');
+});
+test('S01-TC-084 complemento: catálogo vacío con salida semántica', async () => {
+  request.mockResolvedValue({data: []});
+  render(<Catalog/>);
+  expect((await screen.findByText('No hay especialidades disponibles.')).tagName).toBe('OUTPUT');
+});

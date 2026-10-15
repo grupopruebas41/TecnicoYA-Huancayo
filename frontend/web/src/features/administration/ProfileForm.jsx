@@ -15,8 +15,12 @@ export default function ProfileForm({user, onUpdate, onExpired}) {
   async function reload() {
     setBusy(true);
     try { onUpdate((await request('/me')).data); setConflict(false); setUncertain(false); setErrors({}); setError(''); setSuccess('Perfil actualizado desde el servidor.'); }
-    catch (failure) { setError(failure.message); if ([401, 419, 403].includes(failure.status)) onExpired(failure); }
+    catch (error) { setError(error.message); if ([401, 419, 403].includes(error.status)) onExpired(error); }
     finally { setBusy(false); }
+  }
+  async function reconcileProfile() {
+    try { onUpdate((await request('/me')).data); setUncertain(false); }
+    catch (error) { if ([401, 419, 403].includes(error.status)) onExpired(error); }
   }
   async function submit(event) {
     event.preventDefault();
@@ -30,13 +34,12 @@ export default function ProfileForm({user, onUpdate, onExpired}) {
     try {
       const result = await request('/me', {name: name.trim(), phone: phone || null, expected_version: user.version}, 'PATCH');
       onUpdate(result.data); setSuccess('Cambios guardados correctamente.'); setConflict(false);
-    } catch (failure) {
-      setError(failure.message); setErrors(failure.fields || {}); setConflict(failure.status === 409);
-      if ([401, 419, 403].includes(failure.status)) onExpired(failure);
-      if (failure.status === 0) {
+    } catch (error) {
+      setError(error.message); setErrors(error.fields || {}); setConflict(error.status === 409);
+      if ([401, 419, 403].includes(error.status)) onExpired(error);
+      if (error.status === 0) {
         setUncertain(true);
-        try { onUpdate((await request('/me')).data); setUncertain(false); }
-        catch (refreshFailure) { if ([401, 419, 403].includes(refreshFailure.status)) onExpired(refreshFailure); }
+        await reconcileProfile();
       }
     } finally { setBusy(false); }
   }

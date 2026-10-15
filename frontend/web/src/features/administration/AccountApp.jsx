@@ -19,10 +19,10 @@ export default function AccountApp() {
   useEffect(() => {
     let active = true;
     setLoading(true); setError(''); setBlocked(false);
-    request('/me').then(result => { if (active) setUser(result.data); }).catch(failure => {
+    request('/me').then(result => { if (active) setUser(result.data); }).catch(error => {
       if (!active) return;
-      setUser(null); setBlocked(failure.status === 403);
-      if (failure.status !== 401) setError(failure.message);
+      setUser(null); setBlocked(error.status === 403);
+      if (error.status !== 401) setError(error.message);
     }).finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [reload]);
@@ -40,22 +40,25 @@ export default function AccountApp() {
     return () => window.removeEventListener('hashchange', redirect);
   }, [user, loading]);
   function clearSession() { setUser(null); setBlocked(false); }
+  async function reconcileLogout() {
+    try { setUser((await request('/me')).data); }
+    catch (error) { if (error.status === 401) clearSession(); }
+  }
   async function logout() {
     if (busy) return;
     setBusy(true); setError('');
     try { await request('/auth/logout', undefined, 'POST'); clearSession(); }
-    catch (failure) {
-      if (failure.status === 401) clearSession();
+    catch (error) {
+      if (error.status === 401) clearSession();
       else {
-        setError(failure.message);
-        if (failure.status === 0) {
-          try { setUser((await request('/me')).data); }
-          catch (refreshFailure) { if (refreshFailure.status === 401) clearSession(); }
+        setError(error.message);
+        if (error.status === 0) {
+          await reconcileLogout();
         }
       }
     } finally { setBusy(false); }
   }
-  if (loading) return <section className="session-page" role="status">Comprobando tu sesión…</section>;
+  if (loading) return <section className="session-page"><output>Comprobando tu sesión…</output></section>;
   if (blocked) return <section className="session-page"><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></section>;
   if (!user) return <section className="session-page"><Notice error={error}/>{error && <button type="button" className="button outline" onClick={() => setReload(reload + 1)}>Reintentar conexión</button>}<SessionForm onLogin={(value, warning = '') => { setUser(value); setError(warning); }}/></section>;
   const role = user.role?.code;
