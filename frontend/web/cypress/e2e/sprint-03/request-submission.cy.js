@@ -17,7 +17,7 @@ describe("S3 envío", () => {
   afterEach(() => {
     if (!restoreId) return;
     switchAccount("e2e-admin@example.test");
-    cy.request({url: api() + "/api/v1/admin/catalog", headers: {Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json"}}).then(({ body }) => {
+    cy.request({url: api() + "/api/v1/admin/specialties", headers: {Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json"}}).then(({ body }) => {
       const item = body.data
         .flatMap((s) => s.subcategories)
         .find((s) => s.id === restoreId);
@@ -77,7 +77,7 @@ describe("S3 envío", () => {
     toSummary();
     cy.get("@record").then((record) => {
       switchAccount("e2e-admin@example.test");
-      cy.request({url: api() + "/api/v1/admin/catalog", headers: {Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json"}}).then(({ body }) => {
+      cy.request({url: api() + "/api/v1/admin/specialties", headers: {Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json"}}).then(({ body }) => {
         const item = body.data
           .flatMap((s) => s.subcategories)
           .find((s) => s.id === record.subcategory.id);
@@ -98,7 +98,7 @@ describe("S3 envío", () => {
         .should("be.visible");
       wizard().contains("Solicitud enviada correctamente.").should("not.exist");
       switchAccount("e2e-admin@example.test");
-      cy.request({url: api() + "/api/v1/admin/catalog", headers: {Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json"}}).then(({ body }) => {
+      cy.request({url: api() + "/api/v1/admin/specialties", headers: {Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json"}}).then(({ body }) => {
         const item = body.data
           .flatMap((s) => s.subcategories)
           .find((s) => s.id === record.subcategory.id);
