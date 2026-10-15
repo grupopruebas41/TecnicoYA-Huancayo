@@ -2,6 +2,16 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 3 · S3.2 completado (Pest en rojo)
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`. Commit `acebacc`: test(s03) S03-TC-016 a 051.
+- **Resultado:** Pest Sprint03 con **21 en rojo y 30 en verde** (431 aserciones), slot A. Detalle y motivo de cada fallo en `evidencias/sprint-03/01-rojo-antes-de-implementar.txt`.
+- **Ya pasan con el código existente**, sin tocar el producto, y se conservan como regresión:
+  - 001 a 015 (las 15 renombradas);
+  - 023 a 026 y 031 a 041.
+  - La 020 se endureció: exige un único error en `file`, para que no pase solo porque `purpose=evidence` aún no existe.
+- **Qué falta:** S3.3 (backend en verde).
+
 ## 2026-10-15 · Sprint 3 · S3.1 completado: CONTRATO LISTO PARA CODEX
 
 - **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada en origin.
