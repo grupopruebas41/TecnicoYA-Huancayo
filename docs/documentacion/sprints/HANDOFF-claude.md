@@ -2,6 +2,19 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 3 · DEF-43: composer audit (PR #16)
+
+- **Rama:** `feature/pimentel/infra/s03-composer-audit`, desde `main` `5814a5d` (con el PR #14).
+- **PR #16:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/16. CI con backend, frontend y conteo en verde.
+- **Causa:** la CI del PR #15 (Codex) fallaba en `composer audit` por dos avisos, CVE-2026-108082 y CVE-2026-109413. También afectaba a `main`.
+- **Cambio:** `composer update symfony/http-foundation symfony/yaml --with-dependencies`, sin `-W`.
+  - `symfony/http-foundation` y `symfony/yaml`: 7.4.17 → 7.4.21.
+  - `symfony/polyfill-mbstring`, `polyfill-php80` y `polyfill-php83`: → 1.43.0.
+  - Solo cambia `composer.lock`.
+- **Verificación:** `composer audit` limpio; Pest 185/185 en el slot A. DEF-43 registrado y cerrado (`b69b637`).
+
+**Para Codex:** cuando se integre el PR #16, fusionar `main` en la rama del PR #15 para que su CI pase.
+
 ## 2026-10-15 · Sprint 3 · S3.3 completado (backend en verde y PR)
 
 - **Rama:** `feature/mayhuasca/a-solicitudes/s03`, publicada. Commit `20dcc34` feat(s03) y `5f10884` docs. **PR #14:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/14
