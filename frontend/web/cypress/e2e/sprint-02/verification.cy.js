@@ -1,0 +1,5 @@
+import {admin,field,observe} from './helpers';
+describe('Verificación S2 (requiere pendientes del seeder)',()=>{
+it('S02-TC-069 aprobar técnico completo',()=>{admin('Verificación');cy.contains('.s02-panel>button','Técnico E2E listo').click();field('Motivo','Documentación verificada correctamente.');observe('POST','/admin/technicians/*/reviews','review');cy.contains('button','Confirmar aprobación').click();cy.wait('@review').its('response.statusCode').should('eq',201);cy.contains('Revisión registrada correctamente.').should('be.visible')});
+it('S02-TC-070 rechazar exige motivo',()=>{admin('Verificación');cy.get('.s02-panel>button').first().click();let calls=0;cy.intercept('POST','**/api/v1/admin/technicians/*/reviews',()=>calls++);cy.contains('button','Rechazar').click();cy.contains('El motivo debe tener entre 5 y 2000 caracteres.').should('be.visible').then(()=>expect(calls).to.eq(0));field('Motivo','Falta documentación de experiencia.');cy.contains('button','Confirmar rechazo').click();cy.contains('Revisión registrada correctamente.').should('be.visible').then(()=>expect(calls).to.eq(1))});
+});

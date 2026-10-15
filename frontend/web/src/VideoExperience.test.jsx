@@ -27,6 +27,7 @@ test('shows only the video until the cue, then keeps the content through subsequ
   fireEvent.timeUpdate(video);
   expect(screen.getByRole('heading')).toBeVisible();
   expect(video.loop).toBe(true);
+  expect(video).toHaveAttribute('tabindex','-1');
 });
 
 test('reduced motion immediately exposes the page and pauses playback', () => {

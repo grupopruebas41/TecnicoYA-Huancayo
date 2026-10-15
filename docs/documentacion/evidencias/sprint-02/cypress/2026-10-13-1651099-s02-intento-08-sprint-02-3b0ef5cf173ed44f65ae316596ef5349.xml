@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="60.621" tests="4" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-13T23:13:45" tests="0" file="cypress\e2e\sprint-02\catalog-admin.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Catálogo S2" timestamp="2026-10-13T23:13:45" tests="4" time="60.614" failures="1">
+    <testcase name="Catálogo S2 S02-TC-061 crear subcategoría con foto" time="0.000" classname="S02-TC-061 crear subcategoría con foto">
+      <failure message="Timed out retrying after 20000ms: `cy.wait()` timed out waiting `20000ms` for the 1st request to the route: `media`. No request ever occurred.
+
+https://on.cypress.io/wait" type="CypressError"><![CDATA[CypressError: Timed out retrying after 20000ms: `cy.wait()` timed out waiting `20000ms` for the 1st request to the route: `media`. No request ever occurred.
+
+https://on.cypress.io/wait
+    at cypressErr (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:75831:18)
+    at Object.errByPath (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:75891:10)
+    at checkForXhr (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:136853:84)
+    at <unknown> (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:136870:28)
+    at tryCatcher (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1780:23)
+    at Promise.attempt.Promise.try (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:4288:29)
+    at whenStable (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:151874:70)
+    at <unknown> (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:151774:14)
+    at tryCatcher (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1780:23)
+    at Promise._settlePromiseFromHandler (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1492:31)
+    at Promise._settlePromise (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1549:18)
+    at Promise._settlePromise0 (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1594:10)
+    at Promise._settlePromises (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1674:18)
+    at Promise._fulfill (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:1618:18)
+    at <unknown> (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:5423:46)
+From Your Spec Code:
+    at Object.proxyGetter [as get] (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:81320:22)
+    at exists (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:150970:26)
+    at elExists (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:150985:10)
+    at ensureExistence (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:151166:22)
+    at onFailFn (http://127.0.0.1:5175/__cypress/runner/cypress_runner.js:151195:53)]]></failure>
+    </testcase>
+    <testcase name="Catálogo S2 S02-TC-062 duplicado muestra error sin falso éxito" time="10.666" classname="S02-TC-062 duplicado muestra error sin falso éxito">
+    </testcase>
+    <testcase name="Catálogo S2 S02-TC-063 desactivar y activar subcategoría" time="17.308" classname="S02-TC-063 desactivar y activar subcategoría">
+    </testcase>
+    <testcase name="Catálogo S2 S02-TC-064 especialidad vacía no envía POST" time="4.033" classname="S02-TC-064 especialidad vacía no envía POST">
+    </testcase>
+  </testsuite>
+</testsuites>

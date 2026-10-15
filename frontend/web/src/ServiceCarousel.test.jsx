@@ -1,7 +1,7 @@
 import React from 'react';
 import {test,expect,vi,beforeEach,afterEach} from 'vitest';
 import {render,screen,fireEvent,cleanup,act} from '@testing-library/react';
-import ServiceCarousel from './ServiceCarousel';
+import ServiceCarousel from './LegacyServiceCarousel';
 
 beforeEach(()=>{vi.stubGlobal('matchMedia',()=>({matches:false,addEventListener:vi.fn(),removeEventListener:vi.fn()}));vi.stubGlobal('IntersectionObserver',class{constructor(cb){this.cb=cb}observe(){this.cb([{isIntersecting:true}])}disconnect(){}})});
 afterEach(()=>{cleanup();vi.useRealTimers();vi.unstubAllGlobals()});

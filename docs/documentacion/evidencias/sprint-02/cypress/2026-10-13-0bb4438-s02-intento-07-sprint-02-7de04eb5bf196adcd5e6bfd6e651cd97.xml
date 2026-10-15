@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="40.617" tests="4" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-13T18:24:02" tests="0" file="cypress\e2e\sprint-02\announcements.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Comunicados S2" timestamp="2026-10-13T18:24:02" tests="4" time="40.611" failures="0">
+    <testcase name="Comunicados S2 S02-TC-065 crear y publicar con vista previa escapada" time="21.157" classname="S02-TC-065 crear y publicar con vista previa escapada">
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-066 cancelar retiro no envía DELETE" time="6.811" classname="S02-TC-066 cancelar retiro no envía DELETE">
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-067 error 500 conserva formulario y referencia" time="6.040" classname="S02-TC-067 error 500 conserva formulario y referencia">
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-068 duplicar genera borrador" time="6.149" classname="S02-TC-068 duplicar genera borrador">
+    </testcase>
+  </testsuite>
+</testsuites>

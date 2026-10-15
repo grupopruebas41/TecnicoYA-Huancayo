@@ -22,7 +22,7 @@ async function send(path, options = {}) {
   }
   if (response.status === 204) return null;
   const body = await response.json().catch(() => null);
-  if (!response.ok) throw new ApiError(apiMessage(body?.error?.message || body?.message || statusMessage(response.status)), response.status, body?.error?.fields || body?.errors, body?.error?.code);
+  if (!response.ok) { const reference = body?.meta?.request_id; throw new ApiError(apiMessage(body?.error?.message || body?.message || statusMessage(response.status)) + (reference ? ' Referencia: ' + reference : ''), response.status, body?.error?.fields || body?.errors, body?.error?.code); }
   // Un 200 ilegible no confirma una operación: consultamos el estado sin repetir la escritura.
   if (!body || typeof body !== 'object' || !('data' in body)) throw new ApiError('No pudimos confirmar el resultado. Revisa tu conexión y consulta el estado antes de repetir la operación.', 0);
   return body;
@@ -48,6 +48,7 @@ export async function request(path, body, method = body ? 'POST' : 'GET') {
     if (!cookie) throw new ApiError('No se pudo preparar la sesión segura. Permite las cookies y vuelve a intentarlo.', 419);
     headers['X-XSRF-TOKEN'] = decodeURIComponent(cookie.slice('XSRF-TOKEN='.length));
   }
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
-  return send(`/api/v1${path}`, {method, headers, ...(body !== undefined ? {body: JSON.stringify(body)} : {})});
+  const multipart = body instanceof FormData;
+  if (body !== undefined && !multipart) headers['Content-Type'] = 'application/json';
+  return send(`/api/v1${path}`, {method, headers, ...(body !== undefined ? {body: multipart ? body : JSON.stringify(body)} : {})});
 }
