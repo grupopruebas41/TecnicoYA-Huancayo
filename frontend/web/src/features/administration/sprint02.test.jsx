@@ -16,3 +16,15 @@ test('S02-TC-083 revisión exige motivo antes de API',async()=>{const save=vi.fn
 test('S02-TC-086 error 500 y resultado incierto nunca dan éxito',async()=>{const reload=vi.fn();const save=vi.fn().mockRejectedValueOnce(Object.assign(new Error('Error. Referencia: prueba-500'),{status:500})).mockRejectedValueOnce(Object.assign(new Error('Resultado incierto'),{status:0}));render(<MutationForm onSave={save} reload={reload}><span>Datos conservados</span></MutationForm>);fireEvent.click(screen.getByText('Guardar'));await screen.findByText(/prueba-500/);expect(screen.queryByText('Cambios guardados.')).toBeNull();fireEvent.click(screen.getByText('Guardar'));await waitFor(()=>expect(reload).toHaveBeenCalledTimes(1));expect(screen.getByRole('alert')).toHaveTextContent(/confirmar|incierto/);expect(screen.getByText('Datos conservados')).toBeInTheDocument()});
 test('S02-TC-087 estados distintos en español',()=>{expect(['pending','rejected','active','suspended'].map(technicianState)).toEqual(['Pendiente de verificación','Verificación rechazada','Activo','Suspendido'])});
 test('S02-TC-088 validación de archivo',()=>{expect(validateUpload({type:'image/gif',size:100})).toBeTruthy();expect(validateUpload({type:'image/jpeg',size:5242881})).toBeTruthy();expect(validateUpload({type:'image/jpeg',size:5242880})).toBe('')});
+
+
+test('S02-TC-079 complemento: diálogo nativo mantiene nombre y bloqueo de confirmación', () => {
+  const cancel=vi.fn(), confirm=vi.fn();
+  render(<ConfirmDialog busy onCancel={cancel} onConfirm={confirm}/>);
+  const dialog=screen.getByRole('dialog', {name:'Confirmar retiro'});
+  expect(dialog.tagName).toBe('DIALOG');
+  expect(screen.getByRole('button', {name:'Confirmar'})).toBeDisabled();
+  fireEvent.keyDown(dialog, {key:'Escape'});
+  expect(cancel).not.toHaveBeenCalled();
+  expect(confirm).not.toHaveBeenCalled();
+});
