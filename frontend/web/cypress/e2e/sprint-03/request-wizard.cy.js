@@ -6,6 +6,28 @@ import {
   send,
   observe,
 } from "./helpers";
+// Chrome 156 necesita el código virtual y texto de Enter para activar botones.
+// Se envían eventos nativos CDP; nunca click() ni eventos DOM fabricados.
+function enter() {
+  const key = {
+    key: "Enter",
+    code: "Enter",
+    windowsVirtualKeyCode: 13,
+    nativeVirtualKeyCode: 13,
+  };
+  cy.then(() =>
+    Cypress.automation("remote:debugger:protocol", {
+      command: "Input.dispatchKeyEvent",
+      params: { ...key, type: "keyDown", text: "\r", unmodifiedText: "\r" },
+    }),
+  );
+  cy.then(() =>
+    Cypress.automation("remote:debugger:protocol", {
+      command: "Input.dispatchKeyEvent",
+      params: { ...key, type: "keyUp" },
+    }),
+  );
+}
 describe("S3 asistente", () => {
   beforeEach(() => loginClient());
   it("S03-TC-052 recorrido con corrección antes de enviar", () => {
@@ -74,29 +96,30 @@ describe("S3 asistente", () => {
   });
   it("S03-TC-063 recorrido por teclado", () => {
     cy.location("hash").should("eq", "#cuenta/cliente");
-    cy.window().then(win => win.focus());
+    cy.window().then((win) => win.focus());
     cy.get('nav[aria-label="Gestión del cliente"]')
       .contains("button", "Nueva solicitud")
       .scrollIntoView()
-      .focus().should("be.focused");
-    cy.press(Cypress.Keyboard.Keys.ENTER);
+      .focus()
+      .should("be.focused");
+    enter();
     wizard().contains("h2", "Paso 1").should("be.visible").and("be.focused");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().should("have.attr", "name", "specialty_id").select(1);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.ENTER);
+    enter();
     wizard().contains("h2", "Paso 2").should("be.visible").and("be.focused");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().select(1);
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.ENTER);
+    enter();
     wizard().contains("h2", "Paso 3").should("be.visible").and("be.focused");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().type("Descripción sintética suficientemente larga.");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.ENTER);
+    enter();
     wizard().contains("h2", "Paso 4").should("be.visible").and("be.focused");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.focused().select(1);
@@ -105,13 +128,37 @@ describe("S3 asistente", () => {
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.ENTER);
+    enter();
     wizard().contains("h2", "Paso 5").should("be.focused");
     cy.press(Cypress.Keyboard.Keys.TAB);
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().should("have.attr", "type", "checkbox").type(" ");
+    cy.focused().should("have.attr", "type", "checkbox");
+    cy.then(() =>
+      Cypress.automation("remote:debugger:protocol", {
+        command: "Input.dispatchKeyEvent",
+        params: {
+          type: "keyDown",
+          key: " ",
+          code: "Space",
+          windowsVirtualKeyCode: 32,
+          text: " ",
+        },
+      }),
+    );
+    cy.then(() =>
+      Cypress.automation("remote:debugger:protocol", {
+        command: "Input.dispatchKeyEvent",
+        params: {
+          type: "keyUp",
+          key: " ",
+          code: "Space",
+          windowsVirtualKeyCode: 32,
+        },
+      }),
+    );
+    cy.focused().should("be.checked");
     cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.ENTER);
+    enter();
     wizard().contains("Solicitud enviada correctamente.").should("be.visible");
   });
 });

@@ -77,17 +77,19 @@ export function image() {
 }
 export function apiWrite(method, path, body) {
   cy.request({ url: api() + "/sanctum/csrf-cookie", log: false });
-  return cy
-    .getCookie("XSRF-TOKEN", { log: false })
-    .then((cookie) =>
-      cy.request({
-        method,
-        url: api() + "/api/v1" + path,
-        body,
-        headers: { "X-XSRF-TOKEN": decodeURIComponent(cookie.value), Origin: new URL(Cypress.config("baseUrl")).origin, Accept: "application/json" },
-        log: false,
-      }),
-    );
+  return cy.getCookie("XSRF-TOKEN", { log: false }).then((cookie) =>
+    cy.request({
+      method,
+      url: api() + "/api/v1" + path,
+      body,
+      headers: {
+        "X-XSRF-TOKEN": decodeURIComponent(cookie.value),
+        Origin: new URL(Cypress.config("baseUrl")).origin,
+        Accept: "application/json",
+      },
+      log: false,
+    }),
+  );
 }
 export function switchAccount(email) {
   apiWrite("POST", "/auth/logout");
