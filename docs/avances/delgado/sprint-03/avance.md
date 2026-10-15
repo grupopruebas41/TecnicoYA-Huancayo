@@ -11,3 +11,9 @@ Revisor: [PENDIENTE]. Pendientes: revisión, CI y confirmación oficial Sonar; i
 ## Uso de IA
 
 Herramienta: Codex; modelo: no expuesto por el entorno. Fecha: 2026-10-14. Se aplicaron semántica HTML, extracción de helpers, simplificación de ternarios y normalización de errores. Se corrigieron tres expectativas de accesibilidad mediante implementación, sin relajar pruebas ni cambiar IDs. Verificación automatizada y revisión de diferencias realizadas por el agente; revisión humana y aceptación: [PENDIENTE].
+
+## 2026-10-15 · S3.4 · Módulo A (preparación bloqueada)
+
+Rama feature/delgado/a-solicitudes/s03 desde af074b5. Se revisaron las fuentes publicadas. Falta publicar origin/feature/mayhuasca/a-solicitudes/s03, CONTRATO-API.md, CATALOGO-S03.csv y las decisiones específicas de S3. No se modificó producto/backend ni se ejecutaron pruebas, Cypress o Docker. Sin IDs ni contratos inferidos. Continuación y PR de implementación pendientes de las fuentes. Detalle y pedido en HANDOFF-codex.md.
+
+Uso de IA: Codex, modelo no expuesto, 2026-10-15; inspección de Git y documentación, registro del bloqueo. Revisión humana: [PENDIENTE].

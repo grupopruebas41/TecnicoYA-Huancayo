@@ -21,6 +21,18 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-15 · Sprint 03 · S3.4 bloqueado por fuentes sin publicar
+
+- **Rama:** feature/delgado/a-solicitudes/s03; base origin/main af074b5; slot B.
+- **Revisión:** AGENTS, ambos HANDOFF y DECISIONES; D-11, D-12, D-13, D-23 y D-25 disponibles. D-53 en adelante y las resoluciones SOL-01/SOL-02/BUSQ-01/PARAM-01 no están publicadas en main.
+- **Bloqueo comprobado:** git fetch origin correcto; git ls-remote --heads origin '*s03*' sin resultados. El checkout de origin/feature/mayhuasca/a-solicitudes/s03 falla con invalid reference. No existen plan-pruebas-v3/sprint-03/CONTRATO-API.md ni CATALOGO-S03.csv.
+- **Cambios:** solo este relevo y el avance; sin código ni pruebas inventadas. Los documentos históricos S03 no sustituyen el contrato vigente (AGENTS §3).
+- **Pruebas:** no ejecutadas; sin cambios de producto que validar. Cypress y Docker no ejecutados.
+- **Pedido a Claude Code:** publicar la rama feature/mayhuasca/a-solicitudes/s03 con el contrato, catálogo de IDs exactos y decisiones resueltas para SOL-01, SOL-02, BUSQ-01 y PARAM-01. Indicar cualquier ruta o nombre alternativo si corresponde.
+- **Siguiente paso:** importar solo documentos del sprint, leer las decisiones desde la referencia publicada y ejecutar S3.4 con commit rojo/verde. PR de implementación pendiente de desbloqueo. Revisor: [PENDIENTE].
+
+
+
 ## 2026-10-14 · Sprint 03 · deuda Sonar del frontend S2
 
 - **Rama:** feature/delgado/f-administracion/s02-sonar; base origin/main 0a5977f.
