@@ -66,6 +66,7 @@ export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
     [media, setMedia] = useState([]);
   const [errors, setErrors] = useState({}),
     [error, setError] = useState(""),
+    [success, setSuccess] = useState(""),
     [busy, setBusy] = useState(false),
     [uploading, setUploading] = useState(false),
     [uncertain, setUncertain] = useState(false),
@@ -97,6 +98,7 @@ export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
   }, [errors]);
   const update = (name, value) => dispatch({ type: "field", name, value });
   const go = (step) => {
+    setSuccess("");
     setErrors({});
     dispatch({ type: "step", step });
   };
@@ -134,6 +136,7 @@ export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
       current = await attachPending(current, media);
       setRecord(current);
       go(5);
+      setSuccess(record ? "Solicitud actualizada." : "Solicitud registrada. Revisa el resumen antes de enviarla.");
     } catch (error) {
       setError(error.message);
       setErrors(fieldErrors(error));
@@ -157,6 +160,7 @@ export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
       record && state.step < 3 ? {} : validateStep(state.step, state);
     setErrors(invalid);
     setError("");
+    setSuccess("");
     if (Object.keys(invalid).length) return;
     if (state.step < 4) {
       go(state.step + 1);
@@ -179,6 +183,7 @@ export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
     setRecord,
     errors,
     error,
+    success,
     busy,
     uploading,
     uncertain,

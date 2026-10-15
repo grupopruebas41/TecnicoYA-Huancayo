@@ -36,6 +36,7 @@ export default function RequestWizard({
     setRecord,
     errors,
     error,
+    success,
     busy,
     uploading,
     uncertain,
@@ -64,7 +65,7 @@ export default function RequestWizard({
       </h2>
       <WizardContext target={target} record={record} />
       <div ref={notice} tabIndex={-1}>
-        <Notice error={error} />
+        <Notice error={error} success={success} />
       </div>
       {error && (
         <button
