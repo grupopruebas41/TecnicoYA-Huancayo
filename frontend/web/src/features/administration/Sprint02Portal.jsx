@@ -1,3 +1,4 @@
+import ClientPortal from '../requests/ClientPortal';
 import React, { useState } from "react";
 import CatalogAdmin from "./CatalogAdmin";
 import AnnouncementsAdmin from "./AnnouncementsAdmin";
@@ -18,6 +19,7 @@ export default function Sprint02Portal({ user }) {
   return (
     <>
       <RoleAnnouncements key={user.id} />
+      {role === "client" && <ClientPortal key={user.id} />}
       {role === "technician" && <TechnicianPanel />}
       {role === "admin" && (
         <>

@@ -1,4 +1,6 @@
 import {apiMessage} from './labels';
+let serverOffset = 0;
+export const serverNow = () => Date.now() + serverOffset;
 const origin = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 export class ApiError extends Error {
@@ -22,6 +24,8 @@ async function send(path, options = {}) {
   }
   if (response.status === 204) return null;
   const body = await response.json().catch(() => null);
+  const timestamp = Date.parse(body?.meta?.server_time);
+  if (Number.isFinite(timestamp)) serverOffset = timestamp - Date.now();
   if (!response.ok) { const reference = body?.meta?.request_id; throw new ApiError(apiMessage(body?.error?.message || body?.message || statusMessage(response.status)) + (reference ? ' Referencia: ' + reference : ''), response.status, body?.error?.fields || body?.errors, body?.error?.code); }
   // Un 200 ilegible no confirma una operación: consultamos el estado sin repetir la escritura.
   if (!body || typeof body !== 'object' || !('data' in body)) throw new ApiError('No pudimos confirmar el resultado. Revisa tu conexión y consulta el estado antes de repetir la operación.', 0);
@@ -40,8 +44,8 @@ function statusMessage(status) {
   return messages[status] || 'El servicio no está disponible. Inténtalo nuevamente más tarde.';
 }
 
-export async function request(path, body, method = body ? 'POST' : 'GET') {
-  const headers = {};
+export async function request(path, body, method = body ? 'POST' : 'GET', options = {}) {
+  const headers = {...options.headers};
   if (!['GET', 'HEAD'].includes(method)) {
     await send('/sanctum/csrf-cookie');
     const cookie = document.cookie.split('; ').find(item => item.startsWith('XSRF-TOKEN='));

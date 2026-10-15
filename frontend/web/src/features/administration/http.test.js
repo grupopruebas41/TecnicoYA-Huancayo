@@ -20,3 +20,12 @@ test('S01-TC-082 contrato: prioriza error.message, código y campos; red sin res
   await expect(request('/me')).rejects.toMatchObject({status: 403, code: 'SESSION_ACTIVE', message: 'Ya tienes una sesión activa.', fields: {email: ['Revisa el correo.']}});
   await expect(request('/me')).rejects.toMatchObject({status: 0, message: expect.stringContaining('No pudimos confirmar el resultado')});
 });
+
+
+test('S03-TC-076 complemento: Idempotency-Key atraviesa HTTP junto con CSRF y sesión', async () => {
+  document.cookie = 'XSRF-TOKEN=token-sintetico; path=/';
+  const fetch=vi.fn().mockResolvedValueOnce(new Response(null,{status:204})).mockResolvedValueOnce(json({data:{id:31,status:'sent'}},202));
+  vi.stubGlobal('fetch',fetch);
+  await request('/requests/31/submission',{expected_version:1,summary_confirmed:true},'POST',{headers:{'Idempotency-Key':'intento-sintetico'}});
+  expect(fetch.mock.calls[1]).toEqual(['/api/v1/requests/31/submission',expect.objectContaining({credentials:'include',headers:expect.objectContaining({'Idempotency-Key':'intento-sintetico','X-XSRF-TOKEN':'token-sintetico'})})]);
+});
