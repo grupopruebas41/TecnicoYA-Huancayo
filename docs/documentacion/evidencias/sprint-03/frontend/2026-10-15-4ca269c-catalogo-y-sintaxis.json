@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-15",
+  "commit": "4ca269c",
+  "checks": [
+    {
+      "tool": "Vitest",
+      "ids": [
+        "S03-TC-069",
+        "S03-TC-070",
+        "S03-TC-071",
+        "S03-TC-072",
+        "S03-TC-073",
+        "S03-TC-074",
+        "S03-TC-075",
+        "S03-TC-076",
+        "S03-TC-077",
+        "S03-TC-078",
+        "S03-TC-079",
+        "S03-TC-080",
+        "S03-TC-081"
+      ],
+      "missing": []
+    },
+    {
+      "tool": "Cypress",
+      "ids": [
+        "S03-TC-052",
+        "S03-TC-053",
+        "S03-TC-054",
+        "S03-TC-055",
+        "S03-TC-056",
+        "S03-TC-057",
+        "S03-TC-058",
+        "S03-TC-059",
+        "S03-TC-060",
+        "S03-TC-061",
+        "S03-TC-062",
+        "S03-TC-063",
+        "S03-TC-064",
+        "S03-TC-065",
+        "S03-TC-066",
+        "S03-TC-067",
+        "S03-TC-068"
+      ],
+      "missing": []
+    }
+  ],
+  "cypressSyntax": "node --check: correcto; SIN ejecutar Cypress"
+}

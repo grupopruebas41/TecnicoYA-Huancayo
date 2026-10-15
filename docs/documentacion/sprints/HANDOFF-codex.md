@@ -21,6 +21,19 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-15 · Sprint 03 · S3.4 frontend listo para integración
+
+- **Rama/base:** feature/delgado/a-solicitudes/s03 / af074b5; slot B. Bloqueo anterior resuelto: fuentes de Mayhuasca 402f1a8 importadas (solo docs del sprint y DECISIONES).
+- **Commits:** b916280 pruebas y contratos (error de sintaxis conservado); 85e058e rojo real 13/13; 00381c9 implementación verde; 557c913 Cypress preparados; fce1653 rojo alertas; 4ca269c alertas verdes.
+- **Pantallas:** asistente accesible, evidencias privadas, resumen Referencial, idempotencia/recuperación, búsqueda/perfil sin contacto, técnico precargado, Mis solicitudes y alerta de límite de activas del servidor. Registro y correcciones con mensajes de éxito/error; confirmación de retiro.
+- **Pruebas:** 146/146 Vitest (23 archivos), 13 IDs S03-TC-069–081, complementos sin inflar IDs; líneas solicitudes 84,67 %, búsqueda 83,92 %, global 83,42 %. Build 0; npm audit 0 vulnerabilidades. Sin pruebas fallidas al final.
+- **Cypress:** 17 IDs S03-TC-052–068 preparados y node --check correcto; NO ejecutados. Sin Docker/Pest/SonarQube.
+- **Evidencias:** docs/documentacion/evidencias/sprint-03/frontend/; avance actualizado, revisión [PENDIENTE].
+- **Pedidos al backend:** confirmar política de limpieza para /media sin vincular (no hay DELETE); POST /requests no tiene idempotencia, así que una creación incierta obliga a consultar Mis solicitudes, sin reenvío automático. No se inventaron endpoints. Detalle en README de evidencias.
+- **Qué falta:** PR/CI, revisión e integración del backend #14 y luego S3.5 con Cypress real; cierre Sonar S3.6. No tocar el prototipo antes de D-26.
+
+
+
 ## 2026-10-15 · Sprint 03 · S3.4 bloqueado por fuentes sin publicar
 
 - **Rama:** feature/delgado/a-solicitudes/s03; base origin/main af074b5; slot B.

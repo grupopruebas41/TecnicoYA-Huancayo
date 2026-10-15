@@ -1,0 +1,6 @@
+Fecha: 2026-10-15
+Commit: 4ca269c
+Comando (frontend/web): npm audit
+Código de salida: 0
+
+found 0 vulnerabilities
