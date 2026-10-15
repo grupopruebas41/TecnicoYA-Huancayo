@@ -73,9 +73,12 @@ describe("S3 asistente", () => {
     wizard().contains("h2", "Paso 4").should("be.visible");
   });
   it("S03-TC-063 recorrido por teclado", () => {
+    cy.location("hash").should("eq", "#cuenta/cliente");
+    cy.window().then(win => win.focus());
     cy.get('nav[aria-label="Gestión del cliente"]')
       .contains("button", "Nueva solicitud")
-      .focus();
+      .scrollIntoView()
+      .focus().should("be.focused");
     cy.press(Cypress.Keyboard.Keys.ENTER);
     wizard().contains("h2", "Paso 1").should("be.visible").and("be.focused");
     cy.press(Cypress.Keyboard.Keys.TAB);
