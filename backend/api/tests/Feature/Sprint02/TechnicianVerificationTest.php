@@ -7,6 +7,7 @@ use Database\Factories\TechnicianProfileFactory;
 use Database\Seeders\AuthorizationSeeder;
 use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
@@ -43,7 +44,9 @@ it('S02-TC-031 lista la bandeja de técnicos por estado sin correo, teléfono ni
 
 it('S02-TC-032 muestra la ficha con checklist, servicios, zonas y documentos sin exponer el archivo ni datos privados', function () {
     $technician = Sprint02::readyTechnician();
+    DB::table('technician_profiles')->where('id', $technician->id)->update(['bio' => 'Técnico sintético de cómputo.']);
     $document = DB::table('technician_documents')->where('technician_id', $technician->id)->sole();
+    $district = DB::table('districts')->find(DB::table('technician_districts')->where('technician_id', $technician->id)->value('district_id'));
     Sanctum::actingAs(Sprint02::admin());
 
     $card = $this->getJson("/api/v1/admin/technicians/{$technician->id}")->assertOk();
@@ -55,6 +58,16 @@ it('S02-TC-032 muestra la ficha con checklist, servicios, zonas y documentos sin
         ->and($card->json('data.documents.0.id'))->toBe($document->id)
         ->and($card->json('data.documents.0.url'))->toEndWith("/api/v1/media/{$document->media_id}")
         ->and($card->json('data.reviews'))->toBe([]);
+    // Refuerzo S2.6 (mutación): cada campo de la ficha, de sus servicios y de sus zonas.
+    $card->assertJsonPath('data.id', $technician->id)->assertJsonPath('data.display_name', $technician->display_name)
+        ->assertJsonPath('data.bio', 'Técnico sintético de cómputo.')->assertJsonPath('data.experience_years', $technician->experience_years)
+        ->assertJsonPath('data.status', 'pending_verification')->assertJsonPath('data.verification_status', 'pending')
+        ->assertJsonPath('data.version', $technician->version);
+    expect($card->json('data.services'))->toBe([[
+        'subcategory_id' => Sprint02::subcategoryId(),
+        'subcategory_name' => DB::table('subcategories')->where('id', Sprint02::subcategoryId())->value('name'),
+        'reference_fee' => '50.00',
+    ]])->and($card->json('data.districts'))->toBe([['id' => $district->id, 'name' => $district->name]]);
     expect($card->getContent())->not->toContain('storage_key')->not->toContain('CONTENIDO-SINTETICO')
         ->not->toContain('900000010')->not->toContain('password');
     $this->getJson('/api/v1/admin/technicians/999999')->assertNotFound();
@@ -89,6 +102,11 @@ it('S02-TC-034 CRUD-01 rechaza con motivo sin habilitar y deja que el técnico p
     ]);
     $this->assertDatabaseHas('technician_reviews', ['technician_id' => $technician->id, 'decision' => 'reject', 'reason' => 'Falta el certificado vigente.']);
     $this->assertDatabaseHas('audit_entries', ['actor_id' => $admin->id, 'action' => 'technician.review', 'subject_id' => $technician->id]);
+    // Refuerzo S2.6 (mutación): la ficha muestra la revisión con su decisión, motivo y fecha.
+    $reviewedAt = DB::table('technician_reviews')->where('technician_id', $technician->id)->value('reviewed_at');
+    expect($this->getJson("/api/v1/admin/technicians/{$technician->id}")->assertOk()->json('data.reviews'))->toBe([[
+        'decision' => 'reject', 'reason' => 'Falta el certificado vigente.', 'reviewed_at' => Carbon::parse($reviewedAt)->toISOString(),
+    ]]);
 
     Sprint01::forgetSession();
     Sanctum::actingAs($technician->user);

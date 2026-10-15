@@ -6,16 +6,18 @@ use Database\Factories\MediaFileFactory;
 use Database\Factories\TechnicianDocumentFactory;
 use Database\Factories\TechnicianProfileFactory;
 use Database\Seeders\AuthorizationSeeder;
+use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Tests\Support\Sprint01;
+use Tests\Support\Sprint02;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(AuthorizationSeeder::class);
+    $this->seed([AuthorizationSeeder::class, CatalogSeeder::class]);
     Storage::fake('public');
     Storage::fake('local');
     Sprint01::actAsSpa($this);
@@ -35,19 +37,29 @@ it('S02-TC-007 publica un trabajo con su imagen en la galería pública sin docu
     Sprint01::assertSpanishValidation($invalid, ['title', 'media_ids.0']);
     $this->assertDatabaseCount('portfolio_items', 0);
 
-    // Cuando publica un trabajo con título, descripción e imagen propia
+    // Cuando publica un trabajo con título, descripción, subcategoría, fecha e imagen propia
+    $performedOn = now()->subDays(10)->toDateString();
     $this->postJson('/api/v1/technicians/me/portfolio', [
         'title' => 'Reparación de placa base',
         'description' => 'Cambio de condensadores en una placa de escritorio.',
+        'subcategory_id' => Sprint02::subcategoryId(),
+        'performed_on' => $performedOn,
         'media_ids' => [$image->id],
         'status' => 'published',
     ])->assertCreated();
+    // Refuerzo S2.6 (mutación): se guardan los campos opcionales enviados.
+    $this->assertDatabaseHas('portfolio_items', [
+        'technician_id' => $technician->id, 'subcategory_id' => Sprint02::subcategoryId(),
+        'description' => 'Cambio de condensadores en una placa de escritorio.', 'performed_on' => $performedOn,
+    ]);
 
     // Entonces aparece en su galería pública, sin sesión, solo con la imagen del trabajo
     app('auth')->forgetGuards();
     $gallery = $this->getJson("/api/v1/technicians/{$technician->id}/portfolio")->assertOk()->json('data');
     expect($gallery)->toHaveCount(1)
         ->and($gallery[0]['title'])->toBe('Reparación de placa base')
+        ->and($gallery[0]['description'])->toBe('Cambio de condensadores en una placa de escritorio.')
+        ->and($gallery[0]['performed_on'])->toBe($performedOn)
         ->and(array_column($gallery[0]['images'], 'media_id'))->toBe([$image->id]);
     expect(json_encode($gallery))->not->toContain('/api/v1/media/'.$document->media_id);
     expect(DB::table('portfolio_images')->where('media_id', $document->media_id)->exists())->toBeFalse();

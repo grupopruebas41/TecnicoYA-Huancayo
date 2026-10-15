@@ -2,6 +2,158 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 2 · cierre S2.6 completado
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`. `origin/main` `0a5977f` (PR #10) se fusionó en `8730a13`, sin rebase. El conflicto de `REGISTRO-DEFECTOS.csv` se resolvió conservando DEF-40 a 42 cerradas.
+- **Commits del cierre:**
+  - `e176a6b` ci(s02): `projectVersion=sprint-02`;
+  - el commit «docs(s02): cierre del Sprint 2» (evidencias, informe, matriz, catálogo, registro, avances y este relevo).
+  - PR: ver abajo.
+- **Resultados** (slot A, revisión `8730a13`):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest | 149/149 (1685 aserciones); cobertura total 92,8 %, `FAdministration` 97,22 % |
+  | Vitest | 116/116; líneas 82,89 %, `features/administration` 86,77 % |
+  | Cypress | S01 17/17 y S02 17/17 (Chrome 156) |
+  | Conteo S02 | 90 IDs (Pest 59, Cypress 17, Vitest 14) |
+  | Mutación de las 4 clases | 91,32 % (284/311; 7 sobrevivientes y 20 sin cubrir) |
+  | SonarQube `sprint-02` (`e176a6b`) | Gate OK |
+  | Auditorías | `composer audit` y `npm audit` limpios |
+
+  En SonarQube, `php:S5693` es una incidencia, no un hotspot. Se marcó False Positive (D-46); con eso el Gate pasó de FAILED a OK. SonarQube se detuvo al terminar.
+- **Registro:**
+  - DEF-27 cerrado (CI del PR #9);
+  - DEF-16, 24 y 25 parciales (S2 hecho);
+  - resumen: 27 cerrados, 12 abiertos y 3 duplicados.
+- **Matriz:** 15 de las 17 filas de S2 en APROBADO. TC-131 y TC-135 no tienen caso S02 que las cite; el equipo decide si se vinculan a S02-TC-074 y 073.
+- **Avances:**
+  - Pimentel S2 con la sección del cierre;
+  - Mayhuasca S2 con revisor «Pimentel Chumbes James», indicado por el usuario el 2026-10-13.
+
+**Qué falta:**
+- Revisión humana e integración del PR de cierre.
+- Que el equipo confirme el falso positivo `php:S5693` y decida sobre TC-131 y TC-135.
+
+**Para Codex:**
+1. Atender los 13 `S6819` y los 20 `S3358` del frontend (lista en la entrada del 2026-10-13).
+2. Hacer `git pull` de `main` cuando se integre este PR (trae `run-e2e.mjs` con log de la API y aviso de RAM).
+
+**Bloqueos:** ninguno.
+
+## 2026-10-14 · Sprint 2 · cierre S2.6: DEF-42 (en espera de la integración del PR #10)
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`. Solo local: sin push ni PR.
+- **Contexto:** Codex se quedó sin uso. El usuario pidió diagnosticar DEF-42 en el slot A sobre la rama del PR #10 (`b3302c1`, checkout separado) y volver a esta rama.
+- **Resultado:** **Cypress S2 17/17 tres veces en Chrome (slot A)**, sin cambios en producto ni pruebas. Cypress S1 17/17. El producto no tiene el defecto:
+  - la API sin navegador responde 201 en menos de 1 s;
+  - Chrome sin Cypress (CDP) también responde 201.
+  - El fallo solo se vio en Cypress + Chrome en el estado del equipo del 2026-10-13, con poca RAM y todo más lento. La causa exacta no quedó aislada. Detalle en `evidencias/sprint-02/cypress/2026-10-14-DEF-42-diagnostico.md`.
+- **CI del PR #10:** backend, frontend y conteo en verde; OPEN y MERGEABLE.
+- **Commits:**
+  - `9e1c272` ci(s02): `run-e2e.mjs` guarda la salida de la API en `tmp/e2e-api-<slot>.log` e informa la RAM libre, con aviso por debajo de 1 GB.
+  - commit de evidencias, registro y este relevo.
+- **Registro de defectos:**
+  - DEF-41 copiado tal cual de la rama de Codex (Cerrado, `0bb4438`);
+  - DEF-42 Cerrado (`9e1c272`);
+  - DEF-40 sigue Cerrado (`86a65aa`).
+  - Al fusionar `main` con el PR #10 habrá conflicto en las últimas filas de `REGISTRO-DEFECTOS.csv`: conservar las de esta rama.
+- **No se tocó** la rama de Codex: no hubo arreglo de frontend ni de pruebas, así que no hubo commit ni push allí.
+- **Limpieza:**
+  - se restauraron los specs que se apartaron para el diagnóstico y `run-e2e.mjs` en el checkout separado;
+  - se quitaron dos bloqueos huérfanos (`tmp/e2e-cypress.lock` y `tmp/e2e-slot-A.lock`, PID 15180, de la corrida interrumpida);
+  - no quedan puertos 8001, 5174 ni 9333 en uso.
+
+**Para Codex:** DEF-42 no exige cambios en `frontend/`. Si vuelve a aparecer en el slot B, revisar `tmp/e2e-api-B.log` (disponible cuando esta rama esté en `main`).
+
+**Qué falta:** tras el aviso del usuario de que el PR #10 está en `main`, la parte pesada del cierre (ver la entrada siguiente).
+
+## 2026-10-13 · Sprint 2 · cierre S2.6: DEF-40 e incidencias de SonarQube (en espera del aviso)
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`. Solo local: sin push ni PR.
+- **Commits:**
+  - `989761e` test(s02): S02-TC-090 en rojo («null is identical to 1» en la respuesta del PATCH) y su fila en `CATALOGO-S02.csv`, que pasa a 90 casos (59 Pest).
+  - `86a65aa` fix(s02): `Portfolio::present` devuelve `subcategory_id`, también si la subcategoría está inactiva o es null. La galería pública y el 201 del POST no cambian.
+  - `3b9e6d8` docs(s02): `CONTRATO-API.md` v1.2 (§5.1 y §5.6) y DEF-40 cerrado en `REGISTRO-DEFECTOS.csv` y `.md`.
+  - `1c58b45` refactor(s02): incidencias seguras de SonarQube (ver abajo).
+  - commit de este relevo.
+- **Pruebas** (solo los archivos tocados, slot A):
+  - PortfolioAndProfileTest y TC021PublishedPortfolioWorkTest: 6/6 (198 aserciones);
+  - ProvisionAdminTest, TC011 y TC012: 5/5 (44 aserciones);
+  - `php -l` sin errores.
+  - Pint pasa en los archivos tocados, con LF. En la copia de trabajo (CRLF por `core.autocrlf=true`) Pint marca `line_ending` en archivos que nadie tocó. Siguen fallando, desde antes, la migración `add_account_access` (prototipo compacto) y `Sprint01E2ESeeder` (`not_operator_with_successor_space`).
+- **No se ejecutó:** suite completa, mutación ni análisis nuevo de SonarQube.
+
+**SonarQube: incidencias abiertas de Reliability y Maintainability, consultadas por la API**
+- Son las del último análisis guardado. El token no deja leer `project_analyses`, así que no se sabe de qué commit es; incluye `features/administration`.
+- En total hay 116: 55 de `backend/api` y 61 de `frontend/`.
+- **Corregidas en backend (7):**
+  - php:S112 ×5: `SeedingRefused` y `AdministratorProvisioningRefused`, subclases de `RuntimeException` con los mismos mensajes;
+  - php:S1186: `AppServiceProvider::register`;
+  - php:S113: la migración `add_account_access`.
+- **No corregidas en backend (48), con su motivo:**
+  - **Prototipo congelado (AGENTS §2, D-26), se retira y no se toca (41):**
+    - `app/Http/Controllers/AuthController.php` (4) y `MarketplaceController.php` (6);
+    - `app/Services/Marketplace.php` (14), `Matching.php` (12) y `Announcements.php` (4, servicio histórico);
+    - migración `create_marketplace` (1).
+    - Las S2681 («solo la primera sentencia es condicional») de estos archivos son las de más riesgo y deben revisarse al retirar el prototipo, no antes.
+  - **php:S107**, 8 parámetros, en `AuditTrail::record` y `RequestTimeline`: cambiar la firma afecta a todas las llamadas; no es pequeño.
+  - **php:S1142**, más de 3 `return`, en `MediaController`, `ApiExceptionRenderer` y el comando `ProvisionAdmin`: es un refactor de flujo y no aporta seguridad.
+  - **php:S1172**, `$attribute` sin usar en `RegisterAccountRequest`: Laravel pasa los argumentos de la regla closure por posición, así que el parámetro es obligatorio.
+  - **php:S1192** en `config/logging.php`: es la configuración estándar de Laravel; se deja como viene para facilitar las actualizaciones.
+- **Frontend (61), para Codex; no se tocaron:**
+  - S2681 ×14, sentencias de una línea sin llaves: `Marketplace.jsx` 5, `domain/demo.js` 3, `Announcements.jsx` 2, `App.jsx` 2, `ServiceCarousel.jsx` 1 y `marketplace-api.js` 1.
+  - S3358 ×11, ternarios anidados: `ServiceCarousel` 3, `Marketplace` 3, `AccountPanel`, `Announcements`, `App`, `Auth` y `SessionForm`.
+  - S6819 ×12, `role="group"` en lugar de `<fieldset>`/`<details>`: `Marketplace` 3, `Catalog` 2, `AccountApp`, `forms.jsx`, `SessionForm`, `AccountPanel`, `Announcements`, `Auth` y `TechnicianProfile`.
+  - S7718 ×9, el parámetro de `catch` debe llamarse `error_`: `AccountApp` 3, `ProfileForm` 3, `Catalog` 2 y `SessionForm`.
+  - S3776 ×5, complejidad cognitiva de 16 a 17: `AccountApp`, `ProfileForm`, `forms.jsx`, `Marketplace` y `demo.js`.
+  - S7723 ×6, `new Error()`: `demo.js` 3, `marketplace-api.js` 2 y `Marketplace`.
+  - S6479 ×2, índice como `key`: `App` y `Marketplace`.
+  - S6825 ×1, `aria-hidden` en un elemento enfocable: `VideoExperience`.
+  - S1788 ×1, parámetro por defecto que no va al final: `features/administration/http.js`.
+  - `Marketplace.jsx`, `demo.js` y `marketplace-api.js` son de la demo congelada.
+
+**Pedidos a Codex:**
+1. DEF-40 está cerrado en esta rama (`86a65aa`). En tu `REGISTRO-DEFECTOS.csv` local, DEF-40 sigue «Abierto». Al integrar habrá conflicto en las últimas filas: conserva la fila DEF-40 cerrada de esta rama y tu DEF-41. Ya puedes precargar `subcategory_id` desde `GET /technicians/me/profile` (contrato v1.2 §5.1).
+2. Revisa las incidencias de frontend de arriba que no sean de la demo congelada; S6819 y S6825 afectan a la accesibilidad (DoD).
+
+**Qué falta:** lo mismo de la entrada siguiente (mutación de las 4 clases, regresión, conteo, SonarQube y PR), tras el aviso del usuario.
+
+## 2026-10-13 · Sprint 2 · cierre S2.6, parte liviana (en espera del PR #10 y de S2.5)
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`, creada desde `origin/main` `f7c524e`. Solo local: sin push ni PR, como pidió el usuario.
+- **Estado de `main`:** contiene solo el PR #11 (backend). El PR #10 de Codex (frontend S2.4) sigue **abierto** y no hay Cypress de S2.5. Por eso el usuario pidió hacer ahora solo lo liviano y esperar su aviso.
+- **Commits:**
+  - `9896b40` chore(s02): `.gitignore` estándar de Laravel en `backend/api/storage/` (app, app/private, app/public, framework y sus subcarpetas, logs). Se quitaron de la raíz `storage/logs/*` y `storage/framework/*`, que los tapaban. Los 20 PNG de DEF-38 y los logs quedan ignorados.
+  - `670a1cb` test(s02): refuerzo de aserciones, sin cambiar IDs ni resultados esperados:
+    - ManageAnnouncements: S02-TC-026, 027 y 028;
+    - Portfolio: S02-TC-007 y 042 (S02-TC-007 ahora siembra `CatalogSeeder`);
+    - TechnicianDirectory: S02-TC-032 y 034;
+    - UpdateTechnicianProfileRequest: S02-TC-045.
+  - `439aac3` refactor(s02): nueva `CatalogEntries` con el alta y la edición versionada comunes a `ManageDistricts`, `ManageSpecialties` y `ManageSubcategories`. La API y las acciones auditadas no cambian.
+  - commit de este relevo.
+- **Pruebas** (solo los archivos tocados, slot A):
+  - las 4 de Sprint02 reforzadas: 19/19 (380 aserciones);
+  - las de las rutas del catálogo administrativo: 21/21 (202 aserciones);
+  - Pint: sin cambios.
+  - Comprobación manual: se inyectó un mutante por clase (filtro `published`, versión +2 al retirar, `bio` fuera de la ficha, sin `min:0`). Los cuatro hicieron fallar su prueba y luego se revirtieron con `git checkout`.
+- **No se ejecutó**, por pedido del usuario, para no coincidir con el Cypress S2.5 de Codex en el slot B: mutación, suite completa, Vitest, Cypress, conteo, cobertura, SonarQube ni auditorías.
+
+**Qué falta (tras el aviso del usuario de que #10 y S2.5 están en `main`):**
+1. Fusionar `origin/main` en esta rama, sin rebase.
+2. Mutación **solo** de ManageAnnouncements, UpdateTechnicianProfileRequest, TechnicianDirectory y Portfolio.
+   - Las líneas de constantes (`FIELDS`, `EDITABLE`, `FILTERS`) salen UNCOVERED porque PCOV no las registra: no se pueden matar.
+   - Los `RemoveIntegerCast` sobre versiones que ya llegan como `int` son equivalentes.
+3. Regresión en el slot A: Pest, Vitest, pytest y Cypress de todos los sprints, con el bloqueo global.
+4. Conteo, cobertura, `scripts/run-quality.ps1` y Quality Gate. Marcar como Safe el hotspot php:S5693 de `StoreMediaRequest` L33 (D-46, 5 MB). Exportar con `exportar-sonar-anonimo.mjs`. `composer audit` y `npm audit`.
+5. Trazabilidad, REGISTRO-DEFECTOS, DECISIONES, avance de Pimentel (revisor del avance S2 de Mayhuasca: Pimentel Chumbes James, indicado por el usuario), `INFORME-SPRINT-02.md`, commit «docs(s02): cierre del Sprint 2», push y PR.
+
+**Bloqueos:** PR #10 y S2.5 de Codex.
+
+**Notas:**
+- `CatalogEntries` es una clase nueva. Entra en la mutación de cierre solo si el usuario lo pide.
+- El contenedor `tecnicoya-quality-sonar-db-1` ya estaba arriba al empezar; no lo toqué.
+
 ## 2026-10-10 · Sprint 2 · paso S2.3: backend en verde y precisiones de Codex
 
 - **Rama:** `feature/mayhuasca/f-administracion/s02`. **PR:** ver abajo (pedido del usuario; revisión humana [PENDIENTE]).

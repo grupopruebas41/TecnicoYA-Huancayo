@@ -5,7 +5,6 @@ namespace App\Modules\FAdministration\Application;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use RuntimeException;
 
 final class ProvisionAdministrator
 {
@@ -14,7 +13,7 @@ final class ProvisionAdministrator
         return DB::transaction(function () use ($email, $name, $password) {
             $role = DB::table('roles')->where('code', 'admin')->where('active', 1)->first();
             if (! $role || User::query()->where('email', $email)->exists()) {
-                throw new RuntimeException('Autorización no disponible o cuenta ya existente.');
+                throw new AdministratorProvisioningRefused('Autorización no disponible o cuenta ya existente.');
             }
             $user = new User;
             $user->forceFill([

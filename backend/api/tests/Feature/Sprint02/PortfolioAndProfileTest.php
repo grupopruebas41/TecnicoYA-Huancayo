@@ -7,7 +7,9 @@ use Database\Factories\TechnicianDocumentFactory;
 use Database\Factories\TechnicianProfileFactory;
 use Database\Factories\UserFactory;
 use Database\Seeders\AuthorizationSeeder;
+use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
@@ -23,6 +25,8 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
+afterEach(fn () => Carbon::setTestNow());
+
 /** Trabajo publicado de un técnico con una imagen propia; devuelve [id del trabajo, id de la imagen]. */
 function s02PortfolioItem(object $technician, string $title = 'Reparación de placa base'): array
 {
@@ -34,6 +38,7 @@ function s02PortfolioItem(object $technician, string $title = 'Reparación de pl
 }
 
 it('S02-TC-042 CRUD-01 edita y retira un trabajo propio: sale de la galería y se conservan filas e imágenes', function () {
+    Carbon::setTestNow('2026-10-12 12:00:00');
     $technician = TechnicianProfileFactory::new()->approved()->create();
     [$item] = s02PortfolioItem($technician);
     $images = MediaFileFactory::new()->publicImage()->count(6)->create(['owner_id' => $technician->user_id])->pluck('id')->all();
@@ -46,18 +51,46 @@ it('S02-TC-042 CRUD-01 edita y retira un trabajo propio: sale de la galería y s
     $this->patchJson($url, ['title' => 'Cambio de compresor', 'media_ids' => [$images[0]], 'expected_version' => 1])->assertOk()
         ->assertJsonPath('data.title', 'Cambio de compresor')->assertJsonPath('data.version', 2)
         ->assertJsonPath('data.images.0.media_id', $images[0]);
+    // Refuerzo S2.6 (mutación): la versión vieja responde 409 sin cambiar el trabajo editado.
+    $this->patchJson($url, ['title' => 'Edición perdida', 'expected_version' => 1])->assertConflict()->assertJsonPath('error.code', 'STALE_VERSION');
+    $this->assertDatabaseHas('portfolio_items', ['id' => $item, 'title' => 'Cambio de compresor', 'version' => 2, 'updated_at' => '2026-10-12 12:00:00']);
     Sprint01::forgetSession();
     expect($this->getJson("/api/v1/technicians/{$technician->id}/portfolio")->json('data.0.title'))->toBe('Cambio de compresor');
 
     Sanctum::actingAs($technician->user);
+    Carbon::setTestNow('2026-10-12 12:05:00');
     $this->deleteJson($url)->assertNoContent();
     $this->deleteJson($url)->assertNotFound();
 
     Sprint01::forgetSession();
     expect($this->getJson("/api/v1/technicians/{$technician->id}/portfolio")->assertOk()->json('data'))->toBe([]);
-    $this->assertDatabaseHas('portfolio_items', ['id' => $item, 'status' => 'retired']);
+    $this->assertDatabaseHas('portfolio_items', ['id' => $item, 'status' => 'retired', 'version' => 3, 'updated_at' => '2026-10-12 12:05:00']);
     $this->assertDatabaseHas('portfolio_images', ['portfolio_id' => $item, 'media_id' => $images[0]]);
     $this->assertDatabaseHas('media_files', ['id' => $images[0], 'retired_at' => null]);
+});
+
+it('S02-TC-090 devuelve subcategory_id del trabajo en el perfil propio y al editarlo, aunque la subcategoría esté inactiva [DEF-40]', function () {
+    $this->seed(CatalogSeeder::class);
+    $technician = TechnicianProfileFactory::new()->approved()->create();
+    [$item] = s02PortfolioItem($technician);
+    $active = Sprint02::subcategoryId();
+    $inactive = (int) DB::table('subcategories')->where('id', '!=', $active)->value('id');
+    DB::table('subcategories')->where('id', $inactive)->update(['active' => false]);
+    Sanctum::actingAs($technician->user);
+    $url = "/api/v1/technicians/me/portfolio/$item";
+    $ownItem = fn () => Sprint02::itemsWith($this->getJson('/api/v1/technicians/me/profile')->assertOk()->json('data.portfolio'), 'id', $item)[0];
+
+    $this->patchJson($url, ['subcategory_id' => $active, 'expected_version' => 1])->assertOk()->assertJsonPath('data.subcategory_id', $active);
+    expect($ownItem())->toHaveKey('subcategory_id', $active);
+    $this->patchJson($url, ['subcategory_id' => $inactive, 'expected_version' => 2])->assertOk()->assertJsonPath('data.subcategory_id', $inactive);
+    expect($ownItem())->toHaveKey('subcategory_id', $inactive);
+    $this->patchJson($url, ['subcategory_id' => null, 'expected_version' => 3])->assertOk();
+    expect($ownItem())->toHaveKey('subcategory_id', null);
+
+    // La galería pública no cambia de forma (DEF-40 solo amplía el portafolio propio).
+    Sprint01::forgetSession();
+    expect(array_keys($this->getJson("/api/v1/technicians/{$technician->id}/portfolio")->assertOk()->json('data.0')))
+        ->toBe(['id', 'title', 'description', 'performed_on', 'images']);
 });
 
 it('S02-TC-043 AUTH-01 no deja editar ni retirar el trabajo de otro técnico', function () {
@@ -130,6 +163,25 @@ it('S02-TC-045 CRUD-01 lee el perfil técnico propio completo y edita bio y expe
         'status' => 'active', 'experience_years' => 61, 'expected_version' => $version + 1,
     ]), ['status', 'experience_years']);
     $this->assertDatabaseHas('technician_profiles', ['id' => $technician->id, 'experience_years' => 10, 'version' => $version + 1]);
+
+    // Refuerzo S2.6 (mutación): cada regla de UpdateTechnicianProfileRequest por separado, sin cambiar el perfil.
+    $profileUrl = '/api/v1/technicians/me/profile';
+    foreach ([
+        ['bio' => str_repeat('a', 2001)], ['bio' => ['lista']], ['experience_years' => null], ['experience_years' => 'diez'],
+        ['experience_years' => -1], ['verification_status' => 'approved'], ['technician_id' => 1], ['user_id' => 1], ['version' => 9],
+    ] as $invalid) {
+        Sprint01::assertSpanishValidation($this->patchJson($profileUrl, $invalid + ['expected_version' => $version + 1]), array_keys($invalid));
+    }
+    foreach ([[], ['expected_version' => 'uno'], ['expected_version' => 0]] as $badVersion) {
+        Sprint01::assertSpanishValidation($this->patchJson($profileUrl, ['bio' => 'Sin versión válida.'] + $badVersion), ['expected_version']);
+    }
+    $this->assertDatabaseHas('technician_profiles', [
+        'id' => $technician->id, 'bio' => 'Diez años en refrigeración comercial.', 'experience_years' => 10, 'version' => $version + 1,
+    ]);
+    $this->patchJson($profileUrl, ['bio' => str_repeat('a', 2000), 'expected_version' => $version + 1])->assertOk()
+        ->assertJsonPath('data.experience_years', 10)->assertJsonPath('data.version', $version + 2);
+    $this->patchJson($profileUrl, ['bio' => null, 'expected_version' => $version + 2])->assertOk()
+        ->assertJsonPath('data.bio', null)->assertJsonPath('data.version', $version + 3);
 
     Sprint01::forgetSession();
     Sanctum::actingAs(UserFactory::new()->client()->create());

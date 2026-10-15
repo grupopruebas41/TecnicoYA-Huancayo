@@ -67,8 +67,8 @@ final class Portfolio
     public function present(object $item): array
     {
         return [
-            'id' => $item->id, 'title' => $item->title, 'description' => $item->description, 'performed_on' => $item->performed_on,
-            'status' => $item->status, 'version' => (int) $item->version, 'images' => $this->images($item->id, false),
+            'id' => $item->id, 'title' => $item->title, 'description' => $item->description, 'subcategory_id' => $item->subcategory_id,
+            'performed_on' => $item->performed_on, 'status' => $item->status, 'version' => (int) $item->version, 'images' => $this->images($item->id, false),
         ];
     }
 

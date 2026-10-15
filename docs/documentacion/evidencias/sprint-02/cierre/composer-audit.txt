@@ -1,0 +1,2 @@
+# Cierre S2.6 · composer audit · 2026-10-14 · commit 8730a13
+No security vulnerability advisories found.

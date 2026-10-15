@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 final class Sprint01E2ESeeder extends Seeder
 {
@@ -19,11 +18,11 @@ final class Sprint01E2ESeeder extends Seeder
             || $connection['host'] !== '127.0.0.1' || !str_ends_with($database, '_testing')
             || !in_array($database, ['tecnicoya_testing', 'tecnicoya_b_testing'], true)
             || $connection['username'] !== 'tecnicoya_test') {
-            throw new RuntimeException('Fixtures E2E permitidos solo en la base aislada.');
+            throw new SeedingRefused('Fixtures E2E permitidos solo en la base aislada.');
         }
         $password = env('TECNICOYA_E2E_PASSWORD');
         if (!is_string($password) || strlen($password) < 24) {
-            throw new RuntimeException('Configurar una contraseña sintética de prueba.');
+            throw new SeedingRefused('Configurar una contraseña sintética de prueba.');
         }
         $this->call([AuthorizationSeeder::class, CatalogSeeder::class]);
         DB::transaction(function () use ($password) {
