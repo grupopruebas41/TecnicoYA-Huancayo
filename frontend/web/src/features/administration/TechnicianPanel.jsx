@@ -18,13 +18,11 @@ function Bio({ profile, reload }) {
   return (
     <MutationForm
       reload={reload}
-      validate={() =>
-        bio.length > 2000
-          ? { bio: ["Máximo 2000 caracteres."] }
-          : !Number.isInteger(+years) || +years < 0 || +years > 60
-            ? { experience_years: ["Indica entre 0 y 60 años enteros."] }
-            : {}
-      }
+      validate={() => {
+        if (bio.length > 2000) return { bio: ["Máximo 2000 caracteres."] };
+        if (!Number.isInteger(+years) || +years < 0 || +years > 60) return { experience_years: ["Indica entre 0 y 60 años enteros."] };
+        return {};
+      }}
       onSave={async () => {
         await request(
           "/technicians/me/profile",
@@ -69,16 +67,12 @@ function Documents({ profile, reload }) {
       {!profile.documents?.length && <p>No has adjuntado documentos.</p>}
       <MutationForm
         reload={reload}
-        validate={() =>
-          !media
-            ? { media_id: ["Sube un documento."] }
-            : type.trim().length < 2 || type.length > 60
-              ? { document_type: ["Indica entre 2 y 60 caracteres."] }
-              : profile.documents?.filter((d) => d.review_status !== "rejected")
-                    .length >= 5
-                ? { media_id: ["Máximo 5 documentos vigentes."] }
-                : {}
-        }
+        validate={() => {
+          if (!media) return { media_id: ["Sube un documento."] };
+          if (type.trim().length < 2 || type.length > 60) return { document_type: ["Indica entre 2 y 60 caracteres."] };
+          if (profile.documents?.filter(d => d.review_status !== "rejected").length >= 5) return { media_id: ["Máximo 5 documentos vigentes."] };
+          return {};
+        }}
         onSave={async () => {
           await request("/technicians/me/documents", {
             media_id: media.id,

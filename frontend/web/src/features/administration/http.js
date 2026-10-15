@@ -2,10 +2,10 @@ import {apiMessage} from './labels';
 const origin = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 export class ApiError extends Error {
-  constructor(message, status, fields = {}, code) {
+  constructor(message, status, fields, code) {
     super(message);
     this.status = status;
-    this.fields = fields;
+    this.fields = fields === undefined ? {} : fields;
     this.code = code;
   }
 }

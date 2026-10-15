@@ -110,7 +110,10 @@
   place-items: center;
   padding: 24px;
 }
-.s02-modal > div {
+.s02-modal > dialog {
+  position: static;
+  margin: 0;
+  color: inherit;
   background: #182a2a;
   border: 1px solid #d5c195;
   padding: 32px;

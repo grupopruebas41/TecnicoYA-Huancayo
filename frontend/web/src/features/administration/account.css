@@ -2,3 +2,6 @@
 
 .form-field{display:grid;gap:8px}.session-page button:disabled{cursor:wait;opacity:.65}
 .auth-shell .form-field{margin-bottom:18px}.auth-shell .form-field label{margin-bottom:0}
+
+/* Las salidas semánticas mantienen la presentación de los avisos. */
+output.notice, .session-page > output { display: block; }

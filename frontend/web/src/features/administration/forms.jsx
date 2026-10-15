@@ -10,7 +10,7 @@ export function Field({name, label, errors = {}, children, ...props}) {
 }
 
 export function Notice({error, success}) {
-  return <>{error && <p className="error" role="alert">{error}</p>}{success && <p className="notice" role="status">{success}</p>}</>;
+  return <>{error && <p className="error" role="alert">{error}</p>}{success && <output className="notice">{success}</output>}</>;
 }
 
 export const EMAIL_MAX_LENGTH = 254;
@@ -24,6 +24,12 @@ export function isValidEmail(email) {
   return labels.length > 1 && labels.every(label => label.length > 0);
 }
 
+function validateAccountType(data, invalid) {
+  if (!['client', 'technician'].includes(data.account_type)) invalid('account_type', 'Selecciona un tipo de cuenta válido.');
+  if (data.account_type === 'client' && !['household', 'mype'].includes(data.client_type)) invalid('client_type', 'Selecciona un tipo de cliente válido.');
+  if (data.account_type === 'technician' && data.client_type !== undefined) invalid('client_type', 'El tipo de cliente no corresponde a una cuenta de técnico.');
+}
+
 export function validateAccount(data, registering) {
   const errors = {};
   const invalid = (name, message) => { errors[name] = [message]; };
@@ -34,9 +40,7 @@ export function validateAccount(data, registering) {
     if (nameLength < 2 || nameLength > 100) invalid('name', 'El nombre debe tener entre 2 y 100 caracteres.');
     if (Array.from(data.password || '').length < 8 || new TextEncoder().encode(data.password || '').length > 72) invalid('password', 'La contraseña debe tener al menos 8 caracteres y no superar 72 bytes.');
     if (data.password !== data.password_confirmation) invalid('password_confirmation', 'Las contraseñas no coinciden.');
-    if (!['client', 'technician'].includes(data.account_type)) invalid('account_type', 'Selecciona un tipo de cuenta válido.');
-    if (data.account_type === 'client' && !['household', 'mype'].includes(data.client_type)) invalid('client_type', 'Selecciona un tipo de cliente válido.');
-    if (data.account_type === 'technician' && data.client_type !== undefined) invalid('client_type', 'El tipo de cliente no corresponde a una cuenta de técnico.');
+    validateAccountType(data, invalid);
   }
   return errors;
 }

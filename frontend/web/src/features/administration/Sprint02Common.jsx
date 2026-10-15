@@ -19,8 +19,8 @@ export function useResource(path) {
       setData(r.data);
       setError("");
       return r.data;
-    } catch (e) {
-      setError(e.message);
+    } catch (error) {
+      setError(error.message);
       return null;
     }
   }
@@ -34,8 +34,8 @@ export function useResource(path) {
           setError("");
         }
       })
-      .catch((e) => {
-        if (active) setError(e.message);
+      .catch((error) => {
+        if (active) setError(error.message);
       });
     return () => {
       active = false;
@@ -72,14 +72,14 @@ export function MutationForm({
       await onSave();
       setSuccess("Cambios guardados.");
       onSuccess?.();
-    } catch (f) {
-      setFields(f.fields || {});
+    } catch (error) {
+      setFields(error.fields || {});
       setError(
-        f.status === 0
+        error.status === 0
           ? "No pudimos confirmar el resultado. Consulta el estado antes de repetir la operación."
-          : f.message,
+          : error.message,
       );
-      if (f.status === 0) {
+      if (error.status === 0) {
         setUncertain(true);
         await reload?.();
       }
@@ -183,8 +183,8 @@ export function Upload({ purpose, onUploaded }) {
               form.append("purpose", purpose);
               const r = await request("/media", form);
               onUploaded(r.data);
-            } catch (f) {
-              setError(f.message);
+            } catch (error) {
+              setError(error.message);
             } finally {
               setBusy(false);
             }
@@ -225,8 +225,8 @@ export function useSubcategories() {
       set(rows);
       setError("");
       return rows;
-    } catch (e) {
-      setError(e.message);
+    } catch (error) {
+      setError(error.message);
       return null;
     }
   }

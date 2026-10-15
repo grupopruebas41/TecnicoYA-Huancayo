@@ -8,6 +8,16 @@ import {
   ResourceState,
 } from "./Sprint02Common";
 import { validateSubcategory, validateReferenceFee } from "./sprint02Validation";
+function catalogPayload(kind, value) {
+  if (kind === "districts") return { name: value.name };
+  if (kind === "specialties") return { name: value.name, description: value.description, image_id: value.image_id };
+  return { ...value, specialty_id: +value.specialty_id, reference_fee: value.reference_fee || null };
+}
+function catalogRows(kind, specialties, districts) {
+  if (kind === "districts") return districts;
+  if (kind === "specialties") return specialties;
+  return (specialties || []).flatMap(s => (s.subcategories || []).map(x => ({...x, specialty_id: s.id})));
+}
 function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
   const [v, set] = useState({
     name: item.name || "",
@@ -32,20 +42,7 @@ function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
       validate={validation}
       onSuccess={onDone}
       onSave={async () => {
-        const payload =
-          kind === "districts"
-            ? { name: v.name }
-            : kind === "specialties"
-              ? {
-                  name: v.name,
-                  description: v.description,
-                  image_id: v.image_id,
-                }
-              : {
-                  ...v,
-                  specialty_id: +v.specialty_id,
-                  reference_fee: v.reference_fee || null,
-                };
+        const payload = catalogPayload(kind, v);
         await request(
           "/admin/" + kind + (item.id ? "/" + item.id : ""),
           {
@@ -129,19 +126,12 @@ export default function CatalogAdmin() {
     const zones = await districts.reload();
     setEditing(previous => {
       if(!previous?.id) return previous;
-      const rows=kind==='districts'?zones:kind==='specialties'?fresh:(fresh||[]).flatMap(s=>(s.subcategories||[]).map(x=>({...x,specialty_id:s.id})));
+      const rows = catalogRows(kind, fresh, zones);
       return rows?.find(x=>x.id===previous.id)||previous;
     });
     return fresh;
   };
-  const rows =
-    kind === "districts"
-      ? districts.data || []
-      : kind === "specialties"
-        ? catalog.data || []
-        : (catalog.data || []).flatMap((s) =>
-            (s.subcategories || []).map((x) => ({ ...x, specialty_id: s.id })),
-          );
+  const rows = catalogRows(kind, catalog.data, districts.data) || [];
   return (
     <section className="s02-panel">
       <h2>Administrar catálogo</h2>
@@ -164,11 +154,7 @@ export default function CatalogAdmin() {
       <ResourceState resource={districts} />
       <button type="button" onClick={() => setEditing({})}>
         Crear{" "}
-        {kind === "specialties"
-          ? "especialidad"
-          : kind === "subcategories"
-            ? "subcategoría"
-            : "distrito"}
+        {{specialties: "especialidad", subcategories: "subcategoría", districts: "distrito"}[kind]}
       </button>
       {editing && (
         <div className="s02-card">

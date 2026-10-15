@@ -28,17 +28,18 @@ export default function SessionForm({onLogin}) {
       if (register) {
         setEmail(data.email); setRegister(false); setSuccess('Cuenta creada correctamente. Inicia sesión para continuar.');
       } else onLogin((await request('/me')).data);
-    } catch (failure) {
-      setError(failure.message); setErrors(failure.fields || {});
-      if (failure.status === 0) {
+    } catch (error) {
+      setError(error.message); setErrors(error.fields || {});
+      if (error.status === 0) {
         // Una respuesta perdida puede haber creado la sesión. Nunca reenviamos el POST.
-        try { const current = await request('/me'); if (!register) onLogin(current.data, failure.message); }
+        try { const current = await request('/me'); if (!register) onLogin(current.data, error.message); }
         catch { /* El aviso incierto permanece; no se afirma que la operación falló. */ }
       }
     }
     finally { setBusy(false); }
   }
   const prefix = register ? 'register' : 'login';
+  const submitLabel = register ? 'Registrarme' : 'Ingresar';
   return <div className={`auth-shell ${register ? 'is-register' : ''}`}>
     <aside className="auth-welcome"><span className="auth-emblem" aria-hidden="true">t</span><div className="auth-welcome-copy">
       <span className="kicker">TALENTO LOCAL. CONEXIONES DE CONFIANZA.</span><h2>Tu solución<br/><em>empieza aquí.</em></h2>
@@ -47,7 +48,7 @@ export default function SessionForm({onLogin}) {
     </div><span className="auth-location">TÉCNICOYA · HUANCAYO</span></aside>
     <div className="auth-form-side"><form key={prefix} className="auth-form" onSubmit={submit} noValidate aria-busy={busy}>
       <span className="kicker">TU ESPACIO EN TÉCNICOYA</span><h1>{register ? 'Crea tu cuenta' : 'Iniciar sesión'}</h1>
-      {success && <p role="status" className="notice" data-cy="register-success">{success}</p>}
+      {success && <output className="notice" data-cy="register-success">{success}</output>}
       {register && <>
         <Field name="name" label="Nombre" errors={errors} data-cy="register-name" autoComplete="name"/>
         <Field name="account_type" label="Tipo de cuenta" errors={errors}><select name="account_type" data-cy="register-account-type" value={type} onChange={e => setType(e.target.value)}><option value="client">Cliente</option><option value="technician">Técnico independiente</option></select></Field>
@@ -57,7 +58,7 @@ export default function SessionForm({onLogin}) {
       <Field name="email" label="Correo" errors={errors} type="email" maxLength={EMAIL_MAX_LENGTH} autoComplete="email" data-cy={`${prefix}-email`} value={email} onChange={e => setEmail(e.target.value)}/>
       <Field name="password" label="Contraseña" errors={errors} type="password" autoComplete={register ? 'new-password' : 'current-password'} data-cy={`${prefix}-password`}/>
       {register && <Field name="password_confirmation" label="Confirmar contraseña" errors={errors} type="password" autoComplete="new-password" data-cy="register-password-confirmation"/>}
-      <Notice error={error}/><button type="submit" className="button primary submit" data-cy={`${prefix}-submit`} disabled={busy}>{busy ? 'Conectando…' : register ? 'Registrarme' : 'Ingresar'}</button>
+      <Notice error={error}/><button type="submit" className="button primary submit" data-cy={`${prefix}-submit`} disabled={busy}>{busy ? 'Conectando…' : submitLabel}</button>
       <button className="text-button" type="button" data-cy={register ? 'show-login' : 'show-register'} disabled={busy} onClick={changeMode}>{register ? 'Iniciar sesión' : 'Crear una cuenta'}</button>
     </form></div>
   </div>;

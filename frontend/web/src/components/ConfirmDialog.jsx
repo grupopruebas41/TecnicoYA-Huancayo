@@ -30,9 +30,9 @@ export default function ConfirmDialog({
   }
   return (
     <div className="s02-modal">
-      <div
+      <dialog
+        open
         ref={root}
-        role="dialog"
         aria-modal="true"
         aria-label={title}
         onKeyDown={keys}
@@ -45,7 +45,7 @@ export default function ConfirmDialog({
         <button type="button" disabled={busy} onClick={onConfirm}>
           Confirmar
         </button>
-      </div>
+      </dialog>
     </div>
   );
 }
