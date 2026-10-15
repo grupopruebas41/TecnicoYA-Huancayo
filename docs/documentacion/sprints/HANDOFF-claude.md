@@ -2,6 +2,29 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 3 · S3.1 en curso (en espera de confirmación)
+
+- **Rama:** `feature/mayhuasca/a-solicitudes/s03`, creada desde `main` `af074b5` (con los PR #12 y #13). Solo local: sin push.
+- **Commits:**
+  - `40c615a` docs(s02): D-53, `php:S5693` como falso positivo; D-54, TC-131 → S02-TC-074 y TC-135 → S02-TC-073 en `Matriz-Trazabilidad-TC.csv`.
+  - `15a5df8` test(s03): las 15 Pest del S3 pasan a `S03-TC-001..015 … [TC-0xx]`, solo renombradas; 15/15 en el slot A (254 aserciones).
+- **Presentado al usuario, sin escribir todavía:**
+  - tabla de brechas;
+  - resumen del catálogo (S03-TC-016 en adelante);
+  - decisiones.
+- **Conflicto de fuentes pendiente:** el prompt pide opciones para P03, P05, P10, P16, P17 y P22, pero `DECISIONES.md` ya las decidió (D-15, D-23, D-11, D-25, D-12 y D-13). Hay que esperar la respuesta del usuario.
+- **Brechas clave halladas:**
+  - `POST /media` no admite evidencias de solicitud (`purpose` solo `portfolio`, `catalog` y `document`).
+  - Faltan en el servidor:
+    - la descripción de 20 a 1000 caracteres (D-12);
+    - el máximo de 5 fotos por solicitud;
+    - el límite de 3 activas (D-11);
+    - la revalidación de subcategoría, distrito y técnico al enviar.
+  - `address` es `text` y no tiene límite.
+  - No existe `GET /technicians`.
+  - No hay tablas de reglas (`rule_*`) ni de calificaciones.
+- **Qué falta:** con la confirmación, escribir `plan-pruebas-v3/sprint-03/CATALOGO-S03.csv` y `CONTRATO-API.md` y registrar las decisiones nuevas.
+
 ## 2026-10-15 · Sprint 2 · cierre S2.6 completado
 
 - **Rama:** `feature/pimentel/f-administracion/s02-cierre`. `origin/main` `0a5977f` (PR #10) se fusionó en `8730a13`, sin rebase. El conflicto de `REGISTRO-DEFECTOS.csv` se resolvió conservando DEF-40 a 42 cerradas.
