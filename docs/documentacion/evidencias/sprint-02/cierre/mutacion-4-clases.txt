@@ -1,0 +1,393 @@
+# Cierre S2.6 · Mutación solo de las 4 clases reforzadas · 2026-10-14/15 · commit 8730a13 · slot A
+# Comando (desde backend/api, con C:\xampp\php en el PATH, DEF-37):
+#   php -d pcov.enabled=1 -d pcov.directory=. -d "pcov.exclude=~(vendor|storage|bootstrap/cache)~" 'vendor\bin\pest' tests/Feature/Sprint01 tests/Feature/Sprint02 --mutate --everything --clear-cache --path=<ManageAnnouncements, UpdateTechnicianProfileRequest, TechnicianDirectory, Portfolio>
+# Resultado: 311 mutantes · 284 eliminados · 7 sobrevivientes · 20 sin cubrir · puntuación 91,32 %.
+# Por clase (eliminados/probados): Portfolio 76/76 · TechnicianDirectory 61/61 · ManageAnnouncements 123/128 · UpdateTechnicianProfileRequest 24/26.
+# Antes del refuerzo (S2.3, 04-mutacion.txt) estas 4 clases tenían 92 sobrevivientes.
+# Los 20 sin cubrir son líneas de constantes (FIELDS, EDITABLE, FILTERS): PCOV no las registra como ejecutables.
+
+
+  .................................................................................................................
+
+  Tests:    113 passed (1257 assertions)
+  Duration: 72.26s
+
+  Mutating application files...
+  311 Mutations for 4 Files created
+
+   RUN  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php
+  - Line 22: RemoveArrayItem
+  - Line 22: RemoveArrayItem
+  - Line 22: RemoveArrayItem
+  - Line 22: RemoveArrayItem
+  - Line 22: RemoveArrayItem
+  ✓ Line 29: IdenticalToNotIdentical
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 37: RemoveStringCast
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 39: PlusToMinus
+  ✓ Line 39: UnwrapArrayFlip
+  ✓ Line 39: UnwrapArrayIntersectKey
+  ✓ Line 39: RemoveMethodCall
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 41: RemoveArrayItem
+  ✓ Line 41: RemoveArrayItem
+  ✓ Line 41: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 44: RemoveMethodCall
+  ✓ Line 45: RemoveMethodCall
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ⨯ Line 55: RemoveIntegerCast
+  ✓ Line 56: CoalesceRemoveLeft
+  ✓ Line 57: CoalesceRemoveLeft
+  ✓ Line 58: IfNegated
+  ✓ Line 59: RemoveArrayItem
+  ⨯ Line 60: RemoveArrayItem
+  ⨯ Line 60: RemoveArrayItem
+  ✓ Line 63: PlusToMinus
+  ✓ Line 63: UnwrapArrayFlip
+  ✓ Line 63: UnwrapArrayIntersectKey
+  ✓ Line 64: RemoveArrayItem
+  ✓ Line 64: RemoveArrayItem
+  ✓ Line 64: RemoveArrayItem
+  ✓ Line 66: IfNegated
+  ✓ Line 68: RemoveMethodCall
+  ✓ Line 70: PlusToMinus
+  ✓ Line 70: RemoveMethodCall
+  ✓ Line 71: PlusToMinus
+  ✓ Line 71: DecrementInteger
+  ✓ Line 71: IncrementInteger
+  ✓ Line 71: RemoveArrayItem
+  ⨯ Line 71: RemoveArrayItem
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 73: RemoveMethodCall
+  ✓ Line 74: PlusToMinus
+  ✓ Line 74: UnwrapArrayFlip
+  ✓ Line 74: UnwrapArrayIntersectKey
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 84: IfNegated
+  ✓ Line 84: IdenticalToNotIdentical
+  ✓ Line 84: BooleanOrToBooleanAnd
+  ✓ Line 85: RemoveArrayItem
+  ✓ Line 87: RemoveMethodCall
+  ✓ Line 88: PlusToMinus
+  ✓ Line 88: DecrementInteger
+  ✓ Line 88: IncrementInteger
+  ✓ Line 88: RemoveArrayItem
+  ✓ Line 88: RemoveArrayItem
+  ⨯ Line 88: RemoveArrayItem
+  ✓ Line 88: RemoveArrayItem
+  ✓ Line 90: RemoveMethodCall
+  ✓ Line 91: RemoveArrayItem
+  ✓ Line 91: RemoveArrayItem
+  ✓ Line 91: RemoveArrayItem
+  ✓ Line 91: RemoveArrayItem
+  ✓ Line 99: RemoveMethodCall
+  ✓ Line 101: RemoveMethodCall
+  ✓ Line 102: PlusToMinus
+  ✓ Line 102: DecrementInteger
+  ✓ Line 102: IncrementInteger
+  ✓ Line 102: RemoveArrayItem
+  ✓ Line 102: RemoveArrayItem
+  ✓ Line 102: RemoveArrayItem
+  ✓ Line 103: RemoveArrayItem
+  ✓ Line 103: RemoveArrayItem
+  ✓ Line 105: RemoveMethodCall
+  ✓ Line 106: RemoveArrayItem
+  ✓ Line 106: RemoveArrayItem
+  ✓ Line 106: RemoveArrayItem
+  ✓ Line 106: RemoveArrayItem
+  ✓ Line 114: RemoveArrayItem
+  ✓ Line 114: RemoveArrayItem
+  ✓ Line 125: TernaryNegated
+  ✓ Line 126: DecrementInteger
+  ✓ Line 126: IncrementInteger
+  ✓ Line 126: RemoveFunctionCall
+  ✓ Line 134: IfNegated
+  ✓ Line 134: NotIdenticalToIdentical
+  ✓ Line 135: DecrementInteger
+  ✓ Line 135: IncrementInteger
+  ✓ Line 137: RemoveIntegerCast
+  ✓ Line 137: IdenticalToNotIdentical
+  ✓ Line 137: DecrementInteger
+  ✓ Line 137: IncrementInteger
+  ✓ Line 137: RemoveFunctionCall
+  ✓ Line 144: RemoveMethodCall
+  ✓ Line 145: ForeachEmptyIterable
+  ✓ Line 146: RemoveArrayItem
+  ✓ Line 146: RemoveArrayItem
+  ✓ Line 146: RemoveMethodCall
+  ✓ Line 153: UnwrapArrayUnique
+  ✓ Line 153: TernaryNegated
+  ✓ Line 153: IdenticalToNotIdentical
+  ✓ Line 153: DecrementInteger
+  ✓ Line 153: DecrementInteger
+  ✓ Line 153: IncrementInteger
+  ✓ Line 153: IncrementInteger
+  ✓ Line 158: DivisionToMultiplication
+  ✓ Line 158: RemoveIntegerCast
+  ✓ Line 158: MinToMax
+  ✓ Line 158: MaxToMin
+  ✓ Line 158: CeilToFloor
+  ✓ Line 158: CeilToRound
+  ✓ Line 158: DecrementInteger
+  ✓ Line 158: DecrementInteger
+  ✓ Line 158: DecrementInteger
+  ✓ Line 158: IncrementInteger
+  ✓ Line 158: IncrementInteger
+  ✓ Line 158: IncrementInteger
+
+   RUN  <raiz>\backend\api\app\Modules\FAdministration\Http\Requests\UpdateTechnicianProfileRequest.php
+  ✓ Line 12: AlwaysReturnEmptyArray
+  ⨯ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ⨯ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 14: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 15: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 16: RemoveArrayItem
+  ✓ Line 17: RemoveArrayItem
+  ✓ Line 17: RemoveArrayItem
+  ✓ Line 17: RemoveArrayItem
+  ✓ Line 17: RemoveArrayItem
+
+   RUN  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php
+  - Line 17: RemoveArrayItem
+  - Line 17: RemoveArrayItem
+  - Line 17: RemoveArrayItem
+  - Line 18: RemoveArrayItem
+  - Line 18: RemoveArrayItem
+  - Line 18: RemoveArrayItem
+  - Line 19: RemoveArrayItem
+  - Line 19: RemoveArrayItem
+  - Line 20: RemoveArrayItem
+  - Line 20: RemoveArrayItem
+  ✓ Line 27: AlwaysReturnEmptyArray
+  ✓ Line 28: NotIdenticalToIdentical
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 34: RemoveArrayItem
+  ✓ Line 35: RemoveIntegerCast
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 42: DecrementInteger
+  ✓ Line 42: IncrementInteger
+  ✓ Line 42: RemoveFunctionCall
+  ✓ Line 44: AlwaysReturnEmptyArray
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 47: RemoveIntegerCast
+  ✓ Line 47: RemoveArrayItem
+  ✓ Line 47: RemoveArrayItem
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 49: RemoveArrayItem
+  ✓ Line 50: DecrementInteger
+  ✓ Line 50: IncrementInteger
+  ✓ Line 51: RemoveArrayCast
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 52: RemoveArrayItem
+  ✓ Line 53: DecrementInteger
+  ✓ Line 53: IncrementInteger
+  ✓ Line 54: RemoveArrayCast
+  ✓ Line 54: RemoveArrayItem
+  ✓ Line 54: RemoveArrayItem
+  ✓ Line 55: RemoveArrayItem
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 57: RemoveArrayItem
+  ✓ Line 57: RemoveArrayItem
+  ✓ Line 57: RemoveArrayItem
+  ✓ Line 58: RemoveArrayItem
+  ✓ Line 58: RemoveArrayItem
+  ✓ Line 58: RemoveArrayItem
+  ✓ Line 66: AlwaysReturnEmptyArray
+  ✓ Line 67: RemoveArrayItem
+  ✓ Line 67: RemoveArrayItem
+  ✓ Line 67: RemoveArrayItem
+  ✓ Line 67: RemoveArrayItem
+  ✓ Line 68: PlusToMinus
+  ✓ Line 68: RemoveArrayCast
+  ✓ Line 68: RemoveArrayItem
+
+   RUN  <raiz>\backend\api\app\Modules\FAdministration\Application\Portfolio.php
+  - Line 14: RemoveArrayItem
+  - Line 14: RemoveArrayItem
+  - Line 14: RemoveArrayItem
+  - Line 14: RemoveArrayItem
+  - Line 14: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 24: CoalesceRemoveLeft
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 26: CoalesceRemoveLeft
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: CoalesceRemoveLeft
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 30: RemoveMethodCall
+  ✓ Line 40: RemoveIntegerCast
+  ✓ Line 40: RemoveIntegerCast
+  ✓ Line 40: IdenticalToNotIdentical
+  ✓ Line 40: DecrementInteger
+  ✓ Line 40: IncrementInteger
+  ✓ Line 40: RemoveFunctionCall
+  ✓ Line 41: PlusToMinus
+  ✓ Line 41: UnwrapArrayFlip
+  ✓ Line 41: UnwrapArrayIntersectKey
+  ✓ Line 41: RemoveMethodCall
+  ✓ Line 42: PlusToMinus
+  ✓ Line 42: DecrementInteger
+  ✓ Line 42: IncrementInteger
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 44: IfNegated
+  ✓ Line 45: RemoveMethodCall
+  ✓ Line 54: RemoveMethodCall
+  ✓ Line 56: PlusToMinus
+  ✓ Line 56: DecrementInteger
+  ✓ Line 56: IncrementInteger
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 56: RemoveMethodCall
+  ✓ Line 63: AlwaysReturnEmptyArray
+  ✓ Line 69: AlwaysReturnEmptyArray
+  ✓ Line 70: RemoveArrayItem
+  ✓ Line 70: RemoveArrayItem
+  ✓ Line 70: RemoveArrayItem
+  ✓ Line 70: RemoveArrayItem
+  ✓ Line 71: RemoveIntegerCast
+  ✓ Line 71: FalseToTrue
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 79: DecrementInteger
+  ✓ Line 79: IncrementInteger
+  ✓ Line 79: RemoveFunctionCall
+  ✓ Line 81: RemoveArrayItem
+  ✓ Line 81: RemoveArrayItem
+  ✓ Line 81: RemoveArrayItem
+  ✓ Line 81: RemoveArrayItem
+  ✓ Line 83: PlusToMinus
+  ✓ Line 83: RemoveArrayCast
+  ✓ Line 83: TrueToFalse
+  ✓ Line 83: RemoveArrayItem
+  ✓ Line 83: AlwaysReturnEmptyArray
+  ✓ Line 91: DecrementInteger
+  ✓ Line 91: IncrementInteger
+  ✓ Line 91: RemoveFunctionCall
+  ✓ Line 98: RemoveMethodCall
+  ✓ Line 99: UnwrapArrayValues
+  ✓ Line 99: ForeachEmptyIterable
+  ✓ Line 100: RemoveArrayItem
+  ✓ Line 100: RemoveArrayItem
+  ✓ Line 100: RemoveArrayItem
+  ✓ Line 100: RemoveMethodCall
+  ✓ Line 106: AlwaysReturnEmptyArray
+  ✓ Line 109: RemoveArrayItem
+  ✓ Line 109: RemoveArrayItem
+  ✓ Line 109: RemoveArrayItem
+  ✓ Line 110: PlusToMinus
+  ✓ Line 110: RemoveArrayCast
+  ✓ Line 110: RemoveArrayItem
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 22: RemoveArrayItem - ID: ef0711bdf6e36792
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 22: RemoveArrayItem - ID: 8d8ad5de78df9c23
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 22: RemoveArrayItem - ID: 148d416b874d3d2c
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 22: RemoveArrayItem - ID: eb6ab738344cc05f
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 22: RemoveArrayItem - ID: 97ecbe5f1aa91fde
+
+   UNTESTED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 55: RemoveIntegerCast - ID: fd8963a7afab50e8
+
+   UNTESTED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 60: RemoveArrayItem - ID: 20d09fd4dc05ee87
+
+   UNTESTED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 60: RemoveArrayItem - ID: f163f7daab2d84c2
+
+   UNTESTED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 71: RemoveArrayItem - ID: 8208aa066b393f88
+
+   UNTESTED  <raiz>\backend\api\app\Modules\FAdministration\Application\ManageAnnouncements.php  > Line 88: RemoveArrayItem - ID: 23e90586f9316dab
+
+   UNTESTED  <raiz>\backend\api\app\Modules\FAdministration\Http\Requests\UpdateTechnicianProfileRequest.php  > Line 13: RemoveArrayItem - ID: d8961851692f0f9d
+
+   UNTESTED  <raiz>\backend\api\app\Modules\FAdministration\Http\Requests\UpdateTechnicianProfileRequest.php  > Line 14: RemoveArrayItem - ID: eab1e5639d8c9cde
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 17: RemoveArrayItem - ID: 5656a3d6c2650c83
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 17: RemoveArrayItem - ID: d0c1500a64628918
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 17: RemoveArrayItem - ID: 4fbfeb90395acbf0
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 18: RemoveArrayItem - ID: 1705c3c0225d9d3d
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 18: RemoveArrayItem - ID: 49affbb65d42f142
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 18: RemoveArrayItem - ID: 06843a5642157c81
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 19: RemoveArrayItem - ID: 7b34e6dba203e0aa
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 19: RemoveArrayItem - ID: 942356f101394a6d
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 20: RemoveArrayItem - ID: 529dba9077370cea
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\TechnicianDirectory.php  > Line 20: RemoveArrayItem - ID: f6ac724b8ec87575
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\Portfolio.php  > Line 14: RemoveArrayItem - ID: 2a0d060e0a9377da
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\Portfolio.php  > Line 14: RemoveArrayItem - ID: 1327e0275d480404
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\Portfolio.php  > Line 14: RemoveArrayItem - ID: f7a42da1aafa70fc
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\Portfolio.php  > Line 14: RemoveArrayItem - ID: e5ef8f16aba26fd1
+
+   UNCOVERED  <raiz>\backend\api\app\Modules\FAdministration\Application\Portfolio.php  > Line 14: RemoveArrayItem - ID: 21933012a51622be
+
+  Mutations: 7 untested, 20 uncovered, 284 tested
+  Score:     91.32%
+  Duration:  2,977.47s
+

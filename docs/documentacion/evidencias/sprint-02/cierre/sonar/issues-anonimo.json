@@ -1,0 +1,3098 @@
+{
+  "fuente": "issues.json",
+  "generado": "2026-10-15T05:20:46.644Z",
+  "nota": "Resumen anonimizado: sin autores, asignados ni usuarios del exporte original.",
+  "total": 143,
+  "porTipo": {
+    "CODE_SMELL": 143
+  },
+  "porSeveridad": {
+    "MAJOR": 78,
+    "MINOR": 31,
+    "CRITICAL": 34
+  },
+  "porRegla": {
+    "javascript:S3358": 20,
+    "javascript:S2681": 12,
+    "javascript:S6848": 1,
+    "javascript:S6847": 1,
+    "javascript:S6819": 13,
+    "javascript:S6754": 7,
+    "javascript:S6772": 5,
+    "javascript:S6479": 3,
+    "javascript:S1128": 1,
+    "javascript:S7718": 11,
+    "javascript:S1481": 1,
+    "javascript:S7722": 1,
+    "javascript:S6353": 2,
+    "javascript:S7773": 1,
+    "php:S1142": 8,
+    "php:S1172": 6,
+    "javascript:S3776": 5,
+    "javascript:S1788": 1,
+    "php:S107": 2,
+    "javascript:S7723": 6,
+    "php:S2681": 6,
+    "php:S121": 25,
+    "php:S1481": 1,
+    "php:S3776": 3,
+    "php:S1192": 1
+  },
+  "porArchivo": {
+    "frontend/web/src/App.jsx": 1,
+    "frontend/web/src/LegacyServiceCarousel.jsx": 4,
+    "frontend/web/src/ServiceCarousel.jsx": 2,
+    "frontend/web/src/components/ConfirmDialog.jsx": 2,
+    "frontend/web/src/features/administration/AnnouncementsAdmin.jsx": 2,
+    "frontend/web/src/features/administration/AvailabilityEditor.jsx": 2,
+    "frontend/web/src/features/administration/CatalogAdmin.jsx": 5,
+    "frontend/web/src/features/administration/ServicesEditor.jsx": 3,
+    "frontend/web/src/features/administration/Sprint02Common.jsx": 6,
+    "frontend/web/src/features/administration/TechnicianPanel.jsx": 5,
+    "frontend/web/src/features/administration/VerificationAdmin.jsx": 3,
+    "frontend/web/src/features/administration/sprint02Validation.js": 4,
+    "backend/api/app/Modules/FAdministration/Domain/ImageSanitizer.php": 3,
+    "backend/api/app/Modules/FAdministration/Http/Requests/UpdateAvailabilityRequest.php": 1,
+    "backend/api/app/Shared/Http/ApiExceptionRenderer.php": 1,
+    "frontend/web/src/features/administration/AccountApp.jsx": 5,
+    "frontend/web/src/features/administration/Catalog.jsx": 4,
+    "frontend/web/src/features/administration/ProfileForm.jsx": 4,
+    "frontend/web/src/features/administration/forms.jsx": 2,
+    "frontend/web/src/features/administration/http.js": 1,
+    "backend/api/app/Modules/ARequests/Application/RequestTimeline.php": 1,
+    "backend/api/app/Modules/FAdministration/Http/Controllers/MediaController.php": 1,
+    "backend/api/app/Shared/Audit/AuditTrail.php": 1,
+    "frontend/web/src/features/administration/SessionForm.jsx": 3,
+    "backend/api/app/Console/Commands/ProvisionAdmin.php": 1,
+    "backend/api/app/Modules/FAdministration/Http/Requests/RegisterAccountRequest.php": 1,
+    "frontend/web/src/AccountPanel.jsx": 2,
+    "frontend/web/src/Announcements.jsx": 4,
+    "frontend/web/src/Auth.jsx": 2,
+    "frontend/web/src/Marketplace.jsx": 14,
+    "frontend/web/src/TechnicianProfile.jsx": 1,
+    "frontend/web/src/domain/demo.js": 7,
+    "backend/api/app/Http/Controllers/AuthController.php": 4,
+    "backend/api/app/Http/Controllers/MarketplaceController.php": 6,
+    "backend/api/app/Services/Announcements.php": 4,
+    "backend/api/app/Services/Marketplace.php": 14,
+    "backend/api/app/Services/Matching.php": 12,
+    "backend/api/config/logging.php": 1,
+    "backend/api/database/migrations/2026_09_22_000001_create_marketplace.php": 1,
+    "frontend/web/src/marketplace-api.js": 3
+  },
+  "incidencias": [
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/App.jsx",
+      "line": 43,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/LegacyServiceCarousel.jsx",
+      "line": 32,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/LegacyServiceCarousel.jsx",
+      "line": 40,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/LegacyServiceCarousel.jsx",
+      "line": 40,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/LegacyServiceCarousel.jsx",
+      "line": 47,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6848",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/ServiceCarousel.jsx",
+      "line": 50,
+      "message": "Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/ServiceCarousel.jsx",
+      "line": 115,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6847",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/components/ConfirmDialog.jsx",
+      "line": 33,
+      "message": "Non-interactive elements should not be assigned mouse or keyboard event listeners.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/components/ConfirmDialog.jsx",
+      "line": 33,
+      "message": "Use <dialog> instead of the \"dialog\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6754",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "IDENTIFIABLE",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AnnouncementsAdmin.jsx",
+      "line": 20,
+      "message": "useState call is not destructured into value + setter pair",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AnnouncementsAdmin.jsx",
+      "line": 121,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AvailabilityEditor.jsx",
+      "line": 123,
+      "message": "Ambiguous spacing after previous element input",
+      "effort": "5min",
+      "tags": [
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6479",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "LOGICAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AvailabilityEditor.jsx",
+      "line": 165,
+      "message": "Do not use Array index in keys",
+      "effort": "5min",
+      "tags": [
+        "performance",
+        "react",
+        "jsx"
+      ]
+    },
+    {
+      "rule": "javascript:S6754",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "IDENTIFIABLE",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/CatalogAdmin.jsx",
+      "line": 12,
+      "message": "useState call is not destructured into value + setter pair",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/CatalogAdmin.jsx",
+      "line": 38,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/CatalogAdmin.jsx",
+      "line": 132,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/CatalogAdmin.jsx",
+      "line": 140,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/CatalogAdmin.jsx",
+      "line": 169,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S1128",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/ServicesEditor.jsx",
+      "line": 5,
+      "message": "Remove this unused import of 'useResource'.",
+      "effort": "1min",
+      "tags": [
+        "es2015",
+        "type-dependent",
+        "unused"
+      ]
+    },
+    {
+      "rule": "javascript:S6754",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "IDENTIFIABLE",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/ServicesEditor.jsx",
+      "line": 12,
+      "message": "useState call is not destructured into value + setter pair",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/ServicesEditor.jsx",
+      "line": 47,
+      "message": "Ambiguous spacing before next element select",
+      "effort": "5min",
+      "tags": [
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Sprint02Common.jsx",
+      "line": 75,
+      "message": "The catch parameter `f` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6754",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "IDENTIFIABLE",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Sprint02Common.jsx",
+      "line": 119,
+      "message": "useState call is not destructured into value + setter pair",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6754",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "IDENTIFIABLE",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Sprint02Common.jsx",
+      "line": 120,
+      "message": "useState call is not destructured into value + setter pair",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Sprint02Common.jsx",
+      "line": 165,
+      "message": "Ambiguous spacing before next element input",
+      "effort": "5min",
+      "tags": [
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Sprint02Common.jsx",
+      "line": 186,
+      "message": "The catch parameter `f` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6754",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "IDENTIFIABLE",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Sprint02Common.jsx",
+      "line": 214,
+      "message": "useState call is not destructured into value + setter pair",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/TechnicianPanel.jsx",
+      "line": 24,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/TechnicianPanel.jsx",
+      "line": 75,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/TechnicianPanel.jsx",
+      "line": 77,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6754",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "IDENTIFIABLE",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/TechnicianPanel.jsx",
+      "line": 103,
+      "message": "useState call is not destructured into value + setter pair",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/TechnicianPanel.jsx",
+      "line": 189,
+      "message": "Ambiguous spacing before next element select",
+      "effort": "5min",
+      "tags": [
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6479",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "LOGICAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/VerificationAdmin.jsx",
+      "line": 43,
+      "message": "Do not use Array index in keys",
+      "effort": "5min",
+      "tags": [
+        "performance",
+        "react",
+        "jsx"
+      ]
+    },
+    {
+      "rule": "javascript:S1481",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/VerificationAdmin.jsx",
+      "line": 67,
+      "message": "Remove the declaration of the unused 'notice' variable.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "unused"
+      ]
+    },
+    {
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/VerificationAdmin.jsx",
+      "line": 76,
+      "message": "Ambiguous spacing before next element select",
+      "effort": "5min",
+      "tags": [
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S7722",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/sprint02Validation.js",
+      "line": 38,
+      "message": "Pass a message to the `Error` constructor.",
+      "effort": "5min",
+      "tags": [
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6353",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/sprint02Validation.js",
+      "line": 58,
+      "message": "Use concise character class syntax '\\d' instead of '[0-9]'.",
+      "effort": "5min",
+      "tags": [
+        "regex",
+        "editable-source",
+        "type-dependent"
+      ]
+    },
+    {
+      "rule": "javascript:S6353",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/sprint02Validation.js",
+      "line": 58,
+      "message": "Use concise character class syntax '\\d' instead of '[0-9]'.",
+      "effort": "5min",
+      "tags": [
+        "regex",
+        "editable-source",
+        "type-dependent"
+      ]
+    },
+    {
+      "rule": "javascript:S7773",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/sprint02Validation.js",
+      "line": 60,
+      "message": "Prefer `Number.NaN` over `NaN`.",
+      "effort": "2min",
+      "tags": [
+        "convention",
+        "es2015",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Modules/FAdministration/Domain/ImageSanitizer.php",
+      "line": 26,
+      "message": "This method has 5 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Modules/FAdministration/Domain/ImageSanitizer.php",
+      "line": 58,
+      "message": "This method has 4 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Modules/FAdministration/Domain/ImageSanitizer.php",
+      "line": 84,
+      "message": "This method has 4 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S1172",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Modules/FAdministration/Http/Requests/UpdateAvailabilityRequest.php",
+      "line": 47,
+      "message": "Remove the unused function parameter \"$attribute\".",
+      "effort": "5min",
+      "tags": [
+        "unused"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Shared/Http/ApiExceptionRenderer.php",
+      "line": 15,
+      "message": "This method has 6 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "javascript:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AccountApp.jsx",
+      "line": 43,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+      "effort": "7min",
+      "tags": [
+        "brain-overload",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AccountApp.jsx",
+      "line": 47,
+      "message": "The catch parameter `failure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AccountApp.jsx",
+      "line": 53,
+      "message": "The catch parameter `refreshFailure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Catalog.jsx",
+      "line": 34,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/ProfileForm.jsx",
+      "line": 18,
+      "message": "The catch parameter `failure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/ProfileForm.jsx",
+      "line": 21,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+      "effort": "7min",
+      "tags": [
+        "brain-overload",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/ProfileForm.jsx",
+      "line": 39,
+      "message": "The catch parameter `refreshFailure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/forms.jsx",
+      "line": 27,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+      "effort": "7min",
+      "tags": [
+        "brain-overload",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S1788",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/http.js",
+      "line": 5,
+      "message": "Default parameters should be last.",
+      "effort": "20min",
+      "tags": [
+        "es2015"
+      ]
+    },
+    {
+      "rule": "php:S107",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "backend/api/app/Modules/ARequests/Application/RequestTimeline.php",
+      "line": 11,
+      "message": "This function has 8 parameters, which is greater than the 7 authorized.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Modules/FAdministration/Http/Controllers/MediaController.php",
+      "line": 45,
+      "message": "This method has 4 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S107",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "backend/api/app/Shared/Audit/AuditTrail.php",
+      "line": 15,
+      "message": "This function has 8 parameters, which is greater than the 7 authorized.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AccountApp.jsx",
+      "line": 22,
+      "message": "The catch parameter `failure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/AccountApp.jsx",
+      "line": 58,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Catalog.jsx",
+      "line": 16,
+      "message": "The catch parameter `failure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Catalog.jsx",
+      "line": 27,
+      "message": "The catch parameter `failure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/Catalog.jsx",
+      "line": 33,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/ProfileForm.jsx",
+      "line": 33,
+      "message": "The catch parameter `failure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7718",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/SessionForm.jsx",
+      "line": 31,
+      "message": "The catch parameter `failure` should be named `error_`.",
+      "effort": "5min",
+      "tags": [
+        "convention",
+        "error-handling",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/SessionForm.jsx",
+      "line": 50,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/SessionForm.jsx",
+      "line": 60,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/features/administration/forms.jsx",
+      "line": 13,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Console/Commands/ProvisionAdmin.php",
+      "line": 16,
+      "message": "This method has 4 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S1172",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Modules/FAdministration/Http/Requests/RegisterAccountRequest.php",
+      "line": 21,
+      "message": "Remove the unused function parameter \"$attribute\".",
+      "effort": "5min",
+      "tags": [
+        "unused"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/AccountPanel.jsx",
+      "line": 9,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/AccountPanel.jsx",
+      "line": 20,
+      "message": "Use <details>, <fieldset>, <optgroup>, or <address> instead of the \"group\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Announcements.jsx",
+      "line": 32,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Announcements.jsx",
+      "line": 32,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/Announcements.jsx",
+      "line": 38,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/Announcements.jsx",
+      "line": 38,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/Auth.jsx",
+      "line": 5,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/Auth.jsx",
+      "line": 5,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 15,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+      "effort": "25min",
+      "tags": [
+        "brain-overload",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 18,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 28,
+      "message": "Use `new Error()` instead of `Error()`.",
+      "effort": "5min",
+      "tags": [
+        "convention"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 28,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 38,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 38,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 39,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 39,
+      "message": "Extract this nested ternary operation into an independent statement.",
+      "effort": "5min",
+      "tags": [
+        "editable-source",
+        "confusing"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 45,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/TechnicianProfile.jsx",
+      "line": 14,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "frontend/web/src/domain/demo.js",
+      "line": 32,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 73 to the 15 allowed.",
+      "effort": "1h3min",
+      "tags": [
+        "brain-overload",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/domain/demo.js",
+      "line": 33,
+      "message": "Use `new Error()` instead of `Error()`.",
+      "effort": "5min",
+      "tags": [
+        "convention"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/domain/demo.js",
+      "line": 49,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "php:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/AuthController.php",
+      "line": 14,
+      "message": "This statement will not be executed conditionally; only the first statement of this 2-statement block will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/AuthController.php",
+      "line": 14,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S1481",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/AuthController.php",
+      "line": 14,
+      "message": "Remove this unused \"$user\" local variable.",
+      "effort": "5min",
+      "tags": [
+        "unused"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/MarketplaceController.php",
+      "line": 14,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S1172",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/MarketplaceController.php",
+      "line": 14,
+      "message": "Remove the unused function parameter \"$attribute\".",
+      "effort": "5min",
+      "tags": [
+        "unused"
+      ]
+    },
+    {
+      "rule": "php:S1172",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/MarketplaceController.php",
+      "line": 16,
+      "message": "Remove the unused function parameter \"$attribute\".",
+      "effort": "5min",
+      "tags": [
+        "unused"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/MarketplaceController.php",
+      "line": 16,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/MarketplaceController.php",
+      "line": 16,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/MarketplaceController.php",
+      "line": 16,
+      "message": "This statement will not be executed in a loop; only the first statement of this 2-statement block will be. The rest will execute only once.",
+      "effort": "5min",
+      "tags": [
+        "cwe"
+      ]
+    },
+    {
+      "rule": "php:S1172",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Announcements.php",
+      "line": 16,
+      "message": "Remove the unused function parameter \"$attribute\".",
+      "effort": "5min",
+      "tags": [
+        "unused"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Announcements.php",
+      "line": 20,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Announcements.php",
+      "line": 26,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Announcements.php",
+      "line": 39,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 32,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+      "effort": "7min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 39,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 78 to the 15 allowed.",
+      "effort": "1h8min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 41,
+      "message": "This function has 6 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 45,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 45,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 54,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 6,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 6,
+      "message": "This statement will not be executed in a loop; only the first statement of this 2-statement block will be. The rest will execute only once.",
+      "effort": "5min",
+      "tags": [
+        "cwe"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 6,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "FOCUSED",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 7,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+      "effort": "7min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 9,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S1172",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Http/Controllers/AuthController.php",
+      "line": 13,
+      "message": "Remove the unused function parameter \"$market\".",
+      "effort": "5min",
+      "tags": [
+        "unused"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 27,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 27,
+      "message": "This statement will not be executed conditionally; only the first statement of this 2-statement block will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 27,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 34,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 35,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 87,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 87,
+      "message": "This statement will not be executed conditionally; only the first statement of this 3-statement block will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Marketplace.php",
+      "line": 88,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 11,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 13,
+      "message": "This statement will not be executed in a loop; only the first statement of this 3-statement block will be. The rest will execute only once.",
+      "effort": "5min",
+      "tags": [
+        "cwe"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 13,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S1142",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 16,
+      "message": "This method has 4 returns, which is more than the 3 allowed.",
+      "effort": "20min",
+      "tags": [
+        "brain-overload"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 21,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 22,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/app/Services/Matching.php",
+      "line": 22,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "php:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "DISTINCT",
+      "status": "OPEN",
+      "file": "backend/api/config/logging.php",
+      "line": 63,
+      "message": "Define a constant instead of duplicating this literal \"logs/laravel.log\" 3 times.",
+      "effort": "8min",
+      "tags": [
+        "design"
+      ]
+    },
+    {
+      "rule": "php:S121",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "cleanCodeAttribute": "CLEAR",
+      "status": "OPEN",
+      "file": "backend/api/database/migrations/2026_09_22_000001_create_marketplace.php",
+      "line": 13,
+      "message": "Add curly braces around the nested statement(s).",
+      "effort": "2min",
+      "tags": [
+        "pitfall"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 20,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 20,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 22,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 37,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+      "effort": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ]
+    },
+    {
+      "rule": "javascript:S6479",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "LOGICAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/Marketplace.jsx",
+      "line": 72,
+      "message": "Do not use Array index in keys",
+      "effort": "5min",
+      "tags": [
+        "performance",
+        "react",
+        "jsx"
+      ]
+    },
+    {
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/domain/demo.js",
+      "line": 35,
+      "message": "Use `new Error()` instead of `Error()`.",
+      "effort": "5min",
+      "tags": [
+        "convention"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/domain/demo.js",
+      "line": 85,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/domain/demo.js",
+      "line": 86,
+      "message": "Use `new Error()` instead of `Error()`.",
+      "effort": "5min",
+      "tags": [
+        "convention"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/domain/demo.js",
+      "line": 87,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/marketplace-api.js",
+      "line": 7,
+      "message": "Use `new Error()` instead of `Error()`.",
+      "effort": "5min",
+      "tags": [
+        "convention"
+      ]
+    },
+    {
+      "rule": "javascript:S2681",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "cleanCodeAttribute": "FORMATTED",
+      "status": "OPEN",
+      "file": "frontend/web/src/marketplace-api.js",
+      "line": 9,
+      "message": "This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.",
+      "effort": "5min",
+      "tags": [
+        "cwe",
+        "editable-source"
+      ]
+    },
+    {
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "status": "OPEN",
+      "file": "frontend/web/src/marketplace-api.js",
+      "line": 9,
+      "message": "Use `new Error()` instead of `Error()`.",
+      "effort": "5min",
+      "tags": [
+        "convention"
+      ]
+    }
+  ]
+}

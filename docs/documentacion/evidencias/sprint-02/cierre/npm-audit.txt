@@ -1,0 +1,2 @@
+# Cierre S2.6 · npm audit · 2026-10-14 · commit 8730a13
+found 0 vulnerabilities

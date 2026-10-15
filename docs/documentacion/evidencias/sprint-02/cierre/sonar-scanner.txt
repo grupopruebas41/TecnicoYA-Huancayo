@@ -1,0 +1,181 @@
+# Cierre S2.6 · SonarQube sprint-02 · 2026-10-15 · revisión e176a6b
+# Comando: ./scripts/run-quality.ps1 -ScannerPath tmp/sonar-cli/sonar-scanner-8.1.0.6389/bin/sonar-scanner.bat -JavaHome '<JBR 21 de Android Studio>'
+# El scanner terminó con QUALITY GATE FAILED por new_security_rating = C: una sola incidencia, php:S5693 en StoreMediaRequest:33
+# (en SonarQube 26.9 es incidencia de seguridad, no hotspot). Se marcó False Positive con la justificación de D-46
+# (límite de 5 MB, S02-TC-040 y 041) y el Gate pasó a OK: ver sonar/gate.json.
+
+00:18:22.659 INFO  Scanner configuration file: <raiz>\tmp\sonar-cli\sonar-scanner-8.1.0.6389\bin\..\conf\sonar-scanner.properties
+00:18:22.665 INFO  Project root configuration file: <raiz>\sonar-project.properties
+00:18:22.702 INFO  SonarScanner CLI 8.1.0.6389
+00:18:22.709 INFO  Windows 11 10.0 amd64
+00:18:26.487 INFO  Communicating with SonarQube Community Build 26.9.0.129388
+00:18:26.491 INFO  JRE provisioning is disabled
+00:18:26.491 INFO  Using the java executable '<JBR 21>\bin\java.exe' from JAVA_HOME
+00:18:27.629 INFO  SONAR_SCANNER_JAVA_OPTS=-Xmx512m
+00:18:28.168 INFO  Starting SonarScanner Engine...
+00:18:28.169 INFO  Java 21.0.10 JetBrains s.r.o. (64-bit)
+00:18:31.754 INFO  Load global settings
+00:18:32.199 INFO  Load global settings (done) | time=445ms
+00:18:32.208 INFO  Server id: 303924D4-AaES3Q_hyWCRqXEU4MJM
+00:18:32.279 INFO  Loading required plugins
+00:18:32.279 INFO  Load plugins index
+00:18:32.401 INFO  Load plugins index (done) | time=121ms
+00:18:32.402 INFO  Load/download plugins
+00:18:32.458 INFO  Load/download plugins (done) | time=56ms
+00:18:33.027 INFO  Process project properties
+00:18:33.063 INFO  Process project properties (done) | time=36ms
+00:18:33.087 INFO  Project key: tecnicoya-huancayo
+00:18:33.088 INFO  Base dir: <raiz>
+00:18:33.088 INFO  Working dir: <raiz>\tmp\sonar-work
+00:18:33.105 INFO  Load project settings for component key: 'tecnicoya-huancayo'
+00:18:33.222 INFO  Load project settings for component key: 'tecnicoya-huancayo' (done) | time=117ms
+00:18:33.269 INFO  Load quality profiles
+00:18:33.548 INFO  Load quality profiles (done) | time=280ms
+00:18:33.651 INFO  Load active rules
+00:18:35.048 INFO  Load active rules (done) | time=1400ms
+00:18:35.057 INFO  Load analysis cache
+00:18:35.180 INFO  Load analysis cache | time=123ms
+00:18:35.570 INFO  Preprocessing files...
+00:18:36.416 INFO  5 languages detected in 312 preprocessed files (done) | time=846ms
+00:18:36.416 INFO  71 files ignored because of inclusion/exclusion patterns
+00:18:36.416 INFO  2 files ignored because of scm ignore settings
+00:18:36.418 INFO  Loading plugins for detected languages
+00:18:36.418 INFO  Load/download plugins
+00:18:36.439 INFO  Load/download plugins (done) | time=21ms
+00:18:36.754 INFO  Load project repositories
+00:18:36.987 INFO  Load project repositories (done) | time=243ms
+00:18:37.024 INFO  Indexing files...
+00:18:37.024 INFO  Project configuration:
+00:18:37.026 INFO    Excluded sources: **/*.test.js, **/*.test.jsx, **/test-setup.js, backend/api/tests/**, frontend/web/src/**/*.test.js, frontend/web/src/**/*.test.jsx, frontend/web/src/test-setup.js, frontend/web/cypress/**
+00:18:37.026 INFO    Included tests: backend/api/tests/**, frontend/web/src/**/*.test.js, frontend/web/src/**/*.test.jsx, frontend/web/src/test-setup.js, frontend/web/cypress/**
+00:18:37.513 INFO  312 files indexed (done) | time=488ms
+00:18:37.515 INFO  Quality profile for css: Sonar way
+00:18:37.515 INFO  Quality profile for js: Sonar way
+00:18:37.515 INFO  Quality profile for json: Sonar way
+00:18:37.515 INFO  Quality profile for php: Sonar way
+00:18:37.516 INFO  Quality profile for yaml: Sonar way
+00:18:37.516 INFO  ------------- Run sensors on module TecnicoYa Huancayo
+00:18:37.627 INFO  Load metrics repository
+00:18:37.713 INFO  Load metrics repository (done) | time=86ms
+00:18:38.741 INFO  Reflections took 118 ms to scan 1 urls, producing 30 keys and 295 values
+00:18:38.919 INFO  Sensor IaC YAML File Type Classification Sensor [iac]
+00:18:38.941 INFO  Sensor IaC YAML File Type Classification Sensor [iac] (done) | time=22ms
+00:18:38.943 INFO  Sensor PHP sensor [php]
+00:18:38.974 INFO  Starting PHP symbol indexer
+00:18:38.980 INFO  208 source files to be analyzed
+00:18:41.681 INFO  208/208 source files have been analyzed
+00:18:41.681 INFO  Cached information of global symbols will be used for 0 out of 208 files. Global symbols were recomputed for the remaining files.
+00:18:41.721 INFO  Starting PHP rules
+00:18:41.723 INFO  208 source files to be analyzed
+00:18:48.610 INFO  208/208 source files have been analyzed
+00:18:48.611 INFO  The PHP analyzer was able to leverage cached data from previous analyses for 0 out of 208 files. These files were not parsed.
+00:18:48.612 INFO  Sensor PHP sensor [php] (done) | time=9667ms
+00:18:48.612 INFO  Sensor Analyzer for "php.ini" files [php]
+00:18:48.617 INFO  Sensor Analyzer for "php.ini" files [php] (done) | time=5ms
+00:18:48.617 INFO  Sensor PHPUnit report sensor [php]
+00:18:48.618 INFO  No PHPUnit tests reports provided (see 'sonar.php.tests.reportPath' property)
+00:18:48.619 INFO  Importing <raiz>\backend\api\test-results\clover.xml
+00:18:48.884 INFO  Sensor PHPUnit report sensor [php] (done) | time=266ms
+00:18:48.884 INFO  Sensor IaC CloudFormation Sensor [iac]
+00:18:48.892 INFO  There are no files to be analyzed for the CloudFormation language
+00:18:48.892 INFO  Sensor IaC CloudFormation Sensor [iac] (done) | time=0ms
+00:18:48.892 INFO  Sensor IaC cfn-lint report Sensor [iac]
+00:18:48.892 INFO  Sensor IaC cfn-lint report Sensor [iac] (done) | time=8ms
+00:18:48.892 INFO  Sensor IaC Kustomization Sensor [iac]
+00:18:48.892 INFO  Sensor IaC Kustomization Sensor [iac] (done) | time=0ms
+00:18:48.892 INFO  Sensor IaC hadolint report Sensor [iac]
+00:18:48.892 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=0ms
+00:18:48.892 INFO  Sensor IaC Azure Resource Manager Sensor [iac]
+00:18:48.892 INFO  There are no files to be analyzed for the Azure Resource Manager language
+00:18:48.892 INFO  Sensor IaC Azure Resource Manager Sensor [iac] (done) | time=0ms
+00:18:48.892 INFO  Sensor Java Config Sensor [iac]
+00:18:48.892 INFO  There are no files to be analyzed for the Java language
+00:18:48.892 INFO  Sensor Java Config Sensor [iac] (done) | time=0ms
+00:18:48.892 INFO  Sensor IaC Docker Sensor [iac]
+00:18:48.892 INFO  There are no files to be analyzed for the Docker language
+00:18:48.892 INFO  Sensor IaC Docker Sensor [iac] (done) | time=0ms
+00:18:48.892 INFO  Sensor HTML [web]
+00:18:49.143 INFO  Sensor HTML [web] (done) | time=250ms
+00:18:49.143 INFO  Sensor JavaScript/TypeScript Coverage [javascript]
+00:18:49.143 INFO  Analysing [<raiz>\frontend\web\coverage\lcov.info]
+00:18:49.361 INFO  Sensor JavaScript/TypeScript Coverage [javascript] (done) | time=215ms
+00:18:49.361 INFO  Sensor IaC Kubernetes Sensor [iac]
+00:18:49.462 INFO  There are no files to be analyzed for the Kubernetes language
+00:18:49.462 INFO  Sensor IaC Kubernetes Sensor [iac] (done) | time=103ms
+00:18:49.462 INFO  Sensor TextAndSecretsSensor [text]
+00:18:49.507 INFO  Available processors: 8
+00:18:49.507 INFO  Using 8 threads for analysis.
+00:18:49.949 INFO  Start fetching files for the text and secrets analysis
+00:18:50.132 INFO  Using Git CLI to retrieve dirty files
+00:18:50.203 INFO  Retrieving language associated files and files included via "sonar.text.inclusions" that are tracked by git
+00:18:50.206 INFO  Starting the text and secrets analysis
+00:18:50.206 INFO  296 source files to be analyzed for the text and secrets analysis
+00:18:50.460 INFO  296/296 source files have been analyzed for the text and secrets analysis
+00:18:50.467 INFO  Sensor TextAndSecretsSensor [text] (done) | time=1005ms
+00:18:50.471 INFO  ------------- Run sensors on project
+00:18:50.884 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+00:18:52.564 INFO  Detected os: Windows 11 arch: amd64 alpine: false. Platform: WIN_X64
+00:18:52.573 INFO  Deploy location <usuario>\.sonar\js\node-runtime, tagetRuntime: <usuario>\.sonar\js\node-runtime\node.exe,  version: <usuario>\.sonar\js\node-runtime\version.txt
+00:18:54.259 INFO  Using embedded Node.js runtime.
+00:18:54.259 INFO  Using Node.js executable: '<usuario>\.sonar\js\node-runtime\node.exe'.
+00:19:02.434 INFO  Memory configuration: OS (7975 MB), Node.js (2240 MB).
+00:19:02.468 INFO  gRPC analyze-project server listening on 127.0.0.1:59660
+00:19:02.973 INFO  Plugin version: [13.8.0.44569]
+00:19:06.786 INFO  Found 8 tsconfig.json file(s): [<raiz>/examples/backend/jsts-AdonisJS/tsconfig.json, <raiz>/examples/backend/jsts-Express/tsconfig.json, <raiz>/examples/backend/jsts-Fastify/tsconfig.json, <raiz>/examples/backend/jsts-NestJS/tsconfig.json, <raiz>/examples/frontend/angular/tsconfig.json, <raiz>/examples/frontend/nextjs/tsconfig.json, <raiz>/examples/frontend/react/tsconfig.json, <raiz>/examples/frontend/vue/tsconfig.json]
+00:19:26.428 INFO  71 source files to be analyzed
+00:19:26.430 WARN  Could not find tsconfig.json: C:/node_modules/@adonisjs/tsconfig/tsconfig.app.json/tsconfig.json; falling back to an empty configuration.
+00:19:26.431 WARN  <raiz>/examples/backend/jsts-AdonisJS/tsconfig.json extends a configuration that was not found. Please run 'npm install' for a more complete analysis.
+00:19:26.431 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/backend/jsts-AdonisJS/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+00:19:26.431 INFO  No files to analyze from tsconfig <raiz>/examples/backend/jsts-AdonisJS/tsconfig.json
+00:19:26.431 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/backend/jsts-Express/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+00:19:26.432 INFO  No files to analyze from tsconfig <raiz>/examples/backend/jsts-Express/tsconfig.json
+00:19:26.432 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/backend/jsts-Fastify/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+00:19:26.432 INFO  No files to analyze from tsconfig <raiz>/examples/backend/jsts-Fastify/tsconfig.json
+00:19:26.432 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/backend/jsts-NestJS/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+00:19:26.433 INFO  No files to analyze from tsconfig <raiz>/examples/backend/jsts-NestJS/tsconfig.json
+00:19:26.433 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/angular/tsconfig.json [lib: lib.es2022.d.ts, lib.dom.d.ts]
+00:19:26.433 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/angular/tsconfig.json
+00:19:26.434 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/nextjs/tsconfig.json [lib: lib.dom.d.ts, lib.dom.iterable.d.ts, lib.esnext.d.ts]
+00:19:26.434 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/nextjs/tsconfig.json
+00:19:26.434 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/react/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+00:19:26.442 INFO  Discovered referenced tsconfig: <raiz>/examples/frontend/react/tsconfig.app.json
+00:19:26.445 INFO  Discovered referenced tsconfig: <raiz>/examples/frontend/react/tsconfig.node.json
+00:19:26.445 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/react/tsconfig.json
+00:19:26.447 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/vue/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+00:19:26.447 INFO  Discovered referenced tsconfig: <raiz>/examples/frontend/vue/tsconfig.app.json
+00:19:26.447 INFO  Discovered referenced tsconfig: <raiz>/examples/frontend/vue/tsconfig.node.json
+00:19:26.447 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/vue/tsconfig.json
+00:19:26.447 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/react/tsconfig.app.json [lib: lib.es2020.d.ts, lib.dom.d.ts, lib.dom.iterable.d.ts]
+00:19:26.447 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/react/tsconfig.app.json
+00:19:26.447 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/react/tsconfig.node.json [lib: lib.es2023.d.ts]
+00:19:26.449 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/react/tsconfig.node.json
+00:19:26.449 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/vue/tsconfig.app.json [lib: lib.es2022.d.ts, lib.dom.d.ts, lib.dom.iterable.d.ts]
+00:19:26.449 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/vue/tsconfig.app.json
+00:19:26.449 INFO  Creating TypeScript(6.0.3) program with configuration file <raiz>/examples/frontend/vue/tsconfig.node.json [lib: lib.es2023.d.ts]
+00:19:26.449 INFO  No files to analyze from tsconfig <raiz>/examples/frontend/vue/tsconfig.node.json
+00:19:26.449 INFO  Analyzing 70 file(s) using merged compiler options [lib: lib.es2024.d.ts, lib.dom.d.ts]
+00:19:26.449 INFO  71/71 source files have been analyzed
+00:19:26.506 INFO  Hit the cache for 0 out of 74
+00:19:26.509 INFO  Miss the cache for 74 out of 74: ANALYSIS_MODE_INELIGIBLE [74/74]
+00:19:26.509 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=35624ms
+00:19:26.510 INFO  Sensor IaC Project Sensor [iac]
+00:19:26.522 INFO  Sensor IaC Project Sensor [iac] (done) | time=11ms
+00:19:26.522 INFO  Sensor Zero Coverage Sensor
+00:19:26.538 INFO  Sensor Zero Coverage Sensor (done) | time=16ms
+00:19:26.538 INFO  ------------- Gather SCA dependencies on project
+00:19:26.570 INFO  Dependency analysis skipped
+00:19:26.748 INFO  SCM Publisher SCM provider for this project is: git
+00:19:26.753 INFO  SCM Publisher 109 source files to be analyzed
+00:19:28.017 INFO  SCM Publisher 109/109 source files have been analyzed (done) | time=1263ms
+00:19:28.037 INFO  CPD Executor 19 files had no CPD blocks
+00:19:28.038 INFO  CPD Executor Calculating CPD for 167 files
+00:19:28.291 INFO  CPD Executor CPD calculation finished (done) | time=253ms
+00:19:28.305 INFO  SCM revision ID 'e176a6bac7848237e487dd508661759658b6a710'
+00:19:29.422 INFO  Analysis report generated in 1033ms, dir size=2.2 MB
+00:19:31.092 INFO  Analysis report compressed in 1668ms, zip size=1.3 MB
+00:19:31.897 INFO  Analysis report uploaded in 805ms
+00:19:31.902 INFO  ------------- Check Quality Gate status
+00:19:31.904 INFO  Waiting for the analysis report to be processed (max 300s)
+00:19:54.266 ERROR QUALITY GATE STATUS: FAILED - View details on http://127.0.0.1:9000/dashboard?id=tecnicoya-huancayo
+00:19:54.306 INFO  EXECUTION FAILURE
+00:19:54.320 INFO  Total time: 1:31.674s

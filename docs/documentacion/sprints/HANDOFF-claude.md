@@ -2,6 +2,45 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-15 · Sprint 2 · cierre S2.6 completado
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`. `origin/main` `0a5977f` (PR #10) se fusionó en `8730a13`, sin rebase. El conflicto de `REGISTRO-DEFECTOS.csv` se resolvió conservando DEF-40 a 42 cerradas.
+- **Commits del cierre:**
+  - `e176a6b` ci(s02): `projectVersion=sprint-02`;
+  - el commit «docs(s02): cierre del Sprint 2» (evidencias, informe, matriz, catálogo, registro, avances y este relevo).
+  - PR: ver abajo.
+- **Resultados** (slot A, revisión `8730a13`):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest | 149/149 (1685 aserciones); cobertura total 92,8 %, `FAdministration` 97,22 % |
+  | Vitest | 116/116; líneas 82,89 %, `features/administration` 86,77 % |
+  | Cypress | S01 17/17 y S02 17/17 (Chrome 156) |
+  | Conteo S02 | 90 IDs (Pest 59, Cypress 17, Vitest 14) |
+  | Mutación de las 4 clases | 91,32 % (284/311; 7 sobrevivientes y 20 sin cubrir) |
+  | SonarQube `sprint-02` (`e176a6b`) | Gate OK |
+  | Auditorías | `composer audit` y `npm audit` limpios |
+
+  En SonarQube, `php:S5693` es una incidencia, no un hotspot. Se marcó False Positive (D-46); con eso el Gate pasó de FAILED a OK. SonarQube se detuvo al terminar.
+- **Registro:**
+  - DEF-27 cerrado (CI del PR #9);
+  - DEF-16, 24 y 25 parciales (S2 hecho);
+  - resumen: 27 cerrados, 12 abiertos y 3 duplicados.
+- **Matriz:** 15 de las 17 filas de S2 en APROBADO. TC-131 y TC-135 no tienen caso S02 que las cite; el equipo decide si se vinculan a S02-TC-074 y 073.
+- **Avances:**
+  - Pimentel S2 con la sección del cierre;
+  - Mayhuasca S2 con revisor «Pimentel Chumbes James», indicado por el usuario el 2026-10-13.
+
+**Qué falta:**
+- Revisión humana e integración del PR de cierre.
+- Que el equipo confirme el falso positivo `php:S5693` y decida sobre TC-131 y TC-135.
+
+**Para Codex:**
+1. Atender los 13 `S6819` y los 20 `S3358` del frontend (lista en la entrada del 2026-10-13).
+2. Hacer `git pull` de `main` cuando se integre este PR (trae `run-e2e.mjs` con log de la API y aviso de RAM).
+
+**Bloqueos:** ninguno.
+
 ## 2026-10-14 · Sprint 2 · cierre S2.6: DEF-42 (en espera de la integración del PR #10)
 
 - **Rama:** `feature/pimentel/f-administracion/s02-cierre`. Solo local: sin push ni PR.

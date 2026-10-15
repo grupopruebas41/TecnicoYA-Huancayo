@@ -1,0 +1,18 @@
+# Cierre S2.6 · node scripts/contar-pruebas-sprint.mjs · 2026-10-15 · commit 8730a13 (JUnit de la regresión del slot A)
+
+Reportes JUnit:
+  Pest    backend\api\test-results\junit.xml
+  Cypress frontend\web\test-results\cypress\sprint-01-16b21f6d597de827ada85c11df16787a.xml, frontend\web\test-results\cypress\sprint-01-1f9917d9ef01e6a6f0a8dc43b5c2f639.xml, frontend\web\test-results\cypress\sprint-01-57ac7174bc198922cadc88e4d914eb69.xml, frontend\web\test-results\cypress\sprint-01-5941219ae3c8e1cebe7d8a8650e2e688.xml, frontend\web\test-results\cypress\sprint-01-a9ddca61ddc883231d4c803170246a08.xml, frontend\web\test-results\cypress\sprint-01-f1f0331d7e1328012282ac965c7c9f88.xml, frontend\web\test-results\cypress\sprint-02-7b94d5659b584b8e430a13a7909faa72.xml, frontend\web\test-results\cypress\sprint-02-c3118934c24aee44cf79aa36186224be.xml, frontend\web\test-results\cypress\sprint-02-c3f47e4b252b431784b3efbb8e11fa98.xml, frontend\web\test-results\cypress\sprint-02-ced0fded0d7e7ff14764e45ff4a73707.xml, frontend\web\test-results\cypress\sprint-02-e70aac26e58fa7a48145f5f6ebff4dff.xml
+  Vitest  frontend\web\test-results\junit.xml
+
+Meta por sprint: ≥ 60 IDs aprobados distintos (Pest ≥ 36, Cypress ≥ 14, Vitest ≥ 10).
+Columnas por herramienta: aprobados / fallidos / omitidos (IDs distintos).
+
+Sprint | Pest        | Cypress     | Vitest      | Aprobados | ¿Llega a 60?
+-------|-------------|-------------|-------------|-----------|-------------
+S01    | 54 / 0 / 0  | 17 / 0 / 0  | 24 / 0 / 0  | 87        | Sí
+S02    | 59 / 0 / 0  | 17 / 0 / 0  | 14 / 0 / 0  | 90        | Sí
+S03    | 15 / 0 / 0  | 0 / 0 / 0   | 0 / 0 / 0   | 15        | No (faltan Pest 21, Cypress 14, Vitest 10; total 45)
+
+Pruebas sin ID (no cuentan): Pest 21, Cypress 0, Vitest 38.
+Aviso: hay IDs heredados TC-NNN (sprint deducido del catálogo). Renombrar a SNN-TC-NNN [TC-0xx] (AGENTS.md, regla 7).
