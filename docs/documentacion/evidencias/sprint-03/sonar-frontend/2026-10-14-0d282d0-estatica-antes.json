@@ -1,0 +1,80 @@
+[
+  {
+    "file": "\\web\\src\\features\\administration\\AccountApp.jsx",
+    "line": 43,
+    "rule": "sonar/cognitive-complexity",
+    "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\AnnouncementsAdmin.jsx",
+    "line": 119,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\CatalogAdmin.jsx",
+    "line": 36,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\CatalogAdmin.jsx",
+    "line": 132,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\CatalogAdmin.jsx",
+    "line": 138,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\CatalogAdmin.jsx",
+    "line": 167,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\forms.jsx",
+    "line": 27,
+    "rule": "sonar/cognitive-complexity",
+    "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\http.js",
+    "line": 5,
+    "rule": "default-param-last",
+    "message": "Default parameters should be last."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\ProfileForm.jsx",
+    "line": 21,
+    "rule": "sonar/cognitive-complexity",
+    "message": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\SessionForm.jsx",
+    "line": 60,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\TechnicianPanel.jsx",
+    "line": 22,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\TechnicianPanel.jsx",
+    "line": 73,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  },
+  {
+    "file": "\\web\\src\\features\\administration\\TechnicianPanel.jsx",
+    "line": 75,
+    "rule": "no-nested-ternary",
+    "message": "Do not nest ternary expressions."
+  }
+]
