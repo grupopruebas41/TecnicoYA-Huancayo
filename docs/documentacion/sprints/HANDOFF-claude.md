@@ -2,6 +2,33 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-14 · Sprint 2 · cierre S2.6: DEF-42 (en espera de la integración del PR #10)
+
+- **Rama:** `feature/pimentel/f-administracion/s02-cierre`. Solo local: sin push ni PR.
+- **Contexto:** Codex se quedó sin uso. El usuario pidió diagnosticar DEF-42 en el slot A sobre la rama del PR #10 (`b3302c1`, checkout separado) y volver a esta rama.
+- **Resultado:** **Cypress S2 17/17 tres veces en Chrome (slot A)**, sin cambios en producto ni pruebas. Cypress S1 17/17. El producto no tiene el defecto:
+  - la API sin navegador responde 201 en menos de 1 s;
+  - Chrome sin Cypress (CDP) también responde 201.
+  - El fallo solo se vio en Cypress + Chrome en el estado del equipo del 2026-10-13, con poca RAM y todo más lento. La causa exacta no quedó aislada. Detalle en `evidencias/sprint-02/cypress/2026-10-14-DEF-42-diagnostico.md`.
+- **CI del PR #10:** backend, frontend y conteo en verde; OPEN y MERGEABLE.
+- **Commits:**
+  - `9e1c272` ci(s02): `run-e2e.mjs` guarda la salida de la API en `tmp/e2e-api-<slot>.log` e informa la RAM libre, con aviso por debajo de 1 GB.
+  - commit de evidencias, registro y este relevo.
+- **Registro de defectos:**
+  - DEF-41 copiado tal cual de la rama de Codex (Cerrado, `0bb4438`);
+  - DEF-42 Cerrado (`9e1c272`);
+  - DEF-40 sigue Cerrado (`86a65aa`).
+  - Al fusionar `main` con el PR #10 habrá conflicto en las últimas filas de `REGISTRO-DEFECTOS.csv`: conservar las de esta rama.
+- **No se tocó** la rama de Codex: no hubo arreglo de frontend ni de pruebas, así que no hubo commit ni push allí.
+- **Limpieza:**
+  - se restauraron los specs que se apartaron para el diagnóstico y `run-e2e.mjs` en el checkout separado;
+  - se quitaron dos bloqueos huérfanos (`tmp/e2e-cypress.lock` y `tmp/e2e-slot-A.lock`, PID 15180, de la corrida interrumpida);
+  - no quedan puertos 8001, 5174 ni 9333 en uso.
+
+**Para Codex:** DEF-42 no exige cambios en `frontend/`. Si vuelve a aparecer en el slot B, revisar `tmp/e2e-api-B.log` (disponible cuando esta rama esté en `main`).
+
+**Qué falta:** tras el aviso del usuario de que el PR #10 está en `main`, la parte pesada del cierre (ver la entrada siguiente).
+
 ## 2026-10-13 · Sprint 2 · cierre S2.6: DEF-40 e incidencias de SonarQube (en espera del aviso)
 
 - **Rama:** `feature/pimentel/f-administracion/s02-cierre`. Solo local: sin push ni PR.
