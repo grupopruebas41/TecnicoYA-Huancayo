@@ -43,4 +43,17 @@ return [
     'announcement_expired' => 'La vigencia ya terminó.',
     'performed_on_future' => 'La fecha del trabajo no puede ser futura.',
     'link_scheme' => 'El enlace debe empezar con http:// o https://.',
+    // Sprint 3 (D-11, D-12, D-55 a D-58).
+    'description_length' => 'La descripción debe tener entre 20 y 1000 caracteres.',
+    'address_length' => 'La dirección debe tener entre 5 y 255 caracteres.',
+    'scheduled_start_past' => 'El inicio programado no puede ser anterior a la hora actual.',
+    'scheduled_end_order' => 'El fin programado debe ser posterior al inicio.',
+    'attachment_limit' => 'La solicitud ya tiene el máximo de 5 fotos.',
+    'active_request_limit' => 'Alcanzaste el máximo de :max solicitudes activas. Podrás enviar otra cuando alguna se cierre.',
+    'filter_not_allowed' => 'Filtro no permitido.',
+    'specialty_unavailable' => 'La especialidad elegida no está disponible.',
+    'search_subcategory' => 'La subcategoría no está disponible o no pertenece a la especialidad elegida.',
+    'min_rating_range' => 'La calificación mínima debe estar entre 1 y 5.',
+    'per_page_range' => 'Se pueden mostrar entre 1 y 50 técnicos por página.',
+    'page_invalid' => 'La página debe ser un número entero mayor o igual que 1.',
 ];

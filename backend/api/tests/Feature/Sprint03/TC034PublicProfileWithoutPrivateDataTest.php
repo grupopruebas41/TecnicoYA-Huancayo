@@ -25,7 +25,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-034: muestra al cliente bio, servicios y portafolio del técnico sin documentos ni contacto privado', function () {
+it('S03-TC-005 muestra al cliente bio, servicios y portafolio del técnico sin documentos ni contacto privado [TC-034]', function () {
     // Dado un técnico con bio pública, documento privado, WhatsApp, teléfono y un trabajo publicado
     $technician = TechnicianProfileFactory::new()->approved()->create(['bio' => 'Especialista en placas de escritorio.']);
     DB::table('technician_profiles')->where('id', $technician->id)->update(['whatsapp' => '999888777']);

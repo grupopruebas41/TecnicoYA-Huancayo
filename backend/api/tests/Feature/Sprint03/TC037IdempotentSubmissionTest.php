@@ -22,7 +22,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-037: repite el mismo envío con su clave y obtiene el mismo resultado sin duplicar solicitud ni evento', function () {
+it('S03-TC-008 repite el mismo envío con su clave y obtiene el mismo resultado sin duplicar solicitud ni evento [TC-037]', function () {
     // Dado una solicitud propia registrada y una clave de idempotencia
     Sanctum::actingAs(ClientProfileFactory::new()->create()->user);
     $request = $this->postJson('/api/v1/requests', Sprint03::requestPayload(DistrictFactory::new()->create()->id))

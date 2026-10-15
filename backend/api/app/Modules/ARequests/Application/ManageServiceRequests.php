@@ -4,6 +4,7 @@ namespace App\Modules\ARequests\Application;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Registro, corrección, evidencias y envío de solicitudes del cliente de la sesión. Toda operación sobre una
@@ -12,7 +13,10 @@ use Illuminate\Support\Facades\DB;
  */
 final class ManageServiceRequests
 {
-    public function __construct(private readonly RequestTimeline $timeline) {}
+    /** D-12: fotos por solicitud. */
+    public const MAX_ATTACHMENTS = 5;
+
+    public function __construct(private readonly RequestTimeline $timeline, private readonly SubmissionPolicy $policy) {}
 
     public function register(User $user, array $data): int
     {
@@ -53,6 +57,9 @@ final class ManageServiceRequests
     {
         return DB::transaction(function () use ($user, $id, $data) {
             $request = $this->lockOwnRegistered($user, $id, (int) $data['expected_version']);
+            if (DB::table('request_attachments')->where('request_id', $id)->count() >= self::MAX_ATTACHMENTS) {
+                throw ValidationException::withMessages(['media_id' => __('api.attachment_limit')]);
+            }
             DB::table('request_attachments')->insert([
                 'request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id,
                 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1,
@@ -74,11 +81,15 @@ final class ManageServiceRequests
         });
     }
 
-    /** Confirma el quinto paso. La búsqueda de candidatos se programará en el Sprint 4. */
+    /**
+     * Confirma el quinto paso tras revalidarlo (SubmissionPolicy) y guarda la versión de reglas aplicada (D-24).
+     * La búsqueda de candidatos se programará en el Sprint 4. Corre dentro de la transacción de Idempotency.
+     */
     public function submit(User $user, int $id, int $expectedVersion): array
     {
         $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
-        $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now()], $user->id,
+        $ruleVersionId = $this->policy->check($request);
+        $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId], $user->id,
             'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
         $row = DB::table('service_requests')->find($id);
 

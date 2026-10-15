@@ -19,7 +19,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-119: rechaza en la API, sin React, una solicitud con datos obligatorios ausentes o inválidos', function () {
+it('S03-TC-010 rechaza en la API, sin React, una solicitud con datos obligatorios ausentes o inválidos [TC-119]', function () {
     // Dado un cliente autenticado y un cuerpo válido de referencia
     Sanctum::actingAs(ClientProfileFactory::new()->create()->user);
     $valid = Sprint03::requestPayload(DistrictFactory::new()->create()->id);

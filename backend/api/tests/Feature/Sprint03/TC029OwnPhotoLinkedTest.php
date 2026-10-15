@@ -22,7 +22,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-029: vincula la foto propia solo a su solicitud y la muestra al propietario en el resumen', function () {
+it('S03-TC-001 vincula la foto propia solo a su solicitud y la muestra al propietario en el resumen [TC-029]', function () {
     // Dado una solicitud registrada propia y una imagen válida del cliente
     $client = ClientProfileFactory::new()->create();
     Sanctum::actingAs($client->user);

@@ -23,7 +23,7 @@ beforeEach(function () {
     Sprint01::actAsSpa($this);
 });
 
-it('TC-126: rechaza modificar o eliminar una solicitud ya enviada y conserva solicitud, evidencias y eventos', function () {
+it('S03-TC-013 rechaza modificar o eliminar una solicitud ya enviada y conserva solicitud, evidencias y eventos [TC-126]', function () {
     // Dado una solicitud propia con una foto, editable antes del envío
     $client = ClientProfileFactory::new()->create();
     Sanctum::actingAs($client->user);
