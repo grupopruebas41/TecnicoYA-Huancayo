@@ -24,7 +24,7 @@ Integrante: Delgado. Módulos A (solicitudes) y consulta B (búsqueda, sin match
 
 Archivos: features/requests, features/matching, integración Sprint02Portal y http; Cypress sprint-03; documentos/evidencias. Commits: 85e058e rojo, 00381c9 verde, 557c913 Cypress, fce1653 y 4ca269c alertas.
 
-Pruebas previstas/ejecutadas: 13 IDs Vitest S3 en rojo/verde y regresión completa 146/146; build aprobado; audit sin vulnerabilidades. Cobertura de líneas: solicitudes 84,67 %, búsqueda 83,92 %. Cypress 17 preparados, no ejecutados. Evidencias: ../../../documentacion/evidencias/sprint-03/frontend/. SonarQube y revisión humana: [PENDIENTE]. PR/CI: se enlazan al publicarse en HANDOFF-codex.md.
+Pruebas previstas/ejecutadas: 13 IDs Vitest S3 en rojo/verde y regresión completa 146/146; build aprobado; audit sin vulnerabilidades. Cobertura de líneas: solicitudes 84,67 %, búsqueda 83,92 %. Cypress 17 preparados, no ejecutados. Evidencias: ../../../documentacion/evidencias/sprint-03/frontend/. SonarQube y revisión humana: [PENDIENTE]. PR: [#15](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/15). CI del commit 156be13: backend, frontend y conteo aprobados ([ejecución](https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38694503334)). Estado de commits posteriores: checks del PR.
 
 Limitaciones: incertidumbre al crear sin clave de creación y archivos privados sin vínculo; pedidos documentados en el relevo. S3.5 pendiente tras integrar backend #14. Decisiones: ../../../documentacion/sprints/DECISIONES.md.
 

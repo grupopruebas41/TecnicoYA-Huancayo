@@ -23,6 +23,8 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## 2026-10-15 · Sprint 03 · S3.4 frontend listo para integración
 
+- **PR:** [#15](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/15). **CI comprobada:** commit 156be13, backend/frontend/conteo aprobados en [ejecución 38694503334](https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38694503334). [Estado del último commit](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/15/checks).
+
 - **Rama/base:** feature/delgado/a-solicitudes/s03 / af074b5; slot B. Bloqueo anterior resuelto: fuentes de Mayhuasca 402f1a8 importadas (solo docs del sprint y DECISIONES).
 - **Commits:** b916280 pruebas y contratos (error de sintaxis conservado); 85e058e rojo real 13/13; 00381c9 implementación verde; 557c913 Cypress preparados; fce1653 rojo alertas; 4ca269c alertas verdes.
 - **Pantallas:** asistente accesible, evidencias privadas, resumen Referencial, idempotencia/recuperación, búsqueda/perfil sin contacto, técnico precargado, Mis solicitudes y alerta de límite de activas del servidor. Registro y correcciones con mensajes de éxito/error; confirmación de retiro.
@@ -30,7 +32,7 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - **Cypress:** 17 IDs S03-TC-052–068 preparados y node --check correcto; NO ejecutados. Sin Docker/Pest/SonarQube.
 - **Evidencias:** docs/documentacion/evidencias/sprint-03/frontend/; avance actualizado, revisión [PENDIENTE].
 - **Pedidos al backend:** confirmar política de limpieza para /media sin vincular (no hay DELETE); POST /requests no tiene idempotencia, así que una creación incierta obliga a consultar Mis solicitudes, sin reenvío automático. No se inventaron endpoints. Detalle en README de evidencias.
-- **Qué falta:** PR/CI, revisión e integración del backend #14 y luego S3.5 con Cypress real; cierre Sonar S3.6. No tocar el prototipo antes de D-26.
+- **Qué falta:** revisión e integración del backend #14 y luego S3.5 con Cypress real; cierre Sonar S3.6. No tocar el prototipo antes de D-26.
 
 
 
