@@ -221,3 +221,19 @@ test("S04-TC-102 complemento: vencer deshabilita Aceptar con reloj local distint
   expect(screen.getByText("Plazo vencido")).toBeInTheDocument();
   vi.useRealTimers();
 });
+
+test("S04-TC-104 complemento: al actualizar conserva oferta vencida recuperada por id", async () => {
+  let updated = false;
+  request.mockImplementation(async (path) =>
+    path === "/offers/1"
+      ? { data: { ...offer, status: "expired", version: 2 }, meta }
+      : { data: { items: updated ? [] : [offer] }, meta },
+  );
+  render(<OffersInbox technicianId={1} />);
+  await screen.findByText("Aceptar");
+  updated = true;
+  fireEvent.click(screen.getByText("Actualizar ofertas"));
+  await screen.findByText("Vencida");
+  expect(request).toHaveBeenCalledWith("/offers/1");
+  expect(screen.queryByText("Aceptar")).not.toBeInTheDocument();
+});

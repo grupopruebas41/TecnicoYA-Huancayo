@@ -28,6 +28,7 @@ it("S04-TC-095 reconexión recupera por API", () => {
   cy.task("runJobs");
   observe("GET", "/offers?status=pending,accepted", "reconnect");
   offline(false);
+  cy.contains("p", "Vencida").should("be.visible");
   cy.wait("@reconnect").then(({ response }) => {
     expect(response.statusCode).to.eq(200);
     expect(response.body.data.items.every((o) => o.status !== "pending")).to.eq(

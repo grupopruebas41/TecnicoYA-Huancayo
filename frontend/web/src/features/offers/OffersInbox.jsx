@@ -56,7 +56,10 @@ function OfferCard({ offer, serverTime, onChange }) {
       setError(e);
       if (e.status === 0) {
         setMessage("No pudimos confirmar tu respuesta. Comprobando…");
-        await onChange(offer.id);
+        if (await onChange(offer.id))
+          setMessage(
+            "Respuesta consultada. Revisa el estado actualizado de la oferta.",
+          );
       } else if (e.status === 409) await onChange(offer.id);
     } finally {
       lock.current = false;
@@ -162,12 +165,27 @@ export default function OffersInbox({ technicianId }) {
         setServerTime(result.meta?.server_time);
       } else {
         const result = await request("/offers?status=pending,accepted");
-        setRows(result.data.items);
+        const missing = rows.filter(
+          (row) => !result.data.items.some((item) => item.id === row.id),
+        );
+        const recovered = await Promise.all(
+          missing.map(async (row) => {
+            try {
+              return (await request("/offers/" + row.id)).data;
+            } catch (error) {
+              if (error.status === 404) return null;
+              throw error;
+            }
+          }),
+        );
+        setRows([...result.data.items, ...recovered.filter(Boolean)]);
         setServerTime(result.meta?.server_time);
       }
       setError(null);
+      return true;
     } catch (e) {
       setError(e);
+      return false;
     } finally {
       setLoading(false);
     }

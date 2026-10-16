@@ -61,8 +61,8 @@ describe("S4 ofertas reales", () => {
     cy.wait("@lost");
     cy.wait("@recovery").its("response.statusCode").should("eq", 200);
     cy.contains("Aceptaste la oferta.").should("not.exist");
-    cy.contains("No pudimos confirmar tu respuesta. Comprobando…").should(
-      "be.visible",
-    );
+    cy.contains(
+      "Respuesta consultada. Revisa el estado actualizado de la oferta.",
+    ).should("be.visible");
   });
 });
