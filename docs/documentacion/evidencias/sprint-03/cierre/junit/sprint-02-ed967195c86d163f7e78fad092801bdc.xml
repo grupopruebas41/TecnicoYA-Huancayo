@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="4.448" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-16T04:44:56" tests="0" file="cypress\e2e\sprint-02\landing.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Landing S2" timestamp="2026-10-16T04:44:56" tests="2" time="4.447" failures="0">
+    <testcase name="Landing S2 S02-TC-059 diez secciones y CTA en móvil y escritorio" time="3.243" classname="S02-TC-059 diez secciones y CTA en móvil y escritorio">
+    </testcase>
+    <testcase name="Landing S2 S02-TC-060 carrusel reducido accesible" time="1.063" classname="S02-TC-060 carrusel reducido accesible">
+    </testcase>
+  </testsuite>
+</testsuites>

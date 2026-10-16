@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="27.842" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-16T04:48:56" tests="0" file="cypress\e2e\sprint-03\technician-search.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 búsqueda" timestamp="2026-10-16T04:48:56" tests="3" time="27.840" failures="0">
+    <testcase name="S3 búsqueda S03-TC-064 filtros y vacío" time="9.024" classname="S03-TC-064 filtros y vacío">
+    </testcase>
+    <testcase name="S3 búsqueda S03-TC-065 perfil sin contacto" time="6.326" classname="S03-TC-065 perfil sin contacto">
+    </testcase>
+    <testcase name="S3 búsqueda S03-TC-066 solicitud dirigida al técnico elegido" time="12.214" classname="S03-TC-066 solicitud dirigida al técnico elegido">
+    </testcase>
+  </testsuite>
+</testsuites>

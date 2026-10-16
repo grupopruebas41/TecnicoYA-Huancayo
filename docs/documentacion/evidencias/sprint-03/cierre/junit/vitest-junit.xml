@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="146" failures="0" errors="0" time="16.3661367">
+    <testsuite name="src/Announcements.test.jsx" timestamp="2026-10-16T04:38:00.003Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="1.2274711">
+        <testcase classname="src/Announcements.test.jsx" name="feed hides other audiences and drafts and lets users navigate" time="0.2201001">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="unsafe links never render" time="0.0121252">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="administrator creates a targeted draft and can publish an edit" time="0.329696">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="failed save keeps the draft for retry" time="0.122738">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="demo persists edits and refuses non-administrators" time="0.0059311">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="image upload enforces exact dimensions 1600 x 420" time="0.2186899">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="image upload enforces exact dimensions 1200 x 420" time="0.1794561">
+        </testcase>
+        <testcase classname="src/Announcements.test.jsx" name="image upload enforces exact dimensions 1600 x 600" time="0.1351118">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/ServiceCarousel.test.jsx" timestamp="2026-10-16T04:38:00.018Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.8228414">
+        <testcase classname="src/ServiceCarousel.test.jsx" name="carousel wraps, changes its catalog and preserves the selected specialty on the request link" time="0.6365521">
+        </testcase>
+        <testcase classname="src/ServiceCarousel.test.jsx" name="automatic deck advances and pauses on interaction" time="0.1791395">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Sprint02Landing.test.jsx" timestamp="2026-10-16T04:38:00.019Z" hostname="DESKTOP-BQM4VE8" tests="3" failures="0" errors="0" skipped="0" time="0.5456632">
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-084 carrusel reducido y teclado" time="0.3277856">
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-085 carrusel 2500 ms y pausas" time="0.118757">
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-089 diez secciones de landing en orden" time="0.0965745">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/TechnicianProfile.test.jsx" timestamp="2026-10-16T04:38:00.020Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.4870392">
+        <testcase classname="src/TechnicianProfile.test.jsx" name="technician can update their coverage and fee without granting verification" time="0.4456729">
+        </testcase>
+        <testcase classname="src/TechnicianProfile.test.jsx" name="pending offers prevent changing service terms in the UI and demo" time="0.0388065">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/VideoExperience.test.jsx" timestamp="2026-10-16T04:38:00.021Z" hostname="DESKTOP-BQM4VE8" tests="3" failures="0" errors="0" skipped="0" time="0.270199">
+        <testcase classname="src/VideoExperience.test.jsx" name="shows only the video until the cue, then keeps the content through subsequent loops" time="0.2183052">
+        </testcase>
+        <testcase classname="src/VideoExperience.test.jsx" name="reduced motion immediately exposes the page and pauses playback" time="0.0161187">
+        </testcase>
+        <testcase classname="src/VideoExperience.test.jsx" name="video failure does not trap visitors on an empty page" time="0.0325606">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/access.test.jsx" timestamp="2026-10-16T04:38:00.022Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="1.2447751">
+        <testcase classname="src/access.test.jsx" name="unknown roles and foreign operations are denied" time="0.0094863">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="suspended demo technician cannot accept operations" time="0.0055131">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="account search and suspension confirmation target the correct user" time="0.3882754">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="profile shows only permissions belonging to the actor" time="0.0367161">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="expired sessions clear local credentials and emit logout event" time="0.0151767">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="a delayed account response cannot replace the demo actor" time="0.3332431">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="registration returns to login without signing in and clears password" time="0.2962749">
+        </testcase>
+        <testcase classname="src/access.test.jsx" name="logout clears the session and returns to login for another account" time="0.156984">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/domain/marketplace.test.js" timestamp="2026-10-16T04:38:00.024Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="0.0248163">
+        <testcase classname="src/domain/marketplace.test.js" name="matching shared contract &gt; same ranking and scores as Python and PHP" time="0.0057222">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="matching shared contract &gt; filters unavailable, unverified and uncovered technicians" time="0.0010136">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="matching shared contract &gt; ties prioritize rating" time="0.0006782">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="complete service lifecycle, role controls and no duplicate rating" time="0.0072071">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="offers expire exactly at ten minutes and unassigned closes at 24 hours" time="0.000922">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="new availability triggers matching and rating closes exactly at 48 hours" time="0.0035443">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="subcategory filters fail closed for unrelated, missing, inactive and unknown skills" time="0.0009708">
+        </testcase>
+        <testcase classname="src/domain/marketplace.test.js" name="demo rejects cross-specialty skills and requests" time="0.0015097">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/AccountApp.test.jsx" timestamp="2026-10-16T04:38:00.026Z" hostname="DESKTOP-BQM4VE8" tests="5" failures="0" errors="0" skipped="0" time="1.1385942">
+        <testcase classname="src/features/administration/AccountApp.test.jsx" name="S01-TC-016 [TC-005] complemento unitario: portal client desde identidad del servidor" time="0.4124174">
+        </testcase>
+        <testcase classname="src/features/administration/AccountApp.test.jsx" name="S01-TC-017 [TC-005] complemento unitario: portal technician desde identidad del servidor" time="0.1585879">
+        </testcase>
+        <testcase classname="src/features/administration/AccountApp.test.jsx" name="S01-TC-018 [TC-005] complemento unitario: portal admin desde identidad del servidor" time="0.1500642">
+        </testcase>
+        <testcase classname="src/features/administration/AccountApp.test.jsx" name="S01-TC-077 complemento unitario: ruta protegida anónima regresa al acceso" time="0.0308699">
+        </testcase>
+        <testcase classname="src/features/administration/AccountApp.test.jsx" name="S01-TC-076 complemento unitario: login consulta /me y logout incierto reconcilia sin falso éxito" time="0.3837691">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/Catalog.test.jsx" timestamp="2026-10-16T04:38:00.029Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.5576904">
+        <testcase classname="src/features/administration/Catalog.test.jsx" name="S01-TC-085 [TC-012] error, reintento real y subcategorías desde API" time="0.4621082">
+        </testcase>
+        <testcase classname="src/features/administration/Catalog.test.jsx" name="S01-TC-085 [TC-012] catálogo: especialidades vacías se comunican sin inventar datos" time="0.0929349">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/ProfileForm.test.jsx" timestamp="2026-10-16T04:38:00.029Z" hostname="DESKTOP-BQM4VE8" tests="5" failures="0" errors="0" skipped="0" time="0.7168645">
+        <testcase classname="src/features/administration/ProfileForm.test.jsx" name="S01-TC-081 teléfono inválido sin petición: 111111111111111111111" time="0.331847">
+        </testcase>
+        <testcase classname="src/features/administration/ProfileForm.test.jsx" name="S01-TC-081 teléfono inválido sin petición: 064-ABC" time="0.0779179">
+        </testcase>
+        <testcase classname="src/features/administration/ProfileForm.test.jsx" name="S01-TC-025 [TC-009, TC-010, TC-137] complemento unitario: PATCH versionado, éxito confirmado, conflicto y recarga explícita" time="0.1317467">
+        </testcase>
+        <testcase classname="src/features/administration/ProfileForm.test.jsx" name="S01-TC-074 complemento unitario: resultado incierto consulta identidad, sin repetir PATCH ni afirmar éxito" time="0.0651822">
+        </testcase>
+        <testcase classname="src/features/administration/ProfileForm.test.jsx" name="S01-TC-077 complemento unitario: sesión caducada y nombre inválido no producen falso éxito" time="0.1064261">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/SessionForm.test.jsx" timestamp="2026-10-16T04:38:00.031Z" hostname="DESKTOP-BQM4VE8" tests="3" failures="0" errors="0" skipped="0" time="0.9795145">
+        <testcase classname="src/features/administration/SessionForm.test.jsx" name="S01-TC-083 429 en español sin éxito y botón habilitado nuevamente" time="0.5903145">
+        </testcase>
+        <testcase classname="src/features/administration/SessionForm.test.jsx" name="S01-TC-083 contrato D-43: registro rechazado por sesión activa conserva el formulario y no afirma creación" time="0.2141625">
+        </testcase>
+        <testcase classname="src/features/administration/SessionForm.test.jsx" name="S01-TC-072 [TC-003] complemento unitario: registro técnico sin client_type, creación confirmada sin iniciar sesión" time="0.1725146">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/accessibility.test.jsx" timestamp="2026-10-16T04:38:00.033Z" hostname="DESKTOP-BQM4VE8" tests="6" failures="0" errors="0" skipped="0" time="0.5003233">
+        <testcase classname="src/features/administration/accessibility.test.jsx" name="S01-TC-084 AccountApp: botones explícitos con rol client" time="0.284846">
+        </testcase>
+        <testcase classname="src/features/administration/accessibility.test.jsx" name="S01-TC-084 AccountApp: botones explícitos con rol unknown" time="0.0448716">
+        </testcase>
+        <testcase classname="src/features/administration/accessibility.test.jsx" name="S01-TC-084 AccountApp: botones explícitos al fallar la sesión" time="0.0514907">
+        </testcase>
+        <testcase classname="src/features/administration/accessibility.test.jsx" name="S01-TC-084 Catalog: reintento con type explícito" time="0.0570044">
+        </testcase>
+        <testcase classname="src/features/administration/accessibility.test.jsx" name="S01-TC-084 complemento: carga de sesión con salida semántica" time="0.0336578">
+        </testcase>
+        <testcase classname="src/features/administration/accessibility.test.jsx" name="S01-TC-084 complemento: catálogo vacío con salida semántica" time="0.0257707">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/forms.test.jsx" timestamp="2026-10-16T04:38:00.034Z" hostname="DESKTOP-BQM4VE8" tests="16" failures="0" errors="0" skipped="0" time="0.1140778">
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-026 admite correo de 253 caracteres" time="0.0048112">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-026 admite correo de 254 caracteres" time="0.0005888">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-027 rechaza correo de 255 caracteres antes de analizarlo" time="0.0002425">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-027 rechaza correo de 100000 caracteres antes de analizarlo" time="0.0001785">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido " time="0.0014063">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido a@b" time="0.0002672">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido @b.pe" time="0.0001629">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido a@@b.pe" time="0.0001514">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido a@.pe" time="0.0002275">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido a@b..pe" time="0.0001781">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido a@b.pe." time="0.0001324">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido a b@c.pe" time="0.0001231">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido a@b.pe
+" time="0.0001384">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-028 rechaza formato inválido undefined" time="0.0001663">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-029 acepta subdominios y alias" time="0.0002261">
+        </testcase>
+        <testcase classname="src/features/administration/forms.test.jsx" name="S01-TC-030 limita el campo de correo en la pantalla" time="0.1025366">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/http.test.js" timestamp="2026-10-16T04:38:00.037Z" hostname="DESKTOP-BQM4VE8" tests="3" failures="0" errors="0" skipped="0" time="0.0353343">
+        <testcase classname="src/features/administration/http.test.js" name="S01-TC-082 CSRF previo, cookie decodificada y sesión incluida; sin cookie no hay PATCH" time="0.0282764">
+        </testcase>
+        <testcase classname="src/features/administration/http.test.js" name="S01-TC-082 contrato: prioriza error.message, código y campos; red sin respuesta es incierta" time="0.0024363">
+        </testcase>
+        <testcase classname="src/features/administration/http.test.js" name="S03-TC-076 complemento: Idempotency-Key atraviesa HTTP junto con CSRF y sesión" time="0.0015802">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/labels.test.js" timestamp="2026-10-16T04:38:00.037Z" hostname="DESKTOP-BQM4VE8" tests="9" failures="0" errors="0" skipped="0" time="0.0044077">
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-031 traduce estado approved" time="0.0020565">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-031 traduce estado rejected" time="0.0001982">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-031 traduce estado pending" time="0.0000802">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-031 traduce estado unknown" time="0.0000782">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-032 traduce permiso announcements.manage" time="0.0001299">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-032 traduce permiso technicians.verify" time="0.0000782">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-032 traduce permiso catalog.manage" time="0.0000605">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-032 traduce permiso unknown" time="0.00007">
+        </testcase>
+        <testcase classname="src/features/administration/labels.test.js" name="S01-TC-033 traduce errores estándar y conserva mensajes del servidor en español" time="0.000284">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/sprint02.test.jsx" timestamp="2026-10-16T04:38:00.039Z" hostname="DESKTOP-BQM4VE8" tests="12" failures="0" errors="0" skipped="0" time="0.7275757">
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-076 validación de subcategoría" time="0.0060197">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-077 validación de comunicado" time="0.0009447">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-078 vista previa escapa HTML" time="0.0738354">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-079 diálogo cancela y devuelve foco" time="0.3589289">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-080 validación de franjas" time="0.001373">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-081 límites de tarifa" time="0.0185155">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-082 pausa con reloj controlado" time="0.0052264">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-083 revisión exige motivo antes de API" time="0.1332194">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-086 error 500 y resultado incierto nunca dan éxito" time="0.0869967">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-087 estados distintos en español" time="0.000729">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-088 validación de archivo" time="0.0005573">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02.test.jsx" name="S02-TC-079 complemento: diálogo nativo mantiene nombre y bloqueo de confirmación" time="0.0377028">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/sprint025.test.js" timestamp="2026-10-16T04:38:00.041Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.0115347">
+        <testcase classname="src/features/administration/sprint025.test.js" name="S02-TC-076 complemento: referencia orientativa, límites y decimales v1.1" time="0.0054582">
+        </testcase>
+        <testcase classname="src/features/administration/sprint025.test.js" name="S02-TC-088 complemento de portafolio: fecha opcional y no futura UTC" time="0.0041734">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/sprint02Panels.test.jsx" timestamp="2026-10-16T04:38:00.041Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="3.2245771">
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-076 complemento: catálogo guarda y cambia estado con versión" time="1.0692943">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-078 complemento: comunicado borrador publicación duplicación y retiro" time="0.6933979">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-083 complemento: ficha aprueba con motivo y versión" time="0.1125101">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-081 complemento: técnico guarda bio tarifa disponibilidad y pausa" time="0.4168837">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-079 complemento: portafolio cancela y retira trabajo" time="0.525195">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-087 complemento: menú solo muestra permisos concedidos" time="0.0513809">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-088 complemento v1.1: conserva subcategoría inactiva y permite fecha vacía" time="0.2339731">
+        </testcase>
+        <testcase classname="src/features/administration/sprint02Panels.test.jsx" name="S02-TC-079 complemento: el aviso de retiro persiste al desmontar el botón" time="0.1192455">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/administration/validateAccount.test.js" timestamp="2026-10-16T04:38:00.043Z" hostname="DESKTOP-BQM4VE8" tests="8" failures="0" errors="0" skipped="0" time="0.0050828">
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-078 nombre de 1 caracteres" time="0.0021271">
+        </testcase>
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-078 nombre de 2 caracteres" time="0.0001972">
+        </testcase>
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-078 nombre de 100 caracteres" time="0.0000861">
+        </testcase>
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-078 nombre de 101 caracteres" time="0.0000795">
+        </testcase>
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-079 límite UTF-8 de contraseña" time="0.0001434">
+        </testcase>
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-079 límite UTF-8 de contraseña" time="0.0000813">
+        </testcase>
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-079 límite UTF-8 de contraseña" time="0.0000654">
+        </testcase>
+        <testcase classname="src/features/administration/validateAccount.test.js" name="S01-TC-080 tipo de cliente requerido para cliente y prohibido para técnico" time="0.0008886">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/requests/requestFlows.test.jsx" timestamp="2026-10-16T04:38:00.044Z" hostname="DESKTOP-BQM4VE8" tests="13" failures="0" errors="0" skipped="0" time="1.9732533">
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio" time="0.8784099">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-069 complemento: validación enfoca el campo y no registra" time="0.0855062">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-074 complemento: creación incierta no repite POST" time="0.2735287">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-076 complemento: incertidumbre, lectura registrada y reintento con misma clave" time="0.1078412">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-076 complemento: lectura enviada confirma sin repetir POST" time="0.0651667">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-077 complemento: límite del servidor y 500 no dan falso éxito" time="0.1084787">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-072 complemento: cancela retiro sin DELETE y confirma con versión" time="0.084801">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-072 complemento: sube evidencia privada y adjunta antes de confirmar" time="0.0420079">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-072 complemento: archivo inválido no sale del navegador y quinta foto bloquea" time="0.0510339">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-079 complemento: búsqueda, privacidad y solicitud dirigida" time="0.1333283">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-080 complemento: detalle enviado sin controles de edición" time="0.0296172">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-080 complemento: portal abre solicitud y retoma la registrada" time="0.1066947">
+        </testcase>
+        <testcase classname="src/features/requests/requestFlows.test.jsx" name="S03-TC-073 complemento: fechas de registro y reanudación" time="0.0034969">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/features/requests/sprint03.test.jsx" timestamp="2026-10-16T04:38:00.046Z" hostname="DESKTOP-BQM4VE8" tests="13" failures="0" errors="0" skipped="0" time="1.0066023">
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-069 validación del paso 1" time="0.0062307">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-070 cambiar de rubro limpia subcategoría y catálogo" time="0.5712632">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-071 límites de descripción y espacios" time="0.0013135">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-072 límites de evidencias" time="0.0008973">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-073 ubicación y horario con reloj controlado" time="0.0060191">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-074 estado preservado al navegar" time="0.0004885">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-075 tarifa referencial y ausencia de cobro" time="0.1391551">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-076 reintento conserva clave y cuerpo" time="0.0050854">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-077 envío pendiente bloquea doble clic" time="0.0927885">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-078 técnico sin calificaciones" time="0.0216078">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-079 filtros elegidos y reinicio de página" time="0.0047668">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-080 estados de Mis solicitudes" time="0.1002019">
+        </testcase>
+        <testcase classname="src/features/requests/sprint03.test.jsx" name="S03-TC-081 indicador accesible de cinco pasos" time="0.053526">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/forms.test.jsx" timestamp="2026-10-16T04:38:00.048Z" hostname="DESKTOP-BQM4VE8" tests="2" failures="0" errors="0" skipped="0" time="0.4570984">
+        <testcase classname="src/forms.test.jsx" name="request form passes specialty, zone, address and description" time="0.1710618">
+        </testcase>
+        <testcase classname="src/forms.test.jsx" name="changing specialty clears subcategory and only exposes relevant options" time="0.2834877">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/scroll/scroll.test.jsx" timestamp="2026-10-16T04:38:00.048Z" hostname="DESKTOP-BQM4VE8" tests="5" failures="0" errors="0" skipped="0" time="0.2908004">
+        <testcase classname="src/scroll/scroll.test.jsx" name="the supplied timecodes map to the exact source frames at 24 fps" time="0.0059138">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="scroll mapping is continuous, reversible and bounded at both ends" time="0.0011915">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="portrait cover fills the viewport without stretching the image" time="0.0005807">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="reduced motion exposes all three sections and keeps the service links functional" time="0.2782344">
+        </testcase>
+        <testcase classname="src/scroll/scroll.test.jsx" name="cache limits concurrent loads, pauses prefetch and discards decoded frames on disposal" time="0.0025022">
+        </testcase>
+    </testsuite>
+</testsuites>

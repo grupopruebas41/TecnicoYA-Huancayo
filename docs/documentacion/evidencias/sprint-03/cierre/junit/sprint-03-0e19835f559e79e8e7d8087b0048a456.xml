@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="15.752" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-16T04:46:16" tests="0" file="cypress\e2e\sprint-03\my-requests.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 mis solicitudes" timestamp="2026-10-16T04:46:16" tests="2" time="15.750" failures="0">
+    <testcase name="S3 mis solicitudes S03-TC-067 registrada continúa y enviada no se edita" time="7.078" classname="S03-TC-067 registrada continúa y enviada no se edita">
+    </testcase>
+    <testcase name="S3 mis solicitudes S03-TC-068 cuarta activa queda registrada" time="8.546" classname="S03-TC-068 cuarta activa queda registrada">
+    </testcase>
+  </testsuite>
+</testsuites>

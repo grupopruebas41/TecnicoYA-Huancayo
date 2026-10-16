@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="45.867" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-16T04:48:09" tests="0" file="cypress\e2e\sprint-03\request-wizard.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 asistente" timestamp="2026-10-16T04:48:09" tests="5" time="45.865" failures="0">
+    <testcase name="S3 asistente S03-TC-052 recorrido con corrección antes de enviar" time="11.793" classname="S03-TC-052 recorrido con corrección antes de enviar">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-053 paso incompleto no avanza y enfoca error" time="7.234" classname="S03-TC-053 paso incompleto no avanza y enfoca error">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-054 atrás y adelante conserva datos" time="9.408" classname="S03-TC-054 atrás y adelante conserva datos">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-055 límites de descripción" time="7.455" classname="S03-TC-055 límites de descripción">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-063 recorrido por teclado" time="9.603" classname="S03-TC-063 recorrido por teclado">
+    </testcase>
+  </testsuite>
+</testsuites>

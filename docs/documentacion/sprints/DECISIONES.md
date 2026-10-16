@@ -70,12 +70,15 @@
 | D-56 | SOL-02 · Longitud de la dirección | Opción A: `address` de **5 a 255 caracteres** (sin contar espacios de los extremos), en cliente y servidor | 2026-10-15 | Pimentel |
 | D-57 | BUSQ-01 · Técnico en pausa en la búsqueda | Opción A: el técnico con una pausa vigente **se excluye de `GET /technicians`**; su perfil público sigue accesible por enlace (`GET /technicians/{id}`) | 2026-10-15 | Pimentel |
 | D-58 | PARAM-01 · Dónde vive N de D-11 | Opción A: tablas mínimas `rule_parameters`, `rule_versions` y `rule_values` (§8.1 a §8.3 de las reglas formalizadas) con la **versión 1 sembrada** y `max_active_requests_per_client = 3`; solo lectura hasta S7. La solicitud guarda `rule_version_id` al enviarse (D-24) | 2026-10-15 | Pimentel |
+| D-59 | SEED-01 · Guarda de los seeders E2E (DEF-44) | Cada seeder E2E (S01, S02 y S03) llama a `E2EDatabaseGuard` antes de cualquier consulta: solo siembra en una base que termine en `_testing` y sea de los slots A o B (`tecnicoya_testing`, `tecnicoya_b_testing`), con `APP_ENV=testing`, host 127.0.0.1 y usuario `tecnicoya_test`; si no, `SeedingRefused` nombra la base rechazada. S03-TC-082 a 085 | 2026-10-15 | Pimentel |
 
 ## Decisiones pendientes
 
 | ID | Decisión | Opción elegida | Fecha | Quién decidió |
 |---|---|---|---|---|
 | P17-S6 | Límites de comentarios de calificación y respuestas a reseñas (portafolio y documentos quedaron en D-46) | pendiente | — | — |
+| IDEM-01 | Idempotencia de `POST /requests` (límite de contrato anotado por Codex en S3.5): hoy una creación con respuesta perdida puede duplicar el borrador | pendiente: opciones A y B en INFORME-SPRINT-03 §4.2 | — | — |
+| MEDIA-02 | Foto de evidencia subida y aún no vinculada: no hay ruta para borrarla (límite de contrato anotado por Codex en S3.5) | pendiente: opciones A y B en INFORME-SPRINT-03 §4.2 | — | — |
 
 **Para registrar una decisión:**
 1. Pasar la fila a «Decisiones tomadas».

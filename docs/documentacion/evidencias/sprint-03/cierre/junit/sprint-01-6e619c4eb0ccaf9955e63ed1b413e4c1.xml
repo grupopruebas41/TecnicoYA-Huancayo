@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="8.709" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-16T04:43:20" tests="1" file="cypress\e2e\sprint-01\technician-signup.cy.js" time="8.704" failures="0">
+    <testcase name="S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificación al ingresar" time="8.622" classname="S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificación al ingresar">
+    </testcase>
+  </testsuite>
+</testsuites>
