@@ -20,6 +20,6 @@ Rama feature/delgado/b-matching/s04; módulo BMatching/CNotifications frontend. 
 
 Archivos: features/offers, features/realtime, integración en MyRequests/Sprint02Portal; requestsApi/EvidencePicker y distrito base en TechnicianPanel; specs cypress/e2e/sprint-04. [Informe y evidencia](../../../documentacion/evidencias/sprint-04/frontend/README.md).
 
-Pruebas previstas/ejecutadas: 142/142 Vitest (13 IDs S4), cobertura global 84,26 %; build y audit aprobados. Cypress: sin ejecutar, 13 preparados y 5 bloqueados detallados en HANDOFF. No Sonar local; enlace de análisis pendiente de S4.6. PR/CI: se registran tras publicar. Revisor [PENDIENTE].
+Pruebas previstas/ejecutadas: 142/142 Vitest (13 IDs S4), cobertura global 84,26 %; build y audit aprobados. Cypress: sin ejecutar, 13 preparados y 5 bloqueados detallados en HANDOFF. No Sonar local; enlace de análisis pendiente de S4.6. PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/20; CI iniciada, estado del último commit en checks. Revisor [PENDIENTE].
 
 Uso de IA: Codex, modelo no identificado de forma verificable, 2026-10-16. Aceptados componentes, pruebas y adaptación D-60/D-61; corregidas recuperación de ofertas vencidas, conservación de claves y aserción histórica contraria a D-60. Verificación automática anterior; revisión humana [PENDIENTE]. No se aceptaron fixtures o tareas de servidor inventadas. [Decisiones](../../../documentacion/sprints/DECISIONES.md).

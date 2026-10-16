@@ -29,7 +29,7 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - Vitest **142/142**, 20 archivos; **13 IDs distintos S04-TC-101–113**. Líneas global **84,26 %**. Build 0, audit 0 vulnerabilidades. Prueba S03-TC-074 de creación incierta actualizada por D-60; explicación/fallos conservados en evidencias.
 - Cypress: **no ejecutado**, 18 IDs representados; 13 specs con pasos y 5 skip bloqueados (086,087,089,094,100), no cuentan. No Docker, Pest ni SonarQube. Backend sin modificaciones.
 - Pedidos a Claude Code: fixtures aislados para 60 s, dos aceptaciones, busy/conflicto y dirección antes/después; tarea de republicar mismo event_id; restaurar fixtures/reloj entre casos. Confirmar envoltura data de broadcasting/auth y technician_profile.id en /me. Detalle y configuración VITE_REVERB_* en evidencias/sprint-04/frontend/README.md.
-- Evidencias: docs/documentacion/evidencias/sprint-04/frontend/. Avance: docs/avances/delgado/sprint-04/avance.md. PR/CI se enlazan al publicar. Revisor [PENDIENTE]. S4.4 queda con esos 5 preparativos E2E pendientes; no se declara cierre del sprint.
+- Evidencias: docs/documentacion/evidencias/sprint-04/frontend/. Avance: docs/avances/delgado/sprint-04/avance.md. PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/20; CI iniciada, consultar checks del último commit. Evidencias en d3aead5. Revisor [PENDIENTE]. S4.4 queda con esos 5 preparativos E2E pendientes; no se declara cierre del sprint.
 
 
 
