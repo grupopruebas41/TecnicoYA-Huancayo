@@ -2,14 +2,15 @@
 
 1. **Proyecto:** marketplace web que conecta clientes (MYPES y hogares de Huancayo) con técnicos de cómputo, refrigeración comercial y electricidad. Curso Pruebas y Calidad de Software, Universidad Continental. Equipo: Delgado (frontend), Mayhuasca (backend), Pimentel (base de datos, Docker e integración).
 
-2. **Stack vigente:** React 18 + Vite 5 (`frontend/web`); Laravel 12 con API `/api/v1` y sesión Sanctum (`backend/api`); MySQL 8.4; Pest 3, Vitest 2.1 y Cypress 16.1; SonarQube.
-   **Congelado** (no se amplía; solo se mantienen sus pruebas hasta retirarlo según D-26, cuando las pantallas v1 de S2 y S3 pasen sus pruebas Cypress):
+2. **Stack vigente:** React 18 + Vite 8 (`frontend/web`); Laravel 12 con API `/api/v1` y sesión Sanctum (`backend/api`); MySQL 8.4; Pest 3, Vitest 5 y Cypress 16.1; SonarQube. Desde el S4, Reverb y Echo para el tiempo real (D-70).
+   **Retirado el 2026-10-16** (D-26 y D-62; el código queda en el historial de Git con la etiqueta previa al retiro):
    - la API `/api/*` con token, **salvo `GET /api/health`**, que se mantiene porque el arrancador E2E la usa para saber si la API está lista;
-   - la demo `localStorage` (`#demo`);
-   - los comandos `marketplace:tick` y `marketplace:admin`;
-   - el servicio Python y pytest (el matching va en PHP, D-19);
-   - PostgreSQL;
-   - el plan histórico de 10 iteraciones de los PDF 08 a 17.
+   - la demo `localStorage` (`#demo`), que retira Codex en su PR;
+   - los comandos `marketplace:tick` y `marketplace:admin` (el alta de administradores es `tecnicoya:provision-admin`);
+   - el servicio Python y pytest (el matching va en PHP, D-19), con `domain/rules.json` y `scripts/sync-rules.py`;
+   - las tablas `requests`, `offers`, `technicians`, `api_tokens` y `access_events`.
+
+   **Histórico que no se sigue:** PostgreSQL y el plan de 10 iteraciones de los PDF 08 a 17.
 
 3. **Fuentes, por prioridad:**
    1. `docs/documentacion/sprints/DECISIONES.md`
@@ -59,7 +60,7 @@
      - cambiar una prueba para que pase sin explicarlo.
    - **Plazos:** con reloj controlado (`travel` o `Carbon::setTestNow`, `cy.clock`, `vi.useFakeTimers`).
    - **Datos:** solo sintéticos.
-   - **Prototipo histórico:** sus pruebas (Vitest de la demo, pytest y las Pest de `MarketplaceTest` y `AnnouncementsTest`) se mantienen como regresión, pero no cuentan para la meta.
+   - **Prototipo histórico:** sus pruebas (Vitest de la demo, pytest y las Pest de `MarketplaceTest` y `AnnouncementsTest`) se retiraron con él el 2026-10-16 (D-62); nunca contaron para la meta.
 
 8. **Definición de terminado (adendas del docente):**
    - alertas de éxito y de error en cada operación CRUD, con su prueba automatizada;
