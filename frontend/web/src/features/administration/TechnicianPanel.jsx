@@ -13,20 +13,35 @@ import RetireButton from "./RetireButton";
 import AvailabilityEditor from "./AvailabilityEditor";
 import ServicesEditor from "./ServicesEditor";
 function Bio({ profile, reload }) {
+  const districts = useResource("/catalog/districts");
+  const [baseDistrict, setBaseDistrict] = useState(
+    profile.base_district_id || "",
+  );
   const [bio, setBio] = useState(profile.bio || ""),
     [years, setYears] = useState(profile.experience_years ?? 0);
   return (
     <MutationForm
       reload={reload}
       validate={() => {
+        if (
+          baseDistrict &&
+          !districts.data?.some((d) => d.id === +baseDistrict)
+        )
+          return { base_district_id: ["Selecciona un distrito activo."] };
         if (bio.length > 2000) return { bio: ["Máximo 2000 caracteres."] };
-        if (!Number.isInteger(+years) || +years < 0 || +years > 60) return { experience_years: ["Indica entre 0 y 60 años enteros."] };
+        if (!Number.isInteger(+years) || +years < 0 || +years > 60)
+          return { experience_years: ["Indica entre 0 y 60 años enteros."] };
         return {};
       }}
       onSave={async () => {
         await request(
           "/technicians/me/profile",
-          { bio, experience_years: +years, expected_version: profile.version },
+          {
+            bio,
+            experience_years: +years,
+            expected_version: profile.version,
+            ...(baseDistrict ? { base_district_id: +baseDistrict } : {}),
+          },
           "PATCH",
         );
         await reload();
@@ -34,6 +49,20 @@ function Bio({ profile, reload }) {
     >
       {(e) => (
         <>
+          <ResourceState resource={districts} />
+          <Field label="Distrito base" name="base_district_id" errors={e}>
+            <select
+              value={baseDistrict}
+              onChange={(event) => setBaseDistrict(event.target.value)}
+            >
+              <option value="">Selecciona un distrito activo</option>
+              {districts.data?.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          </Field>
           <Field label="Biografía" name="bio" errors={e}>
             <textarea value={bio} onChange={(x) => setBio(x.target.value)} />
           </Field>
@@ -69,8 +98,13 @@ function Documents({ profile, reload }) {
         reload={reload}
         validate={() => {
           if (!media) return { media_id: ["Sube un documento."] };
-          if (type.trim().length < 2 || type.length > 60) return { document_type: ["Indica entre 2 y 60 caracteres."] };
-          if (profile.documents?.filter(d => d.review_status !== "rejected").length >= 5) return { media_id: ["Máximo 5 documentos vigentes."] };
+          if (type.trim().length < 2 || type.length > 60)
+            return { document_type: ["Indica entre 2 y 60 caracteres."] };
+          if (
+            profile.documents?.filter((d) => d.review_status !== "rejected")
+              .length >= 5
+          )
+            return { media_id: ["Máximo 5 documentos vigentes."] };
           return {};
         }}
         onSave={async () => {
@@ -111,7 +145,8 @@ function PortfolioEditor({ item = {}, reload, subcategories }) {
       e.description = ["Máximo 2000 caracteres."];
     if (images.length < 1 || images.length > 5)
       e.media_ids = ["Adjunta entre 1 y 5 imágenes."];
-    if(validatePerformedOn(v.performed_on)) e.performed_on=[validatePerformedOn(v.performed_on)];
+    if (validatePerformedOn(v.performed_on))
+      e.performed_on = [validatePerformedOn(v.performed_on)];
     return e;
   }
   return (
@@ -170,7 +205,12 @@ function PortfolioEditor({ item = {}, reload, subcategories }) {
               onChange={(e) => update("subcategory_id", e.target.value)}
             >
               <option value="">Selecciona</option>
-              {item.subcategory_id && !subcategories.some(s=>s.id===item.subcategory_id) && <option value={item.subcategory_id}>Subcategoría anterior (inactiva)</option>}
+              {item.subcategory_id &&
+                !subcategories.some((s) => s.id === item.subcategory_id) && (
+                  <option value={item.subcategory_id}>
+                    Subcategoría anterior (inactiva)
+                  </option>
+                )}
               {subcategories.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}

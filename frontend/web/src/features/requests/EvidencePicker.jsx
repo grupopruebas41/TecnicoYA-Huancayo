@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { request } from "../administration/http";
 import { Notice } from "../administration/forms";
+import {offerMessage} from "../offers/offerErrors";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { validateEvidence } from "./requestValidation";
 export default function EvidencePicker({
@@ -92,11 +93,13 @@ export default function EvidencePicker({
           "DELETE",
         );
         await refresh();
+      } else {
+        await request("/media/" + remove.id, undefined, "DELETE");
       }
       setMedia(media.filter((m) => m.id !== remove.id));
-      setSuccess("Foto retirada de la solicitud.");
+      setSuccess(remove.linked ? "Foto retirada de la solicitud." : "Quitaste la foto.");
     } catch (error) {
-      setError(error.message);
+      setError(error.code ? offerMessage(error) : error.message);
       if (error.status === 0) {
         setUncertain(true);
         const current = await refresh();

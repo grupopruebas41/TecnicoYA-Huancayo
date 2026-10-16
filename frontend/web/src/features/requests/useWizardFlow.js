@@ -2,7 +2,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { request } from "../administration/http";
 import { wizardReducer, stateFromRecord } from "./wizardState";
 import { validateStep, fieldErrors } from "./requestValidation";
-import { attachPending, saveRegistration } from "./requestsApi";
+import { attachPending, saveRegistration, createRegistrationAttempt } from "./requestsApi";
 function useWizardCatalog(specialtyId, target, retry, setError) {
   const [specialties, setSpecialties] = useState([]),
     [subcategories, setSubcategories] = useState([]),
@@ -75,6 +75,8 @@ export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
   useEffect(() => {
     onBusy(busy || uploading || submitting || uncertain);
   }, [busy, uploading, submitting, uncertain, onBusy]);
+  const creationAttempt = useRef(null);
+  creationAttempt.current ??= createRegistrationAttempt();
   const notice = useRef(null);
   useEffect(() => {
     if (error && !Object.keys(errors).length) notice.current?.focus();
@@ -131,7 +133,7 @@ export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
   async function save() {
     let current = record;
     try {
-      current = await saveRegistration(state, current, target);
+      current = await saveRegistration(state, current, target, creationAttempt.current);
       setRecord(current);
       current = await attachPending(current, media);
       setRecord(current);

@@ -1,4 +1,7 @@
-import ClientPortal from '../requests/ClientPortal';
+import { RealtimeProvider } from "../realtime/Realtime";
+import Notifications from "../realtime/Notifications";
+import OffersInbox from "../offers/OffersInbox";
+import ClientPortal from "../requests/ClientPortal";
 import React, { useState } from "react";
 import CatalogAdmin from "./CatalogAdmin";
 import AnnouncementsAdmin from "./AnnouncementsAdmin";
@@ -17,10 +20,16 @@ export default function Sprint02Portal({ user }) {
   const selected = items.find(([key]) => key === tab);
   const Panel = selected?.[2];
   return (
-    <>
+    <RealtimeProvider>
       <RoleAnnouncements key={user.id} />
+      <Notifications key={"notifications-" + user.id} userId={user.id} />
       {role === "client" && <ClientPortal key={user.id} />}
-      {role === "technician" && <TechnicianPanel />}
+      {role === "technician" && (
+        <>
+          <OffersInbox technicianId={user.technician_profile?.id} />
+          <TechnicianPanel />
+        </>
+      )}
       {role === "admin" && (
         <>
           <nav className="s02-nav" aria-label="Administración">
@@ -42,6 +51,6 @@ export default function Sprint02Portal({ user }) {
           )}
         </>
       )}
-    </>
+    </RealtimeProvider>
   );
 }

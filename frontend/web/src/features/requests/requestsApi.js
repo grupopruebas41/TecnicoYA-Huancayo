@@ -29,11 +29,42 @@ export async function attachPending(record, media) {
   return current;
 }
 
-export async function saveRegistration(state, current, target) {
+export function createRegistrationAttempt() {
+  let key, body;
+  return {
+    async send(payload) {
+      key ??= crypto.randomUUID();
+      body ??= structuredClone(payload);
+      const send = () =>
+        request("/requests", body, "POST", {
+          headers: { "Idempotency-Key": key },
+        });
+      try {
+        try {
+          return await send();
+        } catch (error) {
+          if (error.status !== 0) throw error;
+          return await send();
+        }
+      } catch (error) {
+        if (error.status !== 0) {
+          key = undefined;
+          body = undefined;
+        }
+        throw error;
+      }
+    },
+  };
+}
+export async function saveRegistration(
+  state,
+  current,
+  target,
+  attempt = createRegistrationAttempt(),
+) {
   if (!current)
     return (
-      await request(
-        "/requests",
+      await attempt.send(
         registrationPayload({
           ...state,
           source: target ? "profile" : state.source,
