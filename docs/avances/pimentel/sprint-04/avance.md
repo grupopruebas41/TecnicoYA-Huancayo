@@ -53,7 +53,7 @@
 
   Detalle en [evidencias/sprint-04/retiro/](../../../documentacion/evidencias/sprint-04/retiro/).
 - **SonarQube:** no aplica. Se analiza en el cierre del S4.
-- **Revisor:** [PENDIENTE]
+- **Revisor:** Pimentel Chumbes James
 - **Fecha:** 2026-10-16
 - **Pendientes y bloqueos:**
   - Agregar S04-TC-120 a 127 a `CATALOGO-S04.csv` al fusionar `main` en `feature/mayhuasca/b-matching/s04`.
