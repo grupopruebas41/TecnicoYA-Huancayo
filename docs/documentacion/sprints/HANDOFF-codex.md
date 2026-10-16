@@ -21,6 +21,18 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-16 · S4.4 · Frontend de matching
+
+- Rama feature/delgado/b-matching/s04; base 38c9c14. Fuentes S4 de origin/feature/mayhuasca/b-matching/s04 importadas; leídos ambos HANDOFF y D-60–71. Se conserva nota de D-26 de main.
+- Commits: 757abe1 rojo (fallo de importación, 0 ejecutados); b5b8891 implementación; e9d7504 Cypress preparado; dac617f recuperación de ofertas vencidas.
+- Pantallas: ofertas técnico y SLA del servidor, candidatos/selección/pendiente/alternativas, notificaciones after_id, Echo/Reverb con deduplicación y recuperación, distrito base del técnico. D-60 creación idempotente y D-61 retiro de media no vinculada.
+- Vitest **142/142**, 20 archivos; **13 IDs distintos S04-TC-101–113**. Líneas global **84,26 %**. Build 0, audit 0 vulnerabilidades. Prueba S03-TC-074 de creación incierta actualizada por D-60; explicación/fallos conservados en evidencias.
+- Cypress: **no ejecutado**, 18 IDs representados; 13 specs con pasos y 5 skip bloqueados (086,087,089,094,100), no cuentan. No Docker, Pest ni SonarQube. Backend sin modificaciones.
+- Pedidos a Claude Code: fixtures aislados para 60 s, dos aceptaciones, busy/conflicto y dirección antes/después; tarea de republicar mismo event_id; restaurar fixtures/reloj entre casos. Confirmar envoltura data de broadcasting/auth y technician_profile.id en /me. Detalle y configuración VITE_REVERB_* en evidencias/sprint-04/frontend/README.md.
+- Evidencias: docs/documentacion/evidencias/sprint-04/frontend/. Avance: docs/avances/delgado/sprint-04/avance.md. PR/CI se enlazan al publicar. Revisor [PENDIENTE]. S4.4 queda con esos 5 preparativos E2E pendientes; no se declara cierre del sprint.
+
+
+
 ## 2026-10-16 · RETIRO-01 · Frontend
 
 - Rama feature/delgado/infra/retiro-prototipo; base cced99e. Commits: 60cc4a7 dependencias DEP-01; f23ed61 prueba en rojo; ee4cb8a retiro y estilos v1.
