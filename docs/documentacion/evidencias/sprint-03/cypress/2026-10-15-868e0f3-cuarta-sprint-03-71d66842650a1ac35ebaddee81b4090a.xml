@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="75.460" tests="4" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:30:47" tests="0" file="cypress\e2e\sprint-03\request-submission.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 envío" timestamp="2026-10-15T20:30:47" tests="4" time="75.458" failures="0">
+    <testcase name="S3 envío S03-TC-059 doble clic no duplica envío" time="15.015" classname="S03-TC-059 doble clic no duplica envío">
+    </testcase>
+    <testcase name="S3 envío S03-TC-060 respuesta perdida después de procesar se recupera" time="12.441" classname="S03-TC-060 respuesta perdida después de procesar se recupera">
+    </testcase>
+    <testcase name="S3 envío S03-TC-061 subcategoría desactivada rechaza envío real" time="29.678" classname="S03-TC-061 subcategoría desactivada rechaza envío real">
+    </testcase>
+    <testcase name="S3 envío S03-TC-062 error 500 simulado no muestra éxito" time="13.800" classname="S03-TC-062 error 500 simulado no muestra éxito">
+    </testcase>
+  </testsuite>
+</testsuites>

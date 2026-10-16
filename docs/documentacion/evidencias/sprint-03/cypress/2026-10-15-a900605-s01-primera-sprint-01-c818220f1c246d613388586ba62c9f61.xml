@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="55.504" tests="7" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:43:25" tests="0" file="cypress\e2e\sprint-01\portals.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Sprint 1: UI real con sesión" timestamp="2026-10-15T20:43:25" tests="7" time="55.420" failures="0">
+    <testcase name="Sprint 1: UI real con sesión S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior" time="15.406" classname="S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-015 [TC-001] registra un cliente mediante formulario" time="3.964" classname="S01-TC-015 [TC-001] registra un cliente mediante formulario">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-016 [TC-005] inicia sesión real como client y mantiene identidad al recargar" time="8.839" classname="S01-TC-016 [TC-005] inicia sesión real como client y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-017 [TC-005] inicia sesión real como technician y mantiene identidad al recargar" time="10.904" classname="S01-TC-017 [TC-005] inicia sesión real como technician y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-018 [TC-005] inicia sesión real como admin y mantiene identidad al recargar" time="9.052" classname="S01-TC-018 [TC-005] inicia sesión real como admin y mantiene identidad al recargar">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-019 [TC-006] rechaza por HTTP la cookie de una sesión cerrada" time="6.047" classname="S01-TC-019 [TC-006] rechaza por HTTP la cookie de una sesión cerrada">
+    </testcase>
+    <testcase name="Sprint 1: UI real con sesión S01-TC-020 rechaza un login sin token CSRF en el servidor HTTP" time="0.691" classname="S01-TC-020 rechaza un login sin token CSRF en el servidor HTTP">
+    </testcase>
+  </testsuite>
+</testsuites>

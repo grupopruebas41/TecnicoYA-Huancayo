@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="13.532" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:52:03" tests="0" file="cypress\e2e\sprint-02\verification.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Verificación S2 (requiere pendientes del seeder)" timestamp="2026-10-15T20:52:03" tests="2" time="13.527" failures="0">
+    <testcase name="Verificación S2 (requiere pendientes del seeder) S02-TC-069 aprobar técnico completo" time="7.396" classname="S02-TC-069 aprobar técnico completo">
+    </testcase>
+    <testcase name="Verificación S2 (requiere pendientes del seeder) S02-TC-070 rechazar exige motivo" time="5.954" classname="S02-TC-070 rechazar exige motivo">
+    </testcase>
+  </testsuite>
+</testsuites>

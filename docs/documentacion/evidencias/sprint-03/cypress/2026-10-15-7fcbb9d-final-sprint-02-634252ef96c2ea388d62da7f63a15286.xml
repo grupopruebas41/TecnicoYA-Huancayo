@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="37.805" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:53:56" tests="0" file="cypress\e2e\sprint-02\technician.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Técnico S2" timestamp="2026-10-15T20:53:56" tests="5" time="37.804" failures="0">
+    <testcase name="Técnico S2 S02-TC-071 subir y publicar portafolio" time="8.182" classname="S02-TC-071 subir y publicar portafolio">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-072 cancelar y confirmar retiro de trabajo" time="5.740" classname="S02-TC-072 cancelar y confirmar retiro de trabajo">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-073 franjas solapadas y persistencia" time="8.145" classname="S02-TC-073 franjas solapadas y persistencia">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-074 tarifa inválida y actualización" time="6.770" classname="S02-TC-074 tarifa inválida y actualización">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-075 activar y quitar pausa" time="8.602" classname="S02-TC-075 activar y quitar pausa">
+    </testcase>
+  </testsuite>
+</testsuites>

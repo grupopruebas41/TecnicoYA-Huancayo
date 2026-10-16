@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="35.656" tests="3" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:45:01" tests="0" file="cypress\e2e\sprint-01\validation.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Alertas y validación del incremento Sprint 1" timestamp="2026-10-15T20:45:01" tests="3" time="35.603" failures="1">
+    <testcase name="Alertas y validación del incremento Sprint 1 S01-TC-023 [TC-001, TC-002]: valida el registro en cliente y muestra el rechazo del correo duplicado del servidor" time="4.803" classname="S01-TC-023 [TC-001, TC-002]: valida el registro en cliente y muestra el rechazo del correo duplicado del servidor">
+    </testcase>
+    <testcase name="Alertas y validación del incremento Sprint 1 S01-TC-024 [TC-005]: muestra el error de credenciales del servidor en español" time="3.408" classname="S01-TC-024 [TC-005]: muestra el error de credenciales del servidor en español">
+    </testcase>
+    <testcase name="Alertas y validación del incremento Sprint 1 S01-TC-025 [TC-009, TC-010, TC-137]: valida el perfil, confirma el guardado y conserva una edición concurrente" time="0.000" classname="S01-TC-025 [TC-009, TC-010, TC-137]: valida el perfil, confirma el guardado y conserva una edición concurrente">
+      <failure message="Timed out retrying after 20000ms: Expected to find element: `[role=status]`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Expected to find element: `[role=status]`, but never found it.
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-01/validation.cy.js:53:28)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

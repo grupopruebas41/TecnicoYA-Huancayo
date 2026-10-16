@@ -1,0 +1,159 @@
+Fecha: 2026-10-15
+Commit: 868e0f3
+Comando: node scripts/run-e2e.mjs --sprint 03 --slot B --junit
+Sprint 03, slot B: base tecnicoya_b_testing, API http://127.0.0.1:8002, web http://127.0.0.1:5175. No ejecutar Pest de este slot hasta que termine.
+RAM libre: 624 MB. Aviso: DEF-42 (subidas sin respuesta en Chrome) se observó con poca memoria libre; si falla una subida, revisar tmp/e2e-api-B.log y repetir con más memoria.
+
+   INFO  Nothing to migrate.  
+
+
+   INFO  Seeding database.  
+
+  Database\Seeders\Sprint02E2ESeeder ......................................................................... RUNNING  
+  Database\Seeders\Sprint01E2ESeeder ......................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder ....................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder ................................................................... 109 ms DONE  
+
+  Database\Seeders\CatalogSeeder ............................................................................. RUNNING  
+  Database\Seeders\CatalogSeeder .......................................................................... 98 ms DONE  
+
+  Database\Seeders\Sprint01E2ESeeder ................................................................... 1,205 ms DONE  
+
+  Database\Seeders\DistrictSeeder ............................................................................ RUNNING  
+  Database\Seeders\DistrictSeeder ......................................................................... 26 ms DONE  
+
+  Database\Seeders\Sprint02E2ESeeder ................................................................... 2,133 ms DONE  
+
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.1.1                                                                         │
+  │ Browser:        Chrome 156 (headless)                                                          │
+  │ Node Version:   v24.19.0 (C:\nvm4w\nodejs\node.exe)                                            │
+  │ Specs:          5 found (my-requests.cy.js, request-evidence.cy.js, request-submission.cy.js,  │
+  │                 request-wizard.cy.js, technician-search.cy.js)                                 │
+  │ Searched:       cypress/e2e/sprint-03/**/*.cy.js                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  my-requests.cy.js                                                               (1 of 5)
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     39 seconds                                                                       │
+  │ Spec Ran:     my-requests.cy.js                                                                │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  request-evidence.cy.js                                                          (2 of 5)
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 15 seconds                                                             │
+  │ Spec Ran:     request-evidence.cy.js                                                           │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  request-submission.cy.js                                                        (3 of 5)
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 15 seconds                                                             │
+  │ Spec Ran:     request-submission.cy.js                                                         │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  request-wizard.cy.js                                                            (4 of 5)
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        5                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 24 seconds                                                             │
+  │ Spec Ran:     request-wizard.cy.js                                                             │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  technician-search.cy.js                                                         (5 of 5)
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     36 seconds                                                                       │
+  │ Spec Ran:     technician-search.cy.js                                                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ √  my-requests.cy.js                        00:39        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  request-evidence.cy.js                   01:15        3        3        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  request-submission.cy.js                 01:15        4        4        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ×  request-wizard.cy.js                     01:24        5        4        1        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  technician-search.cy.js                  00:36        3        3        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ×  1 of 5 failed (20%)                      05:10       17       16        1        -        -  
+
+Cypress terminó con código 1.
+
+Exit code: 1

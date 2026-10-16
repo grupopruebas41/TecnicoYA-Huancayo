@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="71.435" tests="5" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:50:49" tests="0" file="cypress\e2e\sprint-02\technician.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Técnico S2" timestamp="2026-10-15T20:50:49" tests="5" time="71.429" failures="1">
+    <testcase name="Técnico S2 S02-TC-071 subir y publicar portafolio" time="11.900" classname="S02-TC-071 subir y publicar portafolio">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-072 cancelar y confirmar retiro de trabajo" time="0.000" classname="S02-TC-072 cancelar y confirmar retiro de trabajo">
+      <failure message="Timed out retrying after 20000ms: Expected to find element: `[role=dialog]`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Expected to find element: `[role=dialog]`, but never found it.
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-02/technician.cy.js:4:245)]]></failure>
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-073 franjas solapadas y persistencia" time="10.165" classname="S02-TC-073 franjas solapadas y persistencia">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-074 tarifa inválida y actualización" time="11.022" classname="S02-TC-074 tarifa inválida y actualización">
+    </testcase>
+    <testcase name="Técnico S2 S02-TC-075 activar y quitar pausa" time="12.019" classname="S02-TC-075 activar y quitar pausa">
+    </testcase>
+  </testsuite>
+</testsuites>

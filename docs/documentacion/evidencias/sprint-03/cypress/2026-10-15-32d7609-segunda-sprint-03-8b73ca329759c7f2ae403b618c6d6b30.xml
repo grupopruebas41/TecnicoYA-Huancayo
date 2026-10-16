@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="53.606" tests="4" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-15T13:44:38" tests="0" file="cypress\e2e\sprint-03\request-submission.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 envío" timestamp="2026-10-15T13:44:38" tests="4" time="53.597" failures="1">
+    <testcase name="S3 envío S03-TC-059 doble clic no duplica envío" time="12.189" classname="S03-TC-059 doble clic no duplica envío">
+    </testcase>
+    <testcase name="S3 envío S03-TC-060 respuesta perdida después de procesar se recupera" time="12.020" classname="S03-TC-060 respuesta perdida después de procesar se recupera">
+    </testcase>
+    <testcase name="S3 envío S03-TC-061 subcategoría desactivada rechaza envío real" time="0.000" classname="S03-TC-061 subcategoría desactivada rechaza envío real">
+      <failure message="`cy.request()` failed on:  http://127.0.0.1:8002/api/v1/admin/catalog  The response we received from your web server was:    &gt; 404: Not Found  This was considered a failure because the status code was not `2xx` or `3xx`.  If you do not want status codes to cause failures pass the option: `failOnStatusCode: false`  -----------------------------------------------------------  The request we sent was:  Method: GET URL: http://127.0.0.1:8002/api/v1/admin/catalog " type="CypressError">`cy.request()` failed on:  http://127.0.0.1:8002/api/v1/admin/catalog  The response we received from your web server was:    &gt; 404: Not Found  This was considered a failure because the status code was not `2xx` or `3xx`.  If you do not want status codes to cause failures pass the option: `failOnStatusCode: false`  -----------------------------------------------------------  The request we sent was:  Method: GET URL: http://127.0.0.1:8002/api/v1/admin/catalog </failure>
+    </testcase>
+    <testcase name="S3 envío S03-TC-062 error 500 simulado no muestra éxito" time="13.614" classname="S03-TC-062 error 500 simulado no muestra éxito">
+    </testcase>
+  </testsuite>
+</testsuites>
