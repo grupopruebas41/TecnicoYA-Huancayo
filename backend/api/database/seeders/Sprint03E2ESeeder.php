@@ -23,6 +23,7 @@ final class Sprint03E2ESeeder extends Seeder
 
     public function run(): void
     {
+        E2EDatabaseGuard::ensureIsolated();
         $this->call(Sprint02E2ESeeder::class);
         DB::transaction(function () {
             foreach (self::FEES as $code => $fee) {

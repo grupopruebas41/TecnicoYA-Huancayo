@@ -10,16 +10,7 @@ final class Sprint01E2ESeeder extends Seeder
 {
     public function run(): void
     {
-        $connection = config('database.connections.mysql');
-        // Las cuentas sintéticas jamás se crean en la base de desarrollo o producción.
-        // Solo las bases de los slots de prueba A y B (ver ENTORNO-PARALELO.md).
-        $database = (string) $connection['database'];
-        if (!app()->environment('testing') || config('database.default') !== 'mysql'
-            || $connection['host'] !== '127.0.0.1' || !str_ends_with($database, '_testing')
-            || !in_array($database, ['tecnicoya_testing', 'tecnicoya_b_testing'], true)
-            || $connection['username'] !== 'tecnicoya_test') {
-            throw new SeedingRefused('Fixtures E2E permitidos solo en la base aislada.');
-        }
+        E2EDatabaseGuard::ensureIsolated();
         $password = env('TECNICOYA_E2E_PASSWORD');
         if (!is_string($password) || strlen($password) < 24) {
             throw new SeedingRefused('Configurar una contraseña sintética de prueba.');
