@@ -2,6 +2,29 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-16 · Retiro del prototipo: regresión, DEF-45 y PR
+
+- **Rama:** `feature/pimentel/infra/retiro-prototipo`, con `main` `4e85669` fusionado (PR #18 de Codex y etiqueta `v0.3-antes-retiro-prototipo` sobre `cced99e`). Merge sin conflictos.
+- **DEF-45** (segundo artisan manual contra `tecnicoya`):
+  - `DestructiveCommandGuard` rechaza `migrate:fresh`, `migrate:refresh`, `migrate:reset`, `db:wipe` y `db:seed` con `APP_ENV=testing` si la base, o la de `--database`, no termina en `_testing`.
+  - Va en `AppServiceProvider`, leyendo `argv`. **Laravel no emite `CommandStarting` con `APP_ENV=testing`** (`runningUnitTests`), así que un listener de eventos no sirve.
+  - Commits: `017d786` y `0ac7ce8` (rojo; las pruebas pasan a un proceso aparte, explicado en el commit) y `20cf695` (verde, con S04-TC-127 dentro del proceso).
+- **Regla nueva** (AGENTS §13 y memoria): artisan a mano solo con las variables del slot o con el arrancador.
+- **Regresión** (slot A):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest | 176/176 |
+  | Mutación de la guarda | 21/21 |
+  | Vitest | 117/117 (82,66 % de líneas) y build |
+  | Cypress S01, S02 y S03 | 17/17 cada uno |
+  | `composer audit` y `npm audit` | Limpios |
+
+  Evidencias en `evidencias/sprint-04/retiro/`. Avance en `docs/avances/pimentel/sprint-04/avance.md`.
+- **Para la rama del S4:** al fusionar `main`, agregar S04-TC-120 a 127 a `CATALOGO-S04.csv` y resolver el conflicto del HANDOFF (las dos ramas añaden entradas arriba).
+
+**Qué falta:** que se integre este PR; después, merge de `main` en `feature/mayhuasca/b-matching/s04`, S4.2 y S4.3.
+
 ## 2026-10-16 · Retiro del prototipo, parte backend, Python e infraestructura (D-26, D-62)
 
 - **Rama:** `feature/pimentel/infra/retiro-prototipo`, desde `main` `cced99e`. **Sin publicar:** se publica tras la regresión.
