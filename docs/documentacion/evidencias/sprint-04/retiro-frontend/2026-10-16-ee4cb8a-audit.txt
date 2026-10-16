@@ -1,0 +1,6 @@
+Fecha: 2026-10-16
+Commit: ee4cb8a
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web audit
+found 0 vulnerabilities
+
+Exit code: 0

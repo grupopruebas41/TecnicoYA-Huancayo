@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Marketplace from "./Marketplace";
 import ServiceCarousel from "./ServiceCarousel";
 import AccountApp from "./features/administration/AccountApp";
 import Catalog from "./features/administration/Catalog";
@@ -24,7 +23,7 @@ export default function App() {
     return () => window.removeEventListener("hashchange", change);
   }, []);
   const account =
-    ["#cuenta", "#plataforma", "#demo", "#catalogo"].includes(route) ||
+    ["#cuenta", "#plataforma", "#catalogo"].includes(route) ||
     route.startsWith("#cuenta/");
   if (account)
     return (
@@ -38,9 +37,7 @@ export default function App() {
           </a>
         </header>
         <main id="contenido">
-          {route === "#demo" ? (
-            <Marketplace initialSpecialty="computo" accountOnly={false} />
-          ) : route === "#catalogo" ? (
+          {route === "#catalogo" ? (
             <Catalog />
           ) : (
             <AccountApp />

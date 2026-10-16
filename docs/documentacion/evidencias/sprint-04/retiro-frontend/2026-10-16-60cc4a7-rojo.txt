@@ -1,0 +1,43 @@
+Fecha: 2026-10-16
+Commit: 60cc4a7
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- --maxWorkers=1 --pool=threads src/Sprint02Landing.test.jsx
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 --pool=threads src/Sprint02Landing.test.jsx
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/Sprint02Landing.test.jsx (4 tests | 1 failed) 160ms
+   ✓ S02-TC-084 carrusel reducido y teclado 81ms
+   ✓ S02-TC-085 carrusel 2500 ms y pausas 24ms
+   ✓ S02-TC-089 diez secciones de landing en orden 29ms
+   × S02-TC-089 complemento RETIRO-01: el enlace antiguo abre la landing sin demo 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 complemento RETIRO-01: el enlace antiguo abre la landing sin demo
+Error: expect(received).toBeInTheDocument()
+
+received value must be an HTMLElement or an SVGElement.
+Received has type:  Null
+Received has value: null
+ ❯ src/Sprint02Landing.test.jsx:20:60
+     18|   const {container} = render(<App/>);
+     19|   await act(async () => {});
+     20|   expect(container.querySelector('[data-landing="Hero"]')).toBeInTheDo…
+       |                                                            ^
+     21|   expect(container.querySelectorAll('[data-landing]')).toHaveLength(10…
+     22|   expect(screen.queryByText(/Demostración interactiva/)).not.toBeInThe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  01:02:18
+   Duration  2.23s (environment 49%, transform 22%, setup 12%, import 9%, tests 8%, worker 1%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+
+Exit code: 1
