@@ -9,8 +9,10 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - `e7d4878` test(s03): S03-TC-082 a 085 (3 en rojo);
   - `66be473` fix(s03): `E2EDatabaseGuard` (DEF-44);
   - `2947a4d` ci(s03): `projectVersion=sprint-03`;
-  - el commit «docs(s03): cierre del Sprint 3».
-  - PR: ver abajo.
+  - `e99cfef` docs(s03): cierre del Sprint 3;
+  - test(s03): S03-TC-085 no depende del nombre de la base. En la primera CI falló porque la base es `tecnicoya_ci_testing` y la guarda la rechaza con razón.
+  - **PR #17:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/17
+- **Aviso:** para comprobar esa corrección, la prueba de la guarda corrió también en el slot B, lo que recreó `tecnicoya_b_testing` (`RefreshDatabase`). Codex no estaba ejecutando nada.
 - **Resultados** (slot A; Codex no corrió nada):
 
   | Prueba | Resultado |

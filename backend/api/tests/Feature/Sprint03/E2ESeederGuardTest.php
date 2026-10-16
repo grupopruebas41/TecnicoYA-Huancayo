@@ -69,7 +69,11 @@ it('S03-TC-084 Sprint03E2ESeeder rechaza una base _testing que no es de los slot
 });
 
 it('S03-TC-085 Sprint03E2ESeeder siembra en el slot de pruebas y es idempotente', function () {
-    expect(config('database.connections.mysql.database'))->toEndWith('_testing');
+    // La CI usa tecnicoya_ci_testing, que la guarda rechaza con razón (no es un slot). La guarda solo lee la
+    // configuración: se le presenta el nombre del slot A y la conexión ya abierta sigue en la base real de
+    // pruebas, cuyas escrituras revierte RefreshDatabase.
+    expect(DB::connection()->getDatabaseName())->toEndWith('_testing');
+    config(['database.connections.mysql.database' => 'tecnicoya_testing']);
 
     $this->seed(Sprint03E2ESeeder::class);
     $this->seed(Sprint03E2ESeeder::class);

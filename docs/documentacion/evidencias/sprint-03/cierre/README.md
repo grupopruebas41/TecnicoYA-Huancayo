@@ -26,6 +26,10 @@
 **Notas**
 
 - **Guarda de los seeders (DEF-44):** antes del cierre, Sprint02 y Sprint03E2ESeeder ya se negaban fuera del slot, pero solo porque llamaban primero a Sprint01E2ESeeder. Por eso el rojo solo falla en el mensaje: no había un agujero explotable, sino una protección indirecta que se rompía si alguien reordenaba las llamadas.
+- **CI del PR #17, primera corrida:** S03-TC-085 falló (188/189) porque la base de la CI es `tecnicoya_ci_testing`, que no es un slot, y la guarda la rechazó tal como exige D-59. El defecto era de la prueba, que suponía que la base del proceso era la del slot.
+  - **Corrección** (commit posterior a `e99cfef`): la prueba presenta a la guarda el nombre del slot A sin reconectar. Las escrituras siguen en la base real de pruebas y las revierte `RefreshDatabase`. Además, afirma que la conexión real termina en `_testing`. La guarda no cambió.
+  - **Verificación local:** S03 55/55 en el slot A; la prueba 4/4 también en el slot B, donde la base real (`tecnicoya_b_testing`) no coincide con la configurada.
+  - Esa corrida en el slot B recreó la base `tecnicoya_b_testing` (`RefreshDatabase`); Codex no estaba ejecutando nada.
 - **Mutación:**
   - Los 6 sin cubrir son elementos de arrays constantes (`SLOT_DATABASES` y `FEES`), que PCOV no registra como ejecutables.
   - La corrida reutilizó la caché de cobertura de Pest y duró 11 s.
