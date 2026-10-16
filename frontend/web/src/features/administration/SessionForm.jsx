@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {request} from './http';
 import {Field, Notice, validateAccount, EMAIL_MAX_LENGTH} from './forms';
-import '../../auth.css';
+import './auth.css';
 
 export default function SessionForm({onLogin}) {
   const [register, setRegister] = useState(false);
