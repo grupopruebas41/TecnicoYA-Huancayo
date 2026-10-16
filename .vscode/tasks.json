@@ -32,22 +32,11 @@
       "problemMatcher": []
     },
     {
-      "label": "Python matching",
-      "type": "shell",
-      "command": "python -m uvicorn app:app --host 127.0.0.1 --port 8000",
-      "options": {
-        "cwd": "${workspaceFolder}/python/api"
-      },
-      "isBackground": true,
-      "problemMatcher": []
-    },
-    {
       "label": "TecnicoYa: Iniciar todo",
       "dependsOn": [
         "Frontend React",
         "Backend Laravel",
-        "Plazos automáticos",
-        "Python matching"
+        "Plazos automáticos"
       ],
       "dependsOrder": "parallel",
       "problemMatcher": []

@@ -9,7 +9,6 @@ authors:
 stack:
   frontend: auto
   backend: auto
-  python: auto
 
 database:
   engine: auto

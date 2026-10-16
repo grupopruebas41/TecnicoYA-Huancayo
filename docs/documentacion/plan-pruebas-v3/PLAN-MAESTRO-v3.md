@@ -61,12 +61,12 @@ Se conservan solo como historia. **Ningún agente los sigue.**
 
 **Excluye:** suscripciones, chat y LLM, geolocalización real, apps móviles y procesamiento financiero.
 
-| Vigente | Congelado (solo regresión; se retira en S8) |
+| Vigente | Retirado el 2026-10-16 (D-26, D-62) |
 |---|---|
-| React 18 + Vite 5 (`frontend/web`, `features/*`) | Demo `localStorage` (`#demo`) |
+| React 18 + Vite 8 (`frontend/web`, `features/*`) | Demo `localStorage` (`#demo`) |
 | Laravel 12, API `/api/v1`, Sanctum (cookie + CSRF), módulos `app/Modules/A..F` | API `/api/*` con token (salvo `GET /api/health`) |
 | MySQL 8.4 (producto y pruebas) | PostgreSQL; servicio Python `python/api` (matching del prototipo) |
-| Pest 3, Vitest 2.1, Cypress 16.1, SonarQube | Pruebas `MarketplaceTest`, `AnnouncementsTest`, Vitest de la demo y pytest |
+| Pest 3, Vitest 5, Cypress 16.1, SonarQube | Pruebas `MarketplaceTest`, `AnnouncementsTest`, Vitest de la demo y pytest |
 | Reverb/Echo y colas MySQL (desde S4) | — |
 
 ## 2. Los 8 sprints
@@ -240,7 +240,7 @@ El catálogo base tiene 140 casos, con 26 bloqueados o condicionados. Para cumpl
 | Decisiones Pxx sin tomar (26 casos bloqueados o condicionados) | Proponerlas en N.1 con dos opciones; prioridad para S3–S4: P10, P17, P22, P15, P12, P11, P05/P16 |
 | Memoria del PC (7,8 GB) | Un contenedor MySQL; un solo Cypress a la vez (bloqueo global); SonarQube solo en N.6 |
 | Datos personales en un repositorio que fue público (DEF-17) | `issues.json` retirado; Word retirado; PDF por reemplazar; purga preparada sin ejecutar (D-09) |
-| Código histórico activo (DEF-22) | Congelado; retiro en S8 |
+| Código histórico activo (DEF-22) | Retirado el 2026-10-16, antes del S4.2 (D-62); DEF-22 cerrado |
 | Sin CI (DEF-27) | Definir la plataforma (GitHub Actions o el GitLab del laboratorio) antes de S4 |
 | Informe Word sin capítulos 13 y 14 (DEF-33) | `INFORME-SPRINT-NN.md` alimenta los capítulos; el 14 sale del despliegue de S8 |
 

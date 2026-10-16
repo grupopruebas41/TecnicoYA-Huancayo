@@ -1,0 +1,6 @@
+# Regresión del retiro del prototipo · composer audit y npm audit
+# Fecha: 2026-10-16T09:40:10Z · Commit: 210055a (rama feature/pimentel/infra/retiro-prototipo, con main 4e85669 fusionado) · Slot A
+## composer audit
+No security vulnerability advisories found.
+## npm audit
+found 0 vulnerabilities

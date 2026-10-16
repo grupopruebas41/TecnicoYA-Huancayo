@@ -1,0 +1,29 @@
+# DEF-45 · Mutación de app/Shared/Database/DestructiveCommandGuard.php (clase nueva)
+# Fecha: 2026-10-16T09:27:29Z · Base: 0ac7ce8 + implementación sin commit · Slot A, con tmp/e2e-cypress.lock tomado durante la corrida
+# Comando: php -d pcov.enabled=1 vendor/pestphp/pest/bin/pest tests/Feature/Sprint04/DestructiveCommandGuardTest.php --mutate --everything --clear-cache --path=app/Shared/Database/DestructiveCommandGuard.php
+# AppServiceProvider no se muta: su bloque solo actúa con el argv de un php artisan real (probado por 120 a 126 en proceso aparte).
+  Duration: 4.75s
+  ✓ Line 15: IfNegated
+  ✓ Line 15: BooleanOrToBooleanAnd
+  ✓ Line 15: RemoveNot
+  ✓ Line 15: RemoveNot
+  ✓ Line 18: CoalesceEqualToEqual
+  ✓ Line 20: RemoveStringCast
+  ✓ Line 21: TernaryNegated
+  ✓ Line 21: IdenticalToNotIdentical
+  ✓ Line 21: IdenticalToNotIdentical
+  ✓ Line 21: StrEndsWithToStrStartsWith
+  ✓ Line 22: IfNegated
+  ✓ Line 22: RemoveNot
+  ✓ Line 23: ConcatRemoveLeft
+  ✓ Line 23: ConcatRemoveRight
+  ✓ Line 23: ConcatSwitchSides
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: AlwaysReturnEmptyArray
+  Mutations: 21 tested
+  Score:     100.00%
+  Duration:  0.81s

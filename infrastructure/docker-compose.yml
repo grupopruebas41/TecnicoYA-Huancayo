@@ -17,10 +17,6 @@ services:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u\"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" --silent"]
       interval: 5s
       retries: 30
-  matching:
-    build: ../python/api
-    environment:
-      PORT: 8000
   api:
     build: ../backend/api
     depends_on:
@@ -38,7 +34,6 @@ services:
       DB_DATABASE: tecnicoya
       DB_USERNAME: tecnicoya
       DB_PASSWORD: ${DB_PASSWORD}
-      PYTHON_URL: http://matching:8000
       PORT: 3000
   web:
     build: ../frontend/web

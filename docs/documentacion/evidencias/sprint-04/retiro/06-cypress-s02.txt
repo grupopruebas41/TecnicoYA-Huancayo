@@ -1,0 +1,204 @@
+# Regresión del retiro del prototipo · Cypress S02 (node scripts/run-e2e.mjs --sprint 02 --slot A)
+# Fecha: 2026-10-16T09:40:10Z · Commit: 210055a (rama feature/pimentel/infra/retiro-prototipo, con main 4e85669 fusionado) · Slot A
+Sprint 02, slot A: base tecnicoya_testing, API http://127.0.0.1:8001, web http://127.0.0.1:5174. No ejecutar Pest de este slot hasta que termine.
+RAM libre: 1701 MB.
+
+   INFO  Nothing to migrate.  
+
+
+   INFO  Seeding database.  
+
+  Database\Seeders\Sprint01E2ESeeder ......................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder ....................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder .................................................................... 31 ms DONE  
+
+  Database\Seeders\CatalogSeeder ............................................................................. RUNNING  
+  Database\Seeders\CatalogSeeder .......................................................................... 49 ms DONE  
+
+  Database\Seeders\Sprint01E2ESeeder ..................................................................... 835 ms DONE  
+
+  Database\Seeders\DistrictSeeder ............................................................................ RUNNING  
+  Database\Seeders\DistrictSeeder ......................................................................... 10 ms DONE  
+
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.1.1                                                                         │
+  │ Browser:        Chrome 156 (headless)                                                          │
+  │ Node Version:   v24.19.0 (C:\nvm4w\nodejs\node.exe)                                            │
+  │ Specs:          5 found (announcements.cy.js, catalog-admin.cy.js, landing.cy.js, technician.c │
+  │                 y.js, verification.cy.js)                                                      │
+  │ Searched:       cypress/e2e/sprint-02/**/*.cy.js                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  announcements.cy.js                                                             (1 of 5)
+
+
+  Comunicados S2
+    √ S02-TC-065 crear y publicar con vista previa escapada (10177ms)
+    √ S02-TC-066 cancelar retiro no envía DELETE (5732ms)
+    √ S02-TC-067 error 500 conserva formulario y referencia (4900ms)
+    √ S02-TC-068 duplicar genera borrador (14686ms)
+
+
+  4 passing (36s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     35 seconds                                                                       │
+  │ Spec Ran:     announcements.cy.js                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  catalog-admin.cy.js                                                             (2 of 5)
+
+
+  Catálogo S2
+    √ S02-TC-061 crear subcategoría con foto (20810ms)
+    √ S02-TC-062 duplicado muestra error sin falso éxito (7771ms)
+    √ S02-TC-063 desactivar y activar subcategoría (11530ms)
+    √ S02-TC-064 especialidad vacía no envía POST (3689ms)
+
+
+  4 passing (44s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     44 seconds                                                                       │
+  │ Spec Ran:     catalog-admin.cy.js                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  landing.cy.js                                                                   (3 of 5)
+
+
+  Landing S2
+    √ S02-TC-059 diez secciones y CTA en móvil y escritorio (3845ms)
+    √ S02-TC-060 carrusel reducido accesible (821ms)
+
+
+  2 passing (5s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     4 seconds                                                                        │
+  │ Spec Ran:     landing.cy.js                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  technician.cy.js                                                                (4 of 5)
+
+
+  Técnico S2
+    √ S02-TC-071 subir y publicar portafolio (11408ms)
+    √ S02-TC-072 cancelar y confirmar retiro de trabajo (10497ms)
+    √ S02-TC-073 franjas solapadas y persistencia (10470ms)
+    √ S02-TC-074 tarifa inválida y actualización (8867ms)
+    √ S02-TC-075 activar y quitar pausa (11203ms)
+
+
+  5 passing (53s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        5                                                                                │
+  │ Passing:      5                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     52 seconds                                                                       │
+  │ Spec Ran:     technician.cy.js                                                                 │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  verification.cy.js                                                              (5 of 5)
+
+
+  Verificación S2 (requiere pendientes del seeder)
+    √ S02-TC-069 aprobar técnico completo (5899ms)
+    √ S02-TC-070 rechazar exige motivo (5762ms)
+
+
+  2 passing (12s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     11 seconds                                                                       │
+  │ Spec Ran:     verification.cy.js                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  announcements.cy.js                      00:35        4        4        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  catalog-admin.cy.js                      00:44        4        4        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  landing.cy.js                            00:04        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  technician.cy.js                         00:52        5        5        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  verification.cy.js                       00:11        2        2        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        02:29       17       17        -        -        -  
+

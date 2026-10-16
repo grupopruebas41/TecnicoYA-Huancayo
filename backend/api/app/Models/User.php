@@ -11,7 +11,7 @@ class User extends Authenticatable
 
     protected $attributes = ['is_active' => true, 'version' => 1, 'auth_version' => 1];
 
-    // role se conserva solo para las rutas históricas; v1 asigna role_id desde el servicio.
+    // role es la columna heredada (AuthorizationSeeder la usa para completar role_id); v1 asigna role_id.
     protected $fillable = ['name', 'email', 'password', 'role'];
 
     protected $hidden = ['password', 'remember_token'];
