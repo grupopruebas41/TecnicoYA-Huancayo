@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\ApiToken;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\RejectActiveSession;
 use App\Http\Middleware\RequirePermission;
@@ -16,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
         $middleware->alias([
-            'token' => ApiToken::class,
             'account.active' => EnsureAccountIsActive::class,
             'permission' => RequirePermission::class,
             'role' => RequireRole::class,

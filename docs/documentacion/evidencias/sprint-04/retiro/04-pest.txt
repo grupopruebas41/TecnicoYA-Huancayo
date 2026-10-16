@@ -1,0 +1,5 @@
+# Regresión del retiro del prototipo · Pest completo
+# Fecha: 2026-10-16T09:40:10Z · Commit: 210055a (rama feature/pimentel/infra/retiro-prototipo, con main 4e85669 fusionado) · Slot A
+# El código de backend es el de 20cf695; 210055a solo cambia documentos.
+  Tests:    176 passed (1991 assertions)
+  Duration: 60.26s

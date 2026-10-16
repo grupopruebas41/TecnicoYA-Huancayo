@@ -1,0 +1,220 @@
+# Regresión del retiro del prototipo · Cypress S01 (node scripts/run-e2e.mjs --sprint 01 --slot A)
+# Fecha: 2026-10-16T09:40:10Z · Commit: 210055a (rama feature/pimentel/infra/retiro-prototipo, con main 4e85669 fusionado) · Slot A
+Sprint 01, slot A: base tecnicoya_testing, API http://127.0.0.1:8001, web http://127.0.0.1:5174. No ejecutar Pest de este slot hasta que termine.
+RAM libre: 1129 MB.
+
+   INFO  Nothing to migrate.  
+
+
+   INFO  Seeding database.  
+
+  Database\Seeders\AuthorizationSeeder ....................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder ................................................................... 143 ms DONE  
+
+  Database\Seeders\CatalogSeeder ............................................................................. RUNNING  
+  Database\Seeders\CatalogSeeder ......................................................................... 152 ms DONE  
+
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.1.1                                                                         │
+  │ Browser:        Chrome 156 (headless)                                                          │
+  │ Node Version:   v24.19.0 (C:\nvm4w\nodejs\node.exe)                                            │
+  │ Specs:          6 found (accessibility.cy.js, catalog.cy.js, portals.cy.js, profile.cy.js, tec │
+  │                 hnician-signup.cy.js, validation.cy.js)                                        │
+  │ Searched:       cypress/e2e/sprint-01/**/*.cy.js                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  accessibility.cy.js                                                             (1 of 6)
+
+
+  √ S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter (6281ms)
+
+  1 passing (6s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        1                                                                                │
+  │ Passing:      1                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     6 seconds                                                                        │
+  │ Spec Ran:     accessibility.cy.js                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  catalog.cy.js                                                                   (2 of 6)
+
+
+  Sprint 1: catálogo
+    √ S01-TC-021 [TC-012] muestra el catálogo real servido por Laravel/MySQL (2416ms)
+    √ S01-TC-022 [TC-012] informa un fallo realista sin inventar catálogo (794ms)
+
+
+  2 passing (3s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     3 seconds                                                                        │
+  │ Spec Ran:     catalog.cy.js                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  portals.cy.js                                                                   (3 of 6)
+
+
+  Sprint 1: UI real con sesión
+    √ S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior (11404ms)
+    √ S01-TC-015 [TC-001] registra un cliente mediante formulario (3387ms)
+    √ S01-TC-016 [TC-005] inicia sesión real como client y mantiene identidad al recargar (6959ms)
+    √ S01-TC-017 [TC-005] inicia sesión real como technician y mantiene identidad al recargar (9936ms)
+    √ S01-TC-018 [TC-005] inicia sesión real como admin y mantiene identidad al recargar (5676ms)
+    √ S01-TC-019 [TC-006] rechaza por HTTP la cookie de una sesión cerrada (4873ms)
+    √ S01-TC-020 rechaza un login sin token CSRF en el servidor HTTP (453ms)
+
+
+  7 passing (43s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        7                                                                                │
+  │ Passing:      7                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     43 seconds                                                                       │
+  │ Spec Ran:     portals.cy.js                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  profile.cy.js                                                                   (4 of 6)
+
+
+  √ S01-TC-073 teléfono inválido sin enviar PATCH y con alerta accesible (4221ms)
+  √ S01-TC-074 red interrumpida: resultado incierto y consulta del estado real (5160ms)
+  √ S01-TC-077 sesión vencida al guardar vuelve al formulario de acceso (4849ms)
+
+  3 passing (14s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     14 seconds                                                                       │
+  │ Spec Ran:     profile.cy.js                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  technician-signup.cy.js                                                         (5 of 6)
+
+
+  √ S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificación al ingresar (8950ms)
+
+  1 passing (9s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        1                                                                                │
+  │ Passing:      1                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     9 seconds                                                                        │
+  │ Spec Ran:     technician-signup.cy.js                                                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  validation.cy.js                                                                (6 of 6)
+
+
+  Alertas y validación del incremento Sprint 1
+    √ S01-TC-023 [TC-001, TC-002]: valida el registro en cliente y muestra el rechazo del correo duplicado del servidor (3445ms)
+    √ S01-TC-024 [TC-005]: muestra el error de credenciales del servidor en español (1897ms)
+    √ S01-TC-025 [TC-009, TC-010, TC-137]: valida el perfil, confirma el guardado y conserva una edición concurrente (7457ms)
+
+
+  3 passing (13s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     12 seconds                                                                       │
+  │ Spec Ran:     validation.cy.js                                                                 │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  accessibility.cy.js                      00:06        1        1        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  catalog.cy.js                            00:03        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  portals.cy.js                            00:43        7        7        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  profile.cy.js                            00:14        3        3        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  technician-signup.cy.js                  00:09        1        1        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  validation.cy.js                         00:12        3        3        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        01:29       17       17        -        -        -  
+

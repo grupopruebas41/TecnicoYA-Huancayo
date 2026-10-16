@@ -2,14 +2,15 @@
 
 1. **Proyecto:** marketplace web que conecta clientes (MYPES y hogares de Huancayo) con técnicos de cómputo, refrigeración comercial y electricidad. Curso Pruebas y Calidad de Software, Universidad Continental. Equipo: Delgado (frontend), Mayhuasca (backend), Pimentel (base de datos, Docker e integración).
 
-2. **Stack vigente:** React 18 + Vite 5 (`frontend/web`); Laravel 12 con API `/api/v1` y sesión Sanctum (`backend/api`); MySQL 8.4; Pest 3, Vitest 2.1 y Cypress 16.1; SonarQube.
-   **Congelado** (no se amplía; solo se mantienen sus pruebas hasta retirarlo según D-26, cuando las pantallas v1 de S2 y S3 pasen sus pruebas Cypress):
+2. **Stack vigente:** React 18 + Vite 8 (`frontend/web`); Laravel 12 con API `/api/v1` y sesión Sanctum (`backend/api`); MySQL 8.4; Pest 3, Vitest 5 y Cypress 16.1; SonarQube. Desde el S4, Reverb y Echo para el tiempo real (D-70).
+   **Retirado el 2026-10-16** (D-26 y D-62; el código queda en el historial de Git con la etiqueta `v0.3-antes-retiro-prototipo` sobre `cced99e`):
    - la API `/api/*` con token, **salvo `GET /api/health`**, que se mantiene porque el arrancador E2E la usa para saber si la API está lista;
-   - la demo `localStorage` (`#demo`);
-   - los comandos `marketplace:tick` y `marketplace:admin`;
-   - el servicio Python y pytest (el matching va en PHP, D-19);
-   - PostgreSQL;
-   - el plan histórico de 10 iteraciones de los PDF 08 a 17.
+   - la demo `localStorage` (`#demo`), retirada por Codex en el PR #18;
+   - los comandos `marketplace:tick` y `marketplace:admin` (el alta de administradores es `tecnicoya:provision-admin`);
+   - el servicio Python y pytest (el matching va en PHP, D-19), con `domain/rules.json` y `scripts/sync-rules.py`;
+   - las tablas `requests`, `offers`, `technicians`, `api_tokens` y `access_events`.
+
+   **Histórico que no se sigue:** PostgreSQL y el plan de 10 iteraciones de los PDF 08 a 17.
 
 3. **Fuentes, por prioridad:**
    1. `docs/documentacion/sprints/DECISIONES.md`
@@ -59,7 +60,7 @@
      - cambiar una prueba para que pase sin explicarlo.
    - **Plazos:** con reloj controlado (`travel` o `Carbon::setTestNow`, `cy.clock`, `vi.useFakeTimers`).
    - **Datos:** solo sintéticos.
-   - **Prototipo histórico:** sus pruebas (Vitest de la demo, pytest y las Pest de `MarketplaceTest` y `AnnouncementsTest`) se mantienen como regresión, pero no cuentan para la meta.
+   - **Prototipo histórico:** sus pruebas (Vitest de la demo, pytest y las Pest de `MarketplaceTest` y `AnnouncementsTest`) se retiraron con él el 2026-10-16 (D-62); nunca contaron para la meta.
 
 8. **Definición de terminado (adendas del docente):**
    - alertas de éxito y de error en cada operación CRUD, con su prueba automatizada;
@@ -97,6 +98,7 @@
 
 13. **Comandos:**
     - **Backend:** desde `backend/api`, con `C:\xampp\php\php.exe`.
+    - **Artisan a mano (DEF-45):** solo con las variables del slot (`APP_ENV=testing`, `DB_DATABASE=tecnicoya_testing` o `tecnicoya_b_testing` y `DB_USERNAME=tecnicoya_test`) o a través de `node scripts/run-e2e.mjs`. `--env=testing` solo **no** basta: sin `tests/bootstrap.php` el comando cae en la base `tecnicoya`. Con `APP_ENV=testing`, `DestructiveCommandGuard` rechaza `migrate:fresh`, `migrate:refresh`, `migrate:reset`, `db:wipe` y `db:seed` fuera de una base `_testing`.
     - **Base de pruebas:** `docker compose -f docker-compose.testing.yml --env-file .env.testing up -d --wait`, solo desde la carpeta principal.
     - **Frontend:** desde `frontend/web`, con `npm test` y `npm run build`.
     - **E2E:** `node scripts/run-e2e.mjs --sprint NN [--slot A|B] [--junit]`. El arrancador quita `ELECTRON_RUN_AS_NODE`, que heredan las terminales de VS Code y de los agentes; con ella activa, Cypress muere con `0xC000001D`. Si lanzas Cypress a mano, usa `env -u ELECTRON_RUN_AS_NODE` (Git Bash) o `Remove-Item Env:ELECTRON_RUN_AS_NODE` (PowerShell).

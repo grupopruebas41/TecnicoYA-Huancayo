@@ -1,0 +1,207 @@
+# Regresión del retiro del prototipo · Cypress S03 (node scripts/run-e2e.mjs --sprint 03 --slot A)
+# Fecha: 2026-10-16T09:40:10Z · Commit: 210055a (rama feature/pimentel/infra/retiro-prototipo, con main 4e85669 fusionado) · Slot A
+Sprint 03, slot A: base tecnicoya_testing, API http://127.0.0.1:8001, web http://127.0.0.1:5174. No ejecutar Pest de este slot hasta que termine.
+RAM libre: 1184 MB.
+
+   INFO  Nothing to migrate.  
+
+
+   INFO  Seeding database.  
+
+  Database\Seeders\Sprint02E2ESeeder ......................................................................... RUNNING  
+  Database\Seeders\Sprint01E2ESeeder ......................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder ....................................................................... RUNNING  
+  Database\Seeders\AuthorizationSeeder .................................................................... 59 ms DONE  
+
+  Database\Seeders\CatalogSeeder ............................................................................. RUNNING  
+  Database\Seeders\CatalogSeeder .......................................................................... 79 ms DONE  
+
+  Database\Seeders\Sprint01E2ESeeder ..................................................................... 889 ms DONE  
+
+  Database\Seeders\DistrictSeeder ............................................................................ RUNNING  
+  Database\Seeders\DistrictSeeder ......................................................................... 11 ms DONE  
+
+  Database\Seeders\Sprint02E2ESeeder ................................................................... 1,698 ms DONE  
+
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.1.1                                                                         │
+  │ Browser:        Chrome 156 (headless)                                                          │
+  │ Node Version:   v24.19.0 (C:\nvm4w\nodejs\node.exe)                                            │
+  │ Specs:          5 found (my-requests.cy.js, request-evidence.cy.js, request-submission.cy.js,  │
+  │                 request-wizard.cy.js, technician-search.cy.js)                                 │
+  │ Searched:       cypress/e2e/sprint-03/**/*.cy.js                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  my-requests.cy.js                                                               (1 of 5)
+
+
+  S3 mis solicitudes
+    √ S03-TC-067 registrada continúa y enviada no se edita (9039ms)
+    √ S03-TC-068 cuarta activa queda registrada (9547ms)
+
+
+  2 passing (19s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     18 seconds                                                                       │
+  │ Spec Ran:     my-requests.cy.js                                                                │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  request-evidence.cy.js                                                          (2 of 5)
+
+
+  S3 evidencias
+    √ S03-TC-056 adjunta y retira con confirmación (14821ms)
+    √ S03-TC-057 archivo inválido no sube (7310ms)
+    √ S03-TC-058 sexta evidencia bloqueada (23418ms)
+
+
+  3 passing (46s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     45 seconds                                                                       │
+  │ Spec Ran:     request-evidence.cy.js                                                           │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  request-submission.cy.js                                                        (3 of 5)
+
+
+  S3 envío
+    √ S03-TC-059 doble clic no duplica envío (11737ms)
+    √ S03-TC-060 respuesta perdida después de procesar se recupera (10586ms)
+    √ S03-TC-061 subcategoría desactivada rechaza envío real (20851ms)
+    √ S03-TC-062 error 500 simulado no muestra éxito (10401ms)
+
+
+  4 passing (56s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     56 seconds                                                                       │
+  │ Spec Ran:     request-submission.cy.js                                                         │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  request-wizard.cy.js                                                            (4 of 5)
+
+
+  S3 asistente
+    √ S03-TC-052 recorrido con corrección antes de enviar (11996ms)
+    √ S03-TC-053 paso incompleto no avanza y enfoca error (7903ms)
+    √ S03-TC-054 atrás y adelante conserva datos (9440ms)
+    √ S03-TC-055 límites de descripción (7640ms)
+    √ S03-TC-063 recorrido por teclado (11259ms)
+
+
+  5 passing (49s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        5                                                                                │
+  │ Passing:      5                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     48 seconds                                                                       │
+  │ Spec Ran:     request-wizard.cy.js                                                             │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  technician-search.cy.js                                                         (5 of 5)
+
+
+  S3 búsqueda
+    √ S03-TC-064 filtros y vacío (10984ms)
+    √ S03-TC-065 perfil sin contacto (6657ms)
+    √ S03-TC-066 solicitud dirigida al técnico elegido (13050ms)
+
+
+  3 passing (31s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     30 seconds                                                                       │
+  │ Spec Ran:     technician-search.cy.js                                                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  my-requests.cy.js                        00:18        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  request-evidence.cy.js                   00:45        3        3        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  request-submission.cy.js                 00:56        4        4        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  request-wizard.cy.js                     00:48        5        5        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  technician-search.cy.js                  00:30        3        3        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        03:20       17       17        -        -        -  
+

@@ -1,0 +1,20 @@
+# DEF-45 · S04-TC-120 a 126 en rojo (antes de implementar DestructiveCommandGuard)
+# Fecha: 2026-10-16T09:21:55Z · Base: 017d786 + pruebas sin commit · Slot A (tecnicoya_testing)
+# Las pruebas lanzan php artisan en un proceso aparte, como el incidente; CommandStarting solo se emite en la CLI.
+# Esperado: 120 a 125 fallan al conectar (MySQL niega el acceso a tecnicoya: no se borra nada); 126 es el control permitido.
+  ⨯ it S04-TC-120 rechaza migrate:fresh con --env=testing y la base por defecto tecnicoya                        0.84s  
+  ⨯ it S04-TC-121 rechaza migrate:refresh contra una base sin _testing                                           0.65s  
+  ⨯ it S04-TC-122 rechaza migrate:reset contra una base sin _testing                                             0.64s  
+  ⨯ it S04-TC-123 rechaza db:wipe contra una base sin _testing                                                   0.65s  
+  ⨯ it S04-TC-124 rechaza db:seed contra una base sin _testing                                                   0.45s  
+  ⨯ it S04-TC-125 rechaza la opción --database que apunta a una base sin _testing                                0.65s  
+  ✓ it S04-TC-126 permite db:seed en la base _testing del slot                                                   0.66s  
+   FAILED  Tests\Feature\Sprint04\DestructiveCommandGuardTest > it S04-TC-120 rechaza migrate:fresh con --env=testin…   
+   FAILED  Tests\Feature\Sprint04\DestructiveCommandGuardTest > it S04-TC-121 rechaza migrate:refresh contra una bas…   
+   FAILED  Tests\Feature\Sprint04\DestructiveCommandGuardTest > it S04-TC-122 rechaza migrate:reset contra una base…    
+   FAILED  Tests\Feature\Sprint04\DestructiveCommandGuardTest > it S04-TC-123 rechaza db:wipe contra una base sin _t…   
+   FAILED  Tests\Feature\Sprint04\DestructiveCommandGuardTest > it S04-TC-124 rechaza db:seed contra una base sin _t…   
+   FAILED  Tests\Feature\Sprint04\DestructiveCommandGuardTest > it S04-TC-125 rechaza la opción --database que apunt…   
+  Tests:    6 failed, 1 passed (15 assertions)
+# Causa de cada fallo (salida del proceso hijo):
+     10 SQLSTATE[HY000] [1044] Access denied for user 'tecnicoya_test'@'%' to database 'tecnicoya'

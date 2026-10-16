@@ -2,6 +2,56 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-16 · Retiro del prototipo: regresión, DEF-45 y PR
+
+- **Rama:** `feature/pimentel/infra/retiro-prototipo`, con `main` `4e85669` fusionado (PR #18 de Codex y etiqueta `v0.3-antes-retiro-prototipo` sobre `cced99e`). Merge sin conflictos.
+- **DEF-45** (segundo artisan manual contra `tecnicoya`):
+  - `DestructiveCommandGuard` rechaza `migrate:fresh`, `migrate:refresh`, `migrate:reset`, `db:wipe` y `db:seed` con `APP_ENV=testing` si la base, o la de `--database`, no termina en `_testing`.
+  - Va en `AppServiceProvider`, leyendo `argv`. **Laravel no emite `CommandStarting` con `APP_ENV=testing`** (`runningUnitTests`), así que un listener de eventos no sirve.
+  - Commits: `017d786` y `0ac7ce8` (rojo; las pruebas pasan a un proceso aparte, explicado en el commit) y `20cf695` (verde, con S04-TC-127 dentro del proceso).
+- **Regla nueva** (AGENTS §13 y memoria): artisan a mano solo con las variables del slot o con el arrancador.
+- **Regresión** (slot A):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest | 176/176 |
+  | Mutación de la guarda | 21/21 |
+  | Vitest | 117/117 (82,66 % de líneas) y build |
+  | Cypress S01, S02 y S03 | 17/17 cada uno |
+  | `composer audit` y `npm audit` | Limpios |
+
+  Evidencias en `evidencias/sprint-04/retiro/`. Avance en `docs/avances/pimentel/sprint-04/avance.md`.
+- **PR #19:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/19.
+  - La primera CI falló en S04-TC-121: con 80 columnas, la consola partió el mensaje dentro de «tecnicoya».
+  - `6945f42` fija `COLUMNS=1000` en el proceso hijo, con las mismas aserciones.
+  - CI en verde en `6945f42`: backend, frontend y conteo.
+- **Para la rama del S4:** al fusionar `main`, agregar S04-TC-120 a 127 a `CATALOGO-S04.csv` y resolver el conflicto del HANDOFF (las dos ramas añaden entradas arriba).
+
+**Qué falta:** que se integre este PR; después, merge de `main` en `feature/mayhuasca/b-matching/s04`, S4.2 y S4.3.
+
+## 2026-10-16 · Retiro del prototipo, parte backend, Python e infraestructura (D-26, D-62)
+
+- **Rama:** `feature/pimentel/infra/retiro-prototipo`, desde `main` `cced99e`. **Sin publicar:** se publica tras la regresión.
+- **Commits:**
+  - `07e15aa` refactor: API con token, backend del prototipo y migración 000020;
+  - `ae11118` chore: Python, `domain/`, `sync-rules.py`, Compose, VS Code y `project.yml`;
+  - `f5f8100` docs: AGENTS §2 (Vite 8 y Vitest 5), README, PLAN-MAESTRO, D-26 y DEF-22/26 cerrados.
+- **Pruebas** (slot A):
+  - Pest **168/168** (1940 aserciones). Antes eran 189; salen las 21 del prototipo.
+  - `route:list`: fuera de `/api/v1` solo queda `GET /api/health`.
+  - Migración 000020 comprobada con `migrate:fresh`, `rollback` y `migrate`, desde una prueba temporal de Pest ya borrada.
+- **Aviso:** un `artisan migrate:fresh --env=testing` a mano apuntó a la base de desarrollo `tecnicoya` y MySQL rechazó el acceso, sin cambios (mismo patrón que DEF-44). Para pruebas manuales de base, usar Pest o las variables del arrancador.
+- **Pendiente para Pimentel:** la etiqueta previa al retiro todavía no existía en origin al empezar (`git ls-remote --tags` vacío).
+- **Referencias:** D-62 y D-63 se citan aquí, pero sus filas están en la rama del S4 (`96a055a`) y llegan a `main` con ese PR.
+- **Sin cambiar:** `users.role` (lo usan `AuthorizationSeeder` y una prueba de S1) y los generadores históricos `scripts/generar-*.py` y `documentar-calidad.py`, que describen el plan antiguo.
+
+**Qué falta:**
+1. Que se integre el PR de frontend de Codex.
+2. Merge de `main` en esta rama y regresión completa en el slot A: Pest, Vitest, Cypress S01, S02 y S03 (uno a la vez), `composer audit` y `npm audit`.
+3. Push, PR con `gh` y CI.
+
+**Para Codex:** tu parte es la lista F de ANALISIS-S04 §5. Además retira la copia `frontend/web/src/domain/rules.json` (DEF-26).
+
 ## 2026-10-16 · Sprint 4 · S4.1 completado: CONTRATO LISTO PARA CODEX
 
 - **Rama:** `feature/mayhuasca/b-matching/s04`, desde `main` `cced99e` (PR #17 integrado), publicada en origin. Commit docs(s04) con el análisis, el contrato, el catálogo, DECISIONES y este relevo.

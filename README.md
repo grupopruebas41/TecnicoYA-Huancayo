@@ -8,17 +8,19 @@ Reglas de trabajo (personas y agentes): **[AGENTS.md](AGENTS.md)** · Plan vigen
 
 | Módulo | Tecnología | Función |
 | --- | --- | --- |
-| `frontend/web` | React 18 + Vite 5 | Pantallas v1 en `src/features/*`: cuenta, perfil, catálogo y las de los sprints siguientes |
+| `frontend/web` | React 18 + Vite 8 | Pantallas v1 en `src/features/*`: cuenta, perfil, catálogo y las de los sprints siguientes |
 | `backend/api` | Laravel 12, API `/api/v1`, sesión Sanctum (cookie + CSRF) | Identidad y permisos, catálogo, perfiles, solicitudes; módulos en `app/Modules/A..F` |
 | Base de datos | MySQL 8.4 | Producto (`infrastructure/docker-compose.yml`) y pruebas (`backend/api/docker-compose.testing.yml`) |
-| Pruebas | Pest 3, Vitest 2.1, Cypress 16.1, SonarQube | Meta: 60 o más IDs aprobados por sprint (36 Pest, 14 Cypress, 10 Vitest) |
+| Pruebas | Pest 3, Vitest 5, Cypress 16.1, SonarQube | Meta: 60 o más IDs aprobados por sprint (36 Pest, 14 Cypress, 10 Vitest) |
 
-## Histórico congelado
+## Histórico retirado
 
-No se amplía; solo se mantienen sus pruebas como regresión hasta retirarlo cuando las pantallas v1 de S2 y S3 pasen sus pruebas Cypress (D-26):
+Se retiró el 2026-10-16 (D-26 y D-62); queda en el historial de Git con la etiqueta `v0.3-antes-retiro-prototipo` (`cced99e`):
 - la API `/api/*` con token propio, salvo `GET /api/health`, que usa el arrancador E2E;
 - la demo `localStorage` (`#demo` en la SPA);
-- el servicio Python de matching (`python/api`) y `domain/rules.json`, sincronizado con `scripts/sync-rules.py`;
+- el servicio Python de matching (`python/api`), `domain/rules.json` y `scripts/sync-rules.py`.
+
+Histórico que no se sigue:
 - PostgreSQL;
 - el plan de 10 iteraciones de los PDF 08 a 17 de `docs/documentacion/`;
 - la implementación anterior de `docs/legacy/`.
