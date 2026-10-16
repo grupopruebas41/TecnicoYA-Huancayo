@@ -2,6 +2,33 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-16 · Sprint 4 · S4.1 completado: CONTRATO LISTO PARA CODEX
+
+- **Rama:** `feature/mayhuasca/b-matching/s04`, desde `main` `cced99e` (PR #17 integrado), publicada en origin. Commit docs(s04) con el análisis, el contrato, el catálogo, DECISIONES y este relevo.
+- **Decisiones** (Pimentel, 2026-10-16):
+  - **D-60** IDEM-01 A y **D-61** MEDIA-02 A;
+  - **D-62 a D-70**, las nueve del S4 en opción A: RETIRO-01, PARAM-02, DIST-01 (km de Google Maps: Huancayo–El Tambo 3,5; Huancayo–Chilca 2,5; El Tambo–Chilca 5,5; mismo distrito 1), EMP-01, RES-01, PEND-01, NOTIF-01, EST-01 y DEP-01;
+  - **D-71**: se aceptan los 5 supuestos de diseño.
+- **Ya decididas y aplicadas sin volver a preguntar:** P05 (D-23), P11 (D-22), P12 (D-21), P15 (D-20), P16 (D-25), P19 (D-24) y MATCH-01 (D-19, PHP en Laravel).
+- **Documentos** en `plan-pruebas-v3/sprint-04/`:
+  - `ANALISIS-S04.md`: brechas, catálogo, decisiones y plan de retiro;
+  - `CONTRATO-API.md` v1.0;
+  - `CATALOGO-S04.csv`: **119 ejecutables** (88 Pest, 18 Cypress y 13 Vitest). Los 114 a 119 quedaron desbloqueados.
+- **DEP-01:** solo instalo `laravel/reverb` (sin `-W`), en el S4.3. `laravel-echo` y `pusher-js` los instala Codex.
+- **Pruebas:** ninguna; solo documentos.
+
+**Qué falta:**
+- el retiro del prototipo en `feature/pimentel/infra/retiro-prototipo`, antes del S4.2 (D-62);
+- después, merge de `main` en esta rama y S4.2 y S4.3.
+
+**Para Codex:**
+1. El contrato de S4 está listo para el S4.4.
+2. D-62: tu parte del retiro va en otra rama (ANALISIS §5, lista F: desacoplar `Announcements.jsx`, `TechnicianProfile.jsx` y `auth.css` antes de borrar).
+3. D-64 agrega `base_district_id` al perfil del técnico (`PATCH /technicians/me/profile`): hace falta el campo en la pantalla del perfil.
+4. D-70: instala `laravel-echo` y `pusher-js`.
+
+**Bloqueos:** ninguno.
+
 ## 2026-10-16 · Sprint 3 · cierre S3.6 completado
 
 - **Rama:** `feature/pimentel/a-solicitudes/s03-cierre`, desde `main` `913a538` (PR #14, #15 y #16).
