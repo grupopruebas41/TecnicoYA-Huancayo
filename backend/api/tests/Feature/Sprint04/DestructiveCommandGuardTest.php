@@ -1,9 +1,11 @@
 <?php
 
-// S04-TC-120 a 126 · Transversal (entorno de pruebas) · DEF-45: con APP_ENV=testing, los comandos destructivos de
+// S04-TC-120 a 127 · Transversal (entorno de pruebas) · DEF-45: con APP_ENV=testing, los comandos destructivos de
 // base se niegan a ejecutar si la base no termina en _testing, antes de abrir la conexión, y nombran comando y base.
 // Cada caso repite el incidente: un `php artisan` lanzado a mano en otro proceso, sin tests/bootstrap.php. La base
 // tecnicoya no es accesible para el usuario de pruebas, así que sin la guarda el comando falla al conectar y no borra nada.
+use App\Shared\Database\DestructiveCommandGuard;
+use App\Shared\Database\DestructiveCommandRefused;
 use Symfony\Component\Process\Process;
 
 /** Lanza artisan en un proceso aparte con las variables indicadas (null quita la heredada). */
@@ -60,6 +62,36 @@ it('S04-TC-125 rechaza la opción --database que apunta a una base sin _testing'
         ['APP_ENV' => 'testing', 'DB_DATABASE' => 'tecnicoya_testing', 'DB_NAME' => 'tecnicoya']);
 
     expectRefusedBeforeConnecting($process, 'migrate:fresh');
+});
+
+it('S04-TC-127 tabla de decisión de la guarda dentro del proceso (entorno, comando, conexión y driver)', function () {
+    $guard = new DestructiveCommandGuard;
+    config(['database.connections.probe' => ['driver' => 'mysql', 'database' => 'tecnicoya'],
+        'database.connections.memory' => ['driver' => 'sqlite', 'database' => ':memory:'],
+        'database.connections.sqlite_file' => ['driver' => 'sqlite', 'database' => 'tecnicoya_testing.sqlite']]);
+    $refused = function (string $command, ?string $connection) use ($guard): ?string {
+        try {
+            $guard->check($command, $connection);
+        } catch (DestructiveCommandRefused $exception) {
+            return $exception->getMessage();
+        }
+
+        return null;
+    };
+
+    foreach (['migrate:fresh', 'migrate:refresh', 'migrate:reset', 'db:wipe', 'db:seed'] as $command) {
+        expect($refused($command, 'probe'))->toContain("«{$command}»")->toContain('«tecnicoya»');
+    }
+    expect($refused('db:wipe', 'probe'))->toContain('«db:wipe»')->toContain('«tecnicoya»')
+        ->and($refused('migrate', 'probe'))->toBeNull()          // no destructivo
+        ->and($refused('migrate:status', 'probe'))->toBeNull()
+        ->and($refused('db:seed', null))->toBeNull()              // conexión por defecto del slot (_testing)
+        ->and($refused('migrate:fresh', 'memory'))->toBeNull()    // SQLite en memoria
+        ->and($refused('migrate:fresh', 'sqlite_file'))->toContain('«tecnicoya_testing.sqlite»');
+
+    app()->detectEnvironment(fn () => 'local');
+    expect($refused('db:wipe', 'probe'))->toBeNull();            // la guarda es solo para APP_ENV=testing
+    app()->detectEnvironment(fn () => 'testing');
 });
 
 it('S04-TC-126 permite db:seed en la base _testing del slot', function () {

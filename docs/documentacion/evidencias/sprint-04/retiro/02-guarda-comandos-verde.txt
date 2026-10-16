@@ -1,0 +1,14 @@
+# DEF-45 · S04-TC-120 a 127 en verde (DestructiveCommandGuard)
+# Fecha: 2026-10-16T09:27:29Z · Base: 0ac7ce8 + implementación sin commit · Slot A (tecnicoya_testing)
+# S04-TC-127 se agregó en el verde: llama a la guarda dentro del proceso para que PCOV y la mutación midan la clase (120 a 126 corren artisan en otro proceso).
+  ✓ it S04-TC-120 rechaza migrate:fresh con --env=testing y la base por defecto tecnicoya                        0.44s  
+  ✓ it S04-TC-121 rechaza migrate:refresh contra una base sin _testing                                           0.43s  
+  ✓ it S04-TC-122 rechaza migrate:reset contra una base sin _testing                                             0.42s  
+  ✓ it S04-TC-123 rechaza db:wipe contra una base sin _testing                                                   0.42s  
+  ✓ it S04-TC-124 rechaza db:seed contra una base sin _testing                                                   0.44s  
+  ✓ it S04-TC-125 rechaza la opción --database que apunta a una base sin _testing                                0.45s  
+  ✓ it S04-TC-127 tabla de decisión de la guarda dentro del proceso (entorno, comando, conexión y driver)        0.01s  
+  ✓ it S04-TC-126 permite db:seed en la base _testing del slot                                                   0.44s  
+# Suite completa:
+  Tests:    176 passed (1991 assertions)
+  Duration: 60.26s
