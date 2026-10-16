@@ -27,6 +27,6 @@ Se retiran 30 pruebas exclusivas del prototipo sin IDs SNN-TC; se añade un comp
 - VideoExperience sigue siendo el envoltorio activo de main, sin dependencia de demo. ScrollServices permanece desconectado del runtime, con sus pruebas.
 - laravel-echo ^2.6.1 y pusher-js ^8.6.0 instalados (60cc4a7), sin integración en tiempo real todavía.
 - Backend sin cambios. Cypress, Docker y SonarQube no ejecutados. La regresión E2E del retiro corresponde a Claude Code.
-- Etiqueta prototipo-historico: no se publicó desde esta rama; confirmar su publicación con el equipo responsable.
+- Respaldo confirmado en origin: etiqueta v0.3-antes-retiro-prototipo sobre cced99e, anterior al retiro. No se creó ni modificó ninguna etiqueta desde esta rama.
 
 Revisor: [PENDIENTE]. Los logs usan fecha UTC; las rutas locales están anonimizadas.

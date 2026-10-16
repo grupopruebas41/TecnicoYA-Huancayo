@@ -29,7 +29,7 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - laravel-echo 2.6.1 y pusher-js 8.6.0 instalados sin uso todavía.
 - Vitest: rojo esperado 3/4; verde 117/117 (146 anteriores menos 30 históricos más 1 complemento). Cobertura líneas 82,66 %, ramas 72,77 %. Build y npm audit salida 0; 0 vulnerabilidades.
 - Evidencias: docs/documentacion/evidencias/sprint-04/retiro-frontend/ (logs, JUnit y LCOV anonimizados). Avance: docs/avances/delgado/sprint-04/avance.md.
-- Pedidos a Claude Code: ejecutar regresión Cypress del retiro S01–S03 e integrar ambos retiros; confirmar etiqueta prototipo-historico a cargo del equipo. No ejecuté Cypress, Docker ni SonarQube.
+- Pedidos a Claude Code: ejecutar regresión Cypress del retiro S01–S03 e integrar ambos retiros; respaldo confirmado en origin mediante v0.3-antes-retiro-prototipo (cced99e). No ejecuté Cypress, Docker ni SonarQube.
 - PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/18. CI iniciada al publicar; estado actualizado en los checks del PR. Commit de evidencias 54669f9. Revisor: [PENDIENTE].
 
 
