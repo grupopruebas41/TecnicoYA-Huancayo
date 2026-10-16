@@ -21,6 +21,19 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-16 · RETIRO-01 · Frontend
+
+- Rama feature/delgado/infra/retiro-prototipo; base cced99e. Commits: 60cc4a7 dependencias DEP-01; f23ed61 prueba en rojo; ee4cb8a retiro y estilos v1.
+- Retirados #demo, componentes históricos, cliente token, seis archivos de pruebas históricos y src/domain completo (incluido rules.json). Ninguna prueba retirada tenía ID SNN-TC. auth.css movido a features/administration; Announcements y TechnicianProfile v1 ya eran independientes.
+- Conservados marketplace.css por uso compartido v1, VideoExperience activo y ScrollServices desconectado del runtime. No se tocó backend.
+- laravel-echo 2.6.1 y pusher-js 8.6.0 instalados sin uso todavía.
+- Vitest: rojo esperado 3/4; verde 117/117 (146 anteriores menos 30 históricos más 1 complemento). Cobertura líneas 82,66 %, ramas 72,77 %. Build y npm audit salida 0; 0 vulnerabilidades.
+- Evidencias: docs/documentacion/evidencias/sprint-04/retiro-frontend/ (logs, JUnit y LCOV anonimizados). Avance: docs/avances/delgado/sprint-04/avance.md.
+- Pedidos a Claude Code: ejecutar regresión Cypress del retiro S01–S03 e integrar ambos retiros; confirmar etiqueta prototipo-historico a cargo del equipo. No ejecuté Cypress, Docker ni SonarQube.
+- PR y CI: se registran tras publicar. Revisor: [PENDIENTE].
+
+
+
 ## 2026-10-15 · S3.5 · Integración frontend y regresiones aprobadas
 
 - Rama feature/delgado/a-solicitudes/s03, slot B; merge e91e6bb de origin/main c1918f4 (PR #14 y #16), sin conflictos ni rebase. Dependencias locales sincronizadas con composer install; no se editaron archivos backend. MySQL compartido ya estaba healthy; no se levantó Compose desde el worktree.
