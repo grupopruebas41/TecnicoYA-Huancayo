@@ -12,7 +12,8 @@ use Symfony\Component\Process\Process;
 function artisanProcess(array $arguments, array $env): Process
 {
     $process = new Process([PHP_BINARY, 'artisan', ...$arguments, '--force', '--no-interaction', '--no-ansi'],
-        base_path(), $env + ['DB_USERNAME' => 'tecnicoya_test', 'DB_HOST' => '127.0.0.1', 'TECNICOYA_SLOT' => null]);
+        // COLUMNS fijo: la consola parte el mensaje según el ancho de la terminal (80 en la CI) y cortaría «tecnicoya».
+        base_path(), $env + ['DB_USERNAME' => 'tecnicoya_test', 'DB_HOST' => '127.0.0.1', 'TECNICOYA_SLOT' => null, 'COLUMNS' => '1000']);
     $process->run();
 
     return $process;
