@@ -2,86 +2,71 @@
 
 // S04-TC-120 a 126 · Transversal (entorno de pruebas) · DEF-45: con APP_ENV=testing, los comandos destructivos de
 // base se niegan a ejecutar si la base no termina en _testing, antes de abrir la conexión, y nombran comando y base.
-// La conexión de sondeo apunta a la base de desarrollo, a la que el usuario de pruebas no tiene acceso: sin la guarda
-// el comando falla al conectar y no borra nada.
-use App\Shared\Database\DestructiveCommandRefused;
-use Database\Seeders\DistrictSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
+// Cada caso repite el incidente: un `php artisan` lanzado a mano en otro proceso, sin tests/bootstrap.php. La base
+// tecnicoya no es accesible para el usuario de pruebas, así que sin la guarda el comando falla al conectar y no borra nada.
+use Symfony\Component\Process\Process;
 
-uses(RefreshDatabase::class);
-
-beforeEach(function () {
-    $this->default = config('database.default');
-    config(['database.connections.guard_probe' => ['database' => 'tecnicoya'] + config('database.connections.mysql')]);
-});
-
-afterEach(function () {
-    config(['database.default' => $this->default]);
-    DB::purge('guard_probe');
-});
-
-/** Ejecuta el comando y devuelve la excepción de la guarda, o null si no la hubo. */
-function runAgainstProbe(string $command, array $parameters = []): ?DestructiveCommandRefused
+/** Lanza artisan en un proceso aparte con las variables indicadas (null quita la heredada). */
+function artisanProcess(array $arguments, array $env): Process
 {
-    try {
-        Artisan::call($command, $parameters + ['--force' => true]);
-    } catch (DestructiveCommandRefused $refused) {
-        return $refused;
-    }
+    $process = new Process([PHP_BINARY, 'artisan', ...$arguments, '--force', '--no-interaction', '--no-ansi'],
+        base_path(), $env + ['DB_USERNAME' => 'tecnicoya_test', 'DB_HOST' => '127.0.0.1', 'TECNICOYA_SLOT' => null]);
+    $process->run();
 
-    return null;
+    return $process;
 }
 
-function expectRefusedBeforeConnecting(?DestructiveCommandRefused $refused, string $command): void
+function expectRefusedBeforeConnecting(Process $process, string $command, string $database = 'tecnicoya'): void
 {
-    expect($refused)->toBeInstanceOf(DestructiveCommandRefused::class)
-        ->and($refused->getMessage())->toContain("«{$command}»")->toContain('«tecnicoya»')->toContain('_testing')
-        ->and(array_key_exists('guard_probe', DB::getConnections()))->toBeFalse();
+    $output = $process->getOutput().$process->getErrorOutput();
+    expect($process->getExitCode())->not->toBe(0)
+        ->and($output)->toContain("Comando «{$command}» rechazado")->toContain("«{$database}»")->toContain('_testing')
+        ->and($output)->not->toContain('SQLSTATE');
 }
 
-it('S04-TC-120 rechaza migrate:fresh contra una base sin _testing con APP_ENV=testing', function () {
-    config(['database.default' => 'guard_probe']);
+it('S04-TC-120 rechaza migrate:fresh con --env=testing y la base por defecto tecnicoya', function () {
+    $process = artisanProcess(['migrate:fresh', '--env=testing'], ['APP_ENV' => null, 'DB_DATABASE' => 'tecnicoya']);
 
-    expectRefusedBeforeConnecting(runAgainstProbe('migrate:fresh'), 'migrate:fresh');
+    expectRefusedBeforeConnecting($process, 'migrate:fresh');
 });
 
 it('S04-TC-121 rechaza migrate:refresh contra una base sin _testing', function () {
-    config(['database.default' => 'guard_probe']);
+    $process = artisanProcess(['migrate:refresh'], ['APP_ENV' => 'testing', 'DB_DATABASE' => 'tecnicoya']);
 
-    expectRefusedBeforeConnecting(runAgainstProbe('migrate:refresh'), 'migrate:refresh');
+    expectRefusedBeforeConnecting($process, 'migrate:refresh');
 });
 
 it('S04-TC-122 rechaza migrate:reset contra una base sin _testing', function () {
-    config(['database.default' => 'guard_probe']);
+    $process = artisanProcess(['migrate:reset'], ['APP_ENV' => 'testing', 'DB_DATABASE' => 'tecnicoya']);
 
-    expectRefusedBeforeConnecting(runAgainstProbe('migrate:reset'), 'migrate:reset');
+    expectRefusedBeforeConnecting($process, 'migrate:reset');
 });
 
 it('S04-TC-123 rechaza db:wipe contra una base sin _testing', function () {
-    config(['database.default' => 'guard_probe']);
+    $process = artisanProcess(['db:wipe'], ['APP_ENV' => 'testing', 'DB_DATABASE' => 'tecnicoya']);
 
-    expectRefusedBeforeConnecting(runAgainstProbe('db:wipe'), 'db:wipe');
+    expectRefusedBeforeConnecting($process, 'db:wipe');
 });
 
 it('S04-TC-124 rechaza db:seed contra una base sin _testing', function () {
-    config(['database.default' => 'guard_probe']);
+    $process = artisanProcess(['db:seed', '--class=Database\\Seeders\\DistrictSeeder'], ['APP_ENV' => 'testing', 'DB_DATABASE' => 'tecnicoya']);
 
-    expectRefusedBeforeConnecting(runAgainstProbe('db:seed', ['--class' => DistrictSeeder::class]), 'db:seed');
+    expectRefusedBeforeConnecting($process, 'db:seed');
 });
 
 it('S04-TC-125 rechaza la opción --database que apunta a una base sin _testing', function () {
-    expect(config('database.default'))->toBe('mysql');
+    // La conexión por defecto es la del slot; la pedida con --database (pgsql, DB_NAME) apunta a tecnicoya.
+    $process = artisanProcess(['migrate:fresh', '--database=pgsql'],
+        ['APP_ENV' => 'testing', 'DB_DATABASE' => 'tecnicoya_testing', 'DB_NAME' => 'tecnicoya']);
 
-    expectRefusedBeforeConnecting(runAgainstProbe('migrate:fresh', ['--database' => 'guard_probe']), 'migrate:fresh');
+    expectRefusedBeforeConnecting($process, 'migrate:fresh');
 });
 
 it('S04-TC-126 permite db:seed en la base _testing del slot', function () {
-    expect(DB::connection()->getDatabaseName())->toEndWith('_testing');
+    $process = artisanProcess(['db:seed', '--class=Database\\Seeders\\DistrictSeeder'],
+        ['APP_ENV' => 'testing', 'DB_DATABASE' => getenv('DB_DATABASE')]);
 
-    $refused = runAgainstProbe('db:seed', ['--class' => DistrictSeeder::class]);
-
-    expect($refused)->toBeNull()
-        ->and(DB::table('districts')->count())->toBeGreaterThan(0);
+    expect(getenv('DB_DATABASE'))->toEndWith('_testing')
+        ->and($process->getExitCode())->toBe(0)
+        ->and($process->getOutput())->not->toContain('rechazado');
 });
