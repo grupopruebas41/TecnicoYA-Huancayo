@@ -2,6 +2,29 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-16 · Retiro del prototipo, parte backend, Python e infraestructura (D-26, D-62)
+
+- **Rama:** `feature/pimentel/infra/retiro-prototipo`, desde `main` `cced99e`. **Sin publicar:** se publica tras la regresión.
+- **Commits:**
+  - `07e15aa` refactor: API con token, backend del prototipo y migración 000020;
+  - `ae11118` chore: Python, `domain/`, `sync-rules.py`, Compose, VS Code y `project.yml`;
+  - `f5f8100` docs: AGENTS §2 (Vite 8 y Vitest 5), README, PLAN-MAESTRO, D-26 y DEF-22/26 cerrados.
+- **Pruebas** (slot A):
+  - Pest **168/168** (1940 aserciones). Antes eran 189; salen las 21 del prototipo.
+  - `route:list`: fuera de `/api/v1` solo queda `GET /api/health`.
+  - Migración 000020 comprobada con `migrate:fresh`, `rollback` y `migrate`, desde una prueba temporal de Pest ya borrada.
+- **Aviso:** un `artisan migrate:fresh --env=testing` a mano apuntó a la base de desarrollo `tecnicoya` y MySQL rechazó el acceso, sin cambios (mismo patrón que DEF-44). Para pruebas manuales de base, usar Pest o las variables del arrancador.
+- **Pendiente para Pimentel:** la etiqueta previa al retiro todavía no existía en origin al empezar (`git ls-remote --tags` vacío).
+- **Referencias:** D-62 y D-63 se citan aquí, pero sus filas están en la rama del S4 (`96a055a`) y llegan a `main` con ese PR.
+- **Sin cambiar:** `users.role` (lo usan `AuthorizationSeeder` y una prueba de S1) y los generadores históricos `scripts/generar-*.py` y `documentar-calidad.py`, que describen el plan antiguo.
+
+**Qué falta:**
+1. Que se integre el PR de frontend de Codex.
+2. Merge de `main` en esta rama y regresión completa en el slot A: Pest, Vitest, Cypress S01, S02 y S03 (uno a la vez), `composer audit` y `npm audit`.
+3. Push, PR con `gh` y CI.
+
+**Para Codex:** tu parte es la lista F de ANALISIS-S04 §5. Además retira la copia `frontend/web/src/domain/rules.json` (DEF-26).
+
 ## 2026-10-16 · Sprint 3 · cierre S3.6 completado
 
 - **Rama:** `feature/pimentel/a-solicitudes/s03-cierre`, desde `main` `913a538` (PR #14, #15 y #16).
