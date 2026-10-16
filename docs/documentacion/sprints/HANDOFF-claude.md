@@ -21,6 +21,10 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   | `composer audit` y `npm audit` | Limpios |
 
   Evidencias en `evidencias/sprint-04/retiro/`. Avance en `docs/avances/pimentel/sprint-04/avance.md`.
+- **PR #19:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/19.
+  - La primera CI falló en S04-TC-121: con 80 columnas, la consola partió el mensaje dentro de «tecnicoya».
+  - `6945f42` fija `COLUMNS=1000` en el proceso hijo, con las mismas aserciones.
+  - CI en verde en `6945f42`: backend, frontend y conteo.
 - **Para la rama del S4:** al fusionar `main`, agregar S04-TC-120 a 127 a `CATALOGO-S04.csv` y resolver el conflicto del HANDOFF (las dos ramas añaden entradas arriba).
 
 **Qué falta:** que se integre este PR; después, merge de `main` en `feature/mayhuasca/b-matching/s04`, S4.2 y S4.3.
