@@ -8,7 +8,7 @@ Archivos y resultados: [informe de retiro](../../../documentacion/evidencias/spr
 
 Vitest previsto y ejecutado con cobertura: 117/117, líneas 82,66 %. Build y audit aprobados, cero vulnerabilidades. Prueba roja conservada. Cypress previsto a cargo de Claude Code; no ejecutado aquí. SonarQube: pendiente del cierre, sin nuevo enlace de análisis.
 
-PR/CI: pendientes de publicación en esta entrada inicial. Revisión humana: [PENDIENTE]. Pendiente: regresión E2E conjunta e integración por el equipo; etiqueta histórica a confirmar. Decisiones: [DECISIONES.md](../../../documentacion/sprints/DECISIONES.md).
+PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/18. CI iniciada; consultar checks del PR para el último commit. Evidencias confirmadas en 54669f9. Revisión humana: [PENDIENTE]. Pendiente: regresión E2E conjunta e integración por el equipo; etiqueta histórica a confirmar. Decisiones: [DECISIONES.md](../../../documentacion/sprints/DECISIONES.md).
 
 ## Uso de IA
 
