@@ -15,7 +15,7 @@ Reglas de trabajo (personas y agentes): **[AGENTS.md](AGENTS.md)** · Plan vigen
 
 ## Histórico retirado
 
-Se retiró el 2026-10-16 (D-26 y D-62); queda en el historial de Git con la etiqueta previa al retiro:
+Se retiró el 2026-10-16 (D-26 y D-62); queda en el historial de Git con la etiqueta `v0.3-antes-retiro-prototipo` (`cced99e`):
 - la API `/api/*` con token propio, salvo `GET /api/health`, que usa el arrancador E2E;
 - la demo `localStorage` (`#demo` en la SPA);
 - el servicio Python de matching (`python/api`), `domain/rules.json` y `scripts/sync-rules.py`.
