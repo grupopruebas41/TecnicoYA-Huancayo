@@ -1,0 +1,43 @@
+Fecha: 2026-10-15
+Commit: b916280
+Comando (frontend/web): npm test -- --maxWorkers=1 src/features/requests/sprint03.test.jsx
+Código de salida: 1
+
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 src/features/requests/sprint03.test.jsx
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/features/requests/sprint03.test.jsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx [ src/features/requests/sprint03.test.jsx ]
+Error: Transform failed with 1 error:
+
+[PARSE_ERROR] Unexpected token
+    ╭─[ src/features/requests/sprint03.test.jsx:23:159 ]
+    │
+ 23 │ test('S03-TC-075 tarifa referencial y ausencia de cobro',()=>{const {rerender}=render(<RequestSummary record={doc}/>);expect(screen.getByText(/Referencial S//)).toHaveTextContent('80');expect(screen.queryByText(/Total a pagar/i)).toBeNull();rerender(<RequestSummary record={{...doc,reference_fee:{amount:null}}}/>);expect(screen.getByText('Sin tarifa referencial')).toBeVisible()});
+    │                                                                                                                                                               ┬  
+    │                                                                                                                                                               ╰── 
+────╯
+
+  Plugin: vite:oxc
+  File: [WORKSPACE]/frontend/web/src/features/requests/sprint03.test.jsx
+ ❯ transformWithOxc node_modules/vite/dist/node/chunks/node.js:7581:19
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:7653:26
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:51
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  01:21:08
+   Duration  15.48s (environment 76%, setup 24%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml

@@ -1,0 +1,231 @@
+Fecha: 2026-10-15
+Commit: 85e058e
+Comando (frontend/web): npm test -- --maxWorkers=1 src/features/requests/sprint03.test.jsx
+Código de salida: 1
+
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 src/features/requests/sprint03.test.jsx
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/features/requests/sprint03.test.jsx (13 tests | 13 failed) 1076ms
+   × S03-TC-069 validación del paso 1 8ms
+   × S03-TC-070 cambiar de rubro limpia subcategoría y catálogo 1020ms
+   × S03-TC-071 límites de descripción y espacios 1ms
+   × S03-TC-072 límites de evidencias 1ms
+   × S03-TC-073 ubicación y horario con reloj controlado 2ms
+   × S03-TC-074 estado preservado al navegar 1ms
+   × S03-TC-075 tarifa referencial y ausencia de cobro 2ms
+   × S03-TC-076 reintento conserva clave y cuerpo 1ms
+   × S03-TC-077 envío pendiente bloquea doble clic 2ms
+   × S03-TC-078 técnico sin calificaciones 2ms
+   × S03-TC-079 filtros elegidos y reinicio de página 1ms
+   × S03-TC-080 estados de Mis solicitudes 2ms
+   × S03-TC-081 indicador accesible de cinco pasos 31ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-069 validación del paso 1
+AssertionError: expected {} to deeply equal { specialty_id: StringMatching{…} }
+
+- Expected
++ Received
+
+- {
+-   "specialty_id": StringMatching /especialidad/i,
+- }
++ {}
+
+ ❯ src/features/requests/sprint03.test.jsx:17:73
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-070 cambiar de rubro limpia subcategoría y catálogo
+TestingLibraryElementError: Unable to find role="option" and name "Cómputo"
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/requests/sprint03.test.jsx:18:163
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-071 límites de descripción y espacios
+AssertionError: expected {} to have property "description"
+ ❯ src/features/requests/sprint03.test.jsx:19:135
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-072 límites de evidencias
+AssertionError: expected '' to match /JPG|PNG/
+
+- Expected:
+/JPG|PNG/
+
++ Received:
+""
+
+ ❯ src/features/requests/sprint03.test.jsx:20:100
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-073 ubicación y horario con reloj controlado
+AssertionError: expected {} to have property "address"
+ ❯ src/features/requests/sprint03.test.jsx:21:397
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-074 estado preservado al navegar
+AssertionError: expected {} to deeply equal { step: 1, …(5) }
+
+- Expected
++ Received
+
+- {
+-   "address": "Dirección sintética",
+-   "description": "Falla sintética",
+-   "district_id": "1",
+-   "specialty_id": "1",
+-   "step": 1,
+-   "subcategory_id": "4",
+- }
++ {}
+
+ ❯ src/features/requests/sprint03.test.jsx:22:306
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-075 tarifa referencial y ausencia de cobro
+TestingLibraryElementError: Unable to find an element with the text: /Referencial S/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/requests/sprint03.test.jsx:23:133
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-076 reintento conserva clave y cuerpo
+AssertionError: promise resolved "undefined" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+undefined
+
+ ❯ src/features/requests/sprint03.test.jsx:24:218
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-077 envío pendiente bloquea doble clic
+TestingLibraryElementError: Unable to find a label with the text of: Confirmo que el resumen es correcto
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/requests/sprint03.test.jsx:25:166
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-078 técnico sin calificaciones
+TestingLibraryElementError: Unable to find an element with the text: Sin calificaciones aún. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/requests/sprint03.test.jsx:26:186
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-079 filtros elegidos y reinicio de página
+AssertionError: expected null to be '2' // Object.is equality
+
+- Expected:
+"2"
+
++ Received:
+null
+
+ ❯ src/features/requests/sprint03.test.jsx:27:242
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-080 estados de Mis solicitudes
+TestingLibraryElementError: Unable to find an element with the text: Cargando solicitudes…. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/requests/sprint03.test.jsx:28:152
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/13]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-081 indicador accesible de cinco pasos
+TestingLibraryElementError: Unable to find an accessible element with the role "listitem"
+
+There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ src/features/requests/sprint03.test.jsx:29:112
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  13 failed (13)
+   Start at  01:21:45
+   Duration  3.80s (import 46%, tests 30%, environment 16%, transform 5%, setup 3%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml

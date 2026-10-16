@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="69.668" tests="5" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-15T13:51:35" tests="0" file="cypress\e2e\sprint-03\request-wizard.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 asistente" timestamp="2026-10-15T13:51:35" tests="5" time="69.665" failures="1">
+    <testcase name="S3 asistente S03-TC-052 recorrido con corrección antes de enviar" time="15.369" classname="S03-TC-052 recorrido con corrección antes de enviar">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-053 paso incompleto no avanza y enfoca error" time="8.988" classname="S03-TC-053 paso incompleto no avanza y enfoca error">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-054 atrás y adelante conserva datos" time="13.336" classname="S03-TC-054 atrás y adelante conserva datos">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-055 límites de descripción" time="6.970" classname="S03-TC-055 límites de descripción">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-063 recorrido por teclado" time="0.000" classname="S03-TC-063 recorrido por teclado">
+      <failure message="Timed out retrying after 20000ms: Expected to find element: `[aria-label=&quot;Nueva solicitud&quot;]`, but never found it." type="AssertionError">Timed out retrying after 20000ms: Expected to find element: `[aria-label="Nueva solicitud"]`, but never found it.</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

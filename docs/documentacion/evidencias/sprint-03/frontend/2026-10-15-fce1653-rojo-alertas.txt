@@ -1,0 +1,199 @@
+Fecha: 2026-10-15
+Commit: fce1653
+Comando (frontend/web): npm test -- --maxWorkers=1 src/features/requests/requestFlows.test.jsx -t "registra una vez"
+Código de salida: 1
+
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 src/features/requests/requestFlows.test.jsx -t registra una vez
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/features/requests/requestFlows.test.jsx (13 tests | 1 failed | 12 skipped) 361ms
+   × S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio 359ms
+   ↓ S03-TC-069 complemento: validación enfoca el campo y no registra
+   ↓ S03-TC-074 complemento: creación incierta no repite POST
+   ↓ S03-TC-076 complemento: incertidumbre, lectura registrada y reintento con misma clave
+   ↓ S03-TC-076 complemento: lectura enviada confirma sin repetir POST
+   ↓ S03-TC-077 complemento: límite del servidor y 500 no dan falso éxito
+   ↓ S03-TC-072 complemento: cancela retiro sin DELETE y confirma con versión
+   ↓ S03-TC-072 complemento: sube evidencia privada y adjunta antes de confirmar
+   ↓ S03-TC-072 complemento: archivo inválido no sale del navegador y quinta foto bloquea
+   ↓ S03-TC-079 complemento: búsqueda, privacidad y solicitud dirigida
+   ↓ S03-TC-080 complemento: detalle enviado sin controles de edición
+   ↓ S03-TC-080 complemento: portal abre solicitud y retoma la registrada
+   ↓ S03-TC-073 complemento: fechas de registro y reanudación
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/requests/requestFlows.test.jsx > S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio
+TestingLibraryElementError: Unable to find an element with the text: Solicitud registrada. Revisa el resumen antes de enviarla.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="Nueva solicitud"
+      class="s02-panel request-wizard"
+    >
+      <ol
+        aria-label="Pasos de la solicitud"
+        class="request-steps"
+      >
+        <li>
+          <span>
+            1
+          </span>
+           
+          Especialidad
+        </li>
+        <li>
+          <span>
+            2
+          </span>
+           
+          Subcategoría
+        </li>
+        <li>
+          <span>
+            3
+          </span>
+           
+          Descripción y fotos
+        </li>
+        <li>
+          <span>
+            4
+          </span>
+           
+          Ubicación y horario
+        </li>
+        <li
+          aria-current="step"
+        >
+          <span>
+            5
+          </span>
+           
+          Resumen y envío
+        </li>
+      </ol>
+      <h2
+        tabindex="-1"
+      >
+        Paso 
+        5
+        : 
+        Resumen y envío
+      </h2>
+      <p>
+        Solicitud #
+        31
+        . Para cambiar especialidad o modalidad, inicia una nueva solicitud desde el menú.
+      </p>
+      <div
+        tabindex="-1"
+      />
+      <section
+        aria-label="Evidencias"
+      >
+        <h3>
+          Fotos de la falla
+        </h3>
+        <label>
+          Subir evidencia
+          <input
+            accept=".jpg,.jpeg,.png,.webp"
+            type="file"
+          />
+        </label>
+        <p>
+          JPG, PNG o WebP de hasta 5 MB; máximo 5 fotos.
+        </p>
+        <div
+          class="s02-images"
+        />
+      </section>
+      <section
+        aria-label="Resumen de solicitud"
+        class="s02-card"
+      >
+        <h3>
+          Resumen · Solicitud #
+          31
+        </h3>
+        <p>
+          Registrada
+        </p>
+        <p>
+          Hardware
+           · 
+          Huancayo
+        </p>
+        <p>
+          Falla sintética del computador
+        </p>
+        <p>
+          Calle sintética 123
+        </p>
+        <p>
+          Atención inmediata
+        </p>
+        <p
+          class="request-fee"
+        >
+          Referencial S/
+           
+          80.00
+          <small>
+            Orientativa. No representa un cobro.
+          </small>
+        </p>
+        <div
+          tabindex="-1"
+        />
+        <form>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Confirmo que el resumen es correcto
+          </label>
+          <button
+            disabled=""
+            type="submit"
+          >
+            Enviar solicitud
+          </button>
+        </form>
+      </section>
+      <button
+        type="button"
+      >
+        Atrás
+      </button>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/requests/requestFlows.test.jsx:89:17
+     87|   fireEvent.click(screen.getByText("Siguiente"));
+     88|   await screen.findByText("Resumen · Solicitud #31");
+     89|   expect(screen.getByText("Solicitud registrada. Revisa el resumen ant…
+       |                 ^
+     90|   fireEvent.click(screen.getByText("Atrás"));
+     91|   fireEvent.click(screen.getByText("Atrás"));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 skipped (13)
+   Start at  01:43:31
+   Duration  2.17s (environment 33%, import 22%, tests 18%, transform 17%, setup 9%, worker 1%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml

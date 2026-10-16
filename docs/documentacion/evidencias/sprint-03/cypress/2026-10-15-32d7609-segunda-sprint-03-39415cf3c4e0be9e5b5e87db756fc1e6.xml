@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="51.624" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-15T13:43:44" tests="0" file="cypress\e2e\sprint-03\request-evidence.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 evidencias" timestamp="2026-10-15T13:43:44" tests="3" time="51.621" failures="0">
+    <testcase name="S3 evidencias S03-TC-056 adjunta y retira con confirmación" time="16.746" classname="S03-TC-056 adjunta y retira con confirmación">
+    </testcase>
+    <testcase name="S3 evidencias S03-TC-057 archivo inválido no sube" time="8.851" classname="S03-TC-057 archivo inválido no sube">
+    </testcase>
+    <testcase name="S3 evidencias S03-TC-058 sexta evidencia bloqueada" time="25.625" classname="S03-TC-058 sexta evidencia bloqueada">
+    </testcase>
+  </testsuite>
+</testsuites>

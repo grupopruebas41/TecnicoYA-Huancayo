@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="47.362" tests="4" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:49:07" tests="0" file="cypress\e2e\sprint-02\announcements.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Comunicados S2" timestamp="2026-10-15T20:49:07" tests="4" time="47.359" failures="1">
+    <testcase name="Comunicados S2 S02-TC-065 crear y publicar con vista previa escapada" time="10.515" classname="S02-TC-065 crear y publicar con vista previa escapada">
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-066 cancelar retiro no envía DELETE" time="0.000" classname="S02-TC-066 cancelar retiro no envía DELETE">
+      <failure message="Timed out retrying after 20000ms: Expected to find element: `[role=dialog]`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Expected to find element: `[role=dialog]`, but never found it.
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-02/announcements.cy.js:4:245)]]></failure>
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-067 error 500 conserva formulario y referencia" time="6.288" classname="S02-TC-067 error 500 conserva formulario y referencia">
+    </testcase>
+    <testcase name="Comunicados S2 S02-TC-068 duplicar genera borrador" time="5.537" classname="S02-TC-068 duplicar genera borrador">
+    </testcase>
+  </testsuite>
+</testsuites>

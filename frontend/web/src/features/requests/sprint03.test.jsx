@@ -1,0 +1,238 @@
+import React from "react";
+import { test, expect, vi, afterEach } from "vitest";
+import {
+  render,
+  screen,
+  fireEvent,
+  cleanup,
+  waitFor,
+} from "@testing-library/react";
+import { validateStep, validateEvidence } from "./requestValidation";
+import { initialWizard, wizardReducer } from "./wizardState";
+import RequestWizard, { StepIndicator } from "./RequestWizard";
+import RequestSummary from "./RequestSummary";
+import { createSubmissionAttempt } from "./requestsApi";
+import MyRequests from "./MyRequests";
+import TechnicianCard from "../matching/TechnicianCard";
+import { searchQuery, changeFilters } from "../matching/searchQuery";
+import { request } from "../administration/http";
+vi.mock("../administration/http", () => ({
+  request: vi.fn(),
+  serverNow: () => Date.now(),
+}));
+afterEach(() => {
+  cleanup();
+  vi.resetAllMocks();
+  vi.useRealTimers();
+});
+const doc = {
+  id: 31,
+  status: "registered",
+  version: 3,
+  description: "Una descripción válida de prueba",
+  address: "Calle sintética",
+  subcategory: { id: 4, name: "Hardware" },
+  district: { id: 1, name: "Huancayo" },
+  reference_fee: { amount: "80.00" },
+  attachments: [],
+};
+const catalog = (path) => {
+  if (path === "/catalog/specialties")
+    return {
+      data: [
+        { id: 1, name: "Cómputo" },
+        { id: 2, name: "Electricidad" },
+      ],
+    };
+  if (path === "/catalog/districts")
+    return { data: [{ id: 1, name: "Huancayo" }] };
+  return {
+    data: path.endsWith("=2")
+      ? [{ id: 8, name: "Iluminación" }]
+      : [{ id: 4, name: "Hardware" }],
+  };
+};
+test("S03-TC-069 validación del paso 1", () => {
+  expect(validateStep(1, {})).toEqual({
+    specialty_id: expect.stringMatching(/especialidad/i),
+  });
+  expect(validateStep(1, { specialty_id: "1" })).toEqual({});
+});
+test("S03-TC-070 cambiar de rubro limpia subcategoría y catálogo", async () => {
+  request.mockImplementation(async (p) => catalog(p));
+  render(<RequestWizard />);
+  await screen.findByRole("option", { name: "Cómputo" });
+  fireEvent.change(screen.getByLabelText("Especialidad"), {
+    target: { value: "1" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+  await screen.findByRole("option", { name: "Hardware" });
+  fireEvent.change(screen.getByLabelText("Subcategoría"), {
+    target: { value: "4" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Atrás" }));
+  fireEvent.change(screen.getByLabelText("Especialidad"), {
+    target: { value: "2" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+  await screen.findByRole("option", { name: "Iluminación" });
+  expect(screen.getByLabelText("Subcategoría")).toHaveValue("");
+  expect(screen.queryByRole("option", { name: "Hardware" })).toBeNull();
+});
+test("S03-TC-071 límites de descripción y espacios", () => {
+  for (const n of [19, 1001])
+    expect(validateStep(3, { description: "x".repeat(n) })).toHaveProperty(
+      "description",
+    );
+  for (const n of [20, 1000])
+    expect(validateStep(3, { description: "x".repeat(n) })).toEqual({});
+  expect(
+    validateStep(3, { description: "  " + "x".repeat(19) + "  " }),
+  ).toHaveProperty("description");
+});
+test("S03-TC-072 límites de evidencias", () => {
+  expect(validateEvidence({ type: "image/gif", size: 1 }, 0)).toMatch(
+    /JPG|PNG/,
+  );
+  expect(validateEvidence({ type: "image/png", size: 5242880 }, 0)).toBe("");
+  expect(validateEvidence({ type: "image/png", size: 5242881 }, 0)).toMatch(
+    /5 MB/,
+  );
+  expect(validateEvidence({ type: "image/png", size: 1 }, 5)).toMatch(
+    /5 fotos/,
+  );
+});
+test("S03-TC-073 ubicación y horario con reloj controlado", () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date("2030-01-01T12:00:00Z"));
+  const v = {
+    district_id: 1,
+    address: "abcde",
+    mode: "scheduled",
+    preferred_start_at: "2030-01-01T12:00:00Z",
+    preferred_end_at: "2030-01-01T13:00:00Z",
+  };
+  expect(validateStep(4, v)).toEqual({});
+  for (const address of ["abcd", "a".repeat(256)])
+    expect(validateStep(4, { ...v, address })).toHaveProperty("address");
+  for (const preferred_start_at of ["", "2030-01-01T11:59:00Z"])
+    expect(validateStep(4, { ...v, preferred_start_at })).toHaveProperty(
+      "preferred_start_at",
+    );
+  expect(
+    validateStep(4, { ...v, preferred_end_at: v.preferred_start_at }),
+  ).toHaveProperty("preferred_end_at");
+});
+test("S03-TC-074 estado preservado al navegar", () => {
+  const base = {
+    ...initialWizard,
+    description: "Falla sintética",
+    district_id: "1",
+    address: "Dirección sintética",
+    subcategory_id: "4",
+    specialty_id: "1",
+  };
+  let state = base;
+  for (const step of [2, 3, 4, 5, 4, 3, 2, 1])
+    state = wizardReducer(state, { type: "step", step });
+  expect(state).toEqual(base);
+});
+test("S03-TC-075 tarifa referencial y ausencia de cobro", () => {
+  const { rerender } = render(<RequestSummary record={doc} />);
+  expect(screen.getByText(/Referencial S/)).toHaveTextContent("80");
+  expect(screen.queryByText(/Total a pagar/i)).toBeNull();
+  rerender(
+    <RequestSummary record={{ ...doc, reference_fee: { amount: null } }} />,
+  );
+  expect(screen.getByText("Sin tarifa referencial")).toBeVisible();
+});
+test("S03-TC-076 reintento conserva clave y cuerpo", async () => {
+  request
+    .mockRejectedValueOnce({ status: 0 })
+    .mockResolvedValue({ data: { status: "sent" } });
+  const attempt = createSubmissionAttempt(31);
+  await expect(attempt.send(3)).rejects.toMatchObject({ status: 0 });
+  await attempt.send(4);
+  const first = request.mock.calls[0],
+    second = request.mock.calls[1];
+  expect(first[3].headers["Idempotency-Key"]).toBeTruthy();
+  expect(second).toEqual(first);
+  await createSubmissionAttempt(32).send(1);
+  expect(request.mock.calls[2][3].headers["Idempotency-Key"]).not.toBe(
+    first[3].headers["Idempotency-Key"],
+  );
+});
+test("S03-TC-077 envío pendiente bloquea doble clic", () => {
+  request.mockReturnValue(new Promise(() => {}));
+  render(<RequestSummary record={doc} />);
+  fireEvent.click(screen.getByLabelText("Confirmo que el resumen es correcto"));
+  const button = screen.getByRole("button", { name: "Enviar solicitud" });
+  fireEvent.click(button);
+  fireEvent.click(button);
+  expect(screen.getByRole("button", { name: "Enviando…" })).toBeDisabled();
+  expect(request).toHaveBeenCalledTimes(1);
+});
+test("S03-TC-078 técnico sin calificaciones", () => {
+  render(
+    <TechnicianCard
+      technician={{
+        id: 1,
+        display_name: "Técnico sintético",
+        rating: { average: null, count: 0 },
+        services: [],
+      }}
+    />,
+  );
+  expect(screen.getByText("Sin calificaciones aún")).toBeVisible();
+  expect(screen.queryByText(/0 estrellas/)).toBeNull();
+});
+test("S03-TC-079 filtros elegidos y reinicio de página", () => {
+  expect(searchQuery({ specialty_id: "", district_id: "" })).toBe("");
+  expect(
+    new URLSearchParams(
+      searchQuery({
+        specialty_id: "1",
+        district_id: "2",
+        min_rating: "",
+        page: 2,
+      }),
+    ).get("district_id"),
+  ).toBe("2");
+  expect(
+    changeFilters(
+      { specialty_id: "1", subcategory_id: "4", page: 3 },
+      "specialty_id",
+      "2",
+    ),
+  ).toEqual({ specialty_id: "2", subcategory_id: "", page: 1 });
+});
+test("S03-TC-080 estados de Mis solicitudes", async () => {
+  request.mockReturnValueOnce(new Promise(() => {}));
+  const view = render(<MyRequests />);
+  expect(screen.getByText("Cargando solicitudes…")).toBeVisible();
+  request.mockResolvedValueOnce({ data: [] });
+  view.rerender(<MyRequests key="empty" />);
+  expect(await screen.findByText("Aún no tienes solicitudes.")).toBeVisible();
+  request.mockRejectedValueOnce({
+    message: "No se pudieron consultar las solicitudes.",
+  });
+  view.rerender(<MyRequests key="error" />);
+  expect(await screen.findByRole("alert")).toHaveTextContent("No se pudieron");
+  request.mockResolvedValueOnce({
+    data: [
+      { id: 1, status: "registered" },
+      { id: 2, status: "sent" },
+    ],
+  });
+  view.rerender(<MyRequests key="data" />);
+  expect(await screen.findByText("Registrada")).toBeVisible();
+  expect(screen.getByText("Enviada")).toBeVisible();
+});
+test("S03-TC-081 indicador accesible de cinco pasos", () => {
+  render(<StepIndicator step={3} />);
+  const items = screen.getAllByRole("listitem");
+  expect(items).toHaveLength(5);
+  expect(items[2]).toHaveAttribute("aria-current", "step");
+  expect(items.filter((x) => x.hasAttribute("aria-current"))).toHaveLength(1);
+  items.forEach((x) => expect(x.textContent.trim()).not.toBe(""));
+});

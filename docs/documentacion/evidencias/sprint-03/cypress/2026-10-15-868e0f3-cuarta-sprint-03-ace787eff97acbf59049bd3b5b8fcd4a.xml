@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="84.063" tests="5" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-10-15T20:32:05" tests="0" file="cypress\e2e\sprint-03\request-wizard.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S3 asistente" timestamp="2026-10-15T20:32:05" tests="5" time="84.053" failures="1">
+    <testcase name="S3 asistente S03-TC-052 recorrido con corrección antes de enviar" time="16.678" classname="S03-TC-052 recorrido con corrección antes de enviar">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-053 paso incompleto no avanza y enfoca error" time="9.954" classname="S03-TC-053 paso incompleto no avanza y enfoca error">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-054 atrás y adelante conserva datos" time="19.341" classname="S03-TC-054 atrás y adelante conserva datos">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-055 límites de descripción" time="11.436" classname="S03-TC-055 límites de descripción">
+    </testcase>
+    <testcase name="S3 asistente S03-TC-063 recorrido por teclado" time="0.000" classname="S03-TC-063 recorrido por teclado">
+      <failure message="Timed out retrying after 20000ms: Expected to find element: `[aria-label=&quot;Nueva solicitud&quot;]`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 20000ms: Expected to find element: `[aria-label="Nueva solicitud"]`, but never found it.
+    at wizard (webpack://tecnicoya-web/./cypress/e2e/sprint-03/helpers.js:2:31)
+    at Context.eval (webpack://tecnicoya-web/./cypress/e2e/sprint-03/request-wizard.cy.js:83:11)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

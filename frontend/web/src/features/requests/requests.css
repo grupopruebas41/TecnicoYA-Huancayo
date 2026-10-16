@@ -1,0 +1,76 @@
+.client-requests {
+  margin-block: 2rem;
+}
+.request-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  list-style: none;
+  padding: 0;
+  gap: 0.65rem;
+}
+.request-steps li {
+  padding: 1rem;
+  border: 1px solid #607772;
+  border-radius: 12px;
+  color: #c7d6d0;
+}
+.request-steps [aria-current="step"] {
+  color: #162827;
+  background: #e7d6ac;
+  font-weight: 600;
+}
+.request-steps span {
+  display: block;
+  font-size: 1.4rem;
+}
+.request-actions,
+.request-filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.request-filters > label {
+  flex: 1;
+  min-width: 150px;
+}
+.request-fee {
+  font-size: 1.6rem;
+  color: #e7d6ac;
+}
+.request-fee small {
+  display: block;
+  font-size: 1rem;
+  color: #c7d6d0;
+}
+.request-wizard h2:focus {
+  outline: 3px solid #e7d6ac;
+  outline-offset: 5px;
+}
+.request-wizard .field-error {
+  color: #ffc7bb;
+}
+.client-requests button:focus-visible,
+.client-requests a:focus-visible {
+  outline: 3px solid #e7d6ac;
+  outline-offset: 4px;
+}
+.request-wizard fieldset:disabled {
+  opacity: 0.8;
+}
+@media (max-width: 640px) {
+  .request-steps {
+    grid-template-columns: 1fr;
+  }
+  .request-steps li {
+    padding: 0.5rem;
+  }
+  .request-steps span {
+    display: inline;
+  }
+  .request-actions > * {
+    flex: 1;
+  }
+  .client-requests {
+    overflow-wrap: anywhere;
+  }
+}

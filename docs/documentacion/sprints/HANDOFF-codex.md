@@ -21,6 +21,55 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-15 · S3.5 · Integración frontend y regresiones aprobadas
+
+- Rama feature/delgado/a-solicitudes/s03, slot B; merge e91e6bb de origin/main c1918f4 (PR #14 y #16), sin conflictos ni rebase. Dependencias locales sincronizadas con composer install; no se editaron archivos backend. MySQL compartido ya estaba healthy; no se levantó Compose desde el worktree.
+- Pausa previa con 0,82 GiB registrada. El usuario indicó iniciar después; se notificaron avisos de RAM (675/624/833 MB en distintas corridas). Cypress siempre secuencial y con bloqueo global. Sin Pest ni SonarQube locales.
+- Cypress finales: S03 **17/17** (a900605, S03-TC-052–068); S01 **17/17** (5da90c3); S02 **17/17** (7fcbb9d). JUnit y comprobación de IDs en evidencias/sprint-03/cypress/.
+- Correcciones de pruebas, sin cambiar aserciones esperadas: 32d7609 cabeceras SPA y teclado; b8bf770 ruta /admin/specialties; 868e0f3 sincronización del foco; a900605 Enter y Espacio nativos CDP en Chrome; 5da90c3 output con rol implícito; 7fcbb9d dialog nativo. No quedan it.only ni reintentos configurados.
+- Corridas fallidas conservadas: S03 15/17, 15/17, 16/17 y 16/17, más diagnóstico aislado TC-063; S01 16/17 por selector [role=status]; S02 15/17 por [role=dialog]. No se atribuyeron a backend: corregidos los helpers y selectores, las respuestas reales aprobaron. No hay nuevo defecto backend para REGISTRO-DEFECTOS.
+- Vitest con cobertura: primera ejecución forks incompleta (139 aprobadas; 2 workers no arrancaron a tiempo). Con --maxWorkers=1 --pool=threads, aislamiento por archivo conservado: **146/146, 23 archivos, salida 0**. No se relajaron tiempos/aserciones ni se agregaron reintentos. Líneas: global 83,42 %, requests 84,67 %, matching 83,92 %.
+- npm run build: salida 0. npm audit: salida 0, sin vulnerabilidades. Código validado 7fcbb9d. Evidencias anonimizadas, JUnit, LCOV y resumen de IDs en docs/documentacion/evidencias/sprint-03/cypress/.
+- PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/15 . CI del push de esta entrega: comprobar checks del PR; resultado se comunica al usuario al finalizar.
+- Pendiente: revisión humana [PENDIENTE], integración y cierre S3.6/SonarQube por el equipo. Se conservan los pedidos previos sobre creación incierta y limpieza de medios sin vínculo; no bloquean los 17 recorridos del contrato.
+
+
+## 2026-10-15 · S3.5 · Merge completo; pausa por RAM
+
+- Rama: feature/delgado/a-solicitudes/s03, slot B. Merge e91e6bb de origin/main c1918f4 sin conflictos; incluye PR #14 y #16 (DEF-43).
+- Leídos AGENTS, ambos HANDOFF y ENTORNO-PARALELO. Contrato S3 conservado.
+- Comprobación previa con os.freemem(): 0,82 GiB libres, inferior al umbral de 1 GiB del arrancador. Se avisó al usuario y no se inició Cypress, por su instrucción explícita.
+- Pendiente: comprobar memoria de nuevo y dependencias locales contra composer.lock actualizado; ejecutar S03 (17 casos), S01 y S02 secuencialmente; Vitest/cobertura, build y audit; evidencias, push y CI PR #15. No se levantó Docker ni se modificó backend manualmente.
+- No se atribuyen resultados anteriores al merge. Revisor: [PENDIENTE].
+
+
+## 2026-10-15 · Sprint 03 · S3.4 frontend listo para integración
+
+- **PR:** [#15](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/15). **CI comprobada:** commit 156be13, backend/frontend/conteo aprobados en [ejecución 38694503334](https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38694503334). [Estado del último commit](https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/15/checks).
+
+- **Rama/base:** feature/delgado/a-solicitudes/s03 / af074b5; slot B. Bloqueo anterior resuelto: fuentes de Mayhuasca 402f1a8 importadas (solo docs del sprint y DECISIONES).
+- **Commits:** b916280 pruebas y contratos (error de sintaxis conservado); 85e058e rojo real 13/13; 00381c9 implementación verde; 557c913 Cypress preparados; fce1653 rojo alertas; 4ca269c alertas verdes.
+- **Pantallas:** asistente accesible, evidencias privadas, resumen Referencial, idempotencia/recuperación, búsqueda/perfil sin contacto, técnico precargado, Mis solicitudes y alerta de límite de activas del servidor. Registro y correcciones con mensajes de éxito/error; confirmación de retiro.
+- **Pruebas:** 146/146 Vitest (23 archivos), 13 IDs S03-TC-069–081, complementos sin inflar IDs; líneas solicitudes 84,67 %, búsqueda 83,92 %, global 83,42 %. Build 0; npm audit 0 vulnerabilidades. Sin pruebas fallidas al final.
+- **Cypress:** 17 IDs S03-TC-052–068 preparados y node --check correcto; NO ejecutados. Sin Docker/Pest/SonarQube.
+- **Evidencias:** docs/documentacion/evidencias/sprint-03/frontend/; avance actualizado, revisión [PENDIENTE].
+- **Pedidos al backend:** confirmar política de limpieza para /media sin vincular (no hay DELETE); POST /requests no tiene idempotencia, así que una creación incierta obliga a consultar Mis solicitudes, sin reenvío automático. No se inventaron endpoints. Detalle en README de evidencias.
+- **Qué falta:** revisión e integración del backend #14 y luego S3.5 con Cypress real; cierre Sonar S3.6. No tocar el prototipo antes de D-26.
+
+
+
+## 2026-10-15 · Sprint 03 · S3.4 bloqueado por fuentes sin publicar
+
+- **Rama:** feature/delgado/a-solicitudes/s03; base origin/main af074b5; slot B.
+- **Revisión:** AGENTS, ambos HANDOFF y DECISIONES; D-11, D-12, D-13, D-23 y D-25 disponibles. D-53 en adelante y las resoluciones SOL-01/SOL-02/BUSQ-01/PARAM-01 no están publicadas en main.
+- **Bloqueo comprobado:** git fetch origin correcto; git ls-remote --heads origin '*s03*' sin resultados. El checkout de origin/feature/mayhuasca/a-solicitudes/s03 falla con invalid reference. No existen plan-pruebas-v3/sprint-03/CONTRATO-API.md ni CATALOGO-S03.csv.
+- **Cambios:** solo este relevo y el avance; sin código ni pruebas inventadas. Los documentos históricos S03 no sustituyen el contrato vigente (AGENTS §3).
+- **Pruebas:** no ejecutadas; sin cambios de producto que validar. Cypress y Docker no ejecutados.
+- **Pedido a Claude Code:** publicar la rama feature/mayhuasca/a-solicitudes/s03 con el contrato, catálogo de IDs exactos y decisiones resueltas para SOL-01, SOL-02, BUSQ-01 y PARAM-01. Indicar cualquier ruta o nombre alternativo si corresponde.
+- **Siguiente paso:** importar solo documentos del sprint, leer las decisiones desde la referencia publicada y ejecutar S3.4 con commit rojo/verde. PR de implementación pendiente de desbloqueo. Revisor: [PENDIENTE].
+
+
+
 ## 2026-10-14 · Sprint 03 · deuda Sonar del frontend S2
 
 - **Rama:** feature/delgado/f-administracion/s02-sonar; base origin/main 0a5977f.
@@ -165,3 +214,8 @@ AGENTS.md no encontrado. ENTORNO-PARALELO.md leído en carpeta principal. La ind
 - DEF-13: Dockerfile cambiado a USER node. La comprobación de construcción y HTTP se añadirá al terminar docker-web.txt.
 - No se ejecutó SonarQube; no se declara Quality Gate ni compatibilidad E2E aprobada.
 Verificacion Docker final (commit 152e145): build aprobado; usuario node, UID 1000; HTTP 200 para HTML y bundle (229191 bytes); HTTP interno 200. Se preservo el fallo inicial ResponseEnded y se verifico sin proxy despues del arranque. Contenedores temporales retirados.
+
+
+## 2026-10-15 · Actualización CI S3.4
+
+Commit comprobado: 7103c44. Ejecución: https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38734429455. Frontend aprobado (Vitest, build y npm audit); Pest aprobado. Backend falla en composer audit: symfony/http-foundation (PKSA-xmwy-rmx5-m7h4, CVE-2026-108082) y symfony/yaml (PKSA-xz3r-9gp4-4m1z, CVE-2026-109413), según el reporte de CI. Conteo omitido por dependencia fallida. No se modificó backend ni se reintentó para ocultar el fallo. Pedido a Claude Code: revisar y actualizar las dependencias afectadas en su rama, validar Pest/audit y publicar la corrección. La ejecución anterior aprobada no acredita el estado actual. Revisión humana: [PENDIENTE].

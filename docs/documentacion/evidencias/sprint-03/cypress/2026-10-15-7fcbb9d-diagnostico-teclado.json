@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "target": "Nueva solicitud",
+      "prevented": false
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "target": "Nueva solicitud",
+      "prevented": false
+    }
+  ],
+  "active": "<button type=\"button\" aria-pressed=\"false\">Nueva solicitud</button>",
+  "hasFocus": true
+}
