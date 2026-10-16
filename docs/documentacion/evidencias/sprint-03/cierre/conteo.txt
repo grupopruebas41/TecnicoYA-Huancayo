@@ -1,0 +1,18 @@
+# Cierre S3.6 · Conteo de IDs por sprint · 2026-10-15 · commit 66be473
+# Comando: node scripts/contar-pruebas-sprint.mjs
+Reportes JUnit:
+  Pest    backend\api\test-results\junit.xml
+  Cypress frontend\web\test-results\cypress\sprint-01-0266ae152af16c2da166d06d45c6c42f.xml, frontend\web\test-results\cypress\sprint-01-291aa927cc0740977a178575bbe1d5a5.xml, frontend\web\test-results\cypress\sprint-01-6e619c4eb0ccaf9955e63ed1b413e4c1.xml, frontend\web\test-results\cypress\sprint-01-89be7f182a2550c8ed8d326775a5492b.xml, frontend\web\test-results\cypress\sprint-01-b3233f6086ad26d449f5f5137b9a53ab.xml, frontend\web\test-results\cypress\sprint-01-d45c21f84efeadcfdc1e8983c4f1dfce.xml, frontend\web\test-results\cypress\sprint-02-1e1ff2d300405c5ded4c4fe45c25dc03.xml, frontend\web\test-results\cypress\sprint-02-29a067705acb78ac5b2f547feaa8c324.xml, frontend\web\test-results\cypress\sprint-02-8bdc131ce151c2de7a44c414a635b7e5.xml, frontend\web\test-results\cypress\sprint-02-ed967195c86d163f7e78fad092801bdc.xml, frontend\web\test-results\cypress\sprint-02-fe80f5ac570a7f2f46a55ebcda975186.xml, frontend\web\test-results\cypress\sprint-03-0e19835f559e79e8e7d8087b0048a456.xml, frontend\web\test-results\cypress\sprint-03-4cf0fa408ab70ce1b5fb16ee9239604a.xml, frontend\web\test-results\cypress\sprint-03-a12320625061c378d7210744d136a072.xml, frontend\web\test-results\cypress\sprint-03-bfe3db7e7d9d21692a84169289c6abe3.xml, frontend\web\test-results\cypress\sprint-03-e47b06f268a39f5d7e2df6368f25df5b.xml
+  Vitest  frontend\web\test-results\junit.xml
+
+Meta por sprint: ≥ 60 IDs aprobados distintos (Pest ≥ 36, Cypress ≥ 14, Vitest ≥ 10).
+Columnas por herramienta: aprobados / fallidos / omitidos (IDs distintos).
+
+Sprint | Pest        | Cypress     | Vitest      | Aprobados | ¿Llega a 60?
+-------|-------------|-------------|-------------|-----------|-------------
+S01    | 54 / 0 / 0  | 17 / 0 / 0  | 24 / 0 / 0  | 87        | Sí
+S02    | 59 / 0 / 0  | 17 / 0 / 0  | 14 / 0 / 0  | 90        | Sí
+S03    | 55 / 0 / 0  | 17 / 0 / 0  | 13 / 0 / 0  | 85        | Sí
+
+Pruebas sin ID (no cuentan): Pest 21, Cypress 0, Vitest 38.
+# exit=0

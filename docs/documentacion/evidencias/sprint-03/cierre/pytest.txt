@@ -1,0 +1,11 @@
+# Cierre S3.6 · pytest del servicio Python congelado (regresión, no cuenta para la meta) · 2026-10-15 · commit 66be473
+# Comando (desde python/api): PYTHONPATH=../../.runtime-python python3.12 -m pytest -q -p no:cacheprovider
+....                                                                     [100%]
+============================== warnings summary ===============================
+..\..\.runtime-python\starlette\testclient.py:40
+  <raiz>\.runtime-python\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+4 passed, 1 warning in 0.67s
+# exit=0

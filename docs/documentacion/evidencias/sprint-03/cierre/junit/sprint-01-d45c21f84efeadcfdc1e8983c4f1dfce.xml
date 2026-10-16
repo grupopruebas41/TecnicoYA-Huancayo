@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="14.449" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-10-16T04:43:04" tests="3" file="cypress\e2e\sprint-01\profile.cy.js" time="14.446" failures="0">
+    <testcase name="S01-TC-073 teléfono inválido sin enviar PATCH y con alerta accesible" time="4.446" classname="S01-TC-073 teléfono inválido sin enviar PATCH y con alerta accesible">
+    </testcase>
+    <testcase name="S01-TC-074 red interrumpida: resultado incierto y consulta del estado real" time="5.506" classname="S01-TC-074 red interrumpida: resultado incierto y consulta del estado real">
+    </testcase>
+    <testcase name="S01-TC-077 sesión vencida al guardar vuelve al formulario de acceso" time="4.225" classname="S01-TC-077 sesión vencida al guardar vuelve al formulario de acceso">
+    </testcase>
+  </testsuite>
+</testsuites>

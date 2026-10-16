@@ -2,6 +2,58 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-16 · Sprint 3 · cierre S3.6 completado
+
+- **Rama:** `feature/pimentel/a-solicitudes/s03-cierre`, desde `main` `913a538` (PR #14, #15 y #16).
+- **Commits:**
+  - `e7d4878` test(s03): S03-TC-082 a 085 (3 en rojo);
+  - `66be473` fix(s03): `E2EDatabaseGuard` (DEF-44);
+  - `2947a4d` ci(s03): `projectVersion=sprint-03`;
+  - `e99cfef` docs(s03): cierre del Sprint 3;
+  - test(s03): S03-TC-085 no depende del nombre de la base. En la primera CI falló porque la base es `tecnicoya_ci_testing` y la guarda la rechaza con razón.
+  - **PR #17:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/17
+- **Aviso:** para comprobar esa corrección, la prueba de la guarda corrió también en el slot B, lo que recreó `tecnicoya_b_testing` (`RefreshDatabase`). Codex no estaba ejecutando nada.
+- **Resultados** (slot A; Codex no corrió nada):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest | 189/189 (2114 aserciones); total 96,5 %; `ARequests` y `BMatching` 100 % |
+  | Vitest | 146/146; líneas 83,42 %; `requests` 84,67 % y `matching` 83,92 % |
+  | pytest | 4/4, con Python 3.12 local y `PYTHONPATH=.runtime-python` |
+  | Cypress | S01, S02 y S03 17/17 cada uno |
+  | Conteo S03 | **85 IDs** (Pest 55, Cypress 17, Vitest 13) |
+  | Mutación de las 4 clases del cierre | 98,29 % (0 sobrevivientes) |
+  | SonarQube `sprint-03` (`2947a4d`) | Gate **OK** a la primera; cobertura nueva 86,2 % |
+  | Auditorías | `composer audit` y `npm audit` limpios |
+
+  SonarQube se detuvo al terminar.
+- **DEF-44:** la guarda de base aislada solo vivía en `Sprint01E2ESeeder`. Ahora `E2EDatabaseGuard::ensureIsolated()` va al inicio de los tres seeders E2E y nombra la base rechazada (D-59).
+- **Registro:**
+  - DEF-44 nuevo y cerrado;
+  - DEF-16, 24 y 25 cerrados;
+  - resumen: 32 cerrados, 9 abiertos y 3 duplicados.
+- **Matriz y catálogo:** 24 de 24 filas de S3 en APROBADO; S03-TC-052 a 081 pasan a Implementado.
+- **Decisiones pendientes nuevas:** IDEM-01 (`POST /requests` no es idempotente) y MEDIA-02 (no se puede borrar una evidencia no vinculada). Recomendación: A en ambas (INFORME-SPRINT-03 §4.2). **No implementar sin la decisión.**
+- **Avance de Mayhuasca S3:** revisor «Pimentel Chumbes James», indicado por el usuario.
+- **SonarQube, incidencias nuevas** (8, ninguna bloquea el Gate):
+  - para Claude Code: `php:S112` ×2 en `RuleBook.php:19` y `27`;
+  - para Codex: el resto (ver «Para Codex»).
+
+**Qué falta:**
+- Revisión humana e integración del PR de cierre.
+- Decidir IDEM-01 y MEDIA-02.
+- Programar el retiro del prototipo (DEF-22): la condición de D-26 ya se cumple.
+
+**Para Codex:**
+1. Incidencias nuevas de SonarQube en tu código:
+   - `S2004` (crítica) en `useWizardFlow.js:26`;
+   - `S6772` ×3 en `TechnicianSearch.jsx:88`, `EvidencePicker.jsx:158` y `RequestSummary.jsx:135`;
+   - `S7776` en `searchQuery.js:1`;
+   - `S6749` en `RequestWizard.jsx:149`.
+2. Cuando se decidan IDEM-01 y MEDIA-02, habrá contrato v1.1 antes de tocar el asistente.
+
+**Bloqueos:** ninguno.
+
 ## 2026-10-15 · Sprint 3 · DEF-43: composer audit (PR #16)
 
 - **Rama:** `feature/pimentel/infra/s03-composer-audit`, desde `main` `5814a5d` (con el PR #14).

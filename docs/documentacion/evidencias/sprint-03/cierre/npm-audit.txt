@@ -1,0 +1,4 @@
+# Cierre S3.6 · npm audit · 2026-10-15 · commit 66be473
+# Comando (desde frontend/web): npm audit
+found 0 vulnerabilities
+# exit=0

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
- * Datos E2E del Sprint 2 (contrato S2 §10). Sprint01E2ESeeder aplica la guarda de base aislada y crea las cuentas
+ * Datos E2E del Sprint 2 (contrato S2 §10). E2EDatabaseGuard aplica la guarda de base aislada; Sprint01E2ESeeder crea las cuentas
  * e2e-client, e2e-technician (pendiente e incompleto) y e2e-admin. Aquí se agregan, de forma idempotente:
  * - e2e-technician-ready@example.test y e2e-technician-reject@example.test: pendientes con la checklist completa
  *   (uno para aprobar y otro para rechazar, S02-TC-069 y 070);
@@ -22,6 +22,7 @@ final class Sprint02E2ESeeder extends Seeder
 {
     public function run(): void
     {
+        E2EDatabaseGuard::ensureIsolated();
         $this->call([Sprint01E2ESeeder::class, DistrictSeeder::class]);
         DB::transaction(function () {
             $admin = User::query()->where('email', 'e2e-admin@example.test')->sole();

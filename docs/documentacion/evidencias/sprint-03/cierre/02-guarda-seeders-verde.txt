@@ -1,0 +1,12 @@
+# S3.6 · Guarda de seeders E2E en verde · 2026-10-15 · base e7d4878 + E2EDatabaseGuard (commit siguiente)
+# Comando: TECNICOYA_SLOT=A php vendor/pestphp/pest/bin/pest tests/Feature/Sprint03/E2ESeederGuardTest.php --colors=never
+
+   PASS  Tests\Feature\Sprint03\E2ESeederGuardTest
+  ✓ it S03-TC-082 Sprint01E2ESeeder rechaza la base de desarrollo «tecnicoya» sin consultar                     12.33s  
+  ✓ it S03-TC-083 Sprint02E2ESeeder rechaza una base cuyo nombre solo contiene _testing                          0.05s  
+  ✓ it S03-TC-084 Sprint03E2ESeeder rechaza una base _testing que no es de los slots A o B                       0.02s  
+  ✓ it S03-TC-085 Sprint03E2ESeeder siembra en el slot de pruebas y es idempotente                               0.95s  
+
+  Tests:    4 passed (14 assertions)
+  Duration: 13.57s
+

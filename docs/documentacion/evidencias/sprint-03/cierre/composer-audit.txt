@@ -1,0 +1,4 @@
+# Cierre S3.6 · composer audit · 2026-10-15 · commit 66be473
+# Comando (desde backend/api): composer audit
+No security vulnerability advisories found.
+# exit=0

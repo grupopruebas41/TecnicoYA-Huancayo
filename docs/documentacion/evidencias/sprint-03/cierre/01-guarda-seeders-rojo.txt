@@ -1,0 +1,78 @@
+# S3.6 · Guarda de seeders E2E en rojo · 2026-10-15 · base 913a538 (pruebas sin implementación)
+# Comando: TECNICOYA_SLOT=A php vendor/pestphp/pest/bin/pest tests/Feature/Sprint03/E2ESeederGuardTest.php --colors=never
+
+   FAIL  Tests\Feature\Sprint03\E2ESeederGuardTest
+  ⨯ it S03-TC-082 Sprint01E2ESeeder rechaza la base de desarrollo «tecnicoya» sin consultar                     10.41s  
+  ⨯ it S03-TC-083 Sprint02E2ESeeder rechaza una base cuyo nombre solo contiene _testing                          0.02s  
+  ⨯ it S03-TC-084 Sprint03E2ESeeder rechaza una base _testing que no es de los slots A o B                       0.02s  
+  ✓ it S03-TC-085 Sprint03E2ESeeder siembra en el slot de pruebas y es idempotente                               0.82s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\E2ESeederGuardTest > it S03-TC-082 Sprint01E2ESeeder rechaza la base de desarrollo…   
+  Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'Siembra E2E rechazada: la base «tecnicoya» no es un slot de pruebas (*_testing).'
++'Fixtures E2E permitidos solo en la base aislada.'
+
+  at tests\Feature\Sprint03\E2ESeederGuardTest.php:49
+     45▕ it('S03-TC-082 Sprint01E2ESeeder rechaza la base de desarrollo «tecnicoya» sin consultar', function () {
+     46▕     [$refused, $queries] = seedAgainst(Sprint01E2ESeeder::class, 'tecnicoya');
+     47▕ 
+     48▕     expect($refused)->not->toBeNull()
+  ➜  49▕         ->and($refused->getMessage())->toBe('Siembra E2E rechazada: la base «tecnicoya» no es un slot de pruebas (*_testing).')
+     50▕         ->and($queries)->toBe(0);
+     51▕     config(['database.connections.mysql.database' => 'tecnicoya_testing']);
+     52▕     expect(DB::table('users')->where('email', 'like', 'e2e-%')->count())->toBe(0);
+     53▕ });
+
+  1   tests\Feature\Sprint03\E2ESeederGuardTest.php:49
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\E2ESeederGuardTest > it S03-TC-083 Sprint02E2ESeeder rechaza una base cuyo nombre…    
+  Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'Siembra E2E rechazada: la base «tecnicoya_testing_copia» no es un slot de pruebas (*_testing).'
++'Fixtures E2E permitidos solo en la base aislada.'
+
+  at tests\Feature\Sprint03\E2ESeederGuardTest.php:58
+     54▕ 
+     55▕ it('S03-TC-083 Sprint02E2ESeeder rechaza una base cuyo nombre solo contiene _testing', function () {
+     56▕     [$refused, $queries] = seedAgainst(Sprint02E2ESeeder::class, 'tecnicoya_testing_copia');
+     57▕ 
+  ➜  58▕     expect($refused?->getMessage())->toBe('Siembra E2E rechazada: la base «tecnicoya_testing_copia» no es un slot de pruebas (*_testing).')
+     59▕         ->and($queries)->toBe(0)
+     60▕         ->and(Storage::disk('local')->allFiles())->toBe([]);
+     61▕ });
+     62▕
+
+  1   tests\Feature\Sprint03\E2ESeederGuardTest.php:58
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint03\E2ESeederGuardTest > it S03-TC-084 Sprint03E2ESeeder rechaza una base _testing que…   
+  Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'Siembra E2E rechazada: la base «otra_testing» no es un slot de pruebas (*_testing).'
++'Fixtures E2E permitidos solo en la base aislada.'
+
+  at tests\Feature\Sprint03\E2ESeederGuardTest.php:66
+     62▕ 
+     63▕ it('S03-TC-084 Sprint03E2ESeeder rechaza una base _testing que no es de los slots A o B', function () {
+     64▕     [$refused, $queries] = seedAgainst(Sprint03E2ESeeder::class, 'otra_testing');
+     65▕ 
+  ➜  66▕     expect($refused?->getMessage())->toBe('Siembra E2E rechazada: la base «otra_testing» no es un slot de pruebas (*_testing).')
+     67▕         ->and($queries)->toBe(0)
+     68▕         ->and(Storage::disk('local')->allFiles())->toBe([]);
+     69▕ });
+     70▕
+
+  1   tests\Feature\Sprint03\E2ESeederGuardTest.php:66
+
+
+  Tests:    3 failed, 1 passed (8 assertions)
+  Duration: 11.51s
+
