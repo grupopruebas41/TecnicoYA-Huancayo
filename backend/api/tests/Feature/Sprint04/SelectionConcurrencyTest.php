@@ -3,11 +3,11 @@
 // S04-TC-045 y 046 · HU-S04-06 · RF-18; RN-10.3 · D-25: elecciones simultáneas con dos procesos PHP reales y barrera
 // GET_LOCK (sin sleep). El orden de bloqueo es solicitud, ronda, ofertas y técnico (contrato §3).
 use App\Models\TechnicianProfile;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
+use Tests\Support\CommittedDatabase;
 use Tests\Support\Sprint04;
 
-uses(DatabaseMigrations::class);
+uses(CommittedDatabase::class);
 
 beforeEach(fn () => Sprint04::boot($this));
 

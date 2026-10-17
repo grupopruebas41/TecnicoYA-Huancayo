@@ -28,6 +28,12 @@ if (! $app->environment('testing') || ! str_ends_with((string) config('database.
 
 CarbonImmutable::setTestNow(CarbonImmutable::parse($spec['now']));
 Illuminate\Support\Carbon::setTestNow(Illuminate\Support\Carbon::parse($spec['now']));
+
+$request = Request::create($spec['uri'], $spec['method'], [], [], [], [
+    'HTTP_ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json',
+] + array_combine(array_map(fn ($h) => 'HTTP_'.strtoupper(str_replace('-', '_', $h)), array_keys($spec['headers'])), $spec['headers']),
+    json_encode($spec['body'], JSON_THROW_ON_ERROR));
+$app->instance('request', $request); // el guard de Sanctum se arma con la petición en curso
 Sanctum::actingAs(User::query()->findOrFail($spec['user_id']));
 
 fwrite(STDOUT, "ready\n");
@@ -35,10 +41,6 @@ fflush(STDOUT);
 DB::select('SELECT GET_LOCK(?, 30)', [$spec['barrier']]);
 DB::select('SELECT RELEASE_LOCK(?)', [$spec['barrier']]);
 
-$request = Request::create($spec['uri'], $spec['method'], [], [], [], [
-    'HTTP_ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json',
-] + array_combine(array_map(fn ($h) => 'HTTP_'.strtoupper(str_replace('-', '_', $h)), array_keys($spec['headers'])), $spec['headers']),
-    json_encode($spec['body'], JSON_THROW_ON_ERROR));
 $response = $kernel->handle($request);
 
 fwrite(STDOUT, json_encode(['status' => $response->getStatusCode(), 'body' => json_decode($response->getContent(), true)], JSON_THROW_ON_ERROR)."\n");

@@ -1,13 +1,13 @@
 <?php
 
 // S04-TC-040 · HU-S04-05 · RN-10.1: aceptar y rechazar a la vez la misma oferta. Dos procesos PHP reales arrancan juntos
-// tras una barrera GET_LOCK; la base no va dentro de una transacción de la prueba (DatabaseMigrations) para que los
+// tras una barrera GET_LOCK; la base no va dentro de una transacción de la prueba (CommittedDatabase) para que los
 // procesos vean los datos y compitan por el bloqueo de fila.
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
+use Tests\Support\CommittedDatabase;
 use Tests\Support\Sprint04;
 
-uses(DatabaseMigrations::class);
+uses(CommittedDatabase::class);
 
 beforeEach(fn () => Sprint04::boot($this));
 
