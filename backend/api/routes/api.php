@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function () {
         Route::patch('me', [ProfileController::class, 'update']);
         Route::get('announcements', [AnnouncementController::class, 'index']);
         Route::post('media', [MediaController::class, 'store']); // D-46 y D-47; StoreMediaRequest autoriza por finalidad.
+        Route::delete('media/{media}', [MediaController::class, 'retire'])->whereNumber('media'); // D-61: evidencia propia no adjunta.
 
         // Búsqueda (D-57: sin técnicos en pausa); el perfil por enlace sigue disponible.
         Route::get('technicians', [TechnicianSearchController::class, 'index']);

@@ -56,4 +56,16 @@ return [
     'min_rating_range' => 'La calificación mínima debe estar entre 1 y 5.',
     'per_page_range' => 'Se pueden mostrar entre 1 y 50 técnicos por página.',
     'page_invalid' => 'La página debe ser un número entero mayor o igual que 1.',
+    // Sprint 4 (D-21, D-22, D-60, D-61, D-64): ofertas, elección y archivos.
+    'offer_expired' => 'La oferta venció. Ya no puedes responderla.',
+    'offer_not_pending' => 'Esta oferta ya no está disponible.',
+    'technician_unavailable_self' => 'Ya no estás disponible para esta solicitud.',
+    'technician_unavailable_client' => 'El técnico ya no está disponible. Elige otra opción.',
+    'schedule_conflict' => 'El técnico ya no tiene disponible esa franja. Elige otra opción.',
+    'round_not_closed' => 'Espera a que respondan todos o venza el plazo.',
+    'no_alternatives_pending' => 'Esta solicitud no espera tu autorización.',
+    'media_linked' => 'La foto está adjunta a una solicitud. Quítala primero de la solicitud.',
+    'offer_decision' => 'La respuesta debe ser aceptar o rechazar.',
+    'offer_not_accepted' => 'Elige uno de los técnicos que aceptaron tu solicitud.',
+    'base_district' => 'Selecciona un distrito activo.',
 ];

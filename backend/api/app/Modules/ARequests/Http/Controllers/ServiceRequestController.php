@@ -27,11 +27,14 @@ final class ServiceRequestController
         return ApiResponse::data($this->view->detailFor($request->user(), $serviceRequest));
     }
 
-    public function store(StoreServiceRequestRequest $request): JsonResponse
+    /** D-60: con Idempotency-Key, la misma clave y el mismo cuerpo devuelven el mismo 201; sin ella, crea siempre. */
+    public function store(StoreServiceRequestRequest $request, Idempotency $idempotency): JsonResponse
     {
-        $id = $this->requests->register($request->user(), $request->validated());
+        $create = fn () => [201, $this->view->detailFor($request->user(), $this->requests->register($request->user(), $request->validated()))];
+        $key = (string) $request->header('Idempotency-Key');
+        [$status, $data] = $key === '' ? $create() : $idempotency->run($request->user(), 'request.create', $key, $request->validated(), $create);
 
-        return ApiResponse::data($this->view->detailFor($request->user(), $id), 201);
+        return ApiResponse::data($data, $status);
     }
 
     public function update(UpdateServiceRequestRequest $request, int $serviceRequest): JsonResponse

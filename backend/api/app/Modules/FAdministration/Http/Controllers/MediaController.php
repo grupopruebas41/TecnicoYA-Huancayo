@@ -4,11 +4,14 @@ namespace App\Modules\FAdministration\Http\Controllers;
 
 use App\Models\MediaFile;
 use App\Models\User;
+use App\Modules\FAdministration\Application\RetireEvidence;
 use App\Modules\FAdministration\Application\StoreMedia;
 use App\Modules\FAdministration\Http\Requests\StoreMediaRequest;
 use App\Shared\Auth\EffectivePermissions;
 use App\Shared\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -30,6 +33,13 @@ final class MediaController
             'id' => $file->id, 'purpose' => $file->purpose, 'visibility' => $file->visibility,
             'mime_type' => $file->mime_type, 'byte_size' => $file->byte_size, 'url' => url("/api/v1/media/{$file->id}"),
         ], 201);
+    }
+
+    public function retire(Request $request, int $media, RetireEvidence $evidence): Response
+    {
+        $evidence->execute($request->user(), $media);
+
+        return response()->noContent();
     }
 
     public function show(int $media): StreamedResponse
