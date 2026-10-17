@@ -4,7 +4,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 
 ## 2026-10-17 · Sprint 4 · paso 5: cobertura, mutación, audit, avance y PR
 
-- **Rama:** `feature/mayhuasca/b-matching/s04` (publicada en este paso; PR abajo).
+- **Rama:** `feature/mayhuasca/b-matching/s04` publicada. **PR #21:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/21
 - **Commits nuevos:** `b94e484` test S04-TC-129 a 132 (herramientas E2E; pasaron a la primera, sin commit en rojo), `570d96d` docs (contrato v1.1, DIST-02, evidencias 02 y 05), `e726174` test (mutación válida y DEF-46) y el de avance y relevo.
 - **Resultados** (slot A):
 

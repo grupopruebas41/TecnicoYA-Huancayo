@@ -35,7 +35,7 @@
   | `570d96d` | docs(s04): contrato v1.1, DIST-02 y evidencias |
   | `e726174` | test(s04): mutación válida y DEF-46 |
 
-  PR: [PENDIENTE de publicar en este paso]
+  PR #21: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/21
 - **Pruebas previstas:** S04-TC-001 a 132 (`CATALOGO-S04.csv`). A cargo de Claude Code: las 101 Pest.
 - **Pruebas ejecutadas** (slot A):
   - **Rojo** (`217503f`): 87 fallan y 9 pasan (las 8 de la guarda, ya en verde desde el PR #19, y S04-TC-078, que el código ya cumplía). [01-rojo](../../../documentacion/evidencias/sprint-04/01-rojo-antes-de-implementar.txt)
