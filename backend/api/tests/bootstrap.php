@@ -46,3 +46,9 @@ if ($base === false || $base === '') {
 if (getenv('TECNICOYA_MUTATION_MIGRATED') === '1') {
     Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
 }
+
+// Sprint 4: los jobs se ejecutan de forma explícita en las pruebas (cola null) y /broadcasting/auth necesita el
+// broadcaster de Reverb. Se fijan aquí porque Laravel lee primero $_SERVER y un QUEUE_CONNECTION del entorno (la CI
+// usaba sync) ganaría a phpunit.xml: los jobs encolados tras el commit se ejecutarían solos.
+$definir('QUEUE_CONNECTION', 'null');
+$definir('BROADCAST_CONNECTION', 'reverb');

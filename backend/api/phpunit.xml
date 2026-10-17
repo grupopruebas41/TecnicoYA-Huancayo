@@ -22,7 +22,8 @@
     <env name="BCRYPT_ROUNDS" value="4"/>
     <!-- Sprint 4: la cola no ejecuta nada (las pruebas corren cada job con reloj controlado); el correo de la
          sandbox queda en memoria; Reverb usa credenciales sintéticas solo para firmar /broadcasting/auth y un puerto
-         cerrado, así que publicar sin Event::fake falla rápido y queda como entrega fallida del outbox. -->
+         cerrado, así que publicar sin Event::fake falla rápido y queda como entrega fallida del outbox. La cola y el
+         broadcasting se fijan además en tests/bootstrap.php porque la CI define QUEUE_CONNECTION=sync. -->
     <env name="QUEUE_CONNECTION" value="null"/>
     <env name="MAIL_MAILER" value="array"/>
     <env name="BROADCAST_CONNECTION" value="reverb"/>
