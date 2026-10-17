@@ -1,3 +1,5 @@
+beforeEach(() => cy.task("serverClock", "reset"));
+afterEach(() => cy.task("serverClock", "reset"));
 import { login, openRequest, observe } from "./helpers";
 it("S04-TC-090 directa vencida requiere autorizar alternativas", () => {
   cy.task("serverClock", "+10m");

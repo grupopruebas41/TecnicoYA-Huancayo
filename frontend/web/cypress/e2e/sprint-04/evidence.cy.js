@@ -1,3 +1,5 @@
+beforeEach(() => cy.task("serverClock", "reset"));
+afterEach(() => cy.task("serverClock", "reset"));
 import { loginClient, toDescription, wizard } from "../sprint-03/helpers";
 import { api, observe } from "./helpers";
 it("S04-TC-098 foto no adjunta solo se retira al confirmar", () => {

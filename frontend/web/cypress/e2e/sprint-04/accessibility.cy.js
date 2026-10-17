@@ -1,8 +1,10 @@
-import { login, pendingOffer } from "./helpers";
+beforeEach(() => cy.task("serverClock", "reset"));
+afterEach(() => cy.task("serverClock", "reset"));
+import { login } from "./helpers";
 it("S04-TC-096 teclado y foco en confirmación", () => {
-  cy.task("openRoundFor", "e2e-technician-frio");
+  cy.task("openRoundFor", "e2e-technician-frio@example.test").as("freshRound");
   login("e2e-technician-frio");
-  pendingOffer()
+  cy.get("@freshRound").then(({offer_id}) => cy.get('[aria-label="Oferta ' + offer_id + '"]'))
     .contains("button", "Rechazar")
     .focus()
     .should("have.attr", "type", "button");
@@ -33,6 +35,6 @@ it("S04-TC-096 teclado y foco en confirmación", () => {
     .contains("button", "Cancelar")
     .should("have.focus")
     .click();
-  pendingOffer().contains("button", "Rechazar").should("have.focus");
+  cy.get("@freshRound").then(({offer_id}) => cy.get('[aria-label="Oferta ' + offer_id + '"]')).contains("button", "Rechazar").should("have.focus");
   cy.get("[role=timer]").first().should("have.attr", "aria-live", "off");
 });

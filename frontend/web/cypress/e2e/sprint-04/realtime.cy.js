@@ -1,3 +1,5 @@
+beforeEach(() => cy.task("serverClock", "reset"));
+afterEach(() => cy.task("serverClock", "reset"));
 import { login, observe, offline } from "./helpers";
 it("S04-TC-093 oferta por Reverb sin recargar", () => {
   login("e2e-technician-electro");
@@ -5,7 +7,7 @@ it("S04-TC-093 oferta por Reverb sin recargar", () => {
     .contains("[role=status]", "Conexión en tiempo real activa.")
     .should("be.visible");
   observe("GET", "/offers/*", "eventResource");
-  cy.task("openRoundFor", "e2e-technician-electro");
+  cy.task("openRoundFor", "e2e-technician-electro@example.test");
   cy.wait("@eventResource").its("response.statusCode").should("eq", 200);
   cy.get('[aria-label^="Oferta "]').should("exist");
   cy.get("[role=timer]").should("exist");
@@ -15,7 +17,7 @@ it.skip("S04-TC-094 BLOQUEADO: contrato no define tarea para republicar el mismo
   // una notificación lógica y versión de la API. No inyectar datos al estado React.
 });
 it("S04-TC-095 reconexión recupera por API", () => {
-  cy.task("openRoundFor", "e2e-technician-frio");
+  cy.task("openRoundFor", "e2e-technician-frio@example.test");
   login("e2e-technician-frio");
   cy.get('[aria-label="Solicitudes entrantes"]')
     .contains("Conexión en tiempo real activa.")

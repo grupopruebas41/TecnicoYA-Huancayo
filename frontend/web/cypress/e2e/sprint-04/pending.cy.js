@@ -1,3 +1,5 @@
+beforeEach(() => cy.task("serverClock", "reset"));
+afterEach(() => cy.task("serverClock", "reset"));
 import { login, openRequest } from "./helpers";
 it("S04-TC-091 pendiente muestra límite en Lima", () => {
   login("e2e-client-pending");
