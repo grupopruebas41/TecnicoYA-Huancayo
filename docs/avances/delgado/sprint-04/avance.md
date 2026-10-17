@@ -23,3 +23,11 @@ Archivos: features/offers, features/realtime, integración en MyRequests/Sprint0
 Pruebas previstas/ejecutadas: 142/142 Vitest (13 IDs S4), cobertura global 84,26 %; build y audit aprobados. Cypress: sin ejecutar, 13 preparados y 5 bloqueados detallados en HANDOFF. No Sonar local; enlace de análisis pendiente de S4.6. PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/20; CI iniciada, estado del último commit en checks. Revisor [PENDIENTE].
 
 Uso de IA: Codex, modelo no identificado de forma verificable, 2026-10-16. Aceptados componentes, pruebas y adaptación D-60/D-61; corregidas recuperación de ofertas vencidas, conservación de claves y aserción histórica contraria a D-60. Verificación automática anterior; revisión humana [PENDIENTE]. No se aceptaron fixtures o tareas de servidor inventadas. [Decisiones](../../../documentacion/sprints/DECISIONES.md).
+
+## S4.5 · 2026-10-17
+
+Frontend BMatching/CNotifications, HU-S04-05/06/09, RF-15/16/18/29, D-60–71. Rama feature/delgado/b-matching/s04; commits f0612cf, 8b5c811, 345bf88; PR #20. Cambios en HTTP, OffersInbox, RequestTracking, Realtime, sus pruebas y configuración/specs Cypress S4.
+
+Vitest final 146/146, cobertura líneas 84,22 %; build aprobado; npm audit 0 vulnerabilidades. Cypress S04 y regresiones S01–03 pendientes por RAM menor a 1 GiB; 17 casos preparados, 094 requiere replay real desde tarea. [Evidencias](../../../documentacion/evidencias/sprint-04/cypress/README.md). SonarQube pendiente del cierre; CI del último push por verificar. Revisor [PENDIENTE].
+
+Uso de IA: Codex, modelo no expuesto de forma verificable; 2026-10-17. Aceptadas adaptaciones de contrato y preparación de pruebas; corregidos canal sin ID, respuesta auth nativa e idempotencia tras 409. Resultados ejecutados diferenciados de casos preparados. Revisión humana [PENDIENTE].
