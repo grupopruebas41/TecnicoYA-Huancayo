@@ -2,6 +2,25 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-17 · Sprint 4 · S4.3 completado (backend en verde)
+
+- **Rama:** `feature/mayhuasca/b-matching/s04`, sin publicar todavía.
+- **Commits:** `c9759bc` test (comparación sin orden de claves en 042, 051 y 076), `b604d41` feat D-60 y D-61, `2114fec` test S04-TC-128 (rojo), `f64355b` test (base confirmada para concurrencia y reloj fijo en S03-TC-030), `ffa7b17` chore laravel/reverb, `a3aeea9` refactor (Idempotency, RuleBook, READ COMMITTED), `5ab9643` feat del S4, `a5d1fc2` feat E2E.
+- **Pruebas:** suite Pest completa **265/265** (2470 aserciones), slot A. Concurrencia (040, 045, 046) estable en 3 corridas seguidas.
+- **Hallazgos con procesos reales** (corregidos):
+  - deadlock en `Idempotency` por bloqueos de hueco: ahora reserva la clave insertándola;
+  - con REPEATABLE READ, lo leído tras esperar el bloqueo de la solicitud era una foto vieja y los `FOR UPDATE` por rango chocaban con otra solicitud: la conexión MySQL pasa a **READ COMMITTED** (`config/database.php`, `DB_ISOLATION_LEVEL`).
+- **Supuestos de diseño a confirmar** (no son reglas de negocio; documentados en el contrato):
+  - sin distrito base declarado, C = 0 (la cercanía no aporta);
+  - `PrepareMatching` abre la ronda en el mismo job (lo exige TC-030);
+  - avisos de bandeja al cliente en awaiting_choice, direct_declined, pendiente y expirada, y al técnico elegido.
+- **Para Codex (S4.4 y S4.5):**
+  - registrar las tareas con `import {tareasSprint04} from '../../scripts/e2e-tareas-s04.mjs'` y `on('task', tareasSprint04())` en `cypress.e2e.config.js`;
+  - cuentas del seeder en el contrato §9; las ofertas duran 10 min desde la siembra: usar `serverClock` y `serverClock('reset')` al terminar cada spec;
+  - el arrancador expone `VITE_REVERB_APP_KEY`, `VITE_REVERB_HOST`, `VITE_REVERB_PORT` y `VITE_REVERB_SCHEME`; `GET /offers?status=pending,accepted` acepta la lista separada por comas.
+
+**Qué falta:** cobertura, mutación de las clases nuevas, `composer audit`, contrato v1.1, avance de Mayhuasca, push y PR.
+
 ## 2026-10-16 · Sprint 4 · S4.2 completado (Pest en rojo)
 
 - **Rama:** `feature/mayhuasca/b-matching/s04`. `main` `38c9c14` (PR #19) fusionado en `3cda4b4`; el conflicto del HANDOFF se resolvió conservando las dos entradas.
