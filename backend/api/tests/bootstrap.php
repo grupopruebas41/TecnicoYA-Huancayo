@@ -39,3 +39,10 @@ $base = getenv('DB_DATABASE');
 if ($base === false || $base === '') {
     $definir('DB_DATABASE', $bases[$slot]);
 }
+
+// DEF-46: en la mutación cada mutante es un proceso PHP nuevo y RefreshDatabase repetiría migrate:fresh en cada uno
+// (unos 15 s), así que el plugin los cortaba por tiempo y los contaba como eliminados. El envoltorio de la mutación
+// migra una vez y pone TECNICOYA_MUTATION_MIGRATED=1: cada prueba sigue dentro de su transacción revertida.
+if (getenv('TECNICOYA_MUTATION_MIGRATED') === '1') {
+    Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
+}
