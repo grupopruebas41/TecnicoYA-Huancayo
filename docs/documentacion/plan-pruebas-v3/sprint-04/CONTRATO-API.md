@@ -1,8 +1,8 @@
 # Contrato de API · Sprint 4
 
-**Versión:** 1.0 (decisiones D-62 a D-71 aplicadas; análisis en [ANALISIS-S04.md](ANALISIS-S04.md)) · **Fecha:** 2026-10-16 · **Autor:** Claude Code (S4.1) · **Revisor:** [PENDIENTE]
+**Versión:** 1.1 (2026-10-17, S4.3: lo que fijó la implementación, ver §11) · 1.0 (decisiones D-62 a D-71 aplicadas; análisis en [ANALISIS-S04.md](ANALISIS-S04.md)) · **Fecha:** 2026-10-16 · **Autor:** Claude Code (S4.1 y S4.3) · **Revisor:** [PENDIENTE]
 **Base:** `main` `cced99e`; rama `feature/mayhuasca/b-matching/s04`.
-**Catálogo:** [CATALOGO-S04.csv](CATALOGO-S04.csv): 119 casos ejecutables (88 Pest, 18 Cypress y 13 Vitest).
+**Catálogo:** [CATALOGO-S04.csv](CATALOGO-S04.csv): 132 casos ejecutables (101 Pest, 18 Cypress y 13 Vitest). La v1.0 tenía 119; se agregaron S04-TC-120 a 127 (guarda de comandos destructivos, PR #19) y 128 a 132 (distrito base y herramientas E2E).
 **Decisiones aplicadas:** D-11, D-18 a D-25, D-32, D-33, D-36 y D-57 a D-71.
 
 > **Estado de las rutas:**
@@ -422,3 +422,23 @@ El arrancador levanta también Reverb, la cola y el scheduler del slot (D-70). E
 | Nuevas | `GET /offers`, `GET /offers/{id}`, `POST /offers/{id}/response`, `GET /requests/{id}/candidates`, `POST /requests/{id}/selection`, `POST /requests/{id}/alternative-searches`, `GET /notifications`, `DELETE /media/{id}` y `POST /broadcasting/auth` |
 | Versión de reglas | Parámetros de matching en la versión 2 (D-63) |
 | `PATCH /technicians/me/profile` | Acepta `base_district_id` (distrito activo; 422 «Selecciona un distrito activo.»); `GET` lo devuelve (D-64) |
+
+## 11. Cambios de la versión 1.1 (S4.3)
+
+Lo que fijó la implementación del backend. No cambia ninguna ruta ni código de error de la v1.0.
+
+| Tema | Precisión |
+|---|---|
+| Paso 1 y 2 (§3) | `PrepareMatching` ejecuta el matching **y abre la ronda en el mismo job** (S04-TC-030 exige una ronda tras preparar). `OpenOfferRound` queda para reintentos explícitos. |
+| Barrido (§3) | El scheduler ejecuta `php artisan tecnicoya:sweep` cada minuto: vence rondas, expira o reintenta pendientes (cada 5 min desde el pendiente o el último reintento, D-67), entrega notificaciones atrasadas y publica el outbox. |
+| Reasignación | Cada ronda nueva vuelve a ejecutar el matching (los datos pudieron cambiar) y excluye a quien ya tuvo oferta en la solicitud (RN-11.1). |
+| Distancia sin distrito base | Si el técnico no declaró distrito base, **C = 0** (la cercanía no aporta) y `distance` va en `null`. **Pendiente de confirmar: DIST-02 en DECISIONES.md.** |
+| Respuestas 409 idempotentes | `POST /offers/{id}/response`, `…/selection` y `…/alternative-searches` guardan también sus 409 de negocio con la `Idempotency-Key`: repetir la misma clave y cuerpo devuelve el mismo 409. Tras un 409 la SPA genera una clave nueva. |
+| Retiro por indisponibilidad | En `selection`, `TECHNICIAN_UNAVAILABLE` o `SCHEDULE_CONFLICT` retiran la oferta y suben `request_version`; si no queda ninguna aceptada sigue la búsqueda (§5.2). |
+| Notificaciones de la bandeja | `offer.created` al técnico; `request.awaiting_choice`, `request.direct_declined`, `request.pending` y `request.expired` al cliente; `request.assigned` al técnico elegido. |
+| `GET /offers` | `status` admite la lista separada por comas (`?status=pending,accepted`) o como arreglo. |
+| `GET /requests/{id}` | `search.alternatives_available` (booleano) en `direct_declined`. |
+| `GET /technicians/me/profile` | Devuelve `base_district_id` (D-64; S04-TC-128). |
+| Carga de `notification.created` | `event_id`, `type`, `notification_id` y `occurred_at` (§8). |
+| Aislamiento de MySQL | La conexión usa **READ COMMITTED** (`DB_ISOLATION_LEVEL`): tras esperar el bloqueo de la solicitud se lee lo confirmado y no hay bloqueos de hueco (deadlocks hallados con S04-TC-040 y 045). |
+| Datos E2E (§9) | Sin cambios de cuentas. Las ofertas del seeder duran 10 min desde la siembra: usar `serverClock` y reponerlo con `serverClock('reset')`. Tareas en `scripts/e2e-tareas-s04.mjs`: `on('task', tareasSprint04())` en la configuración de Cypress. |
