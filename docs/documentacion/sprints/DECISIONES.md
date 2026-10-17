@@ -89,6 +89,7 @@
 | ID | Decisión | Opción elegida | Fecha | Quién decidió |
 |---|---|---|---|---|
 | P17-S6 | Límites de comentarios de calificación y respuestas a reseñas (portafolio y documentos quedaron en D-46) | pendiente | — | — |
+| DIST-02 | Factor de cercanía C de un técnico elegible que no declaró distrito base (D-64 no lo cubre) | pendiente. **A (recomendada, aplicada de forma provisional en S4.3):** C = 0, la cercanía no aporta y `distance` va en null; incentiva declarar el distrito. **B:** el técnico sin distrito base no es elegible (código nuevo `missing_base_district`); más estricto, deja fuera a técnicos de S1 a S3 hasta que lo declaren | — | — |
 
 **Para registrar una decisión:**
 1. Pasar la fila a «Decisiones tomadas».

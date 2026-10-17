@@ -4,11 +4,14 @@ namespace App\Modules\FAdministration\Http\Controllers;
 
 use App\Models\MediaFile;
 use App\Models\User;
+use App\Modules\FAdministration\Application\RetireEvidence;
 use App\Modules\FAdministration\Application\StoreMedia;
 use App\Modules\FAdministration\Http\Requests\StoreMediaRequest;
 use App\Shared\Auth\EffectivePermissions;
 use App\Shared\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -32,6 +35,13 @@ final class MediaController
         ], 201);
     }
 
+    public function retire(Request $request, int $media, RetireEvidence $evidence): Response
+    {
+        $evidence->execute($request->user(), $media);
+
+        return response()->noContent();
+    }
+
     public function show(int $media): StreamedResponse
     {
         $file = MediaFile::query()->whereNull('retired_at')->find($media);
@@ -52,6 +62,12 @@ final class MediaController
         }
         if ($file->owner_id === $user->id) {
             return true;
+        }
+        if ($file->purpose === 'evidence') {
+            // S4 (contrato §10): el técnico notificado ve las fotos de evidencia de esa solicitud.
+            return DB::table('request_attachments as a')->join('offers as o', 'o.request_id', '=', 'a.request_id')
+                ->join('technician_profiles as t', 't.id', '=', 'o.technician_id')
+                ->where('a.media_id', $file->id)->where('t.user_id', $user->id)->exists();
         }
 
         return DB::table('technician_documents')->where('media_id', $file->id)->exists()

@@ -1,6 +1,7 @@
 <?php
 
 // S03-TC-030 y 031 · HU-S03-06 · RF-01 · D-11 y D-58: máximo de 3 solicitudes activas (TC-122).
+use Carbon\CarbonImmutable;
 use Database\Factories\ClientProfileFactory;
 use Database\Factories\DistrictFactory;
 use Database\Seeders\AuthorizationSeeder;
@@ -22,6 +23,8 @@ beforeEach(function () {
 });
 
 it('S03-TC-030 rechaza la cuarta solicitud activa, no cuenta las registradas y guarda la versión de reglas [TC-122]', function () {
+    // Reloj del S3: la versión 2 de reglas (D-63) rige desde el 2026-10-16; antes, la vigente es la 1.
+    $this->travelTo(CarbonImmutable::parse('2026-10-15 15:00:00', 'UTC'));
     $registered = [Sprint03::register($this, $this->districtId), Sprint03::register($this, $this->districtId)];
     $sent = [Sprint03::sent($this, $this->districtId), Sprint03::sent($this, $this->districtId), Sprint03::sent($this, $this->districtId)];
 

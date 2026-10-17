@@ -3,6 +3,7 @@
 namespace App\Modules\ARequests\Application;
 
 use App\Models\User;
+use App\Modules\BMatching\Jobs\PrepareMatching;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -83,14 +84,17 @@ final class ManageServiceRequests
 
     /**
      * Confirma el quinto paso tras revalidarlo (SubmissionPolicy) y guarda la versión de reglas aplicada (D-24).
-     * La búsqueda de candidatos se programará en el Sprint 4. Corre dentro de la transacción de Idempotency.
+     * Abre la generación 1 de búsqueda y encola el matching después del commit (S4). Corre dentro de la
+     * transacción de Idempotency.
      */
     public function submit(User $user, int $id, int $expectedVersion): array
     {
         $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
         $ruleVersionId = $this->policy->check($request);
-        $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId], $user->id,
-            'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+        $generation = (int) $request->search_generation + 1;
+        $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId,
+            'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+        PrepareMatching::dispatch($id, $generation)->afterCommit();
         $row = DB::table('service_requests')->find($id);
 
         return ['id' => $row->id, 'status' => $row->status, 'version' => $version, 'submitted_at' => $row->submitted_at];

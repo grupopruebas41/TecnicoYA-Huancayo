@@ -1,0 +1,1801 @@
+Sprint 4 · S4.2 · Pest en rojo antes de implementar
+Fecha: 2026-10-16 · Base: 9c0ad10 (feature/mayhuasca/b-matching/s04, con main 38c9c14 fusionado) + pruebas de este commit
+Entorno: slot A (tecnicoya_testing), PHP de XAMPP, MySQL 8.4 en Docker
+Comando: php vendor/bin/pest tests/Unit/Sprint04 tests/Feature/Sprint04
+Resultado: 87 fallan y 9 pasan (67 aserciones). De las 88 nuevas del catálogo (001-082 y 114-119), 87 en rojo y 1 en verde.
+
+Rojo (87; motivo del fallo):
+  014-019            Scorer y Ranker (BMatching\Domain) no existen
+  001-013, 020-030,
+  032-039, 041-058,
+  062, 064-074,
+  114-119            PrepareMatching y el resto de jobs de BMatching no existen; faltan matching_runs,
+                     matching_candidates, offer_rounds, offers, participations, appointments,
+                     notifications, outbox_events, district_distances, matching_weights y base_district_id
+  031, 071, 072,
+  075, 118           falta la interfaz CNotifications\Application\DeliveryChannel y DeliverNotification
+  040, 045, 046      concurrencia con dos procesos PHP: fallan al preparar (PrepareMatching no existe)
+  059-061, 063       el pendiente de 24 h no existe (PrepareMatching, ExpirePendingRequest)
+  065, 066           POST /api/v1/broadcasting/auth no existe (404)
+  076, 077           POST /requests ignora Idempotency-Key (D-60): crea dos borradores y no responde 409
+  079-082            DELETE /media/{id} no existe (D-61): 405
+
+Ya pasan con el código existente (9), sin cambios en el producto:
+  078                POST /requests sin clave ya creaba dos borradores; se conserva como regresión de D-60
+                     (la cabecera debe seguir siendo opcional)
+  120-127            guarda de comandos destructivos (DEF-45), en verde desde el PR #19
+
+---- Salida del runner ----
+
+   FAIL  Tests\Unit\Sprint04\RankerTest
+  ⨯ it S04-TC-015 normaliza por ejecución y puntúa 73, 50 y 30 calculados a mano                                 9.19s  
+  ⨯ it S04-TC-016 con datos iguales no divide por cero y deja a los tres empatados                               0.02s  
+  ⨯ it S04-TC-017 desempata por promedio real 4,8 antes que 4,2 [TC-042]                                         0.01s  
+  ⨯ it S04-TC-018 informa el empate persistente sin depender del id ni del orden de entrada                      0.01s  
+  ⨯ it S04-TC-019 ordena por el puntaje sin redondear aunque ambos se muestren como 75                           0.02s  
+
+   FAIL  Tests\Unit\Sprint04\ScorerTest
+  ⨯ it S04-TC-014 puntúa 75 sobre 100 con cuatro aportes calculados a mano [TC-041]                              0.72s  
+
+   PASS  Tests\Feature\Sprint04\DestructiveCommandGuardTest
+  ✓ it S04-TC-120 rechaza migrate:fresh con --env=testing y la base por defecto tecnicoya                        2.61s  
+  ✓ it S04-TC-121 rechaza migrate:refresh contra una base sin _testing                                           0.45s  
+  ✓ it S04-TC-122 rechaza migrate:reset contra una base sin _testing                                             0.44s  
+  ✓ it S04-TC-123 rechaza db:wipe contra una base sin _testing                                                   0.43s  
+  ✓ it S04-TC-124 rechaza db:seed contra una base sin _testing                                                   0.44s  
+  ✓ it S04-TC-125 rechaza la opción --database que apunta a una base sin _testing                                0.46s  
+  ✓ it S04-TC-127 tabla de decisión de la guarda dentro del proceso (entorno, comando, conexión y driver)        0.05s  
+  ✓ it S04-TC-126 permite db:seed en la base _testing del slot                                                   4.61s  
+
+   FAIL  Tests\Feature\Sprint04\DirectRouteTest
+  ⨯ it S04-TC-013 no activa a otros técnicos cuando el objetivo de la solicitud dirigida no es elegible [TC-05… 29.55s  
+  ⨯ it S04-TC-032 abre una ronda directa de un solo destinatario aunque otros puntúen mejor                      0.50s  
+  ⨯ it S04-TC-056 ofrece alternativas sin contactar a nadie cuando el objetivo no responde [TC-052]              0.61s  
+  ⨯ it S04-TC-057 solo el titular autoriza la búsqueda alternativa, que excluye al técnico objetivo              0.36s  
+
+   FAIL  Tests\Feature\Sprint04\DistanceTest
+  ⨯ it S04-TC-115 mide la distancia desde el distrito base con la matriz de distritos [TC-043]                   0.22s  
+
+   FAIL  Tests\Feature\Sprint04\EligibilityTest
+  ⨯ it S04-TC-001 deja elegible al técnico que cumple todos los filtros, con fotografía [TC-039]                 0.27s  
+  ⨯ it S04-TC-002 nunca ofrece al suspendido aunque tenga el mejor puntaje potencial [TC-040]                    0.32s  
+  ⨯ it S04-TC-003 excluye al técnico sin verificación aprobada y deja la solicitud pendiente                     0.34s  
+  ⨯ it S04-TC-004 excluye al técnico con la cuenta deshabilitada                                                 0.29s  
+  ⨯ it S04-TC-005 excluye al técnico que no ofrece la subcategoría o la tiene inactiva                           0.29s  
+  ⨯ it S04-TC-006 excluye al técnico que no cubre el distrito de la solicitud                                    0.37s  
+  ⨯ it S04-TC-007 excluye al técnico con una pausa vigente sin fin [TC-132]                                      0.32s  
+  ⨯ it S04-TC-008 no excluye por una pausa que termina exactamente ahora                                         0.27s  
+  ⨯ it S04-TC-009 excluye al técnico cuya franja semanal no contiene la franja programada                        0.27s  
+  ⨯ it S04-TC-010 deja no disponible al técnico con una cita solapada y acepta la contigua [TC-133]              0.26s  
+  ⨯ it S04-TC-011 excluye en una inmediata al técnico con una cita que empieza a 1:59 h                          0.31s  
+  ⨯ it S04-TC-012 no excluye en una inmediata por una cita que empieza a 2:00 h exactas                          0.28s  
+
+   FAIL  Tests\Feature\Sprint04\MatchingPerformanceTest
+  ⨯ it S04-TC-024 ejecuta el matching de 300 técnicos en 3 segundos o menos                                      0.26s  
+
+   FAIL  Tests\Feature\Sprint04\MatchingRulesTest
+  ⨯ it S04-TC-020 rechaza en MySQL los pesos que no suman 100 y no aplica pesos inválidos                        0.30s  
+  ⨯ it S04-TC-025 conserva la fotografía de la ejecución anterior al ejecutar otra generación                    0.27s  
+  ⨯ it S04-TC-026 aplica la versión de reglas de la solicitud aunque otra esté vigente                           0.33s  
+
+   FAIL  Tests\Feature\Sprint04\MediaDeletionTest
+  ⨯ it S04-TC-079 retira una evidencia propia no vinculada                                                       2.33s  
+  ⨯ it S04-TC-080 no retira una evidencia adjunta a una solicitud                                                0.33s  
+  ⨯ it S04-TC-081 borra archivos según la tabla de decisión por rol                                              0.22s  
+  ⨯ it S04-TC-082 no vuelve a retirar una evidencia ya retirada                                                  0.22s  
+
+   FAIL  Tests\Feature\Sprint04\NewTechnicianTest
+  ⨯ it S04-TC-021 muestra al técnico nuevo con historial neutro y sin estimación [TC-044]                        0.39s  
+  ⨯ it S04-TC-022 mantiene H neutro con tres servicios finalizados y ninguna reseña                              0.28s  
+  ⨯ it S04-TC-116 estima por la mediana de la misma subcategoría con historial suficiente [TC-140]               0.30s  
+
+   FAIL  Tests\Feature\Sprint04\NotificationDeliveryTest
+  ⨯ it S04-TC-031 hace correr el SLA desde la bandeja aunque falle el correo                                     0.28s  
+  ⨯ it S04-TC-071 hace como máximo tres reintentos y ningún quinto intento [TC-057]                              0.23s  
+  ⨯ it S04-TC-072 se detiene cuando la entrega funciona al tercer intento                                        0.26s  
+  ⨯ it S04-TC-075 guarda el error de entrega saneado, sin el token ni la traza                                   0.26s  
+  ⨯ it S04-TC-118 respeta los intervalos de 1, 2 y 4 minutos entre reintentos                                    0.25s  
+
+   FAIL  Tests\Feature\Sprint04\OfferAccessTest
+  ⨯ it S04-TC-037 no deja que un técnico responda la oferta de otro
+  ⨯ it S04-TC-038 responde ofertas según la tabla de decisión por rol
+  ⨯ it S04-TC-052 muestra la dirección exacta solo al técnico asignado
+  ⨯ it S04-TC-069 muestra en ofertas y bandeja solo lo propio
+
+   FAIL  Tests\Feature\Sprint04\OfferConcurrencyTest
+  ⨯ it S04-TC-040 deja una sola respuesta cuando llegan a la vez aceptar y rechazar                             50.54s  
+
+   FAIL  Tests\Feature\Sprint04\OfferResponseTest
+  ⨯ it S04-TC-033 acepta a los 9:59 dentro del plazo sin asignar todavía [TC-047]
+  ⨯ it S04-TC-034 rechaza a los 10:00 exactos aunque el job de vencimiento no corrió [TC-048]
+  ⨯ it S04-TC-035 rechaza a los 10:01 y el job vence la oferta una sola vez
+  ⨯ it S04-TC-036 guarda el rechazo con motivo y mantiene la ronda si quedan pendientes
+  ⨯ it S04-TC-039 no vence una aceptación confirmada antes de que corra el job
+  ⨯ it S04-TC-041 revalida la elegibilidad del técnico al aceptar
+  ⨯ it S04-TC-042 responde igual con la misma clave y rechaza otro cuerpo con esa clave
+  ⨯ it S04-TC-043 rechaza en el servidor una respuesta inválida
+
+   FAIL  Tests\Feature\Sprint04\OfferRoundTest
+  ⨯ it S04-TC-023 conserva en la oferta la tarifa notificada aunque el técnico la cambie                         0.31s  
+  ⨯ it S04-TC-027 abre la primera ronda con exactamente tres ofertas a los tres primeros [TC-045]                0.40s  
+  ⨯ it S04-TC-028 ofrece a todos cuando hay menos elegibles que el máximo                                        0.35s  
+  ⨯ it S04-TC-030 no duplica la ronda al preparar dos veces la misma generación                                  0.41s  
+  ⨯ it S04-TC-114 resuelve el empate del corte por la verificación más antigua                                   0.35s  
+
+   FAIL  Tests\Feature\Sprint04\OutboxTest
+  ⨯ it S04-TC-029 no publica avisos cuando la apertura de la ronda se revierte [TC-046]                          0.51s  
+  ⨯ it S04-TC-068 publica una sola vez la fila del outbox aunque el job corra dos veces                          0.30s  
+
+   FAIL  Tests\Feature\Sprint04\PendingAvailabilityTest
+  ⨯ it S04-TC-059 deja pendiente con plazo de 24 h cuando no hay elegibles [TC-053]                              0.24s  
+  ⨯ it S04-TC-060 no expira el pendiente a las 23:59                                                             0.24s  
+  ⨯ it S04-TC-061 expira el pendiente a las 24:00 una sola vez [TC-054]                                          0.22s  
+  ⨯ it S04-TC-062 conserva el primer plazo al volver al pendiente                                                0.24s  
+  ⨯ it S04-TC-063 libera el cupo de activas cuando una solicitud expira                                          0.26s  
+  ⨯ it S04-TC-119 reintenta el pendiente cada 5 minutos solo con técnicos nuevos                                 0.25s  
+
+   FAIL  Tests\Feature\Sprint04\RealtimeTest
+  ⨯ it S04-TC-064 publica solo lo confirmado, con identificador de evento y versión                              0.28s  
+  ⨯ it S04-TC-065 autoriza el canal privado de la solicitud solo al titular [TC-056]                             0.28s  
+  ⨯ it S04-TC-066 autoriza el canal privado del técnico solo a ese técnico activo                                0.34s  
+  ⨯ it S04-TC-067 publica eventos sin dirección, descripción, teléfono ni correo                                 0.27s  
+
+   FAIL  Tests\Feature\Sprint04\ReassignmentTest
+  ⨯ it S04-TC-053 abre una sola ronda nueva aunque el vencimiento corra dos veces [TC-051]
+  ⨯ it S04-TC-054 abre la siguiente ronda al tercer rechazo sin esperar el plazo
+  ⨯ it S04-TC-055 espera la elección cuando la ronda tiene alguna aceptación
+  ⨯ it S04-TC-058 no vuelve a ofrecer a quien ya tuvo oferta en la solicitud
+
+   FAIL  Tests\Feature\Sprint04\RequestCreationIdempotencyTest
+  ⨯ it S04-TC-076 no duplica el borrador al crear dos veces con la misma clave                                   1.27s  
+  ⨯ it S04-TC-077 rechaza la misma clave con otro cuerpo                                                         0.26s  
+  ✓ it S04-TC-078 sigue creando sin clave porque la cabecera es opcional en la API                               0.27s  
+
+   FAIL  Tests\Feature\Sprint04\SelectionConcurrencyTest
+  ⨯ it S04-TC-045 confirma una sola cita cuando dos clientes eligen al mismo técnico en franjas solapadas [TC-… 36.45s  
+  ⨯ it S04-TC-046 acepta una sola elección cuando el mismo cliente elige dos veces a la vez                     36.32s  
+
+   FAIL  Tests\Feature\Sprint04\SelectionTest
+  ⨯ it S04-TC-044 crea la participación y la reserva al elegir una aceptación válida [TC-049]                   28.60s  
+  ⨯ it S04-TC-047 no deja elegir mientras la ronda sigue abierta                                                 0.29s  
+  ⨯ it S04-TC-048 no deja elegir una oferta de una solicitud ajena                                               0.27s  
+  ⨯ it S04-TC-049 revalida al elegir que el técnico siga disponible                                              0.29s  
+  ⨯ it S04-TC-050 abre la siguiente ronda si la única aceptada deja de estar disponible                          0.42s  
+  ⨯ it S04-TC-051 responde igual a la misma elección con la misma clave                                          0.28s  
+  ⨯ it S04-TC-070 muestra al titular solo las aceptaciones de su solicitud, sin puntaje                          0.43s  
+  ⨯ it S04-TC-117 reserva dos horas al elegir en una solicitud inmediata                                         0.34s  
+
+   FAIL  Tests\Feature\Sprint04\StaleJobTest
+  ⨯ it S04-TC-073 ignora un job de ronda con una generación anterior [TC-058]                                    0.30s  
+  ⨯ it S04-TC-074 no expira con un job antiguo una solicitud que pasó de pendiente a asignada                    0.35s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Sprint04\RankerTest > it S04-TC-015 normaliza por ejecución y puntúa 73, 50 y 30 calcul…  Error   
+  Class "App\Modules\BMatching\Domain\Ranker" not found
+
+  at tests\Unit\Sprint04\RankerTest.php:17
+     13▕         'history_factor' => $history, 'average' => $average];
+     14▕ }
+     15▕ 
+     16▕ it('S04-TC-015 normaliza por ejecución y puntúa 73, 50 y 30 calculados a mano', function () {
+  ➜  17▕     $ranked = (new Ranker)->rank([
+     18▕         s04Input(1, 0.0, 80, 2), s04Input(2, 2.0, 100, 5), s04Input(3, 4.0, 120, 10),
+     19▕     ], S04_WEIGHTS, S04_PARAMS);
+     20▕ 
+     21▕     expect($ranked['references'])->toEqual(['dref' => 4.0, 'aref' => 10.0])
+
+  1   tests\Unit\Sprint04\RankerTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Sprint04\RankerTest > it S04-TC-016 con datos iguales no divide por cero y deja a los t…  Error   
+  Class "App\Modules\BMatching\Domain\Ranker" not found
+
+  at tests\Unit\Sprint04\RankerTest.php:32
+     28▕         ->and(array_map(fn ($c) => $c['rank_position'], $ranked['candidates']))->toBe([1 => 1, 2 => 2, 3 => 3]);
+     29▕ });
+     30▕ 
+     31▕ it('S04-TC-016 con datos iguales no divide por cero y deja a los tres empatados', function () {
+  ➜  32▕     $ranked = (new Ranker)->rank([s04Input(7, 0.0, 90, 0), s04Input(8, 0.0, 90, 0), s04Input(9, 0.0, 90, 0)], S04_WEIGHTS, S04_PARAMS);
+     33▕ 
+     34▕     foreach ([7, 8, 9] as $id) {
+     35▕         expect($ranked['candidates'][$id]['factors'])->toEqualWithDelta(['proximity' => 1.0, 'price' => 0.5, 'history' => 0.5, 'experience' => 0.0], 1e-9)
+     36▕             ->and($ranked['candidates'][$id]['score'])->toEqualWithDelta(60.0, 1e-9)
+
+  1   tests\Unit\Sprint04\RankerTest.php:32
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Sprint04\RankerTest > it S04-TC-017 desempata por promedio real 4,8 antes que 4,2 [TC-0…  Error   
+  Class "App\Modules\BMatching\Domain\Ranker" not found
+
+  at tests\Unit\Sprint04\RankerTest.php:43
+     39▕     }
+     40▕ });
+     41▕ 
+     42▕ it('S04-TC-017 desempata por promedio real 4,8 antes que 4,2 [TC-042]', function () {
+  ➜  43▕     $order = (new Ranker)->order([
+     44▕         ['technician_id' => 21, 'score' => 70.0, 'average' => 4.2],
+     45▕         ['technician_id' => 22, 'score' => 70.0, 'average' => 4.8],
+     46▕     ]);
+     47▕
+
+  1   tests\Unit\Sprint04\RankerTest.php:43
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Sprint04\RankerTest > it S04-TC-018 informa el empate persistente sin depender del id n…  Error   
+  Class "App\Modules\BMatching\Domain\Ranker" not found
+
+  at tests\Unit\Sprint04\RankerTest.php:58
+     54▕         ['technician_id' => 40, 'score' => 66.5, 'average' => null],
+     55▕         ['technician_id' => 12, 'score' => 66.5, 'average' => null],
+     56▕         ['technician_id' => 30, 'score' => 50.0, 'average' => null],
+     57▕     ];
+  ➜  58▕     $directo = (new Ranker)->order($entrada);
+     59▕     $invertido = (new Ranker)->order(array_reverse($entrada));
+     60▕ 
+     61▕     expect($directo[40])->toBe(['rank_position' => 1, 'tie_group' => 1])
+     62▕         ->and($directo[12])->toBe(['rank_position' => 1, 'tie_group' => 1])
+
+  1   tests\Unit\Sprint04\RankerTest.php:58
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Sprint04\RankerTest > it S04-TC-019 ordena por el puntaje sin redondear aunque ambos se…  Error   
+  Class "App\Modules\BMatching\Domain\Ranker" not found
+
+  at tests\Unit\Sprint04\RankerTest.php:70
+     66▕     expect($invertido)->toBe($directo);
+     67▕ });
+     68▕ 
+     69▕ it('S04-TC-019 ordena por el puntaje sin redondear aunque ambos se muestren como 75', function () {
+  ➜  70▕     $order = (new Ranker)->order([
+     71▕         ['technician_id' => 5, 'score' => 75.000000, 'average' => null],
+     72▕         ['technician_id' => 6, 'score' => 75.000001, 'average' => null],
+     73▕     ]);
+     74▕
+
+  1   tests\Unit\Sprint04\RankerTest.php:70
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Sprint04\ScorerTest > it S04-TC-014 puntúa 75 sobre 100 con cuatro aportes calculados a…  Error   
+  Class "App\Modules\BMatching\Domain\Scorer" not found
+
+  at tests\Unit\Sprint04\ScorerTest.php:7
+      3▕ // S04-TC-014 · HU-S04-02 · RF-06, RF-08 · D-20: P = wC·C + wT·T + wH·H + wE·E, calculado a mano.
+      4▕ use App\Modules\BMatching\Domain\Scorer;
+      5▕ 
+      6▕ it('S04-TC-014 puntúa 75 sobre 100 con cuatro aportes calculados a mano [TC-041]', function () {
+  ➜   7▕     $result = (new Scorer)->score(
+      8▕         ['proximity' => 1.0, 'price' => 0.5, 'history' => 0.8, 'experience' => 0.4],
+      9▕         ['proximity' => 35, 'price' => 20, 'history' => 30, 'experience' => 15],
+     10▕     );
+     11▕
+
+  1   tests\Unit\Sprint04\ScorerTest.php:7
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\DirectRouteTest > it S04-TC-013 no activa a otros técnicos cuando el objeti…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\DirectRouteTest.php:25
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\DirectRouteTest > it S04-TC-032 abre una ronda directa de un solo destinata…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\DirectRouteTest.php:37
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\DirectRouteTest > it S04-TC-056 ofrece alternativas sin contactar a nadie c…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\DirectRouteTest.php:48
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\DirectRouteTest > it S04-TC-057 solo el titular autoriza la búsqueda altern…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\DirectRouteTest.php:66
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\DistanceTest > it S04-TC-115 mide la distancia desde el distrito b…  QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.district_distances' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: select exists(select * from `district_distances` where (`from_district_id` = 14 and `to_district_id` = 15)) as `exists`)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+    416▕             // For select statements, we'll simply execute the query and return an array
+    417▕             // of the database result set. Each element in the array will be a single
+    418▕             // row from the database table, and will either be an array or objects.
+    419▕             $statement = $this->prepared(
+  ➜ 420▕                 $this->getPdoForSelect($useReadPdo)->prepare($query)
+    421▕             );
+    422▕ 
+    423▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+    424▕
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-001 deja elegible al técnico que cumple todos l…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:25
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-002 nunca ofrece al suspendido aunque tenga el…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-003 excluye al técnico sin verificación aprobad…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:55
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-004 excluye al técnico con la cuenta deshabilit…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:68
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-005 excluye al técnico que no ofrece la subcate…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:80
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-006 excluye al técnico que no cubre el distrito…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:93
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-007 excluye al técnico con una pausa vigente si…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:104
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-008 no excluye por una pausa que termina exacta…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:115
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-009 excluye al técnico cuya franja semanal no c…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\EligibilityTest.php:128
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-010 deja no disponible al técnico con…   QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.participations' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: insert into `participations` (`request_id`, `technician_id`, `slot`, `status`, `reference_fee_snapshot`, `currency`, `assigned_at`) values (14, 29, primary, assigned, 80.00, PEN, 2026-10-20 14:00:00))
+
+  at vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+     43▕             if ($this->pretending()) {
+     44▕                 return true;
+     45▕             }
+     46▕ 
+  ➜  47▕             $statement = $this->getPdo()->prepare($query);
+     48▕ 
+     49▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+     50▕ 
+     51▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-011 excluye en una inmediata al técnic…  QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.participations' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: insert into `participations` (`request_id`, `technician_id`, `slot`, `status`, `reference_fee_snapshot`, `currency`, `assigned_at`) values (15, 30, primary, assigned, 80.00, PEN, 2026-10-20 14:00:00))
+
+  at vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+     43▕             if ($this->pretending()) {
+     44▕                 return true;
+     45▕             }
+     46▕ 
+  ➜  47▕             $statement = $this->getPdo()->prepare($query);
+     48▕ 
+     49▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+     50▕ 
+     51▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\EligibilityTest > it S04-TC-012 no excluye en una inmediata por un…  QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.participations' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: insert into `participations` (`request_id`, `technician_id`, `slot`, `status`, `reference_fee_snapshot`, `currency`, `assigned_at`) values (16, 31, primary, assigned, 80.00, PEN, 2026-10-20 14:00:00))
+
+  at vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+     43▕             if ($this->pretending()) {
+     44▕                 return true;
+     45▕             }
+     46▕ 
+  ➜  47▕             $statement = $this->getPdo()->prepare($query);
+     48▕ 
+     49▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+     50▕ 
+     51▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MatchingPerformanceTest > it S04-TC-024 ejecuta el matching de 300…  QueryException   
+  SQLSTATE[42S22]: Column not found: 1054 Unknown column 'base_district_id' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: insert into `technician_profiles` (`base_district_id`, `display_name`, `status`, `user_id`, `verification_status`, `verified_at`) values (52, Técnico masivo 0, active, 48, approved, 2026-10-19 14:00:00), (52, Técnico masivo 1, active, 49, approved, 2026-10-18 14:00:00), (52, Técnico masivo 2, active, 50, approved, 2026-10-17 14:00:00), (52, Técnico masivo 3, active, 51, approved, 2026-10-16 14:00:00), (52, Técnico masivo 4, active, 52, approved, 2026-10-15 14:00:00), (52, Técnico masivo 5, active, 53, approved, 2026-10-14 14:00:00), (52, Técnico masivo 6, active, 54, approved, 2026-10-13 14:00:00), (52, Técnico masivo 7, active, 55, approved, 2026-10-12 14:00:00), (52, Técnico masivo 8, active, 56, approved, 2026-10-11 14:00:00), (52, Técnico masivo 9, active, 57, approved, 2026-10-10 14:00:00), (52, Técnico masivo 10, active, 58, approved, 2026-10-09 14:00:00), (52, Técnico masivo 11, active, 59, approved, 2026-10-08 14:00:00), (52, Técnico masivo 12, active, 60, approved, 2026-10-07 14:00:00), (52, Técnico masivo 13, active, 61, approved, 2026-10-06 14:00:00), (52, Técnico masivo 14, active, 62, approved, 2026-10-05 14:00:00), (52, Técnico masivo 15, active, 63, approved, 2026-10-04 14:00:00), (52, Técnico masivo 16, active, 64, approved, 2026-10-03 14:00:00), (52, Técnico masivo 17, active, 65, approved, 2026-10-02 14:00:00), (52, Técnico masivo 18, active, 66, approved, 2026-10-01 14:00:00), (52, Técnico masivo 19, active, 67, approved, 2026-09-30 14:00:00), (52, Técnico masivo 20, active, 68, approved, 2026-09-29 14:00:00), (52, Técnico masivo 21, active, 69, approved, 2026-09-28 14:00:00), (52, Técnico masivo 22, active, 70, approved, 2026-09-27 14:00:00), (52, Técnico masivo 23, active, 71, approved, 2026-09-26 14:00:00), (52, Técnico masivo 24, active, 72, approved, 2026-09-25 14:00:00), (52, Técnico masivo 25, active, 73, approved, 2026-09-24 14:00:00), (52, Técnico masivo 26, active, 74, approved, 2026-09-23 14:00:00), (52, Técnico masivo 27, active, 75, approved, 2026-09-22 14:00:00), (52, Técnico masivo 28, active, 76, approved, 2026-09-21 14:00:00), (52, Técnico masivo 29, active, 77, approved, 2026-09-20 14:00:00), (52, Técnico masivo 30, active, 78, approved, 2026-09-19 14:00:00), (52, Técnico masivo 31, active, 79, approved, 2026-09-18 14:00:00), (52, Técnico masivo 32, active, 80, approved, 2026-09-17 14:00:00), (52, Técnico masivo 33, active, 81, approved, 2026-09-16 14:00:00), (52, Técnico masivo 34, active, 82, approved, 2026-09-15 14:00:00), (52, Técnico masivo 35, active, 83, approved, 2026-09-14 14:00:00), (52, Técnico masivo 36, active, 84, approved, 2026-09-13 14:00:00), (52, Técnico masivo 37, active, 85, approved, 2026-09-12 14:00:00), (52, Técnico masivo 38, active, 86, approved, 2026-09-11 14:00:00), (52, Técnico masivo 39, active, 87, approved, 2026-09-10 14:00:00), (52, Técnico masivo 40, active, 88, approved, 2026-09-09 14:00:00), (52, Técnico masivo 41, active, 89, approved, 2026-09-08 14:00:00), (52, Técnico masivo 42, active, 90, approved, 2026-09-07 14:00:00), (52, Técnico masivo 43, active, 91, approved, 2026-09-06 14:00:00), (52, Técnico masivo 44, active, 92, approved, 2026-09-05 14:00:00), (52, Técnico masivo 45, active, 93, approved, 2026-09-04 14:00:00), (52, Técnico masivo 46, active, 94, approved, 2026-09-03 14:00:00), (52, Técnico masivo 47, active, 95, approved, 2026-09-02 14:00:00), (52, Técnico masivo 48, active, 96, approved, 2026-09-01 14:00:00), (52, Técnico masivo 49, active, 97, approved, 2026-08-31 14:00:00), (52, Técnico masivo 50, active, 98, approved, 2026-08-30 14:00:00), (52, Técnico masivo 51, active, 99, approved, 2026-08-29 14:00:00), (52, Técnico masivo 52, active, 100, approved, 2026-08-28 14:00:00), (52, Técnico masivo 53, active, 101, approved, 2026-08-27 14:00:00), (52, Técnico masivo 54, active, 102, approved, 2026-08-26 14:00:00), (52, Técnico masivo 55, active, 103, approved, 2026-08-25 14:00:00), (52, Técnico masivo 56, active, 104, approved, 2026-08-24 14:00:00), (52, Técnico masivo 57, active, 105, approved, 2026-08-23 14:00:00), (52, Técnico masivo 58, active, 106, approved, 2026-08-22 14:00:00), (52, Técnico masivo 59, active, 107, approved, 2026-08-21 14:00:00), (52, Técnico masivo 60, active, 108, approved, 2026-08-20 14:00:00), (52, Técnico masivo 61, active, 109, approved, 2026-08-19 14:00:00), (52, Técnico masivo 62, active, 110, approved, 2026-08-18 14:00:00), (52, Técnico masivo 63, active, 111, approved, 2026-08-17 14:00:00), (52, Técnico masivo 64, active, 112, approved, 2026-08-16 14:00:00), (52, Técnico masivo 65, active, 113, approved, 2026-08-15 14:00:00), (52, Técnico masivo 66, active, 114, approved, 2026-08-14 14:00:00), (52, Técnico masivo 67, active, 115, approved, 2026-08-13 14:00:00), (52, Técnico masivo 68, active, 116, approved, 2026-08-12 14:00:00), (52, Técnico masivo 69, active, 117, approved, 2026-08-11 14:00:00), (52, Técnico masivo 70, active, 118, approved, 2026-08-10 14:00:00), (52, Técnico masivo 71, active, 119, approved, 2026-08-09 14:00:00), (52, Técnico masivo 72, active, 120, approved, 2026-08-08 14:00:00), (52, Técnico masivo 73, active, 121, approved, 2026-08-07 14:00:00), (52, Técnico masivo 74, active, 122, approved, 2026-08-06 14:00:00), (52, Técnico masivo 75, active, 123, approved, 2026-08-05 14:00:00), (52, Técnico masivo 76, active, 124, approved, 2026-08-04 14:00:00), (52, Técnico masivo 77, active, 125, approved, 2026-08-03 14:00:00), (52, Técnico masivo 78, active, 126, approved, 2026-08-02 14:00:00), (52, Técnico masivo 79, active, 127, approved, 2026-08-01 14:00:00), (52, Técnico masivo 80, active, 128, approved, 2026-07-31 14:00:00), (52, Técnico masivo 81, active, 129, approved, 2026-07-30 14:00:00), (52, Técnico masivo 82, active, 130, approved, 2026-07-29 14:00:00), (52, Técnico masivo 83, active, 131, approved, 2026-07-28 14:00:00), (52, Técnico masivo 84, active, 132, approved, 2026-07-27 14:00:00), (52, Técnico masivo 85, active, 133, approved, 2026-07-26 14:00:00), (52, Técnico masivo 86, active, 134, approved, 2026-07-25 14:00:00), (52, Técnico masivo 87, active, 135, approved, 2026-07-24 14:00:00), (52, Técnico masivo 88, active, 136, approved, 2026-07-23 14:00:00), (52, Técnico masivo 89, active, 137, approved, 2026-07-22 14:00:00), (52, Técnico masivo 90, active, 138, approved, 2026-07-21 14:00:00), (52, Técnico masivo 91, active, 139, approved, 2026-07-20 14:00:00), (52, Técnico masivo 92, active, 140, approved, 2026-07-19 14:00:00), (52, Técnico masivo 93, active, 141, approved, 2026-07-18 14:00:00), (52, Técnico masivo 94, active, 142, approved, 2026-07-17 14:00:00), (52, Técnico masivo 95, active, 143, approved, 2026-07-16 14:00:00), (52, Técnico masivo 96, active, 144, approved, 2026-07-15 14:00:00), (52, Técnico masivo 97, active, 145, approved, 2026-07-14 14:00:00), (52, Técnico masivo 98, active, 146, approved, 2026-07-13 14:00:00), (52, Técnico masivo 99, active, 147, approved, 2026-07-12 14:00:00), (52, Técnico masivo 100, active, 148, approved, 2026-07-11 14:00:00), (52, Técnico masivo 101, active, 149, approved, 2026-07-10 14:00:00), (52, Técnico masivo 102, active, 150, approved, 2026-07-09 14:00:00), (52, Técnico masivo 103, active, 151, approved, 2026-07-08 14:00:00), (52, Técnico masivo 104, active, 152, approved, 2026-07-07 14:00:00), (52, Técnico masivo 105, active, 153, approved, 2026-07-06 14:00:00), (52, Técnico masivo 106, active, 154, approved, 2026-07-05 14:00:00), (52, Técnico masivo 107, active, 155, approved, 2026-07-04 14:00:00), (52, Técnico masivo 108, active, 156, approved, 2026-07-03 14:00:00), (52, Técnico masivo 109, active, 157, approved, 2026-07-02 14:00:00), (52, Técnico masivo 110, active, 158, approved, 2026-07-01 14:00:00), (52, Técnico masivo 111, active, 159, approved, 2026-06-30 14:00:00), (52, Técnico masivo 112, active, 160, approved, 2026-06-29 14:00:00), (52, Técnico masivo 113, active, 161, approved, 2026-06-28 14:00:00), (52, Técnico masivo 114, active, 162, approved, 2026-06-27 14:00:00), (52, Técnico masivo 115, active, 163, approved, 2026-06-26 14:00:00), (52, Técnico masivo 116, active, 164, approved, 2026-06-25 14:00:00), (52, Técnico masivo 117, active, 165, approved, 2026-06-24 14:00:00), (52, Técnico masivo 118, active, 166, approved, 2026-06-23 14:00:00), (52, Técnico masivo 119, active, 167, approved, 2026-06-22 14:00:00), (52, Técnico masivo 120, active, 168, approved, 2026-06-21 14:00:00), (52, Técnico masivo 121, active, 169, approved, 2026-06-20 14:00:00), (52, Técnico masivo 122, active, 170, approved, 2026-06-19 14:00:00), (52, Técnico masivo 123, active, 171, approved, 2026-06-18 14:00:00), (52, Técnico masivo 124, active, 172, approved, 2026-06-17 14:00:00), (52, Técnico masivo 125, active, 173, approved, 2026-06-16 14:00:00), (52, Técnico masivo 126, active, 174, approved, 2026-06-15 14:00:00), (52, Técnico masivo 127, active, 175, approved, 2026-06-14 14:00:00), (52, Técnico masivo 128, active, 176, approved, 2026-06-13 14:00:00), (52, Técnico masivo 129, active, 177, approved, 2026-06-12 14:00:00), (52, Técnico masivo 130, active, 178, approved, 2026-06-11 14:00:00), (52, Técnico masivo 131, active, 179, approved, 2026-06-10 14:00:00), (52, Técnico masivo 132, active, 180, approved, 2026-06-09 14:00:00), (52, Técnico masivo 133, active, 181, approved, 2026-06-08 14:00:00), (52, Técnico masivo 134, active, 182, approved, 2026-06-07 14:00:00), (52, Técnico masivo 135, active, 183, approved, 2026-06-06 14:00:00), (52, Técnico masivo 136, active, 184, approved, 2026-06-05 14:00:00), (52, Técnico masivo 137, active, 185, approved, 2026-06-04 14:00:00), (52, Técnico masivo 138, active, 186, approved, 2026-06-03 14:00:00), (52, Técnico masivo 139, active, 187, approved, 2026-06-02 14:00:00), (52, Técnico masivo 140, active, 188, approved, 2026-06-01 14:00:00), (52, Técnico masivo 141, active, 189, approved, 2026-05-31 14:00:00), (52, Técnico masivo 142, active, 190, approved, 2026-05-30 14:00:00), (52, Técnico masivo 143, active, 191, approved, 2026-05-29 14:00:00), (52, Técnico masivo 144, active, 192, approved, 2026-05-28 14:00:00), (52, Técnico masivo 145, active, 193, approved, 2026-05-27 14:00:00), (52, Técnico masivo 146, active, 194, approved, 2026-05-26 14:00:00), (52, Técnico masivo 147, active, 195, approved, 2026-05-25 14:00:00), (52, Técnico masivo 148, active, 196, approved, 2026-05-24 14:00:00), (52, Técnico masivo 149, active, 197, approved, 2026-05-23 14:00:00), (52, Técnico masivo 150, active, 198, approved, 2026-05-22 14:00:00), (52, Técnico masivo 151, active, 199, approved, 2026-05-21 14:00:00), (52, Técnico masivo 152, active, 200, approved, 2026-05-20 14:00:00), (52, Técnico masivo 153, active, 201, approved, 2026-05-19 14:00:00), (52, Técnico masivo 154, active, 202, approved, 2026-05-18 14:00:00), (52, Técnico masivo 155, active, 203, approved, 2026-05-17 14:00:00), (52, Técnico masivo 156, active, 204, approved, 2026-05-16 14:00:00), (52, Técnico masivo 157, active, 205, approved, 2026-05-15 14:00:00), (52, Técnico masivo 158, active, 206, approved, 2026-05-14 14:00:00), (52, Técnico masivo 159, active, 207, approved, 2026-05-13 14:00:00), (52, Técnico masivo 160, active, 208, approved, 2026-05-12 14:00:00), (52, Técnico masivo 161, active, 209, approved, 2026-05-11 14:00:00), (52, Técnico masivo 162, active, 210, approved, 2026-05-10 14:00:00), (52, Técnico masivo 163, active, 211, approved, 2026-05-09 14:00:00), (52, Técnico masivo 164, active, 212, approved, 2026-05-08 14:00:00), (52, Técnico masivo 165, active, 213, approved, 2026-05-07 14:00:00), (52, Técnico masivo 166, active, 214, approved, 2026-05-06 14:00:00), (52, Técnico masivo 167, active, 215, approved, 2026-05-05 14:00:00), (52, Técnico masivo 168, active, 216, approved, 2026-05-04 14:00:00), (52, Técnico masivo 169, active, 217, approved, 2026-05-03 14:00:00), (52, Técnico masivo 170, active, 218, approved, 2026-05-02 14:00:00), (52, Técnico masivo 171, active, 219, approved, 2026-05-01 14:00:00), (52, Técnico masivo 172, active, 220, approved, 2026-04-30 14:00:00), (52, Técnico masivo 173, active, 221, approved, 2026-04-29 14:00:00), (52, Técnico masivo 174, active, 222, approved, 2026-04-28 14:00:00), (52, Técnico masivo 175, active, 223, approved, 2026-04-27 14:00:00), (52, Técnico masivo 176, active, 224, approved, 2026-04-26 14:00:00), (52, Técnico masivo 177, active, 225, approved, 2026-04-25 14:00:00), (52, Técnico masivo 178, active, 226, approved, 2026-04-24 14:00:00), (52, Técnico masivo 179, active, 227, approved, 2026-04-23 14:00:00), (52, Técnico masivo 180, active, 228, approved, 2026-04-22 14:00:00), (52, Técnico masivo 181, active, 229, approved, 2026-04-21 14:00:00), (52, Técnico masivo 182, active, 230, approved, 2026-04-20 14:00:00), (52, Técnico masivo 183, active, 231, approved, 2026-04-19 14:00:00), (52, Técnico masivo 184, active, 232, approved, 2026-04-18 14:00:00), (52, Técnico masivo 185, active, 233, approved, 2026-04-17 14:00:00), (52, Técnico masivo 186, active, 234, approved, 2026-04-16 14:00:00), (52, Técnico masivo 187, active, 235, approved, 2026-04-15 14:00:00), (52, Técnico masivo 188, active, 236, approved, 2026-04-14 14:00:00), (52, Técnico masivo 189, active, 237, approved, 2026-04-13 14:00:00), (52, Técnico masivo 190, active, 238, approved, 2026-04-12 14:00:00), (52, Técnico masivo 191, active, 239, approved, 2026-04-11 14:00:00), (52, Técnico masivo 192, active, 240, approved, 2026-04-10 14:00:00), (52, Técnico masivo 193, active, 241, approved, 2026-04-09 14:00:00), (52, Técnico masivo 194, active, 242, approved, 2026-04-08 14:00:00), (52, Técnico masivo 195, active, 243, approved, 2026-04-07 14:00:00), (52, Técnico masivo 196, active, 244, approved, 2026-04-06 14:00:00), (52, Técnico masivo 197, active, 245, approved, 2026-04-05 14:00:00), (52, Técnico masivo 198, active, 246, approved, 2026-04-04 14:00:00), (52, Técnico masivo 199, active, 247, approved, 2026-04-03 14:00:00), (52, Técnico masivo 200, active, 248, approved, 2026-04-02 14:00:00), (52, Técnico masivo 201, active, 249, approved, 2026-04-01 14:00:00), (52, Técnico masivo 202, active, 250, approved, 2026-03-31 14:00:00), (52, Técnico masivo 203, active, 251, approved, 2026-03-30 14:00:00), (52, Técnico masivo 204, active, 252, approved, 2026-03-29 14:00:00), (52, Técnico masivo 205, active, 253, approved, 2026-03-28 14:00:00), (52, Técnico masivo 206, active, 254, approved, 2026-03-27 14:00:00), (52, Técnico masivo 207, active, 255, approved, 2026-03-26 14:00:00), (52, Técnico masivo 208, active, 256, approved, 2026-03-25 14:00:00), (52, Técnico masivo 209, active, 257, approved, 2026-03-24 14:00:00), (52, Técnico masivo 210, active, 258, approved, 2026-03-23 14:00:00), (52, Técnico masivo 211, active, 259, approved, 2026-03-22 14:00:00), (52, Técnico masivo 212, active, 260, approved, 2026-03-21 14:00:00), (52, Técnico masivo 213, active, 261, approved, 2026-03-20 14:00:00), (52, Técnico masivo 214, active, 262, approved, 2026-03-19 14:00:00), (52, Técnico masivo 215, active, 263, approved, 2026-03-18 14:00:00), (52, Técnico masivo 216, active, 264, approved, 2026-03-17 14:00:00), (52, Técnico masivo 217, active, 265, approved, 2026-03-16 14:00:00), (52, Técnico masivo 218, active, 266, approved, 2026-03-15 14:00:00), (52, Técnico masivo 219, active, 267, approved, 2026-03-14 14:00:00), (52, Técnico masivo 220, active, 268, approved, 2026-03-13 14:00:00), (52, Técnico masivo 221, active, 269, approved, 2026-03-12 14:00:00), (52, Técnico masivo 222, active, 270, approved, 2026-03-11 14:00:00), (52, Técnico masivo 223, active, 271, approved, 2026-03-10 14:00:00), (52, Técnico masivo 224, active, 272, approved, 2026-03-09 14:00:00), (52, Técnico masivo 225, active, 273, approved, 2026-03-08 14:00:00), (52, Técnico masivo 226, active, 274, approved, 2026-03-07 14:00:00), (52, Técnico masivo 227, active, 275, approved, 2026-03-06 14:00:00), (52, Técnico masivo 228, active, 276, approved, 2026-03-05 14:00:00), (52, Técnico masivo 229, active, 277, approved, 2026-03-04 14:00:00), (52, Técnico masivo 230, active, 278, approved, 2026-03-03 14:00:00), (52, Técnico masivo 231, active, 279, approved, 2026-03-02 14:00:00), (52, Técnico masivo 232, active, 280, approved, 2026-03-01 14:00:00), (52, Técnico masivo 233, active, 281, approved, 2026-02-28 14:00:00), (52, Técnico masivo 234, active, 282, approved, 2026-02-27 14:00:00), (52, Técnico masivo 235, active, 283, approved, 2026-02-26 14:00:00), (52, Técnico masivo 236, active, 284, approved, 2026-02-25 14:00:00), (52, Técnico masivo 237, active, 285, approved, 2026-02-24 14:00:00), (52, Técnico masivo 238, active, 286, approved, 2026-02-23 14:00:00), (52, Técnico masivo 239, active, 287, approved, 2026-02-22 14:00:00), (52, Técnico masivo 240, active, 288, approved, 2026-02-21 14:00:00), (52, Técnico masivo 241, active, 289, approved, 2026-02-20 14:00:00), (52, Técnico masivo 242, active, 290, approved, 2026-02-19 14:00:00), (52, Técnico masivo 243, active, 291, approved, 2026-02-18 14:00:00), (52, Técnico masivo 244, active, 292, approved, 2026-02-17 14:00:00), (52, Técnico masivo 245, active, 293, approved, 2026-02-16 14:00:00), (52, Técnico masivo 246, active, 294, approved, 2026-02-15 14:00:00), (52, Técnico masivo 247, active, 295, approved, 2026-02-14 14:00:00), (52, Técnico masivo 248, active, 296, approved, 2026-02-13 14:00:00), (52, Técnico masivo 249, active, 297, approved, 2026-02-12 14:00:00), (52, Técnico masivo 250, active, 298, approved, 2026-02-11 14:00:00), (52, Técnico masivo 251, active, 299, approved, 2026-02-10 14:00:00), (52, Técnico masivo 252, active, 300, approved, 2026-02-09 14:00:00), (52, Técnico masivo 253, active, 301, approved, 2026-02-08 14:00:00), (52, Técnico masivo 254, active, 302, approved, 2026-02-07 14:00:00), (52, Técnico masivo 255, active, 303, approved, 2026-02-06 14:00:00), (52, Técnico masivo 256, active, 304, approved, 2026-02-05 14:00:00), (52, Técnico masivo 257, active, 305, approved, 2026-02-04 14:00:00), (52, Técnico masivo 258, active, 306, approved, 2026-02-03 14:00:00), (52, Técnico masivo 259, active, 307, approved, 2026-02-02 14:00:00), (52, Técnico masivo 260, active, 308, approved, 2026-02-01 14:00:00), (52, Técnico masivo 261, active, 309, approved, 2026-01-31 14:00:00), (52, Técnico masivo 262, active, 310, approved, 2026-01-30 14:00:00), (52, Técnico masivo 263, active, 311, approved, 2026-01-29 14:00:00), (52, Técnico masivo 264, active, 312, approved, 2026-01-28 14:00:00), (52, Técnico masivo 265, active, 313, approved, 2026-01-27 14:00:00), (52, Técnico masivo 266, active, 314, approved, 2026-01-26 14:00:00), (52, Técnico masivo 267, active, 315, approved, 2026-01-25 14:00:00), (52, Técnico masivo 268, active, 316, approved, 2026-01-24 14:00:00), (52, Técnico masivo 269, active, 317, approved, 2026-01-23 14:00:00), (52, Técnico masivo 270, active, 318, approved, 2026-01-22 14:00:00), (52, Técnico masivo 271, active, 319, approved, 2026-01-21 14:00:00), (52, Técnico masivo 272, active, 320, approved, 2026-01-20 14:00:00), (52, Técnico masivo 273, active, 321, approved, 2026-01-19 14:00:00), (52, Técnico masivo 274, active, 322, approved, 2026-01-18 14:00:00), (52, Técnico masivo 275, active, 323, approved, 2026-01-17 14:00:00), (52, Técnico masivo 276, active, 324, approved, 2026-01-16 14:00:00), (52, Técnico masivo 277, active, 325, approved, 2026-01-15 14:00:00), (52, Técnico masivo 278, active, 326, approved, 2026-01-14 14:00:00), (52, Técnico masivo 279, active, 327, approved, 2026-01-13 14:00:00), (52, Técnico masivo 280, active, 328, approved, 2026-01-12 14:00:00), (52, Técnico masivo 281, active, 329, approved, 2026-01-11 14:00:00), (52, Técnico masivo 282, active, 330, approved, 2026-01-10 14:00:00), (52, Técnico masivo 283, active, 331, approved, 2026-01-09 14:00:00), (52, Técnico masivo 284, active, 332, approved, 2026-01-08 14:00:00), (52, Técnico masivo 285, active, 333, approved, 2026-01-07 14:00:00), (52, Técnico masivo 286, active, 334, approved, 2026-01-06 14:00:00), (52, Técnico masivo 287, active, 335, approved, 2026-01-05 14:00:00), (52, Técnico masivo 288, active, 336, approved, 2026-01-04 14:00:00), (52, Técnico masivo 289, active, 337, approved, 2026-01-03 14:00:00), (52, Técnico masivo 290, active, 338, approved, 2026-01-02 14:00:00), (52, Técnico masivo 291, active, 339, approved, 2026-01-01 14:00:00), (52, Técnico masivo 292, active, 340, approved, 2025-12-31 14:00:00), (52, Técnico masivo 293, active, 341, approved, 2025-12-30 14:00:00), (52, Técnico masivo 294, active, 342, approved, 2025-12-29 14:00:00), (52, Técnico masivo 295, active, 343, approved, 2025-12-28 14:00:00), (52, Técnico masivo 296, active, 344, approved, 2025-12-27 14:00:00), (52, Técnico masivo 297, active, 345, approved, 2025-12-26 14:00:00), (52, Técnico masivo 298, active, 346, approved, 2025-12-25 14:00:00), (52, Técnico masivo 299, active, 347, approved, 2025-12-24 14:00:00))
+
+  at vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+     43▕             if ($this->pretending()) {
+     44▕                 return true;
+     45▕             }
+     46▕ 
+  ➜  47▕             $statement = $this->getPdo()->prepare($query);
+     48▕ 
+     49▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+     50▕ 
+     51▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MatchingRulesTest > it S04-TC-020 rechaza en MySQL los pesos que no suman 1…  Error   
+  Class "App\Modules\BMatching\Application\MatchingRules" not found
+
+  at tests\Feature\Sprint04\MatchingRulesTest.php:42
+     38▕     expect(fn () => DB::table('matching_weights')->insert([
+     39▕         'rule_version_id' => $draft, 'proximity_weight' => 35, 'price_weight' => 20, 'history_weight' => 30, 'experience_weight' => 14.99,
+     40▕     ]))->toThrow(QueryException::class);
+     41▕ 
+  ➜  42▕     app()->instance(MatchingRules::class, new class extends MatchingRules
+     43▕     {
+     44▕         public function weights(int $ruleVersionId): array
+     45▕         {
+     46▕             return ['proximity' => 35, 'price' => 20, 'history' => 30, 'experience' => 14.99];
+
+  1   tests\Feature\Sprint04\MatchingRulesTest.php:42
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MatchingRulesTest > it S04-TC-025 conserva la fotografía de la ejecución an…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\MatchingRulesTest.php:65
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MatchingRulesTest > it S04-TC-026 aplica la versión de reglas de l…  QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.matching_weights' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: select * from `matching_weights` where `rule_version_id` = 1 limit 1)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+    416▕             // For select statements, we'll simply execute the query and return an array
+    417▕             // of the database result set. Each element in the array will be a single
+    418▕             // row from the database table, and will either be an array or objects.
+    419▕             $statement = $this->prepared(
+  ➜ 420▕                 $this->getPdoForSelect($useReadPdo)->prepare($query)
+    421▕             );
+    422▕ 
+    423▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+    424▕
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MediaDeletionTest > it S04-TC-079 retira una evidencia propia no vinculada            
+  Expected response status code [204] but received 405.
+Failed asserting that 405 is identical to 204.
+
+The following errors occurred during the last request:
+
+{
+    "message": "No se pudo completar la solicitud.",
+    "errors": [],
+    "error": {
+        "code": "REQUEST_FAILED",
+        "message": "No se pudo completar la solicitud.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "df28f361-7281-46d4-88a8-928d78f98a73",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint04\MediaDeletionTest.php:28
+     24▕ 
+     25▕ it('S04-TC-079 retira una evidencia propia no vinculada', function () {
+     26▕     Sanctum::actingAs($this->owner);
+     27▕ 
+  ➜  28▕     $this->deleteJson("/api/v1/media/{$this->photo->id}")->assertNoContent();
+     29▕ 
+     30▕     $audit = DB::table('audit_entries')->where('action', 'media.retired')->first();
+     31▕     expect(DB::table('media_files')->where('id', $this->photo->id)->value('retired_at'))->not->toBeNull()
+     32▕         ->and(Storage::disk('local')->exists($this->photo->storage_key))->toBeFalse()
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MediaDeletionTest > it S04-TC-080 no retira una evidencia adjunta a una solicitud     
+  Expected response status code [409] but received 405.
+Failed asserting that 405 is identical to 409.
+
+The following errors occurred during the last request:
+
+{
+    "message": "No se pudo completar la solicitud.",
+    "errors": [],
+    "error": {
+        "code": "REQUEST_FAILED",
+        "message": "No se pudo completar la solicitud.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "55e8e95d-920b-45d6-9dbb-45e51ea6eab0",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint04\MediaDeletionTest.php:43
+     39▕     $request = Sprint04::sentRequest(['client_id' => DB::table('client_profiles')->where('user_id', $this->owner->id)->value('id'), 'status' => 'registered']);
+     40▕     DB::table('request_attachments')->insert(['request_id' => $request->id, 'media_id' => $this->photo->id, 'uploaded_by' => $this->owner->id, 'position' => 1]);
+     41▕     Sanctum::actingAs($this->owner);
+     42▕ 
+  ➜  43▕     $this->deleteJson("/api/v1/media/{$this->photo->id}")->assertConflict()->assertJsonPath('error.code', 'MEDIA_LINKED')
+     44▕         ->assertJsonPath('error.message', 'La foto está adjunta a una solicitud. Quítala primero de la solicitud.');
+     45▕ 
+     46▕     expect(DB::table('media_files')->where('id', $this->photo->id)->value('retired_at'))->toBeNull()
+     47▕         ->and(Storage::disk('local')->exists($this->photo->storage_key))->toBeTrue()
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MediaDeletionTest > it S04-TC-081 borra archivos según la tabla de decisión por ro…   
+  Expected response status code [401] but received 405.
+Failed asserting that 405 is identical to 401.
+
+The following errors occurred during the last request:
+
+{
+    "message": "No se pudo completar la solicitud.",
+    "errors": [],
+    "error": {
+        "code": "REQUEST_FAILED",
+        "message": "No se pudo completar la solicitud.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "b94d5e11-f5f0-416a-aba4-1f168faff6b2",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint04\MediaDeletionTest.php:52
+     48▕         ->and(DB::table('request_attachments')->where('media_id', $this->photo->id)->count())->toBe(1);
+     49▕ });
+     50▕ 
+     51▕ it('S04-TC-081 borra archivos según la tabla de decisión por rol', function () {
+  ➜  52▕     $this->deleteJson("/api/v1/media/{$this->photo->id}")->assertUnauthorized();
+     53▕     Sanctum::actingAs(ClientProfileFactory::new()->create()->user);
+     54▕     $this->deleteJson("/api/v1/media/{$this->photo->id}")->assertNotFound();
+     55▕ 
+     56▕     Sanctum::actingAs($this->owner);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\MediaDeletionTest > it S04-TC-082 no vuelve a retirar una evidencia ya retirada       
+  Expected response status code [204] but received 405.
+Failed asserting that 405 is identical to 204.
+
+The following errors occurred during the last request:
+
+{
+    "message": "No se pudo completar la solicitud.",
+    "errors": [],
+    "error": {
+        "code": "REQUEST_FAILED",
+        "message": "No se pudo completar la solicitud.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "a165ec6a-d549-4ba2-b1c9-3727aa7266be",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint04\MediaDeletionTest.php:63
+     59▕ });
+     60▕ 
+     61▕ it('S04-TC-082 no vuelve a retirar una evidencia ya retirada', function () {
+     62▕     Sanctum::actingAs($this->owner);
+  ➜  63▕     $this->deleteJson("/api/v1/media/{$this->photo->id}")->assertNoContent();
+     64▕ 
+     65▕     $this->deleteJson("/api/v1/media/{$this->photo->id}")->assertNotFound();
+     66▕ 
+     67▕     expect(DB::table('audit_entries')->where('action', 'media.retired')->count())->toBe(1);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NewTechnicianTest > it S04-TC-021 muestra al técnico nuevo con historial ne…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\NewTechnicianTest.php:21
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NewTechnicianTest > it S04-TC-022 mantiene H neutro con tres servi…  QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.participations' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: insert into `participations` (`request_id`, `technician_id`, `slot`, `status`, `reference_fee_snapshot`, `currency`, `assigned_at`, `started_at`, `completed_at`) values (21, 36, primary, completed, 80.00, PEN, 2026-10-01 14:00:00, 2026-10-01 15:00:00, 2026-10-01 15:45:00))
+
+  at vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+     43▕             if ($this->pretending()) {
+     44▕                 return true;
+     45▕             }
+     46▕ 
+  ➜  47▕             $statement = $this->getPdo()->prepare($query);
+     48▕ 
+     49▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+     50▕ 
+     51▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NewTechnicianTest > it S04-TC-116 estima por la mediana de la mism…  QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.participations' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: insert into `participations` (`request_id`, `technician_id`, `slot`, `status`, `reference_fee_snapshot`, `currency`, `assigned_at`, `started_at`, `completed_at`) values (22, 37, primary, completed, 80.00, PEN, 2026-10-01 14:00:00, 2026-10-01 15:00:00, 2026-10-01 16:00:00))
+
+  at vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+     43▕             if ($this->pretending()) {
+     44▕                 return true;
+     45▕             }
+     46▕ 
+  ➜  47▕             $statement = $this->getPdo()->prepare($query);
+     48▕ 
+     49▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+     50▕ 
+     51▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NotificationDeliveryTest > it S04-TC-031 hace correr el SLA desde la bandej…  Error   
+  Interface "App\Modules\CNotifications\Application\DeliveryChannel" not found
+
+  at tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+     19▕ 
+     20▕ /** Sandbox de correo que falla las primeras $failures veces (PHP_INT_MAX: siempre). */
+     21▕ function s04Sandbox(int $failures, string $message = 'Sandbox caído.'): void
+     22▕ {
+  ➜  23▕     app()->instance(DeliveryChannel::class, new class($failures, $message) implements DeliveryChannel
+     24▕     {
+     25▕         public int $calls = 0;
+     26▕ 
+     27▕         public function __construct(private readonly int $failures, private readonly string $message) {}
+
+  1   tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+  2   tests\Feature\Sprint04\NotificationDeliveryTest.php:57
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NotificationDeliveryTest > it S04-TC-071 hace como máximo tres reintentos y…  Error   
+  Interface "App\Modules\CNotifications\Application\DeliveryChannel" not found
+
+  at tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+     19▕ 
+     20▕ /** Sandbox de correo que falla las primeras $failures veces (PHP_INT_MAX: siempre). */
+     21▕ function s04Sandbox(int $failures, string $message = 'Sandbox caído.'): void
+     22▕ {
+  ➜  23▕     app()->instance(DeliveryChannel::class, new class($failures, $message) implements DeliveryChannel
+     24▕     {
+     25▕         public int $calls = 0;
+     26▕ 
+     27▕         public function __construct(private readonly int $failures, private readonly string $message) {}
+
+  1   tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+  2   tests\Feature\Sprint04\NotificationDeliveryTest.php:73
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NotificationDeliveryTest > it S04-TC-072 se detiene cuando la entrega funci…  Error   
+  Interface "App\Modules\CNotifications\Application\DeliveryChannel" not found
+
+  at tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+     19▕ 
+     20▕ /** Sandbox de correo que falla las primeras $failures veces (PHP_INT_MAX: siempre). */
+     21▕ function s04Sandbox(int $failures, string $message = 'Sandbox caído.'): void
+     22▕ {
+  ➜  23▕     app()->instance(DeliveryChannel::class, new class($failures, $message) implements DeliveryChannel
+     24▕     {
+     25▕         public int $calls = 0;
+     26▕ 
+     27▕         public function __construct(private readonly int $failures, private readonly string $message) {}
+
+  1   tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+  2   tests\Feature\Sprint04\NotificationDeliveryTest.php:87
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NotificationDeliveryTest > it S04-TC-075 guarda el error de entrega saneado…  Error   
+  Interface "App\Modules\CNotifications\Application\DeliveryChannel" not found
+
+  at tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+     19▕ 
+     20▕ /** Sandbox de correo que falla las primeras $failures veces (PHP_INT_MAX: siempre). */
+     21▕ function s04Sandbox(int $failures, string $message = 'Sandbox caído.'): void
+     22▕ {
+  ➜  23▕     app()->instance(DeliveryChannel::class, new class($failures, $message) implements DeliveryChannel
+     24▕     {
+     25▕         public int $calls = 0;
+     26▕ 
+     27▕         public function __construct(private readonly int $failures, private readonly string $message) {}
+
+  1   tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+  2   tests\Feature\Sprint04\NotificationDeliveryTest.php:101
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\NotificationDeliveryTest > it S04-TC-118 respeta los intervalos de 1, 2 y 4…  Error   
+  Interface "App\Modules\CNotifications\Application\DeliveryChannel" not found
+
+  at tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+     19▕ 
+     20▕ /** Sandbox de correo que falla las primeras $failures veces (PHP_INT_MAX: siempre). */
+     21▕ function s04Sandbox(int $failures, string $message = 'Sandbox caído.'): void
+     22▕ {
+  ➜  23▕     app()->instance(DeliveryChannel::class, new class($failures, $message) implements DeliveryChannel
+     24▕     {
+     25▕         public int $calls = 0;
+     26▕ 
+     27▕         public function __construct(private readonly int $failures, private readonly string $message) {}
+
+  1   tests\Feature\Sprint04\NotificationDeliveryTest.php:23
+  2   tests\Feature\Sprint04\NotificationDeliveryTest.php:114
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferAccessTest > it S04-TC-037 no deja que un técnico responda la oferta d…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferAccessTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferAccessTest > it S04-TC-038 responde ofertas según la tabla de decisión…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferAccessTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferAccessTest > it S04-TC-052 muestra la dirección exacta solo al técnico…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferAccessTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferAccessTest > it S04-TC-069 muestra en ofertas y bandeja solo lo propio   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferAccessTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferConcurrencyTest > it S04-TC-040 deja una sola respuesta cuando llegan…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferConcurrencyTest.php:18
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-033 acepta a los 9:59 dentro del plazo sin as…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-034 rechaza a los 10:00 exactos aunque el job…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-035 rechaza a los 10:01 y el job vence la ofe…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-036 guarda el rechazo con motivo y mantiene l…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-039 no vence una aceptación confirmada antes…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-041 revalida la elegibilidad del técnico al a…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-042 responde igual con la misma clave y recha…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferResponseTest > it S04-TC-043 rechaza en el servidor una respuesta invá…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferResponseTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferRoundTest > it S04-TC-023 conserva en la oferta la tarifa notificada a…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferRoundTest.php:18
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferRoundTest > it S04-TC-027 abre la primera ronda con exactamente tres o…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferRoundTest.php:39
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferRoundTest > it S04-TC-028 ofrece a todos cuando hay menos elegibles qu…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferRoundTest.php:57
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferRoundTest > it S04-TC-030 no duplica la ronda al preparar dos veces la…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferRoundTest.php:70
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OfferRoundTest > it S04-TC-114 resuelve el empate del corte por la verifica…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OfferRoundTest.php:85
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OutboxTest > it S04-TC-029 no publica avisos cuando la apertura de la ronda se rev…   
+  Expected: Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  To contain: Fallo forzado
+
+  at tests\Feature\Sprint04\OutboxTest.php:30
+     26▕             throw new RuntimeException('Fallo forzado antes del commit de la ronda.');
+     27▕         }
+     28▕     });
+     29▕ 
+  ➜  30▕     expect(fn () => Sprint04::prepare($request->id))->toThrow(RuntimeException::class, 'Fallo forzado');
+     31▕     $this->artisan('tecnicoya:sweep')->assertSuccessful();
+     32▕ 
+     33▕     expect(DB::table('offer_rounds')->count())->toBe(0)
+     34▕         ->and(DB::table('offers')->count())->toBe(0)
+
+  1   tests\Feature\Sprint04\OutboxTest.php:30
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\OutboxTest > it S04-TC-068 publica una sola vez la fila del outbox aunque e…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\OutboxTest.php:42
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\PendingAvailabilityTest > it S04-TC-059 deja pendiente con plazo de 24 h cu…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\PendingAvailabilityTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\PendingAvailabilityTest > it S04-TC-060 no expira el pendiente a las 23:59    Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\PendingAvailabilityTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\PendingAvailabilityTest > it S04-TC-061 expira el pendiente a las 24:00 una…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\PendingAvailabilityTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\PendingAvailabilityTest > it S04-TC-062 conserva el primer plazo al volver…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\PendingAvailabilityTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\PendingAvailabilityTest > it S04-TC-063 libera el cupo de activas cuando un…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\PendingAvailabilityTest.php:84
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\PendingAvailabilityTest > it S04-TC-119 reintenta el pendiente cada 5 minut…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\PendingAvailabilityTest.php:98
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\RealtimeTest > it S04-TC-064 publica solo lo confirmado, con identificador…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\RealtimeTest.php:34
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\RealtimeTest > it S04-TC-065 autoriza el canal privado de la solicitud solo…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\RealtimeTest.php:55
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\RealtimeTest > it S04-TC-066 autoriza el canal privado del técnico solo a ese técn…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "2b1fc438-8eb3-4e89-8864-5fb2924166f8",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint04\RealtimeTest.php:75
+     71▕     $b = Sprint04::technician();
+     72▕     $channel = "private-technicians.{$a->id}";
+     73▕ 
+     74▕     Sanctum::actingAs($a->user);
+  ➜  75▕     s04ChannelAuth($this, $channel)->assertOk();
+     76▕     Sanctum::actingAs($b->user);
+     77▕     s04ChannelAuth($this, $channel)->assertForbidden();
+     78▕     Sanctum::actingAs(ClientProfileFactory::new()->create()->user);
+     79▕     s04ChannelAuth($this, $channel)->assertForbidden();
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\RealtimeTest > it S04-TC-067 publica eventos sin dirección, descripción, te…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\RealtimeTest.php:90
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\ReassignmentTest > it S04-TC-053 abre una sola ronda nueva aunque el vencim…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\ReassignmentTest.php:15
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\ReassignmentTest > it S04-TC-054 abre la siguiente ronda al tercer rechazo…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\ReassignmentTest.php:15
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\ReassignmentTest > it S04-TC-055 espera la elección cuando la ronda tiene a…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\ReassignmentTest.php:15
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\ReassignmentTest > it S04-TC-058 no vuelve a ofrecer a quien ya tuvo oferta…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\ReassignmentTest.php:15
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\RequestCreationIdempotencyTest > it S04-TC-076 no duplica el borrador al crear dos…   
+  Failed asserting that 32 is identical to 31.
+
+  at tests\Feature\Sprint04\RequestCreationIdempotencyTest.php:27
+     23▕ 
+     24▕     $first = $this->postJson('/api/v1/requests', $this->payload, $key)->assertCreated()->json('data');
+     25▕     $second = $this->postJson('/api/v1/requests', $this->payload, $key)->assertCreated()->json('data');
+     26▕ 
+  ➜  27▕     expect($second['id'])->toBe($first['id'])
+     28▕         ->and($second)->toBe($first)
+     29▕         ->and(DB::table('service_requests')->count())->toBe(1)
+     30▕         ->and(DB::table('request_events')->where('event_type', 'request.registered')->count())->toBe(1);
+     31▕ });
+
+  1   tests\Feature\Sprint04\RequestCreationIdempotencyTest.php:27
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\RequestCreationIdempotencyTest > it S04-TC-077 rechaza la misma clave con otro cue…   
+  Expected response status code [409] but received 201.
+Failed asserting that 201 is identical to 409.
+
+  at tests\Feature\Sprint04\RequestCreationIdempotencyTest.php:38
+     34▕     $key = ['Idempotency-Key' => (string) Str::uuid()];
+     35▕     $this->postJson('/api/v1/requests', $this->payload, $key)->assertCreated();
+     36▕ 
+     37▕     $this->postJson('/api/v1/requests', ['description' => 'Otra descripción distinta de la original.'] + $this->payload, $key)
+  ➜  38▕         ->assertConflict()->assertJsonPath('error.code', 'STALE_VERSION');
+     39▕ 
+     40▕     expect(DB::table('service_requests')->pluck('description')->all())->toBe([$this->payload['description']]);
+     41▕ });
+     42▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionConcurrencyTest > it S04-TC-045 confirma una sola cita cuando dos…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionConcurrencyTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionConcurrencyTest > it S04-TC-046 acepta una sola elección cuando el…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionConcurrencyTest.php:17
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-044 crea la participación y la reserva al elegir…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-047 no deja elegir mientras la ronda sigue abiert…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-048 no deja elegir una oferta de una solicitud aj…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-049 revalida al elegir que el técnico siga dispon…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-050 abre la siguiente ronda si la única aceptada…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-051 responde igual a la misma elección con la mis…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-070 muestra al titular solo las aceptaciones de s…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SelectionTest > it S04-TC-117 reserva dos horas al elegir en una solicitud…   Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\SelectionTest.php:20
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\StaleJobTest > it S04-TC-073 ignora un job de ronda con una generación ante…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\StaleJobTest.php:24
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\StaleJobTest > it S04-TC-074 no expira con un job antiguo una solicitud que…  Error   
+  Class "App\Modules\BMatching\Jobs\PrepareMatching" not found
+
+  at tests\Support\Sprint04.php:137
+    133▕     }
+    134▕ 
+    135▕     public static function prepare(int $requestId, ?int $generation = null): void
+    136▕     {
+  ➜ 137▕         dispatch_sync(new PrepareMatching($requestId, $generation ?? self::generation($requestId)));
+    138▕     }
+    139▕ 
+    140▕     public static function openRound(int $requestId, ?int $generation = null): void
+    141▕     {
+
+  1   tests\Support\Sprint04.php:137
+  2   tests\Feature\Sprint04\StaleJobTest.php:40
+
+
+  Tests:    87 failed, 9 passed (67 assertions)
+  Duration: 265.53s
+
