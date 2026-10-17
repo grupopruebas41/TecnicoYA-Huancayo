@@ -2,6 +2,32 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-17 · Sprint 4 · paso 5: cobertura, mutación, audit, avance y PR
+
+- **Rama:** `feature/mayhuasca/b-matching/s04` (publicada en este paso; PR abajo).
+- **Commits nuevos:** `b94e484` test S04-TC-129 a 132 (herramientas E2E; pasaron a la primera, sin commit en rojo), `570d96d` docs (contrato v1.1, DIST-02, evidencias 02 y 05), `e726174` test (mutación válida y DEF-46) y el de avance y relevo.
+- **Resultados** (slot A):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest completo | **269/269** (2510 aserciones) |
+  | Conteo S04 | **101 IDs Pest** aprobados; Cypress y Vitest a cargo de Codex |
+  | Cobertura | Total 95,0 %; `BMatching` 96,40 %, `CNotifications` 100 % |
+  | Mutación de las clases del S4 | **63,12 %**: 1513 mutantes, 955 eliminados, 439 sobrevivientes, 119 sin cubrir (unos 150 min, bloqueo de Cypress tomado) |
+  | `composer audit` | Limpio |
+
+- **DEF-46 (Abierto):** en Windows, `pest --mutate` contaba como eliminados los mutantes cuyo proceso moría (`--filter="A|B"` y cmd) o se cortaba por tiempo. La primera corrida del S4 dio **92,13 % falso**. La del S3 (93,05 % en 12,67 s) **muy probablemente también es falsa**.
+  - Para medir se usó un parche **local y temporal** en `vendor/pestphp/pest-plugin-mutate/src/MutationTest.php` (ya revertido) y `TECNICOYA_MUTATION_MIGRATED=1` (en `tests/bootstrap.php`, tras una migración única).
+  - **Antes de confiar en una mutación, hacer un control negativo** (mutar `Scorer` solo con `EligibilityTest`: deben quedar sobrevivientes).
+- **Pendiente:**
+  1. integrar el PR (revisión humana);
+  2. reforzar las aserciones de las clases con sobrevivientes (vistas, `MatchingFlow`, `ClientSelection`) y repetir su mutación; repetir la del S3;
+  3. una solución versionada para DEF-46 (parche con composer o mutación en Linux);
+  4. decidir **DIST-02** (opción A aplicada de forma provisional);
+  5. cierre del sprint: Cypress del S4, SonarQube, `npm audit` e informe.
+- **Para Codex:** lo de la entrada del S4.3 (tareas `tareasSprint04`, cuentas del seeder, `VITE_REVERB_*`).
+- **Bloqueos:** ninguno. MySQL de pruebas arriba.
+
 ## 2026-10-17 · Sprint 4 · S4.3 completado (backend en verde)
 
 - **Rama:** `feature/mayhuasca/b-matching/s04`, sin publicar todavía.
