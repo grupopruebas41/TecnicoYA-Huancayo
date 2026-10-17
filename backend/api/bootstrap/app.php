@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\RejectActiveSession;
+use App\Http\Middleware\RejectSuspendedTechnician;
 use App\Http\Middleware\RequirePermission;
 use App\Http\Middleware\RequireRole;
 use App\Shared\Http\ApiExceptionRenderer;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(api: __DIR__.'/../routes/api.php', commands: __DIR__.'/../routes/console.php', health: '/health')
+    // S4 (D-70): POST /api/v1/broadcasting/auth con la sesión de Sanctum para los canales privados de Reverb.
+    ->withBroadcasting(__DIR__.'/../routes/channels.php', ['prefix' => 'api/v1', 'middleware' => ['api', 'auth:sanctum', 'account.active']])
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
         $middleware->alias([
@@ -19,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => RequirePermission::class,
             'role' => RequireRole::class,
             'session.none' => RejectActiveSession::class,
+            'technician.not_suspended' => RejectSuspendedTechnician::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

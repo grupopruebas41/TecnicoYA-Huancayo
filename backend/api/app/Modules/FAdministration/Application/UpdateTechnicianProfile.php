@@ -15,7 +15,7 @@ final class UpdateTechnicianProfile
         return DB::transaction(function () use ($user, $data) {
             $profile = $this->profiles->lockFor($user, (int) $data['expected_version']);
             DB::table('technician_profiles')->where('id', $profile->id)
-                ->update(array_intersect_key($data, array_flip(['bio', 'experience_years'])));
+                ->update(array_intersect_key($data, array_flip(['bio', 'experience_years', 'base_district_id'])));
             $this->profiles->bumpVersion($profile);
 
             return $profile->id;

@@ -2,6 +2,68 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-17 · Sprint 4 · paso 5: cobertura, mutación, audit, avance y PR
+
+- **Rama:** `feature/mayhuasca/b-matching/s04` publicada. **PR #21:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/21
+- **Commits nuevos:** `b94e484` test S04-TC-129 a 132 (herramientas E2E; pasaron a la primera, sin commit en rojo), `570d96d` docs (contrato v1.1, DIST-02, evidencias 02 y 05), `e726174` test (mutación válida y DEF-46) y el de avance y relevo.
+- **Resultados** (slot A):
+
+  | Prueba | Resultado |
+  |---|---|
+  | Pest completo | **269/269** (2510 aserciones) |
+  | Conteo S04 | **101 IDs Pest** aprobados; Cypress y Vitest a cargo de Codex |
+  | Cobertura | Total 95,0 %; `BMatching` 96,40 %, `CNotifications` 100 % |
+  | Mutación de las clases del S4 | **63,12 %**: 1513 mutantes, 955 eliminados, 439 sobrevivientes, 119 sin cubrir (unos 150 min, bloqueo de Cypress tomado) |
+  | `composer audit` | Limpio |
+
+- **DEF-46 (Abierto):** en Windows, `pest --mutate` contaba como eliminados los mutantes cuyo proceso moría (`--filter="A|B"` y cmd) o se cortaba por tiempo. La primera corrida del S4 dio **92,13 % falso**. La del S3 (93,05 % en 12,67 s) **muy probablemente también es falsa**.
+  - Para medir se usó un parche **local y temporal** en `vendor/pestphp/pest-plugin-mutate/src/MutationTest.php` (ya revertido) y `TECNICOYA_MUTATION_MIGRATED=1` (en `tests/bootstrap.php`, tras una migración única).
+  - **Antes de confiar en una mutación, hacer un control negativo** (mutar `Scorer` solo con `EligibilityTest`: deben quedar sobrevivientes).
+- **Pendiente:**
+  1. integrar el PR (revisión humana);
+  2. reforzar las aserciones de las clases con sobrevivientes (vistas, `MatchingFlow`, `ClientSelection`) y repetir su mutación; repetir la del S3;
+  3. una solución versionada para DEF-46 (parche con composer o mutación en Linux);
+  4. decidir **DIST-02** (opción A aplicada de forma provisional);
+  5. cierre del sprint: Cypress del S4, SonarQube, `npm audit` e informe.
+- **Para Codex:** lo de la entrada del S4.3 (tareas `tareasSprint04`, cuentas del seeder, `VITE_REVERB_*`).
+- **CI del PR #21:** la primera corrida falló en 6 pruebas porque el workflow define `QUEUE_CONNECTION=sync` y los jobs encolados tras el commit se ejecutaban solos. `73cd861` fija la cola `null` en `tests/bootstrap.php` (Laravel lee primero `$_SERVER`) y el workflow pasa a `"null"`. CI en verde en `73cd861`: backend, frontend y conteo.
+- **Bloqueos:** ninguno. MySQL de pruebas arriba.
+
+## 2026-10-17 · Sprint 4 · S4.3 completado (backend en verde)
+
+- **Rama:** `feature/mayhuasca/b-matching/s04`, sin publicar todavía.
+- **Commits:** `c9759bc` test (comparación sin orden de claves en 042, 051 y 076), `b604d41` feat D-60 y D-61, `2114fec` test S04-TC-128 (rojo), `f64355b` test (base confirmada para concurrencia y reloj fijo en S03-TC-030), `ffa7b17` chore laravel/reverb, `a3aeea9` refactor (Idempotency, RuleBook, READ COMMITTED), `5ab9643` feat del S4, `a5d1fc2` feat E2E.
+- **Pruebas:** suite Pest completa **265/265** (2470 aserciones), slot A. Concurrencia (040, 045, 046) estable en 3 corridas seguidas.
+- **Hallazgos con procesos reales** (corregidos):
+  - deadlock en `Idempotency` por bloqueos de hueco: ahora reserva la clave insertándola;
+  - con REPEATABLE READ, lo leído tras esperar el bloqueo de la solicitud era una foto vieja y los `FOR UPDATE` por rango chocaban con otra solicitud: la conexión MySQL pasa a **READ COMMITTED** (`config/database.php`, `DB_ISOLATION_LEVEL`).
+- **Supuestos de diseño a confirmar** (no son reglas de negocio; documentados en el contrato):
+  - sin distrito base declarado, C = 0 (la cercanía no aporta);
+  - `PrepareMatching` abre la ronda en el mismo job (lo exige TC-030);
+  - avisos de bandeja al cliente en awaiting_choice, direct_declined, pendiente y expirada, y al técnico elegido.
+- **Para Codex (S4.4 y S4.5):**
+  - registrar las tareas con `import {tareasSprint04} from '../../scripts/e2e-tareas-s04.mjs'` y `on('task', tareasSprint04())` en `cypress.e2e.config.js`;
+  - cuentas del seeder en el contrato §9; las ofertas duran 10 min desde la siembra: usar `serverClock` y `serverClock('reset')` al terminar cada spec;
+  - el arrancador expone `VITE_REVERB_APP_KEY`, `VITE_REVERB_HOST`, `VITE_REVERB_PORT` y `VITE_REVERB_SCHEME`; `GET /offers?status=pending,accepted` acepta la lista separada por comas.
+
+**Qué falta:** cobertura, mutación de las clases nuevas, `composer audit`, contrato v1.1, avance de Mayhuasca, push y PR.
+
+## 2026-10-16 · Sprint 4 · S4.2 completado (Pest en rojo)
+
+- **Rama:** `feature/mayhuasca/b-matching/s04`. `main` `38c9c14` (PR #19) fusionado en `3cda4b4`; el conflicto del HANDOFF se resolvió conservando las dos entradas.
+- **Commits:**
+  - `9c0ad10` docs: S04-TC-120 a 127 en `CATALOGO-S04.csv` (Transversal, RNF-SEG, como S03-TC-082 a 085) y revisor del avance S4 de Pimentel («Pimentel Chumbes James», indicado por el usuario).
+  - `217503f` test: los 88 casos Pest del catálogo (001 a 082 y 114 a 119).
+- **Rojo** (slot A): **87 fallan y 9 pasan**. Pasan las 8 de la guarda (120 a 127) y S04-TC-078, que el código ya cumplía y se conserva como regresión de D-60. Motivos en `evidencias/sprint-04/01-rojo-antes-de-implementar.txt`.
+- **Diseño fijado por las pruebas** (se documenta en el contrato al terminar S4.3):
+  - la cola de pruebas es `null` y los jobs se ejecutan de forma explícita (`tests/Support/Sprint04.php`);
+  - `PrepareMatching` ejecuta el matching y abre la ronda en el mismo job (TC-030 exige ronda tras preparar);
+  - el barrido del scheduler es `tecnicoya:sweep`;
+  - 040, 045 y 046 usan dos procesos PHP reales con barrera `GET_LOCK` y `DatabaseMigrations`.
+- **Entorno:** el contenedor `tecnicoya-mysql-test` estaba detenido; se levantó desde `backend/api` (donde está el Compose).
+
+**Qué falta:** S4.3 (verde), suite completa, cobertura, mutación de las clases nuevas, `composer audit`, avance de Mayhuasca y PR.
+
 ## 2026-10-16 · Retiro del prototipo: regresión, DEF-45 y PR
 
 - **Rama:** `feature/pimentel/infra/retiro-prototipo`, con `main` `4e85669` fusionado (PR #18 de Codex y etiqueta `v0.3-antes-retiro-prototipo` sobre `cced99e`). Merge sin conflictos.
@@ -51,6 +113,33 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 3. Push, PR con `gh` y CI.
 
 **Para Codex:** tu parte es la lista F de ANALISIS-S04 §5. Además retira la copia `frontend/web/src/domain/rules.json` (DEF-26).
+
+## 2026-10-16 · Sprint 4 · S4.1 completado: CONTRATO LISTO PARA CODEX
+
+- **Rama:** `feature/mayhuasca/b-matching/s04`, desde `main` `cced99e` (PR #17 integrado), publicada en origin. Commit docs(s04) con el análisis, el contrato, el catálogo, DECISIONES y este relevo.
+- **Decisiones** (Pimentel, 2026-10-16):
+  - **D-60** IDEM-01 A y **D-61** MEDIA-02 A;
+  - **D-62 a D-70**, las nueve del S4 en opción A: RETIRO-01, PARAM-02, DIST-01 (km de Google Maps: Huancayo–El Tambo 3,5; Huancayo–Chilca 2,5; El Tambo–Chilca 5,5; mismo distrito 1), EMP-01, RES-01, PEND-01, NOTIF-01, EST-01 y DEP-01;
+  - **D-71**: se aceptan los 5 supuestos de diseño.
+- **Ya decididas y aplicadas sin volver a preguntar:** P05 (D-23), P11 (D-22), P12 (D-21), P15 (D-20), P16 (D-25), P19 (D-24) y MATCH-01 (D-19, PHP en Laravel).
+- **Documentos** en `plan-pruebas-v3/sprint-04/`:
+  - `ANALISIS-S04.md`: brechas, catálogo, decisiones y plan de retiro;
+  - `CONTRATO-API.md` v1.0;
+  - `CATALOGO-S04.csv`: **119 ejecutables** (88 Pest, 18 Cypress y 13 Vitest). Los 114 a 119 quedaron desbloqueados.
+- **DEP-01:** solo instalo `laravel/reverb` (sin `-W`), en el S4.3. `laravel-echo` y `pusher-js` los instala Codex.
+- **Pruebas:** ninguna; solo documentos.
+
+**Qué falta:**
+- el retiro del prototipo en `feature/pimentel/infra/retiro-prototipo`, antes del S4.2 (D-62);
+- después, merge de `main` en esta rama y S4.2 y S4.3.
+
+**Para Codex:**
+1. El contrato de S4 está listo para el S4.4.
+2. D-62: tu parte del retiro va en otra rama (ANALISIS §5, lista F: desacoplar `Announcements.jsx`, `TechnicianProfile.jsx` y `auth.css` antes de borrar).
+3. D-64 agrega `base_district_id` al perfil del técnico (`PATCH /technicians/me/profile`): hace falta el campo en la pantalla del perfil.
+4. D-70: instala `laravel-echo` y `pusher-js`.
+
+**Bloqueos:** ninguno.
 
 ## 2026-10-16 · Sprint 3 · cierre S3.6 completado
 

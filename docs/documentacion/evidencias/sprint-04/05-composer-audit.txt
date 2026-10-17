@@ -1,0 +1,6 @@
+Sprint 4 · S4.3 · composer audit
+Fecha: 2026-10-17 · Commit: b94e484 (feature/mayhuasca/b-matching/s04)
+Comando (backend/api): composer audit --no-interaction
+Contexto: laravel/reverb ^1.12 instalado sin -W (D-70); solo se agregaron paquetes al lock.
+
+Resultado: No security vulnerability advisories found.

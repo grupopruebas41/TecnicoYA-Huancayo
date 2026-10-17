@@ -11,6 +11,9 @@
 //
 // La salida de la API (una línea por petición) queda en tmp/e2e-api-<slot>.log para diagnosticar
 // fallos de transporte (DEF-42). Se informa la RAM libre y, por debajo de 1 GB, se avisa.
+//
+// Desde el Sprint 4 (D-70) levanta además, por slot, Reverb (8081 en A, 8082 en B), la cola `database` y el
+// scheduler, y activa el reloj del servidor de las tareas de Cypress (scripts/e2e-tareas-s04.mjs).
 import {spawn, spawnSync} from 'node:child_process';
 import {readFileSync, existsSync, mkdirSync, openSync, closeSync, writeSync, unlinkSync, readdirSync} from 'node:fs';
 import {freemem} from 'node:os';
@@ -20,8 +23,8 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 
 const SLOTS = {
-  A: {database: 'tecnicoya_testing', api: 8001, web: 5174},
-  B: {database: 'tecnicoya_b_testing', api: 8002, web: 5175},
+  A: {database: 'tecnicoya_testing', api: 8001, web: 5174, reverb: 8081},
+  B: {database: 'tecnicoya_b_testing', api: 8002, web: 5175, reverb: 8082},
 };
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -61,6 +64,20 @@ const env = {...process.env, ...fixture, TECNICOYA_SLOT: slotName, APP_ENV: 'tes
   VITE_API_URL: apiUrl, TECNICOYA_API_URL: apiUrl, TECNICOYA_WEB_URL: webUrl, TECNICOYA_E2E_SPECS: specs,
   TECNICOYA_E2E_PASSWORD: randomBytes(24).toString('base64url'),
 };
+// D-70: tiempo real, cola y reloj del servidor desde el Sprint 4. Credenciales de Reverb sintéticas por ejecución si
+// .env.testing no trae las suyas; la SPA las recibe como VITE_REVERB_*.
+const realtime = Number(sprint) >= 4;
+if (realtime) {
+  Object.assign(env, {
+    QUEUE_CONNECTION: 'database', BROADCAST_CONNECTION: 'reverb',
+    REVERB_APP_ID: fixture.REVERB_APP_ID || 'tecnicoya-e2e', REVERB_APP_KEY: fixture.REVERB_APP_KEY || randomBytes(12).toString('hex'),
+    REVERB_APP_SECRET: fixture.REVERB_APP_SECRET || randomBytes(24).toString('hex'),
+    REVERB_HOST: '127.0.0.1', REVERB_PORT: String(slot.reverb), REVERB_SCHEME: 'http',
+    REVERB_SERVER_HOST: '127.0.0.1', REVERB_SERVER_PORT: String(slot.reverb),
+    TECNICOYA_E2E_CLOCK: '1', TECNICOYA_PHP: php, TECNICOYA_BACKEND: backend,
+  });
+  Object.assign(env, {VITE_REVERB_APP_KEY: env.REVERB_APP_KEY, VITE_REVERB_HOST: '127.0.0.1', VITE_REVERB_PORT: String(slot.reverb), VITE_REVERB_SCHEME: 'http'});
+}
 // La terminal integrada de VS Code (y los agentes) exporta ELECTRON_RUN_AS_NODE=1: con ella
 // Cypress.exe arranca como Node y muere con 0xC000001D. Ver DIAGNOSTICO-E2E-2026-10-09.md.
 delete env.ELECTRON_RUN_AS_NODE;
@@ -126,9 +143,21 @@ async function waitReady(url) {
   }
   throw new Error(`El servicio no respondió: ${url}`);
 }
+async function waitPort(port) {
+  const {connect} = await import('node:net');
+  for (let attempt = 0; attempt < 60; attempt++) {
+    const open = await new Promise(resolve => {
+      const socket = connect(port, '127.0.0.1', () => { socket.end(); resolve(true); });
+      socket.once('error', () => resolve(false));
+    });
+    if (open) return;
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+  throw new Error(`Reverb no abrió el puerto ${port}.`);
+}
 async function ensurePortsFree() {
   const {createServer} = await import('node:net');
-  for (const port of [slot.api, slot.web]) {
+  for (const port of realtime ? [slot.api, slot.web, slot.reverb] : [slot.api, slot.web]) {
     await new Promise((resolve, reject) => {
       const server = createServer();
       server.once('error', () => reject(new Error(`Puerto ${port} ocupado; no se reutilizan servidores desconocidos.`)));
@@ -165,8 +194,14 @@ try {
   const apiLog = openSync(path.join(tmp, `e2e-api-${slotName}.log`), 'w');
   services.push(command(php, ['artisan', 'serve', '--host=127.0.0.1', `--port=${slot.api}`, '--no-reload'], backend, ['ignore', apiLog, apiLog]));
   services.push(command(process.execPath, ['node_modules/vite/bin/vite.js', '--host=127.0.0.1', `--port=${slot.web}`, '--strictPort'], frontend, 'ignore'));
+  if (realtime) {
+    services.push(command(php, ['artisan', 'reverb:start', '--host=127.0.0.1', `--port=${slot.reverb}`, '--no-ansi'], backend, ['ignore', apiLog, apiLog]));
+    services.push(command(php, ['artisan', 'queue:work', '--sleep=1', '--tries=1', '--no-ansi'], backend, ['ignore', apiLog, apiLog]));
+    services.push(command(php, ['artisan', 'schedule:work', '--no-ansi'], backend, ['ignore', apiLog, apiLog]));
+  }
   await waitReady(`${apiUrl}/api/health`);
   await waitReady(webUrl);
+  if (realtime) await waitPort(slot.reverb);
 
   // Un único Cypress a la vez en todo el PC, sea cual sea el slot (memoria limitada).
   const cypressLock = path.join(tmp, 'e2e-cypress.lock');

@@ -39,3 +39,16 @@ $base = getenv('DB_DATABASE');
 if ($base === false || $base === '') {
     $definir('DB_DATABASE', $bases[$slot]);
 }
+
+// DEF-46: en la mutación cada mutante es un proceso PHP nuevo y RefreshDatabase repetiría migrate:fresh en cada uno
+// (unos 15 s), así que el plugin los cortaba por tiempo y los contaba como eliminados. El envoltorio de la mutación
+// migra una vez y pone TECNICOYA_MUTATION_MIGRATED=1: cada prueba sigue dentro de su transacción revertida.
+if (getenv('TECNICOYA_MUTATION_MIGRATED') === '1') {
+    Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
+}
+
+// Sprint 4: los jobs se ejecutan de forma explícita en las pruebas (cola null) y /broadcasting/auth necesita el
+// broadcaster de Reverb. Se fijan aquí porque Laravel lee primero $_SERVER y un QUEUE_CONNECTION del entorno (la CI
+// usaba sync) ganaría a phpunit.xml: los jobs encolados tras el commit se ejecutarían solos.
+$definir('QUEUE_CONNECTION', 'null');
+$definir('BROADCAST_CONNECTION', 'reverb');

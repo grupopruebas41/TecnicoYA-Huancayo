@@ -1,0 +1,2750 @@
+# Sprint 4 · S4.3 · Mutación solo de las clases nuevas o modificadas · 2026-10-17 · commit 570d96d · slot A
+# Comando (backend/api), con el bloqueo global tmp/e2e-cypress.lock tomado durante toda la corrida (unos 150 min):
+#   PATH=C:\xampp\php;… php -d pcov.enabled=1 -d pcov.directory=. vendor\bin\pest <pruebas> --mutate --everything --clear-cache --path=<clases>
+#   con TECNICOYA_MUTATION_MIGRATED=1 tras una migración previa (DEF-46).
+# Pruebas: tests/Unit/Sprint04 y tests/Feature/Sprint04 salvo las de concurrencia con procesos reales (040, 045, 046),
+#   las de herramientas E2E (129 a 132) y la guarda de comandos; más S03 RequestIdempotency, TC037 y ActiveRequestLimit.
+# Clases: BMatching (Domain, 13 de Application y 2 controladores), CNotifications (Application y Http), ServiceRequestView,
+#   ServiceRequestController, RetireEvidence, Idempotency, RuleBook, Sweep y RejectSuspendedTechnician.
+#
+# Resultado VÁLIDO: 1513 mutantes · 955 eliminados · 439 sobrevivientes · 119 sin cubrir · puntuación 63,12 %.
+#
+# DEF-46: una primera corrida dio 92,13 % en 44 s y era FALSA. En Windows el plugin lanza cada mutante con
+#   --filter="A|B" y cmd toma el «|» como tubería: el proceso muere y se cuenta como eliminado. Se comprobó con un
+#   control negativo (mutar Scorer solo con EligibilityTest): antes del arreglo todo salía eliminado; después, los
+#   mutantes inocuos (RemoveDoubleCast) sobreviven, como corresponde. Arreglo usado: parche local y temporal en
+#   vendor/pestphp/pest-plugin-mutate (sin comillas internas en Windows; ya revertido) y migración única.
+#
+# Sobrevivientes por clase (mayoría: campos de respuesta y ramas sin aserción; pendiente reforzar):
+#       50 app/Modules\BMatching\Application\OfferView.php 
+#       48 app/Modules\BMatching\Application\MatchingFlow.php 
+#       48 app/Modules\BMatching\Application\CandidatesView.php 
+#       44 app/Modules\ARequests\Application\ServiceRequestView.php 
+#       43 app/Modules\BMatching\Application\ClientSelection.php 
+#       42 app/Modules\CNotifications\Http\Controllers\NotificationController.php 
+#       18 app/Modules\BMatching\Http\Controllers\OfferController.php 
+#       17 app/Modules\BMatching\Application\TechnicianHistory.php 
+#       17 app/Modules\BMatching\Application\RoundOpener.php 
+#       16 app/Modules\BMatching\Application\Matcher.php 
+#       16 app/Modules\BMatching\Application\Eligibility.php 
+#       14 app/Modules\BMatching\Domain\Ranker.php 
+#       11 app/Modules\BMatching\Application\OfferResponses.php 
+#       10 app/Modules\CNotifications\Application\OutboxPublisher.php 
+#       10 app/Modules\BMatching\Http\Controllers\SelectionController.php 
+#        8 app/Shared\Http\Idempotency.php 
+#        6 app/Console\Commands\Sweep.php 
+#        4 app/Modules\CNotifications\Application\NotificationDelivery.php 
+#        4 app/Http\Middleware\RejectSuspendedTechnician.php 
+#        3 app/Modules\FAdministration\Application\RetireEvidence.php 
+#        3 app/Modules\BMatching\Application\SearchState.php 
+#        2 app/Modules\BMatching\Domain\Scorer.php 
+#        2 app/Modules\ARequests\Http\Controllers\ServiceRequestController.php 
+#        1 app/Shared\Rules\RuleBook.php 
+#        1 app/Modules\CNotifications\Application\MailSandboxChannel.php 
+#        1 app/Modules\BMatching\Application\OwnTechnician.php 
+
+---- Salida del runner ----
+
+migracion-previa codigo 0
+
+  ...............................................................................................
+
+  Tests:    95 passed (550 assertions)
+  Duration: 76.85s
+
+  Mutating application files...
+  1513 Mutations for 30 Files created
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php
+  - Line 16: DecrementInteger
+  - Line 16: IncrementInteger
+  ✓ Line 26: UnwrapArrayColumn
+  ✓ Line 26: UnwrapArrayFilter
+  ✓ Line 26: NotIdenticalToIdentical
+  ✓ Line 27: UnwrapArrayColumn
+  ✓ Line 27: UnwrapArrayMap
+  ✓ Line 28: UnwrapArrayColumn
+  ✓ Line 28: UnwrapArrayMap
+  ✓ Line 29: RemoveDoubleCast
+  ✓ Line 29: TernaryNegated
+  ✓ Line 29: IdenticalToNotIdentical
+  ✓ Line 29: MaxToMin
+  ✓ Line 29: DecrementFloat
+  ✓ Line 29: IncrementFloat
+  ✓ Line 30: RemoveDoubleCast
+  ✓ Line 30: TernaryNegated
+  ✓ Line 30: IdenticalToNotIdentical
+  ✓ Line 30: MaxToMin
+  ✓ Line 30: DecrementFloat
+  ✓ Line 30: IncrementFloat
+  ✓ Line 31: TernaryNegated
+  ✓ Line 31: IdenticalToNotIdentical
+  ✓ Line 31: MaxToMin
+  ✓ Line 31: DecrementFloat
+  ✓ Line 31: IncrementFloat
+  ✓ Line 32: TernaryNegated
+  ✓ Line 32: IdenticalToNotIdentical
+  ✓ Line 32: MinToMax
+  ✓ Line 32: DecrementFloat
+  ✓ Line 32: IncrementFloat
+  ✓ Line 35: ForeachEmptyIterable
+  ✓ Line 37: RemoveArrayItem
+  ✓ Line 38: MinusToPlus
+  ✓ Line 38: MinusToPlus
+  ✓ Line 38: DivisionToMultiplication
+  ⨯ Line 38: RemoveDoubleCast
+  ⨯ Line 38: RemoveDoubleCast
+  ✓ Line 38: TernaryNegated
+  ✓ Line 38: IdenticalToNotIdentical
+  ✓ Line 38: RemoveArrayItem
+  ⨯ Line 39: RemoveDoubleCast
+  ✓ Line 39: RemoveArrayItem
+  ✓ Line 40: DivisionToMultiplication
+  ✓ Line 40: TernaryNegated
+  ✓ Line 40: IdenticalToNotIdentical
+  ✓ Line 40: DecrementFloat
+  ✓ Line 40: DecrementFloat
+  ✓ Line 40: IncrementFloat
+  ✓ Line 40: IncrementFloat
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 42: PlusToMinus
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 44: UnwrapArrayMap
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 47: ForeachEmptyIterable
+  ✓ Line 48: PlusEqualToMinusEqual
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 51: AlwaysReturnEmptyArray
+  ✓ Line 60: SpaceshipSwitchSides
+  ✓ Line 60: RemoveFunctionCall
+  ✓ Line 62: ForeachEmptyIterable
+  ✓ Line 66: DecrementInteger
+  ✓ Line 66: IncrementInteger
+  ✓ Line 67: ForeachEmptyIterable
+  ✓ Line 68: ForeachEmptyIterable
+  ✓ Line 69: TernaryNegated
+  ✓ Line 69: GreaterToGreaterOrEqual
+  ✓ Line 69: GreaterToSmallerOrEqual
+  ✓ Line 69: DecrementInteger
+  ✓ Line 69: IncrementInteger
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 71: PlusEqualToMinusEqual
+  ✓ Line 74: AlwaysReturnEmptyArray
+  ⨯ Line 80: RemoveDoubleCast
+  ⨯ Line 80: RemoveDoubleCast
+  ✓ Line 80: TernaryNegated
+  ✓ Line 80: IdenticalToNotIdentical
+  ✓ Line 80: RoundToFloor
+  ✓ Line 80: RoundToFloor
+  ✓ Line 80: RoundToCeil
+  ✓ Line 80: RoundToCeil
+  ⨯ Line 80: DecrementFloat
+  ⨯ Line 80: IncrementFloat
+  ⨯ Line 80: DecrementInteger
+  ⨯ Line 80: IncrementInteger
+  ✓ Line 80: RemoveArrayItem
+  ✓ Line 80: RemoveArrayItem
+  ✓ Line 80: AlwaysReturnEmptyArray
+  ✓ Line 85: IfNegated
+  ✓ Line 85: IdenticalToNotIdentical
+  ⨯ Line 86: DecrementFloat
+  ⨯ Line 86: IncrementFloat
+  ⨯ Line 86: RemoveEarlyReturn
+  ✓ Line 89: MinusToPlus
+  ✓ Line 89: DivisionToMultiplication
+  ✓ Line 89: TernaryNegated
+  ✓ Line 89: IdenticalToNotIdentical
+  ✓ Line 89: DecrementFloat
+  ✓ Line 89: DecrementFloat
+  ✓ Line 89: IncrementFloat
+  ✓ Line 89: IncrementFloat
+  ✓ Line 89: DecrementInteger
+  ✓ Line 89: IncrementInteger
+  ✓ Line 94: MinToMax
+  ✓ Line 94: MaxToMin
+  ⨯ Line 94: DecrementFloat
+  ✓ Line 94: DecrementFloat
+  ✓ Line 94: IncrementFloat
+  ⨯ Line 94: IncrementFloat
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Scorer.php
+  - Line 8: RemoveArrayItem
+  - Line 8: RemoveArrayItem
+  - Line 8: RemoveArrayItem
+  - Line 8: RemoveArrayItem
+  ✓ Line 18: ForeachEmptyIterable
+  ✓ Line 19: MultiplicationToDivision
+  ⨯ Line 19: RemoveDoubleCast
+  ⨯ Line 19: RemoveDoubleCast
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 22: AlwaysReturnEmptyArray
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\Inbox.php
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 22: RemoveStringCast
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 22: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveMethodCall
+  ✓ Line 26: RemoveMethodCall
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\MailSandboxChannel.php
+  ⨯ Line 17: RemoveMethodCall
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php
+  - Line 18: DecrementInteger
+  - Line 18: DecrementInteger
+  - Line 18: DecrementInteger
+  - Line 18: IncrementInteger
+  - Line 18: IncrementInteger
+  - Line 18: IncrementInteger
+  - Line 18: RemoveArrayItem
+  - Line 18: RemoveArrayItem
+  - Line 18: RemoveArrayItem
+  ✓ Line 26: IfNegated
+  ✓ Line 26: NotIdenticalToIdentical
+  ✓ Line 26: BooleanOrToBooleanAnd
+  ✓ Line 26: BooleanOrToBooleanAnd
+  ✓ Line 26: RemoveNot
+  ✓ Line 29: PlusToMinus
+  ⨯ Line 29: RemoveIntegerCast
+  ✓ Line 29: DecrementInteger
+  ✓ Line 29: IncrementInteger
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 31: RemoveMethodCall
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 35: PlusToMinus
+  ✓ Line 35: DecrementInteger
+  ✓ Line 35: IncrementInteger
+  ✓ Line 36: MinusToPlus
+  ✓ Line 36: TernaryNegated
+  ✓ Line 36: IdenticalToNotIdentical
+  ✓ Line 36: SmallerToGreaterOrEqual
+  ✓ Line 36: SmallerToSmallerOrEqual
+  ✓ Line 36: BooleanAndToBooleanOr
+  ✓ Line 36: DecrementInteger
+  ✓ Line 36: IncrementInteger
+  ✓ Line 37: RemoveMethodCall
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 38: RemoveArrayItem
+  ⨯ Line 38: RemoveArrayItem
+  ✓ Line 39: TernaryNegated
+  ✓ Line 39: TernaryNegated
+  ✓ Line 39: IdenticalToNotIdentical
+  ✓ Line 39: RemoveArrayItem
+  ✓ Line 40: TernaryNegated
+  ✓ Line 40: IdenticalToNotIdentical
+  ✓ Line 40: RemoveArrayItem
+  ⨯ Line 45: IfNegated
+  ⨯ Line 46: RemoveMethodCall
+  ✓ Line 54: RemoveMethodCall
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 58: RemoveArrayItem
+  ✓ Line 58: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\Outbox.php
+  ✓ Line 17: RemoveStringCast
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 21: PlusToMinus
+  ✓ Line 21: PlusToMinus
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 23: RemoveMethodCall
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php
+  ✓ Line 21: RemoveMethodCall
+  ✓ Line 23: IfNegated
+  ✓ Line 23: NotIdenticalToIdentical
+  ⨯ Line 23: GreaterOrEqualToGreater
+  ✓ Line 23: GreaterOrEqualToSmaller
+  ✓ Line 23: BooleanOrToBooleanAnd
+  ✓ Line 23: BooleanOrToBooleanAnd
+  ✓ Line 23: RemoveNot
+  ✓ Line 27: TrueToFalse
+  ⨯ Line 27: DecrementInteger
+  ⨯ Line 27: IncrementInteger
+  ✓ Line 27: RemoveFunctionCall
+  ✓ Line 32: RemoveMethodCall
+  ✓ Line 33: PlusToMinus
+  ⨯ Line 33: DecrementInteger
+  ⨯ Line 33: IncrementInteger
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ⨯ Line 34: TernaryNegated
+  ⨯ Line 34: IdenticalToNotIdentical
+  ⨯ Line 34: RemoveArrayItem
+  ✓ Line 34: RemoveArrayItem
+  ✓ Line 36: IfNegated
+  ✓ Line 36: IdenticalToNotIdentical
+  ✓ Line 37: RemoveArrayItem
+  ✓ Line 37: RemoveMethodCall
+  ✓ Line 44: PlusToMinus
+  ⨯ Line 44: DecrementInteger
+  ⨯ Line 44: IncrementInteger
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php
+  ⨯ Line 20: RemoveArrayItem
+  ⨯ Line 20: RemoveArrayItem
+  ⨯ Line 20: RemoveArrayItem
+  ⨯ Line 20: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 26: RemoveIntegerCast
+  ⨯ Line 26: CoalesceRemoveLeft
+  ⨯ Line 26: DecrementInteger
+  ⨯ Line 26: IncrementInteger
+  ⨯ Line 27: RemoveIntegerCast
+  ⨯ Line 27: CoalesceRemoveLeft
+  ⨯ Line 27: DecrementInteger
+  ✓ Line 27: IncrementInteger
+  ⨯ Line 30: RemoveArrayItem
+  ⨯ Line 30: RemoveArrayItem
+  ⨯ Line 30: RemoveArrayItem
+  ⨯ Line 30: RemoveArrayItem
+  ⨯ Line 31: RemoveIntegerCast
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ⨯ Line 31: RemoveArrayItem
+  ⨯ Line 32: RemoveArrayItem
+  ⨯ Line 33: TernaryNegated
+  ⨯ Line 33: IdenticalToNotIdentical
+  ⨯ Line 33: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ⨯ Line 37: DivisionToMultiplication
+  ⨯ Line 37: RemoveIntegerCast
+  ⨯ Line 37: MaxToMin
+  ⨯ Line 37: CeilToFloor
+  ⨯ Line 37: CeilToRound
+  ⨯ Line 37: DecrementInteger
+  ⨯ Line 37: IncrementInteger
+  ⨯ Line 37: RemoveArrayItem
+  ⨯ Line 37: RemoveArrayItem
+  ⨯ Line 37: RemoveArrayItem
+  ⨯ Line 37: RemoveArrayItem
+  ⨯ Line 37: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php
+  - Line 15: DecrementInteger
+  - Line 15: IncrementInteger
+  ✓ Line 24: TernaryNegated
+  ✓ Line 24: IdenticalToNotIdentical
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: PlusToMinus
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 29: AlwaysReturnEmptyArray
+  ⨯ Line 30: RemoveIntegerCast
+  ✓ Line 30: RemoveArrayItem
+  ⨯ Line 30: RemoveArrayItem
+  ⨯ Line 31: RemoveIntegerCast
+  ⨯ Line 31: TernaryNegated
+  ⨯ Line 31: RemoveArrayItem
+  ⨯ Line 31: RemoveArrayItem
+  ⨯ Line 31: RemoveArrayItem
+  ⨯ Line 31: RemoveArrayItem
+  ⨯ Line 31: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 33: TernaryNegated
+  ✓ Line 33: IdenticalToNotIdentical
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 42: TernaryNegated
+  ⨯ Line 42: RemoveArrayItem
+  ✓ Line 44: AlwaysReturnEmptyArray
+  ⨯ Line 45: RemoveIntegerCast
+  ✓ Line 45: RemoveArrayItem
+  ⨯ Line 45: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ⨯ Line 47: RemoveIntegerCast
+  ✓ Line 47: TernaryNegated
+  ⨯ Line 47: RemoveArrayItem
+  ⨯ Line 47: RemoveArrayItem
+  ⨯ Line 47: RemoveArrayItem
+  ⨯ Line 47: RemoveArrayItem
+  ⨯ Line 47: RemoveArrayItem
+  ⨯ Line 48: RemoveArrayItem
+  ⨯ Line 48: RemoveArrayItem
+  - Line 49: RemoveIntegerCast
+  - Line 49: RemoveIntegerCast
+  - Line 49: RemoveArrayItem
+  - Line 49: RemoveArrayItem
+  ⨯ Line 50: RemoveArrayItem
+  ⨯ Line 50: RemoveArrayItem
+  ✓ Line 51: IdenticalToNotIdentical
+  ✓ Line 51: NotIdenticalToIdentical
+  ⨯ Line 51: BooleanAndToBooleanOr
+  ✓ Line 51: RemoveArrayItem
+  ⨯ Line 53: RemoveArrayItem
+  ✓ Line 61: IfNegated
+  ✓ Line 61: RemoveNot
+  - Line 62: RemoveEarlyReturn
+  ✓ Line 66: DecrementInteger
+  ✓ Line 66: IncrementInteger
+  ✓ Line 66: AlwaysReturnEmptyArray
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 71: TrueToFalse
+  ⨯ Line 71: DecrementInteger
+  ⨯ Line 71: IncrementInteger
+  ✓ Line 81: TrueToFalse
+  ⨯ Line 81: DecrementInteger
+  ⨯ Line 81: IncrementInteger
+  ✓ Line 82: RemoveArrayItem
+  ✓ Line 82: RemoveArrayItem
+  ✓ Line 82: RemoveArrayItem
+  ⨯ Line 83: CoalesceRemoveLeft
+  ✓ Line 85: AlwaysReturnEmptyArray
+  ⨯ Line 86: RemoveIntegerCast
+  ⨯ Line 86: TernaryNegated
+  ⨯ Line 86: IdenticalToNotIdentical
+  ⨯ Line 86: RemoveArrayItem
+  ⨯ Line 87: RemoveIntegerCast
+  ⨯ Line 87: TernaryNegated
+  ⨯ Line 87: IdenticalToNotIdentical
+  ⨯ Line 87: RemoveArrayItem
+  ✓ Line 88: RemoveArrayItem
+  ⨯ Line 88: RemoveArrayItem
+  ✓ Line 88: RemoveArrayItem
+  ✓ Line 89: DecrementInteger
+  ✓ Line 89: IncrementInteger
+  ⨯ Line 89: RemoveArrayItem
+  ✓ Line 89: RemoveArrayItem
+  ✓ Line 89: RemoveArrayItem
+  ✓ Line 89: RemoveArrayItem
+  ⨯ Line 90: TrueToFalse
+  ✓ Line 90: RemoveArrayItem
+  ⨯ Line 90: RemoveArrayItem
+  ⨯ Line 90: RemoveArrayItem
+  ✓ Line 90: RemoveArrayItem
+  ✓ Line 91: TernaryNegated
+  ✓ Line 91: IdenticalToNotIdentical
+  ✓ Line 91: RemoveArrayItem
+  ✓ Line 92: TrueToFalse
+  ✓ Line 92: RemoveArrayItem
+  ✓ Line 92: RemoveArrayItem
+  ✓ Line 92: RemoveArrayItem
+  ✓ Line 93: TernaryNegated
+  ✓ Line 93: IdenticalToNotIdentical
+  ✓ Line 93: RemoveArrayItem
+  ✓ Line 93: RemoveArrayItem
+  ✓ Line 93: RemoveArrayItem
+  ✓ Line 93: RemoveArrayItem
+  ⨯ Line 94: RemoveArrayItem
+  ⨯ Line 94: RemoveArrayItem
+  ⨯ Line 94: RemoveArrayItem
+  ⨯ Line 94: ConcatRemoveLeft
+  ⨯ Line 94: ConcatRemoveRight
+  ⨯ Line 94: ConcatSwitchSides
+  - Line 100: DecrementInteger
+  - Line 100: IncrementInteger
+  - Line 101: ModulusToMultiplication
+  - Line 101: DecrementInteger
+  - Line 101: IncrementInteger
+  - Line 103: TernaryNegated
+  - Line 103: TernaryNegated
+  - Line 103: IdenticalToNotIdentical
+  - Line 103: GreaterToGreaterOrEqual
+  - Line 103: GreaterToGreaterOrEqual
+  - Line 103: GreaterToSmallerOrEqual
+  - Line 103: GreaterToSmallerOrEqual
+  - Line 103: BooleanOrToBooleanAnd
+  - Line 103: DecrementInteger
+  - Line 103: DecrementInteger
+  - Line 103: DecrementInteger
+  - Line 103: IncrementInteger
+  - Line 103: IncrementInteger
+  - Line 103: IncrementInteger
+  - Line 103: ConcatRemoveLeft
+  - Line 103: ConcatRemoveRight
+  - Line 103: ConcatSwitchSides
+  - Line 103: EmptyStringToNotEmpty
+  - Line 103: EmptyStringToNotEmpty
+  - Line 103: UnwrapTrim
+  ✓ Line 109: IfNegated
+  ✓ Line 109: RemoveNot
+  ✓ Line 110: RemoveEarlyReturn
+  - Line 114: AlwaysReturnNull
+  - Line 115: RemoveArrayItem
+  - Line 115: RemoveArrayItem
+  - Line 115: RemoveArrayItem
+  - Line 115: RemoveArrayItem
+  - Line 116: RemoveIntegerCast
+  - Line 116: RemoveArrayItem
+  - Line 117: TrueToFalse
+  - Line 117: RemoveArrayItem
+  - Line 117: RemoveArrayItem
+  - Line 117: RemoveArrayItem
+  - Line 117: RemoveArrayItem
+  - Line 118: RemoveArrayItem
+  - Line 119: TernaryNegated
+  - Line 119: RemoveArrayItem
+  - Line 119: RemoveArrayItem
+  - Line 119: RemoveArrayItem
+  - Line 120: RemoveArrayItem
+  - Line 120: RemoveArrayItem
+  ✓ Line 127: RemoveArrayItem
+  ✓ Line 128: DecrementInteger
+  ✓ Line 128: IncrementInteger
+  ✓ Line 128: RemoveFunctionCall
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php
+  ⨯ Line 35: RemoveIntegerCast
+  ⨯ Line 35: RemoveIntegerCast
+  ✓ Line 35: IfNegated
+  ✓ Line 35: NotIdenticalToIdentical
+  ✓ Line 35: NotIdenticalToIdentical
+  ⨯ Line 35: BooleanOrToBooleanAnd
+  - Line 36: RemoveEarlyReturn
+  ✓ Line 39: IfNegated
+  ✓ Line 39: NotIdenticalToIdentical
+  ✓ Line 39: BooleanOrToBooleanAnd
+  ✓ Line 39: RemoveNot
+  ✓ Line 40: RemoveEarlyReturn
+  ✓ Line 45: IfNegated
+  ✓ Line 45: RemoveNot
+  ✓ Line 46: RemoveArrayItem
+  ⨯ Line 50: RemoveMethodCall
+  ⨯ Line 51: RemoveIntegerCast
+  ✓ Line 52: IfNegated
+  ✓ Line 52: NotIdenticalToIdentical
+  ✓ Line 53: RemoveEarlyReturn
+  ✓ Line 56: DecrementInteger
+  ✓ Line 56: IncrementInteger
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 56: AlwaysReturnEmptyArray
+  ⨯ Line 63: RemoveIntegerCast
+  ⨯ Line 63: RemoveIntegerCast
+  ✓ Line 63: IfNegated
+  ✓ Line 63: NotIdenticalToIdentical
+  - Line 64: RemoveEarlyReturn
+  ✓ Line 66: IfNegated
+  ✓ Line 66: NotIdenticalToIdentical
+  - Line 67: RemoveEarlyReturn
+  ✓ Line 69: PlusToMinus
+  ⨯ Line 69: RemoveIntegerCast
+  ✓ Line 69: DecrementInteger
+  ✓ Line 69: IncrementInteger
+  ✓ Line 70: RemoveArrayItem
+  ⨯ Line 72: RemoveMethodCall
+  ✓ Line 74: DecrementInteger
+  ✓ Line 74: IncrementInteger
+  ✓ Line 74: RemoveArrayItem
+  ⨯ Line 74: RemoveArrayItem
+  ⨯ Line 74: RemoveArrayItem
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 74: AlwaysReturnEmptyArray
+  ⨯ Line 75: RemoveIntegerCast
+  ⨯ Line 75: RemoveArrayItem
+  ✓ Line 75: RemoveArrayItem
+  ✓ Line 81: TernaryNegated
+  ✓ Line 81: IdenticalToNotIdentical
+  ✓ Line 81: RemoveArrayItem
+  ✓ Line 81: RemoveArrayItem
+  ✓ Line 82: RemoveArrayItem
+  ✓ Line 82: RemoveArrayItem
+  ✓ Line 83: DecrementInteger
+  ✓ Line 83: IncrementInteger
+  ✓ Line 83: RemoveArrayItem
+  ✓ Line 83: RemoveArrayItem
+  ✓ Line 85: RemoveArrayItem
+  ✓ Line 85: RemoveArrayItem
+  ⨯ Line 85: RemoveArrayItem
+  ⨯ Line 85: RemoveArrayItem
+  ✓ Line 86: RemoveArrayItem
+  ✓ Line 86: RemoveArrayItem
+  ⨯ Line 86: RemoveArrayItem
+  ✓ Line 86: RemoveArrayItem
+  ✓ Line 89: RemoveArrayItem
+  ✓ Line 89: RemoveArrayItem
+  ✓ Line 89: RemoveArrayItem
+  ✓ Line 90: RemoveArrayItem
+  ✓ Line 90: RemoveArrayItem
+  ⨯ Line 90: RemoveArrayItem
+  ✓ Line 92: ForeachEmptyIterable
+  ✓ Line 92: RemoveArrayItem
+  ⨯ Line 92: RemoveArrayItem
+  ✓ Line 94: RemoveMethodCall
+  ✓ Line 96: RemoveMethodCall
+  ✓ Line 97: PlusToMinus
+  ⨯ Line 97: RemoveIntegerCast
+  ✓ Line 97: DecrementInteger
+  ✓ Line 97: IncrementInteger
+  ✓ Line 97: RemoveArrayItem
+  ✓ Line 97: RemoveArrayItem
+  ⨯ Line 98: RemoveArrayItem
+  ⨯ Line 98: RemoveArrayItem
+  ⨯ Line 99: RemoveIntegerCast
+  ⨯ Line 100: RemoveMethodCall
+  ⨯ Line 101: RemoveIntegerCast
+  ✓ Line 103: AlwaysReturnEmptyArray
+  ⨯ Line 104: RemoveIntegerCast
+  ⨯ Line 104: RemoveArrayItem
+  ✓ Line 104: RemoveArrayItem
+  ⨯ Line 104: RemoveArrayItem
+  ⨯ Line 104: RemoveArrayItem
+  ✓ Line 104: RemoveArrayItem
+  ⨯ Line 105: RemoveIntegerCast
+  ⨯ Line 105: RemoveArrayItem
+  ✓ Line 105: RemoveArrayItem
+  ⨯ Line 105: RemoveArrayItem
+  ⨯ Line 105: RemoveArrayItem
+  ✓ Line 105: RemoveArrayItem
+  ⨯ Line 106: TrueToFalse
+  ✓ Line 106: RemoveArrayItem
+  ⨯ Line 106: RemoveArrayItem
+  ⨯ Line 106: RemoveArrayItem
+  ✓ Line 106: RemoveArrayItem
+  ⨯ Line 107: RemoveArrayItem
+  ⨯ Line 108: RemoveArrayItem
+  ✓ Line 108: RemoveArrayItem
+  ⨯ Line 108: RemoveArrayItem
+  ⨯ Line 108: RemoveArrayItem
+  ✓ Line 108: RemoveArrayItem
+  ✓ Line 115: RemoveMethodCall
+  ✓ Line 117: IfNegated
+  ⨯ Line 118: RemoveArrayItem
+  ⨯ Line 118: RemoveMethodCall
+  ✓ Line 120: RemoveMethodCall
+  ✓ Line 123: TernaryNegated
+  ⨯ Line 123: RemoveArrayItem
+  ⨯ Line 123: RemoveArrayItem
+  ✓ Line 123: AlwaysReturnEmptyArray
+  ✓ Line 131: RemoveArrayItem
+  ✓ Line 132: DecrementInteger
+  ✓ Line 132: IncrementInteger
+  ✓ Line 132: RemoveFunctionCall
+  ✓ Line 139: DecrementInteger
+  ✓ Line 139: IncrementInteger
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 139: AlwaysReturnEmptyArray
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 29: NotIdenticalToIdentical
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 34: DecrementInteger
+  ✓ Line 34: IncrementInteger
+  ✓ Line 36: DecrementInteger
+  ✓ Line 36: IncrementInteger
+  ✓ Line 40: DecrementInteger
+  ✓ Line 40: IncrementInteger
+  ✓ Line 45: ForeachEmptyIterable
+  ✓ Line 46: TrueToFalse
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 47: IdenticalToNotIdentical
+  ✓ Line 48: NotIdenticalToIdentical
+  ✓ Line 49: NotIdenticalToIdentical
+  ✓ Line 50: NotIdenticalToIdentical
+  ✓ Line 50: BooleanOrToBooleanAnd
+  ✓ Line 50: RemoveNot
+  ✓ Line 51: RemoveNot
+  ✓ Line 52: RemoveNot
+  ✓ Line 54: RemoveNot
+  ✓ Line 55: TernaryNegated
+  ✓ Line 55: IdenticalToNotIdentical
+  ✓ Line 60: AlwaysReturnEmptyArray
+  ✓ Line 66: RemoveArrayItem
+  ✓ Line 68: TernaryNegated
+  ✓ Line 68: AlwaysReturnNull
+  ✓ Line 74: TernaryNegated
+  ✓ Line 74: IdenticalToNotIdentical
+  ✓ Line 74: AlwaysReturnEmptyArray
+  ✓ Line 75: RemoveArrayItem
+  ✓ Line 75: RemoveArrayItem
+  ✓ Line 76: DecrementInteger
+  ✓ Line 76: IncrementInteger
+  ✓ Line 76: RemoveArrayItem
+  ✓ Line 76: RemoveArrayItem
+  ✓ Line 82: TernaryNegated
+  ✓ Line 82: IdenticalToNotIdentical
+  ✓ Line 84: TernaryNegated
+  ✓ Line 84: IdenticalToNotIdentical
+  - Line 85: TernaryNegated
+  - Line 85: IdenticalToNotIdentical
+  - Line 85: BooleanAndToBooleanOr
+  ⨯ Line 92: TernaryNegated
+  ⨯ Line 96: RemoveIntegerCast
+  ✓ Line 96: IfNegated
+  ✓ Line 96: NotIdenticalToIdentical
+  ⨯ Line 96: GreaterToGreaterOrEqual
+  ✓ Line 96: GreaterToSmallerOrEqual
+  ⨯ Line 96: BooleanOrToBooleanAnd
+  ⨯ Line 96: BooleanOrToBooleanAnd
+  ✓ Line 97: NotIdenticalToIdentical
+  ⨯ Line 97: SmallerToGreaterOrEqual
+  ⨯ Line 97: SmallerToSmallerOrEqual
+  ✓ Line 97: BooleanAndToBooleanOr
+  ⨯ Line 98: FalseToTrue
+  ⨯ Line 98: RemoveEarlyReturn
+  ✓ Line 101: IfNegated
+  ✓ Line 101: NotIdenticalToIdentical
+  ✓ Line 102: SmallerToGreaterOrEqual
+  ⨯ Line 102: SmallerToSmallerOrEqual
+  ✓ Line 102: SmallerOrEqualToGreater
+  ⨯ Line 102: SmallerOrEqualToSmaller
+  ⨯ Line 102: BooleanAndToBooleanOr
+  ⨯ Line 102: RemoveEarlyReturn
+  ✓ Line 105: IdenticalToNotIdentical
+  ✓ Line 105: SmallerOrEqualToGreater
+  ✓ Line 105: SmallerOrEqualToGreater
+  ⨯ Line 105: SmallerOrEqualToSmaller
+  ⨯ Line 105: SmallerOrEqualToSmaller
+  ⨯ Line 105: BooleanAndToBooleanOr
+  ✓ Line 105: BooleanAndToBooleanOr
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: PlusToMinus
+  ✓ Line 27: RemoveIntegerCast
+  ✓ Line 27: DecrementInteger
+  ✓ Line 27: IncrementInteger
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 32: RemoveIntegerCast
+  ✓ Line 33: RemoveIntegerCast
+  ✓ Line 34: TrueToFalse
+  - Line 35: IdenticalToNotIdentical
+  - Line 35: IdenticalToNotIdentical
+  - Line 35: BooleanOrToBooleanAnd
+  ✓ Line 36: MinusToPlus
+  ✓ Line 36: GreaterToGreaterOrEqual
+  ✓ Line 36: GreaterToSmallerOrEqual
+  ✓ Line 36: DecrementFloat
+  ✓ Line 36: IncrementFloat
+  ✓ Line 36: DecrementInteger
+  ✓ Line 36: IncrementInteger
+  ✓ Line 39: IfNegated
+  ✓ Line 39: IdenticalToNotIdentical
+  ✓ Line 42: RemoveMethodCall
+  ✓ Line 43: TernaryNegated
+  ✓ Line 43: IdenticalToNotIdentical
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 44: RemoveIntegerCast
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 46: CoalesceRemoveLeft
+  ✓ Line 46: DecrementInteger
+  ✓ Line 46: IncrementInteger
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 56: UnwrapArrayFilter
+  ✓ Line 56: UnwrapArrayKeys
+  ✓ Line 56: IdenticalToNotIdentical
+  ✓ Line 57: RemoveIntegerCast
+  ✓ Line 57: RemoveIntegerCast
+  ✓ Line 58: RemoveIntegerCast
+  ✓ Line 59: UnwrapArrayMap
+  ✓ Line 64: ForeachEmptyIterable
+  ✓ Line 66: CoalesceRemoveLeft
+  ⨯ Line 67: RemoveDoubleCast
+  ✓ Line 67: TernaryNegated
+  ✓ Line 67: IdenticalToNotIdentical
+  ✓ Line 67: RemoveArrayItem
+  ✓ Line 67: RemoveArrayItem
+  ⨯ Line 68: RemoveDoubleCast
+  ⨯ Line 68: RemoveIntegerCast
+  ⨯ Line 68: RemoveArrayItem
+  ✓ Line 68: RemoveArrayItem
+  ⨯ Line 69: RemoveDoubleCast
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 70: PlusToMinus
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 72: CoalesceRemoveLeft
+  ⨯ Line 72: RemoveArrayItem
+  ✓ Line 72: RemoveArrayItem
+  ⨯ Line 73: RemoveIntegerCast
+  ✓ Line 73: RemoveArrayItem
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 74: RemoveArrayItem
+  ✓ Line 74: RemoveNullSafeOperator
+  ✓ Line 74: RemoveNullSafeOperator
+  ⨯ Line 75: RemoveArrayItem
+  ✓ Line 81: ForeachEmptyIterable
+  ✓ Line 82: CoalesceRemoveLeft
+  ✓ Line 84: TernaryNegated
+  ✓ Line 84: DecrementInteger
+  ✓ Line 84: DecrementInteger
+  ✓ Line 84: IncrementInteger
+  ✓ Line 84: IncrementInteger
+  ✓ Line 84: RemoveArrayItem
+  ✓ Line 84: RemoveArrayItem
+  ✓ Line 84: RemoveArrayItem
+  ✓ Line 84: RemoveArrayItem
+  ⨯ Line 85: CoalesceRemoveLeft
+  ⨯ Line 85: CoalesceRemoveLeft
+  ⨯ Line 85: RemoveArrayItem
+  ⨯ Line 85: RemoveArrayItem
+  ✓ Line 86: CoalesceRemoveLeft
+  ✓ Line 86: CoalesceRemoveLeft
+  ✓ Line 86: RemoveArrayItem
+  ✓ Line 86: RemoveArrayItem
+  ⨯ Line 87: CoalesceRemoveLeft
+  ✓ Line 87: CoalesceRemoveLeft
+  ✓ Line 87: CoalesceRemoveLeft
+  ⨯ Line 87: RemoveArrayItem
+  ✓ Line 87: RemoveArrayItem
+  ✓ Line 87: RemoveArrayItem
+  ✓ Line 88: CoalesceRemoveLeft
+  ⨯ Line 88: RemoveArrayItem
+  ✓ Line 88: RemoveArrayItem
+  ✓ Line 91: UnwrapArrayChunk
+  ✓ Line 91: ForeachEmptyIterable
+  ✓ Line 91: DecrementInteger
+  ✓ Line 91: IncrementInteger
+  ✓ Line 92: RemoveMethodCall
+  ✓ Line 102: ForeachEmptyIterable
+  ✓ Line 103: IfNegated
+  ✓ Line 103: NotIdenticalToIdentical
+  ⨯ Line 104: RemoveIntegerCast
+  ✓ Line 108: UnwrapArrayUnique
+  ✓ Line 109: UnwrapArrayUnique
+  ✓ Line 110: TernaryNegated
+  ✓ Line 110: IdenticalToNotIdentical
+  ✓ Line 112: UnwrapArrayFilter
+  ✓ Line 112: UnwrapArrayMap
+  ✓ Line 112: AlwaysReturnEmptyArray
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php
+  ✓ Line 31: TrueToFalse
+  ✓ Line 32: RemoveMethodCall
+  ✓ Line 34: IfNegated
+  ✓ Line 34: NotIdenticalToIdentical
+  ✓ Line 34: BooleanOrToBooleanAnd
+  ✓ Line 34: BooleanOrToBooleanAnd
+  ✓ Line 34: RemoveNot
+  ✓ Line 38: TernaryNegated
+  ✓ Line 38: GreaterToGreaterOrEqual
+  ✓ Line 38: GreaterToSmallerOrEqual
+  ✓ Line 38: DecrementInteger
+  ✓ Line 38: IncrementInteger
+  ✓ Line 39: IfNegated
+  ✓ Line 39: IdenticalToNotIdentical
+  ✓ Line 40: RemoveMethodCall
+  ✓ Line 42: MinusToPlus
+  ✓ Line 42: DivisionToMultiplication
+  ✓ Line 42: TrueToFalse
+  ✓ Line 42: RoundToFloor
+  ✓ Line 42: RoundToCeil
+  ✓ Line 42: DecrementFloat
+  ✓ Line 42: IncrementFloat
+  ✓ Line 42: DecrementInteger
+  ✓ Line 42: IncrementInteger
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveMethodCall
+  ✓ Line 49: RemoveMethodCall
+  ✓ Line 51: IfNegated
+  ✓ Line 51: BooleanOrToBooleanAnd
+  ✓ Line 51: BooleanOrToBooleanAnd
+  ✓ Line 51: RemoveNot
+  ⨯ Line 51: RemoveNot
+  ⨯ Line 51: RemoveArrayItem
+  ⨯ Line 51: RemoveArrayItem
+  ⨯ Line 53: RemoveArrayItem
+  ⨯ Line 53: RemoveArrayItem
+  - Line 56: TernaryNegated
+  - Line 56: IdenticalToNotIdentical
+  - Line 56: RemoveMethodCall
+  ✓ Line 63: RemoveMethodCall
+  ⨯ Line 65: RemoveIntegerCast
+  ✓ Line 65: TernaryNegated
+  ✓ Line 66: TernaryNegated
+  ✓ Line 67: IfNegated
+  ✓ Line 67: NotIdenticalToIdentical
+  ⨯ Line 67: BooleanOrToBooleanAnd
+  ⨯ Line 67: BooleanOrToBooleanAnd
+  ✓ Line 67: RemoveNot
+  ✓ Line 71: ForeachEmptyIterable
+  ✓ Line 72: RemoveMethodCall
+  ✓ Line 74: RemoveMethodCall
+  ✓ Line 81: RemoveMethodCall
+  ✓ Line 83: IfNegated
+  ✓ Line 83: IdenticalToNotIdentical
+  ⨯ Line 83: BooleanAndToBooleanOr
+  ✓ Line 84: RemoveMethodCall
+  ✓ Line 92: RemoveMethodCall
+  ✓ Line 94: IfNegated
+  ✓ Line 94: NotIdenticalToIdentical
+  ✓ Line 94: BooleanOrToBooleanAnd
+  ✓ Line 94: BooleanOrToBooleanAnd
+  ✓ Line 94: RemoveNot
+  ✓ Line 97: RemoveArrayItem
+  ✓ Line 97: RemoveArrayItem
+  ✓ Line 97: RemoveMethodCall
+  ⨯ Line 99: RemoveMethodCall
+  ✓ Line 111: IfNegated
+  ✓ Line 112: RemoveEarlyReturn
+  ✓ Line 114: IfNegated
+  ✓ Line 115: IfNegated
+  ✓ Line 115: NotIdenticalToIdentical
+  - Line 116: RemoveEarlyReturn
+  ✓ Line 118: RemoveMethodCall
+  ⨯ Line 119: RemoveMethodCall
+  ⨯ Line 121: RemoveArrayItem
+  ✓ Line 121: RemoveEarlyReturn
+  ✓ Line 123: RemoveMethodCall
+  ✓ Line 124: IfNegated
+  ✓ Line 124: IdenticalToNotIdentical
+  ⨯ Line 125: RemoveMethodCall
+  ⨯ Line 127: RemoveArrayItem
+  ⨯ Line 127: RemoveEarlyReturn
+  ✓ Line 135: PlusToMinus
+  ⨯ Line 135: RemoveIntegerCast
+  ✓ Line 135: DecrementInteger
+  ✓ Line 135: IncrementInteger
+  ✓ Line 136: PlusToMinus
+  ✓ Line 136: RemoveArrayItem
+  ✓ Line 136: RemoveArrayItem
+  ⨯ Line 136: RemoveArrayItem
+  ✓ Line 136: RemoveMethodCall
+  ✓ Line 137: RemoveMethodCall
+  ✓ Line 138: RemoveArrayItem
+  ⨯ Line 138: RemoveArrayItem
+  ✓ Line 138: RemoveArrayItem
+  ⨯ Line 138: RemoveArrayItem
+  ⨯ Line 139: RemoveArrayItem
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 139: RemoveArrayItem
+  ✓ Line 140: RemoveArrayItem
+  ✓ Line 140: RemoveArrayItem
+  ✓ Line 141: RemoveArrayItem
+  ⨯ Line 143: RemoveMethodCall
+  ⨯ Line 144: RemoveArrayItem
+  ⨯ Line 144: RemoveArrayItem
+  ⨯ Line 144: RemoveArrayItem
+  ⨯ Line 144: RemoveArrayItem
+  ✓ Line 150: RemoveMethodCall
+  ✓ Line 151: PlusToMinus
+  ⨯ Line 151: RemoveIntegerCast
+  ⨯ Line 151: DecrementInteger
+  ⨯ Line 151: IncrementInteger
+  ✓ Line 151: RemoveArrayItem
+  ⨯ Line 151: RemoveArrayItem
+  ⨯ Line 151: RemoveArrayItem
+  ⨯ Line 152: TernaryNegated
+  ⨯ Line 152: IdenticalToNotIdentical
+  ⨯ Line 152: RemoveArrayItem
+  ✓ Line 161: TernaryNegated
+  ✓ Line 161: IdenticalToNotIdentical
+  ✓ Line 167: IfNegated
+  ✓ Line 168: RemoveArrayItem
+  ✓ Line 168: RemoveEarlyReturn
+  ⨯ Line 169: RemoveArrayItem
+  ⨯ Line 169: RemoveArrayItem
+  ✓ Line 171: IfNegated
+  ⨯ Line 172: RemoveMethodCall
+  ✓ Line 174: RemoveEarlyReturn
+  ⨯ Line 175: RemoveArrayItem
+  ✓ Line 177: IfNegated
+  ✓ Line 177: IdenticalToNotIdentical
+  - Line 178: RemoveEarlyReturn
+  ✓ Line 181: TernaryNegated
+  ✓ Line 181: IdenticalToNotIdentical
+  ⨯ Line 182: RemoveIntegerCast
+  ⨯ Line 182: RemoveIntegerCast
+  ⨯ Line 183: RemoveMethodCall
+  ✓ Line 187: RemoveArrayItem
+  ✓ Line 187: RemoveArrayItem
+  ⨯ Line 188: CoalesceRemoveLeft
+  ✓ Line 188: RemoveArrayItem
+  ⨯ Line 189: RemoveArrayItem
+  ✓ Line 196: RemoveIntegerCast
+  ✓ Line 196: IfNegated
+  ✓ Line 196: NotIdenticalToIdentical
+  ✓ Line 196: BooleanAndToBooleanOr
+  ⨯ Line 197: RemoveArrayItem
+  ✓ Line 197: RemoveArrayItem
+  ✓ Line 197: RemoveMethodCall
+  ⨯ Line 198: RemoveIntegerCast
+  ✓ Line 198: RemoveArrayItem
+  ✓ Line 198: RemoveArrayItem
+  ⨯ Line 200: RemoveEarlyReturn
+  ✓ Line 203: AlwaysReturnNull
+  ⨯ Line 208: RemoveIntegerCast
+  ⨯ Line 209: RemoveIntegerCast
+  ⨯ Line 209: RemoveMethodCall
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingRules.php
+  - Line 16: RemoveArrayItem
+  - Line 16: RemoveArrayItem
+  - Line 16: RemoveArrayItem
+  - Line 16: RemoveArrayItem
+  - Line 17: RemoveArrayItem
+  - Line 17: RemoveArrayItem
+  ✓ Line 24: CoalesceRemoveLeft
+  ✓ Line 30: UnwrapArrayFlip
+  ✓ Line 30: UnwrapArrayIntersectKey
+  ✓ Line 32: TernaryNegated
+  ✓ Line 32: IdenticalToNotIdentical
+  ✓ Line 32: AlwaysReturnNull
+  ✓ Line 40: TernaryNegated
+  ✓ Line 40: IdenticalToNotIdentical
+  ✓ Line 40: AlwaysReturnNull
+  ✓ Line 41: RemoveDoubleCast
+  ✓ Line 41: RemoveDoubleCast
+  ✓ Line 41: RemoveArrayItem
+  ✓ Line 41: RemoveArrayItem
+  ✓ Line 42: RemoveDoubleCast
+  ✓ Line 42: RemoveDoubleCast
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php
+  ✓ Line 27: DecrementInteger
+  ✓ Line 27: IncrementInteger
+  ✓ Line 27: RemoveFunctionCall
+  ✓ Line 33: TrueToFalse
+  ⨯ Line 34: RemoveIntegerCast
+  ⨯ Line 34: RemoveIntegerCast
+  ✓ Line 34: NotIdenticalToIdentical
+  ⨯ Line 34: RemoveArrayItem
+  ⨯ Line 34: RemoveArrayItem
+  ✓ Line 35: NotIdenticalToIdentical
+  ⨯ Line 35: RemoveArrayItem
+  ⨯ Line 35: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ✓ Line 37: IdenticalToNotIdentical
+  ✓ Line 37: NotIdenticalToIdentical
+  ✓ Line 37: BooleanAndToBooleanOr
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 41: IfNegated
+  ✓ Line 42: DecrementInteger
+  ✓ Line 42: DecrementInteger
+  ✓ Line 42: DecrementInteger
+  ✓ Line 42: IncrementInteger
+  ✓ Line 42: IncrementInteger
+  ✓ Line 42: IncrementInteger
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveEarlyReturn
+  ✓ Line 45: IdenticalToNotIdentical
+  ✓ Line 46: TernaryNegated
+  ✓ Line 46: TernaryNegated
+  ✓ Line 46: RemoveMethodCall
+  ⨯ Line 47: TernaryNegated
+  ✓ Line 48: TernaryNegated
+  ✓ Line 48: CoalesceRemoveLeft
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 49: RemoveMethodCall
+  ✓ Line 52: DecrementInteger
+  ✓ Line 52: IncrementInteger
+  ✓ Line 52: RemoveArrayItem
+  ✓ Line 52: RemoveArrayItem
+  ✓ Line 52: AlwaysReturnEmptyArray
+  ⨯ Line 53: RemoveIntegerCast
+  ⨯ Line 53: RemoveArrayItem
+  ✓ Line 53: RemoveArrayItem
+  ✓ Line 53: RemoveArrayItem
+  ⨯ Line 54: RemoveArrayItem
+  ⨯ Line 55: RemoveArrayItem
+  ✓ Line 55: RemoveArrayItem
+  ✓ Line 55: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php
+  ✓ Line 20: TernaryNegated
+  ✓ Line 20: IdenticalToNotIdentical
+  ✓ Line 20: AlwaysReturnNull
+  ⨯ Line 27: RemoveIntegerCast
+  ⨯ Line 27: CoalesceRemoveLeft
+  ⨯ Line 27: DecrementInteger
+  ⨯ Line 27: IncrementInteger
+  ⨯ Line 28: RemoveIntegerCast
+  ⨯ Line 28: CoalesceRemoveLeft
+  ⨯ Line 28: DecrementInteger
+  ✓ Line 28: IncrementInteger
+  ✓ Line 31: AlwaysReturnEmptyArray
+  ✓ Line 32: RemoveArrayItem
+  ⨯ Line 33: DivisionToMultiplication
+  ⨯ Line 33: RemoveIntegerCast
+  ⨯ Line 33: MaxToMin
+  ⨯ Line 33: CeilToFloor
+  ⨯ Line 33: CeilToRound
+  ⨯ Line 33: DecrementInteger
+  ⨯ Line 33: IncrementInteger
+  ⨯ Line 33: RemoveArrayItem
+  ⨯ Line 33: RemoveArrayItem
+  ⨯ Line 33: RemoveArrayItem
+  ⨯ Line 33: RemoveArrayItem
+  ⨯ Line 33: RemoveArrayItem
+  ✓ Line 40: DecrementInteger
+  ✓ Line 40: IncrementInteger
+  ✓ Line 40: RemoveFunctionCall
+  ✓ Line 42: DecrementInteger
+  ✓ Line 42: IncrementInteger
+  ✓ Line 42: AlwaysReturnEmptyArray
+  ✓ Line 50: RemoveArrayItem
+  ✓ Line 50: RemoveArrayItem
+  ✓ Line 50: RemoveArrayItem
+  ✓ Line 52: RemoveArrayItem
+  ⨯ Line 52: RemoveArrayItem
+  ⨯ Line 52: RemoveArrayItem
+  ✓ Line 52: RemoveArrayItem
+  ✓ Line 52: RemoveArrayItem
+  ⨯ Line 54: RemoveArrayItem
+  ⨯ Line 54: RemoveArrayItem
+  ✓ Line 56: AlwaysReturnEmptyArray
+  ⨯ Line 59: RemoveIntegerCast
+  ⨯ Line 59: RemoveIntegerCast
+  ⨯ Line 59: RemoveIntegerCast
+  ⨯ Line 59: RemoveIntegerCast
+  ✓ Line 59: IdenticalToNotIdentical
+  ✓ Line 59: IdenticalToNotIdentical
+  ✓ Line 59: BooleanAndToBooleanOr
+  ⨯ Line 62: RemoveIntegerCast
+  ✓ Line 62: RemoveArrayItem
+  ⨯ Line 62: RemoveArrayItem
+  ⨯ Line 62: RemoveArrayItem
+  ⨯ Line 63: RemoveIntegerCast
+  ⨯ Line 63: RemoveArrayItem
+  ⨯ Line 63: RemoveArrayItem
+  ⨯ Line 63: RemoveArrayItem
+  ⨯ Line 63: RemoveArrayItem
+  ✓ Line 64: RemoveArrayItem
+  ✓ Line 64: RemoveArrayItem
+  ⨯ Line 65: RemoveArrayItem
+  ⨯ Line 66: TrueToFalse
+  ✓ Line 66: RemoveArrayItem
+  ⨯ Line 66: RemoveArrayItem
+  ⨯ Line 66: RemoveArrayItem
+  ✓ Line 66: RemoveArrayItem
+  ✓ Line 67: RemoveArrayItem
+  ⨯ Line 68: RemoveArrayItem
+  ⨯ Line 68: RemoveArrayItem
+  ⨯ Line 68: RemoveArrayItem
+  ⨯ Line 68: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ⨯ Line 69: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ⨯ Line 69: RemoveArrayItem
+  ⨯ Line 70: RemoveArrayItem
+  ⨯ Line 70: RemoveArrayItem
+  ✓ Line 71: RemoveArrayItem
+  ⨯ Line 72: RemoveArrayItem
+  ⨯ Line 72: RemoveArrayItem
+  ⨯ Line 72: RemoveArrayItem
+  ✓ Line 73: TernaryNegated
+  ✓ Line 73: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OwnTechnician.php
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 13: RemoveArrayItem
+  ✓ Line 14: NotIdenticalToIdentical
+  ✓ Line 14: BooleanAndToBooleanOr
+  ✓ Line 14: DecrementInteger
+  ✓ Line 14: IncrementInteger
+  ✓ Line 14: RemoveFunctionCall
+  ⨯ Line 16: RemoveIntegerCast
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RequestProgress.php
+  ✓ Line 24: PlusToMinus
+  ✓ Line 24: RemoveIntegerCast
+  ✓ Line 24: DecrementInteger
+  ✓ Line 24: IncrementInteger
+  ✓ Line 25: PlusToMinus
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveMethodCall
+  ✓ Line 27: RemoveMethodCall
+  ✓ Line 28: RemoveMethodCall
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php
+  ✓ Line 29: RemoveIntegerCast
+  ✓ Line 31: RemoveIntegerCast
+  ✓ Line 32: IfNegated
+  ✓ Line 32: IdenticalToNotIdentical
+  ✓ Line 33: RemoveEarlyReturn
+  ⨯ Line 36: RemoveIntegerCast
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 38: RemoveArrayItem
+  ✓ Line 39: PlusToMinus
+  ⨯ Line 39: RemoveIntegerCast
+  ✓ Line 39: DecrementInteger
+  ✓ Line 39: IncrementInteger
+  ✓ Line 39: RemoveArrayItem
+  ✓ Line 40: TernaryNegated
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 44: ForeachEmptyIterable
+  ✓ Line 45: RemoveMethodCall
+  ⨯ Line 47: RemoveIntegerCast
+  ⨯ Line 47: RemoveMethodCall
+  ✓ Line 49: AlwaysReturnNull
+  ✓ Line 57: DecrementInteger
+  ✓ Line 57: IncrementInteger
+  ✓ Line 59: IdenticalToNotIdentical
+  ✓ Line 59: BooleanAndToBooleanOr
+  ✓ Line 59: RemoveNot
+  ✓ Line 61: RemoveArrayItem
+  ✓ Line 61: RemoveArrayItem
+  ✓ Line 61: RemoveArrayItem
+  ✓ Line 64: ForeachEmptyIterable
+  ✓ Line 65: MinusToPlus
+  ✓ Line 66: IfNegated
+  ✓ Line 66: SmallerOrEqualToGreater
+  ⨯ Line 66: SmallerOrEqualToSmaller
+  ⨯ Line 66: DecrementInteger
+  ✓ Line 66: IncrementInteger
+  ⨯ Line 67: BreakToContinue
+  ✓ Line 69: IfNegated
+  ⨯ Line 69: GreaterToGreaterOrEqual
+  ✓ Line 69: GreaterToSmallerOrEqual
+  ✓ Line 71: RemoveArrayItem
+  ✓ Line 71: RemoveMethodCall
+  ✓ Line 73: RemoveFunctionCall
+  ✓ Line 76: AlwaysReturnEmptyArray
+  ✓ Line 81: TrueToFalse
+  ⨯ Line 81: DecrementInteger
+  ⨯ Line 81: IncrementInteger
+  ✓ Line 83: RemoveArrayItem
+  ✓ Line 83: RemoveArrayItem
+  ✓ Line 83: RemoveArrayItem
+  ✓ Line 84: RemoveArrayItem
+  ⨯ Line 84: RemoveArrayItem
+  ✓ Line 84: RemoveArrayItem
+  ✓ Line 84: RemoveArrayItem
+  ✓ Line 85: RemoveArrayItem
+  ⨯ Line 85: RemoveArrayItem
+  ✓ Line 86: RemoveArrayItem
+  ⨯ Line 89: RemoveIntegerCast
+  ✓ Line 89: RemoveMethodCall
+  ✓ Line 91: RemoveMethodCall
+  ✓ Line 92: DecrementInteger
+  ✓ Line 92: IncrementInteger
+  ⨯ Line 92: RemoveArrayItem
+  ⨯ Line 92: RemoveArrayItem
+  ⨯ Line 92: RemoveArrayItem
+  ✓ Line 92: RemoveArrayItem
+  ⨯ Line 92: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\SearchState.php
+  ✓ Line 15: RemoveIntegerCast
+  ✓ Line 15: IdenticalToNotIdentical
+  ✓ Line 15: SmallerOrEqualToGreater
+  ✓ Line 15: SmallerOrEqualToSmaller
+  ✓ Line 15: BooleanAndToBooleanOr
+  ✓ Line 15: DecrementInteger
+  ✓ Line 15: IncrementInteger
+  ✓ Line 20: IfNegated
+  ✓ Line 20: NotIdenticalToIdentical
+  ⨯ Line 21: RemoveEarlyReturn
+  ✓ Line 24: IfNegated
+  ✓ Line 24: IdenticalToNotIdentical
+  ✓ Line 24: RemoveNullSafeOperator
+  ⨯ Line 25: RemoveEarlyReturn
+  ✓ Line 27: IfNegated
+  ✓ Line 27: IdenticalToNotIdentical
+  ✓ Line 27: RemoveNullSafeOperator
+  ✓ Line 28: RemoveEarlyReturn
+  ✓ Line 33: TernaryNegated
+  ⨯ Line 33: BooleanAndToBooleanOr
+  ✓ Line 39: AlwaysReturnNull
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 28: ForeachEmptyIterable
+  ⨯ Line 29: RemoveIntegerCast
+  ✓ Line 29: IfNegated
+  ✓ Line 29: IdenticalToNotIdentical
+  ✓ Line 29: NotIdenticalToIdentical
+  ✓ Line 29: NotIdenticalToIdentical
+  ✓ Line 29: BooleanAndToBooleanOr
+  ✓ Line 29: BooleanAndToBooleanOr
+  ✓ Line 30: MinusToPlus
+  ✓ Line 30: DivisionToMultiplication
+  ⨯ Line 30: RemoveIntegerCast
+  ⨯ Line 30: RoundToFloor
+  ⨯ Line 30: RoundToCeil
+  ✓ Line 30: DecrementInteger
+  ✓ Line 30: IncrementInteger
+  ✓ Line 37: CoalesceRemoveLeft
+  ⨯ Line 37: DecrementInteger
+  ⨯ Line 37: IncrementInteger
+  ✓ Line 39: AlwaysReturnEmptyArray
+  ✓ Line 40: TernaryNegated
+  ✓ Line 40: GreaterOrEqualToGreater
+  ✓ Line 40: GreaterOrEqualToSmaller
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 41: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 43: TernaryNegated
+  ✓ Line 43: IdenticalToNotIdentical
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 49: CoalesceRemoveLeft
+  ✓ Line 50: IfNegated
+  ✓ Line 50: SmallerToGreaterOrEqual
+  ✓ Line 50: SmallerToSmallerOrEqual
+  ✓ Line 51: RemoveEarlyReturn
+  ✓ Line 53: RemoveFunctionCall
+  ✓ Line 54: DecrementInteger
+  ⨯ Line 54: IncrementInteger
+  ⨯ Line 56: PlusToMinus
+  ⨯ Line 56: MinusToPlus
+  ⨯ Line 56: DivisionToMultiplication
+  ✓ Line 56: ModulusToMultiplication
+  ⨯ Line 56: RemoveIntegerCast
+  ✓ Line 56: TernaryNegated
+  ✓ Line 56: IdenticalToNotIdentical
+  ⨯ Line 56: RoundToFloor
+  ⨯ Line 56: RoundToCeil
+  ✓ Line 56: DecrementInteger
+  ✓ Line 56: DecrementInteger
+  ⨯ Line 56: DecrementInteger
+  ⨯ Line 56: DecrementInteger
+  ✓ Line 56: IncrementInteger
+  ✓ Line 56: IncrementInteger
+  ⨯ Line 56: IncrementInteger
+  ⨯ Line 56: IncrementInteger
+  ✓ Line 56: AlwaysReturnNull
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php
+  ✓ Line 21: IfNegated
+  - Line 22: RemoveArrayItem
+  - Line 22: RemoveMethodCall
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ⨯ Line 27: RemoveArrayItem
+  ⨯ Line 27: RemoveArrayItem
+  ⨯ Line 27: RemoveArrayItem
+  ⨯ Line 27: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ⨯ Line 41: RemoveStringCast
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 50: TernaryNegated
+  ⨯ Line 50: GreaterOrEqualToGreater
+  ✓ Line 50: GreaterOrEqualToSmaller
+  ⨯ Line 50: DecrementInteger
+  ⨯ Line 50: IncrementInteger
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ⨯ Line 30: RemoveStringCast
+  ⨯ Line 35: RemoveArrayItem
+  ⨯ Line 35: RemoveArrayItem
+  ⨯ Line 35: RemoveArrayItem
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 38: RemoveStringCast
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php
+  - Line 21: AlwaysReturnEmptyArray
+  - Line 22: RemoveArrayItem
+  - Line 24: RemoveArrayItem
+  - Line 24: RemoveArrayItem
+  - Line 24: RemoveArrayItem
+  - Line 24: RemoveArrayItem
+  - Line 25: RemoveArrayItem
+  - Line 25: RemoveArrayItem
+  - Line 25: RemoveArrayItem
+  - Line 25: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ⨯ Line 37: DecrementInteger
+  ⨯ Line 37: IncrementInteger
+  ⨯ Line 37: RemoveFunctionCall
+  ⨯ Line 38: RemoveIntegerCast
+  ✓ Line 38: IfNegated
+  ✓ Line 38: IdenticalToNotIdentical
+  ✓ Line 39: PlusToMinus
+  ✓ Line 39: RemoveEarlyReturn
+  ⨯ Line 42: BooleanAndToBooleanOr
+  ⨯ Line 42: DecrementInteger
+  ⨯ Line 42: IncrementInteger
+  ⨯ Line 42: RemoveFunctionCall
+  ✓ Line 44: RemoveArrayItem
+  ⨯ Line 44: RemoveArrayItem
+  ⨯ Line 44: RemoveArrayItem
+  ✓ Line 46: TernaryNegated
+  ✓ Line 46: AlwaysReturnEmptyArray
+  ✓ Line 51: AlwaysReturnEmptyArray
+  ⨯ Line 52: RemoveIntegerCast
+  ✓ Line 52: RemoveArrayItem
+  ⨯ Line 52: RemoveArrayItem
+  ✓ Line 52: RemoveArrayItem
+  ⨯ Line 53: RemoveArrayItem
+  ⨯ Line 53: RemoveArrayItem
+  ⨯ Line 53: RemoveArrayItem
+  ⨯ Line 54: RemoveArrayItem
+  ⨯ Line 54: RemoveArrayItem
+  ⨯ Line 54: RemoveArrayItem
+  ⨯ Line 55: RemoveArrayItem
+  ✓ Line 55: RemoveArrayItem
+  ⨯ Line 55: RemoveArrayItem
+  ⨯ Line 56: RemoveArrayItem
+  ⨯ Line 56: RemoveArrayItem
+  ⨯ Line 57: RemoveArrayItem
+  ⨯ Line 57: RemoveArrayItem
+  ⨯ Line 58: RemoveArrayItem
+  ⨯ Line 59: RemoveArrayItem
+  ⨯ Line 60: RemoveArrayItem
+  ⨯ Line 67: AlwaysReturnEmptyArray
+  ⨯ Line 68: RemoveArrayItem
+  ⨯ Line 69: RemoveArrayItem
+  ⨯ Line 70: TernaryNegated
+  ⨯ Line 70: IdenticalToNotIdentical
+  ⨯ Line 70: RemoveArrayItem
+  ⨯ Line 71: TrueToFalse
+  ⨯ Line 71: RemoveArrayItem
+  ⨯ Line 72: FalseToTrue
+  ⨯ Line 72: RemoveArrayItem
+  ⨯ Line 78: AlwaysReturnEmptyArray
+  ⨯ Line 79: RemoveArrayItem
+  ⨯ Line 79: RemoveArrayItem
+  ⨯ Line 79: RemoveArrayItem
+  ⨯ Line 80: PlusToMinus
+  ⨯ Line 80: RemoveArrayCast
+  ⨯ Line 80: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php
+  ✓ Line 33: DecrementInteger
+  ✓ Line 33: IncrementInteger
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 34: RemoveStringCast
+  ✓ Line 35: TernaryNegated
+  ✓ Line 35: IdenticalToNotIdentical
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 35: EmptyStringToNotEmpty
+  - Line 42: RemoveMethodCall
+  - Line 51: RemoveIntegerCast
+  - Line 51: DecrementInteger
+  - Line 51: IncrementInteger
+  - Line 51: RemoveArrayItem
+  - Line 51: RemoveArrayItem
+  - Line 51: RemoveArrayItem
+  - Line 56: RemoveArrayItem
+  - Line 56: RemoveArrayItem
+  - Line 56: RemoveArrayItem
+  - Line 56: RemoveArrayItem
+  - Line 57: RemoveIntegerCast
+  - Line 57: RemoveMethodCall
+  ✓ Line 64: RemoveArrayItem
+  ✓ Line 64: RemoveArrayItem
+  ⨯ Line 65: RemoveStringCast
+  ⨯ Line 67: RemoveIntegerCast
+  ✓ Line 67: DecrementInteger
+  ✓ Line 67: IncrementInteger
+  ✓ Line 67: RemoveArrayItem
+  ✓ Line 67: RemoveArrayItem
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\FAdministration\Application\RetireEvidence.php
+  ✓ Line 23: RemoveMethodCall
+  ✓ Line 26: DecrementInteger
+  ✓ Line 26: IncrementInteger
+  ✓ Line 26: RemoveFunctionCall
+  ✓ Line 27: IfNegated
+  ✓ Line 28: DecrementInteger
+  ✓ Line 28: IncrementInteger
+  ✓ Line 30: RemoveArrayItem
+  ⨯ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveMethodCall
+  ✓ Line 31: RemoveMethodCall
+  ⨯ Line 32: RemoveArrayItem
+  ⨯ Line 32: RemoveArrayItem
+  ✓ Line 33: RemoveMethodCall
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php
+  ✓ Line 24: AlwaysReturnEmptyArray
+  ⨯ Line 30: IfNegated
+  - Line 31: RemoveMethodCall
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 35: RemoveArrayItem
+  ⨯ Line 36: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ✓ Line 41: IdenticalToNotIdentical
+  ✓ Line 41: IdenticalToNotIdentical
+  ⨯ Line 41: BooleanAndToBooleanOr
+  ✓ Line 41: BooleanAndToBooleanOr
+  ✓ Line 41: DecrementInteger
+  ✓ Line 41: IncrementInteger
+  ✓ Line 41: RemoveFunctionCall
+  ⨯ Line 43: RemoveIntegerCast
+  ✓ Line 43: TrueToFalse
+  ⨯ Line 43: DecrementInteger
+  ⨯ Line 43: IncrementInteger
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 46: RemoveArrayItem
+  ✓ Line 47: RemoveMethodCall
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 48: RemoveArrayItem
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 51: RemoveArrayItem
+  ⨯ Line 57: RemoveFunctionCall
+  ⨯ Line 59: UnwrapArrayMap
+  ✓ Line 59: TernaryNegated
+  ✓ Line 59: AlwaysReturnEmptyArray
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Rules\RuleBook.php
+  ✓ Line 18: CoalesceRemoveLeft
+  ⨯ Line 25: RemoveIntegerCast
+  ✓ Line 25: TernaryNegated
+  ✓ Line 31: AlwaysReturnEmptyArray
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 40: RemoveIntegerCast
+  ✓ Line 41: RemoveDoubleCast
+  - Line 42: RemoveBooleanCast
+  ✓ Line 43: RemoveStringCast
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php
+  - Line 21: DecrementInteger
+  - Line 21: IncrementInteger
+  ⨯ Line 30: ForeachEmptyIterable
+  - Line 31: RemoveIntegerCast
+  - Line 31: RemoveFunctionCall
+  ✓ Line 33: ForeachEmptyIterable
+  ✓ Line 34: IfNegated
+  - Line 35: RemoveIntegerCast
+  - Line 35: RemoveFunctionCall
+  ✓ Line 36: ElseIfNegated
+  ⨯ Line 37: RemoveIntegerCast
+  ✓ Line 37: RemoveFunctionCall
+  ⨯ Line 40: ForeachEmptyIterable
+  ⨯ Line 41: RemoveFunctionCall
+  ✓ Line 43: ForeachEmptyIterable
+  ✓ Line 44: RemoveFunctionCall
+  ⨯ Line 46: RemoveMethodCall
+  ✓ Line 57: TernaryNegated
+  ✓ Line 57: IdenticalToNotIdentical
+  ⨯ Line 57: MaxToMin
+
+   RUN  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Http\Middleware\RejectSuspendedTechnician.php
+  ⨯ Line 15: RemoveNullSafeOperator
+  ⨯ Line 16: DecrementInteger
+  ⨯ Line 16: IncrementInteger
+  ⨯ Line 16: RemoveFunctionCall
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 16: DecrementInteger - ID: 39bcba8a35187d76
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 16: IncrementInteger - ID: ea7e9bcebd42a985
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 38: RemoveDoubleCast - ID: b99752a136acae71
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 38: RemoveDoubleCast - ID: 24afcd53aeda0c86
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 39: RemoveDoubleCast - ID: 7fdd42757ac653a3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 80: RemoveDoubleCast - ID: 0966630709b6cd39
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 80: RemoveDoubleCast - ID: fffc0345648573e9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 80: DecrementFloat - ID: aa89c515f2dc1226
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 80: IncrementFloat - ID: f5728e2acfc4e1e3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 80: DecrementInteger - ID: 1d03846d4be8b806
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 80: IncrementInteger - ID: b2f1081376992836
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 86: DecrementFloat - ID: 39fec26c321e5e24
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 86: IncrementFloat - ID: b57d1d9f385da017
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 86: RemoveEarlyReturn - ID: b2550f9206823e1f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 94: DecrementFloat - ID: b1eeee434cf1adfb
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Ranker.php  > Line 94: IncrementFloat - ID: bb97063a459b9172
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Scorer.php  > Line 8: RemoveArrayItem - ID: a70bc9f382a78703
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Scorer.php  > Line 8: RemoveArrayItem - ID: d75dc2b6ab4497d7
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Scorer.php  > Line 8: RemoveArrayItem - ID: 315b5be16d18e51c
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Scorer.php  > Line 8: RemoveArrayItem - ID: 3e6b7620f5100312
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Scorer.php  > Line 19: RemoveDoubleCast - ID: 21c44698c26903c1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Domain\Scorer.php  > Line 19: RemoveDoubleCast - ID: f830a41a91092fc9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\MailSandboxChannel.php  > Line 17: RemoveMethodCall - ID: 4b81c656537fd350
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: DecrementInteger - ID: a16f77039bd5e57b
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: DecrementInteger - ID: 8cd43e87c45e1586
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: DecrementInteger - ID: 05a058c2e0af1f6f
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: IncrementInteger - ID: e40e7f378b3e42a3
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: IncrementInteger - ID: e2d39dbe1b617a74
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: IncrementInteger - ID: f6008654128e1178
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: RemoveArrayItem - ID: 85e1e0cd18ee554b
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: RemoveArrayItem - ID: 5279e0b953349372
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 18: RemoveArrayItem - ID: 8b3573d600c7435c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 29: RemoveIntegerCast - ID: 70f9fcc1b6a18815
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 38: RemoveArrayItem - ID: 4cae33113e79127c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 45: IfNegated - ID: 833abf6dc686e267
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\NotificationDelivery.php  > Line 46: RemoveMethodCall - ID: 4cf057a584e73494
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 23: GreaterOrEqualToGreater - ID: 71dcdc80485acc45
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 27: DecrementInteger - ID: fc6d19bcc9b6edc8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 27: IncrementInteger - ID: cab297cc518a255b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 33: DecrementInteger - ID: 77b68e68c8e6dcb3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 33: IncrementInteger - ID: 77ec44e3c27af752
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 34: TernaryNegated - ID: 5456956f1cfe2ce4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 34: IdenticalToNotIdentical - ID: 360ad2772f67621b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 34: RemoveArrayItem - ID: cd569bcd674e6bcc
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 44: DecrementInteger - ID: 21ff9dc18f8779e8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Application\OutboxPublisher.php  > Line 44: IncrementInteger - ID: 96fb51dd969a33cd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 20: RemoveArrayItem - ID: 325818c14c516dbd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 20: RemoveArrayItem - ID: 5aee5777ef98f4e2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 20: RemoveArrayItem - ID: 08099fef4cf778ec
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 20: RemoveArrayItem - ID: db67ec8ab481d694
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 21: RemoveArrayItem - ID: dccf9548891f7c40
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 21: RemoveArrayItem - ID: ae02e01f86b2f742
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 21: RemoveArrayItem - ID: 7d6f53e1ebd31c3f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 21: RemoveArrayItem - ID: b3dae60d21f6f1fd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 22: RemoveArrayItem - ID: 85e3c347e8c79f92
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 22: RemoveArrayItem - ID: 95499d78972338a9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 22: RemoveArrayItem - ID: ec14e43d4ea2b992
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 22: RemoveArrayItem - ID: 46b2f3e5690f927c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 22: RemoveArrayItem - ID: ac42033e9821ee27
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 26: RemoveIntegerCast - ID: 8b805c66bd09dd09
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 26: CoalesceRemoveLeft - ID: 2b186baa82ff678d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 26: DecrementInteger - ID: 25451327294f231a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 26: IncrementInteger - ID: b8b983d13eead08c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 27: RemoveIntegerCast - ID: 29613e7dff061455
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 27: CoalesceRemoveLeft - ID: 1eda0be49d04a345
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 27: DecrementInteger - ID: 1561b48316b4dbde
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 30: RemoveArrayItem - ID: a7554dde2cf5d32a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 30: RemoveArrayItem - ID: 3ab0ff7139f79070
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 30: RemoveArrayItem - ID: 305ef62c4a00927e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 30: RemoveArrayItem - ID: fe809dcfa86af643
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 31: RemoveIntegerCast - ID: 82b1212ad866009b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 31: RemoveArrayItem - ID: 487b38782f4372d7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 32: RemoveArrayItem - ID: 20ac7114981eb2c1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 33: TernaryNegated - ID: 1cc34c50e50db927
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 33: IdenticalToNotIdentical - ID: 2cd0cf3fee87588a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 33: RemoveArrayItem - ID: ca0b83ed141ce15b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: DivisionToMultiplication - ID: a9b34ae3fc383530
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: RemoveIntegerCast - ID: 7d57f0b6ed58d660
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: MaxToMin - ID: 7f78e7e50e636a0f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: CeilToFloor - ID: 6192a1993575cd3b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: CeilToRound - ID: 8e302a0adf3aabbd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: DecrementInteger - ID: 80c23ec43ec3eaac
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: IncrementInteger - ID: faf047c7b3b9f89d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: RemoveArrayItem - ID: 0074ad72614f6ee0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: RemoveArrayItem - ID: 4e9b056f8b815db1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: RemoveArrayItem - ID: 6dc8b5e83f11a8da
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: RemoveArrayItem - ID: c38394206821a08c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\CNotifications\Http\Controllers\NotificationController.php  > Line 37: RemoveArrayItem - ID: 2b04e8460c205db7
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 15: DecrementInteger - ID: 119572df0a869f60
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 15: IncrementInteger - ID: 688bbffded35d472
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 30: RemoveIntegerCast - ID: 093c62791e166bb4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 30: RemoveArrayItem - ID: 39e57b2bf0c89d70
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 31: RemoveIntegerCast - ID: a39ddc0861941385
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 31: TernaryNegated - ID: e437820a324cd057
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 31: RemoveArrayItem - ID: b86db726e612e976
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 31: RemoveArrayItem - ID: 2e46e185992ccd89
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 31: RemoveArrayItem - ID: 13e0554e3f43fd90
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 31: RemoveArrayItem - ID: b74fbfaa65daf508
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 31: RemoveArrayItem - ID: 82f3ab2bc9026e4e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 42: RemoveArrayItem - ID: 59e5727bb51afa86
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 45: RemoveIntegerCast - ID: 1225deba64962fa9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 45: RemoveArrayItem - ID: 29313c4c416b993d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 47: RemoveIntegerCast - ID: e5117a659426bf6f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 47: RemoveArrayItem - ID: 21100473962942ab
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 47: RemoveArrayItem - ID: 228dd533c53c038f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 47: RemoveArrayItem - ID: 17597bc22943f3e4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 47: RemoveArrayItem - ID: 6700cf2df64b7ed3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 47: RemoveArrayItem - ID: e1a0dfa594b5b367
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 48: RemoveArrayItem - ID: 2a838dfa4d1323b5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 48: RemoveArrayItem - ID: 9d994b354d51d3a1
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 49: RemoveIntegerCast - ID: d155f84ef7c2f1e8
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 49: RemoveIntegerCast - ID: 795e6eae0760050e
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 49: RemoveArrayItem - ID: 5a6a36d0bf139c74
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 49: RemoveArrayItem - ID: 819f0de0eba9cc09
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 50: RemoveArrayItem - ID: c03b7bead9bf63f8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 50: RemoveArrayItem - ID: 628f51be11dc6965
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 51: BooleanAndToBooleanOr - ID: 07fcceac0e6a0766
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 53: RemoveArrayItem - ID: 55887be7ef09ba0e
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 62: RemoveEarlyReturn - ID: 6047fa800d86d191
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 71: DecrementInteger - ID: 78cb6e9e93cc7c63
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 71: IncrementInteger - ID: 03bc26eaa39ce757
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 81: DecrementInteger - ID: 5391ef4382a306ed
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 81: IncrementInteger - ID: 5b36de34b1d66951
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 83: CoalesceRemoveLeft - ID: b1b6a35f5ec27eb2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 86: RemoveIntegerCast - ID: edff2802b7f8a0bb
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 86: TernaryNegated - ID: 9370666156b17f0e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 86: IdenticalToNotIdentical - ID: 33291b0ca7f00282
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 86: RemoveArrayItem - ID: c39b5f3b704aef27
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 87: RemoveIntegerCast - ID: eeedd976e96ce5c1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 87: TernaryNegated - ID: 35cdfef678d6a77d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 87: IdenticalToNotIdentical - ID: 1023b931b56ee55f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 87: RemoveArrayItem - ID: 02d7c60edf875113
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 88: RemoveArrayItem - ID: caf9a759610be4f7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 89: RemoveArrayItem - ID: 19a49248626c83dd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 90: TrueToFalse - ID: 735c4e44a84edbb5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 90: RemoveArrayItem - ID: ac965e63f559b218
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 90: RemoveArrayItem - ID: 9309df00c466bd41
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 94: RemoveArrayItem - ID: 8665d599e2d9c0e4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 94: RemoveArrayItem - ID: 2bfc728232a2ee2d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 94: RemoveArrayItem - ID: ad61230cb5c32dde
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 94: ConcatRemoveLeft - ID: 4e3ae7fb13872abc
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 94: ConcatRemoveRight - ID: 310553e4e6525381
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 94: ConcatSwitchSides - ID: 38a074aba83eb323
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 100: DecrementInteger - ID: 5750f769a7752e3f
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 100: IncrementInteger - ID: 4c93698a568db6ee
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 101: ModulusToMultiplication - ID: 43dd90b6361bd4a2
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 101: DecrementInteger - ID: 03374a1ed5af1786
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 101: IncrementInteger - ID: b286480f296e2166
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: TernaryNegated - ID: 707e80c68ee2b6a3
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: TernaryNegated - ID: a3f012ebbc23f100
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: IdenticalToNotIdentical - ID: 1fed053d36ac064a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: GreaterToGreaterOrEqual - ID: 8abcfd64859d815c
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: GreaterToGreaterOrEqual - ID: bb6160945d013444
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: GreaterToSmallerOrEqual - ID: c8f1da756144928a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: GreaterToSmallerOrEqual - ID: 963cdb9a6fa4b279
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: BooleanOrToBooleanAnd - ID: 5734917c61c431f7
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: DecrementInteger - ID: a85362c9550a6519
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: DecrementInteger - ID: 1c2d2d15007671da
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: DecrementInteger - ID: 991bd9f25521eaea
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: IncrementInteger - ID: d922192b68fa8085
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: IncrementInteger - ID: d90321806fc23fb2
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: IncrementInteger - ID: 667a6bd997f1a933
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: ConcatRemoveLeft - ID: 1473621c9ea77889
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: ConcatRemoveRight - ID: 809e5c46ae9563af
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: ConcatSwitchSides - ID: a705f3020160750a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: EmptyStringToNotEmpty - ID: 6a897b8297f6e9a8
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: EmptyStringToNotEmpty - ID: e87db5d92f0fa341
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 103: UnwrapTrim - ID: a593802e2eb5e303
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 114: AlwaysReturnNull - ID: ee24d02d63967c14
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 115: RemoveArrayItem - ID: 5d16cbba4be3df51
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 115: RemoveArrayItem - ID: a1be7ee648ea08d2
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 115: RemoveArrayItem - ID: d7e7eca8e7f59d01
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 115: RemoveArrayItem - ID: bf0ca6cd15d33fc3
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 116: RemoveIntegerCast - ID: f6487689d75c0c96
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 116: RemoveArrayItem - ID: e8fc727587dbe563
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 117: TrueToFalse - ID: d8a1f73f2348dda3
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 117: RemoveArrayItem - ID: 8f2cdcdabf35930e
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 117: RemoveArrayItem - ID: 1b64946c170e51b3
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 117: RemoveArrayItem - ID: b871767ae709f49e
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 117: RemoveArrayItem - ID: 00951501eb543d6d
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 118: RemoveArrayItem - ID: 1d08f98b43d8809a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 119: TernaryNegated - ID: f6572a61da89d146
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 119: RemoveArrayItem - ID: 97421e1f5679854c
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 119: RemoveArrayItem - ID: cb2351dd52fc44af
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 119: RemoveArrayItem - ID: 427b8f0f64336d52
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 120: RemoveArrayItem - ID: 47265a6a0a0c508c
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\CandidatesView.php  > Line 120: RemoveArrayItem - ID: 92544f1c1f921f33
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 35: RemoveIntegerCast - ID: 9544127ec77b8d0a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 35: RemoveIntegerCast - ID: 1988b5453924673b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 35: BooleanOrToBooleanAnd - ID: 8cdc86d6d49bc2e9
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 36: RemoveEarlyReturn - ID: c67544470bc4006f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 50: RemoveMethodCall - ID: bcd169a52bca2668
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 51: RemoveIntegerCast - ID: 9f73093df2cd90db
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 63: RemoveIntegerCast - ID: a85b75c3715c9962
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 63: RemoveIntegerCast - ID: 2e78c8ffea3d6377
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 64: RemoveEarlyReturn - ID: c62e2f3c47805c7f
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 67: RemoveEarlyReturn - ID: 15e80e8af4224cf5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 69: RemoveIntegerCast - ID: 822bff380faf6b65
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 72: RemoveMethodCall - ID: 44ccedadeecc6628
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 74: RemoveArrayItem - ID: dd1bf395d32cc6be
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 74: RemoveArrayItem - ID: 8424f114444f7e56
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 75: RemoveIntegerCast - ID: d15d97813f5a8908
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 75: RemoveArrayItem - ID: aeda351d612c3df9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 85: RemoveArrayItem - ID: a5513d53a7e291bf
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 85: RemoveArrayItem - ID: b0d3f456ba9c7411
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 86: RemoveArrayItem - ID: 9676ed893f5e0635
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 90: RemoveArrayItem - ID: 9f173377ad4209f0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 92: RemoveArrayItem - ID: 9f10cf0264fb2258
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 97: RemoveIntegerCast - ID: 27096318b0cbd200
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 98: RemoveArrayItem - ID: 5e6b6d5c58fbb545
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 98: RemoveArrayItem - ID: 0bf99a38e7fadc75
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 99: RemoveIntegerCast - ID: f742b0c7284f117b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 100: RemoveMethodCall - ID: 5958b290db2fd59b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 101: RemoveIntegerCast - ID: 4f9fd29403d812ce
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 104: RemoveIntegerCast - ID: ec27b3bf7d46736f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 104: RemoveArrayItem - ID: beb1ac7fa56449d4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 104: RemoveArrayItem - ID: 5391f4b2071adbe9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 104: RemoveArrayItem - ID: b7bf4a16ea78cc4f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 105: RemoveIntegerCast - ID: 006c1cdf4100fef4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 105: RemoveArrayItem - ID: 8282a72f8efe899f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 105: RemoveArrayItem - ID: 7340dd89426d8366
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 105: RemoveArrayItem - ID: 060f35f70ed02dec
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 106: TrueToFalse - ID: 06d90d610aae2cc2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 106: RemoveArrayItem - ID: 1173c5cc15f8b271
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 106: RemoveArrayItem - ID: 54bdbc00826614db
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 107: RemoveArrayItem - ID: de0cf56624d17e82
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 108: RemoveArrayItem - ID: 950f0b11bfb7bc25
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 108: RemoveArrayItem - ID: d3e1612d043ea3cf
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 108: RemoveArrayItem - ID: 69c81bbc44c3a295
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 118: RemoveArrayItem - ID: f00e289d6b0f7f73
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 118: RemoveMethodCall - ID: 3f90faf853d2b486
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 123: RemoveArrayItem - ID: 18c8770fccc5b2a8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\ClientSelection.php  > Line 123: RemoveArrayItem - ID: 6932935fdf53b49f
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 85: TernaryNegated - ID: 35162bf592780c2a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 85: IdenticalToNotIdentical - ID: b79c94bb03cb9bc7
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 85: BooleanAndToBooleanOr - ID: 0d46bfa70c2a5c65
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 92: TernaryNegated - ID: ce35610beee14367
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 96: RemoveIntegerCast - ID: 81a557a42ca08d20
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 96: GreaterToGreaterOrEqual - ID: 3dd0080e89a1285e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 96: BooleanOrToBooleanAnd - ID: 86e67f3029073838
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 96: BooleanOrToBooleanAnd - ID: 38e2457ccff54e29
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 97: SmallerToGreaterOrEqual - ID: 362f1f6e2100dcd7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 97: SmallerToSmallerOrEqual - ID: f7f60cfe41de24c5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 98: FalseToTrue - ID: f4c72ffc10816f3b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 98: RemoveEarlyReturn - ID: 4c98686fdd48e630
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 102: SmallerToSmallerOrEqual - ID: 3e52ca6297ef782e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 102: SmallerOrEqualToSmaller - ID: a51373c447ac3073
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 102: BooleanAndToBooleanOr - ID: d7266de923ff9478
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 102: RemoveEarlyReturn - ID: 2207b2971b52e10a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 105: SmallerOrEqualToSmaller - ID: af8d20b81290f9b2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 105: SmallerOrEqualToSmaller - ID: 896e7f8a3bb29167
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Eligibility.php  > Line 105: BooleanAndToBooleanOr - ID: 2c4e071a18ee729d
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 35: IdenticalToNotIdentical - ID: 9876bdfbaaa0a936
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 35: IdenticalToNotIdentical - ID: 6a8bfdd4a68f074f
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 35: BooleanOrToBooleanAnd - ID: 8aadd8eb6864399d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 67: RemoveDoubleCast - ID: 8652809dcece7d39
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 68: RemoveDoubleCast - ID: d4cbe3e2cee1fcc9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 68: RemoveIntegerCast - ID: bc5507aeec564e83
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 68: RemoveArrayItem - ID: a1dab9af7217fbcb
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 69: RemoveDoubleCast - ID: 340587ee5abb913c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 72: RemoveArrayItem - ID: a40848d7e64eab72
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 73: RemoveIntegerCast - ID: 9e1be5e36b77f808
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 75: RemoveArrayItem - ID: 732d4ae379eb116e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 85: CoalesceRemoveLeft - ID: 84a0580ab3460d04
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 85: CoalesceRemoveLeft - ID: e09a02bed7b1df0a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 85: RemoveArrayItem - ID: cab8c0cab4581194
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 85: RemoveArrayItem - ID: 707ce0c6a0a8ed7b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 87: CoalesceRemoveLeft - ID: 7d49178a4d7a3f03
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 87: RemoveArrayItem - ID: ae0d8a84a7bc4f9e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 88: RemoveArrayItem - ID: a52082650a50e9b1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\Matcher.php  > Line 104: RemoveIntegerCast - ID: fca0985924e058df
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 51: RemoveNot - ID: 9decf84593b030c1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 51: RemoveArrayItem - ID: 13d8ae2915cfd632
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 51: RemoveArrayItem - ID: 73fdb51db7396bfe
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 53: RemoveArrayItem - ID: e509f224ab584bc1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 53: RemoveArrayItem - ID: b6101dbd3c54ef1d
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 56: TernaryNegated - ID: 3624f2225e4eaf40
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 56: IdenticalToNotIdentical - ID: c799e264df329419
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 56: RemoveMethodCall - ID: cf5b034c6c067167
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 65: RemoveIntegerCast - ID: 9f5738c309e65566
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 67: BooleanOrToBooleanAnd - ID: 1001a4c0c93a4228
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 67: BooleanOrToBooleanAnd - ID: 5c259c4478e2f2ee
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 83: BooleanAndToBooleanOr - ID: 435acc1768bdc948
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 99: RemoveMethodCall - ID: 970030016e65e675
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 116: RemoveEarlyReturn - ID: d69cbb7df46aab8b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 119: RemoveMethodCall - ID: 9dd5a9776e80f1c0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 121: RemoveArrayItem - ID: b24d27ec3c368b8a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 125: RemoveMethodCall - ID: c40ed5ead94746d4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 127: RemoveArrayItem - ID: d90405f9b4b731de
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 127: RemoveEarlyReturn - ID: 61b8db798c20ef23
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 135: RemoveIntegerCast - ID: 67778bf1d30c68e1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 136: RemoveArrayItem - ID: 50624ce30a132bee
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 138: RemoveArrayItem - ID: f67e4f2adef3bbb3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 138: RemoveArrayItem - ID: e74a5e6095b91e80
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 139: RemoveArrayItem - ID: 6afcce1b08f29db7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 143: RemoveMethodCall - ID: ff9c3741e8463aaa
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 144: RemoveArrayItem - ID: 4a013ca884ca6fb0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 144: RemoveArrayItem - ID: cc36b316e61cb18b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 144: RemoveArrayItem - ID: f4a48b8b9d9a0dc4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 144: RemoveArrayItem - ID: a761e1e5402c4daa
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 151: RemoveIntegerCast - ID: 0a6c2b98823f2ea4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 151: DecrementInteger - ID: 5dc4c90ded114779
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 151: IncrementInteger - ID: 158f7f47bd75375e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 151: RemoveArrayItem - ID: 1d0fbae437eb0770
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 151: RemoveArrayItem - ID: e9efe7106f9c24a1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 152: TernaryNegated - ID: 7f5d67176488ca43
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 152: IdenticalToNotIdentical - ID: 48f529d05fcff5dd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 152: RemoveArrayItem - ID: 0c11955f86f0c3f6
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 169: RemoveArrayItem - ID: 2c2e29917cf10b1e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 169: RemoveArrayItem - ID: 01733440e9d8e269
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 172: RemoveMethodCall - ID: 343287800feceedd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 175: RemoveArrayItem - ID: 9b9fc8ecf56fdbab
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 178: RemoveEarlyReturn - ID: 020f9e5d36382bcd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 182: RemoveIntegerCast - ID: 09bbb0c79b626869
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 182: RemoveIntegerCast - ID: cfae228df284ee5b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 183: RemoveMethodCall - ID: 6a3176295d8221db
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 188: CoalesceRemoveLeft - ID: 088aca21881b2e66
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 189: RemoveArrayItem - ID: c105c8693d64f173
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 197: RemoveArrayItem - ID: f2143fbe7f46b671
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 198: RemoveIntegerCast - ID: 1d79674ff4d489ee
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 200: RemoveEarlyReturn - ID: 6fa229087709f95c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 208: RemoveIntegerCast - ID: d4d7c361764e92c1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 209: RemoveIntegerCast - ID: 57920f710f724a1c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingFlow.php  > Line 209: RemoveMethodCall - ID: 3d1cf627d60daac6
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingRules.php  > Line 16: RemoveArrayItem - ID: 69e76970be858816
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingRules.php  > Line 16: RemoveArrayItem - ID: b526cff9644514ed
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingRules.php  > Line 16: RemoveArrayItem - ID: 10b6fde55df1cbb6
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingRules.php  > Line 16: RemoveArrayItem - ID: dc440e03c117869b
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingRules.php  > Line 17: RemoveArrayItem - ID: a3400452c4a62573
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\MatchingRules.php  > Line 17: RemoveArrayItem - ID: 0d44bdf239c9de98
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 34: RemoveIntegerCast - ID: 7fa7d01117010fb9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 34: RemoveIntegerCast - ID: 2a9228c30111b8bd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 34: RemoveArrayItem - ID: 451b17c0104e01ef
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 34: RemoveArrayItem - ID: e8d72c5d6b5a9802
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 35: RemoveArrayItem - ID: e132ec5a331292d6
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 35: RemoveArrayItem - ID: e4e0a0a73b63c8d9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 47: TernaryNegated - ID: 019ced97b6eb2295
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 53: RemoveIntegerCast - ID: 5d5dfa435da23873
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 53: RemoveArrayItem - ID: 523ac65be6369fa9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 54: RemoveArrayItem - ID: fc63f16fe9c70e83
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferResponses.php  > Line 55: RemoveArrayItem - ID: e3275ea7b1263835
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 27: RemoveIntegerCast - ID: c8b2e7db505fc460
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 27: CoalesceRemoveLeft - ID: 7fd93a9c20c59f53
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 27: DecrementInteger - ID: eb2d8e47052067ad
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 27: IncrementInteger - ID: 3d56cd257777c13a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 28: RemoveIntegerCast - ID: 5b12925410b83e4f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 28: CoalesceRemoveLeft - ID: 80250db3ec865d93
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 28: DecrementInteger - ID: 7093bda00fff103b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: DivisionToMultiplication - ID: 9d4968c48e78df88
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: RemoveIntegerCast - ID: 1390deed954a048b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: MaxToMin - ID: 1cf0bc3a06a97a3d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: CeilToFloor - ID: 6b38c9dcc3670b1c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: CeilToRound - ID: e847e1b508674236
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: DecrementInteger - ID: f9de095077f53714
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: IncrementInteger - ID: 2ee6031bbcdd3e96
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: RemoveArrayItem - ID: 38b71b4ab8683083
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: RemoveArrayItem - ID: ce66f528e45797c2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: RemoveArrayItem - ID: d587a88e54465d48
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: RemoveArrayItem - ID: 4a95c7ef138e24a0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 33: RemoveArrayItem - ID: e171b182981fe3f5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 52: RemoveArrayItem - ID: d02fee705b7dd9e5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 52: RemoveArrayItem - ID: b4534da7da02d00a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 54: RemoveArrayItem - ID: 31e453ef83cb5d8e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 54: RemoveArrayItem - ID: 7f6bee1b785c5d1c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 59: RemoveIntegerCast - ID: 72d6d0fc9d2e5b95
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 59: RemoveIntegerCast - ID: b44636ae9f268652
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 59: RemoveIntegerCast - ID: 06cb866b4b9d32e9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 59: RemoveIntegerCast - ID: e895897045102fa1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 62: RemoveIntegerCast - ID: 25b6ea511d1a7cb8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 62: RemoveArrayItem - ID: a66dd627059d49d5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 62: RemoveArrayItem - ID: 16f5568924d4aabc
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 63: RemoveIntegerCast - ID: 49da39cbea456105
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 63: RemoveArrayItem - ID: 7c1dbe06be8d5c92
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 63: RemoveArrayItem - ID: afa9fbf528a80aa4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 63: RemoveArrayItem - ID: d32b5aeb5d241494
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 63: RemoveArrayItem - ID: 2dafa21c8c0151f7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 65: RemoveArrayItem - ID: 6f7a3874bebceede
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 66: TrueToFalse - ID: c56b3c467f1321f0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 66: RemoveArrayItem - ID: ccb42f7897c7ccdf
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 66: RemoveArrayItem - ID: 10cc8c0f4cd5fa01
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 68: RemoveArrayItem - ID: d2ab17816edf8ff2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 68: RemoveArrayItem - ID: eb85c4d088ae3d0d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 68: RemoveArrayItem - ID: 1dae2d372d9ccf59
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 68: RemoveArrayItem - ID: a7f6b14273525775
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 69: RemoveArrayItem - ID: 2a5685dec90196f7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 69: RemoveArrayItem - ID: a0de2ffa67cf2506
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 70: RemoveArrayItem - ID: 80d5c008ba448f8e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 70: RemoveArrayItem - ID: 9b913ebad5bb9893
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 72: RemoveArrayItem - ID: e3725dd894994c22
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 72: RemoveArrayItem - ID: d7e90a45b968e678
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OfferView.php  > Line 72: RemoveArrayItem - ID: fef5ef1a1946b1c8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\OwnTechnician.php  > Line 16: RemoveIntegerCast - ID: 754ce1f9befda9d0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 36: RemoveIntegerCast - ID: 622ab70f1099312b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 39: RemoveIntegerCast - ID: eba8a454a6411f9b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 47: RemoveIntegerCast - ID: e0d3277338fa70e4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 47: RemoveMethodCall - ID: 3756924de01be3d7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 66: SmallerOrEqualToSmaller - ID: fe6b4f8d830bc153
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 66: DecrementInteger - ID: 33d1c59e01170c8f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 67: BreakToContinue - ID: 6539ae7fc5d32051
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 69: GreaterToGreaterOrEqual - ID: 80df3320469608fb
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 81: DecrementInteger - ID: 88ae57a81665d6a5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 81: IncrementInteger - ID: a4e4f4c84f60cf45
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 84: RemoveArrayItem - ID: 17f1102a10abfa72
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 85: RemoveArrayItem - ID: 0a0cca05d32498f6
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 89: RemoveIntegerCast - ID: aa4ca98876f8d2d2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 92: RemoveArrayItem - ID: fe752d05dc9df3df
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 92: RemoveArrayItem - ID: ad85cb1c5d237d2f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 92: RemoveArrayItem - ID: f8e0046b50465188
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\RoundOpener.php  > Line 92: RemoveArrayItem - ID: 12b58ee511f8d55e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\SearchState.php  > Line 21: RemoveEarlyReturn - ID: c90d8a3f1f10b231
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\SearchState.php  > Line 25: RemoveEarlyReturn - ID: 2e9e3444de709eae
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\SearchState.php  > Line 33: BooleanAndToBooleanOr - ID: a7c3081e90ebc53e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 29: RemoveIntegerCast - ID: 4d89be108dc8c707
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 30: RemoveIntegerCast - ID: 8f3c668aea678885
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 30: RoundToFloor - ID: 2474bfd8849d9c56
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 30: RoundToCeil - ID: 09b50ed436944f67
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 37: DecrementInteger - ID: 3fdb120ec7264f37
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 37: IncrementInteger - ID: 4f9348a71a247107
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 54: IncrementInteger - ID: 9664e4e4c65b0e49
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: PlusToMinus - ID: a01bb1839553ac2a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: MinusToPlus - ID: 220654ce79c08fc7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: DivisionToMultiplication - ID: bd1802a2cb73fd46
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: RemoveIntegerCast - ID: ad2046ca96007503
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: RoundToFloor - ID: caf8182cacd030d5
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: RoundToCeil - ID: 781c218795615758
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: DecrementInteger - ID: 639a0544072fbf4e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: DecrementInteger - ID: 20f437ad829d8652
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: IncrementInteger - ID: 33d5e0a267ad3755
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Application\TechnicianHistory.php  > Line 56: IncrementInteger - ID: f6c590f2d95704b2
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 22: RemoveArrayItem - ID: 8c519d07a1db2b71
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 22: RemoveMethodCall - ID: 9c9d3ef1c8227a9d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 25: RemoveArrayItem - ID: dca57d0d792b1a87
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 25: RemoveArrayItem - ID: 1e484787c489a63b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 25: RemoveArrayItem - ID: 49d0cf924cfe825b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 26: RemoveArrayItem - ID: d272a17445c99d5e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 26: RemoveArrayItem - ID: d1b22c1d8eb3572b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 27: RemoveArrayItem - ID: 4dfef68db04cf702
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 27: RemoveArrayItem - ID: ca0dfc12039921e1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 27: RemoveArrayItem - ID: 121fe8f682eb621a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 27: RemoveArrayItem - ID: 46fb8df31c82fcfd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 28: RemoveArrayItem - ID: bba89e0b9d3b7a4a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 28: RemoveArrayItem - ID: add17caf9bd4d0cf
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 28: RemoveArrayItem - ID: 1aec3d109e95ed1a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 28: RemoveArrayItem - ID: f7142a770e9dea52
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 28: RemoveArrayItem - ID: 54f2f399197615ff
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 41: RemoveStringCast - ID: a36291fcdffd0bca
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 50: GreaterOrEqualToGreater - ID: 8b2d41d84aec619e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 50: DecrementInteger - ID: 6d36fbb952873b42
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\OfferController.php  > Line 50: IncrementInteger - ID: 51f40fbbe66f97f0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 25: RemoveArrayItem - ID: e45690d18b0179e1
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 25: RemoveArrayItem - ID: 88f0f80e1848e69b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 25: RemoveArrayItem - ID: 6b946e50feee4393
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 26: RemoveArrayItem - ID: 2d7dad026aa97f51
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 26: RemoveArrayItem - ID: fa5980d8e7d2c722
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 26: RemoveArrayItem - ID: 24e85508a9738efc
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 30: RemoveStringCast - ID: ead5bc3e5396e27c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 35: RemoveArrayItem - ID: 737a98c574438ebc
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 35: RemoveArrayItem - ID: 8664f47aa9ae3613
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\BMatching\Http\Controllers\SelectionController.php  > Line 35: RemoveArrayItem - ID: 2bab02c0a3d77422
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 21: AlwaysReturnEmptyArray - ID: 2e8bd59c6ef8fe01
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 22: RemoveArrayItem - ID: ef22fdb482411a17
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 24: RemoveArrayItem - ID: 0fd431dce23b7413
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 24: RemoveArrayItem - ID: 9e4b341dcad0598b
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 24: RemoveArrayItem - ID: e860017e62105587
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 24: RemoveArrayItem - ID: 89106f600a9e0f9a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 25: RemoveArrayItem - ID: eea7cabe53ead1c6
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 25: RemoveArrayItem - ID: ba68d0afd7dbe1fd
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 25: RemoveArrayItem - ID: 7007a46996de4e21
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 25: RemoveArrayItem - ID: 6b8ac44b6e92fc29
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 37: DecrementInteger - ID: 883d4cc6357d45c7
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 37: IncrementInteger - ID: 0475be3123d0da02
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 37: RemoveFunctionCall - ID: 78baad61c5a42bf6
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 38: RemoveIntegerCast - ID: 6dd3614218aa52be
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 42: BooleanAndToBooleanOr - ID: d6e9e90c2fc827d2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 42: DecrementInteger - ID: fccb72a03a4a600b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 42: IncrementInteger - ID: 0a6f7776cf038112
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 42: RemoveFunctionCall - ID: 524dfdd4379a8c92
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 44: RemoveArrayItem - ID: 2bb8ac3f1cd3e7b0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 44: RemoveArrayItem - ID: 216f363c8848c1c3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 52: RemoveIntegerCast - ID: ac3a820f7d1f297a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 52: RemoveArrayItem - ID: 62d3be3121072449
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 53: RemoveArrayItem - ID: 5dc32b30f14fb869
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 53: RemoveArrayItem - ID: 9cedb8419bbdb2ad
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 53: RemoveArrayItem - ID: 94758a663bc90d86
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 54: RemoveArrayItem - ID: 9c60cf1b41f8d1e8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 54: RemoveArrayItem - ID: 1b3b05b698aca27d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 54: RemoveArrayItem - ID: 60890560d5de612a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 55: RemoveArrayItem - ID: cef04b0f084a35eb
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 55: RemoveArrayItem - ID: 3ad85bb552c5f490
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 56: RemoveArrayItem - ID: 1268b8c3e0132bd8
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 56: RemoveArrayItem - ID: 5c3e51c31eb37bd0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 57: RemoveArrayItem - ID: d74ea6f7968b7638
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 57: RemoveArrayItem - ID: 0d11a83c595dd332
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 58: RemoveArrayItem - ID: 9f81cbaccdc8d73b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 59: RemoveArrayItem - ID: f540bbb91274d957
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 60: RemoveArrayItem - ID: 202f659c477f43a4
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 67: AlwaysReturnEmptyArray - ID: 196cf95d8c517529
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 68: RemoveArrayItem - ID: 38f74a0bfb23fde6
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 69: RemoveArrayItem - ID: ae5e9a2fe6b34a5f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 70: TernaryNegated - ID: 2de41efcbb4e1257
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 70: IdenticalToNotIdentical - ID: 91f7d1811b341feb
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 70: RemoveArrayItem - ID: de77d7771a2975a3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 71: TrueToFalse - ID: 93cf368d7a42669d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 71: RemoveArrayItem - ID: d6cff17ec19291dc
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 72: FalseToTrue - ID: 480a04b436f89354
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 72: RemoveArrayItem - ID: 9a58b86ae2908db6
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 78: AlwaysReturnEmptyArray - ID: 187c39b01ef48b0b
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 79: RemoveArrayItem - ID: 98b362428b926b17
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 79: RemoveArrayItem - ID: 639bb5d5cf78879c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 79: RemoveArrayItem - ID: 0157b49616434312
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 80: PlusToMinus - ID: 670f8c6178e0da2c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 80: RemoveArrayCast - ID: c95984df14a7c2ea
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Application\ServiceRequestView.php  > Line 80: RemoveArrayItem - ID: 8054105a2ed4de7e
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 42: RemoveMethodCall - ID: 70ba4e0b29031643
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 51: RemoveIntegerCast - ID: efe952e5b696808a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 51: DecrementInteger - ID: cf02088961adc5fa
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 51: IncrementInteger - ID: afe09c13e86cd695
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 51: RemoveArrayItem - ID: ddbbe2c59b7d2f55
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 51: RemoveArrayItem - ID: 96fc86893e6c8a61
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 51: RemoveArrayItem - ID: d5508d0e0c01df1e
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 56: RemoveArrayItem - ID: ffacc30c18659b89
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 56: RemoveArrayItem - ID: b56293d180683c61
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 56: RemoveArrayItem - ID: 6648231694d39384
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 56: RemoveArrayItem - ID: dbbbd7eb9b8f5b8a
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 57: RemoveIntegerCast - ID: 69796b112c96d1f4
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 57: RemoveMethodCall - ID: 6c70315bc543392e
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 65: RemoveStringCast - ID: 3ced23c9396508d3
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\ARequests\Http\Controllers\ServiceRequestController.php  > Line 67: RemoveIntegerCast - ID: 4699b77ece458df2
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\FAdministration\Application\RetireEvidence.php  > Line 30: RemoveArrayItem - ID: 61f4671097d7a6d9
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\FAdministration\Application\RetireEvidence.php  > Line 32: RemoveArrayItem - ID: b4bfff5f722a5400
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Modules\FAdministration\Application\RetireEvidence.php  > Line 32: RemoveArrayItem - ID: 6de036d832baf07a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 30: IfNegated - ID: 500f84a06dfcf67d
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 31: RemoveMethodCall - ID: d13437ab921bad7a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 36: RemoveArrayItem - ID: fe6c7465a0bb7e26
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 41: BooleanAndToBooleanOr - ID: 8dad70aa68b15d03
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 43: RemoveIntegerCast - ID: 023016d419487ed0
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 43: DecrementInteger - ID: 4b5b748b2c71fc2a
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 43: IncrementInteger - ID: 23d1ba3e6374f413
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 57: RemoveFunctionCall - ID: 4ad0c40f86131c48
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Http\Idempotency.php  > Line 59: UnwrapArrayMap - ID: 92593451497c6b00
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Rules\RuleBook.php  > Line 25: RemoveIntegerCast - ID: 8b3027dbabd558ba
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Shared\Rules\RuleBook.php  > Line 42: RemoveBooleanCast - ID: 38cb0b681c6cbe7c
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 21: DecrementInteger - ID: 9c05fb00f723efd2
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 21: IncrementInteger - ID: ab636ba7e2635ffd
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 30: ForeachEmptyIterable - ID: 458425211fc95af0
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 31: RemoveIntegerCast - ID: 1c8db0bc6270b055
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 31: RemoveFunctionCall - ID: 9c8e1c5121b7be24
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 35: RemoveIntegerCast - ID: c72fe5b22f24fc18
+
+   UNCOVERED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 35: RemoveFunctionCall - ID: 34d6f862b833ad9d
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 37: RemoveIntegerCast - ID: af48ba1483285a8c
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 40: ForeachEmptyIterable - ID: 4a7274d9e5ea2f08
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 41: RemoveFunctionCall - ID: c4c6dd0023effe63
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 46: RemoveMethodCall - ID: 93ddc01abf6bff33
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Console\Commands\Sweep.php  > Line 57: MaxToMin - ID: cfbc698d9336ed90
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Http\Middleware\RejectSuspendedTechnician.php  > Line 15: RemoveNullSafeOperator - ID: b0f403519214aced
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Http\Middleware\RejectSuspendedTechnician.php  > Line 16: DecrementInteger - ID: ccdf9365f19e9a4f
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Http\Middleware\RejectSuspendedTechnician.php  > Line 16: IncrementInteger - ID: 543e3e55c5196345
+
+   UNTESTED  <usuario>\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\app\Http\Middleware\RejectSuspendedTechnician.php  > Line 16: RemoveFunctionCall - ID: 5213830ca9668b58
+
+  Mutations: 439 untested, 119 uncovered, 955 tested
+  Score:     63.12%
+  Duration:  8,984.21s
+
+mutacion-fin codigo 0

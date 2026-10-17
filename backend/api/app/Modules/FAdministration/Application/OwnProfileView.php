@@ -20,7 +20,7 @@ final class OwnProfileView
 
         return [
             'id' => $profile->id, 'display_name' => $profile->display_name, 'bio' => $profile->bio,
-            'experience_years' => $profile->experience_years, 'status' => $profile->status,
+            'experience_years' => $profile->experience_years, 'base_district_id' => $profile->base_district_id, 'status' => $profile->status,
             'verification_status' => $profile->verification_status, 'version' => (int) $profile->version,
             'last_review' => $review ? [
                 'decision' => $review->decision, 'reason' => $review->reason, 'reviewed_at' => Carbon::parse($review->reviewed_at)->toISOString(),
