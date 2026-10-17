@@ -63,6 +63,12 @@ final class MediaController
         if ($file->owner_id === $user->id) {
             return true;
         }
+        if ($file->purpose === 'evidence') {
+            // S4 (contrato §10): el técnico notificado ve las fotos de evidencia de esa solicitud.
+            return DB::table('request_attachments as a')->join('offers as o', 'o.request_id', '=', 'a.request_id')
+                ->join('technician_profiles as t', 't.id', '=', 'o.technician_id')
+                ->where('a.media_id', $file->id)->where('t.user_id', $user->id)->exists();
+        }
 
         return DB::table('technician_documents')->where('media_id', $file->id)->exists()
             && $this->permissions->allows($user, 'technicians.verify');

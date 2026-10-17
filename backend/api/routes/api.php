@@ -1,7 +1,10 @@
 <?php
 
 use App\Modules\ARequests\Http\Controllers\ServiceRequestController;
+use App\Modules\BMatching\Http\Controllers\OfferController;
+use App\Modules\BMatching\Http\Controllers\SelectionController;
 use App\Modules\BMatching\Http\Controllers\TechnicianSearchController;
+use App\Modules\CNotifications\Http\Controllers\NotificationController;
 use App\Modules\FAdministration\Http\Controllers\AdminAnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
 use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
@@ -51,7 +54,19 @@ Route::prefix('v1')->group(function () {
             Route::delete('requests/{serviceRequest}/attachments/{media}', [ServiceRequestController::class, 'detach'])
                 ->whereNumber(['serviceRequest', 'media']);
             Route::post('requests/{serviceRequest}/submission', [ServiceRequestController::class, 'submit'])->whereNumber('serviceRequest');
+            // S4: elección entre los que aceptaron y búsqueda alternativa tras una dirigida fallida (D-22, RN-12).
+            Route::get('requests/{serviceRequest}/candidates', [SelectionController::class, 'candidates'])->whereNumber('serviceRequest');
+            Route::post('requests/{serviceRequest}/selection', [SelectionController::class, 'select'])->whereNumber('serviceRequest');
+            Route::post('requests/{serviceRequest}/alternative-searches', [SelectionController::class, 'alternatives'])->whereNumber('serviceRequest');
         });
+
+        // S4: ofertas del técnico de la sesión; un técnico suspendido recibe 403 (OwnTechnician, D-32).
+        Route::middleware('role:technician')->group(function () {
+            Route::get('offers', [OfferController::class, 'index']);
+            Route::get('offers/{offer}', [OfferController::class, 'show'])->whereNumber('offer');
+            Route::post('offers/{offer}/response', [OfferController::class, 'respond'])->whereNumber('offer');
+        });
+        Route::get('notifications', [NotificationController::class, 'index'])->middleware('technician.not_suspended');
 
         Route::prefix('technicians/me')->middleware('role:technician')->group(function () {
             Route::get('profile', [TechnicianProfileController::class, 'profile']);

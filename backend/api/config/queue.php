@@ -35,6 +35,11 @@ return [
             'driver' => 'sync',
         ],
 
+        // Pruebas Pest del Sprint 4: los jobs se ejecutan de forma explícita con reloj controlado.
+        'null' => [
+            'driver' => 'null',
+        ],
+
         'database' => [
             'driver' => 'database',
             'connection' => env('DB_QUEUE_CONNECTION'),

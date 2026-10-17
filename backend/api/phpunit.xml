@@ -20,5 +20,17 @@
     <!-- TC-006 recrea el gestor de sesiones: el almacén debe sobrevivir entre peticiones. -->
     <env name="SESSION_DRIVER" value="database"/>
     <env name="BCRYPT_ROUNDS" value="4"/>
+    <!-- Sprint 4: la cola no ejecuta nada (las pruebas corren cada job con reloj controlado); el correo de la
+         sandbox queda en memoria; Reverb usa credenciales sintéticas solo para firmar /broadcasting/auth y un puerto
+         cerrado, así que publicar sin Event::fake falla rápido y queda como entrega fallida del outbox. -->
+    <env name="QUEUE_CONNECTION" value="null"/>
+    <env name="MAIL_MAILER" value="array"/>
+    <env name="BROADCAST_CONNECTION" value="reverb"/>
+    <env name="REVERB_APP_ID" value="tecnicoya-pruebas"/>
+    <env name="REVERB_APP_KEY" value="clave-sintetica-de-pruebas"/>
+    <env name="REVERB_APP_SECRET" value="secreto-sintetico-de-pruebas"/>
+    <env name="REVERB_HOST" value="127.0.0.1"/>
+    <env name="REVERB_PORT" value="9"/>
+    <env name="REVERB_SCHEME" value="http"/>
   </php>
 </phpunit>
