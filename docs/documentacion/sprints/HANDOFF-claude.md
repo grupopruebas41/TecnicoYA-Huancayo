@@ -26,6 +26,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   4. decidir **DIST-02** (opción A aplicada de forma provisional);
   5. cierre del sprint: Cypress del S4, SonarQube, `npm audit` e informe.
 - **Para Codex:** lo de la entrada del S4.3 (tareas `tareasSprint04`, cuentas del seeder, `VITE_REVERB_*`).
+- **CI del PR #21:** la primera corrida falló en 6 pruebas porque el workflow define `QUEUE_CONNECTION=sync` y los jobs encolados tras el commit se ejecutaban solos. `73cd861` fija la cola `null` en `tests/bootstrap.php` (Laravel lee primero `$_SERVER`) y el workflow pasa a `"null"`. CI en verde en `73cd861`: backend, frontend y conteo.
 - **Bloqueos:** ninguno. MySQL de pruebas arriba.
 
 ## 2026-10-17 · Sprint 4 · S4.3 completado (backend en verde)
