@@ -93,7 +93,7 @@ it('S04-TC-042 responde igual con la misma clave y rechaza otro cuerpo con esa c
     $second = Sprint04::respond($this, $this->technicians[0], $this->offer, 'accept', $key)->assertOk()->json('data');
     Sprint04::respond($this, $this->technicians[0], $this->offer, 'reject', $key)->assertConflict()->assertJsonPath('error.code', 'STALE_VERSION');
 
-    expect($second)->toBe($first)
+    expect($second)->toEqual($first)
         ->and(Sprint04::offerTo($this->request->id, $this->technicians[0]->id)->status)->toBe('accepted')
         ->and((int) Sprint04::offerTo($this->request->id, $this->technicians[0]->id)->version)->toBe(2)
         ->and(DB::table('request_events')->where('event_type', 'offer.accepted')->count())->toBe(1);

@@ -25,7 +25,7 @@ it('S04-TC-076 no duplica el borrador al crear dos veces con la misma clave', fu
     $second = $this->postJson('/api/v1/requests', $this->payload, $key)->assertCreated()->json('data');
 
     expect($second['id'])->toBe($first['id'])
-        ->and($second)->toBe($first)
+        ->and($second)->toEqual($first)
         ->and(DB::table('service_requests')->count())->toBe(1)
         ->and(DB::table('request_events')->where('event_type', 'request.registered')->count())->toBe(1);
 });

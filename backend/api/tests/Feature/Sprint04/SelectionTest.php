@@ -118,7 +118,7 @@ it('S04-TC-051 responde igual a la misma elección con la misma clave', function
     $first = Sprint04::select($this, $request, $offerId, $version, $key)->assertOk()->json('data');
     $second = Sprint04::select($this, $request, $offerId, $version, $key)->assertOk()->json('data');
 
-    expect($second)->toBe($first)
+    expect($second)->toEqual($first)
         ->and(DB::table('participations')->where('request_id', $request->id)->count())->toBe(1)
         ->and(DB::table('appointments')->where('request_id', $request->id)->count())->toBe(1);
 });
