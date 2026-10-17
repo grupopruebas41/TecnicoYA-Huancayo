@@ -39,6 +39,23 @@ const candidate = {
   distance: null,
   estimate: { status: "new" },
 };
+
+test('S04-TC-109 complemento: un 409 definitivo no reutiliza la clave aunque la versión recuperada no cambie', async () => {
+  request.mockImplementation(async (path, body) => {
+    if (body) throw {status: 409, code: 'STALE_VERSION'};
+    if (path === '/offers/1') return {data: offer, meta};
+    return {data: {items: [offer]}, meta};
+  });
+  render(<OffersInbox technicianId={1} />);
+  fireEvent.click(await screen.findByText('Aceptar'));
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/offers/1'));
+  await waitFor(() => expect(screen.getByText('Aceptar')).toBeEnabled());
+  fireEvent.click(screen.getByText('Aceptar'));
+  await waitFor(() => expect(request.mock.calls.filter(([,body]) => body)).toHaveLength(2));
+  const writes = request.mock.calls.filter(([,body]) => body);
+  expect(writes[0][3].headers['Idempotency-Key']).not.toBe(writes[1][3].headers['Idempotency-Key']);
+  await waitFor(() => expect(screen.getByText('Aceptar')).toBeEnabled());
+});
 test("S04-TC-102 complemento: aceptar no asigna y respuesta actualiza estado", async () => {
   request.mockImplementation(async (path, body) => {
     if (body) return { data: { status: "accepted" }, meta };

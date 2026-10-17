@@ -28,6 +28,8 @@ async function send(path, options = {}) {
   if (Number.isFinite(timestamp)) serverOffset = timestamp - Date.now();
   if (!response.ok) { const reference = body?.meta?.request_id; throw new ApiError(apiMessage(body?.error?.message || body?.message || statusMessage(response.status)) + (reference ? ' Referencia: ' + reference : ''), response.status, body?.error?.fields || body?.errors, body?.error?.code); }
   // Un 200 ilegible no confirma una operación: consultamos el estado sin repetir la escritura.
+  // La autenticación de canales usa el contrato nativo de Pusher, sin sobre data.
+  if (path === '/api/v1/broadcasting/auth' && typeof body?.auth === 'string') return {data: body};
   if (!body || typeof body !== 'object' || !('data' in body)) throw new ApiError('No pudimos confirmar el resultado. Revisa tu conexión y consulta el estado antes de repetir la operación.', 0);
   return body;
 }

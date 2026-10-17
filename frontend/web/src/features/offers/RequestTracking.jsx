@@ -76,6 +76,7 @@ export default function RequestTracking({ requestId }) {
       await refresh();
     } catch (e) {
       setError(e);
+      if (e.status === 409) attempt.current = null;
       if (e.status === 409 || e.status === 0) await refresh();
     } finally {
       setBusy(false);

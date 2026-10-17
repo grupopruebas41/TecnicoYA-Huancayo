@@ -2,6 +2,19 @@ import {afterEach, expect, test, vi} from 'vitest';
 import {request} from './http';
 afterEach(() => {vi.unstubAllGlobals(); document.cookie = 'XSRF-TOKEN=; Max-Age=0; path=/';});
 const json = (body, status = 200) => new Response(JSON.stringify(body), {status, headers: {'Content-Type': 'application/json'}});
+
+test('S04-TC-104 complemento: autenticación nativa de Reverb conserva CSRF y sesión sin aceptar respuestas ilegibles de otros recursos', async () => {
+  document.cookie = 'XSRF-TOKEN=token-sintetico; path=/';
+  const fetch = vi.fn()
+    .mockResolvedValueOnce(new Response(null, {status: 204}))
+    .mockResolvedValueOnce(json({auth: 'firma-sintetica'}))
+    .mockResolvedValueOnce(json({auth: 'firma-sintetica'}));
+  vi.stubGlobal('fetch', fetch);
+  await expect(request('/broadcasting/auth', {socket_id: '1.2', channel_name: 'private-technicians.7'}))
+    .resolves.toEqual({data: {auth: 'firma-sintetica'}});
+  expect(fetch.mock.calls[1][1]).toMatchObject({credentials: 'include', headers: {'X-XSRF-TOKEN': 'token-sintetico'}});
+  await expect(request('/offers/7')).rejects.toMatchObject({status: 0});
+});
 test('S01-TC-082 CSRF previo, cookie decodificada y sesión incluida; sin cookie no hay PATCH', async () => {
   document.cookie = 'XSRF-TOKEN=token%3Dseguro; path=/';
   const fetch = vi.fn().mockResolvedValueOnce(new Response(null, {status: 204})).mockResolvedValueOnce(json({data: {version: 2}}));

@@ -29,6 +29,10 @@ export function useRealtimeResource(name, events, refresh, version = 0) {
   const [connected, setConnected] = useState(false);
   const names = events.join(",");
   useEffect(() => {
+    if (!name) {
+      setConnected(false);
+      return;
+    }
     const accept = createEventDedupe();
     const reload = (event) => {
       Promise.resolve(latest.current.refresh(event)).catch(() => {

@@ -60,7 +60,10 @@ function OfferCard({ offer, serverTime, onChange }) {
           setMessage(
             "Respuesta consultada. Revisa el estado actualizado de la oferta.",
           );
-      } else if (e.status === 409) await onChange(offer.id);
+      } else if (e.status === 409) {
+        attempt.current = null;
+        await onChange(offer.id);
+      }
     } finally {
       lock.current = false;
       setBusy(false);
@@ -148,6 +151,18 @@ function OfferCard({ offer, serverTime, onChange }) {
   );
 }
 export default function OffersInbox({ technicianId }) {
+  const [channelId, setChannelId] = useState(technicianId);
+  useEffect(() => {
+    let active = true;
+    if (technicianId) setChannelId(technicianId);
+    else request('/technicians/me/profile').then(({data}) => {
+      if (active) setChannelId(data.id);
+    }).catch(() => {
+      // La bandeja sigue disponible por HTTP y muestra el aviso de desconexión.
+      if (active) setChannelId(null);
+    });
+    return () => { active = false; };
+  }, [technicianId]);
   const [rows, setRows] = useState([]),
     [serverTime, setServerTime] = useState(null),
     [error, setError] = useState(null),
@@ -194,7 +209,7 @@ export default function OffersInbox({ technicianId }) {
     refresh();
   }, [technicianId]);
   const connected = useRealtimeResource(
-    `technicians.${technicianId}`,
+    channelId ? `technicians.${channelId}` : null,
     ["offer.created", "offer.updated"],
     refresh,
     (event) => rows.find((row) => row.id === event.offer_id)?.version || 0,
