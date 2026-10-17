@@ -2,6 +2,22 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-16 · Sprint 4 · S4.2 completado (Pest en rojo)
+
+- **Rama:** `feature/mayhuasca/b-matching/s04`. `main` `38c9c14` (PR #19) fusionado en `3cda4b4`; el conflicto del HANDOFF se resolvió conservando las dos entradas.
+- **Commits:**
+  - `9c0ad10` docs: S04-TC-120 a 127 en `CATALOGO-S04.csv` (Transversal, RNF-SEG, como S03-TC-082 a 085) y revisor del avance S4 de Pimentel («Pimentel Chumbes James», indicado por el usuario).
+  - `217503f` test: los 88 casos Pest del catálogo (001 a 082 y 114 a 119).
+- **Rojo** (slot A): **87 fallan y 9 pasan**. Pasan las 8 de la guarda (120 a 127) y S04-TC-078, que el código ya cumplía y se conserva como regresión de D-60. Motivos en `evidencias/sprint-04/01-rojo-antes-de-implementar.txt`.
+- **Diseño fijado por las pruebas** (se documenta en el contrato al terminar S4.3):
+  - la cola de pruebas es `null` y los jobs se ejecutan de forma explícita (`tests/Support/Sprint04.php`);
+  - `PrepareMatching` ejecuta el matching y abre la ronda en el mismo job (TC-030 exige ronda tras preparar);
+  - el barrido del scheduler es `tecnicoya:sweep`;
+  - 040, 045 y 046 usan dos procesos PHP reales con barrera `GET_LOCK` y `DatabaseMigrations`.
+- **Entorno:** el contenedor `tecnicoya-mysql-test` estaba detenido; se levantó desde `backend/api` (donde está el Compose).
+
+**Qué falta:** S4.3 (verde), suite completa, cobertura, mutación de las clases nuevas, `composer audit`, avance de Mayhuasca y PR.
+
 ## 2026-10-16 · Retiro del prototipo: regresión, DEF-45 y PR
 
 - **Rama:** `feature/pimentel/infra/retiro-prototipo`, con `main` `4e85669` fusionado (PR #18 de Codex y etiqueta `v0.3-antes-retiro-prototipo` sobre `cced99e`). Merge sin conflictos.
