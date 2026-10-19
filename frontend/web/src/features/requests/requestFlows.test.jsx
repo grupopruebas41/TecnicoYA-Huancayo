@@ -114,7 +114,7 @@ test("S03-TC-069 complemento: validación enfoca el campo y no registra", async 
   expect(screen.getByText("Selecciona una especialidad.")).toBeVisible();
   expect(request.mock.calls.some(([p]) => p === "/requests")).toBe(false);
 });
-test("S03-TC-074 complemento: creación incierta no repite POST", async () => {
+test("S03-TC-074 complemento D-60: creación incierta reintenta con la misma clave", async () => {
   const exit = vi.fn();
   request.mockImplementation(async (p) => {
     if (p === "/requests")
@@ -128,7 +128,9 @@ test("S03-TC-074 complemento: creación incierta no repite POST", async () => {
   expect(screen.getByText("Siguiente")).toBeDisabled();
   fireEvent.click(screen.getByText("Consultar Mis solicitudes"));
   expect(exit).toHaveBeenCalledOnce();
-  expect(request.mock.calls.filter(([p]) => p === "/requests")).toHaveLength(1);
+  const attempts = request.mock.calls.filter(([p]) => p === "/requests");
+  expect(attempts).toHaveLength(2);
+  expect(attempts[0][3].headers["Idempotency-Key"]).toBe(attempts[1][3].headers["Idempotency-Key"]);
 });
 test("S03-TC-076 complemento: incertidumbre, lectura registrada y reintento con misma clave", async () => {
   request

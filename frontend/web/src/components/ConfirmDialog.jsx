@@ -4,6 +4,7 @@ export default function ConfirmDialog({
   onConfirm,
   title = "Confirmar retiro",
   busy = false,
+  description = "El contenido dejará de estar visible. ¿Deseas continuar?",
 }) {
   const root = useRef(null);
   useEffect(() => {
@@ -38,11 +39,16 @@ export default function ConfirmDialog({
         onKeyDown={keys}
       >
         <h2>{title}</h2>
-        <p>El contenido dejará de estar visible. ¿Deseas continuar?</p>
+        <p>{description}</p>
         <button type="button" disabled={busy} onClick={onCancel}>
           Cancelar
         </button>
-        <button type="button" disabled={busy} onClick={onConfirm}>
+        <button
+          type="button"
+          disabled={busy}
+          aria-busy={busy}
+          onClick={onConfirm}
+        >
           Confirmar
         </button>
       </dialog>

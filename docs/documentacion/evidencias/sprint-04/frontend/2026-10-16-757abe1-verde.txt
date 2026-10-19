@@ -1,0 +1,117 @@
+Fecha: 2026-10-16
+Commit: 757abe1
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- --coverage --maxWorkers=1 --pool=threads
+
+> tecnicoya-web@1.0.0 test
+> vitest run --coverage --maxWorkers=1 --pool=threads
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+      Coverage enabled with v8
+
+ ✓ src/features/requests/requestFlows.test.jsx (13 tests) 1178ms
+ ✓ src/features/administration/sprint02Panels.test.jsx (8 tests) 1725ms
+   ✓ S02-TC-076 complemento: catálogo guarda y cambia estado con versión 341ms
+   ✓ S02-TC-078 complemento: comunicado borrador publicación duplicación y retiro 502ms
+   ✓ S02-TC-081 complemento: técnico guarda bio tarifa disponibilidad y pausa 362ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 818ms
+   ✓ S01-TC-016 [TC-005] complemento unitario: portal client desde identidad del servidor 380ms
+ ✓ src/features/offers/sprint04Flows.test.jsx (8 tests) 376ms
+ ✓ src/features/requests/sprint03.test.jsx (13 tests) 276ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 230ms
+ ✓ src/Sprint02Landing.test.jsx (4 tests) 182ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 188ms
+ ✓ src/features/administration/accessibility.test.jsx (6 tests) 235ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 175ms
+ ✓ src/features/offers/sprint04.test.jsx (13 tests) 188ms
+ ✓ src/features/administration/sprint02.test.jsx (12 tests) 169ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 223ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 341ms
+   ✓ shows only the video until the cue, then keeps the content through subsequent loops 301ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 44ms
+ ✓ src/features/administration/http.test.js (3 tests) 30ms
+ ✓ src/features/administration/sprint025.test.js (2 tests) 10ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 7ms
+ ✓ src/features/administration/labels.test.js (9 tests) 5ms
+
+ Test Files  19 passed (19)
+      Tests  138 passed (138)
+   Start at  18:51:10
+   Duration  30.58s (environment 48%, tests 25%, setup 11%, import 8%, worker 4%, transform 4%)
+
+    Isolate  19 workers spawned · ~804ms startup each (spawn + environment, per file)
+             at least ~14.47s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   78.66 |    73.33 |   76.84 |    83.6 |                   
+ src               |   80.23 |    65.95 |      76 |   84.24 |                   
+  App.jsx          |   94.11 |       50 |     100 |   93.33 | 29                
+  ...eCarousel.jsx |   84.28 |    81.39 |   72.41 |   85.48 | ...95-113,132,170 
+  ...xperience.jsx |   74.35 |    53.33 |   66.66 |   82.08 | ...51,57-58,88-89 
+  main.jsx         |       0 |      100 |     100 |       0 | 8                 
+ src/components    |   52.63 |    47.05 |     100 |   47.05 |                   
+  ...irmDialog.jsx |   52.63 |    47.05 |     100 |   47.05 | 18-28             
+ ...administration |   82.75 |    76.45 |    81.2 |   86.92 |                   
+  AccountApp.jsx   |   89.33 |    77.27 |    87.5 |   97.77 | 69                
+  ...entsAdmin.jsx |   86.95 |    63.33 |   88.88 |   88.88 | 14-15,83,128      
+  ...ityEditor.jsx |      75 |       50 |   67.85 |      80 | ...98,170,193-200 
+  Catalog.jsx      |   95.23 |    74.07 |   93.33 |   96.15 | 27                
+  CatalogAdmin.jsx |    91.8 |    86.07 |   85.71 |   91.83 | 71,87-102         
+  ProfileForm.jsx  |   90.16 |    86.84 |     100 |   94.28 | 18,23             
+  RetireButton.jsx |      75 |    55.55 |     100 |   85.71 | 28-30             
+  ...uncements.jsx |     100 |       75 |     100 |     100 | 13                
+  ...cesEditor.jsx |      68 |    41.66 |   68.75 |   76.19 | 50-52,66,93       
+  SessionForm.jsx  |   82.97 |    85.71 |     100 |   96.87 | 35                
+  ...t02Common.jsx |   72.72 |     74.5 |   85.18 |   76.34 | ...74-189,229-230 
+  ...t02Portal.jsx |     100 |       75 |     100 |     100 | 26-27             
+  ...cianPanel.jsx |   61.44 |    65.34 |   60.46 |   70.42 | ...98,206,260-282 
+  ...tionAdmin.jsx |   86.36 |    63.63 |   83.33 |   85.71 | 43,79-80          
+  forms.jsx        |   91.89 |    89.28 |     100 |     100 | 28,37,39,41-42    
+  http.js          |   84.21 |    82.92 |   57.14 |   92.85 | 36-44             
+  ...Validation.js |   89.87 |    85.58 |     100 |   91.66 | ...7,19,28,51,112 
+ ...tures/matching |   80.32 |    73.33 |   73.52 |   83.92 |                   
+  ...icianCard.jsx |      75 |    33.33 |      60 |      75 | 20                
+  ...anProfile.jsx |     100 |     87.5 |     100 |     100 | 26                
+  ...ianSearch.jsx |   76.08 |    68.96 |   66.66 |   80.48 | ...75,103,121-132 
+ ...eatures/offers |   90.68 |    79.27 |   84.21 |   95.55 |                   
+  ...idateCard.jsx |     100 |     90.9 |     100 |     100 | 6                 
+  ...idateList.jsx |     100 |    66.66 |     100 |     100 | 3                 
+  ...Countdown.jsx |     100 |    72.72 |      80 |     100 | 3-10              
+  OffersInbox.jsx  |   93.75 |    85.71 |   82.35 |   93.75 | 16                
+  ...tTracking.jsx |   80.85 |    72.72 |   71.42 |    87.5 | 18                
+  ...ionDialog.jsx |   94.73 |       50 |     100 |     100 | 7-9               
+  offerErrors.jsx  |   85.71 |    91.66 |     100 |     100 | 10                
+ ...tures/realtime |   86.91 |       75 |   65.51 |   96.15 |                   
+  ...fications.jsx |   94.44 |    61.53 |   85.71 |     100 | 7-9               
+  Realtime.jsx     |      80 |       40 |      60 |     100 | 9-12              
+  connection.js    |   81.25 |    86.66 |      50 |   88.88 | 6                 
+  eventDedupe.js   |   92.85 |    86.66 |     100 |     100 | 3-4               
+ ...tures/requests |   82.93 |    80.23 |   77.19 |   85.48 |                   
+  ClientPortal.jsx |   72.22 |     87.5 |   55.55 |   70.58 | 33-54,60          
+  ...ncePicker.jsx |   74.69 |    73.58 |   76.47 |      80 | ...,70-77,104-112 
+  MyRequests.jsx   |      88 |    70.83 |      75 |   86.95 | 32,40,61          
+  ...stSummary.jsx |   92.59 |    80.85 |      80 |   94.11 | 61-62,123         
+  ...estWizard.jsx |   88.88 |       92 |   77.77 |   88.88 | 74                
+  WizardFields.jsx |   94.44 |    88.88 |     100 |   94.44 | 43                
+  ...Validation.js |   90.24 |    87.75 |   85.71 |   89.47 | 8,37,46,50        
+  requestsApi.js   |      75 |    56.25 |   88.88 |   77.77 | 22-27,52          
+  useWizardFlow.js |   79.67 |    71.69 |   67.85 |   83.63 | ...22-130,148-150 
+  wizardState.js   |   95.23 |    92.85 |     100 |   94.44 | 22                
+ src/scroll        |   45.76 |    29.89 |   54.16 |   55.75 |                   
+  FrameCache.js    |   77.96 |    80.95 |   83.33 |   95.83 | 9                 
+  ...lServices.jsx |   26.62 |     4.47 |   34.48 |   33.78 | ...2-79,92,99-107 
+  timeline.js      |    91.3 |      100 |   85.71 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 78.66% ( 1552/1973 )
+Branches     : 73.33% ( 1089/1485 )
+Functions    : 76.84% ( 448/583 )
+Lines        : 83.6% ( 1178/1409 )
+================================================================================
+
+Exit code: 0

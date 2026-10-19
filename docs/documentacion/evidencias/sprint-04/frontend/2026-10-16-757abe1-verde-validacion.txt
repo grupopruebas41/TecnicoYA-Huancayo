@@ -1,0 +1,97 @@
+Fecha: 2026-10-16
+Commit: 757abe1
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- --coverage --maxWorkers=1 --pool=threads
+
+> tecnicoya-web@1.0.0 test
+> vitest run --coverage --maxWorkers=1 --pool=threads
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+      Coverage enabled with v8
+
+ ❯ src/features/requests/requestFlows.test.jsx (13 tests | 2 failed) 722ms
+   × S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio 232ms
+   ✓ S03-TC-069 complemento: validación enfoca el campo y no registra 15ms
+   × S03-TC-074 complemento D-60: creación incierta reintenta con la misma clave 99ms
+   ✓ S03-TC-076 complemento: incertidumbre, lectura registrada y reintento con misma clave 39ms
+   ✓ S03-TC-076 complemento: lectura enviada confirma sin repetir POST 23ms
+   ✓ S03-TC-077 complemento: límite del servidor y 500 no dan falso éxito 31ms
+   ✓ S03-TC-072 complemento: cancela retiro sin DELETE y confirma con versión 21ms
+   ✓ S03-TC-072 complemento: sube evidencia privada y adjunta antes de confirmar 31ms
+   ✓ S03-TC-072 complemento: archivo inválido no sale del navegador y quinta foto bloquea 13ms
+   ✓ S03-TC-079 complemento: búsqueda, privacidad y solicitud dirigida 57ms
+   ✓ S03-TC-080 complemento: detalle enviado sin controles de edición 30ms
+   ✓ S03-TC-080 complemento: portal abre solicitud y retoma la registrada 125ms
+   ✓ S03-TC-073 complemento: fechas de registro y reanudación 3ms
+ ✓ src/features/administration/sprint02Panels.test.jsx (8 tests) 968ms
+   ✓ S02-TC-076 complemento: catálogo guarda y cambia estado con versión 307ms
+ ✓ src/features/offers/sprint04Flows.test.jsx (8 tests) 326ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 352ms
+ ✓ src/features/requests/sprint03.test.jsx (13 tests) 278ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 242ms
+ ✓ src/features/offers/sprint04.test.jsx (13 tests) 159ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 211ms
+ ✓ src/features/administration/accessibility.test.jsx (6 tests) 165ms
+ ✓ src/Sprint02Landing.test.jsx (4 tests) 221ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 165ms
+ ✓ src/features/administration/sprint02.test.jsx (12 tests) 136ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 126ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 92ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 39ms
+ ✓ src/features/administration/http.test.js (3 tests) 23ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 4ms
+ ✓ src/features/administration/sprint025.test.js (2 tests) 5ms
+ ✓ src/features/administration/labels.test.js (9 tests) 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/requests/requestFlows.test.jsx > S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio
+AssertionError: expected [ [ '/requests', …(3) ] ] to have a length of 2 but got 1
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/features/requests/requestFlows.test.jsx:100:20
+     98|   expect(screen.getByText("Solicitud actualizada.").tagName).toBe("OUT…
+     99|   const attempts = request.mock.calls.filter(([p]) => p === "/requests…
+    100|   expect(attempts).toHaveLength(2);
+       |                    ^
+    101|   expect(attempts[0][3].headers["Idempotency-Key"]).toBe(attempts[1][3…
+    102|   expect(request).toHaveBeenCalledWith(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/requests/requestFlows.test.jsx > S03-TC-074 complemento D-60: creación incierta reintenta con la misma clave
+AssertionError: expected [ [ '/requests', …(3) ], …(1) ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/features/requests/requestFlows.test.jsx:133:65
+    131|   fireEvent.click(screen.getByText("Consultar Mis solicitudes"));
+    132|   expect(exit).toHaveBeenCalledOnce();
+    133|   expect(request.mock.calls.filter(([p]) => p === "/requests")).toHave…
+       |                                                                 ^
+    134| });
+    135| test("S03-TC-076 complemento: incertidumbre, lectura registrada y rein…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 18 passed (19)
+      Tests  2 failed | 136 passed (138)
+   Start at  18:50:22
+   Duration  22.04s (environment 49%, tests 23%, setup 13%, import 8%, worker 4%, transform 3%)
+
+    Isolate  19 workers spawned · ~594ms startup each (spawn + environment, per file)
+             at least ~10.69s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+
+Exit code: 1

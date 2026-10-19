@@ -1,3 +1,5 @@
+import RequestTracking from '../offers/RequestTracking';
+import RequestPhase from './RequestPhase';
 import React, { useEffect, useState } from "react";
 import { request } from "../administration/http";
 import { Notice } from "../administration/forms";
@@ -44,7 +46,7 @@ export default function MyRequests({ onContinue = () => {} }) {
       {rows?.map((row) => (
         <article className="s02-card" key={row.id}>
           <h3>Solicitud #{row.id}</h3>
-          <p>{row.status === "registered" ? "Registrada" : "Enviada"}</p>
+          {row.phase ? <RequestPhase phase={row.phase}/> : <p>{row.status === "registered" ? "Registrada" : "Enviada"}</p>}
           <button type="button" onClick={() => open(row)}>
             Ver solicitud #{row.id}
           </button>
@@ -53,6 +55,7 @@ export default function MyRequests({ onContinue = () => {} }) {
       {detail && (
         <>
           <RequestSummary record={detail} disabled />
+          {detail.phase && <RequestTracking key={detail.id} requestId={detail.id}/>}
           <div className="s02-images">
             {detail.attachments?.map((a) => (
               <img

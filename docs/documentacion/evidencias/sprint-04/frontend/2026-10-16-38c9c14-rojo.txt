@@ -1,0 +1,43 @@
+Fecha: 2026-10-16
+Commit: 38c9c14
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- --maxWorkers=1 --pool=threads src/features/offers/sprint04.test.jsx
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 --pool=threads src/features/offers/sprint04.test.jsx
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/features/offers/sprint04.test.jsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/offers/sprint04.test.jsx [ src/features/offers/sprint04.test.jsx ]
+Error: Failed to resolve import "./OfferCountdown" from "src/features/offers/sprint04.test.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: [WORKSPACE]/frontend/web/src/features/offers/sprint04.test.jsx:4:0
+  2  |  const __vi_import_0__ = await import("react");
+  3  |  const __vi_import_1__ = await import("@testing-library/react");
+  4  |  const __vi_import_2__ = await import("./OfferCountdown");
+     |                                       ^
+  5  |  const __vi_import_3__ = await import("./CandidateCard");
+  6  |  const __vi_import_4__ = await import("./CandidateList");
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  18:45:41
+   Duration  16.65s (environment 75%, setup 24%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+
+Exit code: 1

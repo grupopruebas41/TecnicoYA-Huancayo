@@ -13,3 +13,21 @@ PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/18. CI iniciada; c
 ## Uso de IA
 
 Herramienta: Codex; modelo no expuesto de forma verificable en esta sesión. Fecha: 2026-10-16. Se incorporaron la limpieza de imports, eliminación del prototipo y prueba del enlace antiguo. Se corrigió la premisa del análisis: comunicados y perfil público ya eran v1; se conservaron CSS compartido y VideoExperience por uso real. Validación automática indicada arriba. Revisor humano: [PENDIENTE].
+
+## S4.4 · 2026-10-16
+
+Rama feature/delgado/b-matching/s04; módulo BMatching/CNotifications frontend. HU-S04-03,05–09, HU-S03-01/02; RF-01,03,09,11,12,14–18,29,33; D-60–71. Commits: 757abe1, b5b8891, e9d7504, dac617f.
+
+Archivos: features/offers, features/realtime, integración en MyRequests/Sprint02Portal; requestsApi/EvidencePicker y distrito base en TechnicianPanel; specs cypress/e2e/sprint-04. [Informe y evidencia](../../../documentacion/evidencias/sprint-04/frontend/README.md).
+
+Pruebas previstas/ejecutadas: 142/142 Vitest (13 IDs S4), cobertura global 84,26 %; build y audit aprobados. Cypress: sin ejecutar, 13 preparados y 5 bloqueados detallados en HANDOFF. No Sonar local; enlace de análisis pendiente de S4.6. PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/20; CI iniciada, estado del último commit en checks. Revisor [PENDIENTE].
+
+Uso de IA: Codex, modelo no identificado de forma verificable, 2026-10-16. Aceptados componentes, pruebas y adaptación D-60/D-61; corregidas recuperación de ofertas vencidas, conservación de claves y aserción histórica contraria a D-60. Verificación automática anterior; revisión humana [PENDIENTE]. No se aceptaron fixtures o tareas de servidor inventadas. [Decisiones](../../../documentacion/sprints/DECISIONES.md).
+
+## S4.5 · 2026-10-17
+
+Frontend BMatching/CNotifications, HU-S04-05/06/09, RF-15/16/18/29, D-60–71. Rama feature/delgado/b-matching/s04; commits f0612cf, 8b5c811, 345bf88; PR #20. Cambios en HTTP, OffersInbox, RequestTracking, Realtime, sus pruebas y configuración/specs Cypress S4.
+
+Vitest final 146/146, cobertura líneas 84,22 %; build aprobado; npm audit 0 vulnerabilidades. Cypress S04 y regresiones S01–03 pendientes por RAM menor a 1 GiB; 17 casos preparados, 094 requiere replay real desde tarea. [Evidencias](../../../documentacion/evidencias/sprint-04/cypress/README.md). SonarQube pendiente del cierre; CI del último push por verificar. Revisor [PENDIENTE].
+
+Uso de IA: Codex, modelo no expuesto de forma verificable; 2026-10-17. Aceptadas adaptaciones de contrato y preparación de pruebas; corregidos canal sin ID, respuesta auth nativa e idempotencia tras 409. Resultados ejecutados diferenciados de casos preparados. Revisión humana [PENDIENTE].
