@@ -9,10 +9,19 @@ use Illuminate\Support\Facades\DB;
 
 final class CatalogController
 {
+    /** La foto (hero_media_id) solo se expone si es pública, revisada y no retirada, como en el carrusel (S04-TC-133). */
     public function specialties(): JsonResponse
     {
-        return ApiResponse::data(DB::table('specialties')->where('active', 1)
-            ->orderBy('display_order')->orderBy('id')->get(['id', 'code', 'name', 'description'])->toArray());
+        $items = DB::table('specialties as p')
+            ->leftJoin('media_files as m', fn ($join) => $join->on('m.id', '=', 'p.hero_media_id')
+                ->where('m.visibility', 'public')->where('m.scan_status', 'clean')->whereNull('m.retired_at'))
+            ->where('p.active', 1)->orderBy('p.display_order')->orderBy('p.id')
+            ->get(['p.id', 'p.code', 'p.name', 'p.description', 'm.id as media_id']);
+
+        return ApiResponse::data($items->map(fn (object $item) => [
+            'id' => $item->id, 'code' => $item->code, 'name' => $item->name, 'description' => $item->description,
+            'image_url' => $item->media_id ? url("/api/v1/media/{$item->media_id}") : null,
+        ])->all());
     }
 
     public function subcategories(Request $request): JsonResponse
