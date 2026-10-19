@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {request} from './http';
 import {Field, Notice, validateAccount, EMAIL_MAX_LENGTH} from './forms';
 import './auth.css';
+import {takeAuthIntent} from '../../landing/config';
 
 export default function SessionForm({onLogin}) {
-  const [register, setRegister] = useState(false);
-  const [type, setType] = useState('client');
+  const [intent] = useState(takeAuthIntent);
+  const [register, setRegister] = useState(intent?.mode === 'register');
+  const [type, setType] = useState(intent?.role || 'client');
   const [email, setEmail] = useState('');
   const [busy, setBusy] = useState(false);
   const [errors, setErrors] = useState({});

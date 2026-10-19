@@ -42,3 +42,16 @@ test('video failure does not trap visitors on an empty page', () => {
   fireEvent.error(container.querySelector('video'));
   expect(screen.getByRole('heading')).toBeVisible();
 });
+
+test('S02-TC-089 rediseño: el video sigue al nuevo hero al volver de Nosotros',()=>{
+ const observe=vi.fn();vi.stubGlobal('IntersectionObserver',class{observe=observe;disconnect(){}});
+ const view=render(<VideoExperience revealAt={0}><section id="inicio">Inicio</section></VideoExperience>);
+ fireEvent.error(view.container.querySelector('video'));
+ expect(observe).toHaveBeenCalledWith(document.getElementById('inicio'));
+ view.rerender(<VideoExperience revealAt={0}><section>Nosotros</section></VideoExperience>);
+ fireEvent(window,new Event('tecnicoya:hero-change'));
+ expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
+ view.rerender(<VideoExperience revealAt={0}><section id="inicio">Inicio nuevo</section></VideoExperience>);
+ fireEvent(window,new Event('tecnicoya:hero-change'));
+ expect(observe).toHaveBeenLastCalledWith(document.getElementById('inicio'));
+});
