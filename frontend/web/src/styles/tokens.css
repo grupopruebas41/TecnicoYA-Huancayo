@@ -1,7 +1,8 @@
 :root {
   --ty-header-height: 100px;
   --ty-match-history: #3b5956;
-  --ty-match-fee: #7c755d;
+  --ty-match-fee: #635d48;
+  --ty-match-experience: #d9bd8b;
   --ty-veil: rgba(8, 24, 27, 0.95);
   --ty-veil-mid: rgba(8, 24, 27, 0.8);
   --ty-bg: #0d1b1e;
@@ -31,6 +32,8 @@
   --ty-width: 1200px;
 }
 [data-theme="light"] {
+ --ty-match-history:#b9d2c9;
+ --ty-match-fee:#e0d3b1;
   --ty-bg: #f5f1e9;
   --ty-surface: #e8e3d8;
   --ty-raised: #ded8cb;

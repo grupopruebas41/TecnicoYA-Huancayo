@@ -698,7 +698,7 @@
   background: var(--ty-match-fee);
 }
 .ty-matching > div:nth-child(4) {
-  background: var(--ty-accent);
+  background: var(--ty-match-experience);
   color: var(--ty-ink);
 }
 .ty-matching strong {
