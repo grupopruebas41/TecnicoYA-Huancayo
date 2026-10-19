@@ -42,3 +42,14 @@ test('S02-TC-089 complemento RETIRO-01: el enlace antiguo abre la landing sin de
  expect(screen.getByText('No hay especialidades activas disponibles.')).toBeInTheDocument();
  expect(screen.queryByRole('button',{name:'Subcategoría siguiente'})).not.toBeInTheDocument();
  });
+
+test('S02-TC-085 complemento: pausa al pasar el mouse y retoma a 2500 ms',async()=>{
+ vi.useFakeTimers(); const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+ const deck=container.querySelector('.subcategory-deck');
+ fireEvent.mouseEnter(deck); act(()=>vi.advanceTimersByTime(5000));
+ expect(container.querySelector('.current h4')).toHaveTextContent('Primero');
+ fireEvent.mouseLeave(deck); act(()=>vi.advanceTimersByTime(2499));
+ expect(container.querySelector('.current h4')).toHaveTextContent('Primero');
+ act(()=>vi.advanceTimersByTime(1));
+ expect(container.querySelector('.current h4')).toHaveTextContent('Segundo');
+});

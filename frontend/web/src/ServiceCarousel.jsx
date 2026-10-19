@@ -120,13 +120,16 @@ export function CarouselDeck({ items, label = "Servicios" }) {
 }
 export default function ServiceCarousel() {
   const [items, setItems] = useState(null),
+    [specialties, setSpecialties] = useState(null),
     [error, setError] = useState(""),
     [active, setActive] = useState(null);
   async function load() {
     try {
-      const r = await request("/catalog/carousel");
-      setItems(r.data);
-      setActive(r.data[0]?.specialty_id);
+      const [catalog, carousel] = await Promise.all([request("/catalog/specialties"), request("/catalog/carousel")]);
+      const activeSpecialties = catalog.data.filter(item => item.active !== false);
+      setSpecialties(activeSpecialties);
+      setItems(carousel.data);
+      setActive(current => activeSpecialties.some(item => item.id === current) ? current : activeSpecialties[0]?.id);
       setError("");
     } catch (e) {
       setError(e.message);
@@ -135,11 +138,7 @@ export default function ServiceCarousel() {
   useEffect(() => {
     load();
   }, []);
-  const specialties = [
-    ...new Map(
-      (items || []).map((x) => [x.specialty_id, x.specialty_name]),
-    ).entries(),
-  ];
+  const specialty = specialties?.find(item => item.id === active);
   const selected = (items || []).filter((x) => x.specialty_id === active);
   return (
     <section
@@ -158,11 +157,11 @@ export default function ServiceCarousel() {
         </>
       )}
       {items === null && !error && <output>Cargando especialidades…</output>}
-      {items?.length === 0 && (
-        <p>No hay especialidades con imágenes disponibles.</p>
+      {specialties?.length === 0 && (
+        <p>No hay especialidades activas disponibles.</p>
       )}
       <nav className="service-tabs" aria-label="Seleccionar especialidad">
-        {specialties.map(([id, name]) => (
+        {(specialties || []).map(({id, name}) => (
           <button
             type="button"
             key={id}
@@ -173,25 +172,25 @@ export default function ServiceCarousel() {
           </button>
         ))}
       </nav>
-      {selected.length > 0 && (
+      {specialty && (
         <div className="service-split">
           <div className="service-main">
             <h3 className="service-category-heading">
-              {selected[0].specialty_name}
+              {specialty.name}
             </h3>
             <div className="service-main-photo">
-              <img src={selected[0].image_url} alt={selected[0].name} />
+              {specialty.image_url ? <img src={specialty.image_url} alt={specialty.name} /> : <p className="service-photo-empty">Imagen de la especialidad no disponible.</p>}
             </div>
-            <p>{selected[0].description}</p>
+            <p>{specialty.description}</p>
             <a className="button primary" href="#cuenta">
               Encontrar un técnico ↗
             </a>
           </div>
-          <CarouselDeck
+          {selected.length ? <CarouselDeck
             key={active}
             items={selected}
             label="¿Qué necesitas resolver?"
-          />
+          /> : <p className="service-empty" role="status">No hay subcategorías con imágenes publicadas para esta especialidad.</p>}
         </div>
       )}
     </section>
