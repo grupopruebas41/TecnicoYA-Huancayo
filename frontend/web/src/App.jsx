@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./landing.css";
 import ServiceCarousel from "./ServiceCarousel";
 import AccountApp from "./features/administration/AccountApp";
 import Catalog from "./features/administration/Catalog";
@@ -46,7 +47,7 @@ export default function App() {
       </div>
     );
   return (
-    <>
+    <div className="landing-page">
       <a className="skip" href="#contenido">
         Ir al contenido
       </a>
@@ -169,7 +170,7 @@ export default function App() {
         </section>
       </main>
       <LandingFooter />
-    </>
+    </div>
   );
 }
 

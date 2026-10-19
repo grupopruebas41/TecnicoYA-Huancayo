@@ -1,0 +1,57 @@
+/* Shared visual language retained from v0.3; scoped to the v1 landing. */
+.landing-page { --landing-width: 1280px; color: #f4f0e7; }
+.landing-page .header { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 24px; padding: 24px max(24px,5vw); }
+.landing-page .brand, .landing-page .header > .button { flex-shrink: 0; }
+.landing-page .landing-menu { justify-content: center; gap: 10px 18px; font-size: 14px; line-height: 1.5; }
+.landing-page .landing-menu a { padding: 5px 0; }
+.landing-page .hero { min-height: min(760px,calc(100svh - 120px)); justify-content: center; padding: 64px 24px 80px; }
+.landing-page h1 { font-size: clamp(52px,6.2vw,88px); line-height: 1.04; letter-spacing: -.04em; max-width: 900px; }
+.landing-page h1 em { color: #dcc69e; }
+.landing-page .hero-copy { max-width: 580px; margin: 28px auto; }
+.landing-page .s02-landing-section { max-width: none; margin: 0; padding: clamp(48px,6vw,88px) max(24px,calc((100% - 1180px)/2)); background: #101a1d; border-top: 1px solid #ffffff14; }
+.landing-page .s02-landing-section:nth-of-type(even) { background: #172325; }
+.landing-page .s02-landing-section h2 { max-width: 850px; margin: 0 0 24px; font-size: clamp(32px,3.5vw,48px); line-height: 1.15; overflow-wrap: anywhere; }
+.landing-page .s02-landing-section p { font-size: 18px; color: #c9d6d5; }
+.landing-page #proceso ol { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 36px; padding-left: 24px; margin: 32px 0 0; }
+.landing-page #proceso li { padding-left: 8px; }
+.landing-page #proceso li::marker { color: #dcc69e; font-size: 24px; }
+.landing-page #proceso h3 { font-size: 23px; font-weight: 500; }
+.landing-page #preguntas summary { padding: 20px 0; font-size: 19px; }
+.landing-page #preguntas summary:focus-visible { outline: 2px solid #dcc69e; outline-offset: 4px; }
+.landing-page .footer { display: flex; flex-wrap: wrap; padding: 40px max(24px,5vw); }
+.landing-page .footer h2 { margin: 0; font-size: 28px; }
+.landing-page .footer > span { max-width: none; }
+.landing-page .service-carousel { padding: 64px max(24px,calc((100% - 1280px)/2)); background: #101a1d; }
+.landing-page .service-carousel > h2 { margin: 0 0 28px; }
+.landing-page .service-split { align-items: start; }
+.landing-page .service-main { min-width: 0; }
+.landing-page .service-main > p { color: #c9d6d5; }
+.service-photo-empty, .service-empty { padding: 32px; border: 1px dashed #768480; border-radius: 20px; color: #b8c6c5; line-height: 1.6; }
+.service-photo-empty { min-height: 180px; display: grid; place-items: center; margin: 0; }
+.landing-page .subcategory-deck > h3 { margin: 0 0 24px; font-size: clamp(26px,2.6vw,36px); line-height: 1.2; }
+/* Grid preserves the tallest caption in flow, so long titles never clip. */
+.landing-page .deck-stage { display: grid; height: auto; overflow: visible; }
+.landing-page .subcategory-card { position: relative; grid-area: 1/1; width: 100%; left: auto; top: auto; align-self: start; }
+.landing-page .subcategory-card.away { visibility: hidden; }
+.landing-page .subcategory-card img { height: auto; aspect-ratio: 16/10; }
+.landing-page .subcategory-caption { min-height: 0; }
+.landing-page .subcategory-caption h4 { margin: 0; }
+.landing-page .deck-controls { flex-wrap: wrap; margin-top: 24px; gap: 12px; }
+.landing-page .deck-controls > button:last-child { width: auto; padding: 10px 18px; font-size: 14px; }
+@media(max-width: 1050px) {
+  .landing-page .header { grid-template-columns: 1fr auto; }
+  .landing-page .landing-menu { grid-column: 1/-1; grid-row: 2; }
+  .landing-page .hero { min-height: 600px; }
+}
+@media(max-width: 850px) {
+  .landing-page #proceso ol { grid-template-columns: 1fr; gap: 12px; }
+  .landing-page .service-split { grid-template-columns: 1fr; gap: 40px; }
+}
+@media(max-width: 480px) {
+  .landing-page .header { gap: 20px 10px; padding: 20px 24px; }
+  .landing-page .header > .button { padding: 10px 14px; font-size: 13px; }
+  .landing-page .hero { min-height: 0; padding: 48px 24px 64px; }
+  .landing-page .eyebrow { max-width: 100%; line-height: 1.6; }
+  .landing-page .service-category-heading { font-size: 36px; }
+  .landing-page .footer { align-items: start; flex-direction: column; gap: 16px; }
+}

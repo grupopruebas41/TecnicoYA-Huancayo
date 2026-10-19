@@ -1,0 +1,43 @@
+Fecha: 2026-10-19
+Commit: 74827ed
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- --maxWorkers=1 --pool=threads
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=1 --pool=threads
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ✓ src/features/administration/sprint02Panels.test.jsx (8 tests) 740ms
+ ✓ src/features/requests/requestFlows.test.jsx (13 tests) 555ms
+ ✓ src/features/requests/sprint03.test.jsx (13 tests) 241ms
+ ✓ src/features/offers/sprint04Flows.test.jsx (11 tests) 376ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 313ms
+ ✓ src/Sprint02Landing.test.jsx (8 tests) 206ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 142ms
+ ✓ src/features/administration/sprint02.test.jsx (12 tests) 129ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 168ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 206ms
+ ✓ src/features/administration/accessibility.test.jsx (6 tests) 174ms
+ ✓ src/features/offers/sprint04.test.jsx (14 tests) 147ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 99ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 87ms
+ ✓ src/features/offers/channelIdentity.test.jsx (2 tests) 103ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 33ms
+ ✓ src/features/realtime/Realtime.test.jsx (1 test) 27ms
+ ✓ src/features/administration/http.test.js (4 tests) 22ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 5ms
+ ✓ src/features/administration/sprint025.test.js (2 tests) 5ms
+ ✓ src/features/administration/labels.test.js (9 tests) 6ms
+
+ Test Files  21 passed (21)
+      Tests  150 passed (150)
+   Start at  00:09:50
+   Duration  21.18s (environment 54%, tests 20%, setup 12%, import 9%, transform 4%, worker 1%)
+
+    Isolate  21 workers spawned · ~585ms startup each (spawn + environment, per file)
+             at least ~11.70s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+
+Exit code: 0

@@ -31,3 +31,11 @@ Frontend BMatching/CNotifications, HU-S04-05/06/09, RF-15/16/18/29, D-60–71. R
 Vitest final 146/146, cobertura líneas 84,22 %; build aprobado; npm audit 0 vulnerabilidades. Cypress S04 y regresiones S01–03 pendientes por RAM menor a 1 GiB; 17 casos preparados, 094 requiere replay real desde tarea. [Evidencias](../../../documentacion/evidencias/sprint-04/cypress/README.md). SonarQube pendiente del cierre; CI del último push por verificar. Revisor [PENDIENTE].
 
 Uso de IA: Codex, modelo no expuesto de forma verificable; 2026-10-17. Aceptadas adaptaciones de contrato y preparación de pruebas; corregidos canal sin ID, respuesta auth nativa e idempotencia tras 409. Resultados ejecutados diferenciados de casos preparados. Revisión humana [PENDIENTE].
+
+## Corrección aparte de S4.5 · Landing · 2026-10-18
+
+Rama feature/delgado/landing/fix-carrusel; alcance S2 HU-S02-01 y S02-TC-084/085/089. Commits fb1d945 (rojo), dec9aa9 (verde). Cambios: App.jsx, ServiceCarousel.jsx, landing.css y pruebas. Evidencias en docs/documentacion/evidencias/landing: capturas 1440/375 y medidas 1440/1024/768/375. Vitest 121/121, líneas 82,91 %, build aprobado, audit 0; sin Cypress por RAM <1 GiB. Pedido backend image_url público en specialties documentado en HANDOFF. S4.5 permanece en PR #20. SonarQube pendiente de cierre; revisión [PENDIENTE].
+
+IA: Codex, modelo no expuesto verificablemente, 2026-10-18. Aceptadas separación del catálogo y corrección responsive; corregida la hipótesis de CSS borrado: los estilos comparados siguen en main pero no se ajustaban al marcado v1. Sin datos fijos ni retorno de demo. Validación automatizada y visual indicada; revisor humano [PENDIENTE].
+
+PR de la landing: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/22. Evidencias c1fb8bb; CI en checks del último push.

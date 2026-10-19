@@ -1,0 +1,226 @@
+[
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 102
+      },
+      {
+        "name": "Hero",
+        "top": 102,
+        "height": 796
+      },
+      {
+        "name": "Especialidades",
+        "top": 898,
+        "height": 301.390625
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1199.390625,
+        "height": 549.90625
+      },
+      {
+        "name": "Confianza",
+        "top": 1749.296875,
+        "height": 434.1875
+      },
+      {
+        "name": "Testimonios",
+        "top": 2183.484375,
+        "height": 397.1875
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 2580.671875,
+        "height": 398.1875
+      },
+      {
+        "name": "FAQ",
+        "top": 2978.859375,
+        "height": 486.1875
+      },
+      {
+        "name": "CTA final",
+        "top": 3465.046875,
+        "height": 366.1875
+      },
+      {
+        "name": "Footer",
+        "top": 3831.234375,
+        "height": 140
+      }
+    ]
+  },
+  {
+    "width": 1024,
+    "scrollWidth": 1024,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 116
+      },
+      {
+        "name": "Hero",
+        "top": 116,
+        "height": 796
+      },
+      {
+        "name": "Especialidades",
+        "top": 912,
+        "height": 301.390625
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1213.390625,
+        "height": 540.0625
+      },
+      {
+        "name": "Confianza",
+        "top": 1753.453125,
+        "height": 424.34375
+      },
+      {
+        "name": "Testimonios",
+        "top": 2177.796875,
+        "height": 387.34375
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 2565.140625,
+        "height": 445.6875
+      },
+      {
+        "name": "FAQ",
+        "top": 3010.828125,
+        "height": 476.34375
+      },
+      {
+        "name": "CTA final",
+        "top": 3487.171875,
+        "height": 356.34375
+      },
+      {
+        "name": "Footer",
+        "top": 3843.515625,
+        "height": 171
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "scrollWidth": 768,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 176
+      },
+      {
+        "name": "Hero",
+        "top": 176,
+        "height": 796
+      },
+      {
+        "name": "Especialidades",
+        "top": 972,
+        "height": 301.390625
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1273.390625,
+        "height": 557.71875
+      },
+      {
+        "name": "Confianza",
+        "top": 1831.109375,
+        "height": 410
+      },
+      {
+        "name": "Testimonios",
+        "top": 2241.109375,
+        "height": 373
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 2614.109375,
+        "height": 417
+      },
+      {
+        "name": "FAQ",
+        "top": 3031.109375,
+        "height": 462
+      },
+      {
+        "name": "CTA final",
+        "top": 3493.109375,
+        "height": 342
+      },
+      {
+        "name": "Footer",
+        "top": 3835.109375,
+        "height": 171
+      }
+    ]
+  },
+  {
+    "width": 375,
+    "scrollWidth": 375,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 259
+      },
+      {
+        "name": "Hero",
+        "top": 259,
+        "height": 740
+      },
+      {
+        "name": "Especialidades",
+        "top": 999,
+        "height": 256.265625
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1255.265625,
+        "height": 614.546875
+      },
+      {
+        "name": "Confianza",
+        "top": 1869.8125,
+        "height": 498.828125
+      },
+      {
+        "name": "Testimonios",
+        "top": 2368.640625,
+        "height": 439.65625
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 2808.296875,
+        "height": 370.65625
+      },
+      {
+        "name": "FAQ",
+        "top": 3178.953125,
+        "height": 390.828125
+      },
+      {
+        "name": "CTA final",
+        "top": 3569.78125,
+        "height": 338.65625
+      },
+      {
+        "name": "Footer",
+        "top": 3908.4375,
+        "height": 263.265625
+      }
+    ]
+  }
+]

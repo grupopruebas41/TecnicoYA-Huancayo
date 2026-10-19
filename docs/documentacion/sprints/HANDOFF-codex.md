@@ -21,6 +21,22 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-19 · Landing · integración de main tras PR #20
+
+- Rama feature/delgado/landing/fix-carrusel, PR #22. Merge sin rebase ni force; conflictos limitados a este HANDOFF y avance de Delgado S04, conservando todas las entradas de ambos lados y su orden cronológico. Sin cambios manuales de código.
+- Validación después del merge: npm test con un worker, 150/150 (21 archivos); npm run build aprobado. Evidencias 2026-10-19-74827ed-merge-*.txt en evidencias/landing; hash corresponde al HEAD previo con merge preparado. CI pendiente de verificar tras push. Revisor [PENDIENTE].
+
+
+## 2026-10-18 · Landing · catálogo y disposición responsive
+
+PR #22: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/22. Evidencias c1fb8bb; CI en checks del último push.
+
+- Rama feature/delgado/landing/fix-carrusel desde origin/main 4c56cd7. S4.5 limpio y conservado en su rama/PR #20; no se mezcló aquí. Commits fb1d945 (rojo), dec9aa9 (implementación).
+- Modificados App.jsx, ServiceCarousel.jsx, Sprint02Landing.test.jsx; nuevo landing.css limitado a la landing. Diez secciones, 2,5 s y pausas conservadas. Comparación de estilos con cced99e: no estaban borrados; el marcado v1 requería ajustar cabecera, interlineado y alturas.
+- **Pedido exacto a Claude Code:** GET /api/v1/catalog/specialties debe devolver image_url (string|null) derivado de specialties.hero_media_id solo para medio público, clean y no retirado. Hoy devuelve únicamente id/code/name/description. Ya se soporta este campo opcional; mientras falta se muestran especialidades sin imagen y aviso honesto. El carrusel de subcategorías sigue viniendo de /catalog/carousel. Backend intacto.
+- Capturas antes/después 1440 y 375; medidas también 1024/768, sin overflow ni secciones solapadas. Fuente backend real :3000 mediante proxy de lectura CORS, explicado en docs/documentacion/evidencias/landing/README.md.
+- Vitest rojo 3 fallos esperados; verde final 121/121, cobertura de líneas 82,91 %. Build aprobado, audit 0. Sin Cypress por RAM <1 GiB, sin Docker/Pest. Revisor [PENDIENTE].
+
 ## 2026-10-17 · S4.5 · Integración preparada; ejecución E2E pendiente de RAM
 
 - Rama feature/delgado/b-matching/s04, PR #20. Merge f0612cf (main 4c56cd7); fixes 8b5c811; Cypress 345bf88. Contrato v1.1 y catálogo de main conservados al resolver conflictos de documentos.
@@ -40,7 +56,6 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - Cypress: **no ejecutado**, 18 IDs representados; 13 specs con pasos y 5 skip bloqueados (086,087,089,094,100), no cuentan. No Docker, Pest ni SonarQube. Backend sin modificaciones.
 - Pedidos a Claude Code: fixtures aislados para 60 s, dos aceptaciones, busy/conflicto y dirección antes/después; tarea de republicar mismo event_id; restaurar fixtures/reloj entre casos. Confirmar envoltura data de broadcasting/auth y technician_profile.id en /me. Detalle y configuración VITE_REVERB_* en evidencias/sprint-04/frontend/README.md.
 - Evidencias: docs/documentacion/evidencias/sprint-04/frontend/. Avance: docs/avances/delgado/sprint-04/avance.md. PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/20; CI iniciada, consultar checks del último commit. Evidencias en d3aead5. Revisor [PENDIENTE]. S4.4 queda con esos 5 preparativos E2E pendientes; no se declara cierre del sprint.
-
 
 
 ## 2026-10-16 · RETIRO-01 · Frontend

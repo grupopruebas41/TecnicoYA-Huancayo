@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="3" errors="0" time="0.3092768">
+    <testsuite name="src/Sprint02Landing.test.jsx" timestamp="2026-10-19T04:42:09.742Z" hostname="DESKTOP-BQM4VE8" tests="7" failures="3" errors="0" skipped="0" time="0.3092768">
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-084 carrusel reducido y teclado" time="0.1322818">
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-085 carrusel 2500 ms y pausas" time="0.0347754">
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-089 diez secciones de landing en orden" time="0.0346194">
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-089 complemento RETIRO-01: el enlace antiguo abre la landing sin demo" time="0.0198247">
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-084 complemento: especialidades sin subcategorías con foto siguen disponibles" time="0.025093">
+            <failure message="Unable to find an accessible element with the role &quot;button&quot; and name &quot;Electricidad&quot;
+
+Here are the accessible roles:
+
+  region:
+
+  Name &quot;Especialidades de TécnicoYa&quot;:
+  [36m&lt;section[39m
+    [33maria-label[39m=[32m&quot;Especialidades de TécnicoYa&quot;[39m
+    [33mclass[39m=[32m&quot;service-carousel&quot;[39m
+    [33mdata-landing[39m=[32m&quot;Especialidades&quot;[39m
+    [33mid[39m=[32m&quot;servicios&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Especialidades&quot;:
+  [36m&lt;h2 /&gt;[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  [36m&lt;p /&gt;[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name &quot;Seleccionar especialidad&quot;:
+  [36m&lt;nav[39m
+    [33maria-label[39m=[32m&quot;Seleccionar especialidad&quot;[39m
+    [33mclass[39m=[32m&quot;service-tabs&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m&lt;body&gt;[39m
+  [36m&lt;div&gt;[39m
+    [36m&lt;section[39m
+      [33maria-label[39m=[32m&quot;Especialidades de TécnicoYa&quot;[39m
+      [33mclass[39m=[32m&quot;service-carousel&quot;[39m
+      [33mdata-landing[39m=[32m&quot;Especialidades&quot;[39m
+      [33mid[39m=[32m&quot;servicios&quot;[39m
+    [36m&gt;[39m
+      [36m&lt;h2&gt;[39m
+        [0mEspecialidades[0m
+      [36m&lt;/h2&gt;[39m
+      [36m&lt;p&gt;[39m
+        [0mNo hay especialidades con imágenes disponibles.[0m
+      [36m&lt;/p&gt;[39m
+      [36m&lt;nav[39m
+        [33maria-label[39m=[32m&quot;Seleccionar especialidad&quot;[39m
+        [33mclass[39m=[32m&quot;service-tabs&quot;[39m
+      [36m/&gt;[39m
+    [36m&lt;/section&gt;[39m
+  [36m&lt;/div&gt;[39m
+[36m&lt;/body&gt;[39m" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;button&quot; and name &quot;Electricidad&quot;
+
+Here are the accessible roles:
+
+  region:
+
+  Name &quot;Especialidades de TécnicoYa&quot;:
+  &lt;section
+    aria-label=&quot;Especialidades de TécnicoYa&quot;
+    class=&quot;service-carousel&quot;
+    data-landing=&quot;Especialidades&quot;
+    id=&quot;servicios&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Especialidades&quot;:
+  &lt;h2 /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  --------------------------------------------------
+  navigation:
+
+  Name &quot;Seleccionar especialidad&quot;:
+  &lt;nav
+    aria-label=&quot;Seleccionar especialidad&quot;
+    class=&quot;service-tabs&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;section
+      aria-label=&quot;Especialidades de TécnicoYa&quot;
+      class=&quot;service-carousel&quot;
+      data-landing=&quot;Especialidades&quot;
+      id=&quot;servicios&quot;
+    &gt;
+      &lt;h2&gt;
+        Especialidades
+      &lt;/h2&gt;
+      &lt;p&gt;
+        No hay especialidades con imágenes disponibles.
+      &lt;/p&gt;
+      &lt;nav
+        aria-label=&quot;Seleccionar especialidad&quot;
+        class=&quot;service-tabs&quot;
+      /&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Sprint02Landing.test.jsx:28:16
+            </failure>
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-084 complemento: foto principal pertenece a la especialidad y no a su primer servicio" time="0.0563814">
+            <failure message="Unable to find an accessible element with the role &quot;img&quot; and name &quot;Cómputo&quot;
+
+Here are the accessible roles:
+
+  region:
+
+  Name &quot;Especialidades de TécnicoYa&quot;:
+  [36m&lt;section[39m
+    [33maria-label[39m=[32m&quot;Especialidades de TécnicoYa&quot;[39m
+    [33mclass[39m=[32m&quot;service-carousel&quot;[39m
+    [33mdata-landing[39m=[32m&quot;Especialidades&quot;[39m
+    [33mid[39m=[32m&quot;servicios&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Especialidades&quot;:
+  [36m&lt;h2 /&gt;[39m
+
+  Name &quot;Cómputo&quot;:
+  [36m&lt;h3[39m
+    [33mclass[39m=[32m&quot;service-category-heading&quot;[39m
+  [36m/&gt;[39m
+
+  Name &quot;¿Qué necesitas resolver?&quot;:
+  [36m&lt;h3 /&gt;[39m
+
+  Name &quot;Primero&quot;:
+  [36m&lt;h4 /&gt;[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name &quot;Seleccionar especialidad&quot;:
+  [36m&lt;nav[39m
+    [33maria-label[39m=[32m&quot;Seleccionar especialidad&quot;[39m
+    [33mclass[39m=[32m&quot;service-tabs&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Cómputo&quot;:
+  [36m&lt;button[39m
+    [33maria-pressed[39m=[32m&quot;true&quot;[39m
+    [33mtype[39m=[32m&quot;button&quot;[39m
+  [36m/&gt;[39m
+
+  Name &quot;Subcategoría anterior&quot;:
+  [36m&lt;button[39m
+    [33maria-label[39m=[32m&quot;Subcategoría anterior&quot;[39m
+    [33mtype[39m=[32m&quot;button&quot;[39m
+  [36m/&gt;[39m
+
+  Name &quot;Subcategoría siguiente&quot;:
+  [36m&lt;button[39m
+    [33maria-label[39m=[32m&quot;Subcategoría siguiente&quot;[39m
+    [33mtype[39m=[32m&quot;button&quot;[39m
+  [36m/&gt;[39m
+
+  Name &quot;Pausar&quot;:
+  [36m&lt;button[39m
+    [33mtype[39m=[32m&quot;button&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;Primero&quot;:
+  [36m&lt;img[39m
+    [33malt[39m=[32m&quot;Primero&quot;[39m
+    [33msrc[39m=[32m&quot;/uno.png&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  [36m&lt;p /&gt;[39m
+
+  Name &quot;&quot;:
+  [36m&lt;p /&gt;[39m
+
+  --------------------------------------------------
+  link:
+
+  Name &quot;Encontrar un técnico ↗&quot;:
+  [36m&lt;a[39m
+    [33mclass[39m=[32m&quot;button primary&quot;[39m
+    [33mhref[39m=[32m&quot;#cuenta&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+  article:
+
+  Name &quot;&quot;:
+  [36m&lt;article[39m
+    [33maria-hidden[39m=[32m&quot;false&quot;[39m
+    [33mclass[39m=[32m&quot;subcategory-card current&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+  presentation:
+
+  Name &quot;&quot;:
+  [36m&lt;img[39m
+    [33malt[39m=[32m&quot;&quot;[39m
+    [33msrc[39m=[32m&quot;/uno.png&quot;[39m
+  [36m/&gt;[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m&lt;body&gt;[39m
+  [36m&lt;div&gt;[39m
+    [36m&lt;section[39m
+      [33maria-label[39m=[32m&quot;Especialidades de TécnicoYa&quot;[39m
+      [33mclass[39m=[32m&quot;service-carousel&quot;[39m
+      [33mdata-landing[39m=[32m&quot;Especialidades&quot;[39m
+      [33mid[39m=[32m&quot;servicios&quot;[39m
+    [36m&gt;[39m
+      [36m&lt;h2&gt;[39m
+        [0mEspecialidades[0m
+      [36m&lt;/h2&gt;[39m
+      [36m&lt;nav[39m
+        [33maria-label[39m=[32m&quot;Seleccionar especialidad&quot;[39m
+        [33mclass[39m=[32m&quot;service-tabs&quot;[39m
+      [36m&gt;[39m
+        [36m&lt;button[39m
+          [33maria-pressed[39m=[32m&quot;true&quot;[39m
+          [33mtype[39m=[32m&quot;button&quot;[39m
+        [36m&gt;[39m
+          [0mCómputo[0m
+        [36m&lt;/button&gt;[39m
+      [36m&lt;/nav&gt;[39m
+      [36m&lt;div[39m
+        [33mclass[39m=[32m&quot;service-split&quot;[39m
+      [36m&gt;[39m
+        [36m&lt;div[39m
+          [33mclass[39m=[32m&quot;service-main&quot;[39m
+        [36m&gt;[39m
+          [36m&lt;h3[39m
+            [33mclass[39m=[32m&quot;service-category-heading&quot;[39m
+          [36m&gt;[39m
+            [0mCómputo[0m
+          [36m&lt;/h3&gt;[39m
+          [36m&lt;div[39m
+            [33mclass[39m=[32m&quot;service-main-photo&quot;[39m
+          [36m&gt;[39m
+            [36m&lt;img[39m
+              [33malt[39m=[32m&quot;Primero&quot;[39m
+              [33msrc[39m=[32m&quot;/uno.png&quot;[39m
+            [36m/&gt;[39m
+          [36m&lt;/div&gt;[39m
+          [36m&lt;p /&gt;[39m
+          [36m&lt;a[39m
+            [33mclass[39m=[32m&quot;button primary&quot;[39m
+            [33mhref[39m=[32m&quot;#cuenta&quot;[39m
+          [36m&gt;[39m
+            [0mEncontrar un técnico ↗[0m
+          [36m&lt;/a&gt;[39m
+        [36m&lt;/div&gt;[39m
+        [36m&lt;div[39m
+          [33mclass[39m=[32m&quot;subcategory-deck&quot;[39m
+        [36m&gt;[39m
+          [36m&lt;h3&gt;[39m
+            [0m¿Qué necesitas resolver?[0m
+          [36m&lt;/h3&gt;[39m
+          [36m&lt;div[39m
+            [33maria-label[39m=[32m&quot;¿Qué necesitas resolver?&quot;[39m
+            [33maria-roledescription[39m=[32m&quot;carrusel&quot;[39m
+            [33mclass[39m=[32m&quot;deck-stage&quot;[39m
+          [36m&gt;[39m
+            [36m&lt;article[39m
+              [33maria-hidden[39m=[32m&quot;false&quot;[39m
+              [33mclass[39m=[32m&quot;subcategory-card current&quot;[39m
+            [36m&gt;[39m
+              [36m&lt;img[39m
+                [33malt[39m=[32m&quot;&quot;[39m
+                [33msrc[39m=[32m&quot;/uno.png&quot;[39m
+              [36m/&gt;[39m
+              [36m&lt;div[39m
+                [33mclass[39m=[32m&quot;subcategory-caption&quot;[39m
+              [36m&gt;[39m
+                [36m&lt;h4&gt;[39m
+                  [0mPrimero[0m
+                [36m&lt;/h4&gt;[39m
+                [36m&lt;p /&gt;[39m
+              [36m&lt;/div&gt;[39m
+            [36m&lt;/article&gt;[39m
+            [36m&lt;article[39m
+              [33maria-hidden[39m=[32m&quot;true&quot;[39m
+              [33mclass[39m=[32m&quot;subcategory-card away&quot;[39m
+            [36m&gt;[39m
+              [36m&lt;img[39m
+                [33malt[39m=[32m&quot;&quot;[39m
+                [33msrc[39m=[32m&quot;/dos.png&quot;[39m
+              [36m/&gt;[39m
+              [36m&lt;div[39m
+                [33mclass[39m=[32m&quot;subcategory-caption&quot;[39m
+              [36m&gt;[39m
+                [36m&lt;h4&gt;[39m
+                  [0mSegundo[0m
+                [36m&lt;/h4&gt;[39m
+                [36m&lt;p /&gt;[39m
+              [36m&lt;/div&gt;[39m
+            [36m&lt;/article&gt;[39m
+          [36m&lt;/div&gt;[39m
+          [36m&lt;div[39m
+            [33mclass[39m=[32m&quot;deck-controls&quot;[39m
+          [36m&gt;[39m
+            [36m&lt;button[39m
+              [33maria-label[39m=[32m&quot;Subcategoría anterior&quot;[39m
+              [33mtype[39m=[32m&quot;button&quot;[39m
+            [36m&gt;[39m
+              [0m←[0m
+            [36m&lt;/button&gt;[39m
+            [36m&lt;span&gt;[39m
+              [0m1[0m
+              [0m / [0m
+              [0m2[0m
+            [36m&lt;/span&gt;[39m
+            [36m&lt;button[39m
+              [33maria-label[39m=[32m&quot;Subcategoría siguiente&quot;[39m
+              [33mtype[39m=[32m&quot;button&quot;[39m
+            [36m&gt;[39m
+              [0m→[0m
+            [36m&lt;/button&gt;[39m
+            [36m&lt;button[39m
+              [33mtype[39m=[32m&quot;button&quot;[39m
+            [36m&gt;[39m
+              [0mPausar[0m
+            [36m&lt;/button&gt;[39m
+          [36m&lt;/div&gt;[39m
+        [36m&lt;/div&gt;[39m
+      [36m&lt;/div&gt;[39m
+    [36m&lt;/section&gt;[39m
+  [36m&lt;/div&gt;[39m
+[36m&lt;/body&gt;[39m" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;img&quot; and name &quot;Cómputo&quot;
+
+Here are the accessible roles:
+
+  region:
+
+  Name &quot;Especialidades de TécnicoYa&quot;:
+  &lt;section
+    aria-label=&quot;Especialidades de TécnicoYa&quot;
+    class=&quot;service-carousel&quot;
+    data-landing=&quot;Especialidades&quot;
+    id=&quot;servicios&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Especialidades&quot;:
+  &lt;h2 /&gt;
+
+  Name &quot;Cómputo&quot;:
+  &lt;h3
+    class=&quot;service-category-heading&quot;
+  /&gt;
+
+  Name &quot;¿Qué necesitas resolver?&quot;:
+  &lt;h3 /&gt;
+
+  Name &quot;Primero&quot;:
+  &lt;h4 /&gt;
+
+  --------------------------------------------------
+  navigation:
+
+  Name &quot;Seleccionar especialidad&quot;:
+  &lt;nav
+    aria-label=&quot;Seleccionar especialidad&quot;
+    class=&quot;service-tabs&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Cómputo&quot;:
+  &lt;button
+    aria-pressed=&quot;true&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Subcategoría anterior&quot;:
+  &lt;button
+    aria-label=&quot;Subcategoría anterior&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Subcategoría siguiente&quot;:
+  &lt;button
+    aria-label=&quot;Subcategoría siguiente&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Pausar&quot;:
+  &lt;button
+    type=&quot;button&quot;
+  /&gt;
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;Primero&quot;:
+  &lt;img
+    alt=&quot;Primero&quot;
+    src=&quot;/uno.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  --------------------------------------------------
+  link:
+
+  Name &quot;Encontrar un técnico ↗&quot;:
+  &lt;a
+    class=&quot;button primary&quot;
+    href=&quot;#cuenta&quot;
+  /&gt;
+
+  --------------------------------------------------
+  article:
+
+  Name &quot;&quot;:
+  &lt;article
+    aria-hidden=&quot;false&quot;
+    class=&quot;subcategory-card current&quot;
+  /&gt;
+
+  --------------------------------------------------
+  presentation:
+
+  Name &quot;&quot;:
+  &lt;img
+    alt=&quot;&quot;
+    src=&quot;/uno.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;section
+      aria-label=&quot;Especialidades de TécnicoYa&quot;
+      class=&quot;service-carousel&quot;
+      data-landing=&quot;Especialidades&quot;
+      id=&quot;servicios&quot;
+    &gt;
+      &lt;h2&gt;
+        Especialidades
+      &lt;/h2&gt;
+      &lt;nav
+        aria-label=&quot;Seleccionar especialidad&quot;
+        class=&quot;service-tabs&quot;
+      &gt;
+        &lt;button
+          aria-pressed=&quot;true&quot;
+          type=&quot;button&quot;
+        &gt;
+          Cómputo
+        &lt;/button&gt;
+      &lt;/nav&gt;
+      &lt;div
+        class=&quot;service-split&quot;
+      &gt;
+        &lt;div
+          class=&quot;service-main&quot;
+        &gt;
+          &lt;h3
+            class=&quot;service-category-heading&quot;
+          &gt;
+            Cómputo
+          &lt;/h3&gt;
+          &lt;div
+            class=&quot;service-main-photo&quot;
+          &gt;
+            &lt;img
+              alt=&quot;Primero&quot;
+              src=&quot;/uno.png&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;p /&gt;
+          &lt;a
+            class=&quot;button primary&quot;
+            href=&quot;#cuenta&quot;
+          &gt;
+            Encontrar un técnico ↗
+          &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;subcategory-deck&quot;
+        &gt;
+          &lt;h3&gt;
+            ¿Qué necesitas resolver?
+          &lt;/h3&gt;
+          &lt;div
+            aria-label=&quot;¿Qué necesitas resolver?&quot;
+            aria-roledescription=&quot;carrusel&quot;
+            class=&quot;deck-stage&quot;
+          &gt;
+            &lt;article
+              aria-hidden=&quot;false&quot;
+              class=&quot;subcategory-card current&quot;
+            &gt;
+              &lt;img
+                alt=&quot;&quot;
+                src=&quot;/uno.png&quot;
+              /&gt;
+              &lt;div
+                class=&quot;subcategory-caption&quot;
+              &gt;
+                &lt;h4&gt;
+                  Primero
+                &lt;/h4&gt;
+                &lt;p /&gt;
+              &lt;/div&gt;
+            &lt;/article&gt;
+            &lt;article
+              aria-hidden=&quot;true&quot;
+              class=&quot;subcategory-card away&quot;
+            &gt;
+              &lt;img
+                alt=&quot;&quot;
+                src=&quot;/dos.png&quot;
+              /&gt;
+              &lt;div
+                class=&quot;subcategory-caption&quot;
+              &gt;
+                &lt;h4&gt;
+                  Segundo
+                &lt;/h4&gt;
+                &lt;p /&gt;
+              &lt;/div&gt;
+            &lt;/article&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;deck-controls&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Subcategoría anterior&quot;
+              type=&quot;button&quot;
+            &gt;
+              ←
+            &lt;/button&gt;
+            &lt;span&gt;
+              1
+               / 
+              2
+            &lt;/span&gt;
+            &lt;button
+              aria-label=&quot;Subcategoría siguiente&quot;
+              type=&quot;button&quot;
+            &gt;
+              →
+            &lt;/button&gt;
+            &lt;button
+              type=&quot;button&quot;
+            &gt;
+              Pausar
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Sprint02Landing.test.jsx:38:16
+            </failure>
+        </testcase>
+        <testcase classname="src/Sprint02Landing.test.jsx" name="S02-TC-085 complemento: catálogo vacío no inventa especialidades" time="0.0049866">
+            <failure message="Unable to find an element with the text: No hay especialidades activas disponibles.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m&lt;body&gt;[39m
+  [36m&lt;div&gt;[39m
+    [36m&lt;section[39m
+      [33maria-label[39m=[32m&quot;Especialidades de TécnicoYa&quot;[39m
+      [33mclass[39m=[32m&quot;service-carousel&quot;[39m
+      [33mdata-landing[39m=[32m&quot;Especialidades&quot;[39m
+      [33mid[39m=[32m&quot;servicios&quot;[39m
+    [36m&gt;[39m
+      [36m&lt;h2&gt;[39m
+        [0mEspecialidades[0m
+      [36m&lt;/h2&gt;[39m
+      [36m&lt;p&gt;[39m
+        [0mNo hay especialidades con imágenes disponibles.[0m
+      [36m&lt;/p&gt;[39m
+      [36m&lt;nav[39m
+        [33maria-label[39m=[32m&quot;Seleccionar especialidad&quot;[39m
+        [33mclass[39m=[32m&quot;service-tabs&quot;[39m
+      [36m/&gt;[39m
+    [36m&lt;/section&gt;[39m
+  [36m&lt;/div&gt;[39m
+[36m&lt;/body&gt;[39m" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: No hay especialidades activas disponibles.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;section
+      aria-label=&quot;Especialidades de TécnicoYa&quot;
+      class=&quot;service-carousel&quot;
+      data-landing=&quot;Especialidades&quot;
+      id=&quot;servicios&quot;
+    &gt;
+      &lt;h2&gt;
+        Especialidades
+      &lt;/h2&gt;
+      &lt;p&gt;
+        No hay especialidades con imágenes disponibles.
+      &lt;/p&gt;
+      &lt;nav
+        aria-label=&quot;Seleccionar especialidad&quot;
+        class=&quot;service-tabs&quot;
+      /&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Sprint02Landing.test.jsx:42:16
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
