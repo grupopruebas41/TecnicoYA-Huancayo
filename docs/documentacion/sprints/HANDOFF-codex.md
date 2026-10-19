@@ -21,6 +21,15 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-18 · Landing · catálogo y disposición responsive
+
+- Rama feature/delgado/landing/fix-carrusel desde origin/main 4c56cd7. S4.5 limpio y conservado en su rama/PR #20; no se mezcló aquí. Commits fb1d945 (rojo), dec9aa9 (implementación).
+- Modificados App.jsx, ServiceCarousel.jsx, Sprint02Landing.test.jsx; nuevo landing.css limitado a la landing. Diez secciones, 2,5 s y pausas conservadas. Comparación de estilos con cced99e: no estaban borrados; el marcado v1 requería ajustar cabecera, interlineado y alturas.
+- **Pedido exacto a Claude Code:** GET /api/v1/catalog/specialties debe devolver image_url (string|null) derivado de specialties.hero_media_id solo para medio público, clean y no retirado. Hoy devuelve únicamente id/code/name/description. Ya se soporta este campo opcional; mientras falta se muestran especialidades sin imagen y aviso honesto. El carrusel de subcategorías sigue viniendo de /catalog/carousel. Backend intacto.
+- Capturas antes/después 1440 y 375; medidas también 1024/768, sin overflow ni secciones solapadas. Fuente backend real :3000 mediante proxy de lectura CORS, explicado en docs/documentacion/evidencias/landing/README.md.
+- Vitest rojo 3 fallos esperados; verde final 121/121, cobertura de líneas 82,91 %. Build aprobado, audit 0. Sin Cypress por RAM <1 GiB, sin Docker/Pest. Revisor [PENDIENTE].
+
+
 ## 2026-10-16 · RETIRO-01 · Frontend
 
 - Rama feature/delgado/infra/retiro-prototipo; base cced99e. Commits: 60cc4a7 dependencias DEP-01; f23ed61 prueba en rojo; ee4cb8a retiro y estilos v1.
