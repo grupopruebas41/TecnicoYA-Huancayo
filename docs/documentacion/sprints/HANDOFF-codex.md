@@ -21,6 +21,12 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-19 · Landing · integración de main tras PR #20
+
+- Rama feature/delgado/landing/fix-carrusel, PR #22. Merge sin rebase ni force; conflictos limitados a este HANDOFF y avance de Delgado S04, conservando todas las entradas de ambos lados y su orden cronológico. Sin cambios manuales de código.
+- Validación después del merge: npm test con un worker, 150/150 (21 archivos); npm run build aprobado. Evidencias 2026-10-19-74827ed-merge-*.txt en evidencias/landing; hash corresponde al HEAD previo con merge preparado. CI pendiente de verificar tras push. Revisor [PENDIENTE].
+
+
 ## 2026-10-18 · Landing · catálogo y disposición responsive
 
 PR #22: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/22. Evidencias c1fb8bb; CI en checks del último push.
@@ -30,6 +36,26 @@ PR #22: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/22. Evidencias
 - **Pedido exacto a Claude Code:** GET /api/v1/catalog/specialties debe devolver image_url (string|null) derivado de specialties.hero_media_id solo para medio público, clean y no retirado. Hoy devuelve únicamente id/code/name/description. Ya se soporta este campo opcional; mientras falta se muestran especialidades sin imagen y aviso honesto. El carrusel de subcategorías sigue viniendo de /catalog/carousel. Backend intacto.
 - Capturas antes/después 1440 y 375; medidas también 1024/768, sin overflow ni secciones solapadas. Fuente backend real :3000 mediante proxy de lectura CORS, explicado en docs/documentacion/evidencias/landing/README.md.
 - Vitest rojo 3 fallos esperados; verde final 121/121, cobertura de líneas 82,91 %. Build aprobado, audit 0. Sin Cypress por RAM <1 GiB, sin Docker/Pest. Revisor [PENDIENTE].
+
+## 2026-10-17 · S4.5 · Integración preparada; ejecución E2E pendiente de RAM
+
+- Rama feature/delgado/b-matching/s04, PR #20. Merge f0612cf (main 4c56cd7); fixes 8b5c811; Cypress 345bf88. Contrato v1.1 y catálogo de main conservados al resolver conflictos de documentos.
+- Vitest 146/146; líneas globales 84,22 %, ofertas 92,17 %, realtime 91,83 %. Build y audit salida 0; cero vulnerabilidades. Evidencias: docs/documentacion/evidencias/sprint-04/cypress/.
+- Cypress S04 y regresiones S01–03 NO ejecutadas: RAM menor de 1 GiB (0,59/0,94/0,73). Usuario avisado; no arrancar hasta disponer de memoria suficiente. Preparados 17/18; eso no equivale a aprobados. S04-TC-086,087,089,100 pasan de skip a implementados, pendientes de ejecución.
+- Registradas tareasSprint04; correos completos para openRoundFor, aislamiento del reloj e IDs devueltos por tarea. Reverb usa VITE_REVERB_*; auth nativa y perfil ID adaptados sin cambios del backend. Tras 409, claves nuevas para respuesta y alternativas.
+- **Pedido preciso a Claude Code (S04-TC-094):** falta tarea de replay de evento real. Debe localizar un evento de solicitud del cliente sintético, devolver event_id/request_id/version/canal y publicarlo dos veces por Reverb con el MISMO event_id y versión, sin modificar el negocio. Respetar slot/guarda *_testing. Hoy tareasSprint04 solo ofrece serverClock, runJobs y openRoundFor. No hace falta cuenta nueva ni endpoint HTTP del producto. Se mantiene skip hasta tener esta operación.
+- Continuación: comprobar memoria y bloqueo global; correr S04 y luego S01,S02,S03 de a uno, preservar fallos y documentar los del backend sin tocarlo. Revisar CI del último push. Revisor [PENDIENTE]. Informe completo en evidencias/sprint-04/cypress/README.md.
+
+
+## 2026-10-16 · S4.4 · Frontend de matching
+
+- Rama feature/delgado/b-matching/s04; base 38c9c14. Fuentes S4 de origin/feature/mayhuasca/b-matching/s04 importadas; leídos ambos HANDOFF y D-60–71. Se conserva nota de D-26 de main.
+- Commits: 757abe1 rojo (fallo de importación, 0 ejecutados); b5b8891 implementación; e9d7504 Cypress preparado; dac617f recuperación de ofertas vencidas.
+- Pantallas: ofertas técnico y SLA del servidor, candidatos/selección/pendiente/alternativas, notificaciones after_id, Echo/Reverb con deduplicación y recuperación, distrito base del técnico. D-60 creación idempotente y D-61 retiro de media no vinculada.
+- Vitest **142/142**, 20 archivos; **13 IDs distintos S04-TC-101–113**. Líneas global **84,26 %**. Build 0, audit 0 vulnerabilidades. Prueba S03-TC-074 de creación incierta actualizada por D-60; explicación/fallos conservados en evidencias.
+- Cypress: **no ejecutado**, 18 IDs representados; 13 specs con pasos y 5 skip bloqueados (086,087,089,094,100), no cuentan. No Docker, Pest ni SonarQube. Backend sin modificaciones.
+- Pedidos a Claude Code: fixtures aislados para 60 s, dos aceptaciones, busy/conflicto y dirección antes/después; tarea de republicar mismo event_id; restaurar fixtures/reloj entre casos. Confirmar envoltura data de broadcasting/auth y technician_profile.id en /me. Detalle y configuración VITE_REVERB_* en evidencias/sprint-04/frontend/README.md.
+- Evidencias: docs/documentacion/evidencias/sprint-04/frontend/. Avance: docs/avances/delgado/sprint-04/avance.md. PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/20; CI iniciada, consultar checks del último commit. Evidencias en d3aead5. Revisor [PENDIENTE]. S4.4 queda con esos 5 preparativos E2E pendientes; no se declara cierre del sprint.
 
 
 ## 2026-10-16 · RETIRO-01 · Frontend

@@ -1,4 +1,5 @@
 import {defineConfig} from 'cypress';
+import {tareasSprint04} from '../../scripts/e2e-tareas-s04.mjs';
 
 // Configuración que usa scripts/run-e2e.mjs para cualquier sprint y slot. Los valores llegan
 // por variables de entorno del arrancador; los predeterminados son los del slot A, Sprint 1.
@@ -19,6 +20,7 @@ export default defineConfig({
     supportFile: false,
     testIsolation: true,
     setupNodeEvents(on) {
+      on('task', tareasSprint04());
       on('before:browser:launch', (browser, options) => {
         if (browser.family === 'chromium' && browser.name !== 'electron') options.args.push('--force-prefers-reduced-motion');
         return options;
