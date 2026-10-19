@@ -23,6 +23,8 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## 2026-10-18 · Landing · catálogo y disposición responsive
 
+PR #22: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/22. Evidencias c1fb8bb; CI en checks del último push.
+
 - Rama feature/delgado/landing/fix-carrusel desde origin/main 4c56cd7. S4.5 limpio y conservado en su rama/PR #20; no se mezcló aquí. Commits fb1d945 (rojo), dec9aa9 (implementación).
 - Modificados App.jsx, ServiceCarousel.jsx, Sprint02Landing.test.jsx; nuevo landing.css limitado a la landing. Diez secciones, 2,5 s y pausas conservadas. Comparación de estilos con cced99e: no estaban borrados; el marcado v1 requería ajustar cabecera, interlineado y alturas.
 - **Pedido exacto a Claude Code:** GET /api/v1/catalog/specialties debe devolver image_url (string|null) derivado de specialties.hero_media_id solo para medio público, clean y no retirado. Hoy devuelve únicamente id/code/name/description. Ya se soporta este campo opcional; mientras falta se muestran especialidades sin imagen y aviso honesto. El carrusel de subcategorías sigue viniendo de /catalog/carousel. Backend intacto.

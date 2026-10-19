@@ -19,3 +19,5 @@ Herramienta: Codex; modelo no expuesto de forma verificable en esta sesión. Fec
 Rama feature/delgado/landing/fix-carrusel; alcance S2 HU-S02-01 y S02-TC-084/085/089. Commits fb1d945 (rojo), dec9aa9 (verde). Cambios: App.jsx, ServiceCarousel.jsx, landing.css y pruebas. Evidencias en docs/documentacion/evidencias/landing: capturas 1440/375 y medidas 1440/1024/768/375. Vitest 121/121, líneas 82,91 %, build aprobado, audit 0; sin Cypress por RAM <1 GiB. Pedido backend image_url público en specialties documentado en HANDOFF. S4.5 permanece en PR #20. SonarQube pendiente de cierre; revisión [PENDIENTE].
 
 IA: Codex, modelo no expuesto verificablemente, 2026-10-18. Aceptadas separación del catálogo y corrección responsive; corregida la hipótesis de CSS borrado: los estilos comparados siguen en main pero no se ajustaban al marcado v1. Sin datos fijos ni retorno de demo. Validación automatizada y visual indicada; revisor humano [PENDIENTE].
+
+PR de la landing: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/22. Evidencias c1fb8bb; CI en checks del último push.
