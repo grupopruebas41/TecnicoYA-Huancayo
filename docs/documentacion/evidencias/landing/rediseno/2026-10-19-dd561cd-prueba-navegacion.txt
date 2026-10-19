@@ -1,0 +1,20 @@
+Fecha: 2026-10-19
+Commit: dd561cd
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- --run src/Sprint02Landing.test.jsx --maxWorkers=1 --pool=threads
+
+> tecnicoya-web@1.0.0 test
+> vitest run --run src/Sprint02Landing.test.jsx --maxWorkers=1 --pool=threads
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ✓ src/Sprint02Landing.test.jsx (8 tests) 303ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  16:50:30
+   Duration  2.43s (environment 48%, transform 20%, tests 14%, import 10%, setup 8%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+
+Exit code: 0

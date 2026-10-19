@@ -1,0 +1,270 @@
+Fecha: 2026-10-19
+Commit: dd561cd
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- --run src/LandingRedesign.test.jsx src/Sprint02Landing.test.jsx --maxWorkers=1 --pool=threads
+
+> tecnicoya-web@1.0.0 test
+> vitest run --run src/LandingRedesign.test.jsx src/Sprint02Landing.test.jsx --maxWorkers=1 --pool=threads
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+Error: Not implemented: window.scrollTo
+    at module.exports ([WORKSPACE]\frontend\web\node_modules\jsdom\lib\jsdom\browser\not-implemented.js:9:17)
+    at [WORKSPACE]\frontend\web\node_modules\jsdom\lib\jsdom\browser\Window.js:960:7
+    at [WORKSPACE]/frontend/web/src/App.jsx:11:255
+    at commitHookEffectListMount ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:27023:14) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports ([WORKSPACE]\frontend\web\node_modules\jsdom\lib\jsdom\browser\not-implemented.js:9:17)
+    at [WORKSPACE]\frontend\web\node_modules\jsdom\lib\jsdom\browser\Window.js:960:7
+    at [WORKSPACE]/frontend/web/src/App.jsx:11:255
+    at commitHookEffectListMount ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:27078:3)
+    at flushPassiveEffects ([WORKSPACE]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:27023:14) undefined
+ ✓ src/LandingRedesign.test.jsx (6 tests) 472ms
+stderr | src/Sprint02Landing.test.jsx > S02-TC-084 carrusel reducido y teclado
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `ServiceCarousel`. See https://reactjs.org/link/warning-keys for more information.
+    at li
+    at ServiceCarousel ([WORKSPACE]/frontend/web/src/ServiceCarousel.jsx:180:62)
+
+stderr | src/Sprint02Landing.test.jsx > S02-TC-089 diez secciones de landing en orden
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `Hero`. See https://reactjs.org/link/warning-keys for more information.
+    at option
+    at Hero ([WORKSPACE]/frontend/web/src/landing/Home.jsx:40:17)
+    at Home ([WORKSPACE]/frontend/web/src/landing/Home.jsx:298:17)
+    at main
+    at div
+    at PublicSite ([WORKSPACE]/frontend/web/src/App.jsx:25:23)
+    at App ([WORKSPACE]/frontend/web/src/App.jsx:81:62)
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `Zones`. See https://reactjs.org/link/warning-keys for more information.
+    at li
+    at Zones ([WORKSPACE]/frontend/web/src/landing/Shared.jsx:347:18)
+    at Home ([WORKSPACE]/frontend/web/src/landing/Home.jsx:298:17)
+    at main
+    at div
+    at PublicSite ([WORKSPACE]/frontend/web/src/App.jsx:25:23)
+    at App ([WORKSPACE]/frontend/web/src/App.jsx:81:62)
+
+ ❯ src/Sprint02Landing.test.jsx (8 tests | 1 failed) 269ms
+   ✓ S02-TC-084 carrusel reducido y teclado 123ms
+   ✓ S02-TC-085 carrusel 2500 ms y pausas 29ms
+   ✓ S02-TC-089 diez secciones de landing en orden 49ms
+   ✓ S02-TC-089 complemento RETIRO-01: el enlace antiguo abre la landing sin demo 23ms
+   × S02-TC-084 complemento: especialidades sin subcategorías con foto siguen disponibles 20ms
+   ✓ S02-TC-084 complemento: foto principal pertenece a la especialidad y no a su primer servicio 15ms
+   ✓ S02-TC-085 complemento: catálogo vacío no inventa especialidades 3ms
+   ✓ S02-TC-085 complemento: pausa al pasar el mouse y retoma a 2500 ms 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-084 complemento: especialidades sin subcategorías con foto siguen disponibles
+TestingLibraryElementError: Found multiple elements with the text: Imagen de la especialidad no disponible.
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+<small>
+  Imagen de la especialidad no disponible.
+</small>
+
+Ignored nodes: comments, script, style
+<small>
+  Imagen de la especialidad no disponible.
+</small>
+
+Ignored nodes: comments, script, style
+<small>
+  Imagen de la especialidad no disponible.
+</small>
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="Especialidades de TécnicoYa"
+      class="service-carousel"
+      data-landing="Especialidades"
+      id="servicios"
+    >
+      <h2>
+        Especialidades
+      </h2>
+      <nav
+        aria-label="Seleccionar especialidad"
+        class="service-tabs"
+      >
+        <button
+          aria-pressed="true"
+          type="button"
+        >
+          Cómputo
+        </button>
+        <button
+          aria-pressed="false"
+          type="button"
+        >
+          Refrigeración comercial
+        </button>
+        <button
+          aria-pressed="false"
+          type="button"
+        >
+          Electricidad
+        </button>
+      </nav>
+      <div
+        class="ty-specialty-cards"
+      >
+        <article
+          class="ty-specialty-card"
+        >
+          <div
+            class="ty-specialty-photo"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ◇
+            </span>
+          </div>
+          <div
+            class="ty-specialty-copy"
+          >
+            <h3>
+              Cómputo
+            </h3>
+            <small>
+              Imagen de la especialidad no disponible.
+            </small>
+            <p />
+            <button
+              aria-label="Explorar Cómputo"
+              type="button"
+            >
+              Explorar servicios →
+            </button>
+            <ul
+              class="ty-subcategory-list"
+            />
+          </div>
+        </article>
+        <article
+          class="ty-specialty-card"
+        >
+          <div
+            class="ty-specialty-photo"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ◇
+            </span>
+          </div>
+          <div
+            class="ty-specialty-copy"
+          >
+            <h3>
+              Refrigeración comercial
+            </h3>
+            <small>
+              Imagen de la especialidad no disponible.
+            </small>
+            <p />
+            <button
+              aria-label="Explorar Refrigeración comercial"
+              type="button"
+            >
+              Explorar servicios →
+            </button>
+            <ul
+              class="ty-subcategory-list"
+            />
+          </div>
+        </article>
+        <article
+          class="ty-specialty-card"
+        >
+          <div
+            class="ty-specialty-photo"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ◇
+            </span>
+          </div>
+          <div
+            class="ty-specialty-copy"
+          >
+            <h3>
+              Electricidad
+            </h3>
+            <small>
+              Imagen de la especialidad no disponible.
+            </small>
+            <p />
+            <button
+              aria-label="Explorar Electricidad"
+              type="button"
+            >
+              Explorar servicios →
+            </button>
+            <ul
+              class="ty-subcategory-list"
+            />
+          </div>
+        </article>
+      </div>
+      <p
+        class="service-empty"
+        role="status"
+      >
+        No hay subcategorías con imágenes publicadas para esta especialidad.
+      </p>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getElementError node_modules/@testing-library/dom/dist/query-helpers.js:20:35
+ ❯ getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:23:10
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Sprint02Landing.test.jsx:30:16
+     28|  expect(screen.getByRole('button',{name:'Electricidad'})).toBeInTheDoc…
+     29|  expect(screen.getByRole('heading',{name:'Cómputo'})).toBeInTheDocumen…
+     30|  expect(screen.getByText('Imagen de la especialidad no disponible.')).…
+       |                ^
+     31|  expect(screen.getByText('No hay subcategorías con imágenes publicadas…
+     32|  fireEvent.click(screen.getByRole('button',{name:'Electricidad'}));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 13 passed (14)
+   Start at  16:18:22
+   Duration  3.97s (environment 44%, tests 20%, transform 16%, import 10%, setup 9%)
+
+    Isolate  2 workers spawned · ~962ms startup each (spawn + environment, per file)
+             at least ~962ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+
+Exit code: 1

@@ -21,6 +21,18 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-19 · Rediseño de landing y Nosotros
+
+- Rama feature/delgado/landing/rediseno-landing, base e6b15df. Commit rojo dd561cd; implementación 1fdfa27. Solo frontend/documentación, sin backend ni dependencias nuevas.
+- Diez secciones reordenadas por petición expresa del equipo: Header, Hero, Especialidades, Cómo funciona, Confianza, CTA técnicos, Zonas, FAQ, CTA final, Footer. Testimonios se mueve a Nosotros (12 bloques). S02-TC-089 verifica el nuevo orden exacto y los enlaces de cabecera solicitados; 084 y 085 mantienen intervalo/pausas/teclado/estados vacíos.
+- Tokens: frontend/web/src/styles/tokens.css, tema claro preparado sin selector. Siete imágenes generadas en WebP <=300 KB con prompts. Conservado video; navegación Nosotros/inicio vuelve a conectar su observador. Búsqueda guarda solo IDs de filtros en sessionStorage, nunca credenciales. Registro técnico preseleccionado, sesión Sanctum intacta.
+- Pruebas: 161/161 Vitest, líneas globales 85,33 %, landing 89,61 %; build aprobado; audit 0. Evidencias en docs/documentacion/evidencias/landing/rediseno y capturas antes/después 1440/375; medidas 1024/768 sin desbordamiento. Cypress no ejecutado: RAM 736–793 MB. No Docker ni SonarQube.
+- Backend pendiente, para resolver en una pasada: GET /catalog/specialties necesita image_url nullable de SU imagen pública/revisada; GET /catalog/carousel necesita reference_fee nullable orientativa D-52. Ninguna foto de subcategoría se presenta como propia de especialidad, ni tarifa inventada. El nuevo componente ya usa esos campos cuando existan. Pesos de matching presentados como valores de referencia, no vigentes; contrato público pendiente solo si se desea mostrarlos en vivo.
+- Contacto/horario/legales quedan rotulados pendientes. Calidad cita el informe S2.6 (90 IDs y Gate OK), no certifica código nuevo. API desarrollo :3000 apagada: capturas reales con estado de error; falta revisión visual con catálogo real disponible.
+- Mensaje del usuario para Claude Code: no empezar el rediseño público; la landing, Nosotros y tokens los realiza Codex. Eliminar su rama local vacía feature/pimentel/ui/rediseno-visual solo si sigue vacía. Más adelante rediseñar paneles usando estos tokens y atender campos backend anteriores. No se manipuló la rama ajena ni se afirma haber enviado un mensaje fuera de este relevo.
+- Avance: docs/avances/delgado/landing/avance.md. Revisor [PENDIENTE]. PR/CI: se agregan tras publicar.
+
+
 ## 2026-10-19 · Landing · integración de main tras PR #20
 
 - Rama feature/delgado/landing/fix-carrusel, PR #22. Merge sin rebase ni force; conflictos limitados a este HANDOFF y avance de Delgado S04, conservando todas las entradas de ambos lados y su orden cronológico. Sin cambios manuales de código.

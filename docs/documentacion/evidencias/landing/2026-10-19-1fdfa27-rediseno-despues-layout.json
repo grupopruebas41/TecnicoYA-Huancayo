@@ -1,0 +1,290 @@
+[
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Hero",
+        "top": 0,
+        "height": 900
+      },
+      {
+        "name": "Especialidades",
+        "top": 900,
+        "height": 487.515625
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1387.515625,
+        "height": 579.6875
+      },
+      {
+        "name": "Confianza",
+        "top": 1967.203125,
+        "height": 550.9375
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 2518.140625,
+        "height": 682.21875
+      },
+      {
+        "name": "Zonas",
+        "top": 3200.359375,
+        "height": 601.59375
+      },
+      {
+        "name": "FAQ",
+        "top": 3801.953125,
+        "height": 750.65625
+      },
+      {
+        "name": "CTA final",
+        "top": 4552.609375,
+        "height": 449.75
+      },
+      {
+        "name": "Footer",
+        "top": 5002.359375,
+        "height": 329.96875
+      }
+    ]
+  },
+  {
+    "width": 1024,
+    "scrollWidth": 1024,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Hero",
+        "top": 0,
+        "height": 900
+      },
+      {
+        "name": "Especialidades",
+        "top": 900,
+        "height": 411.296875
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1311.296875,
+        "height": 528.015625
+      },
+      {
+        "name": "Confianza",
+        "top": 1839.3125,
+        "height": 462.015625
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 2301.328125,
+        "height": 509.796875
+      },
+      {
+        "name": "Zonas",
+        "top": 2811.125,
+        "height": 491.34375
+      },
+      {
+        "name": "FAQ",
+        "top": 3302.46875,
+        "height": 692.40625
+      },
+      {
+        "name": "CTA final",
+        "top": 3994.875,
+        "height": 369.9375
+      },
+      {
+        "name": "Footer",
+        "top": 4364.8125,
+        "height": 329.96875
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "scrollWidth": 768,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Hero",
+        "top": 0,
+        "height": 900
+      },
+      {
+        "name": "Especialidades",
+        "top": 900,
+        "height": 423.0625
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1323.0625,
+        "height": 727.546875
+      },
+      {
+        "name": "Confianza",
+        "top": 2050.609375,
+        "height": 435.53125
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 2486.140625,
+        "height": 544
+      },
+      {
+        "name": "Zonas",
+        "top": 3030.140625,
+        "height": 430.625
+      },
+      {
+        "name": "FAQ",
+        "top": 3460.765625,
+        "height": 677.0625
+      },
+      {
+        "name": "CTA final",
+        "top": 4137.828125,
+        "height": 353.34375
+      },
+      {
+        "name": "Footer",
+        "top": 4491.171875,
+        "height": 483.25
+      }
+    ]
+  },
+  {
+    "width": 375,
+    "scrollWidth": 375,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Hero",
+        "top": 0,
+        "height": 1088.25
+      },
+      {
+        "name": "Especialidades",
+        "top": 1088.25,
+        "height": 451.203125
+      },
+      {
+        "name": "Cómo funciona",
+        "top": 1539.453125,
+        "height": 1267.90625
+      },
+      {
+        "name": "Confianza",
+        "top": 2807.359375,
+        "height": 650.796875
+      },
+      {
+        "name": "CTA técnicos",
+        "top": 3458.15625,
+        "height": 837.25
+      },
+      {
+        "name": "Zonas",
+        "top": 4295.40625,
+        "height": 723.875
+      },
+      {
+        "name": "FAQ",
+        "top": 5019.28125,
+        "height": 895.90625
+      },
+      {
+        "name": "CTA final",
+        "top": 5915.1875,
+        "height": 381.484375
+      },
+      {
+        "name": "Footer",
+        "top": 6296.671875,
+        "height": 673.328125
+      }
+    ]
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Footer",
+        "top": 7799.234375,
+        "height": 329.96875
+      }
+    ]
+  },
+  {
+    "width": 1024,
+    "scrollWidth": 1024,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Footer",
+        "top": 7107.203125,
+        "height": 329.96875
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "scrollWidth": 768,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Footer",
+        "top": 7135.171875,
+        "height": 483.25
+      }
+    ]
+  },
+  {
+    "width": 375,
+    "scrollWidth": 375,
+    "sections": [
+      {
+        "name": "Header",
+        "top": 0,
+        "height": 100
+      },
+      {
+        "name": "Footer",
+        "top": 10770.09375,
+        "height": 673.328125
+      }
+    ]
+  }
+]

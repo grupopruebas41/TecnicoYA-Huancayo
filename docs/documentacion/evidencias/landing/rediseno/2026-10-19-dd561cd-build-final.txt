@@ -1,0 +1,19 @@
+Fecha: 2026-10-19
+Commit: dd561cd
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web run build
+
+> tecnicoya-web@1.0.0 build
+> vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 78 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.07 kB │ gzip:   0.66 kB
+dist/assets/index-BXO1tFYB.css   52.79 kB │ gzip:  11.85 kB
+dist/assets/index-Bkfa7_EF.js   351.79 kB │ gzip: 103.78 kB
+
+✓ built in 2.19s
+
+Exit code: 0
