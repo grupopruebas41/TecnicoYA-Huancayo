@@ -1,0 +1,29 @@
+# S04-TC-133 en rojo · 2026-10-19 · base e6b15df (main con PR #22) · slot A
+   FAIL  Tests\Feature\Sprint04\SpecialtyImageTest
+  ⨯ it S04-TC-133 expone la foto de la especialidad solo si es pública, revisada y no retirada [TC-012]         72.46s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\SpecialtyImageTest > it S04-TC-133 expone la foto de la especialidad solo si es pú…   
+  Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+     0 => 'code'
+     1 => 'description'
+     2 => 'id'
+-    3 => 'image_url'
+-    4 => 'name'
++    3 => 'name'
+ )
+  at tests\Feature\Sprint04\SpecialtyImageTest.php:34
+     30▕ 
+     31▕     $response = $this->getJson('/api/v1/catalog/specialties')->assertOk();
+     32▕ 
+     33▕     $items = collect($response->json('data'))->keyBy('code');
+  ➜  34▕     expect(array_keys($items['computo']))->toEqualCanonicalizing(['id', 'code', 'name', 'description', 'image_url'])
+     35▕         ->and($items['computo']['image_url'])->toEndWith("/api/v1/media/$clean")
+     36▕         ->and($items['refrigeracion']['image_url'])->toBeNull()
+     37▕         ->and($items['electricidad']['image_url'])->toBeNull();
+     38▕     expect($response->getContent())->not->toContain('storage_key')->not->toContain('hero_media_id');
+  1   tests\Feature\Sprint04\SpecialtyImageTest.php:34
+  Tests:    1 failed (2 assertions)
+  Duration: 73.67s
