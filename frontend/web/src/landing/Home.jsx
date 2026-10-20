@@ -13,7 +13,7 @@ function Count({ value, label }) {
     </div>
   );
 }
-export function Hero({ catalog }) {
+export function CatalogSearch({ catalog }) {
   const [specialty, setSpecialty] = useState(""),
     [district, setDistrict] = useState(""),
     [busy, setBusy] = useState(false),
@@ -46,90 +46,106 @@ export function Hero({ catalog }) {
     }
   }
   return (
-    <section id="inicio" data-landing="Hero" className="ty-hero">
+    <div className="ty-catalog-search">
+      <form className="ty-search" onSubmit={search}>
+        <label>
+          ¿Qué necesitas?
+          <select
+            value={specialty}
+            onChange={(e) => setSpecialty(e.target.value)}
+          >
+            <option value="">Todas las especialidades</option>
+            {catalog.data?.specialties.map((x) => (
+              <option key={x.id} value={x.id}>
+                {x.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          ¿Dónde?
+          <select
+            value={district}
+            onChange={(e) => setDistrict(e.target.value)}
+          >
+            <option value="">Todos los distritos</option>
+            {catalog.data?.districts.map((x) => (
+              <option key={x.id} value={x.id}>
+                {x.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button
+          className="ty-button"
+          type="submit"
+          disabled={busy || !catalog.data}
+        >
+          {busy ? "Comprobando…" : "Encontrar técnico"}
+        </button>
+      </form>
+      {error && <p role="alert">{error}</p>}
+      {catalog.error ? (
+        <div role="status">
+          <p>{catalog.error}</p>
+          <button
+            type="button"
+            className="ty-text-button"
+            onClick={catalog.reload}
+          >
+            Reintentar catálogo público
+          </button>
+        </div>
+      ) : catalog.data ? (
+        <div className="ty-stats">
+          <Count
+            value={catalog.data.specialties.length}
+            label="Especialidades activas"
+          />
+          <Count
+            value={catalog.data.subcategories.length}
+            label="Subcategorías activas"
+          />
+          <Count
+            value={catalog.data.districts.length}
+            label="Distritos activos"
+          />
+        </div>
+      ) : (
+        <p role="status">Consultando catálogo público…</p>
+      )}
+    </div>
+  );
+}
+export function Hero() {
+  return (
+    <section
+      id="inicio"
+      data-landing="Hero"
+      className="ty-hero ty-hero-centered"
+    >
       <div className="ty-hero-content">
-        <span className="ty-eyebrow">
-          PARA TU HOGAR. PARA TU NEGOCIO. PARA HUANCAYO.
+        <span className="ty-hero-pill">
+          Para tu hogar. Para tu negocio. Para Huancayo.
         </span>
         <h1>
-          Tu técnico de confianza,
-          <br />
-          <em>cerca de ti.</em>
+          <span>El técnico</span>
+          <span>indicado.</span>
+          <span className="ty-gold">Aquí, en</span>
+          <span className="ty-gold">Huancayo.</span>
         </h1>
         <p>
-          Que una falla no detenga tu día. Conecta con técnicos independientes
-          verificados de tu ciudad y sigue cada paso de tu atención.
+          <span>
+            Conectamos hogares y MYPES con técnicos independientes verificados.
+          </span>
+          <span>Cuéntanos la falla y encuentra a quien puede resolverla.</span>
         </p>
-        <form className="ty-search" onSubmit={search}>
-          <label>
-            ¿Qué necesitas?
-            <select
-              value={specialty}
-              onChange={(e) => setSpecialty(e.target.value)}
-            >
-              <option value="">Todas las especialidades</option>
-              {catalog.data?.specialties.map((x) => (
-                <option key={x.id} value={x.id}>
-                  {x.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            ¿Dónde?
-            <select
-              value={district}
-              onChange={(e) => setDistrict(e.target.value)}
-            >
-              <option value="">Todos los distritos</option>
-              {catalog.data?.districts.map((x) => (
-                <option key={x.id} value={x.id}>
-                  {x.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            className="ty-button"
-            type="submit"
-            disabled={busy || !catalog.data}
-          >
-            {busy ? "Comprobando…" : "Encontrar técnico"}
-          </button>
-        </form>
-        {error && <p role="alert">{error}</p>}
-        {catalog.error ? (
-          <div role="status">
-            <p>{catalog.error}</p>
-            <button
-              type="button"
-              className="ty-text-button"
-              onClick={catalog.reload}
-            >
-              Reintentar catálogo público
-            </button>
-          </div>
-        ) : catalog.data ? (
-          <div className="ty-stats">
-            <Count
-              value={catalog.data.specialties.length}
-              label="Especialidades activas"
-            />
-            <Count
-              value={catalog.data.subcategories.length}
-              label="Subcategorías activas"
-            />
-            <Count
-              value={catalog.data.districts.length}
-              label="Distritos activos"
-            />
-          </div>
-        ) : (
-          <p role="status">Consultando catálogo público…</p>
-        )}
-        <a className="ty-scroll" href="#servicios">
-          Descubre cómo podemos ayudarte ↓
-        </a>
+        <div className="ty-actions">
+          <a className="ty-button" href="#servicios">
+            Encontrar un técnico ↗
+          </a>
+          <AuthLink className="ty-button ty-outline">Crear mi cuenta</AuthLink>
+        </div>
       </div>
     </section>
   );
@@ -189,8 +205,10 @@ const faqs = [
 export default function Home({ catalog }) {
   return (
     <>
-      <Hero catalog={catalog} />
-      <ServiceCarousel />
+      <Hero />
+      <ServiceCarousel>
+        <CatalogSearch catalog={catalog} />
+      </ServiceCarousel>
       <section
         id="proceso"
         data-landing="Cómo funciona"

@@ -1,7 +1,7 @@
 .landing-page {
   color: var(--ty-text);
   font-family: var(--ty-font);
-  background: var(--ty-bg);
+  background: transparent;
   line-height: 1.6;
   overflow: clip;
   isolation: isolate;
@@ -100,7 +100,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ty-lg);
+  gap: var(--ty-sm);
   padding: var(--ty-md) max(var(--ty-md), calc((100% - 1380px) / 2));
   background: linear-gradient(var(--ty-bg), transparent);
   transition:
@@ -139,6 +139,12 @@
   align-items: center;
   gap: var(--ty-md);
   font-size: 0.9rem;
+  white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--ty-cream) 30%, transparent);
+  border-radius: var(--ty-pill);
+  padding: 0.75rem 1.2rem;
+  background: color-mix(in srgb, var(--ty-bg) 40%, transparent);
+  backdrop-filter: blur(12px);
 }
 .ty-header a:hover {
   color: var(--ty-accent);
@@ -203,27 +209,90 @@
     var(--ty-2xl);
   background: transparent;
 }
-.landing-page:not(.about-page) {
-  background: linear-gradient(transparent 0 100svh, var(--ty-bg) 100svh);
+/* Una sola imagen estática acompaña toda la página, también en iOS. */
+.ty-fixed-background {
+  pointer-events: none;
 }
-.ty-hero:before {
+.landing-page .ty-fixed-background img {
+  height: 100%;
+  border-radius: 0;
+  object-fit: cover;
+}
+.ty-fixed-background::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    90deg,
-    var(--ty-veil),
-    var(--ty-veil-mid) 45%,
-    transparent 75%
-  );
+  background: color-mix(in srgb, var(--ty-bg) 68%, transparent);
+}
+.ty-hero-centered {
+  justify-content: center;
+  text-align: center;
+  padding-top: 8rem;
 }
 .ty-hero-content {
   width: 100%;
+  max-width: 900px;
+}
+.ty-hero-pill {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--ty-cream) 40%, transparent);
+  border-radius: var(--ty-pill);
+  background: color-mix(in srgb, var(--ty-bg) 30%, transparent);
+  backdrop-filter: blur(8px);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+.landing-page .ty-hero h1 {
+  font-family: var(--ty-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(3.5rem, 7.5vw, 6rem);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  margin: 0 auto 1.5rem;
+}
+.ty-hero h1 span,
+.ty-hero-content > p span {
+  display: block;
+}
+.ty-hero .ty-gold {
+  color: var(--ty-accent);
 }
 .ty-hero-content > p {
-  max-width: 620px;
-  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 1.5rem;
+  color: var(--ty-muted);
+  font-size: clamp(1rem, 1.4vw, 1.1rem);
+}
+.ty-hero .ty-actions {
+  justify-content: center;
+}
+.ty-hero-content > * {
+  animation: ty-hero-enter 0.85s both;
+}
+.ty-hero-content > :nth-child(2) {
+  animation-delay: 0.12s;
+}
+.ty-hero-content > :nth-child(3) {
+  animation-delay: 0.24s;
+}
+.ty-hero-content > :nth-child(4) {
+  animation-delay: 0.36s;
+}
+@keyframes ty-hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.ty-catalog-search {
+  max-width: 900px;
+  margin: 0 auto 3rem;
 }
 .ty-search {
   display: flex;
@@ -931,10 +1000,7 @@
     translate: none !important;
   }
 }
-/* El video conserva su luminancia; la legibilidad se resuelve solo a la izquierda del hero. */
-.video-experience:has(.landing-page) .background > div {
-  display: none;
-}
+
 .landing-page .ty-zones svg {
   height: auto;
 }
@@ -957,4 +1023,62 @@
 
 .ty-header {
   min-height: var(--ty-header-height);
+}
+
+/* Capas legibles que dejan visible el fondo compartido. */
+.landing-page .ty-section,
+.landing-page .service-carousel,
+.landing-page .ty-footer {
+  background: color-mix(in srgb, var(--ty-bg) 86%, transparent);
+  backdrop-filter: blur(5px);
+}
+.ty-header-login {
+  white-space: nowrap;
+}
+@media (min-width: 901px) {
+  .ty-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.75rem;
+  }
+  .ty-header nav {
+    gap: clamp(0.6rem, 1.5vw, 1.5rem);
+  }
+}
+@media (max-width: 900px) {
+  .ty-brand {
+    margin-right: auto;
+  }
+  .ty-menu-toggle {
+    order: 3;
+    padding: 0.4rem 0.65rem;
+  }
+  .ty-header-login {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.85rem;
+  }
+  .ty-header {
+    gap: 0.6rem;
+    padding: 1rem;
+  }
+}
+@media (max-width: 400px) {
+  .ty-brand {
+    font-size: 1.1rem;
+    gap: 0.35rem;
+  }
+  .ty-monogram {
+    width: 32px;
+    height: 32px;
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 901px) {
+  .ty-header-login {
+    justify-self: end;
+  }
+  .ty-brand {
+    justify-self: start;
+  }
 }

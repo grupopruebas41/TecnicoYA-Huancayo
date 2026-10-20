@@ -1,0 +1,5 @@
+Fecha: 2026-10-20 | Base: ab7c374 | Corrección visual PR #24
+{"width":1440,"scrollWidth":1440,"background":"fixed","titleFont":"\"Instrument Serif\", Georgia, serif","align":"center","nav":"flex","login":{"x":1270.28125,"y":24,"width":139.71875,"height":53.1875,"top":24,"right":1410,"bottom":77.1875,"left":1270.28125},"video":0}
+{"width":1024,"scrollWidth":1024,"background":"fixed","titleFont":"\"Instrument Serif\", Georgia, serif","align":"center","nav":"flex","login":{"x":860.28125,"y":24,"width":139.71875,"height":53.1875,"top":24,"right":1000,"bottom":77.1875,"left":860.28125},"video":0}
+{"width":768,"scrollWidth":768,"background":"fixed","titleFont":"\"Instrument Serif\", Georgia, serif","align":"center","nav":"none","login":{"x":597.0625,"y":27,"width":108.1875,"height":46,"top":27,"right":705.25,"bottom":73,"left":597.0625},"video":0}
+{"width":375,"scrollWidth":375,"background":"fixed","titleFont":"\"Instrument Serif\", Georgia, serif","align":"center","nav":"none","login":{"x":204.0625,"y":27,"width":108.1875,"height":46,"top":27,"right":312.25,"bottom":73,"left":204.0625},"video":0}

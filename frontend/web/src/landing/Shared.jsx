@@ -98,11 +98,10 @@ export function Header() {
             {name}
           </a>
         ))}
-        <AuthLink login className="ty-button ty-outline">
-          Iniciar sesión
-        </AuthLink>
-        <AuthLink>Crear cuenta</AuthLink>
       </nav>
+      <AuthLink login className="ty-button ty-header-login">
+        Iniciar sesión
+      </AuthLink>
     </header>
   );
 }

@@ -125,7 +125,7 @@ export function CarouselDeck({ items, label = "Servicios" }) {
     </div>
   );
 }
-export default function ServiceCarousel() {
+export default function ServiceCarousel({ children }) {
   const [items, setItems] = useState(null),
     [specialties, setSpecialties] = useState(null),
     [error, setError] = useState(""),
@@ -175,6 +175,7 @@ export default function ServiceCarousel() {
       aria-label="Especialidades de TécnicoYa"
     >
       <h2>Especialidades</h2>
+      {children}
       {error && (
         <>
           <p role="alert">{error}</p>

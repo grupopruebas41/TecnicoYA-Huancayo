@@ -20,6 +20,17 @@ function PublicSite({ route }) {
   }, [route, about]);
   return (
     <div className={"landing-page " + (about ? "about-page" : "")} ref={reveal}>
+      <div
+        className="ty-fixed-background"
+        style={{ position: "fixed", inset: 0, zIndex: -1 }}
+        aria-hidden="true"
+      >
+        <img
+          src="/media/landing/habitacion-estatica.webp"
+          alt=""
+          fetchpriority="high"
+        />
+      </div>
       <a className="skip" href="#contenido">
         Ir al contenido
       </a>
