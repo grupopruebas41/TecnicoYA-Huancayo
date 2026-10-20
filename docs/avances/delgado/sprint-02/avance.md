@@ -32,3 +32,9 @@ Codex (modelo no expuesto por la sesión), 2026-10-10. Se incorporaron pruebas a
 Codex (variante de modelo no expuesta por la sesión), 2026-10-13. Se aceptaron validaciones alineadas al contrato, pruebas y manejo persistente del aviso de retiro. Se corrigieron selectores ambiguos, datos de precondición del seeder, lectura de horarios antes de cargar el perfil y sincronización con respuestas HTTP; el retiro se reprodujo en Vitest antes de corregirlo. Los intentos fallidos se conservan y no se acreditan como aprobados. No se modificó backend ni se inventaron respuestas exitosas. Revisión humana: [PENDIENTE].
 
 Pendiente adicional: Claude Code debe contrastar recepción multipart/preflight de /media (DEF-42); la instrumentación y el PNG físico solo facilitan reproducción y no solucionan ese defecto. Todos los intentos fallidos están preservados.
+
+## 2026-10-19 · DEF-47
+
+Delgado, administración de catálogo S2; S02-TC-076 complementos. Rama feature/delgado/f-administracion/s02-catalog-edit. Rojo 84a0f63, verde 25065ab. Cambios: CatalogAdmin.jsx y CatalogEdit.test.jsx; PATCH omite campo inmutable, creación lo conserva. Revisión de especialidades/distritos sin el defecto. Vitest 154/154, líneas 84,49 %; build aprobado y audit 0. Evidencias: docs/documentacion/evidencias/sprint-02/def-47. Sin Cypress/SonarQube local; Quality Gate pendiente de cierre. Revisor [PENDIENTE].
+
+IA: Codex, modelo no expuesto verificablemente; se aceptó payload explícito y pruebas de regresión, se verificó la regla en contrato/Requests sin editar backend. Revisión humana [PENDIENTE].

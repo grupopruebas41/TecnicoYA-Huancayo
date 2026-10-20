@@ -21,6 +21,14 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-19 · DEF-47 · edición de subcategorías
+
+PR #23: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/23. Evidencias 04fbbb9; estado de CI en checks del último push.
+
+- Rama feature/delgado/f-administracion/s02-catalog-edit desde main tras integrar #22; rojo 84a0f63, verde 25065ab. CatalogAdmin omite specialty_id en PATCH, selector deshabilitado al editar; creación requiere y envía especialidad. Especialidades/distritos no presentan la misma fuga de campos inmutables, confirmado con pruebas. Backend intacto.
+- Vitest 154/154 (22 archivos), líneas 84,49 %; build y audit salida 0, sin vulnerabilidades. Rojo 1 fallo esperado y 3 aprobadas. Evidencias sprint-02/def-47; DEF-47 registrado como corregido, pendiente revisión humana [PENDIENTE]. Sin Cypress/Docker; CI se verificará en el PR.
+
+
 ## 2026-10-19 · Landing · integración de main tras PR #20
 
 - Rama feature/delgado/landing/fix-carrusel, PR #22. Merge sin rebase ni force; conflictos limitados a este HANDOFF y avance de Delgado S04, conservando todas las entradas de ambos lados y su orden cronológico. Sin cambios manuales de código.
