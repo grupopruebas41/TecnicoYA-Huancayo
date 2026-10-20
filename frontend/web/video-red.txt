@@ -1,0 +1,38 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=2 src/landing/HeroBackground.test.jsx
+
+
+ RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ❯ src/landing/HeroBackground.test.jsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landing/HeroBackground.test.jsx [ src/landing/HeroBackground.test.jsx ]
+Error: Failed to resolve import "./HeroBackground" from "src/landing/HeroBackground.test.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/src/landing/HeroBackground.test.jsx:4:27
+  2  |  import { act, cleanup, fireEvent, render } from "@testing-library/react";
+  3  |  import { afterEach, beforeEach, expect, test, vi } from "vitest";
+  4  |  import HeroBackground from "./HeroBackground";
+     |                              ^
+  5  |  import { CONTENT_REVEAL_SECONDS } from "../video-timing";
+  6  |  var _jsxFileName = "C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/src/landing/HeroBackground.test.jsx";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  13:48:23
+   Duration  2.75s (environment 83%, setup 15%, transform 2%)
+
+JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
