@@ -12,6 +12,8 @@ import App from "./App";
 import { request } from "./features/administration/http";
 vi.mock("./features/administration/http", () => ({ request: vi.fn() }));
 beforeEach(() => {
+  vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
+  vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
   vi.stubGlobal("scrollTo", vi.fn());
   window.location.hash = "#inicio";
   sessionStorage.clear();
@@ -54,6 +56,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
   vi.unstubAllGlobals();
   sessionStorage.clear();
 });
@@ -279,7 +282,7 @@ test("S02-TC-089 cabecera con cinco enlaces y único acceso de sesión fuera del
   expect(within(header).queryByRole("link", { name: /Crear/ })).toBeNull();
   expect(login).toHaveClass("ty-button");
 });
-test("S02-TC-089 imagen decorativa fija detrás de la página sin vídeo", async () => {
+test("S02-TC-089 fondo fijo conserva poster con movimiento reducido", async () => {
   const { container } = render(<App />);
   await act(async () => {});
   const background = container.querySelector(".ty-fixed-background");
@@ -289,5 +292,9 @@ test("S02-TC-089 imagen decorativa fija detrás de la página sin vídeo", async
     "src",
     "/media/landing/habitacion-estatica.webp",
   );
-  expect(container.querySelector("video")).toBeNull();
+  expect(container.querySelector("video")).toHaveAttribute("hidden");
+  expect(container.querySelector("video")).toHaveAttribute(
+    "poster",
+    "/media/landing/habitacion-estatica.webp",
+  );
 });

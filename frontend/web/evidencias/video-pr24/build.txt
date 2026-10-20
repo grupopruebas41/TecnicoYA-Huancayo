@@ -1,0 +1,23 @@
+Fecha: 2026-10-20 | Base de implementación: 5a216e2 | PR #24
+
+> tecnicoya-web@1.0.0 build
+> vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 78 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.07 kB │ gzip:   0.66 kB
+dist/assets/index-CBWJ1hp5.css   55.21 kB │ gzip:  12.28 kB
+dist/assets/index-BKcxMHbH.js   351.64 kB │ gzip: 103.65 kB
+
+✓ built in 5.61s
+[PLUGIN_TIMINGS] JavaScript callbacks ran for 5.3s of this 5.6s build (96%).
+The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+  - plugin vite:prepare-out-dir renderStart (91%, 5.1s, 1 call)
+Additional callback time came from the callbacks below and from callbacks under 1s.
+1 callback is listed without a time. Its calls overlapped, so the time inside one call includes work from other calls. To find its cost, profile the build with `node --cpu-prof`:
+  - plugin vite:css transform (9 calls)
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+

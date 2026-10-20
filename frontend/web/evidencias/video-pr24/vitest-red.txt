@@ -1,9 +1,10 @@
+Fecha: 2026-10-20 | Base de implementación: 5a216e2 | PR #24
 
 > tecnicoya-web@1.0.0 test
 > vitest run --maxWorkers=2 src/landing/HeroBackground.test.jsx
 
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+ RUN  v5.0.3 [workspace]/frontend/web
 
  ❯ src/landing/HeroBackground.test.jsx (0 test)
 
@@ -12,13 +13,13 @@
  FAIL  src/landing/HeroBackground.test.jsx [ src/landing/HeroBackground.test.jsx ]
 Error: Failed to resolve import "./HeroBackground" from "src/landing/HeroBackground.test.jsx". Does the file exist?
   Plugin: vite:import-analysis
-  File: C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/src/landing/HeroBackground.test.jsx:4:27
+  File: [workspace]/frontend/web/src/landing/HeroBackground.test.jsx:4:27
   2  |  import { act, cleanup, fireEvent, render } from "@testing-library/react";
   3  |  import { afterEach, beforeEach, expect, test, vi } from "vitest";
   4  |  import HeroBackground from "./HeroBackground";
      |                              ^
   5  |  import { CONTENT_REVEAL_SECONDS } from "../video-timing";
-  6  |  var _jsxFileName = "C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/src/landing/HeroBackground.test.jsx";
+  6  |  var _jsxFileName = "[workspace]/frontend/web/src/landing/HeroBackground.test.jsx";
  ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
  ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
  ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
@@ -35,4 +36,4 @@ Error: Failed to resolve import "./HeroBackground" from "src/landing/HeroBackgro
    Start at  13:48:23
    Duration  2.75s (environment 83%, setup 15%, transform 2%)
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+JUNIT report written to [workspace]/frontend/web/test-results/junit.xml

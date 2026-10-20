@@ -5,6 +5,7 @@ import AccountApp from "./features/administration/AccountApp";
 import Catalog from "./features/administration/Catalog";
 import "./features/administration/sprint02.css";
 import Home from "./landing/Home";
+import HeroBackground from "./landing/HeroBackground";
 import About from "./landing/About";
 import { Header, Footer } from "./landing/Shared";
 import { useCatalog, useReveal } from "./landing/hooks";
@@ -20,17 +21,7 @@ function PublicSite({ route }) {
   }, [route, about]);
   return (
     <div className={"landing-page " + (about ? "about-page" : "")} ref={reveal}>
-      <div
-        className="ty-fixed-background"
-        style={{ position: "fixed", inset: 0, zIndex: -1 }}
-        aria-hidden="true"
-      >
-        <img
-          src="/media/landing/habitacion-estatica.webp"
-          alt=""
-          fetchpriority="high"
-        />
-      </div>
+      <HeroBackground />
       <a className="skip" href="#contenido">
         Ir al contenido
       </a>

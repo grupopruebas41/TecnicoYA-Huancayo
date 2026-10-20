@@ -1,0 +1,48 @@
+Fecha: 2026-10-20 | Base de implementación: 5a216e2 | PR #24
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.3 [workspace]/frontend/web
+
+ ✓ src/features/administration/sprint02Panels.test.jsx (8 tests) 1600ms
+   ✓ S02-TC-076 complemento: catálogo guarda y cambia estado con versión 415ms
+   ✓ S02-TC-087 complemento: menú solo muestra permisos concedidos 382ms
+ ✓ src/LandingRedesign.test.jsx (13 tests) 1190ms
+   ✓ S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape 376ms
+ ✓ src/features/offers/sprint04Flows.test.jsx (11 tests) 768ms
+ ✓ src/features/requests/requestFlows.test.jsx (13 tests) 1418ms
+   ✓ S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio 948ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 632ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 384ms
+ ✓ src/features/requests/sprint03.test.jsx (13 tests) 535ms
+   ✓ S03-TC-070 cambiar de rubro limpia subcategoría y catálogo 313ms
+ ✓ src/Sprint02Landing.test.jsx (8 tests) 628ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 494ms
+   ✓ S01-TC-083 429 en español sin éxito y botón habilitado nuevamente 302ms
+ ✓ src/features/offers/sprint04.test.jsx (14 tests) 485ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 321ms
+ ✓ src/features/administration/accessibility.test.jsx (6 tests) 441ms
+ ✓ src/features/administration/sprint02.test.jsx (12 tests) 547ms
+ ✓ src/VideoExperience.test.jsx (4 tests) 302ms
+ ✓ src/features/offers/channelIdentity.test.jsx (2 tests) 170ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 179ms
+ ✓ src/landing/HeroBackground.test.jsx (6 tests) 48ms
+ ✓ src/features/realtime/Realtime.test.jsx (1 test) 47ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 51ms
+ ✓ src/features/administration/http.test.js (4 tests) 23ms
+ ✓ src/features/administration/sprint025.test.js (2 tests) 5ms
+ ✓ src/features/administration/labels.test.js (9 tests) 5ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 5ms
+
+ Test Files  23 passed (23)
+      Tests  170 passed (170)
+   Start at  13:51:25
+   Duration  41.83s (environment 41%, import 19%, transform 17%, tests 14%, setup 8%)
+
+Environment  jsdom was created 23 times · 31.10s total, 41% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to [workspace]/frontend/web/test-results/junit.xml

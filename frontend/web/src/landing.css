@@ -1082,3 +1082,20 @@
     justify-self: start;
   }
 }
+
+/* El video comparte el plano fijo del poster; no hay zoom CSS ni parallax. */
+.ty-fixed-background video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ty-fixed-background video[hidden] {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ty-fixed-background video {
+    display: none;
+  }
+}
