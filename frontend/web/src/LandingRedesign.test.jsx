@@ -153,7 +153,7 @@ test("S02-TC-089 rediseño: iniciar sesión y registro técnico seleccionan el f
   ).toBeInTheDocument();
 });
 test("S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su búsqueda", async () => {
-  const { Hero } = await import("./landing/Home");
+  const { CatalogSearch } = await import("./landing/Home");
   const { default: ClientPortal } = await import(
     "./features/requests/ClientPortal"
   );
@@ -165,7 +165,7 @@ test("S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su b�
         : { data: [] },
   );
   const view = render(
-    <Hero
+    <CatalogSearch
       catalog={{
         data: {
           specialties: [{ id: 1, name: "Cómputo" }],
@@ -196,10 +196,10 @@ test("S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su b�
   expect(sessionStorage.getItem("tecnicoya.searchIntent")).toBeNull();
 });
 test("S02-TC-089 rediseño: fallo de red no redirige ni declara sesión iniciada", async () => {
-  const { Hero } = await import("./landing/Home");
+  const { CatalogSearch } = await import("./landing/Home");
   request.mockRejectedValue({ status: 0 });
   render(
-    <Hero
+    <CatalogSearch
       catalog={{ data: { specialties: [], districts: [], subcategories: [] } }}
     />,
   );
@@ -220,4 +220,40 @@ test("S02-TC-085 rediseño: tarifas solo presentes cuando el catálogo las propo
   expect(screen.getByText("desde S/ 0.00, referencial")).toBeInTheDocument();
   view.rerender(<CarouselDeck items={[{ id: 1, name: "Servicio" }]} />);
   expect(screen.queryByText(/desde S\//)).not.toBeInTheDocument();
+});
+
+test("S02-TC-089 hero centrado sin buscador, con cuatro líneas y accesos", async () => {
+  const { container } = render(<App />);
+  await act(async () => {});
+  const hero = container.querySelector("#inicio");
+  expect(hero).toHaveClass("ty-hero-centered");
+  expect(within(hero).getByText("Para tu hogar. Para tu negocio. Para Huancayo.")).toBeInTheDocument();
+  expect([...hero.querySelectorAll("h1 span")].map(x => x.textContent)).toEqual(["El técnico", "indicado.", "Aquí, en", "Huancayo."]);
+  expect(within(hero).getByText("Conectamos hogares y MYPES con técnicos independientes verificados.")).toBeInTheDocument();
+  expect(within(hero).getByText("Cuéntanos la falla y encuentra a quien puede resolverla.")).toBeInTheDocument();
+  expect(within(hero).getByRole("link", { name: "Encontrar un técnico ↗" })).toHaveAttribute("href", "#servicios");
+  fireEvent.click(within(hero).getByRole("link", { name: "Crear mi cuenta" }));
+  expect(hero.querySelector("form")).toBeNull();
+  expect(hero.querySelector('[role="status"]')).toBeNull();
+  expect(container.querySelector("#servicios form")).not.toBeNull();
+});
+test("S02-TC-089 cabecera con cinco enlaces y único acceso de sesión fuera del menú", async () => {
+  render(<App />);
+  await act(async () => {});
+  const header = screen.getByRole("banner");
+  const menu = within(header).getByRole("navigation", { name: "Principal" });
+  expect(within(menu).getAllByRole("link").map(x => x.textContent)).toEqual(["Servicios", "Cómo funciona", "Para técnicos", "Nosotros", "Preguntas"]);
+  const login = within(header).getByRole("link", { name: "Iniciar sesión" });
+  expect(menu.contains(login)).toBe(false);
+  expect(within(header).queryByRole("link", { name: /Crear/ })).toBeNull();
+  expect(login).toHaveClass("ty-button");
+});
+test("S02-TC-089 imagen decorativa fija detrás de la página sin vídeo", async () => {
+  const { container } = render(<App />);
+  await act(async () => {});
+  const background = container.querySelector(".ty-fixed-background");
+  expect(background).toHaveStyle({ position: "fixed", zIndex: "-1" });
+  expect(background.querySelector("img")).toHaveAttribute("alt", "");
+  expect(background.querySelector("img")).toHaveAttribute("src", "/media/landing/habitacion-estatica.webp");
+  expect(container.querySelector("video")).toBeNull();
 });

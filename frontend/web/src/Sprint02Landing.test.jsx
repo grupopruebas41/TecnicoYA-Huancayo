@@ -121,7 +121,7 @@ test("S02-TC-089 diez secciones de landing en orden", async () => {
     "CTA final",
     "Footer",
   ]);
-  expect([...container.querySelectorAll("#principal a")].map(a=>a.getAttribute("href"))).toEqual(["#servicios","#proceso","#tecnicos","#nosotros","#preguntas","#cuenta","#cuenta"]);
+  expect([...container.querySelectorAll("#principal a")].map(a=>a.getAttribute("href"))).toEqual(["#servicios","#proceso","#tecnicos","#nosotros","#preguntas"]);
   expect(
     screen.getByRole("link", { name: /Conoce más sobre nosotros/ }),
   ).toHaveAttribute("href", "#nosotros");
