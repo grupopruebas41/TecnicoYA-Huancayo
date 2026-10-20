@@ -19,3 +19,11 @@
 - Aceptado: componentes, estilos, pruebas, recursos visuales y textos basados en el contrato y pedido del equipo.
 - Corregido: selector de pruebas al mostrar las tres especialidades a la vez; mocks del catálogo por endpoint; retorno del observador del video al cambiar de página; separación en componentes de menos de 150 líneas.
 - Validación: pruebas automatizadas, build, audit y revisión visual. Revisión humana: [PENDIENTE].
+
+## Publicación
+
+- PR #24: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/24
+- Commits: dd561cd (rojo), 1fdfa27 (verde), ee755ad (contraste), 182f25f (evidencias).
+- Resultado final local: 161/161, cobertura global de líneas 85,33 %, landing 89,61 %, build aprobado y audit 0 vulnerabilidades.
+- CI de 182f25f: backend, frontend y conteo aprobados: https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/39331002647
+- Integración y revisión humana: [PENDIENTE].

@@ -30,7 +30,7 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - Backend pendiente, para resolver en una pasada: GET /catalog/specialties necesita image_url nullable de SU imagen pública/revisada; GET /catalog/carousel necesita reference_fee nullable orientativa D-52. Ninguna foto de subcategoría se presenta como propia de especialidad, ni tarifa inventada. El nuevo componente ya usa esos campos cuando existan. Pesos de matching presentados como valores de referencia, no vigentes; contrato público pendiente solo si se desea mostrarlos en vivo.
 - Contacto/horario/legales quedan rotulados pendientes. Calidad cita el informe S2.6 (90 IDs y Gate OK), no certifica código nuevo. API desarrollo :3000 apagada: capturas reales con estado de error; falta revisión visual con catálogo real disponible.
 - Mensaje del usuario para Claude Code: no empezar el rediseño público; la landing, Nosotros y tokens los realiza Codex. Eliminar su rama local vacía feature/pimentel/ui/rediseno-visual solo si sigue vacía. Más adelante rediseñar paneles usando estos tokens y atender campos backend anteriores. No se manipuló la rama ajena ni se afirma haber enviado un mensaje fuera de este relevo.
-- Avance: docs/avances/delgado/landing/avance.md. Revisor [PENDIENTE]. PR/CI: se agregan tras publicar.
+- Avance: docs/avances/delgado/landing/avance.md. Revisor [PENDIENTE]. PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/24. CI del código y evidencias (182f25f): aprobada, backend/frontend/conteo; https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/39331002647. El siguiente commit solo agrega estos enlaces; consultar sus checks para el estado más reciente.
 
 
 ## 2026-10-19 · Landing · integración de main tras PR #20
