@@ -173,7 +173,16 @@ test("S02-TC-089 Nosotros: las flechas del teclado recorren cuando el carrusel t
   expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
 });
 
+test("S02-TC-089 Nosotros: limpia el temporizador al desmontar", () => {
+  vi.useFakeTimers();
+  const clearInterval = vi.spyOn(window, "clearInterval");
+  const view = render(<About catalog={catalog} />);
+  view.unmount();
+  expect(clearInterval).toHaveBeenCalled();
+});
+
 test("S02-TC-089 Nosotros: el carrusel respeta movimiento reducido", () => {
+  vi.useFakeTimers();
   vi.stubGlobal("matchMedia", () => ({
     matches: true,
     addEventListener: vi.fn(),
@@ -184,4 +193,9 @@ test("S02-TC-089 Nosotros: el carrusel respeta movimiento reducido", () => {
   expect(resume).toHaveTextContent("Reanudar");
   expect(resume).toBeDisabled();
   expect(resume).toHaveAttribute("aria-pressed", "true");
+  const section = screen.getByRole("region", { name: "Testimonios" });
+  act(() => vi.advanceTimersByTime(6000));
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+  fireEvent.click(within(section).getByRole("button", { name: "Testimonio siguiente" }));
+  expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
 });

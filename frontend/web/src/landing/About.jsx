@@ -423,21 +423,26 @@ function TestimonialCoverflow() {
   const [index, setIndex] = useState(0),
     [paused, setPaused] = useState(false),
     [hovered, setHovered] = useState(false),
-    [focused, setFocused] = useState(false),
+    [hidden, setHidden] = useState(() => document.hidden),
     [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const pointerStart = useRef(null),
     region = useRef(null);
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setReduced(media.matches);
+    const updateVisibility = () => setHidden(document.hidden);
     media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => {
+      media.removeEventListener("change", update);
+      document.removeEventListener("visibilitychange", updateVisibility);
+    };
   }, []);
   useEffect(() => {
-    if (reduced || paused || hovered || focused) return undefined;
-    const timer = window.setInterval(() => setIndex((current) => (current + 1) % testimonials.length), 5000);
+    if (reduced || paused || hovered || hidden) return undefined;
+    const timer = window.setInterval(() => setIndex((current) => (current + 1) % testimonials.length), 3000);
     return () => window.clearInterval(timer);
-  }, [reduced, paused, hovered, focused]);
+  }, [reduced, paused, hovered, hidden, index]);
   function move(offset) {
     setIndex((current) => (current + offset + testimonials.length) % testimonials.length);
   }
@@ -446,6 +451,15 @@ function TestimonialCoverflow() {
     const distance = event.clientX - pointerStart.current;
     if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1);
     pointerStart.current = null;
+  }
+  function handleKeys(event) {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      move(1);
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      move(-1);
+    }
   }
   const visibleItems = testimonials.map((item, itemIndex) => {
     const offset = (itemIndex - index + testimonials.length) % testimonials.length;
@@ -461,8 +475,8 @@ function TestimonialCoverflow() {
       <span className="ty-eyebrow">LO QUE BUSCAMOS HACER POSIBLE</span>
       <h2 id="testimonials-title">Testimonios</h2>
       <p className="ty-testimonial-note">Historias ilustrativas con personajes ficticios.</p>
-      <div className="ty-coverflow" ref={region} aria-roledescription="carrusel" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }} onPointerDown={(event) => { pointerStart.current = event.clientX; event.currentTarget.setPointerCapture?.(event.pointerId); }} onPointerUp={handlePointerUp} onPointerCancel={() => { pointerStart.current = null; }}>
-        <div className="ty-coverflow-stage" aria-live="off">
+      <div className="ty-coverflow" ref={region} aria-roledescription="carrusel" tabIndex={0} onKeyDown={handleKeys}>
+        <div className="ty-coverflow-stage" aria-live="off" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onPointerDown={(event) => { pointerStart.current = event.clientX; event.currentTarget.setPointerCapture?.(event.pointerId); }} onPointerUp={handlePointerUp} onPointerCancel={() => { pointerStart.current = null; }}>
           {visibleItems.map((item) => (
             <article key={item.id} className={"ty-coverflow-card " + item.positionClass} aria-hidden={item.position !== 0}>
               {item.position === 0 ? (
@@ -489,7 +503,7 @@ function TestimonialCoverflow() {
           <button type="button" className="ty-round-control" aria-label="Testimonio anterior" onClick={() => move(-1)}>←</button>
           <span role="status" aria-live="polite">{index + 1} de {testimonials.length}</span>
           <button type="button" className="ty-round-control" aria-label="Testimonio siguiente" onClick={() => move(1)}>→</button>
-          <button type="button" className="ty-rotation-control" aria-label={reduced ? "Rotación automática desactivada por movimiento reducido" : paused ? "Reanudar rotación automática" : "Pausar rotación automática"} disabled={reduced} onClick={() => setPaused((value) => !value)}>{reduced ? "Movimiento reducido" : paused ? "Reanudar" : "Pausar"}</button>
+          <button type="button" className="ty-rotation-control" aria-label={paused || reduced ? "Reanudar rotación automática" : "Pausar rotación automática"} aria-pressed={paused || reduced} disabled={reduced} onClick={() => setPaused((value) => !value)}>{paused || reduced ? "Reanudar" : "Pausar"}</button>
         </div>
         <div className="ty-coverflow-dots" role="group" aria-label="Elegir testimonio">
           {testimonials.map((item, itemIndex) => <button type="button" key={item.id} aria-label={`Testimonio ${itemIndex + 1}`} aria-pressed={index === itemIndex} onClick={() => setIndex(itemIndex)} />)}
