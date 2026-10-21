@@ -1,0 +1,196 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=2 src/landing/Intro.test.jsx
+
+
+ RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ❯ src/landing/Intro.test.jsx (4 tests | 2 failed) 228ms
+   × S02-TC-089 intro muestra solo video y después transición y contenido 131ms
+   ✓ S02-TC-089 reduced motion omite intro y muestra poster y contenido inmediato 43ms
+   × S02-TC-089 carga detenida revela contenido a los 12 segundos como máximo 27ms
+   ✓ S02-TC-089 error de video libera la intro y el scroll sin esperar más 25ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landing/Intro.test.jsx > S02-TC-089 intro muestra solo video y después transición y contenido
+AssertionError: expected <header id="encabezado" …(2)>…(4)</header> to be null
+
+- Expected:
+null
+
++ Received:
+<header
+  class="ty-header "
+  data-landing="Header"
+  id="encabezado"
+>
+  <a
+    aria-label="TécnicoYa Huancayo, inicio"
+    class="ty-brand"
+    href="#inicio"
+  >
+    <span
+      class="ty-monogram"
+    >
+      t
+    </span>
+    <span>
+      TécnicoYa
+      <small>
+        HUANCAYO
+      </small>
+    </span>
+  </a>
+  <button
+    aria-controls="principal"
+    aria-expanded="false"
+    aria-label="Abrir menú"
+    class="ty-menu-toggle"
+    type="button"
+  >
+    ☰
+  </button>
+  <nav
+    aria-label="Principal"
+    class=""
+    id="principal"
+  >
+    <a
+      href="#servicios"
+    >
+      Servicios
+    </a>
+    <a
+      href="#proceso"
+    >
+      Cómo funciona
+    </a>
+    <a
+      href="#tecnicos"
+    >
+      Para técnicos
+    </a>
+    <a
+      href="#nosotros"
+    >
+      Nosotros
+    </a>
+    <a
+      href="#preguntas"
+    >
+      Preguntas
+    </a>
+  </nav>
+  <a
+    class="ty-button ty-header-login"
+    href="#cuenta"
+  >
+    Iniciar sesión
+  </a>
+</header>
+
+ ❯ src/landing/Intro.test.jsx:21:39
+     19|  const { container } = render(<App />); await act(async () => {});
+     20|  const video = container.querySelector("video");
+     21|  expect(screen.queryByRole("banner")).toBeNull(); expect(screen.queryB…
+       |                                       ^
+     22|  expect(document.body.style.overflow).toBe("hidden");
+     23|  expect(container.querySelector(".ty-fixed-background")).toHaveAttribu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/landing/Intro.test.jsx > S02-TC-089 carga detenida revela contenido a los 12 segundos como máximo
+AssertionError: expected <header id="encabezado" …(2)>…(4)</header> to be null
+
+- Expected:
+null
+
++ Received:
+<header
+  class="ty-header "
+  data-landing="Header"
+  id="encabezado"
+>
+  <a
+    aria-label="TécnicoYa Huancayo, inicio"
+    class="ty-brand"
+    href="#inicio"
+  >
+    <span
+      class="ty-monogram"
+    >
+      t
+    </span>
+    <span>
+      TécnicoYa
+      <small>
+        HUANCAYO
+      </small>
+    </span>
+  </a>
+  <button
+    aria-controls="principal"
+    aria-expanded="false"
+    aria-label="Abrir menú"
+    class="ty-menu-toggle"
+    type="button"
+  >
+    ☰
+  </button>
+  <nav
+    aria-label="Principal"
+    class=""
+    id="principal"
+  >
+    <a
+      href="#servicios"
+    >
+      Servicios
+    </a>
+    <a
+      href="#proceso"
+    >
+      Cómo funciona
+    </a>
+    <a
+      href="#tecnicos"
+    >
+      Para técnicos
+    </a>
+    <a
+      href="#nosotros"
+    >
+      Nosotros
+    </a>
+    <a
+      href="#preguntas"
+    >
+      Preguntas
+    </a>
+  </nav>
+  <a
+    class="ty-button ty-header-login"
+    href="#cuenta"
+  >
+    Iniciar sesión
+  </a>
+</header>
+
+ ❯ src/landing/Intro.test.jsx:39:81
+     37| test("S02-TC-089 carga detenida revela contenido a los 12 segundos com…
+     38|  const { container } = render(<App />); await act(async () => {});
+     39|  act(() => vi.advanceTimersByTime(11999)); expect(screen.queryByRole("…
+       |                                                                                 ^
+     40|  act(() => vi.advanceTimersByTime(1)); expect(screen.getByRole("banner…
+     41| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  22:04:12
+   Duration  32.76s (environment 66%, setup 17%, import 10%, transform 6%, tests 1%)
+
+JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
