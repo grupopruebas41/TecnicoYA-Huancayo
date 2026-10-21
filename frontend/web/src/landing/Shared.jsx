@@ -177,6 +177,23 @@ export function Zones({
   error = "",
   about = false,
 }) {
+  const [activeZone, setActiveZone] = useState("");
+  const [entered, setEntered] = useState(false);
+  const mapRef = useRef(null);
+  useEffect(() => {
+    if (!mapRef.current || typeof IntersectionObserver === "undefined") {
+      setEntered(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setEntered(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.2 });
+    observer.observe(mapRef.current);
+    return () => observer.disconnect();
+  }, []);
   const available = (name) =>
     districts.some((d) => d.name.toLowerCase() === name.toLowerCase());
   return (
@@ -210,10 +227,12 @@ export function Zones({
           Mapa ilustrativo, sin límites geográficos ni ubicación en tiempo real.
         </small>
       </div>
-      <svg
+        <svg
+          ref={mapRef}
+          className={entered ? "ty-map-entered" : ""}
         viewBox="0 0 480 360"
-        role="img"
-        aria-label="Mapa ilustrativo de El Tambo, Huancayo y Chilca"
+          role="group"
+          aria-label="Zonas de atención ilustradas"
       >
         <path className="ty-map-river" d="M70 0 Q200 130 95 200 T100 360" />
         {[
@@ -230,15 +249,36 @@ export function Zones({
             230,
             305,
           ],
-        ].map(([name, path, x, y]) => (
-          <g key={name} className={available(name) ? "active" : ""}>
-            <path d={path + " Z"} />
+          ].map(([name, path, x, y], index) => (
+            <g
+              key={name}
+              className={`ty-map-zone ${available(name) ? "active" : ""} ${activeZone === name ? "selected" : ""}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`Zona ${name}`}
+              aria-pressed={activeZone === name}
+              style={{ "--zone-order": index }}
+              onFocus={() => setActiveZone(name)}
+              onMouseEnter={() => setActiveZone(name)}
+              onClick={() => setActiveZone(name)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setActiveZone(name);
+                }
+              }}
+            >
+              <path className="ty-map-edge" d={path + " Z"} aria-hidden="true" />
+              <path className="ty-map-face" d={path + " Z"} aria-hidden="true" />
             <text x={x} y={y} textAnchor="middle">
               {name}
             </text>
           </g>
         ))}
       </svg>
+        <p className="ty-map-active" role="status" aria-live="polite">
+          {activeZone ? <>Zona seleccionada: <strong>{activeZone}</strong></> : "Selecciona una zona del mapa."}
+        </p>
     </section>
   );
 }

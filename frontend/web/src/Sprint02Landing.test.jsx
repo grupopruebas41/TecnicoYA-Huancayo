@@ -146,7 +146,7 @@ test("S02-TC-089 complemento RETIRO-01: el enlace antiguo abre la landing sin de
   ).not.toBeInTheDocument();
 });
 
-test("S02-TC-084 complemento: especialidades sin subcategorías con foto siguen disponibles", async () => {
+test("S02-TC-084 complemento: especialidades sin foto siguen disponibles y declaran que no hay subcategorías", async () => {
   request.mockImplementation(async (path) => ({
     data:
       path === "/catalog/specialties"
@@ -164,11 +164,8 @@ test("S02-TC-084 complemento: especialidades sin subcategorías con foto siguen 
   ).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Cómputo" })).toBeInTheDocument();
   expect(
-    screen.getAllByText("Imagen de la especialidad no disponible."),
-  ).toHaveLength(3);
-  expect(
     screen.getByText(
-      "No hay subcategorías con imágenes publicadas para esta especialidad.",
+      "Aún no hay subespecialidades activas para esta especialidad.",
     ),
   ).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Electricidad" }));
@@ -189,7 +186,7 @@ test("S02-TC-084 complemento: foto principal pertenece a la especialidad y no a 
   }));
   render(<ServiceCarousel />);
   await act(async () => {});
-  expect(screen.getByRole("img", { name: "Cómputo" })).toHaveAttribute(
+  expect(screen.getByRole("img", { name: "Servicio de Cómputo" })).toHaveAttribute(
     "src",
     "/principal.png",
   );
@@ -206,16 +203,16 @@ test("S02-TC-085 complemento: catálogo vacío no inventa especialidades", async
   ).not.toBeInTheDocument();
 });
 
-test("S02-TC-085 complemento: pausa al pasar el mouse y retoma a 2500 ms", async () => {
+test("S02-TC-085 complemento: pausa al pasar el mouse y retoma a 3000 ms", async () => {
   vi.useFakeTimers();
   const { container } = render(<ServiceCarousel />);
   await act(async () => {});
-  const deck = container.querySelector(".subcategory-deck");
+  const deck = container.querySelector(".ty-product-carousel");
   fireEvent.mouseEnter(deck);
   act(() => vi.advanceTimersByTime(5000));
   expect(container.querySelector(".current h4")).toHaveTextContent("Primero");
-  fireEvent.mouseLeave(deck);
-  act(() => vi.advanceTimersByTime(2499));
+  fireEvent.mouseLeave(deck, { relatedTarget: document.body });
+  act(() => vi.advanceTimersByTime(2999));
   expect(container.querySelector(".current h4")).toHaveTextContent("Primero");
   act(() => vi.advanceTimersByTime(1));
   expect(container.querySelector(".current h4")).toHaveTextContent("Segundo");
@@ -231,7 +228,12 @@ test("S02-TC-089 especialidad y subespecialidades vienen del API", async()=>{
  expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocument();
  expect(container.querySelectorAll(".ty-product-card")).toHaveLength(2);
  expect(screen.getByText("Subespecialidades disponibles")).toBeInTheDocument();
- expect(container.querySelector(".service-main-photo img")).toHaveAttribute("src","/media/services/subcategorias/computo/hardware.png");
+ expect(container.querySelector(".service-main-photo img")).toHaveAttribute("src","/uno.png");
+});
+test("S02-TC-089 imagen local por categoría y subcategoría cuando el API no aporta foto",async()=>{
+ request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"}]:path.startsWith("/catalog/subcategories")?[{id:8,specialty_id:1,name:"Hardware"}]:[]}));
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ expect(container.querySelector(".ty-vitrine-main img")).toHaveAttribute("src","/media/services/subcategorias/computo/hardware.png");
 });
 test("S02-TC-089 mini carrusel rota cada 3 segundos, pausa con hover y permite elegir tarjeta", async()=>{
  vi.useFakeTimers(); const {container}=render(<ServiceCarousel/>); await act(async()=>{});
@@ -253,6 +255,17 @@ test("S02-TC-089 botones y chips cambian de especialidad", async()=>{
  fireEvent.click(screen.getByRole("button",{name:"Cómputo",pressed:false}));
  expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocument();
 });
+test("S02-TC-089 autoplay cambia de especialidad a los 9 segundos y se pausa al pasar el mouse",async()=>{
+ vi.useFakeTimers();
+ request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"},{id:2,name:"Electricidad"}]:path.startsWith("/catalog/subcategories")?[{id:3,specialty_id:2,name:"Tableros"}]:[]}));
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ act(()=>vi.advanceTimersByTime(8999));expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocument();
+ act(()=>vi.advanceTimersByTime(1));expect(screen.getByRole("heading",{name:"Electricidad"})).toBeInTheDocument();
+ fireEvent.mouseEnter(container.querySelector(".ty-vitrine"));
+ act(()=>vi.advanceTimersByTime(18000));expect(screen.getByRole("heading",{name:"Electricidad"})).toBeInTheDocument();
+ fireEvent.mouseLeave(container.querySelector(".ty-vitrine"),{relatedTarget:document.body});
+ act(()=>vi.advanceTimersByTime(9000));expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocument();
+});
 test("S02-TC-089 reduced motion detiene rotación automática",async()=>{
  vi.useFakeTimers();vi.stubGlobal("matchMedia",()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
  const {container}=render(<ServiceCarousel/>);await act(async()=>{});
@@ -267,9 +280,10 @@ test("S02-TC-089 carga error único con un mensaje y un reintento",async()=>{
  expect(screen.getAllByRole("button",{name:"Reintentar"})).toHaveLength(1);
 });
 test("S02-TC-089 zonas son enfocables y muestran zona activa",async()=>{
- const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+ const { Zones } = await import("./landing/Shared");
+ const {container}=render(<Zones/>); await act(async()=>{});
  const zones=container.querySelectorAll(".ty-map-zone");
- expect(zones).toHaveLength(3); zones[1].focus();
+ expect(zones).toHaveLength(3); fireEvent.focus(zones[1]);
  expect(zones[1]).toHaveAttribute("aria-label","Zona Huancayo");
  expect(screen.getByRole("status")).toHaveTextContent("Huancayo");
 });

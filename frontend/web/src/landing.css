@@ -477,6 +477,20 @@
   stroke-width: 5;
   opacity: 0.3;
 }
+.ty-zones svg { perspective: 1000px; overflow: visible; }
+.ty-map-zone { cursor: pointer; transform-box: fill-box; transform-origin: center; transform-style: preserve-3d; opacity: 1; transition: transform 420ms cubic-bezier(.2,.7,.2,1), opacity 300ms ease, filter 420ms ease; outline: none; }
+.ty-zones svg .ty-map-edge { fill: #0a1113; stroke: #0a1113; stroke-width: 2; transform: translateY(7px); }
+.ty-zones svg .ty-map-face { fill: var(--ty-surface); stroke: var(--ty-border); stroke-width: 2; transition: fill 300ms ease, stroke 300ms ease; }
+.ty-map-zone.active .ty-map-face { fill: var(--ty-raised); stroke: var(--ty-border); }
+.ty-map-zone text { pointer-events: none; transition: fill 250ms ease; }
+.ty-map-entered .ty-map-zone { animation: ty-map-arrive 520ms cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--zone-order) * 120ms); }
+.ty-map-zone:hover, .ty-map-zone:focus-visible, .ty-map-zone.selected { transform: translateY(-8px) translateZ(40px) rotateX(8deg); filter: drop-shadow(0 18px 10px #0008); }
+.ty-map-zone:hover .ty-map-face, .ty-map-zone:focus-visible .ty-map-face, .ty-map-zone.selected .ty-map-face { fill: color-mix(in srgb, var(--ty-raised), var(--ty-accent) 14%); stroke: var(--ty-accent); stroke-width: 3; }
+.ty-map-zone:hover text, .ty-map-zone:focus-visible text, .ty-map-zone.selected text { fill: var(--ty-accent); font-weight: 700; }
+.ty-zones svg:has(.ty-map-zone:hover) .ty-map-zone:not(:hover), .ty-zones svg:has(.ty-map-zone:focus-visible) .ty-map-zone:not(:focus-visible), .ty-zones svg:has(.ty-map-zone.selected) .ty-map-zone:not(.selected) { opacity: .6; }
+.ty-map-zone:focus-visible { filter: drop-shadow(0 18px 10px #0008) drop-shadow(0 0 3px var(--ty-accent)); }
+.ty-map-active { color: var(--ty-muted); text-align: center; margin: 10px 0 0; }
+@keyframes ty-map-arrive { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .ty-chips {
   display: flex;
   gap: var(--ty-xs);
@@ -1141,4 +1155,12 @@
 }
 .ty-intro-content .ty-hero-content > :nth-child(4) {
   animation-delay: 1.16s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ty-map-zone, .ty-map-zone .ty-map-face, .ty-map-zone text { transition: none !important; animation: none !important; }
+  .ty-map-zone:hover, .ty-map-zone:focus-visible, .ty-map-zone.selected { transform: none; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ty-map-zone, .ty-map-zone .ty-map-face, .ty-map-zone text { transition: none !important; animation: none !important; }
+  .ty-map-zone:hover, .ty-map-zone:focus-visible, .ty-map-zone.selected { transform: none; filter: none; }
 }

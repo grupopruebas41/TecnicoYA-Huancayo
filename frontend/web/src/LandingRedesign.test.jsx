@@ -122,22 +122,12 @@ test("S02-TC-085 rediseño: catálogo vacío expresa cero sin inventar servicios
     screen.getByText("No hay especialidades activas disponibles."),
   ).toBeInTheDocument();
 });
-test("S02-TC-089 rediseño: acceso conserva solo filtros no sensibles", async () => {
+test("S02-TC-089 rediseño: Especialidades no presenta un formulario de búsqueda", async () => {
   render(<App />);
   await act(async () => {});
-  fireEvent.change(screen.getByLabelText("¿Qué necesitas?"), {
-    target: { value: "1" },
-  });
-  fireEvent.change(screen.getByLabelText("¿Dónde?"), {
-    target: { value: "2" },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Encontrar técnico" }));
-  await act(async () => {});
-  expect(JSON.parse(sessionStorage.getItem("tecnicoya.searchIntent"))).toEqual({
-    specialty_id: "1",
-    district_id: "2",
-  });
-  expect(window.location.hash).toBe("#cuenta");
+  expect(document.querySelector("#servicios form")).toBeNull();
+  expect(screen.queryByLabelText("¿Qué necesitas?")).toBeNull();
+  expect(screen.queryByLabelText("¿Dónde?")).toBeNull();
 });
 
 test("S02-TC-089 rediseño: iniciar sesión y registro técnico seleccionan el formulario correcto", async () => {
@@ -259,7 +249,7 @@ test("S02-TC-089 hero centrado sin buscador, con cuatro líneas y accesos", asyn
   expect(takeAuthIntent()).toEqual({ mode: "register", role: "client" });
   expect(hero.querySelector("form")).toBeNull();
   expect(hero.querySelector('[role="status"]')).toBeNull();
-  expect(container.querySelector("#servicios form")).not.toBeNull();
+  expect(container.querySelector("#servicios form")).toBeNull();
 });
 test("S02-TC-089 cabecera con cinco enlaces y único acceso de sesión fuera del menú", async () => {
   render(<App />);

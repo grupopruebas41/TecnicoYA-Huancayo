@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { request } from "./features/administration/http";
+import { AuthLink } from "./landing/Shared";
+import { getSubcategoryImage, serviceCategory, slugify, specialtyImages } from "./service-media";
 import "./service-carousel.css";
 export function CarouselDeck({ items, label = "Servicios" }) {
   const root = useRef(null);
@@ -125,98 +127,270 @@ export function CarouselDeck({ items, label = "Servicios" }) {
     </div>
   );
 }
-export default function ServiceCarousel({ children }) {
-  const [items, setItems] = useState(null),
-    [specialties, setSpecialties] = useState(null),
-    [error, setError] = useState(""),
-    [active, setActive] = useState(null),
-    [details, setDetails] = useState({});
+const rows = (response) => {
+  if (Array.isArray(response?.data)) return response.data;
+  if (Array.isArray(response?.data?.data)) return response.data.data;
+  return [];
+};
+
+function useMotionPreference() {
+  const [reduced, setReduced] = useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  return reduced;
+}
+
+function usePausedCarousel(root, reduced, paused) {
+  const [visible, setVisible] = useState(false);
+  const [hidden, setHidden] = useState(document.hidden);
+  useEffect(() => {
+    if (!root.current) return undefined;
+    const observer = new IntersectionObserver(([entry]) =>
+      setVisible(entry.isIntersecting),
+    );
+    observer.observe(root.current);
+    const visibility = () => setHidden(document.hidden);
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", visibility);
+    };
+  }, [root]);
+  return !reduced && !paused && visible && !hidden;
+}
+
+function ProductImage({ src, alt, className = "" }) {
+  return (
+    <img
+      className={className}
+      src={src}
+      alt={alt}
+      loading="lazy"
+      width="720"
+      height="480"
+      onError={(event) => {
+        event.currentTarget.onerror = null;
+        event.currentTarget.src = "/media/landing/tecnico-taller.webp";
+      }}
+    />
+  );
+}
+
+function MiniCarousel({ items, specialty, carouselItems, reduced }) {
+  const root = useRef(null);
+  const [index, setIndex] = useState(0);
+  const [focused, setFocused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [touchX, setTouchX] = useState(null);
+  const canRotate = usePausedCarousel(root, reduced, focused || hovered);
+  const size = items.length;
+  useEffect(() => setIndex(0), [specialty?.id, size]);
+  useEffect(() => {
+    if (!canRotate || size < 2) return undefined;
+    const timer = window.setInterval(() => setIndex((value) => (value + 1) % size), 3000);
+    return () => window.clearInterval(timer);
+  }, [canRotate, size]);
+  const move = (offset) => setIndex((value) => (value + offset + size) % size);
+  const select = (next) => setIndex(next);
+  const ordered = size > 1
+    ? [index, (index + 1) % size, (index - 1 + size) % size]
+    : size ? [index] : [];
+  const unique = [...new Set(ordered)];
+  const cardClass = (position, itemIndex) => position === 0 ? "is-center" : `is-side ${itemIndex === (index + 1) % size ? "is-next" : "is-previous"}`;
+  const itemImage = (item) => getSubcategoryImage(item, carouselItems, slugify(specialty?.name));
+  return (
+    <div
+      className="ty-product-carousel"
+      ref={root}
+      role="group"
+      tabIndex={0}
+      aria-roledescription="carrusel"
+      aria-label={`Subespecialidades de ${specialty?.name || "la especialidad"}`}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setFocused(false);
+        }
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onTouchStart={(event) => setTouchX(event.changedTouches[0].clientX)}
+      onTouchEnd={(event) => {
+        if (touchX === null) return;
+        const delta = event.changedTouches[0].clientX - touchX;
+        if (Math.abs(delta) > 35) move(delta < 0 ? 1 : -1);
+        setTouchX(null);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowRight") { event.preventDefault(); move(1); }
+        if (event.key === "ArrowLeft") { event.preventDefault(); move(-1); }
+      }}
+    >
+      <div className="ty-product-stage subcategory-deck" aria-live="polite">
+        {unique.map((itemIndex, position) => {
+          const item = items[itemIndex];
+          return (
+            <article
+              key={item.id || item.subcategory_id}
+              className={`ty-product-card subcategory-card ${cardClass(position, itemIndex)} ${position === 0 ? "current" : ""}`}
+              role={position === 0 ? "group" : "button"}
+              tabIndex={position === 0 ? undefined : 0}
+              aria-label={position === 0 ? undefined : `Mostrar ${item.name}`}
+              onKeyDown={(event) => {
+                if (position !== 0 && (event.key === "Enter" || event.key === " ")) {
+                  event.preventDefault();
+                  select(itemIndex);
+                }
+              }}
+              onClick={() => select(itemIndex)}
+            >
+              <ProductImage src={itemImage(item)} alt={`${item.name} — ${specialty?.name}`} />
+              <div className="ty-product-caption subcategory-caption">
+                <h3>{item.name}</h3>
+                <h4 className="ty-legacy-heading" aria-hidden="true">{item.name}</h4>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      <h3 className="ty-product-legend">Subespecialidades disponibles</h3>
+      <div className="ty-product-controls">
+        <button type="button" aria-label="Subcategoría anterior" disabled={size < 2} onClick={() => move(-1)}>‹</button>
+        <div className="ty-product-dots" aria-label={`Subcategoría ${index + 1} de ${size}`}>
+          {items.map((item, i) => (
+            <button key={item.id || item.subcategory_id} type="button" aria-label={`Mostrar ${item.name}`} aria-current={i === index ? "true" : undefined} onClick={() => select(i)} />
+          ))}
+        </div>
+        <span>{size ? `${index + 1} / ${size}` : "0 / 0"}</span>
+        <button type="button" aria-label="Subcategoría siguiente" disabled={size < 2} onClick={() => move(1)}>›</button>
+      </div>
+    </div>
+  );
+}
+
+function SpecialtyShowcase({ specialty, index, total, items, carouselItems, reduced }) {
+  const first = items[0];
+  const image = specialty.image_url || (first && getSubcategoryImage(first, carouselItems, slugify(specialty.name))) || specialtyImages[serviceCategory(specialty.name)] || "/media/landing/tecnico-taller.webp";
+  const fee = specialty.reference_fee;
+  return (
+    <div className="ty-vitrine-layout" key={specialty.id}>
+      <div className="ty-vitrine-main" aria-live="polite">
+        <div className="service-main-photo">
+          <ProductImage src={image} alt={`Servicio de ${specialty.name}`} />
+          <span className="ty-vitrine-index">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
+        </div>
+        <div className="ty-slide-copy service-slide-copy">
+          <span className="ty-eyebrow">ESPECIALIDAD VERIFICADA</span>
+          <h3>{specialty.name}</h3>
+          <p>{specialty.description || `Encuentra especialistas independientes en ${specialty.name.toLowerCase()} para tu hogar o negocio.`}</p>
+          {fee !== null && fee !== undefined && <p className="ty-reference-fee">Desde S/ {Number(fee).toFixed(2)} <small>referencial</small></p>}
+          <AuthLink className="ty-button ty-vitrine-cta">Ver técnicos de {specialty.name} <span aria-hidden="true">↗</span></AuthLink>
+        </div>
+      </div>
+      {items.length ? (
+        <MiniCarousel items={items} specialty={specialty} carouselItems={carouselItems} reduced={reduced} />
+      ) : (
+        <p className="service-empty" role="status">Aún no hay subespecialidades activas para esta especialidad.</p>
+      )}
+    </div>
+  );
+}
+
+export default function ServiceCarousel({ catalog }) {
+  const root = useRef(null);
+  const [specialties, setSpecialties] = useState(null);
+  const [details, setDetails] = useState({});
+  const [carouselItems, setCarouselItems] = useState([]);
+  const [error, setError] = useState("");
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const reduced = useMotionPreference();
+  const running = usePausedCarousel(root, reduced, paused || focused || hovered);
   async function load() {
+    setError("");
+    setSpecialties(null);
     try {
-      const [catalog, carousel] = await Promise.all([
-        request("/catalog/specialties"),
-        request("/catalog/carousel"),
+      const catalog = await request("/catalog/specialties");
+      const active = rows(catalog).filter((item) => item.active !== false);
+      setSpecialties(active);
+      if (!active.length) return;
+      const [subResponses, mediaResponse] = await Promise.all([
+        Promise.all(active.map((item) => request(`/catalog/subcategories?specialty_id=${encodeURIComponent(item.id)}`))),
+        request("/catalog/carousel").catch(() => ({ data: [] })),
       ]);
-      const activeSpecialties = catalog.data.filter(
-        (item) => item.active !== false,
-      );
-      setSpecialties(activeSpecialties);
-      setItems(carousel.data);
-      const sublists = await Promise.all(
-        activeSpecialties.map((item) =>
-          request("/catalog/subcategories?specialty_id=" + item.id),
-        ),
-      );
-      setDetails(
-        Object.fromEntries(
-          activeSpecialties.map((item, i) => [item.id, sublists[i].data]),
-        ),
-      );
-      setActive((current) =>
-        activeSpecialties.some((item) => item.id === current)
-          ? current
-          : activeSpecialties[0]?.id,
-      );
-      setError("");
-    } catch (e) {
-      setError(e.message);
+      setDetails(Object.fromEntries(active.map((item, i) => [item.id, rows(subResponses[i])] )));
+      setCarouselItems(rows(mediaResponse));
+      setActiveIndex((current) => Math.min(current, active.length - 1));
+    } catch (cause) {
+      setError(cause.message || "No pudimos cargar las especialidades.");
+      setSpecialties([]);
     }
   }
+  useEffect(() => { load(); }, []);
   useEffect(() => {
-    load();
-  }, []);
-  const specialty = specialties?.find((item) => item.id === active);
-  const selected = (items || []).filter((x) => x.specialty_id === active);
+    if (!running || !specialties?.length || specialties.length < 2) return undefined;
+    const timer = window.setInterval(() => setActiveIndex((index) => (index + 1) % specialties.length), 9000);
+    return () => window.clearInterval(timer);
+  }, [running, specialties]);
+  const change = (offset) => {
+    if (!specialties?.length) return;
+    setActiveIndex((current) => (current + offset + specialties.length) % specialties.length);
+  };
+  const setActive = (index) => setActiveIndex(index);
+  const active = specialties?.[activeIndex];
+  const selectedItems = active ? details[active.id] || [] : [];
   return (
     <section
       id="servicios"
       data-landing="Especialidades"
-      className="service-carousel"
+      className="service-carousel ty-vitrine"
       aria-label="Especialidades de TécnicoYa"
+      ref={root}
+      onMouseEnter={() => { setHovered(true); setPaused(true); }}
+      onMouseLeave={() => { setHovered(false); setPaused(false); }}
+      onFocusCapture={() => { setFocused(true); setPaused(true); }}
+      onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) { setFocused(false); setPaused(false); } }}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowRight") { event.preventDefault(); change(1); }
+        if (event.key === "ArrowLeft") { event.preventDefault(); change(-1); }
+      }}
     >
-      <h2>Especialidades</h2>
-      {children}
-      {error && (
+      <div className="service-carousel-heading">
+        <div><span className="ty-eyebrow">ESPECIALISTAS EN CADA DETALLE</span><h2>¿Qué necesitas <em>resolver?</em></h2></div>
+        <span>Soluciones locales para tu hogar y negocio.</span>
+      </div>
+      {catalog?.data && <div className="ty-stats" aria-label="Resumen del catálogo">
+        <span><strong aria-label="Especialidades activas">{catalog.data.specialties.length}</strong> especialidades</span>
+        <span><strong aria-label="Subcategorías activas">{catalog.data.subcategories.length}</strong> subespecialidades</span>
+        <span><strong aria-label="Distritos activos">{catalog.data.districts.length}</strong> distritos</span>
+      </div>}
+      {specialties === null ? (
+        <div className="ty-vitrine-skeleton" aria-label="Cargando especialidades"><span /><span /><span /></div>
+      ) : error ? (
+        <div className="ty-vitrine-error"><p role="alert">{error}</p><button type="button" onClick={load}>Reintentar</button></div>
+      ) : specialties.length === 0 ? (
+        <p className="service-empty" role="status">No hay especialidades activas disponibles.</p>
+      ) : (
         <>
-          <p role="alert">{error}</p>
-          <button type="button" onClick={load}>
-            Reintentar catálogo
-          </button>
+          <nav className="ty-specialty-nav" aria-label="Seleccionar especialidad">
+            <button type="button" aria-label="Especialidad anterior" onClick={() => change(-1)}>‹</button>
+            <div className="ty-specialty-chips">
+              {specialties.map((item, index) => <button type="button" key={item.id} aria-pressed={activeIndex === index} onClick={() => setActive(index)}>{item.name}</button>)}
+            </div>
+            <button type="button" aria-label="Siguiente especialidad" onClick={() => change(1)}>›</button>
+          </nav>
+          <div className={`ty-specialty-progress ${reduced ? "is-static" : ""}`} aria-hidden="true"><span key={active?.id} style={{ animationPlayState: running ? "running" : "paused" }} /></div>
+          {active && <SpecialtyShowcase specialty={active} index={activeIndex} total={specialties.length} items={selectedItems} carouselItems={carouselItems} reduced={reduced} />}
         </>
       )}
-      {items === null && !error && <output>Cargando especialidades…</output>}
-      {specialties?.length === 0 && (
-        <p>No hay especialidades activas disponibles.</p>
-      )}
-      <nav className="service-tabs" aria-label="Seleccionar especialidad">
-        {(specialties || []).map(({ id, name }) => (
-          <button
-            type="button"
-            key={id}
-            aria-pressed={active === id}
-            onClick={() => setActive(id)}
-          >
-            {name}
-          </button>
-        ))}
-      </nav>
-      <SpecialtyCards
-        specialties={specialties}
-        details={details}
-        onSelect={setActive}
-      />
-      {specialty &&
-        (selected.length ? (
-          <CarouselDeck
-            key={active}
-            items={selected}
-            label="¿Qué necesitas resolver?"
-          />
-        ) : (
-          <p className="service-empty" role="status">
-            No hay subcategorías con imágenes publicadas para esta especialidad.
-          </p>
-        ))}
     </section>
   );
 }

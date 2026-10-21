@@ -206,9 +206,7 @@ export default function Home({ catalog }) {
   return (
     <>
       <Hero />
-      <ServiceCarousel>
-        <CatalogSearch catalog={catalog} />
-      </ServiceCarousel>
+      <ServiceCarousel catalog={catalog} />
       <section
         id="proceso"
         data-landing="Cómo funciona"
