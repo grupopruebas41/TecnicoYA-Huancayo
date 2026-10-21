@@ -79,10 +79,11 @@ test("S02-TC-089 rediseño: Nosotros completo y testimonios rotulados", async ()
   window.location.hash = "#nosotros";
   const { container } = render(<App />);
   await act(async () => {});
-  expect(container.querySelectorAll("[data-about]")).toHaveLength(12);
+  expect(container.querySelectorAll("[data-about]")).toHaveLength(11);
   expect(
-    screen.getByRole("heading", { name: "Testimonios de ejemplo" }),
+    screen.getByRole("heading", { name: "Testimonios" }),
   ).toBeInTheDocument();
+  expect(screen.getByText("Historias ilustrativas con personajes ficticios.")).toBeInTheDocument();
   expect(
     screen.getByText(/Proyecto académico – Universidad Continental/),
   ).toBeInTheDocument();

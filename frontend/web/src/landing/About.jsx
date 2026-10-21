@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CONTACT } from "./config";
-import { FinalCTA, Zones } from "./Shared";
-import { CarouselDeck, SpecialtyCards } from "../ServiceCarousel";
+import { Zones } from "./Shared";
+import { SpecialtyCards } from "../ServiceCarousel";
 const testimonials = [
   {
     id: 1,
@@ -129,9 +129,40 @@ function Matching() {
   );
 }
 export default function About({ catalog }) {
+  const [activeSection, setActiveSection] = useState("quienes"),
+    [floating, setFloating] = useState(false);
+  useEffect(() => {
+    const sectionIds = ["quienes", "verificacion", "seguridad", "testimonios", "equipo", "contacto"];
+    const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
+    const root = document.querySelector(".about-page");
+    if (typeof IntersectionObserver === "undefined") return undefined;
+    const activeObserver = new IntersectionObserver(
+      (entries) => {
+        const current = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (current) setActiveSection(current.target.id);
+      },
+      { rootMargin: "-18% 0px -62% 0px", threshold: [0, 0.15, 0.4] },
+    );
+    sections.forEach((section) => activeObserver.observe(section));
+    const hero = document.querySelector(".ty-about-hero");
+    const heroObserver = hero
+      ? new IntersectionObserver(([entry]) => {
+          setFloating(!entry.isIntersecting);
+          root?.classList.toggle("about-has-scrolled", !entry.isIntersecting);
+        }, { threshold: 0.15 })
+      : null;
+    if (hero) heroObserver.observe(hero);
+    return () => {
+      activeObserver.disconnect();
+      heroObserver?.disconnect();
+      root?.classList.remove("about-has-scrolled");
+    };
+  }, []);
   return (
     <>
-      <nav className="ty-about-nav" aria-label="Acerca de TécnicoYa">
+      <nav className={"ty-about-nav " + (floating ? "is-floating" : "is-over-hero")} aria-label="Acerca de TécnicoYa">
         {[
           ["quienes", "Quiénes somos"],
           ["verificacion", "Cómo verificamos"],
@@ -140,7 +171,7 @@ export default function About({ catalog }) {
           ["equipo", "Equipo"],
           ["contacto", "Contacto"],
         ].map(([id, name]) => (
-          <a key={id} href={"#nosotros/" + id}>
+          <a key={id} href={"#nosotros/" + id} aria-current={activeSection === id ? "location" : undefined}>
             {name}
           </a>
         ))}
@@ -177,23 +208,25 @@ export default function About({ catalog }) {
       <Team />
       <Quality />
       <Contact />
-      <FinalCTA about />
     </>
   );
 }
 
 function AboutCover() {
   return (
-    <section data-about="Portada" className="ty-about-hero">
+    <section data-about="Portada" className="ty-about-hero" aria-labelledby="about-title">
       <img
         src="/media/nosotros/portada.webp"
         alt="Tres técnicos independientes caminando por una calle de Huancayo con sus maletines"
       />
       <div>
-        <span className="ty-eyebrow">SOMOS TÉCNICOYA</span>
-        <h1>
-          Conectamos talento técnico local <em>con quien lo necesita.</em>
+        <span className="ty-eyebrow ty-about-kicker">SOMOS TÉCNICOYA</span>
+        <h1 id="about-title">
+          <span>Conectamos talento técnico local</span>{" "}
+          <em>con quien lo necesita.</em>
         </h1>
+        <p>Unimos hogares y negocios de Huancayo con especialistas independientes y verificados para resolver sus necesidades con claridad.</p>
+        <span className="ty-about-rule" aria-hidden="true" />
       </div>
     </section>
   );
@@ -232,28 +265,64 @@ function OurPurpose() {
           </figcaption>
         </figure>
       </div>
-      <div className="ty-grid">
-        {[
-          [
-            "Misión",
-            "Conectar a hogares y MYPES con talento técnico local mediante información clara y atención trazable.",
-          ],
-          [
-            "Visión",
-            "Hacer más confiable y accesible la búsqueda de servicios técnicos en Huancayo.",
-          ],
-          [
-            "Valores",
-            "Confianza, transparencia y reconocimiento del talento local.",
-          ],
-        ].map(([t, p]) => (
-          <article className="ty-card" key={t}>
-            <h3>{t}</h3>
-            <p>{p}</p>
-          </article>
+      <PurposeMap />
+    </section>
+  );
+}
+const purposeStops = [
+  ["Misión", "Conectar a hogares y MYPES con talento técnico local mediante información clara y atención trazable."],
+  ["Visión", "Hacer más confiable y accesible la búsqueda de servicios técnicos en Huancayo."],
+  ["Valores", "Confianza, transparencia y reconocimiento del talento local."],
+];
+function PurposeMap() {
+  const [active, setActive] = useState(0);
+  function handleKeys(event) {
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      event.preventDefault();
+      setActive((index) => Math.min(index + 1, purposeStops.length - 1));
+    }
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      event.preventDefault();
+      setActive((index) => Math.max(index - 1, 0));
+    }
+  }
+  const [title, description] = purposeStops[active];
+  return (
+    <div className="ty-purpose-map" role="region" aria-label="Nuestro propósito" tabIndex={0} onKeyDown={handleKeys}>
+      <div className="ty-purpose-route" aria-hidden="true">
+        <svg className="route-desktop" viewBox="0 0 900 220" preserveAspectRatio="none">
+          <path className="route-base" d="M80 118 C210 15 330 15 450 118 S690 220 820 118" />
+          <path className="route-progress" pathLength="100" style={{ strokeDashoffset: 100 - active * 50 }} d="M80 118 C210 15 330 15 450 118 S690 220 820 118" />
+        </svg>
+        <svg className="route-mobile" viewBox="0 0 100 400" preserveAspectRatio="none">
+          <path className="route-base" d="M50 20 C90 90 10 110 50 200 S90 310 50 380" />
+          <path className="route-progress" pathLength="100" style={{ strokeDashoffset: 100 - active * 50 }} d="M50 20 C90 90 10 110 50 200 S90 310 50 380" />
+        </svg>
+        <span className={"ty-route-marker stop-" + active}>✦</span>
+      </div>
+      <div className="ty-purpose-stops" role="group" aria-label="Puntos del propósito">
+        {purposeStops.map(([stop], index) => (
+          <button type="button" key={stop} className={index === active ? "is-active" : ""} aria-pressed={index === active} onClick={() => setActive(index)}>
+            <span className="ty-stop-number">0{index + 1}</span>{stop}
+          </button>
         ))}
       </div>
-    </section>
+      <article className="ty-purpose-card" aria-live="polite" aria-atomic="true">
+        <span className="ty-eyebrow">PUNTO {active + 1} DE 3</span>
+        <h3>{title}</h3>
+        <p>{description}</p>
+        {title === "Valores" && (
+          <ul className="ty-value-chips" aria-label="Valores de TécnicoYa">
+            {["Confianza", "Transparencia", "Talento local"].map((value) => <li key={value}>{value}</li>)}
+          </ul>
+        )}
+      </article>
+      <div className="ty-purpose-controls">
+        <button type="button" className="ty-button ty-outline" onClick={() => setActive((index) => Math.max(index - 1, 0))} disabled={active === 0}>Anterior</button>
+        <span role="status">{active + 1} de {purposeStops.length}</span>
+        <button type="button" className="ty-button" aria-label="Siguiente propósito" onClick={() => setActive((index) => Math.min(index + 1, purposeStops.length - 1))} disabled={active === purposeStops.length - 1}>Siguiente</button>
+      </div>
+    </div>
   );
 }
 function Verification() {
@@ -348,20 +417,84 @@ function TransparentFees() {
   );
 }
 function ExampleStories() {
+  return <TestimonialCoverflow />;
+}
+function TestimonialCoverflow() {
+  const [index, setIndex] = useState(0),
+    [paused, setPaused] = useState(false),
+    [hovered, setHovered] = useState(false),
+    [focused, setFocused] = useState(false),
+    [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const pointerStart = useRef(null),
+    region = useRef(null);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  useEffect(() => {
+    if (reduced || paused || hovered || focused) return undefined;
+    const timer = window.setInterval(() => setIndex((current) => (current + 1) % testimonials.length), 5000);
+    return () => window.clearInterval(timer);
+  }, [reduced, paused, hovered, focused]);
+  function move(offset) {
+    setIndex((current) => (current + offset + testimonials.length) % testimonials.length);
+  }
+  function handlePointerUp(event) {
+    if (pointerStart.current === null) return;
+    const distance = event.clientX - pointerStart.current;
+    if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1);
+    pointerStart.current = null;
+  }
+  const visibleItems = testimonials.map((item, itemIndex) => {
+    const offset = (itemIndex - index + testimonials.length) % testimonials.length;
+    const position = offset === testimonials.length - 1 ? -1 : offset;
+    const positionClass = position === 0 ? "is-current" : Math.abs(position) === 1 ? `side-${position}` : "is-hidden";
+    return { ...item, itemIndex, position, positionClass };
+  });
+  const selected = testimonials[index];
+  const [name, district, specialty] = selected.name.split(" · ");
+  const quote = selected.description.replace(/^★★★★★ · Valoración ficticia\. /, "").replace(/[«»]/g, "");
   return (
-    <section
-      id="testimonios"
-      data-about="Testimonios"
-      className="ty-section"
-      data-reveal
-    >
+    <section id="testimonios" data-about="Testimonios" className="ty-section ty-testimonials" data-reveal aria-labelledby="testimonials-title">
       <span className="ty-eyebrow">LO QUE BUSCAMOS HACER POSIBLE</span>
-      <h2>Testimonios de ejemplo</h2>
-      <p>
-        Personajes, imágenes y valoraciones ficticias. No son reseñas de
-        clientes reales.
-      </p>
-      <CarouselDeck items={testimonials} label="Historias ilustrativas" />
+      <h2 id="testimonials-title">Testimonios</h2>
+      <p className="ty-testimonial-note">Historias ilustrativas con personajes ficticios.</p>
+      <div className="ty-coverflow" ref={region} aria-roledescription="carrusel" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }} onPointerDown={(event) => { pointerStart.current = event.clientX; event.currentTarget.setPointerCapture?.(event.pointerId); }} onPointerUp={handlePointerUp} onPointerCancel={() => { pointerStart.current = null; }}>
+        <div className="ty-coverflow-stage" aria-live="off">
+          {visibleItems.map((item) => (
+            <article key={item.id} className={"ty-coverflow-card " + item.positionClass} aria-hidden={item.position !== 0}>
+              {item.position === 0 ? (
+                <>
+                  <img src={item.image_url} alt={`Escena ilustrativa de ${name}, ${specialty.toLowerCase()}`} draggable="false" />
+                  <div className="ty-testimonial-copy">
+                    <span className="ty-quote-mark" aria-hidden="true">“</span>
+                    <p>{quote}</p>
+                    <strong>{name}</strong>
+                    <span>{district} · {specialty}</span>
+                    <span className="ty-fiction-rating">★★★★★ <small>Valoración ficticia</small></span>
+                  </div>
+                </>
+              ) : Math.abs(item.position) === 1 ? (
+                <div className="ty-coverflow-side">
+                  <img src={item.image_url} alt="" draggable="false" />
+                  <strong>{item.name.split(" · ")[0]}</strong>
+                </div>
+              ) : null}
+            </article>
+          ))}
+        </div>
+        <div className="ty-coverflow-controls">
+          <button type="button" className="ty-round-control" aria-label="Testimonio anterior" onClick={() => move(-1)}>←</button>
+          <span role="status" aria-live="polite">{index + 1} de {testimonials.length}</span>
+          <button type="button" className="ty-round-control" aria-label="Testimonio siguiente" onClick={() => move(1)}>→</button>
+          <button type="button" className="ty-rotation-control" aria-label={reduced ? "Rotación automática desactivada por movimiento reducido" : paused ? "Reanudar rotación automática" : "Pausar rotación automática"} disabled={reduced} onClick={() => setPaused((value) => !value)}>{reduced ? "Movimiento reducido" : paused ? "Reanudar" : "Pausar"}</button>
+        </div>
+        <div className="ty-coverflow-dots" role="group" aria-label="Elegir testimonio">
+          {testimonials.map((item, itemIndex) => <button type="button" key={item.id} aria-label={`Testimonio ${itemIndex + 1}`} aria-pressed={index === itemIndex} onClick={() => setIndex(itemIndex)} />)}
+        </div>
+      </div>
     </section>
   );
 }
