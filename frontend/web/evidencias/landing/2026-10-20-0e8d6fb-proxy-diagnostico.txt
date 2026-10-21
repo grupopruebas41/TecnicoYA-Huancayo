@@ -1,0 +1,10 @@
+Fecha: 2026-10-20
+Commit probado: 0e8d6fb
+Diagnóstico del catálogo público:
+- vite.config.js está igual que origin/main y el proxy /api apunta por defecto a http://127.0.0.1:3000 (API_URL permite sobreescribirlo; no se imprimió su valor).
+- El cliente HTTP está igual que origin/main y llama rutas relativas /api/v1.
+- No existe archivo .env.development local; solo .env.example.
+- TCP 127.0.0.1:3000: sin conexión.
+- GET /api/v1/catalog/specialties a través de Vite devuelve HTTP 502.
+- Consola Vite: http proxy error; connect ECONNREFUSED 127.0.0.1:3000.
+Conclusión: API de desarrollo apagada/no escuchando. No se observó un 404 ni un 500 del backend.
