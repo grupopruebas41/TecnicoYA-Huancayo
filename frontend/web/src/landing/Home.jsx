@@ -129,10 +129,8 @@ export function Hero() {
           Para tu hogar. Para tu negocio. Para Huancayo.
         </span>
         <h1>
-          <span>El técnico</span>
-          <span>indicado.</span>
-          <span className="ty-gold">Aquí, en</span>
-          <span className="ty-gold">Huancayo.</span>
+          <span>El técnico indicado.</span>
+          <span className="ty-gold">Aquí, en Huancayo.</span>
         </h1>
         <p>
           <span>

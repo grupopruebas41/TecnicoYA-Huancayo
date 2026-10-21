@@ -216,7 +216,7 @@ test("S02-TC-085 rediseño: tarifas solo presentes cuando el catálogo las propo
   expect(screen.queryByText(/desde S\//)).not.toBeInTheDocument();
 });
 
-test("S02-TC-089 hero centrado sin buscador, con cuatro líneas y accesos", async () => {
+test("S02-TC-089 hero centrado sin buscador, con dos líneas amplias y accesos", async () => {
   const { container } = render(<App />);
   await act(async () => {});
   const hero = container.querySelector("#inicio");
@@ -226,7 +226,7 @@ test("S02-TC-089 hero centrado sin buscador, con cuatro líneas y accesos", asyn
   ).toBeInTheDocument();
   expect(
     [...hero.querySelectorAll("h1 span")].map((x) => x.textContent),
-  ).toEqual(["El técnico", "indicado.", "Aquí, en", "Huancayo."]);
+  ).toEqual(["El técnico indicado.", "Aquí, en Huancayo."]);
   expect(
     within(hero).getByText(
       "Conectamos hogares y MYPES con técnicos independientes verificados.",
