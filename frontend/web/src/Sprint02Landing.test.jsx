@@ -125,10 +125,10 @@ test("S02-TC-089 diez secciones de landing en orden", async () => {
     "CTA final",
     "Footer",
   ]);
-  expect([...container.querySelectorAll("#principal a")].map(a=>a.getAttribute("href"))).toEqual(["#servicios","#proceso","#tecnicos","#nosotros","#preguntas"]);
+  expect([...container.querySelectorAll("#principal a")].map(a=>a.getAttribute("href"))).toEqual(["#servicios","#proceso","#tecnicos","/nosotros","#preguntas"]);
   expect(
     screen.getByRole("link", { name: /Conoce más sobre nosotros/ }),
-  ).toHaveAttribute("href", "#nosotros");
+  ).toHaveAttribute("href", "/nosotros");
   for (const section of container.querySelectorAll("[data-landing]")) {
     expect(section.id).toBeTruthy();
     expect(section).toBeVisible();

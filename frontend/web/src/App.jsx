@@ -9,10 +9,16 @@ import HeroBackground from "./landing/HeroBackground";
 import About from "./landing/About";
 import { Header, Footer } from "./landing/Shared";
 import { useCatalog, useReveal } from "./landing/hooks";
+import {
+  consumePendingSection,
+  currentRoute,
+  scrollToSection,
+  useScrollToTopOnLoad,
+} from "./landing/navigation";
 function PublicSite({ route, introCompleted }) {
   const [phase, setPhase] = useState(() =>
     introCompleted.current ||
-    route.startsWith("#nosotros") ||
+    route === "/nosotros" ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
       ? "ready"
       : "intro",
@@ -37,15 +43,14 @@ function PublicSite({ route, introCompleted }) {
     };
   }, [phase, introCompleted]);
   const catalog = useCatalog();
-  const about = route.startsWith("#nosotros");
+  const about = route === "/nosotros";
   const reveal = useReveal();
   useEffect(() => {
     if (phase !== "ready") return;
     window.dispatchEvent(new Event("tecnicoya:hero-change"));
-    const id = about ? route.split("/")[1] : route.slice(1);
-    if (id) document.getElementById(id)?.scrollIntoView?.();
-    else window.scrollTo?.(0, 0);
-  }, [route, about, phase]);
+    const pendingSection = consumePendingSection();
+    if (pendingSection) scrollToSection(pendingSection);
+  }, [phase, route]);
   return (
     <div className={"landing-page " + (about ? "about-page" : "")} ref={reveal}>
       <HeroBackground
@@ -68,15 +73,34 @@ function PublicSite({ route, introCompleted }) {
 }
 export default function App() {
   const introCompleted = useRef(false);
-  const [route, setRoute] = useState(window.location.hash);
+  const [route, setRoute] = useState(currentRoute);
+  useScrollToTopOnLoad(route);
   useEffect(() => {
-    const change = () => setRoute(window.location.hash);
-    window.addEventListener("hashchange", change);
-    return () => window.removeEventListener("hashchange", change);
+    const change = () => setRoute(currentRoute());
+    const hashChange = () => {
+      const nextRoute = currentRoute();
+      if (nextRoute === "/") {
+        window.history.replaceState(
+          window.history.state,
+          "",
+          window.location.pathname + window.location.search,
+        );
+        window.scrollTo(0, 0);
+      }
+      setRoute(nextRoute);
+    };
+    window.addEventListener("popstate", change);
+    window.addEventListener("tecnicoya:navigate", change);
+    window.addEventListener("hashchange", hashChange);
+    return () => {
+      window.removeEventListener("popstate", change);
+      window.removeEventListener("tecnicoya:navigate", change);
+      window.removeEventListener("hashchange", hashChange);
+    };
   }, []);
   const account =
-    ["#cuenta", "#plataforma", "#catalogo"].includes(route) ||
-    route.startsWith("#cuenta/");
+    route.startsWith("#cuenta") ||
+    ["#plataforma", "#catalogo"].includes(route);
   if (account)
     return (
       <div className="account-page">
@@ -95,7 +119,7 @@ export default function App() {
     );
   return (
     <PublicSite
-      key={route.startsWith("#nosotros") ? "about" : "home"}
+      key={route === "/nosotros" ? "about" : "home"}
       route={route}
       introCompleted={introCompleted}
     />

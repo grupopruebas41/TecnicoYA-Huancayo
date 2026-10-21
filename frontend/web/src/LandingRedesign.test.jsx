@@ -12,6 +12,7 @@ import App from "./App";
 import { request } from "./features/administration/http";
 vi.mock("./features/administration/http", () => ({ request: vi.fn() }));
 beforeEach(() => {
+  window.history.replaceState(null, "", "/");
   vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
   vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
   vi.stubGlobal("scrollTo", vi.fn());
@@ -59,6 +60,7 @@ afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
   sessionStorage.clear();
+  window.history.replaceState(null, "", "/");
 });
 test("S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape", async () => {
   render(<App />);
@@ -76,7 +78,7 @@ test("S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape", async
   expect(toggle).toHaveAttribute("aria-expanded", "false");
 });
 test("S02-TC-089 rediseño: Nosotros completo y testimonios rotulados", async () => {
-  window.location.hash = "#nosotros";
+  window.history.replaceState(null, "", "/nosotros");
   const { container } = render(<App />);
   await act(async () => {});
   expect(container.querySelectorAll("[data-about]")).toHaveLength(11);
@@ -89,8 +91,64 @@ test("S02-TC-089 rediseño: Nosotros completo y testimonios rotulados", async ()
   ).toBeInTheDocument();
   expect(screen.getByText(/Valores de referencia/)).toBeInTheDocument();
 });
+test("S02-TC-090 navegar a Nosotros usa la ruta propia y empieza arriba", async () => {
+  render(<App />);
+  await act(async () => {});
+  fireEvent.click(
+    within(screen.getByRole("navigation", { name: "Principal" })).getByRole(
+      "link",
+      { name: "Nosotros" },
+    ),
+  );
+  await act(async () => {});
+  expect(window.location.pathname).toBe("/nosotros");
+  expect(window.location.hash).toBe("");
+  expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+  expect(screen.getByRole("heading", { name: /Conectamos talento técnico local/ })).toBeInTheDocument();
+});
+test("S02-TC-090 desde Nosotros el menú vuelve a servicios sin hash", async () => {
+  window.history.replaceState(null, "", "/nosotros");
+  render(<App />);
+  await act(async () => {});
+  fireEvent.click(
+    within(screen.getByRole("navigation", { name: "Principal" })).getByRole(
+      "link",
+      { name: "Servicios" },
+    ),
+  );
+  await act(async () => {});
+  expect(window.location.pathname).toBe("/");
+  expect(window.location.hash).toBe("");
+  expect(screen.getByRole("heading", { name: /¿Qué necesitas resolver/ })).toHaveFocus();
+});
+test("S02-TC-090 submenú de Nosotros desplaza y enfoca su sección sin hash", async () => {
+  window.history.replaceState(null, "", "/nosotros");
+  render(<App />);
+  await act(async () => {});
+  const section = document.getElementById("seguridad");
+  section.scrollIntoView = vi.fn();
+  fireEvent.click(
+    within(screen.getByRole("navigation", { name: "Acerca de TécnicoYa" })).getByRole(
+      "link",
+      { name: "Tu seguridad" },
+    ),
+  );
+  expect(section.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
+  expect(section.querySelector("h2")).toHaveFocus();
+  expect(window.location.hash).toBe("");
+});
+test("S02-TC-091 abrir un hash de sección antiguo limpia la URL y muestra el inicio", async () => {
+  window.history.replaceState(null, "", "/#servicios");
+  render(<App />);
+  await act(async () => {});
+  expect(window.location.pathname).toBe("/");
+  expect(window.location.hash).toBe("");
+  expect(window.history.scrollRestoration).toBe("manual");
+  expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+  expect(screen.getByRole("heading", { name: /El técnico indicado/ })).toBeInTheDocument();
+});
 test("S02-TC-089 rediseño: contacto sin destinatario no simula envío", async () => {
-  window.location.hash = "#nosotros";
+  window.history.replaceState(null, "", "/nosotros");
   render(<App />);
   await act(async () => {});
   fireEvent.change(screen.getByLabelText("Tu mensaje"), {
@@ -191,6 +249,7 @@ test("S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su b�
 });
 test("S02-TC-089 rediseño: fallo de red no redirige ni declara sesión iniciada", async () => {
   const { CatalogSearch } = await import("./landing/Home");
+  window.history.replaceState(null, "", "/");
   request.mockRejectedValue({ status: 0 });
   render(
     <CatalogSearch
@@ -202,7 +261,7 @@ test("S02-TC-089 rediseño: fallo de red no redirige ni declara sesión iniciada
   expect(screen.getByRole("alert")).toHaveTextContent(
     "No pudimos comprobar tu sesión",
   );
-  expect(window.location.hash).toBe("#inicio");
+  expect(window.location.hash).toBe("");
 });
 test("S02-TC-085 rediseño: tarifas solo presentes cuando el catálogo las proporciona", async () => {
   const { CarouselDeck } = await import("./ServiceCarousel");

@@ -150,6 +150,13 @@
 .ty-header a:hover {
   color: var(--ty-accent);
 }
+.ty-header[id],
+.ty-section[id],
+.service-carousel[id],
+.ty-hero[id],
+.ty-about-hero[id] {
+  scroll-margin-top: calc(var(--ty-header-height) + 1rem);
+}
 .ty-button {
   display: inline-flex;
   align-items: center;

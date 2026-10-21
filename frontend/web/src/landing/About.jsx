@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CONTACT } from "./config";
+import { navigateToSection, scrollToSection } from "./navigation";
 import { Zones } from "./Shared";
 import { SpecialtyCards } from "../ServiceCarousel";
 const testimonials = [
@@ -171,7 +172,12 @@ export default function About({ catalog }) {
           ["equipo", "Equipo"],
           ["contacto", "Contacto"],
         ].map(([id, name]) => (
-          <a key={id} href={"#nosotros/" + id} aria-current={activeSection === id ? "location" : undefined}>
+          <a
+            key={id}
+            href={"#nosotros/" + id}
+            aria-current={activeSection === id ? "location" : undefined}
+            onClick={(event) => { event.preventDefault(); scrollToSection(id); }}
+          >
             {name}
           </a>
         ))}
@@ -201,7 +207,7 @@ export default function About({ catalog }) {
             ]),
           )}
           onSelect={() => {
-            window.location.hash = "#servicios";
+            navigateToSection("servicios");
           }}
         />
       </div>

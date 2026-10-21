@@ -33,6 +33,18 @@ test("S02-TC-090 navegar a una sección desplaza con suavidad y no conserva el h
   section.remove();
 });
 
+test("S02-TC-090 movimiento reducido usa desplazamiento inmediato", () => {
+  const section = document.createElement("section");
+  section.id = "preguntas";
+  document.body.append(section);
+  vi.stubGlobal("matchMedia", () => ({ matches: true }));
+
+  scrollToSection("preguntas");
+
+  expect(section.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
+  section.remove();
+});
+
 test("S02-TC-091 al montar limpia hashes de sección y vuelve al inicio en modo manual", () => {
   function Harness() {
     useScrollToTopOnLoad("/");

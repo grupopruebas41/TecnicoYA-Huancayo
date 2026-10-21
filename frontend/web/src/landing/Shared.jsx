@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CONTACT, setAuthIntent } from "./config";
+import { navigateToPath, navigateToSection, scrollToSection } from "./navigation";
 export function AuthLink({
   children,
   role = "client",
@@ -68,6 +69,12 @@ export function Header() {
         className="ty-brand"
         href="#inicio"
         aria-label="TécnicoYa Huancayo, inicio"
+        onClick={(event) => {
+          event.preventDefault();
+          if (window.location.pathname.replace(/\/$/, "") === "/nosotros")
+            navigateToPath("/");
+          else scrollToSection("inicio");
+        }}
       >
         <span className="ty-monogram">t</span>
         <span>
@@ -94,7 +101,15 @@ export function Header() {
         onClick={() => setOpen(false)}
       >
         {links.map(([id, name]) => (
-          <a key={id} href={"#" + id}>
+          <a
+            key={id}
+            href={id === "nosotros" ? "/nosotros" : "#" + id}
+            onClick={(event) => {
+              event.preventDefault();
+              if (id === "nosotros") navigateToPath("/nosotros");
+              else navigateToSection(id);
+            }}
+          >
             {name}
           </a>
         ))}
@@ -132,23 +147,23 @@ export function Footer() {
   return (
     <footer id="pie" data-landing="Footer" className="ty-footer">
       <div>
-        <a href="#inicio" className="ty-brand">
+        <a href="#inicio" className="ty-brand" onClick={(event) => { event.preventDefault(); navigateToSection("inicio"); }}>
           TécnicoYa
         </a>
         <p>Talento local. Soluciones cerca.</p>
         <small>TécnicoYa · Huancayo 2026</small>
       </div>
       <nav aria-label="Enlaces del pie">
-        <a href="#servicios">Servicios</a>
-        <a href="#nosotros">Nosotros</a>
-        <a href="#preguntas">Preguntas frecuentes</a>
-        <a href="#encabezado">Volver arriba ↑</a>
+        <a href="#servicios" onClick={(event) => { event.preventDefault(); navigateToSection("servicios"); }}>Servicios</a>
+        <a href="/nosotros" onClick={(event) => { event.preventDefault(); navigateToPath("/nosotros"); }}>Nosotros</a>
+        <a href="#preguntas" onClick={(event) => { event.preventDefault(); navigateToSection("preguntas"); }}>Preguntas frecuentes</a>
+        <a href="#encabezado" onClick={(event) => { event.preventDefault(); scrollToSection("encabezado"); }}>Volver arriba ↑</a>
       </nav>
       <div>
         <strong>Contacto de ejemplo · por configurar</strong>
         <p>WhatsApp: {CONTACT.whatsapp}</p>
         <p>Correo: {CONTACT.email}</p>
-        <a href="#nosotros/contacto">Ver contacto</a>
+        <a href="/nosotros" onClick={(event) => { event.preventDefault(); navigateToPath("/nosotros"); }}>Ver contacto</a>
       </div>
       <div className="ty-legal">
         <details>

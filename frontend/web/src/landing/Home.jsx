@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { request } from "../features/administration/http";
 import { rememberSearch, setAuthIntent } from "./config";
+import { navigateToPath, navigateToSection } from "./navigation";
 import { useCount } from "./hooks";
 import { AuthLink, FinalCTA, Zones } from "./Shared";
 import ServiceCarousel from "../ServiceCarousel";
@@ -139,7 +140,11 @@ export function Hero() {
           <span>Cuéntanos la falla y encuentra a quien puede resolverla.</span>
         </p>
         <div className="ty-actions">
-          <a className="ty-button" href="#servicios">
+          <a
+            className="ty-button"
+            href="#servicios"
+            onClick={(event) => { event.preventDefault(); navigateToSection("servicios"); }}
+          >
             Encontrar un técnico ↗
           </a>
           <AuthLink className="ty-button ty-outline">Crear mi cuenta</AuthLink>
@@ -241,7 +246,7 @@ export default function Home({ catalog }) {
           <p>◇ Referencias antes de elegir</p>
           <p>↗ Atención con seguimiento</p>
         </div>
-        <a className="ty-button ty-outline" href="#nosotros">
+        <a className="ty-button ty-outline" href="/nosotros" onClick={(event) => { event.preventDefault(); navigateToPath("/nosotros"); }}>
           Conoce más sobre nosotros →
         </a>
       </section>
