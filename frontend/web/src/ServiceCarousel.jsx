@@ -359,6 +359,7 @@ export default function ServiceCarousel({ catalog }) {
       onFocusCapture={() => { setFocused(true); setPaused(true); }}
       onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) { setFocused(false); setPaused(false); } }}
       onKeyDown={(event) => {
+        if (event.defaultPrevented) return;
         if (event.key === "ArrowRight") { event.preventDefault(); change(1); }
         if (event.key === "ArrowLeft") { event.preventDefault(); change(-1); }
       }}
