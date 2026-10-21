@@ -1099,3 +1099,46 @@
     display: none;
   }
 }
+
+/* Intro recuperada de cced99e: cue del video + overlay .8s ease. */
+.landing-page {
+  min-height: 100svh;
+}
+.ty-fixed-background::after {
+  transition: opacity 0.8s ease;
+}
+.ty-fixed-background[data-phase="intro"]::after {
+  opacity: 0;
+}
+.ty-fixed-background[data-phase="transition"]::after,
+.ty-fixed-background[data-phase="ready"]::after {
+  opacity: 1;
+}
+.ty-intro-content[hidden] {
+  display: none;
+}
+.ty-intro-content > .ty-header {
+  animation: ty-header-enter 0.8s ease both;
+}
+@keyframes ty-header-enter {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+.ty-intro-content .ty-hero-content > :nth-child(1) {
+  animation-delay: 0.8s;
+}
+.ty-intro-content .ty-hero-content > :nth-child(2) {
+  animation-delay: 0.92s;
+}
+.ty-intro-content .ty-hero-content > :nth-child(3) {
+  animation-delay: 1.04s;
+}
+.ty-intro-content .ty-hero-content > :nth-child(4) {
+  animation-delay: 1.16s;
+}

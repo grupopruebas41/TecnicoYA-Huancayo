@@ -105,6 +105,7 @@ test("S02-TC-085 carrusel 2500 ms y pausas", async () => {
   expect(title()).toBe("Segundo");
 });
 test("S02-TC-089 diez secciones de landing en orden", async () => {
+  vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
   window.location.hash = "#inicio";
   const { container } = render(<App />);
   await act(async () => {});

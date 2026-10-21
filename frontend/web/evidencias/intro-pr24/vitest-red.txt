@@ -1,9 +1,10 @@
+Fecha: 2026-10-20 | Base: 49487ea | PR #24
 
 > tecnicoya-web@1.0.0 test
 > vitest run --maxWorkers=2 src/landing/Intro.test.jsx
 
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+ RUN  v5.0.3 [workspace]/frontend/web
 
  ❯ src/landing/Intro.test.jsx (4 tests | 2 failed) 228ms
    × S02-TC-089 intro muestra solo video y después transición y contenido 131ms
@@ -193,4 +194,4 @@ null
    Start at  22:04:12
    Duration  32.76s (environment 66%, setup 17%, import 10%, transform 6%, tests 1%)
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+JUNIT report written to [workspace]/frontend/web/test-results/junit.xml
