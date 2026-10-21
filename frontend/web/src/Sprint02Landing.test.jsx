@@ -83,12 +83,12 @@ test("S02-TC-084 carrusel reducido y teclado", async () => {
   );
   expect(container.querySelector(".current h4")).toHaveTextContent("Segundo");
 });
-test("S02-TC-085 carrusel 2500 ms y pausas", async () => {
+test("S02-TC-085 carrusel 3000 ms y pausas", async () => {
   vi.useFakeTimers();
   const { container } = render(<ServiceCarousel />);
   await act(async () => {});
   const title = () => container.querySelector(".current h4").textContent;
-  act(() => vi.advanceTimersByTime(2499));
+  act(() => vi.advanceTimersByTime(2999));
   expect(title()).toBe("Primero");
   act(() => vi.advanceTimersByTime(1));
   expect(title()).toBe("Segundo");
@@ -219,4 +219,57 @@ test("S02-TC-085 complemento: pausa al pasar el mouse y retoma a 2500 ms", async
   expect(container.querySelector(".current h4")).toHaveTextContent("Primero");
   act(() => vi.advanceTimersByTime(1));
   expect(container.querySelector(".current h4")).toHaveTextContent("Segundo");
+});
+
+test("S02-TC-089 vitrina no muestra formularios de búsqueda", async () => {
+ const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+ expect(container.querySelectorAll("select")).toHaveLength(0);
+ expect(screen.queryByRole("button",{name:/Encontrar técnico/i})).toBeNull();
+});
+test("S02-TC-089 especialidad y subespecialidades vienen del API", async()=>{
+ const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+ expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocument();
+ expect(container.querySelectorAll(".ty-product-card")).toHaveLength(2);
+ expect(screen.getByText("Subespecialidades disponibles")).toBeInTheDocument();
+ expect(container.querySelector(".service-main-photo img")).toHaveAttribute("src","/media/services/subcategorias/computo/hardware.png");
+});
+test("S02-TC-089 mini carrusel rota cada 3 segundos, pausa con hover y permite elegir tarjeta", async()=>{
+ vi.useFakeTimers(); const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+ const stage=container.querySelector(".ty-product-stage");
+ expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Primero");
+ act(()=>vi.advanceTimersByTime(3000));
+ expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Segundo");
+ fireEvent.mouseEnter(stage); act(()=>vi.advanceTimersByTime(6000));
+ expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Segundo");
+ fireEvent.mouseLeave(stage);
+ const side=stage.querySelector(".ty-product-card.is-side"); fireEvent.click(side);
+ expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTextContent(side.querySelector("h3").textContent);
+});
+test("S02-TC-089 botones y chips cambian de especialidad", async()=>{
+ request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"},{id:2,name:"Electricidad"}]:path.startsWith("/catalog/subcategories")?[{id:3,specialty_id:2,name:"Tableros"}]:[]}));
+ render(<ServiceCarousel/>); await act(async()=>{});
+ fireEvent.click(screen.getByRole("button",{name:"Siguiente especialidad"}));
+ expect(screen.getByRole("heading",{name:"Electricidad"})).toBeInTheDocument();
+ fireEvent.click(screen.getByRole("button",{name:"Cómputo",pressed:false}));
+ expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocument();
+});
+test("S02-TC-089 reduced motion detiene rotación automática",async()=>{
+ vi.useFakeTimers();vi.stubGlobal("matchMedia",()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ act(()=>vi.advanceTimersByTime(30000));
+ expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Primero");
+});
+test("S02-TC-089 carga error único con un mensaje y un reintento",async()=>{
+ request.mockRejectedValue(new Error("El servicio no está disponible."));
+ render(<ServiceCarousel/>);await act(async()=>{});
+ expect(screen.getAllByRole("alert")).toHaveLength(1);
+ expect(screen.getAllByText("El servicio no está disponible.")).toHaveLength(1);
+ expect(screen.getAllByRole("button",{name:"Reintentar"})).toHaveLength(1);
+});
+test("S02-TC-089 zonas son enfocables y muestran zona activa",async()=>{
+ const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+ const zones=container.querySelectorAll(".ty-map-zone");
+ expect(zones).toHaveLength(3); zones[1].focus();
+ expect(zones[1]).toHaveAttribute("aria-label","Zona Huancayo");
+ expect(screen.getByRole("status")).toHaveTextContent("Huancayo");
 });
