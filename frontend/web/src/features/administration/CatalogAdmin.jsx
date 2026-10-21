@@ -8,10 +8,16 @@ import {
   ResourceState,
 } from "./Sprint02Common";
 import { validateSubcategory, validateReferenceFee } from "./sprint02Validation";
-function catalogPayload(kind, value) {
+function catalogPayload(kind, value, editing) {
   if (kind === "districts") return { name: value.name };
   if (kind === "specialties") return { name: value.name, description: value.description, image_id: value.image_id };
-  return { ...value, specialty_id: +value.specialty_id, reference_fee: value.reference_fee || null };
+  return {
+    name: value.name,
+    description: value.description,
+    image_id: value.image_id,
+    reference_fee: value.reference_fee || null,
+    ...(!editing ? { specialty_id: +value.specialty_id } : {}),
+  };
 }
 function catalogRows(kind, specialties, districts) {
   if (kind === "districts") return districts;
@@ -42,7 +48,7 @@ function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
       validate={validation}
       onSuccess={onDone}
       onSave={async () => {
-        const payload = catalogPayload(kind, v);
+        const payload = catalogPayload(kind, v, Boolean(item.id));
         await request(
           "/admin/" + kind + (item.id ? "/" + item.id : ""),
           {
@@ -67,12 +73,13 @@ function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
             <>
               <Field label="Especialidad" name="specialty_id" errors={errors}>
                 <select
+                  disabled={Boolean(item.id)}
                   value={v.specialty_id}
                   onChange={(e) => update("specialty_id", e.target.value)}
                 >
                   <option value="">Selecciona</option>
                   {specialties
-                    .filter((s) => s.active)
+                    .filter((s) => s.active || (item.id && s.id === item.specialty_id))
                     .map((s) => (
                       <option key={s.id} value={s.id}>
                         {s.name}

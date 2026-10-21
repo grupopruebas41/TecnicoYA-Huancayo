@@ -1,0 +1,46 @@
+Fecha: 2026-10-19
+Commit: e6b15df
+Comando: node C:/nvm4w/nodejs/node_modules/npm/bin/npm-cli.js --prefix frontend/web test -- src/features/administration/CatalogEdit.test.jsx --maxWorkers=1 --pool=threads
+
+> tecnicoya-web@1.0.0 test
+> vitest run src/features/administration/CatalogEdit.test.jsx --maxWorkers=1 --pool=threads
+
+
+ RUN  v5.0.3 [WORKSPACE]/frontend/web
+
+ ❯ src/features/administration/CatalogEdit.test.jsx (4 tests | 1 failed) 247ms
+   × S02-TC-076 complemento DEF-47: PATCH conserva foto y versión sin enviar specialty_id 101ms
+   ✓ S02-TC-076 complemento DEF-47: creación exige especialidad y la envía en POST 72ms
+   ✓ S02-TC-076 complemento DEF-47: edición de Especialidades envía únicamente campos editables 31ms
+   ✓ S02-TC-076 complemento DEF-47: edición de Distritos envía únicamente campos editables 39ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/administration/CatalogEdit.test.jsx > S02-TC-076 complemento DEF-47: PATCH conserva foto y versión sin enviar specialty_id
+AssertionError: expected { name: 'Redes actualizadas', …(5) } to not have property "specialty_id"
+
+- Expected:
+undefined
+
++ Received:
+1
+
+ ❯ src/features/administration/CatalogEdit.test.jsx:21:22
+     19|  await waitFor(()=>expect(request).toHaveBeenCalledWith('/admin/subcat…
+     20|  const payload=request.mock.calls.find(([path,,method])=>path==='/admi…
+     21|  expect(payload).not.toHaveProperty('specialty_id');
+       |                      ^
+     22|  expect(payload).toEqual({name:'Redes actualizadas',description:'Redes…
+     23|  expect(screen.getByLabelText('Especialidad')).toBeDisabled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  10:25:24
+   Duration  2.88s (environment 68%, setup 11%, tests 9%, import 7%, transform 5%)
+
+JUNIT report written to [WORKSPACE]/frontend/web/test-results/junit.xml
+
+Exit code: 1
