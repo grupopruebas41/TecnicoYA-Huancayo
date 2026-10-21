@@ -76,24 +76,101 @@ test("S02-TC-089 Nosotros: omite la invitación comercial Empieza ahora", () => 
   expect(screen.queryByRole("link", { name: "Soy técnico" })).not.toBeInTheDocument();
 });
 
-test("S02-TC-089 Nosotros: testimonios avanzan cada cinco segundos y paran con hover y foco", () => {
+test("S02-TC-089 Nosotros: testimonios avanzan a los tres segundos y vuelven del tercero al primero", () => {
   vi.useFakeTimers();
   render(<About catalog={catalog} />);
   const section = screen.getByRole("region", { name: "Testimonios" });
-  const deck = section.querySelector(".ty-coverflow");
-  act(() => vi.advanceTimersByTime(5000));
+  act(() => vi.advanceTimersByTime(2999));
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+  act(() => vi.advanceTimersByTime(1));
   expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
-  fireEvent.mouseEnter(deck);
-  act(() => vi.advanceTimersByTime(5000));
-  expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
-  fireEvent.mouseLeave(deck);
+  act(() => vi.advanceTimersByTime(6000));
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+});
+
+test("S02-TC-089 Nosotros: flechas actualizan el testimonio, el contador y los puntos", () => {
+  render(<About catalog={catalog} />);
+  const section = screen.getByRole("region", { name: "Testimonios" });
+  const next = within(section).getByRole("button", { name: "Testimonio siguiente" });
   const previous = within(section).getByRole("button", { name: "Testimonio anterior" });
-  fireEvent.focus(previous);
-  act(() => vi.advanceTimersByTime(5000));
+  fireEvent.click(next);
   expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
-  fireEvent.blur(previous, { relatedTarget: document.body });
-  act(() => vi.advanceTimersByTime(5000));
+  expect(within(section).getByRole("button", { name: "Testimonio 2" })).toHaveAttribute("aria-pressed", "true");
+  fireEvent.click(previous);
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+  fireEvent.click(previous);
   expect(within(section).getByRole("status")).toHaveTextContent("3 de 3");
+});
+
+test("S02-TC-089 Nosotros: Pausar detiene el avance y Reanudar lo activa", () => {
+  vi.useFakeTimers();
+  render(<About catalog={catalog} />);
+  const section = screen.getByRole("region", { name: "Testimonios" });
+  const pause = within(section).getByRole("button", { name: "Pausar rotación automática" });
+  fireEvent.click(pause);
+  expect(pause).toHaveAttribute("aria-pressed", "true");
+  const resume = within(section).getByRole("button", { name: "Reanudar rotación automática" });
+  expect(resume).toHaveTextContent("Reanudar");
+  expect(resume).toHaveAttribute("aria-pressed", "true");
+  act(() => vi.advanceTimersByTime(6000));
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+  fireEvent.click(resume);
+  expect(within(section).getByRole("button", { name: "Pausar rotación automática" })).toHaveAttribute("aria-pressed", "false");
+  act(() => vi.advanceTimersByTime(3000));
+  expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
+});
+
+test("S02-TC-089 Nosotros: un punto selecciona su testimonio y reinicia el tiempo", () => {
+  vi.useFakeTimers();
+  render(<About catalog={catalog} />);
+  const section = screen.getByRole("region", { name: "Testimonios" });
+  act(() => vi.advanceTimersByTime(2500));
+  fireEvent.click(within(section).getByRole("button", { name: "Testimonio 3" }));
+  expect(within(section).getByRole("status")).toHaveTextContent("3 de 3");
+  expect(within(section).getByRole("button", { name: "Testimonio 3" })).toHaveAttribute("aria-pressed", "true");
+  act(() => vi.advanceTimersByTime(2999));
+  expect(within(section).getByRole("status")).toHaveTextContent("3 de 3");
+  act(() => vi.advanceTimersByTime(1));
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+});
+
+test("S02-TC-089 Nosotros: el hover de las tarjetas pausa y al salir vuelve el avance", () => {
+  vi.useFakeTimers();
+  render(<About catalog={catalog} />);
+  const section = screen.getByRole("region", { name: "Testimonios" });
+  const stage = section.querySelector(".ty-coverflow-stage");
+  fireEvent.mouseEnter(stage);
+  act(() => vi.advanceTimersByTime(6000));
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+  fireEvent.mouseLeave(stage);
+  act(() => vi.advanceTimersByTime(3000));
+  expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
+});
+
+test("S02-TC-089 Nosotros: la pestaña oculta pausa el avance y al volver lo reanuda", () => {
+  vi.useFakeTimers();
+  render(<About catalog={catalog} />);
+  const section = screen.getByRole("region", { name: "Testimonios" });
+  const hidden = vi.spyOn(document, "hidden", "get");
+  hidden.mockReturnValue(true);
+  fireEvent(document, new Event("visibilitychange"));
+  act(() => vi.advanceTimersByTime(6000));
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
+  hidden.mockReturnValue(false);
+  fireEvent(document, new Event("visibilitychange"));
+  act(() => vi.advanceTimersByTime(3000));
+  expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
+});
+
+test("S02-TC-089 Nosotros: las flechas del teclado recorren cuando el carrusel tiene foco", () => {
+  render(<About catalog={catalog} />);
+  const section = screen.getByRole("region", { name: "Testimonios" });
+  const deck = section.querySelector(".ty-coverflow");
+  deck.focus();
+  fireEvent.keyDown(deck, { key: "ArrowRight" });
+  expect(within(section).getByRole("status")).toHaveTextContent("2 de 3");
+  fireEvent.keyDown(deck, { key: "ArrowLeft" });
+  expect(within(section).getByRole("status")).toHaveTextContent("1 de 3");
 });
 
 test("S02-TC-089 Nosotros: el carrusel respeta movimiento reducido", () => {
@@ -103,5 +180,8 @@ test("S02-TC-089 Nosotros: el carrusel respeta movimiento reducido", () => {
     removeEventListener: vi.fn(),
   }));
   render(<About catalog={catalog} />);
-  expect(screen.getByRole("button", { name: "Rotación automática desactivada por movimiento reducido" })).toBeDisabled();
+  const resume = screen.getByRole("button", { name: "Reanudar rotación automática" });
+  expect(resume).toHaveTextContent("Reanudar");
+  expect(resume).toBeDisabled();
+  expect(resume).toHaveAttribute("aria-pressed", "true");
 });
