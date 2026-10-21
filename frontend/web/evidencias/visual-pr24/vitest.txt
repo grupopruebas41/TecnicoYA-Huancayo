@@ -1,0 +1,96 @@
+Fecha: 2026-10-20 | Base: ab7c374 | Corrección visual PR #24
+
+> tecnicoya-web@1.0.0 test
+> vitest run --coverage --maxWorkers=2 --reporter=dot
+
+
+ RUN  v5.0.3 [workspace]/frontend/web
+      Coverage enabled with v8
+
+····································································································································································
+
+ Test Files  22 passed (22)
+      Tests  164 passed (164)
+   Start at  13:29:31
+   Duration  27.76s (environment 53%, tests 19%, import 11%, setup 10%, transform 4%, worker 2%)
+
+Environment  jsdom was created 22 times · 24.04s total, 53% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   80.33 |     74.6 |   79.94 |   85.39 |                   
+ src               |   85.41 |    76.47 |   82.75 |   89.15 |                   
+  App.jsx          |     100 |    93.75 |     100 |     100 | 67                
+  ...eCarousel.jsx |   89.41 |    86.66 |   84.21 |   90.66 | ...02-120,162,244 
+  ...xperience.jsx |   78.57 |    55.81 |   71.42 |   85.91 | ...47-48,51,57-58 
+  main.jsx         |       0 |      100 |     100 |       0 | 6                 
+ src/components    |   52.63 |    47.05 |     100 |   47.05 |                   
+  ...irmDialog.jsx |   52.63 |    47.05 |     100 |   47.05 | 18-28             
+ ...administration |   82.93 |    76.77 |    81.2 |   85.87 |                   
+  AccountApp.jsx   |   89.33 |    77.27 |    87.5 |   97.77 | 69                
+  ...entsAdmin.jsx |   86.95 |    63.33 |   88.88 |   88.88 | 14-15,83,128      
+  ...ityEditor.jsx |      75 |       50 |   67.85 |      80 | ...98,170,193-200 
+  Catalog.jsx      |   95.23 |    74.07 |   93.33 |   96.15 | 27                
+  CatalogAdmin.jsx |    91.8 |    86.07 |   85.71 |   91.83 | 71,87-102         
+  ProfileForm.jsx  |   90.16 |    86.84 |     100 |   94.28 | 18,23             
+  RetireButton.jsx |      75 |    55.55 |     100 |   85.71 | 28-30             
+  ...uncements.jsx |     100 |       75 |     100 |     100 | 13                
+  ...cesEditor.jsx |      68 |    41.66 |   68.75 |   76.19 | 50-52,66,93       
+  SessionForm.jsx  |   83.33 |    86.36 |     100 |   96.96 | 37                
+  ...t02Common.jsx |   72.72 |     74.5 |   85.18 |   76.34 | ...74-189,229-230 
+  ...t02Portal.jsx |     100 |       75 |     100 |     100 | 26-27             
+  ...cianPanel.jsx |   61.44 |    65.34 |   60.46 |   63.29 | ...33,241,295-317 
+  ...tionAdmin.jsx |   86.36 |    63.63 |   83.33 |   85.71 | 43,79-80          
+  forms.jsx        |   91.89 |    89.28 |     100 |     100 | 28,37,39,41-42    
+  http.js          |    87.5 |    86.66 |   57.14 |    93.1 | 38-46             
+  ...Validation.js |   89.87 |    85.58 |     100 |   91.66 | ...7,19,28,51,112 
+ ...tures/matching |   85.24 |    78.26 |   76.47 |    87.5 |                   
+  ...icianCard.jsx |      75 |    33.33 |      60 |      75 | 20                
+  ...anProfile.jsx |     100 |     87.5 |     100 |     100 | 26                
+  ...ianSearch.jsx |    82.6 |    76.66 |   71.42 |   85.36 | ...75,103,121-132 
+ ...eatures/offers |   88.32 |    74.45 |   83.67 |   92.17 |                   
+  ...idateCard.jsx |     100 |     90.9 |     100 |     100 | 18                
+  ...idateList.jsx |     100 |    66.66 |     100 |     100 | 8                 
+  ...Countdown.jsx |     100 |    72.72 |      80 |     100 | 6-20,33           
+  OffersInbox.jsx  |   89.47 |    73.68 |   81.48 |   94.04 | ...37,191-192,215 
+  ...tTracking.jsx |   78.84 |    70.27 |      75 |   83.33 | ...8,78-80,93-131 
+  ...ionDialog.jsx |   94.73 |       50 |     100 |     100 | 17-35             
+  offerErrors.jsx  |   85.71 |    91.66 |     100 |   85.71 | 19                
+ ...tures/realtime |   89.09 |    78.84 |   75.86 |   91.83 |                   
+  ...fications.jsx |   94.44 |    61.53 |   85.71 |     100 | 12-29,60-64       
+  Realtime.jsx     |   89.28 |    77.77 |      90 |   88.88 | 19,33-34          
+  connection.js    |   81.25 |    86.66 |      50 |   82.14 | 7-23              
+  eventDedupe.js   |   92.85 |    86.66 |     100 |     100 | 7-8               
+ ...tures/requests |   83.41 |    80.88 |   77.19 |   85.96 |                   
+  ClientPortal.jsx |   73.68 |    91.66 |   55.55 |   72.22 | 35-56,62          
+  ...ncePicker.jsx |   74.69 |    73.58 |   76.47 |      80 | ...,70-77,104-112 
+  MyRequests.jsx   |      88 |    70.83 |      75 |   86.95 | 32,40,61          
+  ...stSummary.jsx |   92.59 |    80.85 |      80 |   94.11 | 61-62,123         
+  ...estWizard.jsx |   88.88 |       92 |   77.77 |   88.88 | 74                
+  WizardFields.jsx |   94.44 |    88.88 |     100 |   94.44 | 43                
+  ...Validation.js |   90.24 |    87.75 |   85.71 |   89.47 | 8,37,46,50        
+  requestsApi.js   |   81.81 |    66.66 |   88.88 |   86.66 | 22-27,80          
+  useWizardFlow.js |   79.67 |    71.69 |   67.85 |   83.63 | ...22-130,148-150 
+  wizardState.js   |   95.23 |    92.85 |     100 |   94.44 | 22                
+ src/landing       |   87.62 |     79.2 |   91.86 |   90.21 |                   
+  About.jsx        |   82.35 |       80 |   95.45 |   82.35 | 37-39,47-54,173   
+  Home.jsx         |   91.17 |    83.33 |     100 |   93.93 | 30-33             
+  Shared.jsx       |    90.9 |    86.53 |   94.44 |    92.3 | 53-54,94          
+  config.js        |   94.44 |      100 |     100 |   94.44 | 27                
+  hooks.js         |   84.72 |       50 |   82.14 |      90 | 25,62-63,86-88    
+ src/scroll        |   45.76 |    29.89 |   54.16 |   55.75 |                   
+  FrameCache.js    |   77.96 |    80.95 |   83.33 |   95.83 | 9                 
+  ...lServices.jsx |   26.62 |     4.47 |   34.48 |   33.78 | ...2-79,92,99-107 
+  timeline.js      |    91.3 |      100 |   85.71 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 80.33% ( 1806/2248 )
+Branches     : 74.6% ( 1234/1654 )
+Functions    : 79.94% ( 550/688 )
+Lines        : 85.39% ( 1573/1842 )
+================================================================================

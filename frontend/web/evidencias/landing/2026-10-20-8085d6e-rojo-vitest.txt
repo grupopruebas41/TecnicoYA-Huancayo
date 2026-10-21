@@ -1,0 +1,459 @@
+Fecha: 2026-10-20
+Commit de pruebas: 8085d6e
+Resultado esperado TDD: 7 fallos en 15 pruebas, antes de implementar.
+
+
+> tecnicoya-web@1.0.0 test
+> vitest run --maxWorkers=2 src/Sprint02Landing.test.jsx
+
+
+ RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ❯ src/Sprint02Landing.test.jsx (15 tests | 7 failed) 350ms
+   ✓ S02-TC-084 carrusel reducido y teclado 91ms
+   × S02-TC-085 carrusel 3000 ms y pausas 16ms
+   ✓ S02-TC-089 diez secciones de landing en orden 60ms
+   ✓ S02-TC-089 complemento RETIRO-01: el enlace antiguo abre la landing sin demo 34ms
+   ✓ S02-TC-084 complemento: especialidades sin subcategorías con foto siguen disponibles 34ms
+   ✓ S02-TC-084 complemento: foto principal pertenece a la especialidad y no a su primer servicio 9ms
+   ✓ S02-TC-085 complemento: catálogo vacío no inventa especialidades 7ms
+   ✓ S02-TC-085 complemento: pausa al pasar el mouse y retoma a 2500 ms 11ms
+   ✓ S02-TC-089 vitrina no muestra formularios de búsqueda 9ms
+   × S02-TC-089 especialidad y subespecialidades vienen del API 13ms
+   × S02-TC-089 mini carrusel rota cada 3 segundos, pausa con hover y permite elegir tarjeta 4ms
+   × S02-TC-089 botones y chips cambian de especialidad 40ms
+   × S02-TC-089 reduced motion detiene rotación automática 5ms
+   × S02-TC-089 carga error único con un mensaje y un reintento 10ms
+   × S02-TC-089 zonas son enfocables y muestran zona activa 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-085 carrusel 3000 ms y pausas
+AssertionError: expected 'Segundo' to be 'Primero' // Object.is equality
+
+Expected: "Primero"
+Received: "Segundo"
+
+ ❯ src/Sprint02Landing.test.jsx:92:19
+     90|   const title = () => container.querySelector(".current h4").textConte…
+     91|   act(() => vi.advanceTimersByTime(2999));
+     92|   expect(title()).toBe("Primero");
+       |                   ^
+     93|   act(() => vi.advanceTimersByTime(1));
+     94|   expect(title()).toBe("Segundo");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 especialidad y subespecialidades vienen del API
+AssertionError: expected  to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ src/Sprint02Landing.test.jsx:232:57
+    230|  const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+    231|  expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocumen…
+    232|  expect(container.querySelectorAll(".ty-product-card")).toHaveLength(2…
+       |                                                         ^
+    233|  expect(screen.getByText("Subespecialidades disponibles")).toBeInTheDo…
+    234|  expect(container.querySelector(".service-main-photo img")).toHaveAttr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 mini carrusel rota cada 3 segundos, pausa con hover y permite elegir tarjeta
+TypeError: Cannot read properties of null (reading 'querySelector')
+ ❯ src/Sprint02Landing.test.jsx:239:15
+    237|  vi.useFakeTimers(); const {container}=render(<ServiceCarousel/>); awa…
+    238|  const stage=container.querySelector(".ty-product-stage");
+    239|  expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTe…
+       |               ^
+    240|  act(()=>vi.advanceTimersByTime(3000));
+    241|  expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 botones y chips cambian de especialidad
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Siguiente especialidad"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "Especialidades de TécnicoYa":
+  <section
+    aria-label="Especialidades de TécnicoYa"
+    class="service-carousel"
+    data-landing="Especialidades"
+    id="servicios"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Especialidades":
+  <h2 />
+
+  Name "Cómputo":
+  <h3 />
+
+  Name "Electricidad":
+  <h3 />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Seleccionar especialidad":
+  <nav
+    aria-label="Seleccionar especialidad"
+    class="service-tabs"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Cómputo":
+  <button
+    aria-pressed="true"
+    type="button"
+  />
+
+  Name "Electricidad":
+  <button
+    aria-pressed="false"
+    type="button"
+  />
+
+  Name "Explorar Cómputo":
+  <button
+    aria-label="Explorar Cómputo"
+    type="button"
+  />
+
+  Name "Explorar Electricidad":
+  <button
+    aria-label="Explorar Electricidad"
+    type="button"
+  />
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  <article
+    class="ty-specialty-card"
+  />
+
+  Name "":
+  <article
+    class="ty-specialty-card"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  <ul
+    class="ty-subcategory-list"
+  />
+
+  Name "":
+  <ul
+    class="ty-subcategory-list"
+  />
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  <li />
+
+  Name "":
+  <li />
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  <p
+    class="service-empty"
+    role="status"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body
+  style=""
+>
+  <div>
+    <section
+      aria-label="Especialidades de TécnicoYa"
+      class="service-carousel"
+      data-landing="Especialidades"
+      id="servicios"
+    >
+      <h2>
+        Especialidades
+      </h2>
+      <nav
+        aria-label="Seleccionar especialidad"
+        class="service-tabs"
+      >
+        <button
+          aria-pressed="true"
+          type="button"
+        >
+          Cómputo
+        </button>
+        <button
+          aria-pressed="false"
+          type="button"
+        >
+          Electricidad
+        </button>
+      </nav>
+      <div
+        class="ty-specialty-cards"
+      >
+        <article
+          class="ty-specialty-card"
+        >
+          <div
+            class="ty-specialty-photo"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ◇
+            </span>
+          </div>
+          <div
+            class="ty-specialty-copy"
+          >
+            <h3>
+              Cómputo
+            </h3>
+            <small>
+              Imagen de la especialidad no disponible.
+            </small>
+            <p />
+            <button
+              aria-label="Explorar Cómputo"
+              type="button"
+            >
+              Explorar servicios →
+            </button>
+            <ul
+              class="ty-subcategory-list"
+            >
+              <li>
+                Tableros
+              </li>
+            </ul>
+          </div>
+        </article>
+        <article
+          class="ty-specialty-card"
+        >
+          <div
+            class="ty-specialty-photo"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ◇
+            </span>
+          </div>
+          <div
+            class="ty-specialty-copy"
+          >
+            <h3>
+              Electricidad
+            </h3>
+            <small>
+              Imagen de la especialidad no disponible.
+            </small>
+            <p />
+            <button
+              aria-label="Explorar Electricidad"
+              type="button"
+            >
+              Explorar servicios →
+            </button>
+            <ul
+              class="ty-subcategory-list"
+            >
+              <li>
+                Tableros
+              </li>
+            </ul>
+          </div>
+        </article>
+      </div>
+      <p
+        class="service-empty"
+        role="status"
+      >
+        No hay subcategorías con imágenes publicadas para esta especialidad.
+      </p>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Sprint02Landing.test.jsx:251:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 reduced motion detiene rotación automática
+Error: expect(received).toHaveTextContent()
+
+received value must be a Node.
+Received has type:  Null
+Received has value: null
+ ❯ src/Sprint02Landing.test.jsx:260:67
+    258|  const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+    259|  act(()=>vi.advanceTimersByTime(30000));
+    260|  expect(container.querySelector(".ty-product-card.is-center h3")).toHa…
+       |                                                                   ^
+    261| });
+    262| test("S02-TC-089 carga error único con un mensaje y un reintento",asyn…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 carga error único con un mensaje y un reintento
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Reintentar"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "Especialidades de TécnicoYa":
+  <section
+    aria-label="Especialidades de TécnicoYa"
+    class="service-carousel"
+    data-landing="Especialidades"
+    id="servicios"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Especialidades":
+  <h2 />
+
+  --------------------------------------------------
+  alert:
+
+  Name "":
+  <p
+    role="alert"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Reintentar catálogo":
+  <button
+    type="button"
+  />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Seleccionar especialidad":
+  <nav
+    aria-label="Seleccionar especialidad"
+    class="service-tabs"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body
+  style=""
+>
+  <div>
+    <section
+      aria-label="Especialidades de TécnicoYa"
+      class="service-carousel"
+      data-landing="Especialidades"
+      id="servicios"
+    >
+      <h2>
+        Especialidades
+      </h2>
+      <p
+        role="alert"
+      >
+        El servicio no está disponible.
+      </p>
+      <button
+        type="button"
+      >
+        Reintentar catálogo
+      </button>
+      <nav
+        aria-label="Seleccionar especialidad"
+        class="service-tabs"
+      />
+      <div
+        class="ty-specialty-cards"
+      />
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ src/Sprint02Landing.test.jsx:267:16
+    265|  expect(screen.getAllByRole("alert")).toHaveLength(1);
+    266|  expect(screen.getAllByText("El servicio no está disponible.")).toHave…
+    267|  expect(screen.getAllByRole("button",{name:"Reintentar"})).toHaveLengt…
+       |                ^
+    268| });
+    269| test("S02-TC-089 zonas son enfocables y muestran zona activa",async()=…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 zonas son enfocables y muestran zona activa
+AssertionError: expected  to have a length of 3 but got +0
+
+- Expected
++ Received
+
+- 3
++ 0
+
+ ❯ src/Sprint02Landing.test.jsx:272:16
+    270|  const {container}=render(<ServiceCarousel/>); await act(async()=>{});
+    271|  const zones=container.querySelectorAll(".ty-map-zone");
+    272|  expect(zones).toHaveLength(3); zones[1].focus();
+       |                ^
+    273|  expect(zones[1]).toHaveAttribute("aria-label","Zona Huancayo");
+    274|  expect(screen.getByRole("status")).toHaveTextContent("Huancayo");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 8 passed (15)
+   Start at  22:48:10
+   Duration  4.14s (environment 33%, import 32%, transform 18%, tests 9%, setup 7%)
+
+JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml

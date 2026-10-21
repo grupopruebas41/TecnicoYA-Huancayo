@@ -1,0 +1,175 @@
+Fecha: 2026-10-20 | Base: ab7c374 | Corrección visual PR #24
+
+> tecnicoya-web@1.0.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v5.0.3 [workspace]/frontend/web
+
+Error: Uncaught [Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.]
+    at reportException ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\helpers\runtime-script-errors.js:66:24)
+    at innerInvokeEventListeners ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:353:9)
+    at invokeEventListeners ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:286:3)
+    at HTMLUnknownElementImpl._dispatch ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:233:9)
+    at HTMLUnknownElementImpl.dispatchEvent ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:104:17)
+    at HTMLUnknownElement.dispatchEvent ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:241:34)
+    at Object.invokeGuardedCallbackDev ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:4213:16)
+    at invokeGuardedCallback ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:4277:31)
+    at beginWork$1 ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:27490:7)
+    at performUnitOfWork ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:26599:12) Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at createFiberFromTypeAndProps ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:28478:17)
+    at createFiberFromElement ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:28504:15)
+    at reconcileSingleElement ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:13986:23)
+    at reconcileChildFibers ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:14044:35)
+    at reconcileChildren ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:19193:28)
+    at updateHostRoot ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:19912:5)
+    at beginWork ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:21654:14)
+    at HTMLUnknownElement.callCallback ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:350:25)
+stderr | src/LandingRedesign.test.jsx > S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su búsqueda
+Warning: React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check your code at LandingRedesign.test.jsx:168.
+
+Error: Uncaught [Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.]
+    at reportException ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\helpers\runtime-script-errors.js:66:24)
+    at innerInvokeEventListeners ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:353:9)
+    at invokeEventListeners ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:286:3)
+    at HTMLUnknownElementImpl._dispatch ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:233:9)
+    at HTMLUnknownElementImpl.dispatchEvent ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:104:17)
+    at HTMLUnknownElement.dispatchEvent ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:241:34)
+    at Object.invokeGuardedCallbackDev ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:4213:16)
+    at invokeGuardedCallback ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:4277:31)
+    at beginWork$1 ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:27490:7)
+    at performUnitOfWork ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:26599:12) Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at createFiberFromTypeAndProps ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:28478:17)
+    at createFiberFromElement ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:28504:15)
+    at reconcileSingleElement ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:13986:23)
+    at reconcileChildFibers ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:14044:35)
+    at reconcileChildren ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:19193:28)
+    at updateHostRoot ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:19912:5)
+    at beginWork ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:21654:14)
+    at HTMLUnknownElement.callCallback ([workspace]\frontend\web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners ([workspace]\frontend\web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:350:25)
+stderr | src/LandingRedesign.test.jsx > S02-TC-089 rediseño: fallo de red no redirige ni declara sesión iniciada
+Warning: React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check your code at LandingRedesign.test.jsx:202.
+
+····································x························xx·x··xx·······························································································
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/LandingRedesign.test.jsx > S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su búsqueda
+ FAIL  src/LandingRedesign.test.jsx > S02-TC-089 rediseño: fallo de red no redirige ni declara sesión iniciada
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom.development.js:28478:17
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom.development.js:28504:15
+ ❯ reconcileSingleElement node_modules/react-dom/cjs/react-dom.development.js:13986:23
+ ❯ reconcileChildFibers node_modules/react-dom/cjs/react-dom.development.js:14044:35
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom.development.js:19193:28
+ ❯ updateHostRoot node_modules/react-dom/cjs/react-dom.development.js:19912:5
+ ❯ beginWork node_modules/react-dom/cjs/react-dom.development.js:21654:14
+ ❯ beginWork$1 node_modules/react-dom/cjs/react-dom.development.js:27465:14
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom.development.js:26599:12
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom.development.js:26505:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/LandingRedesign.test.jsx > S02-TC-089 hero centrado sin buscador, con cuatro líneas y accesos
+Error: expect(element).toHaveClass("ty-hero-centered")
+
+Expected the element to have class:
+  ty-hero-centered
+Received:
+  ty-hero
+ ❯ src/LandingRedesign.test.jsx:229:16
+    227|   await act(async () => {});
+    228|   const hero = container.querySelector("#inicio");
+    229|   expect(hero).toHaveClass("ty-hero-centered");
+       |                ^
+    230|   expect(within(hero).getByText("Para tu hogar. Para tu negocio. Para …
+    231|   expect([...hero.querySelectorAll("h1 span")].map(x => x.textContent)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/LandingRedesign.test.jsx > S02-TC-089 cabecera con cinco enlaces y único acceso de sesión fuera del menú
+AssertionError: expected [ 'Servicios', 'Cómo funciona', …(5) ] to deeply equal [ 'Servicios', 'Cómo funciona', …(3) ]
+
+- Expected
++ Received
+
+@@ -2,6 +2,8 @@
+    "Servicios",
+    "Cómo funciona",
+    "Para técnicos",
+    "Nosotros",
+    "Preguntas",
++   "Iniciar sesión",
++   "Crear cuenta",
+  ]
+
+ ❯ src/LandingRedesign.test.jsx:245:69
+    243|   const header = screen.getByRole("banner");
+    244|   const menu = within(header).getByRole("navigation", { name: "Princip…
+    245|   expect(within(menu).getAllByRole("link").map(x => x.textContent)).to…
+       |                                                                     ^
+    246|   const login = within(header).getByRole("link", { name: "Iniciar sesi…
+    247|   expect(menu.contains(login)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/LandingRedesign.test.jsx > S02-TC-089 imagen decorativa fija detrás de la página sin vídeo
+Error: expect(received).toHaveStyle()
+
+received value must be an HTMLElement or an SVGElement.
+Received has type:  Null
+Received has value: null
+ ❯ src/LandingRedesign.test.jsx:255:22
+    253|   await act(async () => {});
+    254|   const background = container.querySelector(".ty-fixed-background");
+    255|   expect(background).toHaveStyle({ position: "fixed", zIndex: "-1" });
+       |                      ^
+    256|   expect(background.querySelector("img")).toHaveAttribute("alt", "");
+    257|   expect(background.querySelector("img")).toHaveAttribute("src", "/med…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/Sprint02Landing.test.jsx > S02-TC-089 diez secciones de landing en orden
+AssertionError: expected [ '#servicios', '#proceso', …(5) ] to deeply equal [ '#servicios', '#proceso', …(3) ]
+
+- Expected
++ Received
+
+@@ -2,6 +2,8 @@
+    "#servicios",
+    "#proceso",
+    "#tecnicos",
+    "#nosotros",
+    "#preguntas",
++   "#cuenta",
++   "#cuenta",
+  ]
+
+ ❯ src/Sprint02Landing.test.jsx:124:90
+    122|     "Footer",
+    123|   ]);
+    124|   expect([...container.querySelectorAll("#principal a")].map(a=>a.getA…
+       |                                                                                          ^
+    125|   expect(
+    126|     screen.getByRole("link", { name: /Conoce más sobre nosotros/ }),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  2 failed | 20 passed (22)
+      Tests  6 failed | 158 passed (164)
+   Start at  13:22:07
+   Duration  41.98s (environment 59%, setup 21%, import 8%, tests 8%, transform 4%)
+
+Environment  jsdom was created 22 times · 160.84s total, 59% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+

@@ -1,0 +1,18 @@
+Fecha: 2026-10-20
+Commit probado: 0e8d6fb
+Comando: npm run build
+
+> tecnicoya-web@1.0.0 build
+> vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 79 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.07 kB │ gzip:   0.65 kB
+dist/assets/index-CA14mPs5.css   63.77 kB │ gzip:  13.94 kB
+dist/assets/index-DHYwjlWx.js   360.68 kB │ gzip: 106.53 kB
+
+✓ built in 2.09s
+EXIT_CODE=0

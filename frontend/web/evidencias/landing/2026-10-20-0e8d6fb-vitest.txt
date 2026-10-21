@@ -1,0 +1,63 @@
+Fecha: 2026-10-20
+Commit probado: 0e8d6fb
+Comando: npm run test
+
+> tecnicoya-web@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 1441ms
+   ✓ S01-TC-016 [TC-005] complemento unitario: portal client desde identidad del servidor 603ms
+   ✓ S01-TC-076 complemento unitario: login consulta /me y logout incierto reconcilia sin falso éxito 328ms
+ ✓ src/features/offers/sprint04Flows.test.jsx (11 tests) 1339ms
+   ✓ S04-TC-109 complemento: un 409 definitivo no reutiliza la clave aunque la versión recuperada no cambie 313ms
+ ✓ src/features/requests/sprint03.test.jsx (13 tests) 1209ms
+   ✓ S03-TC-070 cambiar de rubro limpia subcategoría y catálogo 833ms
+ ✓ src/features/requests/requestFlows.test.jsx (13 tests) 2468ms
+   ✓ S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio 1065ms
+ ✓ src/Sprint02Landing.test.jsx (17 tests) 2238ms
+   ✓ S02-TC-084 carrusel reducido y teclado 424ms
+   ✓ S02-TC-089 diez secciones de landing en orden 473ms
+ ✓ src/LandingRedesign.test.jsx (13 tests) 2711ms
+   ✓ S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape 682ms
+   ✓ S02-TC-089 rediseño: Nosotros completo y testimonios rotulados 460ms
+   ✓ S02-TC-089 rediseño: contacto sin destinatario no simula envío 355ms
+ ✓ src/features/administration/sprint02Panels.test.jsx (8 tests) 3434ms
+   ✓ S02-TC-076 complemento: catálogo guarda y cambia estado con versión 1120ms
+   ✓ S02-TC-078 complemento: comunicado borrador publicación duplicación y retiro 604ms
+   ✓ S02-TC-081 complemento: técnico guarda bio tarifa disponibilidad y pausa 448ms
+   ✓ S02-TC-079 complemento: portafolio cancela y retira trabajo 651ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 612ms
+   ✓ S01-TC-083 429 en español sin éxito y botón habilitado nuevamente 370ms
+ ✓ src/features/offers/sprint04.test.jsx (14 tests) 515ms
+ ✓ src/landing/Intro.test.jsx (4 tests) 833ms
+   ✓ S02-TC-089 intro muestra solo video y después transición y contenido 494ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 711ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 371ms
+   ✓ S01-TC-085 [TC-012] error, reintento real y subcategorías desde API 330ms
+ ✓ src/features/administration/accessibility.test.jsx (6 tests) 489ms
+ ✓ src/features/administration/sprint02.test.jsx (12 tests) 388ms
+ ✓ src/VideoExperience.test.jsx (4 tests) 313ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 294ms
+ ✓ src/features/offers/channelIdentity.test.jsx (2 tests) 217ms
+ ✓ src/landing/HeroBackground.test.jsx (6 tests) 198ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 111ms
+ ✓ src/features/realtime/Realtime.test.jsx (1 test) 67ms
+ ✓ src/features/administration/http.test.js (4 tests) 38ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 9ms
+ ✓ src/features/administration/sprint025.test.js (2 tests) 10ms
+ ✓ src/features/administration/labels.test.js (9 tests) 4ms
+
+ Test Files  24 passed (24)
+      Tests  183 passed (183)
+   Start at  23:03:24
+   Duration  12.68s (environment 41%, tests 27%, transform 13%, import 10%, setup 9%)
+
+Environment  jsdom was created 24 times · 30.65s total, 41% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+EXIT_CODE=0

@@ -1,0 +1,65 @@
+Fecha: 2026-10-20 | Base: ab7c374 | Corrección visual PR #24
+
+> tecnicoya-web@1.0.0 test
+> vitest run --coverage --reporter=dot
+
+
+ RUN  v5.0.3 [workspace]/frontend/web
+      Coverage enabled with v8
+
+stderr | src/LandingRedesign.test.jsx > S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape
+Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at img
+    at div
+    at div
+    at PublicSite ([workspace]/frontend/web/src/App.jsx:25:23)
+    at App ([workspace]/frontend/web/src/App.jsx:104:62)
+
+stderr | src/Sprint02Landing.test.jsx > S02-TC-089 diez secciones de landing en orden
+Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at img
+    at div
+    at div
+    at PublicSite ([workspace]/frontend/web/src/App.jsx:25:23)
+    at App ([workspace]/frontend/web/src/App.jsx:104:62)
+
+·························x·x········································································································································
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/offers/sprint04Flows.test.jsx > S04-TC-107 complemento: pendiente muestra hora Lima y alternativa requiere autorización
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/features/offers/sprint04Flows.test.jsx:170:1
+    168|   ).not.toBeInTheDocument();
+    169| });
+    170| test("S04-TC-107 complemento: pendiente muestra hora Lima y alternativ…
+       | ^
+    171|   setupTracking("pending_availability");
+    172|   const { unmount } = render(<RequestTracking requestId={31} />);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-075 tarifa referencial y ausencia de cobro
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/features/requests/sprint03.test.jsx:140:1
+    138|   expect(state).toEqual(base);
+    139| });
+    140| test("S03-TC-075 tarifa referencial y ausencia de cobro", () => {
+       | ^
+    141|   const { rerender } = render(<RequestSummary record={doc} />);
+    142|   expect(screen.getByText(/Referencial S/)).toHaveTextContent("80");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 20 passed (22)
+      Tests  2 failed | 162 passed (164)
+   Start at  13:27:15
+   Duration  38.54s (environment 34%, tests 21%, setup 15%, transform 15%, import 14%, worker 1%)
+
+Environment  jsdom was created 22 times · 76.05s total, 34% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+

@@ -83,11 +83,15 @@ export default function VideoExperience({children, revealAt}) {
   // This releases video decoding while the image sequence takes over below it.
   useEffect(() => {
     if (!revealed) return;
-    const hero = document.getElementById('inicio');
-    if (hero && observerRef.current) {
-      observerRef.current.disconnect();
-      observerRef.current.observe(hero);
-    }
+    const trackHero = () => {
+      const hero = document.getElementById('inicio');
+      observerRef.current?.disconnect();
+      if (hero) observerRef.current?.observe(hero);
+      else videoRef.current?.pause();
+    };
+    trackHero();
+    window.addEventListener('tecnicoya:hero-change', trackHero);
+    return () => window.removeEventListener('tecnicoya:hero-change', trackHero);
   }, [revealed]);
 
   return <div className={`video-experience ${revealed ? 'content-visible' : 'intro-playing'}`}>

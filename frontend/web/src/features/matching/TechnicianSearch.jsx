@@ -5,8 +5,8 @@ import { useResource, ResourceState } from "../administration/Sprint02Common";
 import { searchQuery, changeFilters } from "./searchQuery";
 import TechnicianCard from "./TechnicianCard";
 import TechnicianProfile from "./TechnicianProfile";
-export default function TechnicianSearch({ onRequest }) {
-  const [filters, setFilters] = useState({ page: 1 }),
+export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
+  const [filters, setFilters] = useState({ ...initialFilters, page: 1 }),
     [result, setResult] = useState(null),
     [error, setError] = useState(""),
     [selected, setSelected] = useState(null),

@@ -3,9 +3,11 @@ import RequestWizard from "./RequestWizard";
 import MyRequests from "./MyRequests";
 import TechnicianSearch from "../matching/TechnicianSearch";
 import "./requests.css";
+import {consumeSearch} from "../../landing/config";
 export default function ClientPortal() {
+  const [searchIntent] = useState(consumeSearch);
   const [workBusy, setWorkBusy] = useState(false);
-  const [view, setView] = useState("list"),
+  const [view, setView] = useState(searchIntent ? "search" : "list"),
     [draft, setDraft] = useState(null),
     [target, setTarget] = useState(null),
     [instance, setInstance] = useState(0);
@@ -57,7 +59,7 @@ export default function ClientPortal() {
       )}
       {view === "list" && <MyRequests onContinue={(record) => begin(record)} />}
       {view === "search" && (
-        <TechnicianSearch onRequest={(technician) => begin(null, technician)} />
+        <TechnicianSearch initialFilters={searchIntent || {}} onRequest={(technician) => begin(null, technician)} />
       )}
     </div>
   );
