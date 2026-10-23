@@ -160,23 +160,20 @@ test("S02-TC-089 rediseño: contacto sin destinatario no simula envío", async (
   );
   expect(screen.queryByText(/mensaje enviado/i)).not.toBeInTheDocument();
 });
-test("S02-TC-089 rediseño: cifras reales completas con movimiento reducido", async () => {
+test("S02-TC-089 rediseño: sección de especialidades no repite cifras de catálogo", async () => {
   render(<App />);
   await act(async () => {});
-  expect(screen.getByLabelText("Especialidades activas")).toHaveTextContent(
-    "1",
-  );
-  expect(screen.getByLabelText("Subcategorías activas")).toHaveTextContent("2");
-  expect(screen.getByLabelText("Distritos activos")).toHaveTextContent("2");
+  expect(document.querySelector("#servicios .ty-stats")).toBeNull();
+  expect(screen.queryByLabelText("Especialidades activas")).not.toBeInTheDocument();
+  expect(screen.queryByLabelText("Subcategorías activas")).not.toBeInTheDocument();
+  expect(screen.queryByLabelText("Distritos activos")).not.toBeInTheDocument();
   expect(screen.queryByText(/técnicos registrados/i)).not.toBeInTheDocument();
 });
 test("S02-TC-085 rediseño: catálogo vacío expresa cero sin inventar servicios", async () => {
   request.mockResolvedValue({ data: [] });
   render(<App />);
   await act(async () => {});
-  expect(screen.getByLabelText("Especialidades activas")).toHaveTextContent(
-    "0",
-  );
+  expect(document.querySelector("#servicios .ty-stats")).toBeNull();
   expect(
     screen.getByText("No hay especialidades activas disponibles."),
   ).toBeInTheDocument();

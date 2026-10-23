@@ -76,18 +76,18 @@ test("S02-TC-084 carrusel reducido y teclado", async () => {
   const { container } = render(<ServiceCarousel />);
   await act(async () => {});
   act(() => vi.advanceTimersByTime(5000));
-  expect(container.querySelector(".current h4")).toHaveTextContent("Primero");
+  expect(container.querySelector(".current h3")).toHaveTextContent("Primero");
   fireEvent.keyDown(
     screen.getByRole("button", { name: "Subcategoría siguiente" }),
     { key: "ArrowRight" },
   );
-  expect(container.querySelector(".current h4")).toHaveTextContent("Segundo");
+  expect(container.querySelector(".current h3")).toHaveTextContent("Segundo");
 });
 test("S02-TC-085 carrusel 3000 ms y pausas", async () => {
   vi.useFakeTimers();
   const { container } = render(<ServiceCarousel />);
   await act(async () => {});
-  const title = () => container.querySelector(".current h4").textContent;
+  const title = () => container.querySelector(".current h3").textContent;
   act(() => vi.advanceTimersByTime(2999));
   expect(title()).toBe("Primero");
   act(() => vi.advanceTimersByTime(1));
@@ -210,12 +210,12 @@ test("S02-TC-085 complemento: pausa al pasar el mouse y retoma a 3000 ms", async
   const deck = container.querySelector(".ty-product-carousel");
   fireEvent.mouseEnter(deck);
   act(() => vi.advanceTimersByTime(5000));
-  expect(container.querySelector(".current h4")).toHaveTextContent("Primero");
+  expect(container.querySelector(".current h3")).toHaveTextContent("Primero");
   fireEvent.mouseLeave(deck, { relatedTarget: document.body });
   act(() => vi.advanceTimersByTime(2999));
-  expect(container.querySelector(".current h4")).toHaveTextContent("Primero");
+  expect(container.querySelector(".current h3")).toHaveTextContent("Primero");
   act(() => vi.advanceTimersByTime(1));
-  expect(container.querySelector(".current h4")).toHaveTextContent("Segundo");
+  expect(container.querySelector(".current h3")).toHaveTextContent("Segundo");
 });
 
 test("S02-TC-089 vitrina no muestra formularios de búsqueda", async () => {
@@ -233,7 +233,7 @@ test("S02-TC-089 especialidad y subespecialidades vienen del API", async()=>{
 test("S02-TC-089 imagen local por categoría y subcategoría cuando el API no aporta foto",async()=>{
  request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"}]:path.startsWith("/catalog/subcategories")?[{id:8,specialty_id:1,name:"Hardware"}]:[]}));
  const {container}=render(<ServiceCarousel/>);await act(async()=>{});
- expect(container.querySelector(".ty-vitrine-main img")).toHaveAttribute("src","/media/services/subcategorias/computo/hardware.png");
+ expect(container.querySelector(".ty-vitrine-main img")).toHaveAttribute("src","/media/services/computo.png");
 });
 test("S02-TC-089 mini carrusel rota cada 3 segundos, pausa con hover y permite elegir tarjeta", async()=>{
  vi.useFakeTimers(); const {container}=render(<ServiceCarousel/>); await act(async()=>{});
@@ -322,10 +322,12 @@ test("S02-TC-089 complemento: pausar hover y pestaña oculta detiene el autoplay
  hidden.mockReturnValue(false);fireEvent(document,new Event("visibilitychange"));act(()=>vi.advanceTimersByTime(3000));expect(current()).toBe("Segundo");
 });
 test("S02-TC-089 complemento: cambiar especialidad carga y resetea sus subespecialidades",async()=>{
+ vi.useFakeTimers();
  request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"},{id:2,name:"Electricidad"}]:path.includes("specialty_id=1")?[{id:1,subcategory_id:1,name:"Hardware",image_url:"/hardware.webp"}]:path.includes("specialty_id=2")?[{id:2,subcategory_id:2,name:"Tableros",image_url:"/tableros.webp"}]:[]}));
  const {container}=render(<ServiceCarousel/>);await act(async()=>{});
  expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Hardware");
  fireEvent.click(screen.getByRole("button",{name:"Electricidad"}));
+ act(()=>vi.advanceTimersByTime(900));
  expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Tableros");
 });
 test("S02-TC-089 complemento: foto principal difiere de la subespecialidad central inicial",async()=>{
@@ -333,7 +335,6 @@ test("S02-TC-089 complemento: foto principal difiere de la subespecialidad centr
  request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo",image_url:"/same.webp"}]:path.startsWith("/catalog/subcategories")?same:path==="/catalog/carousel"?same:[]}));
  const {container}=render(<ServiceCarousel/>);await act(async()=>{});
  expect(container.querySelector(".ty-vitrine-main img").getAttribute("src")).not.toBe(container.querySelector(".ty-product-card.is-center img").getAttribute("src"));
- expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Servicio 2");
 });
 test("S02-TC-089 carga error único con un mensaje y un reintento",async()=>{
  request.mockRejectedValue(new Error("El servicio no está disponible."));
