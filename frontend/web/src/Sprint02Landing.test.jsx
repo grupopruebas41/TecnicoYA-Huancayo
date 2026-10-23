@@ -227,8 +227,8 @@ test("S02-TC-089 especialidad y subespecialidades vienen del API", async()=>{
  const {container}=render(<ServiceCarousel/>); await act(async()=>{});
  expect(screen.getByRole("heading",{name:"Cómputo"})).toBeInTheDocument();
  expect(container.querySelectorAll(".ty-product-card")).toHaveLength(2);
- expect(screen.getByText("Subespecialidades disponibles")).toBeInTheDocument();
- expect(container.querySelector(".service-main-photo img")).toHaveAttribute("src","/uno.png");
+ expect(screen.getByText("SUBESPECIALIDADES")).toBeInTheDocument();
+ expect(container.querySelector(".service-main-photo img")).toHaveAttribute("src","/media/services/computo.png");
 });
 test("S02-TC-089 imagen local por categoría y subcategoría cuando el API no aporta foto",async()=>{
  request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"}]:path.startsWith("/catalog/subcategories")?[{id:8,specialty_id:1,name:"Hardware"}]:[]}));
@@ -271,6 +271,69 @@ test("S02-TC-089 reduced motion detiene rotación automática",async()=>{
  const {container}=render(<ServiceCarousel/>);await act(async()=>{});
  act(()=>vi.advanceTimersByTime(30000));
  expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Primero");
+});
+test("S02-TC-089 complemento: ya no presenta cifras de catálogo bajo el encabezado",async()=>{
+ const {container}=render(<ServiceCarousel catalog={{data:{specialties:[1,2,3],subcategories:Array(30).fill(1),districts:[]}}}/>);
+ await act(async()=>{});
+ expect(container.querySelector(".ty-stats")).toBeNull();
+ expect(screen.queryByText(/especialidades\s*·\s*30 subespecialidades/i)).not.toBeInTheDocument();
+ expect(screen.getByRole("heading",{name:/¿Qué necesitas resolver/})).toBeInTheDocument();
+ expect(screen.getByRole("navigation",{name:"Seleccionar especialidad"})).toBeInTheDocument();
+});
+test("S02-TC-089 complemento: abanico muestra nombre, precio y contador y avanza en bucle cada 3 s",async()=>{
+ vi.useFakeTimers();
+ const ten=Array.from({length:10},(_,i)=>({id:i+1,subcategory_id:i+1,specialty_id:1,name:`Servicio ${i+1}`,image_url:`/servicio-${i+1}.webp`,reference_fee:i===2?125.5:null}));
+ request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"}]:path.startsWith("/catalog/subcategories")?ten:path==="/catalog/carousel"?ten:[]}));
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ const stage=container.querySelector(".ty-product-stage");
+ expect(stage.querySelectorAll(".ty-product-card")).toHaveLength(5);
+ expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Servicio 1");
+ expect(stage.querySelector(".ty-product-card.is-center")).toHaveTextContent("01 / 10");
+ expect(stage.querySelector(".ty-product-card.is-center")).not.toHaveTextContent("Desde S/");
+ fireEvent.click(screen.getByRole("button",{name:"Ver subespecialidad Servicio 3"}));
+ expect(stage.querySelector(".ty-product-card.is-center")).toHaveTextContent("Desde S/ 125.50");
+ fireEvent.click(screen.getByRole("button",{name:"Ver subespecialidad Servicio 1"}));
+ act(()=>vi.advanceTimersByTime(3000));
+ expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Servicio 2");
+ act(()=>vi.advanceTimersByTime(27000));
+ expect(stage.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Servicio 1");
+});
+test("S02-TC-089 complemento: flechas, miniaturas y carta lateral seleccionan el centro",async()=>{
+ const ten=Array.from({length:6},(_,i)=>({id:i+1,subcategory_id:i+1,specialty_id:1,name:`Servicio ${i+1}`,image_url:`/s${i+1}.webp`}));
+ request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"}]:path.startsWith("/catalog/subcategories")?ten:path==="/catalog/carousel"?ten:[]}));
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ const stage=container.querySelector(".ty-product-stage");
+ fireEvent.click(screen.getByRole("button",{name:"Subcategoría siguiente"}));
+ expect(stage.querySelector(".is-center h3")).toHaveTextContent("Servicio 2");
+ fireEvent.click(screen.getByRole("button",{name:"Ver subespecialidad Servicio 5"}));
+ expect(stage.querySelector(".is-center h3")).toHaveTextContent("Servicio 5");
+ const side=stage.querySelector(".ty-product-card.is-side");
+ const sideName=side.querySelector("h3").textContent;fireEvent.click(side);
+ expect(stage.querySelector(".is-center h3")).toHaveTextContent(sideName);
+});
+test("S02-TC-089 complemento: pausar hover y pestaña oculta detiene el autoplay",async()=>{
+ vi.useFakeTimers();
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ const stage=container.querySelector(".ty-product-stage"), current=()=>stage.querySelector(".is-center h3").textContent;
+ fireEvent.mouseEnter(stage);act(()=>vi.advanceTimersByTime(6000));expect(current()).toBe("Primero");
+ fireEvent.mouseLeave(stage);
+ const hidden=vi.spyOn(document,"hidden","get").mockReturnValue(true);
+ fireEvent(document,new Event("visibilitychange"));act(()=>vi.advanceTimersByTime(6000));expect(current()).toBe("Primero");
+ hidden.mockReturnValue(false);fireEvent(document,new Event("visibilitychange"));act(()=>vi.advanceTimersByTime(3000));expect(current()).toBe("Segundo");
+});
+test("S02-TC-089 complemento: cambiar especialidad carga y resetea sus subespecialidades",async()=>{
+ request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo"},{id:2,name:"Electricidad"}]:path.includes("specialty_id=1")?[{id:1,subcategory_id:1,name:"Hardware",image_url:"/hardware.webp"}]:path.includes("specialty_id=2")?[{id:2,subcategory_id:2,name:"Tableros",image_url:"/tableros.webp"}]:[]}));
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Hardware");
+ fireEvent.click(screen.getByRole("button",{name:"Electricidad"}));
+ expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Tableros");
+});
+test("S02-TC-089 complemento: foto principal difiere de la subespecialidad central inicial",async()=>{
+ const same=[{id:1,subcategory_id:1,specialty_id:1,name:"Servicio 1",image_url:"/same.webp"},{id:2,subcategory_id:2,specialty_id:1,name:"Servicio 2",image_url:"/other.webp"}];
+ request.mockImplementation(async(path)=>({data:path==="/catalog/specialties"?[{id:1,name:"Cómputo",image_url:"/same.webp"}]:path.startsWith("/catalog/subcategories")?same:path==="/catalog/carousel"?same:[]}));
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ expect(container.querySelector(".ty-vitrine-main img").getAttribute("src")).not.toBe(container.querySelector(".ty-product-card.is-center img").getAttribute("src"));
+ expect(container.querySelector(".ty-product-card.is-center h3")).toHaveTextContent("Servicio 2");
 });
 test("S02-TC-089 carga error único con un mensaje y un reintento",async()=>{
  request.mockRejectedValue(new Error("El servicio no está disponible."));
