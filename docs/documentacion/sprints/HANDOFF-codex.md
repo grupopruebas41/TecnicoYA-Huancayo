@@ -21,6 +21,17 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-22 · Vitrina de subespecialidades · abanico 3D
+
+- **Rama:** `feature/delgado/landing/vitrina-carrusel`, base `origin/main` actualizado (no fue posible hacer checkout de `main` porque está activo en el worktree principal).
+- **Commits:** `b747eab` test Vitest en rojo; `b06775e` implementación.
+- **Cambios:** se retiraron las cifras de la sección «¿Qué necesitas resolver?» y el carrusel pasó a un abanico 3D con hasta 5 cartas (3 en móvil), miniaturas, flechas, teclado, clic en lateral, arrastre, autoplay de 3 s, pausa por hover/foco/visibilidad, inclinación y brillo en escritorio, cambio escalonado de especialidad, precio referencial opcional y precarga. Se garantiza imagen principal distinta de la subespecialidad activa cuando hay alternativa local/API.
+- **Pruebas:** Vitest 214/214 (27 archivos), `npm run lint` aprobado, `npm run build` aprobado. No Cypress.
+- **Evidencias:** `docs/documentacion/evidencias/landing/2026-10-22-b06775e-{vitest,lint,build}.txt` y `README.md`.
+- **Avance:** `docs/avances/delgado/landing/vitrina-carrusel/avance.md`. Sin cambios de backend ni dependencias.
+- **PR:** [pendiente de apertura]; revisor [PENDIENTE].
+- **Pendientes:** integración y revisión del equipo.
+
 ## 2026-10-19 · DEF-47 · edición de subcategorías
 
 PR #23: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/23. Evidencias 04fbbb9; estado de CI en checks del último push.

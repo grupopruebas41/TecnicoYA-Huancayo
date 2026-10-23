@@ -25,3 +25,16 @@ Fuente: GET reales del backend de desarrollo 127.0.0.1:3000, solo catálogo púb
 Rojo: 3 fallan y 4 pasan (JUnit guardado). Verde final y cobertura en log; build aprobado y audit 0 vulnerabilidades. Logs fb1d945 capturados con implementación sin commit, posteriormente confirmada como dec9aa9. JUnit final y LCOV corresponden a dec9aa9. No Cypress: RAM observada entre 0,75 y 0,94 GiB. No Docker ni Pest local. CI se consulta en el PR.
 
 Revisor: [PENDIENTE].
+
+## Vitrina abanico 3D · 2026-10-22
+
+Rama `feature/delgado/landing/vitrina-carrusel`. Commit de pruebas en rojo `b747eab`; implementación `b06775e`.
+
+- Se quitaron las cifras duplicadas de «¿Qué necesitas resolver?» y las pruebas heredadas se ajustaron para verificar su ausencia.
+- El carrusel usa solo las subespecialidades que devuelve el API para la especialidad seleccionada. Presenta hasta cinco cartas en escritorio y tres en móvil, con miniaturas, flechas, contador, teclado, clic en laterales, arrastre y swipe por eventos Pointer.
+- Autoplay a 3 s; pausa por hover, foco y pestaña oculta; movimiento reducido quita autoplay/tilt/barajado y conserva cambios con fundido. La tarifa solo aparece si el API envía `reference_fee`; la siguiente imagen se precarga.
+- La imagen principal usa `specialty.image_url` solo si no duplica una imagen del carrusel; en caso contrario emplea la imagen local de la especialidad. El índice inicial busca una foto distinta cuando existe.
+- Primer rojo observado en Vitest: 23 pruebas; 5 fallos esperados por ausencia de las cifras eliminadas, kicker, abanico/miniaturas y diferenciación de imagen principal.
+- Resultado verde, captura real de comandos: `2026-10-22-b06775e-vitest.txt` (214/214, 27 archivos), `2026-10-22-b06775e-lint.txt` y `2026-10-22-b06775e-build.txt` (Vite build aprobado).
+- No se instaló nada, no se tocó backend y Cypress no se ejecutó.
+- Revisor: [PENDIENTE].
