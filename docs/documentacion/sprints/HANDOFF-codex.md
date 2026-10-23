@@ -29,8 +29,8 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - **Pruebas:** Vitest 214/214 (27 archivos), `npm run lint` aprobado, `npm run build` aprobado. No Cypress.
 - **Evidencias:** `docs/documentacion/evidencias/landing/2026-10-22-b06775e-{vitest,lint,build}.txt` y `README.md`.
 - **Avance:** `docs/avances/delgado/landing/vitrina-carrusel/avance.md`. Sin cambios de backend ni dependencias.
-- **PR:** [pendiente de apertura]; revisor [PENDIENTE].
-- **Pendientes:** integración y revisión del equipo.
+- **PR:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/25; backend y frontend pendientes de CI. Revisor [PENDIENTE].
+- **Pendientes:** revisión e integración del equipo.
 
 ## 2026-10-19 · DEF-47 · edición de subcategorías
 

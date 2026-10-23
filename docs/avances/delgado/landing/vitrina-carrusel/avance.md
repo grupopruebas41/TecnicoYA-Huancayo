@@ -11,7 +11,8 @@
 - Pruebas: Vitest 214/214 (27 archivos); lint aprobado; build aprobado. Cypress no ejecutado.
 - Seguridad/dependencias: no se tocó backend ni se instalaron dependencias.
 - Revisor: [PENDIENTE].
-- PR: [PENDIENTE].
+- PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/25.
+- CI al abrir PR: backend y frontend pendientes de ejecución.
 
 ## Uso de IA
 
