@@ -80,12 +80,27 @@ export function calculateScrollTarget({
   return Math.max(0, sectionRect.top + scrollY - desiredTop);
 }
 
+// Alturas de layout: no cambian con la animación de entrada de la cabecera ni
+// con el desplazamiento del submenú oculto (transform), a diferencia del rect.
+function layoutHeight(element) {
+  return element?.offsetHeight || visibleRect(element)?.height || 0;
+}
+
+function headerBottomOf(header) {
+  if (!header) return 0;
+  return header.offsetHeight ? header.offsetTop + header.offsetHeight : visibleRect(header)?.bottom || 0;
+}
+
+/** Bordes fijos que tapan el contenido; el submenú cuenta aunque aún esté oculto. */
 function fixedChrome(scope) {
+  const header = document.querySelector(".ty-header");
+  const subnav = scope?.closest(".about-page")
+    ? document.querySelector(".ty-about-navbar")
+    : null;
+  const headerBottom = headerBottomOf(header);
   return {
-    header: document.querySelector(".ty-header"),
-    subnav: scope?.closest(".about-page")
-      ? document.querySelector(".ty-about-navbar")
-      : null,
+    headerRect: headerBottom ? { bottom: headerBottom } : null,
+    subnavRect: subnav ? { bottom: headerBottom + layoutHeight(subnav) } : null,
   };
 }
 
@@ -96,8 +111,8 @@ export function useFixedChromeOffset(deps) {
     const update = () => {
       const header = document.querySelector(".ty-header");
       const subnav = document.querySelector(".ty-about-navbar");
-      const headerBottom = visibleRect(header)?.bottom || 0;
-      const fixedBottom = Math.max(headerBottom, visibleRect(subnav)?.bottom || 0);
+      const headerBottom = headerBottomOf(header);
+      const fixedBottom = headerBottom + layoutHeight(subnav);
       if (headerBottom) root.style.setProperty("--ty-header-bottom", headerBottom + "px");
       if (fixedBottom) root.style.setProperty("--ty-fixed-top", fixedBottom + "px");
     };
@@ -132,7 +147,7 @@ export function scrollToSection(id) {
   if (!section) return false;
 
   cleanupAlignment();
-  const { header, subnav } = fixedChrome(section);
+  const chrome = () => fixedChrome(section);
   // Un grupo marcado con data-frame="center" se encuadra completo (Cómo funciona).
   const frame = section.closest("[data-frame='center']");
   const align = (behavior) => {
@@ -142,8 +157,7 @@ export function scrollToSection(id) {
       ? Math.max(0, window.scrollY + sectionRect.top)
       : calculateScrollTarget({
           sectionRect,
-          headerRect: visibleRect(header),
-          subnavRect: visibleRect(subnav),
+          ...chrome(),
           viewportHeight: window.innerHeight,
           scrollY: window.scrollY,
           mode: frame ? "center" : "top",

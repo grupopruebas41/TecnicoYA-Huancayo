@@ -139,22 +139,57 @@ export function FinalCTA({ about = false }) {
       className="ty-section ty-final"
       data-reveal
     >
-      <div className="ty-final-card">
+      <div className="ty-final-head">
         <span className="ty-eyebrow">UNA SOLUCIÓN MÁS CERCA</span>
         <h2>
           Empieza <em>ahora.</em>
         </h2>
         <p>Tu hogar y tu negocio merecen seguir en marcha.</p>
-        <div className="ty-actions">
-          <AuthLink>Pedir un técnico ↗</AuthLink>
-          <AuthLink role="technician" className="ty-button ty-outline">
-            Soy técnico
-          </AuthLink>
-        </div>
+      </div>
+      <div className="ty-paths">
+        {paths.map((path) => (
+          <article key={path.id} className="ty-path-card" aria-labelledby={path.id}>
+            <img src={path.image} alt="" loading="lazy" />
+            <div className="ty-path-body">
+              <h3 id={path.id}>{path.title}</h3>
+              <ul>
+                {path.points.map((point) => (
+                  <li key={point}>
+                    <span className="ty-icon-dot" aria-hidden="true">✓</span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <AuthLink role={path.role} className={path.className}>
+                {path.action}
+              </AuthLink>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
 }
+const paths = [
+  {
+    id: "camino-cliente",
+    title: "Necesito un técnico",
+    image: "/media/nosotros/ejemplo-bodega.webp",
+    points: ["Describe la falla", "Recibe recomendaciones", "Sigue la atención"],
+    role: "client",
+    action: "Pedir un técnico ↗",
+    className: "ty-button",
+  },
+  {
+    id: "camino-tecnico",
+    title: "Soy técnico",
+    image: "/media/nosotros/portada.webp",
+    points: ["Clientes de tu zona", "Tú pones tu tarifa", "Construye reputación"],
+    role: "technician",
+    action: "Registrarme como técnico",
+    className: "ty-button ty-outline-gold",
+  },
+];
 const legalTexts = {
   terms: [
     "Términos",

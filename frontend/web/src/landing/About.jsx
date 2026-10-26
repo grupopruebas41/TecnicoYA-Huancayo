@@ -144,7 +144,10 @@ export default function About({ catalog }) {
     const sectionIds = ["quienes", "verificacion", "seguridad", "testimonios", "equipo", "contacto"];
     const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
     const root = document.querySelector(".about-page");
-    if (typeof IntersectionObserver === "undefined") return undefined;
+    if (typeof IntersectionObserver === "undefined") {
+      setFloating(true);
+      return undefined;
+    }
     const setSectionFromNavigation = (event) => {
       if (sectionIds.includes(event.detail?.id)) setActiveSection(event.detail.id);
     };
@@ -160,6 +163,8 @@ export default function About({ catalog }) {
       if (centered) setActiveSection(centered.id);
     };
     window.addEventListener("tecnicoya:section-active", setSectionFromNavigation);
+    // Al terminar un desplazamiento suave, el último cruce del observer puede ser de otra sección.
+    window.addEventListener("scrollend", updateSectionAtViewportCenter);
     const activeObserver = new IntersectionObserver(
       () => updateSectionAtViewportCenter(),
       { rootMargin: "-18% 0px -62% 0px", threshold: [0, 0.15, 0.4] },
@@ -170,11 +175,18 @@ export default function About({ catalog }) {
       ? new IntersectionObserver(([entry]) => {
           setFloating(!entry.isIntersecting);
           root?.classList.toggle("about-has-scrolled", !entry.isIntersecting);
-        }, { threshold: 0.15 })
+        }, {
+          // La portada cuenta como visible solo si asoma bajo cabecera + submenú;
+          // +2 px porque un borde tangente también cuenta como intersección.
+          rootMargin: `-${(document.querySelector(".ty-header")?.offsetHeight || 0) +
+            (document.querySelector(".ty-about-navbar")?.offsetHeight || 0) + 2}px 0px 0px 0px`,
+          threshold: 0,
+        })
       : null;
     if (hero) heroObserver.observe(hero);
     return () => {
       window.removeEventListener("tecnicoya:section-active", setSectionFromNavigation);
+      window.removeEventListener("scrollend", updateSectionAtViewportCenter);
       activeObserver.disconnect();
       heroObserver?.disconnect();
       root?.classList.remove("about-has-scrolled");
@@ -182,7 +194,12 @@ export default function About({ catalog }) {
   }, []);
   return (
     <>
-      <div className={"ty-about-navbar " + (floating ? "is-floating" : "is-over-hero")}>
+      {/* Oculto sobre la portada: sin foco ni lectura hasta que la portada sale de la vista. */}
+      <div
+        className={"ty-about-navbar " + (floating ? "is-visible" : "is-hidden")}
+        aria-hidden={floating ? undefined : "true"}
+        inert={floating ? undefined : ""}
+      >
       <nav className="ty-about-nav" aria-label="Acerca de TécnicoYa">
         {[
           ["quienes", "Quiénes somos"],
