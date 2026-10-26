@@ -1307,6 +1307,7 @@
 .ty-avatar { width: 64px; height: 64px; font-size: 1.35rem; margin-bottom: 0.8rem; }
 .about-page #equipo h3 { font-size: 1.2rem; }
 .about-page #equipo p { font-size: 0.95rem; }
+.about-page #testimonios { padding-block: clamp(36px, 6vh, 48px); }
 .about-page #contacto { margin-bottom: clamp(220px, 40vh, 360px); }
 .landing-page:not(.about-page) #preguntas { margin-bottom: clamp(220px, 40vh, 360px); }
 
