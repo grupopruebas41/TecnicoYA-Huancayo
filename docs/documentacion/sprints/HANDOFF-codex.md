@@ -29,7 +29,8 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 - **Cambios:** estilos aislados bajo `.landing-page .ty-product-stage`, altura 380 px (escritorio) / 360 px (móvil), 5 cartas en escritorio y 3 en móvil, prioridad `loading="eager"` para centro y vecinas, kicker de 1 rem y título activo serif itálico encima del abanico con fundido. El encabezado visual se cambió de `header` a `div` para evitar landmark `banner` duplicado.
 - **Pruebas:** `npm test` 216/216 (27 archivos); `npm run lint` aprobado; `npm run build` aprobado (80 módulos). Cypress no ejecutado.
 - **Visual:** Playwright con Chromium instalado, API `:3000` (health HTTP 200): 1366/1920 muestran 5 cartas, 390 muestra 3; imágenes cargadas, ancho sin desbordamiento, escenario 380/360 px y centro eager con la misma URL que miniatura activa. Capturas y salidas en `docs/documentacion/evidencias/landing/2026-10-25-5be135d-*`.
-- **Pendiente:** publicar commits de esta rama y verificar CI del PR #25; revisión humana [PENDIENTE].
+- **CI:** frontend, backend y conteo de pruebas aprobados en la ejecución https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/40251523217. Revisión humana [PENDIENTE].
+- **Pendiente:** continuar cambios futuros en la rama del PR #25; no se ejecutó Cypress.
 - **Sin cambios:** `backend/`, dependencias y pruebas Cypress.
 
 ## 2026-10-22 · Vitrina de subespecialidades · abanico 3D
