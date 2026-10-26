@@ -86,8 +86,9 @@ test("S02-TC-089 rediseño: Nosotros completo y testimonios rotulados", async ()
     screen.getByRole("heading", { name: "Testimonios" }),
   ).toBeInTheDocument();
   expect(screen.getByText("Historias ilustrativas con personajes ficticios.")).toBeInTheDocument();
+  // El pie también lo repite en su barra inferior; aquí se comprueba la sección Equipo.
   expect(
-    screen.getByText(/Proyecto académico – Universidad Continental/),
+    within(document.getElementById("equipo")).getByText(/Proyecto académico – Universidad Continental/),
   ).toBeInTheDocument();
   expect(screen.getByText(/Valores de referencia/)).toBeInTheDocument();
 });

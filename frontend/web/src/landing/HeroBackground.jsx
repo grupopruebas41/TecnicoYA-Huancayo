@@ -11,6 +11,8 @@ export default function HeroBackground({
 }) {
   const ref = useRef(null);
   const [posterOnly, setPosterOnly] = useState(false);
+  // Fuera del hero el velo oscuro lo pone esta capa fija, no cada sección.
+  const [deep, setDeep] = useState(false);
   useEffect(() => {
     const video = ref.current;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -81,12 +83,14 @@ export default function HeroBackground({
     const observer = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting && entry.intersectionRatio >= 0.15;
+        setDeep(!entry.isIntersecting);
         sync();
       },
       { threshold: 0.15 },
     );
     const hero = document.getElementById("inicio");
     if (hero) observer.observe(hero);
+    else setDeep(true);
     video.addEventListener("timeupdate", checkCue);
     if (playingIntro) watchdog = setTimeout(fallback, 12000);
     video.addEventListener("ended", repeatBody);
@@ -111,6 +115,7 @@ export default function HeroBackground({
     <div
       className="ty-fixed-background"
       data-phase={phase}
+      data-depth={deep ? "deep" : "hero"}
       style={{ position: "fixed", inset: 0, zIndex: -1 }}
       aria-hidden="true"
     >

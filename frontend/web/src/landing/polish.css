@@ -1,0 +1,688 @@
+/* Pulido visual de landing y Nosotros (revisión del 2026-10-26).
+   Se carga después de landing.css y solo ajusta lo revisado. */
+
+/* A1 · Un solo contenedor centrado para todas las secciones. */
+.landing-page {
+  --ty-inline: max(var(--ty-gutter), calc((100% - var(--ty-width)) / 2));
+}
+.landing-page .ty-section,
+.landing-page .service-carousel,
+.landing-page .ty-about-hero {
+  padding-inline: var(--ty-inline);
+}
+
+/* A2 · El velo oscuro vive en la capa fija; sin huecos con la foto entre secciones. */
+html:has(.landing-page) {
+  background: var(--ty-bg);
+}
+.ty-fixed-background::after {
+  transition: opacity 0.8s ease, background-color 0.6s ease;
+}
+.ty-fixed-background[data-depth="deep"]::after {
+  background: color-mix(in srgb, var(--ty-bg) 94%, transparent);
+}
+.about-page #contacto,
+.landing-page:not(.about-page) #preguntas {
+  margin-bottom: 0;
+}
+.landing-page .ty-frame-group {
+  background: color-mix(in srgb, var(--ty-bg) 86%, transparent);
+}
+
+/* A3 · Cabecera y barra del submenú con vidrio oscuro propio. */
+.landing-page .ty-header.is-solid,
+.landing-page.about-page .ty-header,
+.ty-about-navbar {
+  background: color-mix(in srgb, var(--ty-bg) 85%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.landing-page .ty-header.is-solid,
+.landing-page.about-page .ty-header {
+  box-shadow: none;
+}
+.ty-about-navbar {
+  position: fixed;
+  z-index: 29;
+  top: var(--ty-header-bottom, var(--ty-header-height));
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: safe center;
+  padding: 0.35rem var(--ty-gutter) 0.65rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ty-accent) 18%, transparent);
+  box-shadow: 0 14px 30px #0005;
+}
+.landing-page .ty-about-nav {
+  position: static;
+  transform: none;
+  width: auto;
+  max-width: 100%;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  font-size: 0.88rem;
+  border: 1px solid color-mix(in srgb, var(--ty-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--ty-surface) 70%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--ty-accent) 14%, transparent);
+}
+.landing-page .ty-about-nav a {
+  padding: 0.35rem 0.8rem;
+  border: 0;
+  border-radius: var(--ty-pill);
+  background: transparent;
+  text-shadow: none;
+}
+.landing-page .ty-about-nav a[aria-current="location"] {
+  background: color-mix(in srgb, var(--ty-accent) 18%, transparent);
+}
+
+/* A4 · Cada sección del menú ocupa la pantalla bajo la cabecera, con su contenido centrado. */
+.landing-page .ty-frame,
+.landing-page .ty-frame-group {
+  min-height: calc(100svh - var(--ty-fixed-top, var(--ty-header-height)));
+}
+.landing-page .ty-frame:not(.ty-split):not(.ty-faq),
+.landing-page .ty-frame-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+}
+.landing-page .ty-frame.ty-split,
+.landing-page .ty-frame.ty-faq {
+  align-content: center;
+}
+
+/* B1 · Iniciar sesión proporcional al menú. */
+.landing-page .ty-header .ty-header-login {
+  min-height: 40px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.9rem;
+}
+
+/* B2 · Cómo funciona: pasos y confianza encuadrados juntos. */
+.landing-page .ty-frame-group > .ty-section {
+  background: transparent;
+  backdrop-filter: none;
+}
+.landing-page .ty-frame-group > #proceso {
+  padding-bottom: clamp(16px, 3vh, 32px);
+}
+.landing-page .ty-frame-group > #confianza {
+  padding-top: clamp(16px, 3vh, 32px);
+  border-top: 1px solid color-mix(in srgb, var(--ty-accent) 16%, transparent);
+}
+.landing-page .ty-frame-group .ty-eyebrow {
+  margin-bottom: 0.6rem;
+}
+.landing-page .ty-frame-group .ty-section > h2 {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  margin-bottom: 0.75rem;
+}
+.landing-page .ty-timeline {
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-top: 1.25rem;
+}
+.landing-page .ty-step {
+  margin-bottom: 1rem;
+}
+.landing-page .ty-timeline h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+}
+.landing-page .ty-section .ty-timeline p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.landing-page .ty-trust-points {
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin: 1rem 0 0;
+}
+.landing-page .ty-trust-points p {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  color: var(--ty-text);
+}
+.landing-page #confianza > .ty-button {
+  margin-top: 1.5rem;
+}
+.ty-icon-dot {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 1px solid color-mix(in srgb, var(--ty-accent) 60%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ty-accent) 12%, transparent);
+  color: var(--ty-accent);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+/* B3 · Para técnicos, un poco más grande y centrado. */
+.landing-page #tecnicos {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+.landing-page #tecnicos > img {
+  width: min(100%, 600px);
+  justify-self: end;
+}
+.landing-page #tecnicos h2 {
+  font-size: clamp(2.3rem, 4.1vw, 3.75rem);
+}
+.landing-page .ty-benefits {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0;
+  margin: 1.5rem 0 2rem;
+  list-style: none;
+}
+.landing-page .ty-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0;
+  color: var(--ty-text);
+  font-size: 1.1rem;
+}
+.landing-page #tecnicos .ty-button {
+  padding: 0.9rem 1.8rem;
+  font-size: 1.02rem;
+}
+
+/* B4 · Preguntas: introducción con contacto y acordeón amplio. */
+.landing-page .ty-faq {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: clamp(2rem, 6vw, 5rem);
+}
+.landing-page .ty-faq .ty-faq-intro h2 {
+  font-size: clamp(2.4rem, 4.2vw, 3.75rem);
+}
+.landing-page .ty-section .ty-faq-intro p {
+  max-width: 34ch;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+.landing-page .ty-faq details {
+  padding: 0;
+}
+.landing-page .ty-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 18px 0;
+  font-size: 1.1rem;
+  list-style: none;
+  transition: color var(--ty-fast);
+}
+.landing-page .ty-faq summary::-webkit-details-marker {
+  display: none;
+}
+.landing-page .ty-faq summary:hover,
+.landing-page .ty-faq details[open] summary {
+  color: var(--ty-accent);
+}
+.ty-faq-icon {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.ty-faq-icon::before,
+.ty-faq-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 2px;
+  background: var(--ty-accent);
+  transition: transform 300ms ease;
+}
+.ty-faq-icon::after {
+  transform: rotate(90deg);
+}
+.ty-faq details[open] .ty-faq-icon::after {
+  transform: rotate(0deg);
+}
+.landing-page .ty-section .ty-faq-list details p {
+  margin: 0;
+  padding: 0 2.5rem 18px 0;
+  font-size: 1rem;
+  animation: ty-faq-fade 350ms ease both;
+}
+@keyframes ty-faq-fade {
+  from { opacity: 0; translate: 0 -6px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+/* B5 · Empieza ahora (solo landing) como tarjeta destacada. */
+.landing-page:not(.about-page) .ty-final {
+  border-top: 0;
+  padding-block: clamp(56px, 10vh, 112px);
+}
+.ty-final-card {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3.5rem);
+  border: 1px solid color-mix(in srgb, var(--ty-accent) 38%, transparent);
+  border-radius: calc(var(--ty-radius) + 0.5rem);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--ty-accent) 18%, transparent), transparent 62%),
+    linear-gradient(160deg, var(--ty-raised), var(--ty-surface) 55%, var(--ty-bg));
+  box-shadow: 0 30px 80px #0007;
+}
+.landing-page .ty-final .ty-final-card h2 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+.landing-page .ty-section .ty-final-card p {
+  margin-bottom: 2rem;
+  font-size: 1.15rem;
+}
+.ty-final-card .ty-button {
+  min-height: 52px;
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+}
+
+/* B6 · Pie de página de cuatro columnas. */
+.landing-page .ty-footer {
+  display: block;
+  padding: clamp(40px, 7vh, 72px) var(--ty-inline) 0;
+  border-top: 1px solid color-mix(in srgb, var(--ty-accent) 20%, transparent);
+  background: color-mix(in srgb, var(--ty-bg) 96%, transparent);
+  /* Sin filtro: un backdrop-filter atraparía el panel legal (position: fixed). */
+  backdrop-filter: none;
+}
+.ty-footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+.landing-page .ty-footer-title {
+  margin: 0 0 1rem;
+  color: var(--ty-accent);
+  font-family: var(--ty-font);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.landing-page .ty-footer nav {
+  gap: 0;
+}
+.landing-page .ty-footer nav a,
+.landing-page .ty-footer-grid > div > a:not(.ty-brand),
+.landing-page .ty-footer-link {
+  display: block;
+  padding: 0.3rem 0;
+  color: var(--ty-muted);
+  font-size: 0.95rem;
+  transition: color var(--ty-fast);
+}
+.landing-page .ty-footer-link {
+  border: 0;
+  background: none;
+  text-align: left;
+}
+.landing-page .ty-footer nav a:hover,
+.landing-page .ty-footer-grid > div > a:not(.ty-brand):hover,
+.landing-page .ty-footer-link:hover {
+  color: var(--ty-accent);
+}
+.landing-page .ty-footer-brand .ty-brand {
+  margin-bottom: 0.9rem;
+}
+.landing-page .ty-footer-brand p {
+  margin: 0 0 0.3rem;
+  color: var(--ty-text);
+  font-size: 0.95rem;
+}
+.landing-page .ty-footer-grid p {
+  margin: 0.25rem 0;
+}
+.landing-page .ty-footer .ty-footer-bar {
+  margin: clamp(2rem, 5vh, 3rem) 0 0;
+  padding: 1rem 0 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--ty-border) 70%, transparent);
+  font-size: 0.85rem;
+  text-align: center;
+}
+.ty-legal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--ty-gutter);
+  background: rgb(0 0 0 / 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.ty-legal-panel {
+  width: min(520px, 100%);
+  padding: 28px;
+  border: 1px solid color-mix(in srgb, var(--ty-accent) 40%, transparent);
+  border-radius: var(--ty-radius);
+  background: var(--ty-surface);
+  box-shadow: 0 30px 80px #000a;
+}
+.landing-page .ty-legal-panel h2 {
+  font-size: 1.6rem;
+}
+.landing-page .ty-footer .ty-legal-panel p {
+  margin: 0 0 1.5rem;
+  color: var(--ty-text);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.ty-pending {
+  color: color-mix(in srgb, var(--ty-muted) 75%, transparent);
+  font-style: italic;
+}
+.ty-pending-tag {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  padding: 0.2rem 0.65rem;
+  border: 1px dashed color-mix(in srgb, var(--ty-accent) 55%, transparent);
+  border-radius: var(--ty-pill);
+  color: var(--ty-accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* C1 · Portada de Nosotros dentro del contenedor y a menor escala. */
+.landing-page .ty-about-hero {
+  padding-top: calc(var(--ty-fixed-top, 133px) + 4rem);
+}
+.landing-page .ty-about-hero > div {
+  max-width: 720px;
+}
+.landing-page.about-page .ty-about-hero h1 {
+  max-width: 720px;
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
+}
+.landing-page .ty-about-hero p {
+  font-size: 1.05rem;
+}
+
+/* C2 · El pie de foto no queda recortado por el borde redondeado. */
+.about-page #quienes figcaption {
+  padding: 0.6rem 1rem;
+}
+
+/* C3 · Cómo verificamos: dos columnas y pasos numerados. */
+.landing-page .ty-verification {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+}
+.ty-steps {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0;
+  padding: 0;
+  list-style: none;
+}
+.ty-steps li {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.9rem;
+}
+.ty-step-number {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--ty-accent);
+  color: var(--ty-ink);
+  font-weight: 700;
+}
+.ty-steps strong {
+  display: block;
+  color: var(--ty-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.landing-page .ty-section .ty-steps p {
+  margin: 0.1rem 0 0;
+  font-size: 0.95rem;
+}
+.landing-page .ty-section .ty-callout {
+  margin: 0;
+  padding: 0.9rem 1.1rem;
+  border-left: 3px solid var(--ty-accent);
+  border-radius: 0 12px 12px 0;
+  background: color-mix(in srgb, var(--ty-accent) 10%, transparent);
+  color: var(--ty-text);
+  font-size: 0.95rem;
+}
+
+/* C4 · Pesos del matching y tarjetas de seguridad. */
+.landing-page .ty-matching {
+  gap: 3px;
+  margin: 1.5rem 0 0.75rem;
+  border-radius: 16px;
+}
+.landing-page .ty-matching > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 72px;
+  padding: 0.5rem;
+}
+.landing-page .ty-matching strong {
+  color: var(--ty-cream);
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+.landing-page .ty-matching span {
+  color: color-mix(in srgb, var(--ty-cream) 92%, transparent);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.landing-page .ty-matching > div:nth-child(4) strong,
+.landing-page .ty-matching > div:nth-child(4) span {
+  color: var(--ty-ink);
+}
+.landing-page [data-about="Matching"] small {
+  display: block;
+  font-size: 0.85rem;
+}
+.landing-page .ty-grid-four {
+  align-items: stretch;
+  gap: 20px;
+}
+.landing-page .ty-safety-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 24px;
+}
+.landing-page .ty-safety-card h3 {
+  margin: 0.4rem 0 0;
+  font-size: 1.15rem;
+}
+.landing-page .ty-section .ty-safety-card p {
+  font-size: 0.95rem;
+}
+.ty-safety-card .ty-icon-dot {
+  width: 2.6rem;
+  height: 2.6rem;
+  font-size: 1.1rem;
+}
+
+/* C6 · Tarjetas de especialidades con foto real y enlace pequeño. */
+.landing-page .ty-about-specialties {
+  max-width: none;
+  margin: 0;
+  padding-block: clamp(40px, 6vh, 72px);
+}
+.landing-page .ty-specialty-card {
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+.landing-page .ty-specialty-card:is(:hover, :focus-within) {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--ty-accent) 45%, var(--ty-border));
+  box-shadow: 0 24px 50px #0007;
+}
+.landing-page .ty-specialty-photo img {
+  transition: transform 600ms ease;
+}
+.landing-page .ty-specialty-card:is(:hover, :focus-within) .ty-specialty-photo img {
+  transform: scale(1.06);
+}
+.landing-page .ty-specialty-copy {
+  padding: 24px;
+}
+.landing-page .ty-specialty-copy h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+.landing-page .ty-specialty-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ty-accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.ty-specialty-link span {
+  transition: transform 250ms ease;
+}
+.ty-specialty-card:hover .ty-specialty-link span,
+.ty-specialty-link:focus-visible span {
+  transform: translateX(4px);
+}
+
+/* C7 · Calidad que se comprueba. */
+.landing-page .ty-quality-cards {
+  align-items: stretch;
+  gap: 20px;
+  margin: 1.5rem 0 1rem;
+}
+.landing-page .ty-quality-cards .ty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 28px 24px;
+}
+.ty-quality-mark {
+  margin-bottom: 0.4rem;
+  color: var(--ty-accent);
+  font: italic 3rem/1 var(--ty-serif);
+}
+.landing-page .ty-quality-cards h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+.landing-page .ty-section .ty-quality-cards p {
+  font-size: 0.95rem;
+}
+.ty-quality-source {
+  display: block;
+  text-align: center;
+}
+
+/* C8 · Contacto: datos por confirmar y formulario en tarjeta. */
+.ty-contact-list {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ty-contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.landing-page .ty-contact-list small {
+  display: block;
+  color: var(--ty-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.landing-page .ty-contact {
+  padding: 28px;
+  border-radius: var(--ty-radius);
+  background: color-mix(in srgb, var(--ty-surface) 85%, transparent);
+}
+.landing-page .ty-contact label {
+  margin: 0 0 0.6rem;
+  color: var(--ty-text);
+  font-weight: 600;
+}
+.landing-page .ty-contact textarea {
+  border: 1px solid var(--ty-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ty-bg) 60%, transparent);
+  transition: border-color var(--ty-fast), box-shadow var(--ty-fast);
+}
+.landing-page .ty-contact textarea:focus,
+.landing-page .ty-contact textarea:focus-visible {
+  outline: none;
+  border-color: var(--ty-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ty-accent) 30%, transparent);
+}
+.ty-contact-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.landing-page .ty-section .ty-contact-footer p {
+  flex: 1 1 240px;
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 900px) {
+  .ty-footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .landing-page .ty-header .ty-header-login {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+  }
+  .landing-page .ty-about-nav {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 600px) {
+  .landing-page #tecnicos,
+  .landing-page .ty-faq,
+  .landing-page .ty-verification,
+  .ty-footer-grid {
+    grid-template-columns: 1fr;
+  }
+  .landing-page #tecnicos > img {
+    justify-self: center;
+  }
+  .landing-page.about-page .ty-about-hero h1 {
+    font-size: clamp(2.3rem, 10vw, 3.2rem);
+  }
+  .landing-page .ty-about-nav a {
+    padding: 0.35rem 0.6rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ty-fixed-background::after {
+    transition: none;
+  }
+}

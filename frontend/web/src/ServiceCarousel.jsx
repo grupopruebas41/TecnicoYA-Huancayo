@@ -456,7 +456,7 @@ export default function ServiceCarousel() {
     <section
       id="servicios"
       data-landing="Especialidades"
-      className="service-carousel ty-vitrine"
+      className="service-carousel ty-vitrine ty-frame"
       aria-label="Especialidades de TécnicoYa"
       ref={root}
       onMouseEnter={() => { setHovered(true); setPaused(true); }}
@@ -499,27 +499,29 @@ export default function ServiceCarousel() {
 export function SpecialtyCards({ specialties, details = {}, onSelect }) {
   return (
     <div className="ty-specialty-cards">
-      {(specialties || []).map((item) => (
+      {(specialties || []).map((item) => {
+        // Misma fuente que la vitrina: foto del API o la local por slug.
+        const image = item.image_url || specialtyImages[serviceCategory(item.name)];
+        return (
         <article className="ty-specialty-card" key={item.id}>
           <div className="ty-specialty-photo">
-            {item.image_url ? (
-              <img src={item.image_url} alt={item.name} loading="lazy" />
+            {image ? (
+              <img src={image} alt={item.name} loading="lazy" />
             ) : (
               <span aria-hidden="true">◇</span>
             )}
           </div>
           <div className="ty-specialty-copy">
             <h3>{item.name}</h3>
-            {!item.image_url && (
-              <small>Imagen de la especialidad no disponible.</small>
-            )}
-            <p>{item.description}</p>
+            {!image && <small>Imagen no disponible</small>}
+            {item.description && <p>{item.description}</p>}
             <button
               type="button"
+              className="ty-specialty-link"
               onClick={() => onSelect(item.id)}
               aria-label={"Explorar " + item.name}
             >
-              Explorar servicios →
+              Explorar servicios <span aria-hidden="true">→</span>
             </button>
             <ul className="ty-subcategory-list">
               {(details[item.id] || []).map((sub) => (
@@ -528,7 +530,8 @@ export function SpecialtyCards({ specialties, details = {}, onSelect }) {
             </ul>
           </div>
         </article>
-      ))}
+        );
+      })}
     </div>
   );
 }

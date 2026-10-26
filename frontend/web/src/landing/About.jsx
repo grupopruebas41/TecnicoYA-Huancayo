@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CONTACT } from "./config";
+import { CONTACT, contactItems, isContactConfigured } from "./contact";
 import { navigateToSection, scrollToSection } from "./navigation";
 import { Zones } from "./Shared";
 import { SpecialtyCards } from "../ServiceCarousel";
@@ -29,6 +29,7 @@ const testimonials = [
   ...x,
   description: "★★★★★ · Valoración ficticia. " + x.description,
 }));
+const CONTACT_ICONS = { whatsapp: "✆", email: "✉", hours: "◷" };
 function Contact() {
   const [message, setMessage] = useState(""),
     [error, setError] = useState("");
@@ -39,9 +40,9 @@ function Contact() {
       e.currentTarget.elements.message.focus();
       return;
     }
-    if (!CONTACT.configured) {
+    if (!isContactConfigured()) {
       setError(
-        "El contacto aún no está configurado. Estos datos son de ejemplo; no se ha enviado ningún mensaje.",
+        "El contacto aún no está configurado. Los datos están por confirmar; no se ha enviado ningún mensaje.",
       );
       return;
     }
@@ -60,20 +61,25 @@ function Contact() {
     <section
       id="contacto"
       data-about="Contacto"
-      className="ty-section ty-split"
+      className="ty-section ty-split ty-frame"
     >
       <div>
         <span className="ty-eyebrow">CONVERSEMOS</span>
         <h2>
           Estamos <em>cerca.</em>
         </h2>
-        <p>Datos de ejemplo por reemplazar antes de publicar.</p>
-        <p>
-          WhatsApp: {CONTACT.whatsapp}
-          <br />
-          Correo: {CONTACT.email}
-        </p>
-        <p>{CONTACT.hours}</p>
+        <span className="ty-pending-tag">Datos por confirmar</span>
+        <ul className="ty-contact-list">
+          {contactItems().map((item) => (
+            <li key={item.key}>
+              <span className="ty-icon-dot" aria-hidden="true">{CONTACT_ICONS[item.key]}</span>
+              <span>
+                <small>{item.label}</small>
+                <span className={item.pending ? "ty-pending" : undefined}>{item.value}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
       <form className="ty-contact" onSubmit={prepare} noValidate>
         <label htmlFor="contact-message">Tu mensaje</label>
@@ -85,14 +91,16 @@ function Contact() {
           onChange={(e) => setMessage(e.target.value)}
           aria-describedby="contact-help"
         />
-        <p id="contact-help">
-          Se abrirá tu aplicación de correo. Este formulario no envía ni guarda
-          mensajes.
-        </p>
         {error && <p role="alert">{error}</p>}
-        <button type="submit" className="ty-button">
-          Preparar correo
-        </button>
+        <div className="ty-contact-footer">
+          <p id="contact-help">
+            Se abrirá tu aplicación de correo. Este formulario no envía ni guarda
+            mensajes.
+          </p>
+          <button type="submit" className="ty-button">
+            Preparar correo
+          </button>
+        </div>
       </form>
     </section>
   );
@@ -142,7 +150,7 @@ export default function About({ catalog }) {
     };
     const updateSectionAtViewportCenter = () => {
       const headerBottom = document.querySelector(".ty-header")?.getBoundingClientRect().bottom || 0;
-      const navBottom = document.querySelector(".ty-about-nav")?.getBoundingClientRect().bottom || 0;
+      const navBottom = document.querySelector(".ty-about-navbar")?.getBoundingClientRect().bottom || 0;
       const anchorY = Math.max(headerBottom, navBottom) + 16 +
         Math.max(0, window.innerHeight - Math.max(headerBottom, navBottom) - 32) / 2;
       const centered = sections.find((section) => {
@@ -174,7 +182,8 @@ export default function About({ catalog }) {
   }, []);
   return (
     <>
-      <nav className={"ty-about-nav " + (floating ? "is-floating" : "is-over-hero")} aria-label="Acerca de TécnicoYa">
+      <div className={"ty-about-navbar " + (floating ? "is-floating" : "is-over-hero")}>
+      <nav className="ty-about-nav" aria-label="Acerca de TécnicoYa">
         {[
           ["quienes", "Quiénes somos"],
           ["verificacion", "Cómo verificamos"],
@@ -193,6 +202,7 @@ export default function About({ catalog }) {
           </a>
         ))}
       </nav>
+      </div>
       <AboutCover />
       <OurPurpose />
       <Verification />
@@ -206,7 +216,7 @@ export default function About({ catalog }) {
         error={catalog.error}
         loading={!catalog.data && !catalog.error}
       />
-      <div className="ty-about-specialties">
+      <section className="ty-section ty-about-specialties" aria-label="Especialidades">
         <SpecialtyCards
           specialties={catalog.data?.specialties}
           details={Object.fromEntries(
@@ -221,7 +231,7 @@ export default function About({ catalog }) {
             navigateToSection("servicios");
           }}
         />
-      </div>
+      </section>
       <Team />
       <Quality />
       <Contact />
@@ -253,7 +263,7 @@ function OurPurpose() {
     <section
       id="quienes"
       data-about="Quiénes somos"
-      className="ty-section"
+      className="ty-section ty-frame"
       data-reveal
     >
       <div className="ty-split">
@@ -347,7 +357,7 @@ function Verification() {
     <section
       id="verificacion"
       data-about="Verificación"
-      className="ty-section ty-split"
+      className="ty-section ty-split ty-frame ty-verification"
       data-reveal
     >
       <img
@@ -360,16 +370,23 @@ function Verification() {
         <h2>
           Así verificamos <em>a los técnicos.</em>
         </h2>
-        <ol className="ty-checklist">
-          <li>Registro y presentación de documentos.</li>
-          <li>Revisión del administrador con una lista de comprobación.</li>
-          <li>Aprobación o rechazo con motivo.</li>
-          <li>
-            Seguimiento de calificaciones y suspensión ante problemas
-            verificados.
-          </li>
+        <ol className="ty-steps">
+          {[
+            ["Registro", "Registro y presentación de documentos."],
+            ["Revisión", "Revisión del administrador con una lista de comprobación."],
+            ["Decisión", "Aprobación o rechazo con motivo."],
+            ["Seguimiento", "Seguimiento de calificaciones y suspensión ante problemas verificados."],
+          ].map(([title, text], index) => (
+            <li key={title}>
+              <span className="ty-step-number" aria-hidden="true">{index + 1}</span>
+              <div>
+                <strong>{title}</strong>
+                <p>{text}</p>
+              </div>
+            </li>
+          ))}
         </ol>
-        <p>El trabajo lo realiza el técnico independiente que tú eliges.</p>
+        <p className="ty-callout">El trabajo lo realiza el técnico independiente que tú eliges.</p>
       </div>
     </section>
   );
@@ -379,7 +396,7 @@ function Security() {
     <section
       id="seguridad"
       data-about="Seguridad"
-      className="ty-section"
+      className="ty-section ty-frame"
       data-reveal
     >
       <h2>
@@ -404,8 +421,8 @@ function Security() {
             "Contraseñas protegidas con hash y registro de acciones sensibles.",
           ],
         ].map(([t, p]) => (
-          <article className="ty-card" key={t}>
-            <span aria-hidden="true">◇</span>
+          <article className="ty-card ty-safety-card" key={t}>
+            <span className="ty-icon-dot" aria-hidden="true">◇</span>
             <h3>{t}</h3>
             <p>{p}</p>
           </article>
@@ -488,7 +505,7 @@ function TestimonialCoverflow() {
   const [name, district, specialty] = selected.name.split(" · ");
   const quote = selected.description.replace(/^★★★★★ · Valoración ficticia\. /, "").replace(/[«»]/g, "");
   return (
-    <section id="testimonios" data-about="Testimonios" className="ty-section ty-testimonials" data-reveal aria-labelledby="testimonials-title">
+    <section id="testimonios" data-about="Testimonios" className="ty-section ty-testimonials ty-frame" data-reveal aria-labelledby="testimonials-title">
       <span className="ty-eyebrow">LO QUE BUSCAMOS HACER POSIBLE</span>
       <h2 id="testimonials-title">Testimonios</h2>
       <p className="ty-testimonial-note">Historias ilustrativas con personajes ficticios.</p>
@@ -531,7 +548,7 @@ function TestimonialCoverflow() {
 }
 function Team() {
   return (
-    <section id="equipo" data-about="Equipo" className="ty-section" data-reveal>
+    <section id="equipo" data-about="Equipo" className="ty-section ty-frame" data-reveal>
       <h2>
         Detrás de <em>TécnicoYa.</em>
       </h2>
@@ -563,30 +580,20 @@ function Quality() {
       <h2>
         Calidad que <em>se comprueba.</em>
       </h2>
-      <div className="ty-grid">
-        <article>
-          <h3>Más de 60 pruebas por sprint</h3>
-          <p>
-            Meta del proyecto. El cierre del Sprint 2 registra 90 casos
-            automatizados aprobados.
-          </p>
-        </article>
-        <article>
-          <h3>Integración continua</h3>
-          <p>
-            Pruebas en cada pull request y cambio integrado en main, mediante
-            GitHub Actions.
-          </p>
-        </article>
-        <article>
-          <h3>Quality Gate aprobado</h3>
-          <p>
-            Resultado documentado del cierre del Sprint 2. Cada nueva versión
-            requiere su propia revisión.
-          </p>
-        </article>
+      <div className="ty-grid ty-quality-cards">
+        {[
+          ["60+", "Más de 60 pruebas por sprint", "Meta del proyecto. El cierre del Sprint 2 registra 90 casos automatizados aprobados."],
+          ["CI", "Integración continua", "Pruebas en cada pull request y cambio integrado en main, mediante GitHub Actions."],
+          ["✓", "Quality Gate aprobado", "Resultado documentado del cierre del Sprint 2. Cada nueva versión requiere su propia revisión."],
+        ].map(([mark, title, text]) => (
+          <article className="ty-card" key={title}>
+            <span className="ty-quality-mark" aria-hidden="true">{mark}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </article>
+        ))}
       </div>
-      <small>Fuente: informe de cierre S2.6, 13–15 de octubre de 2026.</small>
+      <small className="ty-quality-source">Fuente: informe de cierre S2.6, 13–15 de octubre de 2026.</small>
     </section>
   );
 }

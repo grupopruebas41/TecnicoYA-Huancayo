@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import "./styles/tokens.css";
 import "./landing.css";
+import "./landing/polish.css";
 import AccountApp from "./features/administration/AccountApp";
 import Catalog from "./features/administration/Catalog";
 import "./features/administration/sprint02.css";
@@ -13,6 +14,7 @@ import {
   consumePendingSection,
   currentRoute,
   scrollToSection,
+  useFixedChromeOffset,
   useScrollToTopOnLoad,
 } from "./landing/navigation";
 function PublicSite({ route, introCompleted }) {
@@ -45,6 +47,7 @@ function PublicSite({ route, introCompleted }) {
   const catalog = useCatalog();
   const about = route === "/nosotros";
   const reveal = useReveal();
+  useFixedChromeOffset([phase, route]);
   useEffect(() => {
     if (phase !== "ready") return;
     window.dispatchEvent(new Event("tecnicoya:hero-change"));

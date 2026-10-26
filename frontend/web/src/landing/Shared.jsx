@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CONTACT, setAuthIntent } from "./config";
-import { navigateToPath, navigateToSection, scrollToSection } from "./navigation";
+import { setAuthIntent } from "./config";
+import { contactItems } from "./contact";
+import { navigateToPath, navigateToSection, scrollToSection, scrollToTop } from "./navigation";
 export function AuthLink({
   children,
   role = "client",
@@ -138,60 +139,121 @@ export function FinalCTA({ about = false }) {
       className="ty-section ty-final"
       data-reveal
     >
-      <span className="ty-eyebrow">UNA SOLUCIÓN MÁS CERCA</span>
-      <h2>
-        Empieza <em>ahora.</em>
-      </h2>
-      <p>Tu hogar y tu negocio merecen seguir en marcha.</p>
-      <div className="ty-actions">
-        <AuthLink>Pedir un técnico ↗</AuthLink>
-        <AuthLink role="technician" className="ty-button ty-outline">
-          Soy técnico
-        </AuthLink>
+      <div className="ty-final-card">
+        <span className="ty-eyebrow">UNA SOLUCIÓN MÁS CERCA</span>
+        <h2>
+          Empieza <em>ahora.</em>
+        </h2>
+        <p>Tu hogar y tu negocio merecen seguir en marcha.</p>
+        <div className="ty-actions">
+          <AuthLink>Pedir un técnico ↗</AuthLink>
+          <AuthLink role="technician" className="ty-button ty-outline">
+            Soy técnico
+          </AuthLink>
+        </div>
       </div>
     </section>
   );
 }
+const legalTexts = {
+  terms: [
+    "Términos",
+    "Versión académica MVP. Los servicios los realizan técnicos independientes. Los pagos son simulados. Las condiciones definitivas de publicación están pendientes.",
+  ],
+  privacy: [
+    "Privacidad",
+    "Usa solo los datos necesarios para coordinar tu atención. Las evidencias son privadas. El aviso legal definitivo y el canal para ejercer derechos están pendientes de publicación.",
+  ],
+};
+function LegalDialog({ kind, onClose }) {
+  const close = useRef(null);
+  const [title, body] = legalTexts[kind];
+  useEffect(() => {
+    close.current?.focus();
+  }, [kind]);
+  return (
+    <div className="ty-legal-backdrop" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+      <div
+        className="ty-legal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ty-legal-title"
+        onKeyDown={(event) => {
+          if (event.key === "Escape") onClose();
+          // Con un solo control enfocable, Tab no debe salir del panel.
+          if (event.key === "Tab") {
+            event.preventDefault();
+            close.current?.focus();
+          }
+        }}
+      >
+        <h2 id="ty-legal-title">{title}</h2>
+        <p>{body}</p>
+        <button ref={close} type="button" className="ty-button ty-outline" onClick={onClose}>
+          Cerrar
+        </button>
+      </div>
+    </div>
+  );
+}
+function goTo(path, sectionId) {
+  return (event) => {
+    event.preventDefault();
+    const samePage = window.location.pathname.replace(/\/$/, "") === (path || "").replace(/\/$/, "");
+    if (!path) navigateToSection(sectionId);
+    else if (!samePage) navigateToPath(path, { sectionId });
+    else if (sectionId) scrollToSection(sectionId);
+    else scrollToTop();
+  };
+}
+export { goTo };
 export function Footer() {
+  const [legal, setLegal] = useState(null);
+  const opener = useRef(null);
+  function openLegal(kind, event) {
+    opener.current = event.currentTarget;
+    setLegal(kind);
+  }
+  function closeLegal() {
+    setLegal(null);
+    opener.current?.focus();
+  }
   return (
     <footer id="pie" data-landing="Footer" className="ty-footer">
-      <div>
-        <a href="#inicio" className="ty-brand" onClick={(event) => { event.preventDefault(); navigateToSection("inicio"); }}>
-          TécnicoYa
-        </a>
-        <p>Talento local. Soluciones cerca.</p>
-        <small>TécnicoYa · Huancayo 2026</small>
+      <div className="ty-footer-grid">
+        <div className="ty-footer-brand">
+          <a href="#inicio" className="ty-brand" onClick={goTo(null, "inicio")}>
+            <span className="ty-monogram">t</span>
+            <span>TécnicoYa<small>HUANCAYO</small></span>
+          </a>
+          <p>Talento local. Soluciones cerca.</p>
+          <small>Huancayo 2026</small>
+        </div>
+        <nav aria-labelledby="pie-navegacion">
+          <h2 id="pie-navegacion" className="ty-footer-title">Navegación</h2>
+          <a href="#servicios" onClick={goTo(null, "servicios")}>Servicios</a>
+          <a href="/nosotros" onClick={goTo("/nosotros")}>Nosotros</a>
+          <a href="#preguntas" onClick={goTo(null, "preguntas")}>Preguntas frecuentes</a>
+          <a href="#inicio" onClick={(event) => { event.preventDefault(); scrollToTop(); }}>Volver arriba ↑</a>
+        </nav>
+        <div>
+          <h2 className="ty-footer-title">Contacto</h2>
+          <span className="ty-pending-tag">Datos por confirmar</span>
+          {contactItems().filter((item) => item.key !== "hours").map((item) => (
+            <p key={item.key}>
+              {item.label}: <span className={item.pending ? "ty-pending" : undefined}>{item.value}</span>
+            </p>
+          ))}
+          <a href="/nosotros" onClick={goTo("/nosotros", "contacto")}>Ver contacto</a>
+        </div>
+        <div>
+          <h2 className="ty-footer-title">Legal</h2>
+          <button type="button" className="ty-footer-link" onClick={(event) => openLegal("terms", event)}>Términos</button>
+          <button type="button" className="ty-footer-link" onClick={(event) => openLegal("privacy", event)}>Privacidad</button>
+        </div>
       </div>
-      <nav aria-label="Enlaces del pie">
-        <a href="#servicios" onClick={(event) => { event.preventDefault(); navigateToSection("servicios"); }}>Servicios</a>
-        <a href="/nosotros" onClick={(event) => { event.preventDefault(); navigateToPath("/nosotros"); }}>Nosotros</a>
-        <a href="#preguntas" onClick={(event) => { event.preventDefault(); navigateToSection("preguntas"); }}>Preguntas frecuentes</a>
-        <a href="#encabezado" onClick={(event) => { event.preventDefault(); scrollToSection("encabezado"); }}>Volver arriba ↑</a>
-      </nav>
-      <div>
-        <strong>Contacto de ejemplo · por configurar</strong>
-        <p>WhatsApp: {CONTACT.whatsapp}</p>
-        <p>Correo: {CONTACT.email}</p>
-        <a href="/nosotros" onClick={(event) => { event.preventDefault(); navigateToPath("/nosotros"); }}>Ver contacto</a>
-      </div>
-      <div className="ty-legal">
-        <details>
-          <summary>Términos</summary>
-          <p>
-            Versión académica MVP. Los servicios los realizan técnicos
-            independientes. Los pagos son simulados. Las condiciones definitivas
-            de publicación están pendientes.
-          </p>
-        </details>
-        <details>
-          <summary>Privacidad</summary>
-          <p>
-            Usa solo los datos necesarios para coordinar tu atención. Las
-            evidencias son privadas. El aviso legal definitivo y el canal para
-            ejercer derechos están pendientes de publicación.
-          </p>
-        </details>
-      </div>
+      <p className="ty-footer-bar">© 2026 TécnicoYa · Proyecto académico – Universidad Continental</p>
+      {legal && <LegalDialog kind={legal} onClose={closeLegal} />}
     </footer>
   );
 }

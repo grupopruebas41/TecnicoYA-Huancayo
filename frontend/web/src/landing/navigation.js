@@ -2,7 +2,6 @@ import { useLayoutEffect } from "react";
 
 const ACCOUNT_HASH = /^#cuenta(?:\/|$)/;
 const OTHER_APP_HASHES = ["#plataforma", "#catalogo"];
-const SECTION_MARGIN = 16;
 let pendingSectionId = null;
 let activeAlignment = null;
 
@@ -54,29 +53,68 @@ function visibleRect(element) {
   return rect;
 }
 
+/**
+ * "top": el borde superior de la sección queda justo bajo la cabecera fija
+ * (y la barra del submenú). "center": el bloque se centra en el espacio libre
+ * bajo ellas y, si no cabe, se alinea arriba.
+ */
 export function calculateScrollTarget({
   sectionRect,
   headerRect = null,
   subnavRect = null,
   viewportHeight,
   scrollY,
+  mode = "top",
 }) {
   const fixedBottom = Math.max(
     0,
     headerRect?.bottom || 0,
     subnavRect?.bottom || 0,
   );
-  const availableTop = fixedBottom + SECTION_MARGIN;
-  const availableHeight = Math.max(
-    0,
-    viewportHeight - availableTop - SECTION_MARGIN,
-  );
+  const availableHeight = Math.max(0, viewportHeight - fixedBottom);
   const sectionHeight = Math.max(0, sectionRect.height);
-  const desiredTop = sectionHeight <= availableHeight
-    ? availableTop + (availableHeight - sectionHeight) / 2
-    : availableTop;
+  const desiredTop = mode === "center" && sectionHeight <= availableHeight
+    ? fixedBottom + (availableHeight - sectionHeight) / 2
+    : fixedBottom;
 
   return Math.max(0, sectionRect.top + scrollY - desiredTop);
+}
+
+function fixedChrome(scope) {
+  return {
+    header: document.querySelector(".ty-header"),
+    subnav: scope?.closest(".about-page")
+      ? document.querySelector(".ty-about-navbar")
+      : null,
+  };
+}
+
+/** Publica la altura real de la cabecera (y submenú) para los min-height del CSS. */
+export function useFixedChromeOffset(deps) {
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const update = () => {
+      const header = document.querySelector(".ty-header");
+      const subnav = document.querySelector(".ty-about-navbar");
+      const headerBottom = visibleRect(header)?.bottom || 0;
+      const fixedBottom = Math.max(headerBottom, visibleRect(subnav)?.bottom || 0);
+      if (headerBottom) root.style.setProperty("--ty-header-bottom", headerBottom + "px");
+      if (fixedBottom) root.style.setProperty("--ty-fixed-top", fixedBottom + "px");
+    };
+    update();
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(update);
+    document.querySelectorAll(".ty-header, .ty-about-navbar").forEach((el) => observer?.observe(el));
+    window.addEventListener("resize", update, { passive: true });
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, deps);
+}
+
+export function scrollToTop() {
+  cleanupAlignment();
+  window.scrollTo({ top: 0, behavior: isReducedMotion() ? "auto" : "smooth" });
 }
 
 function cleanupAlignment() {
@@ -94,21 +132,21 @@ export function scrollToSection(id) {
   if (!section) return false;
 
   cleanupAlignment();
-  const header = document.querySelector(".ty-header");
-  const aboutSubnav = section.closest(".about-page")
-    ? document.querySelector(".ty-about-nav")
-    : null;
+  const { header, subnav } = fixedChrome(section);
+  // Un grupo marcado con data-frame="center" se encuadra completo (Cómo funciona).
+  const frame = section.closest("[data-frame='center']");
   const align = (behavior) => {
-    const sectionRect = section.getBoundingClientRect();
+    const sectionRect = (frame || section).getBoundingClientRect();
     const hero = id === "inicio" || section.classList.contains("ty-about-hero");
     const top = hero
       ? Math.max(0, window.scrollY + sectionRect.top)
       : calculateScrollTarget({
           sectionRect,
           headerRect: visibleRect(header),
-          subnavRect: visibleRect(aboutSubnav),
+          subnavRect: visibleRect(subnav),
           viewportHeight: window.innerHeight,
           scrollY: window.scrollY,
+          mode: frame ? "center" : "top",
         });
     window.scrollTo({ top, behavior: isReducedMotion() ? "auto" : behavior });
   };

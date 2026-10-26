@@ -21,6 +21,11 @@
   --ty-serif: "Instrument Serif", Georgia, serif;
   --ty-xs: 0.5rem;
   --ty-sm: 1rem;
+  --ty-md: 1.5rem;
+  --ty-lg: 2rem;
+  --ty-xl: 3rem;
+  --ty-2xl: 4.5rem;
+  --ty-gutter: clamp(16px, 4vw, 48px);
   --ty-section: clamp(56px, 8vh, 96px);
   --ty-radius: 1.5rem;
   --ty-pill: 999px;
