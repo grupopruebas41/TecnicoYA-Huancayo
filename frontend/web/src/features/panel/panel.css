@@ -34,6 +34,10 @@
   outline: 3px solid var(--panel-focus);
   outline-offset: 2px;
 }
+/* La barra lateral es oscura en los dos temas: el foco usa el dorado, que contrasta con ella. */
+.panel-sidebar :focus-visible {
+  outline-color: var(--ty-sidebar-mark);
+}
 
 /* Barra lateral */
 .panel-sidebar {
@@ -44,8 +48,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px 12px;
-  background: var(--ty-surface);
-  border-right: 1px solid var(--ty-border);
+  background: var(--ty-sidebar-bg);
+  color: var(--ty-sidebar-text);
+  border-right: 1px solid var(--ty-sidebar-border);
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 30;
@@ -61,7 +66,7 @@
   align-items: center;
   gap: 12px;
   padding: 4px 6px 12px;
-  border-bottom: 1px solid var(--ty-border);
+  border-bottom: 1px solid var(--ty-sidebar-border);
   font-weight: 600;
   font-size: 1.15rem;
 }
@@ -69,7 +74,7 @@
   display: block;
   font-size: 0.75rem;
   font-weight: 400;
-  color: var(--ty-muted);
+  color: var(--ty-sidebar-muted);
 }
 .panel-monogram {
   flex: 0 0 36px;
@@ -77,7 +82,7 @@
   height: 36px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--ty-border);
+  border: 1px solid var(--ty-sidebar-mark);
   border-radius: 50%;
   font: italic 26px var(--ty-serif, "Instrument Serif", serif);
   padding-bottom: 3px;
@@ -90,7 +95,7 @@
 .panel-sidebar-foot {
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid var(--ty-border);
+  border-top: 1px solid var(--ty-sidebar-border);
 }
 .panel-nav-item {
   display: flex;
@@ -102,17 +107,17 @@
   border: 0;
   border-radius: 12px;
   background: none;
-  color: var(--ty-text);
+  color: var(--ty-sidebar-text);
   font-size: 0.95rem;
   text-align: left;
   white-space: nowrap;
 }
 .panel-nav-item:hover {
-  background: var(--ty-raised);
+  background: var(--ty-sidebar-hover);
 }
 .panel-nav-item[aria-current="page"] {
-  background: var(--ty-raised);
-  box-shadow: inset 3px 0 0 var(--ty-accent);
+  background: var(--ty-sidebar-active);
+  box-shadow: inset 3px 0 0 var(--ty-sidebar-mark);
   font-weight: 600;
 }
 .panel-nav-icon {
@@ -154,7 +159,7 @@
   gap: 12px;
   min-height: var(--panel-topbar);
   padding: 8px clamp(16px, 3vw, 32px);
-  background: var(--ty-bg);
+  background: var(--ty-topbar-bg);
   border-bottom: 1px solid var(--ty-border);
 }
 .panel-title {
@@ -204,13 +209,10 @@
   padding: 0 5px;
   border-radius: 10px;
   background: var(--ty-accent);
-  color: var(--ty-ink);
+  color: var(--ty-on-accent);
   font-size: 0.7rem;
   font-weight: 700;
   line-height: 20px;
-}
-[data-theme="light"] .panel-badge {
-  color: var(--ty-bg);
 }
 .panel-bell,
 .panel-avatar {
@@ -296,6 +298,7 @@
   border: 1px solid var(--ty-border);
   border-radius: 20px;
   background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
 }
 .panel-card h3 {
   margin: 0 0 10px;
@@ -366,8 +369,8 @@
   min-height: 46px;
   padding: 12px;
   color: var(--ty-text);
-  background: var(--ty-bg);
-  border: 1px solid var(--ty-border);
+  background: var(--ty-surface);
+  border: 1px solid var(--ty-control-border);
   border-radius: 10px;
   font: inherit;
 }
@@ -387,16 +390,23 @@
   border: 1px solid var(--ty-border);
   border-radius: 20px;
   background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
   color: var(--ty-text);
 }
 .panel-content .profile-form h2 {
   margin: 0;
   font-size: 1.4rem;
 }
+/* Botón primario: en claro, el acento verde azulado; en oscuro, crema sobre fondo como antes. */
 .panel-content .primary {
-  background: var(--ty-text);
-  border-color: var(--ty-text);
+  --ty-primary: var(--ty-text);
+  background: var(--ty-primary);
+  border-color: var(--ty-primary);
   color: var(--ty-bg);
+}
+[data-theme="light"] .panel-content .primary {
+  --ty-primary: var(--ty-accent);
+  color: var(--ty-on-accent);
 }
 .panel-content .outline {
   border: 1px solid var(--ty-border);
@@ -411,7 +421,8 @@
 }
 .panel-shell .s02-panel button[aria-pressed="true"] {
   background: var(--ty-accent);
-  color: var(--ty-bg);
+  border-color: var(--ty-accent);
+  color: var(--ty-on-accent);
 }
 /* El botón de pausa del carrusel S2 no lleva .deck-pause: sin esto queda en 46 px y su texto desborda. */
 .panel-shell .deck-controls > button:last-child {
@@ -420,10 +431,21 @@
   font-size: 13px;
 }
 .panel-shell .s02-card,
-.panel-shell .s02-modal {
+.panel-shell .s02-modal > dialog {
   background: var(--ty-surface);
   border-color: var(--ty-border);
+  box-shadow: var(--ty-card-shadow);
   color: var(--ty-text);
+}
+/* El diálogo de confirmación cubre la página con un velo; antes el velo tomaba el color de la tarjeta. */
+.panel-shell .s02-modal {
+  background: rgba(8, 20, 24, 0.6);
+}
+/* A4: la vista previa de comunicados tenía un verde fijo y en el tema claro el texto oscuro no se leía. */
+.panel-shell .s02-preview {
+  background: var(--ty-raised);
+  color: var(--ty-text);
+  border: 1px solid var(--ty-border);
 }
 
 /* Mi perfil */

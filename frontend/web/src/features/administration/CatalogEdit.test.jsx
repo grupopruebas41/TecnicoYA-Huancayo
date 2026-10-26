@@ -12,8 +12,8 @@ beforeEach(()=>request.mockImplementation(async(path,body,method)=>{
 }));
 afterEach(()=>{cleanup();vi.resetAllMocks()});
 test('S02-TC-076 complemento DEF-47: PATCH conserva foto y versión sin enviar specialty_id',async()=>{
- render(<CatalogAdmin/>);await screen.findByText('Editar Cómputo');
- fireEvent.click(screen.getByText('Subcategorías'));fireEvent.click(screen.getByText('Editar Redes'));
+ render(<CatalogAdmin/>);await screen.findByRole('button',{name:'Editar Cómputo'});
+ fireEvent.click(screen.getByText('Subcategorías'));fireEvent.click(screen.getByRole('button',{name:'Editar Redes'}));
  fireEvent.change(screen.getByLabelText('Nombre'),{target:{value:'Redes actualizadas'}});
  fireEvent.click(screen.getByText('Guardar'));
  await waitFor(()=>expect(request).toHaveBeenCalledWith('/admin/subcategories/7',expect.any(Object),'PATCH'));
@@ -25,7 +25,7 @@ test('S02-TC-076 complemento DEF-47: PATCH conserva foto y versión sin enviar s
  await screen.findByText('Cambios guardados.');
 });
 test('S02-TC-076 complemento DEF-47: creación exige especialidad y la envía en POST',async()=>{
- render(<CatalogAdmin/>);await screen.findByText('Editar Cómputo');
+ render(<CatalogAdmin/>);await screen.findByRole('button',{name:'Editar Cómputo'});
  fireEvent.click(screen.getByText('Subcategorías'));fireEvent.click(screen.getByText('Crear subcategoría'));
  fireEvent.change(screen.getByLabelText('Nombre'),{target:{value:'Impresoras'}});
  fireEvent.click(screen.getByText('Guardar'));await screen.findByText('Revisa los campos indicados.');
@@ -39,8 +39,8 @@ for(const [tab,name,path,expected] of [
  ['Especialidades','Cómputo','/admin/specialties/1',{name:'Nombre actualizado',description:'',image_id:null,expected_version:2}],
  ['Distritos','Huancayo','/admin/districts/4',{name:'Nombre actualizado',expected_version:2}],
 ]) test('S02-TC-076 complemento DEF-47: edición de '+tab+' envía únicamente campos editables',async()=>{
- render(<CatalogAdmin/>);await screen.findByText('Editar Cómputo');fireEvent.click(screen.getByText(tab));
- fireEvent.click(screen.getByText('Editar '+name));fireEvent.change(screen.getByLabelText('Nombre'),{target:{value:'Nombre actualizado'}});
+ render(<CatalogAdmin/>);await screen.findByRole('button',{name:'Editar Cómputo'});fireEvent.click(screen.getByText(tab));
+ fireEvent.click(screen.getByRole('button',{name:'Editar '+name}));fireEvent.change(screen.getByLabelText('Nombre'),{target:{value:'Nombre actualizado'}});
  fireEvent.click(screen.getByText('Guardar'));await screen.findByText('Cambios guardados.');
  expect(request).toHaveBeenCalledWith(path,expected,'PATCH');
 });

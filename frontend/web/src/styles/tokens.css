@@ -33,16 +33,56 @@
   --ty-fast: 180ms;
   --ty-motion: 700ms;
   --ty-width: 1200px;
+  /* Tokens del panel; en oscuro reproducen el aspecto anterior (el tema oscuro no cambia). */
+  --ty-on-accent: var(--ty-bg);
+  --ty-gold: var(--ty-accent);
+  --ty-control-border: var(--ty-border);
+  --ty-topbar-bg: var(--ty-bg);
+  --ty-card-shadow: none;
+  --ty-sidebar-bg: var(--ty-surface);
+  --ty-sidebar-text: var(--ty-text);
+  --ty-sidebar-muted: var(--ty-muted);
+  --ty-sidebar-hover: var(--ty-raised);
+  --ty-sidebar-active: var(--ty-raised);
+  --ty-sidebar-mark: var(--ty-accent);
+  --ty-sidebar-border: var(--ty-border);
+  --ty-success: #9fd8bb;
+  --ty-success-text: #bfe8d0;
+  --ty-success-bg: #1e4536;
+  --ty-warning: #e5ce9b;
+  --ty-warning-text: #e5ce9b;
+  --ty-warning-bg: #3a3322;
+  --ty-neutral-bg: var(--ty-raised);
 }
 [data-theme="light"] {
- --ty-match-history:#b9d2c9;
- --ty-match-fee:#e0d3b1;
-  --ty-bg: #f5f1e9;
-  --ty-surface: #e8e3d8;
-  --ty-raised: #ded8cb;
-  --ty-text: #132d31;
-  --ty-muted: #415b5d;
-  --ty-accent: #785b31;
-  --ty-border: #8c9e98;
-  --ty-error: #992c24;
+  /* Paleta clara del panel (ajuste del PR #32): contenido claro, barra lateral oscura. Contraste AA en S07-TC-077. */
+  --ty-match-history: #b9d2c9;
+  --ty-match-fee: #e0d3b1;
+  --ty-bg: #f4f7f6;
+  --ty-surface: #ffffff;
+  --ty-raised: #eaf0ee;
+  --ty-text: #13222a;
+  --ty-muted: #5a6b70;
+  --ty-accent: #1f6f6b;
+  --ty-on-accent: #ffffff;
+  --ty-gold: #b8893b;
+  --ty-border: #dde5e3;
+  --ty-control-border: #7d8f93;
+  --ty-topbar-bg: #ffffff;
+  --ty-card-shadow: 0 1px 2px rgba(19, 34, 42, 0.06), 0 6px 16px rgba(19, 34, 42, 0.05);
+  --ty-sidebar-bg: #0f2a2e;
+  --ty-sidebar-text: #e8efee;
+  --ty-sidebar-muted: #a9bdbb;
+  --ty-sidebar-hover: #173a3f;
+  --ty-sidebar-active: #1c4a4f;
+  --ty-sidebar-mark: #c9a35a;
+  --ty-sidebar-border: #24474b;
+  --ty-success: #2e7d5b;
+  --ty-success-text: #1f6146;
+  --ty-success-bg: #e3f2ea;
+  --ty-warning: #b7791f;
+  --ty-warning-text: #8a5a12;
+  --ty-warning-bg: #fdf5e6;
+  --ty-neutral-bg: #eef2f1;
+  --ty-error: #b42318;
 }

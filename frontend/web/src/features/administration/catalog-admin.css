@@ -1,0 +1,228 @@
+/* Catálogo del panel como lista compacta (ajuste A2 del PR #32). Solo tokens: sigue el tema claro u oscuro. */
+.catalog-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px 16px;
+  margin: 20px 0 8px;
+}
+.catalog-toolbar label {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  min-width: 200px;
+  font-size: 0.9rem;
+}
+.catalog-toolbar .catalog-search {
+  flex: 1 1 260px;
+}
+.s02-panel .catalog-toolbar .catalog-create {
+  margin: 0 0 0 auto;
+  min-height: 46px;
+}
+.catalog-count {
+  margin: 8px 0;
+  font-size: 0.85rem;
+}
+
+.s02-list.catalog-list {
+  display: block;
+  border: 1px solid var(--ty-border);
+  border-radius: 16px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow, none);
+  overflow: hidden;
+}
+.s02-list.catalog-list:empty {
+  display: none;
+}
+.catalog-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  grid-template-areas: "main meta switch edit" "notice notice notice notice";
+  align-items: center;
+  column-gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ty-border);
+}
+.catalog-row.has-thumb {
+  grid-template-columns: 56px minmax(0, 1fr) auto auto auto;
+  grid-template-areas: "thumb main meta switch edit" "notice notice notice notice notice";
+}
+.catalog-row:last-child {
+  border-bottom: 0;
+}
+.catalog-row:hover {
+  background: var(--ty-raised);
+}
+.catalog-thumb {
+  grid-area: thumb;
+  width: 56px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--ty-raised);
+}
+.catalog-thumb.is-empty {
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--ty-control-border, var(--ty-border));
+  color: var(--ty-muted);
+  font-weight: 600;
+}
+.catalog-main {
+  grid-area: main;
+  min-width: 0;
+}
+.catalog-main h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.catalog-main small {
+  display: block;
+  margin-top: 2px;
+  color: var(--ty-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.catalog-meta {
+  grid-area: meta;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+.catalog-fee {
+  font-size: 0.9rem;
+}
+.catalog-status {
+  margin: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.catalog-status.is-active {
+  background: var(--ty-success-bg);
+  color: var(--ty-success-text);
+}
+.catalog-status.is-inactive {
+  background: var(--ty-neutral-bg);
+  color: var(--ty-muted);
+}
+.catalog-row-notice {
+  grid-area: notice;
+}
+.catalog-row-notice:empty {
+  display: none;
+}
+.catalog-row-notice > * {
+  margin: 8px 0 0;
+}
+
+/* Interruptor: el estado lo da aria-checked; el texto lo anuncia el lector de pantalla. */
+.s02-panel .catalog-switch {
+  grid-area: switch;
+  position: relative;
+  width: 46px;
+  height: 26px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ty-control-border, var(--ty-border));
+  border-radius: 999px;
+  background: var(--ty-neutral-bg);
+  cursor: pointer;
+}
+.s02-panel .catalog-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ty-muted);
+  transition: transform var(--ty-fast, 0.18s) ease;
+}
+.s02-panel .catalog-switch[aria-checked="true"] {
+  background: var(--ty-accent);
+  border-color: var(--ty-accent);
+}
+.s02-panel .catalog-switch[aria-checked="true"]::after {
+  transform: translateX(20px);
+  background: var(--ty-on-accent, var(--ty-bg));
+}
+.s02-panel .catalog-edit {
+  grid-area: edit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+/* Más especificidad que «.panel-shell .s02-panel button», que pinta todos los botones heredados del S2. */
+.panel-shell .s02-panel .catalog-switch {
+  background: var(--ty-neutral-bg);
+  border-color: var(--ty-control-border);
+}
+.panel-shell .s02-panel .catalog-switch[aria-checked="true"] {
+  background: var(--ty-accent);
+  border-color: var(--ty-accent);
+}
+.panel-shell .s02-panel .catalog-edit {
+  background: var(--ty-surface);
+  border-color: var(--ty-control-border);
+}
+.panel-shell .s02-panel .catalog-edit:hover {
+  background: var(--ty-raised);
+}
+
+@media (max-width: 640px) {
+  .catalog-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas: "main switch edit" "meta meta meta" "notice notice notice";
+    row-gap: 6px;
+    column-gap: 10px;
+    padding: 12px;
+  }
+  .catalog-row.has-thumb {
+    grid-template-columns: 48px minmax(0, 1fr) auto auto;
+    grid-template-areas: "thumb main switch edit" "thumb meta meta meta" "notice notice notice notice";
+  }
+  .catalog-thumb {
+    width: 48px;
+    height: 48px;
+    align-self: start;
+  }
+  .s02-panel .catalog-edit {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+  .catalog-edit-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .catalog-toolbar label {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  .s02-panel .catalog-toolbar .catalog-create {
+    margin: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .s02-panel .catalog-switch::after {
+    transition: none;
+  }
+}

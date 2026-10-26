@@ -1,5 +1,6 @@
 // S07-TC-073 a 076 · Ajuste del PR #32 (A2): el catálogo del panel pasa de tarjetas a una lista compacta con
 // miniatura, especialidad, tarifa, estado de color, interruptor con confirmación, filtro y buscador.
+// La miniatura es decorativa (alt vacío, el nombre está al lado): se busca por su clase y no por el rol img.
 import React from 'react';
 import {test, expect, vi, beforeEach, afterEach} from 'vitest';
 import {render, screen, fireEvent, cleanup, waitFor, within} from '@testing-library/react';
@@ -35,14 +36,14 @@ async function open(tab) {
 test('S07-TC-073 subcategorías en lista compacta con miniatura o marcador, especialidad, tarifa y estado de color', async () => {
   await open('Subcategorías');
   const redes = within(row('Redes'));
-  expect(redes.getByRole('img', {hidden: true})).toHaveAttribute('src', '/redes.png');
+  expect(row('Redes').querySelector('img.catalog-thumb')).toHaveAttribute('src', '/redes.png');
   expect(redes.getByText('Cómputo')).toBeInTheDocument();
   expect(redes.getByText('Desde S/ 50.00')).toBeInTheDocument();
   expect(redes.getByText('Activo')).toHaveClass('catalog-status', 'is-active');
   expect(redes.getByRole('button', {name: 'Editar Redes'})).toHaveTextContent('Editar');
 
   const impresoras = within(row('Impresoras'));
-  expect(impresoras.queryByRole('img', {hidden: true})).not.toBeInTheDocument();
+  expect(row('Impresoras').querySelector('img')).toBeNull();
   expect(row('Impresoras').querySelector('.catalog-thumb.is-empty')).toHaveTextContent('I');
   expect(impresoras.getByText('Sin tarifa')).toBeInTheDocument();
   expect(impresoras.getByText('Inactivo')).toHaveClass('catalog-status', 'is-inactive');
@@ -96,7 +97,7 @@ test('S07-TC-075 el interruptor de estado pide confirmación: cancelar no envía
 
 test('S07-TC-076 especialidades conservan su foto y distritos usan la misma lista sin miniatura', async () => {
   await open();
-  expect(within(row('Cómputo')).getByRole('img', {hidden: true})).toHaveAttribute('src', '/computo.png');
+  expect(row('Cómputo').querySelector('img.catalog-thumb')).toHaveAttribute('src', '/computo.png');
   expect(within(row('Cómputo')).getByText('2 subcategorías')).toBeInTheDocument();
   expect(row('Refrigeración').querySelector('.catalog-thumb.is-empty')).toHaveTextContent('R');
   expect(within(row('Refrigeración')).getByText('1 subcategoría')).toBeInTheDocument();

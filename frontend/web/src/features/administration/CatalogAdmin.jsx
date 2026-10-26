@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { request } from "./http";
-import { Field } from "./forms";
 import {
   MutationForm,
   Upload,
@@ -8,6 +7,9 @@ import {
   ResourceState,
 } from "./Sprint02Common";
 import { validateSubcategory, validateReferenceFee } from "./sprint02Validation";
+import ConfirmDialog from "../../components/ConfirmDialog";
+import { Field, Notice } from "./forms";
+import "./catalog-admin.css";
 function catalogPayload(kind, value, editing) {
   if (kind === "districts") return { name: value.name };
   if (kind === "specialties") return { name: value.name, description: value.description, image_id: value.image_id };
@@ -22,7 +24,7 @@ function catalogPayload(kind, value, editing) {
 function catalogRows(kind, specialties, districts) {
   if (kind === "districts") return districts;
   if (kind === "specialties") return specialties;
-  return (specialties || []).flatMap(s => (s.subcategories || []).map(x => ({...x, specialty_id: s.id})));
+  return (specialties || []).flatMap(s => (s.subcategories || []).map(x => ({...x, specialty_id: s.id, specialty_name: s.name})));
 }
 function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
   const [v, set] = useState({
@@ -118,16 +120,104 @@ function CatalogEditor({ kind, item = {}, specialties = [], reload, onDone }) {
     </MutationForm>
   );
 }
+const NAMES = {
+  specialties: "Especialidades",
+  subcategories: "Subcategorías",
+  districts: "Distritos",
+};
+const SINGULAR = {specialties: "especialidad", subcategories: "subcategoría", districts: "distrito"};
+// Búsqueda sin mayúsculas ni tildes: «camaras» encuentra «Cámaras».
+const fold = text => (text || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+function feeLabel(fee) {
+  return fee === null || fee === undefined || fee === "" ? "Sin tarifa" : "Desde S/ " + Number(fee).toFixed(2);
+}
+function rowDetail(kind, row) {
+  if (kind === "subcategories") return feeLabel(row.reference_fee);
+  if (kind === "specialties") {
+    const count = (row.subcategories || []).length;
+    return count + (count === 1 ? " subcategoría" : " subcategorías");
+  }
+  return null;
+}
+/** Interruptor de estado con confirmación (A2): Cancelar no envía nada; Confirmar guarda con la versión. */
+function StatusSwitch({ kind, row, reload }) {
+  const [open, setOpen] = useState(false),
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState(""),
+    [success, setSuccess] = useState("");
+  const action = row.active ? "Desactivar" : "Activar";
+  async function confirm() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await request("/admin/" + kind + "/" + row.id, { active: !row.active, expected_version: row.version }, "PATCH");
+      setOpen(false);
+      setSuccess("Cambios guardados.");
+      await reload();
+    } catch (failure) {
+      setOpen(false);
+      setError(failure.message);
+      if (failure.status === 0) await reload();
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <>
+      <button
+        type="button"
+        role="switch"
+        className="catalog-switch"
+        aria-checked={Boolean(row.active)}
+        aria-label={"Estado de " + row.name}
+        disabled={busy}
+        onClick={() => { setError(""); setSuccess(""); setOpen(true); }}
+      />
+      <div className="catalog-row-notice"><Notice error={error} success={success} /></div>
+      {open && (
+        <ConfirmDialog
+          busy={busy}
+          title={action + " " + SINGULAR[kind]}
+          description={row.active
+            ? "«" + row.name + "» dejará de mostrarse a clientes y técnicos. Podrás activarla de nuevo."
+            : "«" + row.name + "» volverá a mostrarse en el catálogo."}
+          onCancel={() => setOpen(false)}
+          onConfirm={confirm}
+        />
+      )}
+    </>
+  );
+}
+function CatalogRow({ kind, row, onEdit, reload }) {
+  const detail = rowDetail(kind, row);
+  return (
+    <article className={"catalog-row" + (kind === "districts" ? "" : " has-thumb")}>
+      {kind !== "districts" && (row.image_url
+        ? <img className="catalog-thumb" src={row.image_url} alt="" />
+        : <span className="catalog-thumb is-empty" aria-hidden="true">{Array.from(row.name)[0]}</span>)}
+      <div className="catalog-main">
+        <h3>{row.name}</h3>
+        {kind === "subcategories" && <small>{row.specialty_name}</small>}
+        {kind === "specialties" && row.description && <small>{row.description}</small>}
+      </div>
+      <div className="catalog-meta">
+        {detail && <span className="catalog-fee">{detail}</span>}
+        <p className={"catalog-status " + (row.active ? "is-active" : "is-inactive")}>{row.active ? "Activo" : "Inactivo"}</p>
+      </div>
+      <StatusSwitch kind={kind} row={row} reload={reload} />
+      <button type="button" className="catalog-edit" aria-label={"Editar " + row.name} onClick={onEdit}>
+        <span aria-hidden="true">✎</span> <span className="catalog-edit-text">Editar</span>
+      </button>
+    </article>
+  );
+}
 export default function CatalogAdmin() {
   const catalog = useResource("/admin/specialties"),
     districts = useResource("/admin/districts");
   const [kind, setKind] = useState("specialties"),
-    [editing, setEditing] = useState(null);
-  const names = {
-    specialties: "Especialidades",
-    subcategories: "Subcategorías",
-    districts: "Distritos",
-  };
+    [editing, setEditing] = useState(null),
+    [query, setQuery] = useState(""),
+    [specialty, setSpecialty] = useState("");
   const reload = async () => {
     const fresh = await catalog.reload();
     const zones = await districts.reload();
@@ -139,11 +229,13 @@ export default function CatalogAdmin() {
     return fresh;
   };
   const rows = catalogRows(kind, catalog.data, districts.data) || [];
+  const visible = rows.filter(row => (kind !== "subcategories" || !specialty || String(row.specialty_id) === specialty)
+    && fold(row.name).includes(fold(query.trim())));
   return (
     <section className="s02-panel">
       <h2>Administrar catálogo</h2>
       <nav aria-label="Tipo de catálogo">
-        {Object.entries(names).map(([k, n]) => (
+        {Object.entries(NAMES).map(([k, n]) => (
           <button
             type="button"
             key={k}
@@ -151,6 +243,8 @@ export default function CatalogAdmin() {
             onClick={() => {
               setKind(k);
               setEditing(null);
+              setQuery("");
+              setSpecialty("");
             }}
           >
             {n}
@@ -159,14 +253,28 @@ export default function CatalogAdmin() {
       </nav>
       <ResourceState resource={catalog} />
       <ResourceState resource={districts} />
-      <button type="button" onClick={() => setEditing({})}>
-        Crear{" "}
-        {{specialties: "especialidad", subcategories: "subcategoría", districts: "distrito"}[kind]}
-      </button>
+      <div className="catalog-toolbar">
+        <label className="catalog-search">
+          <span>Buscar {NAMES[kind].toLowerCase()}</span>
+          <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Nombre" />
+        </label>
+        {kind === "subcategories" && (
+          <label>
+            <span>Filtrar por especialidad</span>
+            <select value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
+              <option value="">Todas</option>
+              {(catalog.data || []).map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
+            </select>
+          </label>
+        )}
+        <button type="button" className="catalog-create" onClick={() => setEditing({})}>
+          Crear {SINGULAR[kind]}
+        </button>
+      </div>
       {editing && (
         <div className="s02-card">
           <h3>
-            {editing.id ? "Editar" : "Crear"} {names[kind].toLowerCase()}
+            {editing.id ? "Editar" : "Crear"} {NAMES[kind].toLowerCase()}
           </h3>
           <CatalogEditor
             key={kind + "-" + (editing.id || "new")}
@@ -181,30 +289,11 @@ export default function CatalogAdmin() {
         </div>
       )}
       {!rows.length && catalog.data && <p>No hay registros disponibles.</p>}
-      <div className="s02-list">
-        {rows.map((row) => (
-          <article key={row.id} className="s02-card">
-            <h3>{row.name}</h3>
-            {row.image_url && (
-              <img src={row.image_url} alt={"Imagen de " + row.name} />
-            )}
-            <p>{row.active ? "Activo" : "Inactivo"}</p>
-            <button type="button" onClick={() => setEditing(row)}>
-              Editar {row.name}
-            </button>
-            <MutationForm
-              label={row.active ? "Desactivar" : "Activar"}
-              reload={reload}
-              onSave={async () => {
-                await request(
-                  "/admin/" + kind + "/" + row.id,
-                  { active: !row.active, expected_version: row.version },
-                  "PATCH",
-                );
-                await reload();
-              }}
-            />
-          </article>
+      {rows.length > 0 && <p className="catalog-count muted">{visible.length} de {rows.length}</p>}
+      {rows.length > 0 && !visible.length && <p>{kind === "specialties" ? "Ninguna especialidad" : kind === "subcategories" ? "Ninguna subcategoría" : "Ningún distrito"} coincide con la búsqueda.</p>}
+      <div className={"s02-list catalog-list" + (kind === "districts" ? " is-plain" : "")}>
+        {visible.map((row) => (
+          <CatalogRow key={row.id} kind={kind} row={row} reload={reload} onEdit={() => setEditing(row)} />
         ))}
       </div>
     </section>
