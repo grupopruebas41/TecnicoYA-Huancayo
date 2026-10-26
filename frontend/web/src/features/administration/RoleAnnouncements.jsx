@@ -1,18 +1,10 @@
 import React from "react";
-import { CarouselDeck } from "../../ServiceCarousel";
-import { useResource, ResourceState } from "./Sprint02Common";
+import AnnouncementCarousel from "../announcements/AnnouncementCarousel";
+import { useResource } from "./Sprint02Common";
+// Comunicados vigentes del rol (D-83): carrusel a todo el ancho del contenido. Sin comunicados, o si la lista no
+// carga, no se muestra nada: el Inicio sigue con el resto de su contenido.
 export default function RoleAnnouncements() {
   const r = useResource("/announcements");
-  return (
-    <section className="s02-announcements">
-      <h2>Comunicados</h2>
-      <ResourceState resource={r} />
-      {r.data?.length === 0 && (
-        <p>No hay comunicados vigentes para tu cuenta.</p>
-      )}
-      {r.data?.length > 0 && (
-        <CarouselDeck items={r.data} label="Avisos para tu cuenta" />
-      )}
-    </section>
-  );
+  if (!r.data?.length) return null;
+  return <AnnouncementCarousel items={r.data} label="Comunicados para tu cuenta" />;
 }

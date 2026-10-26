@@ -10,5 +10,7 @@ export function image(){
   cy.get('.s02-panel input[type=file]').first().selectFile('cypress/fixtures/evidencia.png');
   cy.wait('@uploadCsrf').then(({response})=>expect(response?.statusCode,'Preparación CSRF antes de subir').to.eq(204));
 }
-export function announcement(){cy.contains('button','Crear comunicado').click();field('Título','Aviso '+Date.now());field('Contenido','Texto <img src=x onerror=alert(1)> de prueba');cy.contains('label','Clientes').find('input').check();field('Inicio de vigencia','2030-01-01T08:00');field('Fin de vigencia','2030-01-02T08:00')}
+// D-83: el editor del bloque B pide origen, tipo, texto alternativo y audiencia en tarjetas. Genially evita depender de una imagen.
+export function announcement(alt='Aviso <img src=x onerror=alert(1)> de prueba'){cy.contains('button','Crear comunicado').click();cy.contains('label','Genially').click();field('Título interno','Aviso '+Date.now());field('Enlace de Genially','https://view.genially.com/abc123def456');field('Texto alternativo',alt);cy.contains('[role=radiogroup][aria-label=Tipo] label','Aviso').click();cy.contains('label','Solo clientes').click();field('Inicio de vigencia','2030-01-01T08:00');field('Fin de vigencia','2030-01-02T08:00')}
+export function menu(title,action){cy.get('button[aria-label="Acciones de «'+title+'»"]').click();cy.contains('[role=menu] [role=menuitem]',action).click()}
 export function observe(method,path,alias){cy.intercept(method,api()+'/api/v1'+path).as(alias)}
