@@ -91,6 +91,10 @@ html:has(.landing-page) {
 .landing-page .ty-frame.ty-faq {
   align-content: center;
 }
+/* En grid, los bloques con margin: auto se encogerían: la vitrina conserva su ancho. */
+.landing-page .ty-vitrine.ty-frame > * {
+  width: 100%;
+}
 
 /* B1 · Iniciar sesión proporcional al menú. */
 .landing-page .ty-header .ty-header-login {
