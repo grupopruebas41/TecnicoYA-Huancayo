@@ -351,3 +351,24 @@ test("S02-TC-089 zonas son enfocables y muestran zona activa",async()=>{
  expect(zones[1]).toHaveAttribute("aria-label","Zona Huancayo");
  expect(screen.getByRole("status")).toHaveTextContent("Huancayo");
 });
+
+test("S02-TC-089 regresión visual: escenario con altura positiva y cartas visibles",async()=>{
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ const stage=container.querySelector(".ty-product-stage");
+ const center=stage.querySelector(".ty-product-card.is-center");
+ expect(Number.parseFloat(stage.style.height)).toBeGreaterThan(0);
+ expect(center.querySelector("img")).toHaveAttribute("loading","eager");
+ expect([...stage.querySelectorAll(".ty-product-card.is-side img")].every((image)=>image.loading==="eager")).toBe(true);
+ expect(center).toHaveClass("is-center");
+});
+
+test("S02-TC-089 regresión visual: título activo va debajo del kicker y encima del abanico",async()=>{
+ const {container}=render(<ServiceCarousel/>);await act(async()=>{});
+ const kicker=container.querySelector(".ty-product-kicker");
+ const title=container.querySelector(".ty-product-title");
+ const stage=container.querySelector(".ty-product-stage");
+ expect(kicker).toBeInTheDocument();
+ expect(title).toHaveTextContent("Primero");
+ expect(kicker.compareDocumentPosition(title)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+ expect(title.compareDocumentPosition(stage)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});
