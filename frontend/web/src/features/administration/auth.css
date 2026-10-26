@@ -1,1 +1,304 @@
-.auth-shell{position:relative;isolation:isolate;width:min(1080px,100%);min-height:600px;background:#192629;border:1px solid #d7c6a32b;border-radius:28px;overflow:hidden;box-shadow:0 32px 90px #0005}.auth-welcome{position:absolute;inset:0 auto 0 50%;width:50%;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:54px 40px;background:linear-gradient(135deg,#324e4c,#203a3b);border-radius:180px 0 0 180px;transition:transform .85s cubic-bezier(.65,0,.25,1),border-radius .85s cubic-bezier(.65,0,.25,1)}.is-register .auth-welcome{transform:translate(-100%);border-radius:0 180px 180px 0}.auth-emblem{font:italic 66px "Instrument Serif",serif;color:#e5d1ac;border:1px solid #d7c6a34d;width:84px;height:84px;border-radius:50%;margin-bottom:32px}.auth-welcome .kicker{font-size:9px;letter-spacing:1.6px;color:#d0c3a8}.auth-welcome h2{font-size:36px;line-height:1.1;margin:23px 0;color:#f6f1e7;letter-spacing:-1px}.auth-welcome h2 em{font-size:1.2em}.auth-welcome p{font-size:15px;line-height:1.7;color:#d0dcda;max-width:310px;margin:22px auto 28px}.auth-switch{border:1px solid #e7d1aa80;color:#f5eddf;background:transparent;min-width:190px}.auth-location{font-size:9px;letter-spacing:3px;color:#b8c7bf;margin-top:42px}.auth-form-side{position:relative;width:50%;padding:64px 52px;transition:transform .85s cubic-bezier(.65,0,.25,1)}.is-register .auth-form-side{transform:translate(100%)}.account-page .auth-shell .auth-form{width:100%;max-width:none;margin:0;padding:0;background:none;border:0;box-shadow:none;border-radius:0;animation:auth-form-in .7s both}.auth-form h1{font:italic 48px/1.05 "Instrument Serif",serif;letter-spacing:-1.5px;margin:18px 0;color:#f5eddf;text-wrap:balance}.auth-form .kicker{font-size:9px;letter-spacing:1.6px}.auth-intro{color:#aebfbd;font-size:14px;margin:0 0 30px}.auth-shell label{color:#d8e0dc;font-size:12px;gap:9px;margin-bottom:18px}.auth-shell input,.auth-shell select{background:#101c20;border-color:#ffffff20;border-radius:10px;min-height:46px}.auth-shell input:focus,.auth-shell select:focus{border-color:#d5bf95}.auth-shell .submit{margin-top:9px;justify-content:center;background:#e7d9bf;border-color:#e7d9bf;color:#192629}.auth-shell .text-button{font-size:12px;color:#d5c3a0}.auth-shell fieldset{border:1px solid #ffffff25;border-radius:10px;margin:0 0 20px;padding:16px}.auth-shell legend{font-size:12px;color:#d5c3a0}.auth-shell .checkbox-label input{min-height:0;width:16px;height:16px}.auth-welcome-copy{animation:auth-copy-in .75s both}@keyframes auth-form-in{0%{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}@keyframes auth-copy-in{0%{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}@media (max-width:760px){.auth-shell{border-radius:22px;min-height:0;display:flex;flex-direction:column}.auth-welcome,.is-register .auth-welcome{position:relative;inset:auto;width:100%;transform:none;border-radius:0 0 70px;padding:30px 26px}.auth-emblem,.auth-location{display:none}.auth-welcome h2{font-size:29px;margin:14px 0}.auth-welcome p{font-size:13px;margin:14px auto 20px;max-width:360px}.auth-welcome .kicker{font-size:8px}.auth-form-side,.is-register .auth-form-side{width:100%;transform:none;padding:34px 26px}.auth-form h1{font-size:40px}.auth-switch{min-height:44px}.auth-shell .form-row{grid-template-columns:1fr}}@media (prefers-reduced-motion:reduce){.auth-welcome,.auth-form-side{transition:none}.auth-shell .auth-form,.auth-welcome-copy{animation:none}}
+/* Pantalla #cuenta sin sesión: tarjeta centrada en el alto disponible bajo la cabecera.
+   El panel de marca va antes del formulario en el DOM (orden de Tab de S01-TC-075) y se
+   coloca a la derecha con grid-template-areas. */
+.session-page.auth-page {
+  display: grid;
+  place-items: center;
+  max-width: none;
+  min-height: calc(100svh - var(--account-header-height, 72px));
+  margin: 0;
+  padding: clamp(16px, 3vh, 32px) clamp(16px, 4vw, 48px);
+}
+.auth-shell {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-areas: "form panel";
+  width: min(1080px, 100%);
+  overflow: hidden;
+  background: #192629;
+  border: 1px solid #d7c6a32b;
+  border-radius: 28px;
+  box-shadow: 0 32px 90px #0005;
+}
+.auth-welcome {
+  grid-area: panel;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(28px, 5vh, 48px) clamp(24px, 3vw, 40px);
+  text-align: center;
+  background: linear-gradient(135deg, #324e4c, #203a3b);
+  border-radius: 140px 0 0 140px;
+}
+.auth-emblem {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  border: 1px solid #d7c6a34d;
+  border-radius: 50%;
+  color: #e5d1ac;
+  font: italic 48px/1 "Instrument Serif", serif;
+}
+.auth-welcome .kicker {
+  color: #d0c3a8;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+}
+.auth-welcome h2 {
+  margin: 16px 0;
+  color: #f6f1e7;
+  font-size: clamp(26px, 2.4vw, 32px);
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.auth-welcome h2 em {
+  font-size: 1.2em;
+}
+.auth-welcome p {
+  max-width: 300px;
+  margin: 0 auto 22px;
+  color: #d0dcda;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.auth-switch {
+  min-width: 180px;
+  min-height: 42px;
+  padding: 10px 20px;
+  border: 1px solid #e7d1aa80;
+  background: transparent;
+  color: #f5eddf;
+  font-size: 14px;
+}
+.auth-location {
+  margin-top: 28px;
+  color: #b8c7bf;
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+.auth-form-side {
+  grid-area: form;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 4vh, 44px) clamp(24px, 4vw, 52px);
+}
+.account-page .auth-shell .auth-form {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  animation: auth-form-in 0.7s both;
+}
+.auth-form .kicker {
+  font-size: 10px;
+  letter-spacing: 1.6px;
+}
+.auth-form h1 {
+  margin: 10px 0 18px;
+  color: #f5eddf;
+  font: italic clamp(34px, 3vw, 42px) / 1.05 "Instrument Serif", serif;
+  letter-spacing: -1px;
+  text-wrap: balance;
+}
+.auth-shell .form-field {
+  margin-bottom: 14px;
+}
+.auth-shell label {
+  gap: 7px;
+  color: #d8e0dc;
+  font-size: 13px;
+}
+.auth-shell .form-field label {
+  margin-bottom: 0;
+}
+.auth-shell input,
+.auth-shell select {
+  min-height: 44px;
+  padding: 10px 12px;
+  background: #101c20;
+  border-color: #ffffff20;
+  border-radius: 10px;
+}
+.auth-shell input:focus,
+.auth-shell select:focus {
+  border-color: #d5bf95;
+}
+/* Dos campos por fila en el registro para que la tarjeta quepa en 1366×768. */
+.auth-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 14px;
+  align-items: start;
+}
+.auth-row > .muted {
+  align-self: center;
+  margin: 0 0 14px;
+  font-size: 13px;
+}
+.auth-shell .submit {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 4px;
+  justify-content: center;
+  background: #e7d9bf;
+  border-color: #e7d9bf;
+  color: #192629;
+  font-size: 15px;
+}
+.auth-shell .text-button {
+  margin-top: 10px;
+  color: #d5c3a0;
+  font-size: 13px;
+}
+.auth-shell fieldset {
+  margin: 0 0 16px;
+  padding: 14px;
+  border: 1px solid #ffffff25;
+  border-radius: 10px;
+}
+.auth-shell legend {
+  color: #d5c3a0;
+  font-size: 12px;
+}
+.auth-shell .checkbox-label input {
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+}
+.auth-shell .notice,
+.auth-shell .error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+/* Aviso compacto de conexión, dentro de la tarjeta y sobre el formulario. */
+.auth-alert {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  border: 1px solid #ffa88f55;
+  border-radius: 12px;
+  background: #ffa88f14;
+  color: #ffd3c6;
+  font-size: 13px;
+}
+.auth-alert p {
+  margin: 0;
+  color: inherit;
+}
+.auth-alert-icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffa88f;
+  color: #192629;
+  font-weight: 700;
+}
+.auth-shell .auth-alert .text-button {
+  margin: 0;
+  color: #f5eddf;
+  font-weight: 600;
+  white-space: nowrap;
+}
+/* Comprobando tu sesión y cuenta bloqueada: misma tarjeta, compacta. */
+.auth-status {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(420px, 100%);
+  padding: 36px 28px;
+  text-align: center;
+  background: #192629;
+  border: 1px solid #d7c6a32b;
+  border-radius: 28px;
+  box-shadow: 0 32px 90px #0005;
+}
+.auth-status .auth-emblem {
+  margin: 0;
+}
+.auth-status output {
+  color: #d8e0dc;
+}
+.auth-welcome-copy {
+  animation: auth-copy-in 0.75s both;
+}
+@keyframes auth-form-in {
+  from { opacity: 0; translate: 0 14px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes auth-copy-in {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
+/* Móvil: el panel de marca se reduce a una franja arriba y el formulario ocupa todo el ancho. */
+@media (max-width: 760px) {
+  .session-page.auth-page {
+    place-items: start center;
+  }
+  .auth-shell {
+    grid-template-columns: 1fr;
+    grid-template-areas: "panel" "form";
+    border-radius: 22px;
+  }
+  .auth-welcome {
+    padding: 18px 20px 20px;
+    border-radius: 0 0 40px 40px;
+  }
+  .auth-emblem,
+  .auth-location,
+  .auth-welcome p {
+    display: none;
+  }
+  .auth-welcome h2 {
+    margin: 8px 0 12px;
+    font-size: 24px;
+  }
+  .auth-welcome .kicker {
+    font-size: 9px;
+  }
+  .auth-switch {
+    min-width: 0;
+    min-height: 40px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  .auth-form-side {
+    padding: 22px 20px 26px;
+  }
+  .auth-form h1 {
+    font-size: 34px;
+  }
+  .auth-row,
+  .auth-shell .form-row {
+    grid-template-columns: 1fr;
+  }
+  .auth-alert {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .auth-shell .auth-alert .text-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .account-page .auth-shell .auth-form,
+  .auth-welcome-copy {
+    animation: none;
+  }
+}

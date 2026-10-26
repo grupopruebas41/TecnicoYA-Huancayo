@@ -4,7 +4,7 @@ import {Field, Notice, validateAccount, EMAIL_MAX_LENGTH} from './forms';
 import './auth.css';
 import {takeAuthIntent} from '../../landing/config';
 
-export default function SessionForm({onLogin}) {
+export default function SessionForm({onLogin, connectionError = '', onRetry}) {
   const [intent] = useState(takeAuthIntent);
   const [register, setRegister] = useState(intent?.mode === 'register');
   const [type, setType] = useState(intent?.role || 'client');
@@ -48,18 +48,18 @@ export default function SessionForm({onLogin}) {
       <p>Conecta con especialistas de Huancayo desde tu cuenta personal.</p>
       <button className="button auth-switch" type="button" disabled={busy} onClick={changeMode}>{register ? 'Ya tengo una cuenta' : 'Crear una cuenta'} ↗</button>
     </div><span className="auth-location">TÉCNICOYA · HUANCAYO</span></aside>
-    <div className="auth-form-side"><form key={prefix} className="auth-form" onSubmit={submit} noValidate aria-busy={busy}>
+    <div className="auth-form-side">{connectionError && <div className="auth-alert" role="alert"><span className="auth-alert-icon" aria-hidden="true">!</span><p>{connectionError}</p>{onRetry && <button type="button" className="text-button" onClick={onRetry}>Reintentar conexión</button>}</div>}<form key={prefix} className="auth-form" onSubmit={submit} noValidate aria-busy={busy}>
       <span className="kicker">TU ESPACIO EN TÉCNICOYA</span><h1>{register ? 'Crea tu cuenta' : 'Iniciar sesión'}</h1>
       {success && <output className="notice" data-cy="register-success">{success}</output>}
       {register && <>
         <Field name="name" label="Nombre" errors={errors} data-cy="register-name" autoComplete="name"/>
-        <Field name="account_type" label="Tipo de cuenta" errors={errors}><select name="account_type" data-cy="register-account-type" value={type} onChange={e => setType(e.target.value)}><option value="client">Cliente</option><option value="technician">Técnico independiente</option></select></Field>
-        {type === 'client' && <Field name="client_type" label="Tipo de cliente" errors={errors}><select name="client_type" data-cy="register-client-type"><option value="household">Hogar</option><option value="mype">MYPE</option></select></Field>}
+        <div className="auth-row"><Field name="account_type" label="Tipo de cuenta" errors={errors}><select name="account_type" data-cy="register-account-type" value={type} onChange={e => setType(e.target.value)}><option value="client">Cliente</option><option value="technician">Técnico independiente</option></select></Field>
+        {type === 'client' && <Field name="client_type" label="Tipo de cliente" errors={errors}><select name="client_type" data-cy="register-client-type"><option value="household">Hogar</option><option value="mype">MYPE</option></select></Field>}</div>
         {type === 'technician' && <p className="muted">Tu perfil quedará pendiente de verificación. Podrás completar tus datos básicos.</p>}
       </>}
       <Field name="email" label="Correo" errors={errors} type="email" maxLength={EMAIL_MAX_LENGTH} autoComplete="email" data-cy={`${prefix}-email`} value={email} onChange={e => setEmail(e.target.value)}/>
-      <Field name="password" label="Contraseña" errors={errors} type="password" autoComplete={register ? 'new-password' : 'current-password'} data-cy={`${prefix}-password`}/>
-      {register && <Field name="password_confirmation" label="Confirmar contraseña" errors={errors} type="password" autoComplete="new-password" data-cy="register-password-confirmation"/>}
+      <div className={register ? 'auth-row' : undefined}><Field name="password" label="Contraseña" errors={errors} type="password" autoComplete={register ? 'new-password' : 'current-password'} data-cy={`${prefix}-password`}/>
+      {register && <Field name="password_confirmation" label="Confirmar contraseña" errors={errors} type="password" autoComplete="new-password" data-cy="register-password-confirmation"/>}</div>
       <Notice error={error}/><button type="submit" className="button primary submit" data-cy={`${prefix}-submit`} disabled={busy}>{busy ? 'Conectando…' : submitLabel}</button>
       <button className="text-button" type="button" data-cy={register ? 'show-login' : 'show-register'} disabled={busy} onClick={changeMode}>{register ? 'Iniciar sesión' : 'Crear una cuenta'}</button>
     </form></div>
