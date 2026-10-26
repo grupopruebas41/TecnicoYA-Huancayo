@@ -34,7 +34,10 @@ describe('Inicio del administrador', function () {
 
     it('S07-TC-046 exige sesión y el permiso dashboard.view [D-74]', function () {
         $this->getJson('/api/v1/admin/dashboard')->assertUnauthorized();
+        // Entre actores, el guard de Sanctum conserva al anterior: se olvida la sesión (como en el S1).
+        Sprint01::forgetSession();
         $this->actingAs(s07UserWithRole('client'))->getJson('/api/v1/admin/dashboard')->assertForbidden();
+        Sprint01::forgetSession();
 
         $permission = DB::table('permissions')->where('code', 'dashboard.view')->value('id');
         DB::table('role_permissions')->where('permission_id', $permission)->delete();
@@ -142,10 +145,12 @@ describe('Mi perfil', function () {
         $fresh = $admin->fresh();
         expect(Hash::check($new, $fresh->password))->toBeTrue()
             ->and($fresh->auth_version)->toBe($admin->auth_version + 1)
-            ->and(DB::table('sessions')->where('user_id', $admin->id)->count())->toBe(1)
-            ->and(DB::table('sessions')->where('id', $other)->exists())->toBeFalse();
+            ->and(DB::table('sessions')->where('user_id', $admin->id)->count())->toBe(1);
+        // La sesión actual sigue válida y la otra quedó cerrada.
         Sprint01::forgetSession();
         $this->withUnencryptedCookie($cookie, $current)->getJson('/api/v1/me')->assertOk();
+        Sprint01::forgetSession();
+        $this->withUnencryptedCookie($cookie, $other)->getJson('/api/v1/me')->assertUnauthorized();
         $audit = DB::table('audit_entries')->where('action', 'auth.password_changed')->get();
         expect($audit)->toHaveCount(1)->and($audit[0]->subject_id)->toBe($admin->id)
             ->and(json_encode($audit))->not->toContain($new)->not->toContain($this->password);
@@ -184,8 +189,10 @@ describe('Mi perfil', function () {
             ->assertOk()->assertJsonPath('data.avatar_url', url("/api/v1/media/$avatar"));
 
         $stranger = s07UserWithRole('client');
+        Sprint01::forgetSession();
         $foreign = $this->actingAs($stranger)->post('/api/v1/media', ['purpose' => 'avatar',
             'file' => Sprint02::upload('foto.png')], ['Accept' => 'application/json'])->json('data.id');
+        Sprint01::forgetSession();
         Sprint01::assertSpanishValidation($this->actingAs($this->user)->patchJson('/api/v1/me',
             ['avatar_media_id' => $foreign, 'expected_version' => 2]), ['avatar_media_id']);
         $evidence = $this->actingAs($this->user)->post('/api/v1/media', ['purpose' => 'evidence',

@@ -19,6 +19,11 @@ return [
     'password_reset_link_sent' => 'Si el correo existe, te enviamos un enlace para restablecer tu contraseña.',
     'password_reset_done' => 'Tu contraseña se actualizó. Inicia sesión con la nueva contraseña.',
     'password_reset_invalid' => 'El enlace no es válido o venció. Pide uno nuevo.',
+    // Fase 1 del panel: Mi perfil.
+    'current_password_invalid' => 'La contraseña actual no es correcta.',
+    'password_same_as_current' => 'La nueva contraseña debe ser distinta de la actual.',
+    'password_changed' => 'Tu contraseña se actualizó. Cerramos tus otras sesiones.',
+    'avatar_not_allowed' => 'La foto debe ser una imagen tuya, subida como foto de perfil y revisada.',
     'subcategory_not_declared' => 'El rubro no pertenece a una especialidad que elegiste.',
     'subcategory_required_for' => 'Elige al menos un rubro de :specialty.',
     'phone_format' => 'El :attribute debe tener 9 dígitos y empezar en 9.',

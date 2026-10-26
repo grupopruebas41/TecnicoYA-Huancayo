@@ -8,6 +8,7 @@ use App\Modules\CNotifications\Http\Controllers\NotificationController;
 use App\Modules\FAdministration\Http\Controllers\AdminAnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
 use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
+use App\Modules\FAdministration\Http\Controllers\AdminDashboardController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\CatalogController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
@@ -42,6 +43,8 @@ Route::prefix('v1')->group(function () {
     Route::middleware(['auth:sanctum', 'account.active'])->group(function () {
         Route::get('me', [ProfileController::class, 'show']);
         Route::patch('me', [ProfileController::class, 'update']);
+        // Fase 1 del panel: cambio de contraseña pidiendo la actual; conserva esta sesión y cierra las demás.
+        Route::post('me/password', [ProfileController::class, 'password'])->middleware('throttle:spa-auth');
         Route::get('announcements', [AnnouncementController::class, 'index']);
         Route::post('media', [MediaController::class, 'store']); // D-46 y D-47; StoreMediaRequest autoriza por finalidad.
         Route::delete('media/{media}', [MediaController::class, 'retire'])->whereNumber('media'); // D-61: evidencia propia no adjunta.
@@ -87,6 +90,8 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('admin')->group(function () {
+            // Fase 1 del panel: indicadores del Inicio (D-74).
+            Route::get('dashboard', [AdminDashboardController::class, 'show'])->middleware('permission:dashboard.view');
             Route::middleware('permission:catalog.manage')->group(function () {
                 Route::get('specialties', [AdminCatalogController::class, 'specialties']);
                 Route::post('specialties', [AdminCatalogController::class, 'storeSpecialty']);

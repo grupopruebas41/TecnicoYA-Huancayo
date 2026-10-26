@@ -14,6 +14,10 @@ final class AccountData
         $data = [
             'id' => (string) $user->id, 'name' => $user->name, 'phone' => $user->phone,
             'given_names' => $user->given_names, 'family_names' => $user->family_names,
+            // Fase 1 del panel: tema (D-76) y foto de perfil revisada (D-77); sin foto, el panel usa las iniciales.
+            'theme_preference' => $user->theme_preference,
+            'avatar_url' => $user->avatar_media_id && DB::table('media_files')->where('id', $user->avatar_media_id)
+                ->where('scan_status', 'clean')->whereNull('retired_at')->exists() ? url("/api/v1/media/{$user->avatar_media_id}") : null,
             'role' => ['code' => $role], 'version' => (int) $user->version,
             'permissions' => app(EffectivePermissions::class)->codes($user),
         ];
