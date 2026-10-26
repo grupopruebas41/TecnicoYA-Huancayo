@@ -19,6 +19,8 @@ return [
     'password_reset_link_sent' => 'Si el correo existe, te enviamos un enlace para restablecer tu contraseña.',
     'password_reset_done' => 'Tu contraseña se actualizó. Inicia sesión con la nueva contraseña.',
     'password_reset_invalid' => 'El enlace no es válido o venció. Pide uno nuevo.',
+    'subcategory_not_declared' => 'El rubro no pertenece a una especialidad que elegiste.',
+    'subcategory_required_for' => 'Elige al menos un rubro de :specialty.',
     'phone_format' => 'El :attribute debe tener 9 dígitos y empezar en 9.',
     'image_not_reviewed' => 'La imagen debe existir, estar revisada y ser pública.',
     'subcategory_inactive' => 'La subcategoría no está disponible para nuevos servicios.',

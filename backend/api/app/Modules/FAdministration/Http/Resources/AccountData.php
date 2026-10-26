@@ -26,10 +26,15 @@ final class AccountData
         }
         if ($role === 'technician') {
             $profile = DB::table('technician_profiles')->where('user_id', $user->id)
-                ->first(['status', 'verification_status', 'available_now']);
+                ->first(['id', 'status', 'verification_status', 'available_now']);
             $data['technician_profile'] = $profile ? [
                 'status' => $profile->status, 'verification_status' => $profile->verification_status,
                 'available_now' => (bool) $profile->available_now,
+                // D-80: rubros declarados en el registro; la tarifa se carga en «Servicios y tarifas».
+                'declared_subcategories' => DB::table('technician_declared_subcategories as d')
+                    ->join('subcategories as s', 's.id', '=', 'd.subcategory_id')->where('d.technician_id', $profile->id)
+                    ->orderBy('s.display_order')->orderBy('s.id')->get(['s.id', 's.name', 's.specialty_id'])
+                    ->map(fn ($row) => ['id' => (int) $row->id, 'name' => $row->name, 'specialty_id' => (int) $row->specialty_id])->all(),
             ] : null;
         }
 

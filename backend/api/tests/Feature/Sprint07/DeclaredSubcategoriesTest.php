@@ -77,7 +77,8 @@ it('S07-TC-033 exige al menos un rubro por cada especialidad declarada', functio
     ]);
     $response = $this->postJson('/api/v1/auth/register', $payload);
 
-    Sprint01::assertSpanishValidation($response, ['subcategory_ids']);
+    // Mensaje exacto: el detector heurístico de español no reconoce esta frase.
+    $response->assertUnprocessable()->assertJsonValidationErrors(['subcategory_ids']);
     expect($response->json('errors.subcategory_ids.0'))->toBe('Elige al menos un rubro de Electricidad.');
     expect(User::query()->where('email', $payload['email'])->exists())->toBeFalse();
 });

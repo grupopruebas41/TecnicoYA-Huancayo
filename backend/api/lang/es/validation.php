@@ -56,8 +56,9 @@ return [
         // Adelanto del Sprint 7 (D-80): registro detallado y recuperación de contraseña.
         'given_names' => 'nombres', 'family_names' => 'apellidos', 'terms_accepted' => 'aceptación de los Términos y la Privacidad',
         'business_name' => 'razón social', 'reference_address' => 'dirección de referencia', 'base_district_id' => 'distrito base',
-        'specialty_ids' => 'especialidades', 'specialty_ids.*' => 'especialidad', 'experience_years' => 'años de experiencia',
+        'specialty_ids' => 'especialidades', 'specialty_ids.*' => 'especialidad',
         'whatsapp' => 'WhatsApp', 'token' => 'enlace de recuperación',
+        'subcategory_ids' => 'rubros', 'subcategory_ids.*' => 'rubro',
         // Sprint 2: catálogo, comunicados, revisión técnica, portafolio, disponibilidad y servicios.
         'specialty_id' => 'especialidad', 'image_id' => 'imagen', 'reference_fee' => 'tarifa referencial',
         'active' => 'estado activo', 'decision' => 'decisión', 'reason' => 'motivo',

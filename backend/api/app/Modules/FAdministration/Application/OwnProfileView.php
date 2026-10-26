@@ -32,10 +32,26 @@ final class OwnProfileView
                     'subcategory_id' => $row->subcategory_id, 'subcategory_name' => $row->subcategory_name, 'reference_fee' => $row->reference_fee,
                     'currency' => $row->currency, 'rate_version' => (int) $row->current_rate_version, 'active' => (bool) $row->active,
                 ])->all(),
+            'declared_subcategories' => $this->declared($technicianId),
             'availability' => $this->availability($technicianId),
             'portfolio' => $this->portfolio->ownItems($technicianId),
             'documents' => $this->directory->documents($technicianId),
         ];
+    }
+
+    /** D-80: rubros declarados al registrarse; has_rate indica si ya tienen un servicio activo con tarifa. */
+    private function declared(int $technicianId): array
+    {
+        return DB::table('technician_declared_subcategories as d')->join('subcategories as s', 's.id', '=', 'd.subcategory_id')
+            ->join('specialties as p', 'p.id', '=', 's.specialty_id')
+            ->leftJoin('technician_services as t', fn ($join) => $join->on('t.subcategory_id', '=', 'd.subcategory_id')
+                ->on('t.technician_id', '=', 'd.technician_id')->where('t.active', 1))
+            ->where('d.technician_id', $technicianId)->orderBy('p.display_order')->orderBy('s.display_order')->orderBy('s.id')
+            ->get(['d.subcategory_id', 's.name as subcategory_name', 's.specialty_id', 'p.name as specialty_name', 't.subcategory_id as rated'])
+            ->map(fn ($row) => [
+                'subcategory_id' => (int) $row->subcategory_id, 'subcategory_name' => $row->subcategory_name,
+                'specialty_id' => (int) $row->specialty_id, 'specialty_name' => $row->specialty_name, 'has_rate' => $row->rated !== null,
+            ])->all();
     }
 
     private function availability(int $technicianId): array

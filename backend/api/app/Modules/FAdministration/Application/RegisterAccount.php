@@ -61,5 +61,8 @@ final class RegisterAccount
         ])->values()->all());
         DB::table('technician_specialties')->insert(collect($data['specialty_ids'] ?? [])->map(fn ($id) => (int) $id)->unique()
             ->map(fn (int $id) => ['technician_id' => $technicianId, 'specialty_id' => $id])->values()->all());
+        // Rubros declarados: no son servicios; la tarifa se carga después en «Servicios y tarifas».
+        DB::table('technician_declared_subcategories')->insert(collect($data['subcategory_ids'] ?? [])->map(fn ($id) => (int) $id)
+            ->map(fn (int $id) => ['technician_id' => $technicianId, 'subcategory_id' => $id])->values()->all());
     }
 }

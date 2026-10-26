@@ -3,7 +3,9 @@
 namespace App\Modules\FAdministration\Http\Requests;
 
 use Closure;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class RegisterAccountRequest extends AccountRequest
 {
@@ -13,6 +15,33 @@ class RegisterAccountRequest extends AccountRequest
     protected function prepareForValidation(): void
     {
         $this->normalizeEmail();
+    }
+
+    /** D-80: cada rubro pertenece a una especialidad declarada y cada especialidad declarada tiene al menos un rubro. */
+    public function after(): array
+    {
+        return [function (Validator $validator) {
+            $specialties = collect($this->input('specialty_ids'))->filter(fn ($id) => is_numeric($id))->map(fn ($id) => (int) $id);
+            $subcategories = $this->input('subcategory_ids');
+            if ($this->input('account_type') !== 'technician' || ! is_array($subcategories) || $specialties->isEmpty()) {
+                return;
+            }
+            // Solo cuentan las especialidades declaradas que siguen activas; las inactivas ya las rechaza rules().
+            $names = DB::table('specialties')->whereIn('id', $specialties)->where('active', 1)->pluck('name', 'id');
+            $owners = DB::table('subcategories')->whereIn('id', array_filter($subcategories, 'is_numeric'))->pluck('specialty_id', 'id');
+            foreach ($subcategories as $index => $id) {
+                $owner = $owners[(int) $id] ?? null;
+                if ($owner !== null && ! isset($names[(int) $owner])) {
+                    $validator->errors()->add("subcategory_ids.$index", __('api.subcategory_not_declared'));
+                }
+            }
+            $covered = collect($owners)->map(fn ($owner) => (int) $owner)->unique();
+            foreach ($specialties->unique() as $specialty) {
+                if (! $covered->contains($specialty) && isset($names[$specialty])) {
+                    $validator->errors()->add('subcategory_ids', __('api.subcategory_required_for', ['specialty' => $names[$specialty]]));
+                }
+            }
+        }];
     }
 
     public function messages(): array
@@ -55,6 +84,9 @@ class RegisterAccountRequest extends AccountRequest
             'district_ids.*' => ['integer', 'distinct', $activeDistrict],
             'specialty_ids' => ['required_if:account_type,technician', $technician, 'array', 'min:1', 'max:10'],
             'specialty_ids.*' => ['integer', 'distinct', Rule::exists('specialties', 'id')->where('active', 1)],
+            // Rubros declarados: activos, distintos y al menos uno por especialidad (ver after()).
+            'subcategory_ids' => ['required_if:account_type,technician', $technician, 'array', 'min:1', 'max:60'],
+            'subcategory_ids.*' => ['integer', 'distinct', Rule::exists('subcategories', 'id')->where('active', 1)],
             'experience_years' => ['required_if:account_type,technician', $technician, 'integer', 'min:0', 'max:50'],
             'whatsapp' => ['nullable', $technician, 'string', self::PERU_MOBILE],
         ];
