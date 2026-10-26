@@ -1,0 +1,83 @@
+
+   FAIL  Tests\Feature\Sprint07\DeclaredSubcategoriesTest
+  ⨯ it S07-TC-031 guarda los rubros declarados sin crear servicios y los devuelve en /me y en el perfil propio  52.11s  
+  ⨯ it S07-TC-032 rechaza un rubro de una especialidad que el técnico no declaró                                 0.45s  
+  ⨯ it S07-TC-033 exige al menos un rubro por cada especialidad declarada                                        0.32s  
+  ⨯ it S07-TC-034 rechaza rubros inactivos, de una especialidad inactiva o repetidos                             0.35s  
+  ✓ it S07-TC-035 el técnico recién registrado no es candidato del matching hasta tener servicio con tarifa      0.40s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\DeclaredSubcategoriesTest > it S07-TC-031 guarda los rubros declar…  QueryException   
+  SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tecnicoya_testing.technician_declared_subcategories' doesn't exist (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: tecnicoya_testing, SQL: select `subcategory_id` from `technician_declared_subcategories` where `technician_id` = 1)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+    416▕             // For select statements, we'll simply execute the query and return an array
+    417▕             // of the database result set. Each element in the array will be a single
+    418▕             // row from the database table, and will either be an array or objects.
+    419▕             $statement = $this->prepared(
+  ➜ 420▕                 $this->getPdoForSelect($useReadPdo)->prepare($query)
+    421▕             );
+    422▕ 
+    423▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+    424▕
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\DeclaredSubcategoriesTest > it S07-TC-032 rechaza un rubro de una especialidad que…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\DeclaredSubcategoriesTest.php:65
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\DeclaredSubcategoriesTest > it S07-TC-033 exige al menos un rubro por cada especia…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\DeclaredSubcategoriesTest.php:72
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\DeclaredSubcategoriesTest > it S07-TC-034 rechaza rubros inactivos, de una especia…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\DeclaredSubcategoriesTest.php:89
+
+
+  Tests:    4 failed, 1 passed (7 assertions)
+  Duration: 53.87s
+

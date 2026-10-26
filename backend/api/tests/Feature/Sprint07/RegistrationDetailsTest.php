@@ -50,7 +50,9 @@ it('S07-TC-001 registra un cliente MYPE con nombres, teléfono, distrito princip
 it('S07-TC-002 registra un técnico con distrito base, distritos atendidos, especialidades y experiencia, sin servicios ni tarifas [TC-003]', function () {
     Sprint07::catalog(); // Los IDs de especialidad se leen antes de armar el cuerpo.
     $payload = Sprint07::technicianPayload(['whatsapp' => '912345678',
-        'specialty_ids' => [Sprint07::specialtyId('computo'), Sprint07::specialtyId('electricidad')]]);
+        'specialty_ids' => [Sprint07::specialtyId('computo'), Sprint07::specialtyId('electricidad')],
+        // Un rubro por especialidad declarada (S07-TC-033).
+        'subcategory_ids' => [...Sprint07::subcategoryIds('computo'), ...Sprint07::subcategoryIds('electricidad')]]);
 
     s07Register($this, $payload)->assertCreated();
 

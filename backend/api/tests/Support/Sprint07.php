@@ -29,6 +29,13 @@ final class Sprint07
         return (int) DB::table('specialties')->where('code', $code)->value('id');
     }
 
+    /** Subcategorías activas de una especialidad, en orden de catálogo. */
+    public static function subcategoryIds(string $specialty = 'computo', int $limit = 1): array
+    {
+        return DB::table('subcategories')->where('specialty_id', self::specialtyId($specialty))->where('active', 1)
+            ->orderBy('display_order')->orderBy('id')->limit($limit)->pluck('id')->map(fn ($id) => (int) $id)->all();
+    }
+
     /** Campos comunes a cliente y técnico (D-80). */
     private static function common(string $accountType): array
     {
@@ -59,6 +66,8 @@ final class Sprint07
             'base_district_id' => self::districtId('EL-TAMBO'),
             'district_ids' => [self::districtId('HUANCAYO')],
             'specialty_ids' => [self::specialtyId('computo')],
+            // Al menos un rubro por especialidad declarada (D-80).
+            'subcategory_ids' => self::subcategoryIds('computo'),
             'experience_years' => 4,
         ], $overrides);
     }
