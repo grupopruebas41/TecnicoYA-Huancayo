@@ -4,6 +4,7 @@ namespace Tests\Support;
 
 use Database\Seeders\CatalogSeeder;
 use Database\Seeders\DistrictSeeder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
