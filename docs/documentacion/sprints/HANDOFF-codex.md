@@ -21,6 +21,17 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 
 ## Entradas
 
+## 2026-10-25 · PR #25 · corrección visual del abanico de especialidades
+
+- **Rama:** `feature/delgado/landing/vitrina-carrusel` (PR abierto #25: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/25).
+- **Commits:** `3179918` pruebas de regresión en rojo; `61b9542` restauración del abanico; `5be135d` ajuste de landmark.
+- **Causa:** selectores más específicos de `landing.css` sobrescribían `.subcategory-card` de la vitrina: cartas en flujo normal, las laterales ocultas. El escenario tenía altura; las cartas se apilaban fuera de la zona visible.
+- **Cambios:** estilos aislados bajo `.landing-page .ty-product-stage`, altura 380 px (escritorio) / 360 px (móvil), 5 cartas en escritorio y 3 en móvil, prioridad `loading="eager"` para centro y vecinas, kicker de 1 rem y título activo serif itálico encima del abanico con fundido. El encabezado visual se cambió de `header` a `div` para evitar landmark `banner` duplicado.
+- **Pruebas:** `npm test` 216/216 (27 archivos); `npm run lint` aprobado; `npm run build` aprobado (80 módulos). Cypress no ejecutado.
+- **Visual:** Playwright con Chromium instalado, API `:3000` (health HTTP 200): 1366/1920 muestran 5 cartas, 390 muestra 3; imágenes cargadas, ancho sin desbordamiento, escenario 380/360 px y centro eager con la misma URL que miniatura activa. Capturas y salidas en `docs/documentacion/evidencias/landing/2026-10-25-5be135d-*`.
+- **Pendiente:** publicar commits de esta rama y verificar CI del PR #25; revisión humana [PENDIENTE].
+- **Sin cambios:** `backend/`, dependencias y pruebas Cypress.
+
 ## 2026-10-22 · Vitrina de subespecialidades · abanico 3D
 
 - **Rama:** `feature/delgado/landing/vitrina-carrusel`, base `origin/main` actualizado (no fue posible hacer checkout de `main` porque está activo en el worktree principal).
