@@ -400,3 +400,15 @@ test('S07-TC-043 si no cargan los rubros se informa el error y se puede reintent
   fireEvent.click(within(panelOf('Electricidad')).getByRole('button', {name: 'Reintentar'}));
   expect(await screen.findByRole('checkbox', {name: 'Iluminación'})).toBeInTheDocument();
 });
+
+test('S07-TC-045 salir de un campo vacío sin escribir no inserta su error y el envío sí lo muestra [DEF-48]', async () => {
+  await openWizard('client');
+  leave('Nombres'); leave('Teléfono');
+
+  expect(screen.queryByText('Los nombres deben tener entre 2 y 50 caracteres.')).not.toBeInTheDocument();
+  expect(screen.getByLabelText('Nombres')).toHaveAttribute('aria-invalid', 'false');
+
+  fireEvent.click(screen.getByRole('button', {name: 'Crear cuenta'}));
+  expect(screen.getByText('Los nombres deben tener entre 2 y 50 caracteres.')).toBeInTheDocument();
+  expect(screen.getByText('El teléfono debe tener 9 dígitos y empezar en 9.')).toBeInTheDocument();
+});

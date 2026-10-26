@@ -12,6 +12,10 @@ export default function ServicesEditor({ profile, reload }) {
   const [services, set] = useState(
     (profile.services || []).filter((s) => s.active !== false),
   );
+  // D-80: rubros declarados al registrarse que aún no tienen servicio con tarifa.
+  const pending = (profile.declared_subcategories || []).filter(
+    (d) => !d.has_rate && !services.some((s) => s.subcategory_id === d.subcategory_id),
+  );
   function validate() {
     const e = {};
     services.forEach((s, i) => {
@@ -69,6 +73,29 @@ export default function ServicesEditor({ profile, reload }) {
               ))}
           </select>
         </label>
+        {pending.length > 0 && (
+          <section className="s02-pending" aria-label="Rubros pendientes de tarifa">
+            <p className="kicker">Rubros pendientes de tarifa</p>
+            {pending.map((d) => (
+              <div className="s02-card" key={d.subcategory_id}>
+                <h4>{d.subcategory_name}</h4>
+                <p>Agrega tu tarifa para empezar a recibir solicitudes de este rubro.</p>
+                <button
+                  type="button"
+                  aria-label={"Agregar tarifa de " + d.subcategory_name}
+                  onClick={() =>
+                    set([
+                      ...services,
+                      { subcategory_id: d.subcategory_id, subcategory_name: d.subcategory_name, reference_fee: "" },
+                    ])
+                  }
+                >
+                  Agregar tarifa
+                </button>
+              </div>
+            ))}
+          </section>
+        )}
         {!services.length && <p>No has añadido servicios.</p>}
         {services.map((s, i) => (
           <div className="s02-card" key={s.subcategory_id}>

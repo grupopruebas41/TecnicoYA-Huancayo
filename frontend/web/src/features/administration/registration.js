@@ -8,9 +8,17 @@ const bytes = value => new TextEncoder().encode(value || '').length;
 export const emptyRegistration = {
   account_type: '', given_names: '', family_names: '', email: '', phone: '',
   client_type: 'household', district_id: '', business_name: '', reference_address: '',
-  base_district_id: '', district_ids: [], specialty_ids: [], experience_years: '', whatsapp: '',
+  base_district_id: '', district_ids: [], specialty_ids: [], subcategories: {}, experience_years: '', whatsapp: '',
   password: '', password_confirmation: '', terms_accepted: false,
 };
+
+/** «Ofrecerás 5 rubros en 2 especialidades»: solo cuentan las especialidades con al menos un rubro. */
+export function rubrosSummary(values) {
+  const counts = values.specialty_ids.map(id => values.subcategories[id]?.length || 0).filter(Boolean);
+  const total = counts.reduce((sum, n) => sum + n, 0);
+  if (!total) return '';
+  return `Ofrecerás ${total} ${total === 1 ? 'rubro' : 'rubros'} en ${counts.length} ${counts.length === 1 ? 'especialidad' : 'especialidades'}`;
+}
 
 /** Puntaje de 0 a 5: longitud (8 y 12), mayúsculas y minúsculas, números y símbolos. */
 export function passwordStrength(password = '') {
@@ -30,7 +38,8 @@ export function validatePassword(password, confirmation) {
   return errors;
 }
 
-export function validateRegistration(values) {
+/** specialtyNames: {id: nombre} para el mensaje «Elige al menos un rubro de <especialidad>.» */
+export function validateRegistration(values, {specialtyNames = {}} = {}) {
   const errors = {};
   const invalid = (name, message) => { errors[name] = [message]; };
   if (length(values.given_names) < 2 || length(values.given_names) > 50) invalid('given_names', 'Los nombres deben tener entre 2 y 50 caracteres.');
@@ -47,6 +56,9 @@ export function validateRegistration(values) {
   } else {
     if (!values.base_district_id) invalid('base_district_id', 'Elige tu distrito base.');
     if (!values.specialty_ids.length) invalid('specialty_ids', 'Elige al menos una especialidad.');
+    // Al menos un rubro por especialidad marcada (D-80).
+    values.specialty_ids.filter(id => !values.subcategories[id]?.length)
+      .forEach(id => invalid(`subcategories.${id}`, `Elige al menos un rubro de ${specialtyNames[id] || 'esta especialidad'}.`));
     const years = Number(values.experience_years);
     if (values.experience_years === '' || !Number.isInteger(years) || years < 0 || years > 50) {
       invalid('experience_years', 'Indica tus años de experiencia, de 0 a 50.');
@@ -73,6 +85,7 @@ export function registrationPayload(values) {
     payload.base_district_id = base;
     payload.district_ids = [base, ...values.district_ids.map(Number).filter(id => id !== base)];
     payload.specialty_ids = values.specialty_ids.map(Number);
+    payload.subcategory_ids = values.specialty_ids.flatMap(id => (values.subcategories[id] || []).map(Number));
     payload.experience_years = Number(values.experience_years);
     if (values.whatsapp) payload.whatsapp = values.whatsapp;
   }

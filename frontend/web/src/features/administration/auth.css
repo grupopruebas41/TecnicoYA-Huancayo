@@ -685,3 +685,101 @@
     transition: none;
   }
 }
+
+/* Chips con la casilla en línea con su texto (distritos, especialidades y rubros).
+   .session-page label (account.css) los volvía grid y apilaba casilla y texto. */
+.auth-shell label.register-chip {
+  display: inline-flex !important;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin: 0;
+  padding: 6px 14px 6px 10px;
+  line-height: 1.2;
+}
+/* Especialidades en dos niveles (D-80). */
+.specialty-list {
+  display: grid;
+  gap: 10px;
+}
+.specialty-item {
+  display: grid;
+  gap: 8px;
+}
+.auth-shell .specialty-toggle {
+  justify-self: start;
+  font-weight: 600;
+}
+.specialty-panel[hidden] {
+  display: none;
+}
+.rubros-panel {
+  margin: 0 0 4px 18px;
+  padding: 12px 14px 14px;
+  border: 1px solid #ffffff1f;
+  border-left: 3px solid #e7d9bf88;
+  border-radius: 12px;
+  background: #101c20;
+  overflow: hidden;
+  animation: rubros-open 250ms ease both;
+}
+.rubros-panel legend {
+  padding: 0 6px;
+  color: #d5c3a0;
+  font-size: 12px;
+}
+@keyframes rubros-open {
+  from { max-height: 0; opacity: 0; }
+  to { max-height: 900px; opacity: 1; }
+}
+.rubros-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-bottom: 6px;
+}
+.auth-shell .rubros-tools .rubros-search {
+  flex: 1 1 180px;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+.auth-shell .rubros-tools .text-button {
+  margin: 0;
+  font-size: 12px;
+}
+.rubros-count {
+  margin: 0 0 8px;
+  color: #aebfbd;
+  font-size: 12px;
+}
+.rubros-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+.auth-shell .rubros-chips .register-chip {
+  justify-content: flex-start;
+  border-radius: 12px;
+}
+.register-summary {
+  margin: 10px 0 0;
+  color: #e7d9bf;
+  font-size: 13px;
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .rubros-panel {
+    margin-left: 0;
+  }
+  .rubros-chips {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rubros-panel {
+    animation: none;
+  }
+}

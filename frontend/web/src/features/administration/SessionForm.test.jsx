@@ -23,6 +23,7 @@ function routedFetch(register) {
     if (url.endsWith('/sanctum/csrf-cookie')) return new Response(null, {status: 204});
     if (url.endsWith('/catalog/districts')) return json({data: [{id: 1, code: 'HUANCAYO', name: 'Huancayo'}]});
     if (url.endsWith('/catalog/specialties')) return json({data: [{id: 10, code: 'computo', name: 'Cómputo'}]});
+    if (url.endsWith('/catalog/subcategories?specialty_id=10')) return json({data: [{id: 101, specialty_id: 10, name: 'Reparación de hardware'}]});
     if (url.endsWith('/auth/register')) return register(init);
     throw new Error('URL no simulada: ' + url);
   });
@@ -38,6 +39,8 @@ async function fillWizard(type) {
   if (type === 'technician') {
     set('Distrito base', '1'); set('Años de experiencia', '3');
     fireEvent.click(screen.getByRole('checkbox', {name: 'Cómputo'}));
+    // Al menos un rubro por especialidad (D-80).
+    fireEvent.click(await screen.findByRole('checkbox', {name: 'Reparación de hardware'}));
   } else set('Distrito principal', '1');
   fireEvent.click(screen.getByRole('checkbox', {name: /Acepto los Términos/}));
   fireEvent.click(screen.getByRole('button', {name: 'Crear cuenta'}));

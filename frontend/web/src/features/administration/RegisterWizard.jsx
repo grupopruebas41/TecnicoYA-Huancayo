@@ -2,7 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {request} from './http';
 import {Field, EMAIL_MAX_LENGTH} from './forms';
 import {PasswordField, PasswordMeter} from './passwordFields';
-import {emptyRegistration, registrationPayload, validateRegistration} from './registration';
+import {emptyRegistration, registrationPayload, rubrosSummary, validateRegistration} from './registration';
+import SpecialtyPicker from './SpecialtyPicker';
 import {legalTexts} from '../../landing/Shared';
 
 const roles = [
@@ -50,6 +51,8 @@ export default function RegisterWizard({initialRole = '', busy, setBusy, onRegis
   const [catalog, setCatalog] = useState({districts: [], specialties: [], failed: false});
   const [terms, setTerms] = useState(false);
   const [reload, setReload] = useState(0);
+  // Rubros por especialidad ya consultados; se conservan al volver al paso 1.
+  const [rubros, setRubros] = useState({});
   const form = useRef(null);
   const technician = values.account_type === 'technician';
   useEffect(() => {
@@ -59,19 +62,49 @@ export default function RegisterWizard({initialRole = '', busy, setBusy, onRegis
       .catch(() => { if (active) setCatalog(current => ({...current, failed: true})); });
     return () => { active = false; };
   }, [reload]);
-  const local = validateRegistration(values);
+  const specialtyNames = Object.fromEntries(catalog.specialties.map(item => [String(item.id), item.name]));
+  const local = validateRegistration(values, {specialtyNames});
   const visible = Object.fromEntries(Object.entries(local).filter(([name]) => submitted || touched[name]));
   const errors = {...visible, ...serverErrors};
   function set(name, value) {
     setValues(current => ({...current, [name]: value}));
     setServerErrors(current => { const next = {...current}; delete next[name]; return next; });
   }
+  // Salir de un campo vacío que no se escribió no muestra error (lo muestra el envío): si apareciera al
+  // hacer clic en otro control, el contenido se movería entre mousedown y mouseup y el clic se perdería.
   const bind = name => ({name, value: values[name], onChange: event => set(name, event.target.value),
-    onBlur: () => setTouched(current => ({...current, [name]: true}))});
+    onBlur: () => { if (String(values[name] ?? '').trim()) setTouched(current => ({...current, [name]: true})); }});
   const toggle = name => id => {
     setTouched(current => ({...current, [name]: true}));
     set(name, values[name].includes(id) ? values[name].filter(item => item !== id) : [...values[name], id]);
   };
+  function loadRubros(id) {
+    setRubros(current => ({...current, [id]: {status: 'loading', items: []}}));
+    request(`/catalog/subcategories?specialty_id=${id}`)
+      .then(response => setRubros(current => ({...current, [id]: {status: 'ready', items: response.data}})))
+      .catch(() => setRubros(current => ({...current, [id]: {status: 'error', items: []}})));
+  }
+  /** Devuelve false si la persona cancela quitar una especialidad que ya tiene rubros. */
+  function toggleSpecialty(id) {
+    const chosen = values.subcategories[id]?.length || 0;
+    if (values.specialty_ids.includes(id)) {
+      const name = specialtyNames[id];
+      const message = chosen === 1 ? `Se quitará 1 rubro elegido de ${name}. ¿Continuar?` : `Se quitarán ${chosen} rubros elegidos de ${name}. ¿Continuar?`;
+      if (chosen && !window.confirm(message)) return false;
+      const {[id]: _removed, ...rest} = values.subcategories;
+      setValues(current => ({...current, specialty_ids: current.specialty_ids.filter(item => item !== id), subcategories: rest}));
+    } else {
+      setValues(current => ({...current, specialty_ids: [...current.specialty_ids, id]}));
+      if (rubros[id]?.status !== 'ready') loadRubros(id);
+    }
+    setTouched(current => ({...current, specialty_ids: true}));
+    return true;
+  }
+  function setRubrosOf(id, ids) {
+    setValues(current => ({...current, subcategories: {...current.subcategories, [id]: ids}}));
+    setTouched(current => ({...current, [`subcategories.${id}`]: true}));
+    setServerErrors(current => { const next = {...current}; delete next.subcategory_ids; return next; });
+  }
   function next() { setStep(2); setError(''); setTimeout(() => form.current?.querySelector('input')?.focus(), 0); }
   async function submit(event) {
     event.preventDefault();
@@ -126,8 +159,9 @@ export default function RegisterWizard({initialRole = '', busy, setBusy, onRegis
       </div>
       <ChoiceGroup legend="Distritos que atiendes" name="district_ids" items={catalog.districts} selected={values.district_ids}
         locked={values.base_district_id} onToggle={toggle('district_ids')} errors={errors} cy="register-district"/>
-      <ChoiceGroup legend="Especialidades que ofreces" name="specialty_ids" items={catalog.specialties} selected={values.specialty_ids}
-        onToggle={toggle('specialty_ids')} errors={errors} cy="register-specialty"/>
+      <SpecialtyPicker specialties={catalog.specialties} selected={values.specialty_ids} subcategories={values.subcategories}
+        rubros={rubros} errors={{...errors, ...(errors.subcategory_ids ? {specialty_ids: errors.subcategory_ids} : {})}}
+        summary={rubrosSummary(values)} onToggle={toggleSpecialty} onRubros={setRubrosOf} onRetry={loadRubros}/>
       <Field label="WhatsApp (opcional)" errors={errors} type="tel" inputMode="numeric" data-cy="register-whatsapp" maxLength={9} placeholder="9XXXXXXXX" {...bind('whatsapp')}/>
     </> : <>
       <div className="auth-row">
