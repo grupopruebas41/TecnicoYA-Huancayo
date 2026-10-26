@@ -1,4 +1,4 @@
-# HANDOFF · Claude Code (backend)
+# HANDOFF · Claude Code (backend; también frontend hasta el 2026-11-19, D-72)
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
@@ -31,6 +31,22 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Vitest 231/231; lint y build aprobados; evidencias en `2026-10-26-a48812f-*`.
 - **Pendiente:** revisión humana; datos reales de contacto; marcador ✦ del mapa MVV junto a «PUNTO 1 DE 3» (diseño previo que se conservó).
 - **Bloqueos:** ninguno.
+
+## 2026-10-25 · ORG-01 · Claude Code asume el frontend (D-72)
+
+- **Rama:** `docs/pimentel/reasignacion-frontend` desde `main` `441644b` (PR #24 y #25 integrados). Solo documentación.
+- **Cambio:** D-72 en `DECISIONES.md`. Codex no está disponible hasta el 2026-11-19; Claude Code asume también `frontend/web` y trabaja solo en la carpeta principal (no toca `..\TecnicoYa-cx`). Ramas de frontend con prefijo `feature/delgado/...`.
+- **Estado del frontend recibido** (HANDOFF-codex, avance `docs/avances/delgado/landing/`, `frontend/web/src/landing/`):
+  - `App.jsx` enruta `/` y `/nosotros` por `pathname` (sin hash); `#cuenta/...`, `#plataforma` y `#catalogo` siguen por hash.
+  - `landing/navigation.js`: `navigateToPath`/`navigateToSection` y `calculateScrollTarget`, que centra la sección bajo el header y el submenú fijos medidos (margen 16 px) y limpia el hash público.
+  - Hero: intro de video (`VideoExperience.jsx`) y fondo fijo `landing/HeroBackground.jsx`, que se pausa al salir de la vista.
+  - Vitrina de subespecialidades: abanico 3D en `ServiceCarousel.jsx` (5 cartas en escritorio, 3 en móvil; autoplay 3 s con pausa por hover, foco y visibilidad), estilos aislados bajo `.landing-page .ty-product-stage`.
+  - Nosotros: `landing/About.jsx` (12 bloques, coverflow de testimonios de ejemplo); `Shared.jsx` (Header, CTA, Footer, Zonas); `hooks.js` (`useCatalog`, `useReveal`, `useMotion`, `useCount`).
+  - Último estado de Codex (PR #25): Vitest 218/218 (27 archivos), lint y build aprobados; Cypress no ejecutado.
+- **Pendientes heredados de Codex (backend):** `image_url` en `GET /catalog/specialties`, `reference_fee` en `GET /catalog/carousel` (D-52), tarea de replay del mismo `event_id` para S04-TC-094.
+- **Reglas para cambios de frontend:** Vitest, lint y build en verde; si hay cambio visual, capturas con Playwright y el Chromium ya instalado en `docs/documentacion/evidencias/landing/`. Sin dependencias nuevas sin permiso; Cypress solo a pedido.
+- **Pruebas:** no aplica (solo documentación). **Bloqueos:** ninguno.
+- **Nota:** `docs/documentacion/evidencias/ui/` estaba sin versionar en `main` al empezar; no se tocó.
 
 ## 2026-10-17 · Sprint 4 · paso 5: cobertura, mutación, audit, avance y PR
 
