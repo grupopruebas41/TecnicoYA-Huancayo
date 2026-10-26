@@ -48,11 +48,13 @@ final class CatalogController
             ->where('s.active', 1)->where('p.active', 1)
             ->where('m.visibility', 'public')->where('m.scan_status', 'clean')->whereNull('m.retired_at')
             ->orderBy('p.display_order')->orderBy('p.id')->orderBy('s.display_order')->orderBy('s.id')
-            ->get(['s.id', 's.specialty_id', 'p.name as specialty_name', 's.name', 's.description', 's.carousel_media_id']);
+            ->get(['s.id', 's.specialty_id', 'p.name as specialty_name', 's.name', 's.description', 's.carousel_media_id', 's.reference_fee']);
 
         return ApiResponse::data($items->map(fn (object $item) => [
             'subcategory_id' => $item->id, 'specialty_id' => $item->specialty_id, 'specialty_name' => $item->specialty_name,
             'name' => $item->name, 'description' => $item->description, 'image_url' => url("/api/v1/media/{$item->carousel_media_id}"),
+            // D-52: referencia orientativa de la subcategoría, texto con 2 decimales; null si no tiene.
+            'reference_fee' => $item->reference_fee === null ? null : number_format((float) $item->reference_fee, 2, '.', ''),
         ])->all());
     }
 
