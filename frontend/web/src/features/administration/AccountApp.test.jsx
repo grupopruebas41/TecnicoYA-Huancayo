@@ -5,6 +5,10 @@ import AccountApp from './AccountApp';
 import {request} from './http';
 // Estas pruebas aíslan sesión/RBAC; los módulos S2 se prueban por separado.
 vi.mock('./Sprint02Portal', () => ({default: () => null}));
+// Desde la Fase 1 del panel (D-73) el admin monta Catálogo, Verificación y Comunicados como secciones propias.
+vi.mock('./CatalogAdmin', () => ({default: () => null}));
+vi.mock('./VerificationAdmin', () => ({default: () => null}));
+vi.mock('./AnnouncementsAdmin', () => ({default: () => null}));
 vi.mock('./http', () => ({request: vi.fn()}));
 afterEach(() => {cleanup(); vi.resetAllMocks(); window.history.replaceState(null, '', '/');});
 // Comprobaciones unitarias complementarias: no sustituyen ni acreditan los casos Cypress.

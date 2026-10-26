@@ -44,7 +44,7 @@ const openAdmin = async (user = admin) => { routes(user); render(<AccountApp/>);
 test('S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa', async () => {
   const nav = await openAdmin();
 
-  expect(within(nav).getAllByRole('button').map(b => b.textContent.trim())).toEqual(['Inicio', 'Catálogo', 'Verificación', 'Comunicados', 'Mi perfil']);
+  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent)).toEqual(['Inicio', 'Catálogo', 'Verificación', 'Comunicados', 'Mi perfil']);
   expect(within(nav).getByRole('button', {name: 'Inicio'})).toHaveAttribute('aria-current', 'page');
   expect(document.querySelector('[data-cy=portal-admin]')).toBeInTheDocument();
   expect(screen.getByRole('button', {name: 'Cerrar sesión'})).toHaveAttribute('data-cy', 'logout');
@@ -56,7 +56,7 @@ test('S07-TC-057 el panel del administrador muestra su menú según permisos y m
   cleanup();
 
   await openAdmin({...admin, permissions: ['catalog.manage']});
-  expect(within(screen.getByRole('navigation', {name: 'Administración'})).getAllByRole('button').map(b => b.textContent.trim()))
+  expect(within(screen.getByRole('navigation', {name: 'Administración'})).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent))
     .toEqual(['Catálogo', 'Mi perfil']);
 });
 
@@ -281,9 +281,31 @@ test('S07-TC-070 cliente y técnico usan la misma base con su contenido actual',
   render(<AccountApp/>);
 
   const nav = await screen.findByRole('navigation', {name: 'Mi cuenta'});
-  expect(within(nav).getAllByRole('button').map(b => b.textContent.trim())).toEqual(['Inicio', 'Mi perfil']);
+  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent)).toEqual(['Inicio', 'Mi perfil']);
   expect(screen.getByText('Contenido actual de technician')).toBeInTheDocument();
   expect(screen.getByText(/Estado de verificación:/)).toHaveTextContent('Pendiente de verificación');
   expect(document.querySelector('[data-cy=portal-technician]')).toBeInTheDocument();
   await act(async () => {});
+});
+
+test('S07-TC-071 la campana y el menú del avatar se cierran con Escape desde su botón o con un clic fuera', async () => {
+  // Defecto visto en las capturas de la Fase 1: Escape solo cerraba si el foco estaba dentro del popover.
+  await openAdmin();
+  const bell = await screen.findByRole('button', {name: 'Notificaciones: 2 sin leer'});
+  fireEvent.click(bell);
+  fireEvent.keyDown(bell, {key: 'Escape'});
+  expect(screen.queryByRole('region', {name: 'Notificaciones recientes'})).not.toBeInTheDocument();
+  expect(bell).toHaveAttribute('aria-expanded', 'false');
+  expect(bell).toHaveFocus();
+
+  fireEvent.click(bell);
+  fireEvent.pointerDown(screen.getByRole('heading', {name: 'Inicio'}));
+  expect(screen.queryByRole('region', {name: 'Notificaciones recientes'})).not.toBeInTheDocument();
+
+  const avatar = screen.getByRole('button', {name: 'Menú de Ana Quispe'});
+  fireEvent.click(avatar);
+  fireEvent.pointerDown(within(screen.getByRole('menu')).getByRole('menuitem', {name: 'Mi perfil'}));
+  expect(screen.getByRole('menu')).toBeInTheDocument();
+  fireEvent.pointerDown(document.body);
+  expect(screen.queryByRole('menu')).not.toBeInTheDocument();
 });

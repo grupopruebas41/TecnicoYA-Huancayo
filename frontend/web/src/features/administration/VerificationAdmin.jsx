@@ -2,6 +2,47 @@ import React, { useState } from "react";
 import { request } from "./http";
 import { ReviewForm, useResource, ResourceState } from "./Sprint02Common";
 import { technicianState } from "./sprint02Validation";
+// D-32 y D-50: suspensión y reactivación con motivo y un paso de confirmación (Fase 1 del panel).
+const statusActions = {
+  active: { open: "Suspender técnico", label: "Motivo de la suspensión", confirm: "Confirmar suspensión", path: "suspension",
+    done: "Técnico suspendido. Sus sesiones se cerraron." },
+  suspended: { open: "Reactivar técnico", label: "Motivo de la reactivación", confirm: "Confirmar reactivación", path: "reactivation",
+    done: "Técnico reactivado." },
+};
+function StatusChange({ id, technician, onDone }) {
+  const action = statusActions[technician.status];
+  const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  if (!action) return null;
+  async function confirm() {
+    if (busy) return;
+    if (reason.trim().length < 5) { setError("Escribe un motivo de al menos 5 caracteres."); return; }
+    setBusy(true); setError("");
+    try {
+      await request("/admin/technicians/" + id + "/" + action.path, { reason: reason.trim(), expected_version: technician.version });
+      setOpen(false); setReason("");
+      await onDone(action.done);
+    } catch (failure) {
+      setError(failure.fields?.reason?.[0] || failure.message);
+    } finally { setBusy(false); }
+  }
+  if (!open) return <button type="button" className="button outline" onClick={() => setOpen(true)}>{action.open}</button>;
+  return (
+    <div className="s02-status-change">
+      <label>
+        {action.label}
+        <textarea value={reason} maxLength={2000} aria-invalid={!!error} aria-describedby={error ? "status-reason-error" : undefined}
+          onChange={(e) => setReason(e.target.value)} />
+      </label>
+      {error && <p className="field-error" id="status-reason-error" role="alert">{error}</p>}
+      <p className="muted">Quedará registrado en la auditoría con tu motivo.</p>
+      <button type="button" className="button primary" disabled={busy} onClick={confirm}>{action.confirm}</button>
+      <button type="button" className="button outline" disabled={busy} onClick={() => { setOpen(false); setError(""); }}>Cancelar</button>
+    </div>
+  );
+}
 function Detail({ id, reload }) {
   const r = useResource("/admin/technicians/" + id);
   const [notice, setNotice] = useState("");
@@ -44,6 +85,7 @@ function Detail({ id, reload }) {
               {v.decision === "reject" ? "Rechazo" : "Aprobación"}: {v.reason}
             </p>
           ))}
+          <StatusChange id={id} technician={r.data} onDone={async (message) => { setNotice(message); await r.reload(); await reload(); }} />
           {r.data.verification_status === "pending" && (
             <ReviewForm
               reload={r.reload}

@@ -1,0 +1,544 @@
+/* Base común de los paneles (Fase 1, D-73 y D-76). Colores solo con tokens: el tema claro los redefine. */
+
+/* Con el panel montado, la cabecera de #cuenta sobra: el panel trae su marca y su «Ir al sitio». */
+.account-page:has(.panel-shell) > .header {
+  display: none;
+}
+.account-page:has(.panel-shell) {
+  background: var(--ty-bg);
+}
+[data-theme] body {
+  background: var(--ty-bg);
+}
+
+.panel-shell {
+  --panel-sidebar: 248px;
+  --panel-sidebar-collapsed: 72px;
+  --panel-topbar: 64px;
+  --panel-focus: var(--ty-accent);
+  display: grid;
+  grid-template-columns: var(--panel-sidebar) minmax(0, 1fr);
+  min-height: 100svh;
+  background: var(--ty-bg);
+  color: var(--ty-text);
+  color-scheme: dark;
+  transition: grid-template-columns var(--ty-fast, 0.2s) ease;
+}
+[data-theme="light"] .panel-shell {
+  color-scheme: light;
+}
+.panel-shell.is-collapsed {
+  grid-template-columns: var(--panel-sidebar-collapsed) minmax(0, 1fr);
+}
+.panel-shell :focus-visible {
+  outline: 3px solid var(--panel-focus);
+  outline-offset: 2px;
+}
+
+/* Barra lateral */
+.panel-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 12px;
+  background: var(--ty-surface);
+  border-right: 1px solid var(--ty-border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 30;
+}
+.panel-brand {
+  margin: 0;
+  max-width: none;
+  font-family: inherit;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 6px 12px;
+  border-bottom: 1px solid var(--ty-border);
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+.panel-brand small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ty-muted);
+}
+.panel-monogram {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ty-border);
+  border-radius: 50%;
+  font: italic 26px var(--ty-serif, "Instrument Serif", serif);
+  padding-bottom: 3px;
+}
+.panel-sidebar nav,
+.panel-sidebar-foot {
+  display: grid;
+  gap: 4px;
+}
+.panel-sidebar-foot {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--ty-border);
+}
+.panel-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--ty-text);
+  font-size: 0.95rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.panel-nav-item:hover {
+  background: var(--ty-raised);
+}
+.panel-nav-item[aria-current="page"] {
+  background: var(--ty-raised);
+  box-shadow: inset 3px 0 0 var(--ty-accent);
+  font-weight: 600;
+}
+.panel-nav-icon {
+  flex: 0 0 24px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Contraída: solo iconos. Las etiquetas siguen en el árbol de accesibilidad (no display:none). */
+.panel-shell.is-collapsed .panel-sidebar .panel-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.panel-shell.is-collapsed .panel-nav-item {
+  justify-content: center;
+  padding-inline: 0;
+}
+.panel-shell.is-collapsed .panel-brand {
+  justify-content: center;
+}
+
+/* Barra superior */
+.panel-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.panel-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--panel-topbar);
+  padding: 8px clamp(16px, 3vw, 32px);
+  background: var(--ty-bg);
+  border-bottom: 1px solid var(--ty-border);
+}
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.panel-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-icon-button,
+.panel-avatar-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--ty-border);
+  border-radius: 50%;
+  background: var(--ty-surface);
+  color: var(--ty-text);
+  font-size: 1.1rem;
+}
+.panel-avatar-button {
+  overflow: hidden;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--ty-raised);
+}
+.panel-avatar-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.panel-drawer-toggle {
+  display: none;
+}
+.panel-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--ty-accent);
+  color: var(--ty-ink);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 20px;
+}
+[data-theme="light"] .panel-badge {
+  color: var(--ty-bg);
+}
+.panel-bell,
+.panel-avatar {
+  position: relative;
+}
+.panel-popover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: min(320px, calc(100vw - 32px));
+  padding: 12px;
+  border: 1px solid var(--ty-border);
+  border-radius: 16px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-shadow);
+  z-index: 40;
+}
+.panel-popover ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.panel-popover li {
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+.panel-popover li.is-unread {
+  background: var(--ty-raised);
+  font-weight: 600;
+}
+.panel-popover p {
+  margin: 4px;
+}
+.panel-menu {
+  width: 200px;
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+}
+.panel-menu button {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--ty-text);
+  text-align: left;
+}
+.panel-menu button:hover {
+  background: var(--ty-raised);
+}
+
+/* Contenido */
+.panel-notices {
+  padding: 12px clamp(16px, 3vw, 32px) 0;
+  display: grid;
+  gap: 8px;
+}
+.panel-content {
+  padding: clamp(16px, 3vw, 32px);
+  width: 100%;
+  max-width: 1200px;
+}
+.panel-page {
+  display: grid;
+  gap: 20px;
+}
+.panel-page h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+.panel-cards {
+  display: grid;
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.panel-card {
+  padding: 20px;
+  border: 1px solid var(--ty-border);
+  border-radius: 20px;
+  background: var(--ty-surface);
+}
+.panel-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.panel-kpi {
+  margin: 0 0 8px;
+  font: italic 2.6rem/1 var(--ty-serif, "Instrument Serif", serif);
+  color: var(--ty-accent);
+}
+.panel-card small {
+  display: block;
+  color: var(--ty-muted);
+}
+.panel-statuses {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+.panel-statuses > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--ty-border);
+  font-size: 0.9rem;
+}
+.panel-statuses dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Contenidos heredados (S1–S4) dentro del panel: los mismos estilos que .session-page, con tokens. */
+.panel-shell .muted {
+  color: var(--ty-muted);
+}
+.panel-shell .notice {
+  display: block;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ty-raised);
+  color: var(--ty-text);
+}
+.panel-shell .error {
+  color: var(--ty-error);
+  background: var(--ty-raised);
+}
+.panel-shell .field-error {
+  color: var(--ty-error);
+}
+.panel-shell .text-button {
+  display: inline;
+  margin: 0 0 0 8px;
+  color: var(--ty-text);
+}
+.panel-content label:not(.button) {
+  display: grid;
+  gap: 8px;
+}
+.panel-content input,
+.panel-content select,
+.panel-content textarea,
+.panel-shell .s02-panel input,
+.panel-shell .s02-panel select,
+.panel-shell .s02-panel textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px;
+  color: var(--ty-text);
+  background: var(--ty-bg);
+  border: 1px solid var(--ty-border);
+  border-radius: 10px;
+  font: inherit;
+}
+.panel-content input[type="checkbox"],
+.panel-content input[type="radio"] {
+  width: auto;
+  min-height: 0;
+}
+.panel-content [aria-invalid="true"] {
+  border-color: var(--ty-error);
+}
+/* account.css fija .profile-form en oscuro: dentro del panel sigue el tema. */
+.panel-content .profile-form {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid var(--ty-border);
+  border-radius: 20px;
+  background: var(--ty-surface);
+  color: var(--ty-text);
+}
+.panel-content .profile-form h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.panel-content .primary {
+  background: var(--ty-text);
+  border-color: var(--ty-text);
+  color: var(--ty-bg);
+}
+.panel-content .outline {
+  border: 1px solid var(--ty-border);
+  color: var(--ty-text);
+  background: none;
+}
+.panel-shell .s02-panel button,
+.panel-shell .s02-modal button {
+  background: var(--ty-raised);
+  border-color: var(--ty-border);
+  color: var(--ty-text);
+}
+.panel-shell .s02-panel button[aria-pressed="true"] {
+  background: var(--ty-accent);
+  color: var(--ty-bg);
+}
+/* El botón de pausa del carrusel S2 no lleva .deck-pause: sin esto queda en 46 px y su texto desborda. */
+.panel-shell .deck-controls > button:last-child {
+  width: auto;
+  padding-inline: 16px;
+  font-size: 13px;
+}
+.panel-shell .s02-card,
+.panel-shell .s02-modal {
+  background: var(--ty-surface);
+  border-color: var(--ty-border);
+  color: var(--ty-text);
+}
+
+/* Mi perfil */
+.profile-page {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  align-items: start;
+}
+.profile-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.profile-avatar-image {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--ty-raised);
+  border: 1px solid var(--ty-border);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+.profile-avatar-pick {
+  position: relative;
+  cursor: pointer;
+}
+.profile-avatar-pick input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.profile-avatar-pick:focus-within {
+  outline: 3px solid var(--panel-focus);
+  outline-offset: 2px;
+}
+.profile-password {
+  display: grid;
+  gap: 14px;
+}
+/* Medidor y botón Mostrar de auth.css vienen en colores del tema oscuro. */
+.panel-shell .password-meter-label {
+  color: var(--ty-muted);
+}
+.panel-shell .password-meter-bar {
+  background: var(--ty-raised);
+}
+.panel-shell .password-toggle {
+  color: var(--ty-accent);
+}
+.panel-shell .password-toggle:hover,
+.panel-shell .password-toggle[aria-pressed="true"] {
+  background: var(--ty-raised);
+  color: var(--ty-text);
+}
+
+/* Móvil: la barra lateral pasa a ser un cajón. */
+.panel-backdrop {
+  display: none;
+}
+@media (max-width: 760px) {
+  .panel-shell,
+  .panel-shell.is-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .panel-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(280px, 85vw);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform var(--ty-fast, 0.2s) ease, visibility 0s linear var(--ty-fast, 0.2s);
+  }
+  .panel-sidebar.is-open {
+    transform: none;
+    visibility: visible;
+    transition: transform var(--ty-fast, 0.2s) ease;
+    box-shadow: var(--ty-shadow);
+  }
+  /* En el cajón siempre se ven las etiquetas, aunque en escritorio estuviera contraída. */
+  .panel-shell.is-collapsed .panel-sidebar .panel-label {
+    position: static;
+    width: auto;
+    height: auto;
+    clip: auto;
+    clip-path: none;
+  }
+  .panel-shell.is-collapsed .panel-nav-item {
+    justify-content: flex-start;
+    padding-inline: 12px;
+  }
+  .panel-collapse {
+    display: none;
+  }
+  .panel-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    background: #0008;
+  }
+  .panel-drawer-toggle {
+    display: grid;
+  }
+  .panel-topbar {
+    padding-inline: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-shell,
+  .panel-sidebar,
+  .panel-sidebar.is-open {
+    transition: none;
+  }
+}
