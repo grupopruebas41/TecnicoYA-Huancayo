@@ -1,10 +1,3 @@
-// Ejemplos deliberadamente no operativos: reemplazar antes de publicar contacto.
-export const CONTACT = Object.freeze({
-  email: "REEMPLAZAR@example.invalid",
-  whatsapp: "REEMPLAZAR",
-  hours: "Horario de atención por confirmar",
-  configured: false,
-});
 export function rememberSearch(filters) {
   try {
     sessionStorage.setItem("tecnicoya.searchIntent", JSON.stringify(filters));

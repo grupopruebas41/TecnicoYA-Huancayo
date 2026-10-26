@@ -75,7 +75,7 @@ test("S02-TC-092 el menú móvil se cierra después de navegar a una sección", 
   section.remove();
 });
 
-test("S02-TC-092 complemento: centra secciones cortas descontando cabecera y submenú medidos", () => {
+test("S02-TC-092 complemento: una sección corta ya no se centra, alinea su borde bajo cabecera y submenú", () => {
   const target = calculateScrollTarget({
     sectionRect: { top: 900, height: 360 },
     headerRect: { top: 0, bottom: 72, height: 72 },
@@ -84,10 +84,10 @@ test("S02-TC-092 complemento: centra secciones cortas descontando cabecera y sub
     scrollY: 300,
   });
 
-  expect(target).toBe(920);
+  expect(target).toBe(1080);
 });
 
-test("S02-TC-092 complemento: alinea secciones altas debajo de cabecera y submenú con margen", () => {
+test("S02-TC-092 complemento: una sección alta alinea su borde bajo cabecera y submenú sin margen extra", () => {
   const target = calculateScrollTarget({
     sectionRect: { top: 900, height: 700 },
     headerRect: { top: 0, bottom: 72, height: 72 },
@@ -96,5 +96,5 @@ test("S02-TC-092 complemento: alinea secciones altas debajo de cabecera y submen
     scrollY: 300,
   });
 
-  expect(target).toBe(1064);
+  expect(target).toBe(1080);
 });

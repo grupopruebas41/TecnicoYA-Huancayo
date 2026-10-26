@@ -3,7 +3,7 @@ import { request } from "../features/administration/http";
 import { rememberSearch, setAuthIntent } from "./config";
 import { navigateToPath, navigateToSection } from "./navigation";
 import { useCount } from "./hooks";
-import { AuthLink, FinalCTA, Zones } from "./Shared";
+import { AuthLink, FinalCTA, Zones, goTo } from "./Shared";
 import ServiceCarousel from "../ServiceCarousel";
 function Count({ value, label }) {
   const [ref, count] = useCount(value);
@@ -210,6 +210,8 @@ export default function Home({ catalog }) {
     <>
       <Hero />
       <ServiceCarousel />
+      {/* El menú encuadra juntos los pasos y la confianza (data-frame="center"). */}
+      <div className="ty-frame-group" data-frame="center">
       <section
         id="proceso"
         data-landing="Cómo funciona"
@@ -242,18 +244,26 @@ export default function Home({ catalog }) {
           <em>de cada paso.</em>
         </h2>
         <div className="ty-trust-points">
-          <p>✓ Perfiles revisados</p>
-          <p>◇ Referencias antes de elegir</p>
-          <p>↗ Atención con seguimiento</p>
+          {[
+            ["✓", "Perfiles revisados"],
+            ["◇", "Referencias antes de elegir"],
+            ["↗", "Atención con seguimiento"],
+          ].map(([icon, text]) => (
+            <p key={text}>
+              <span className="ty-icon-dot" aria-hidden="true">{icon}</span>
+              {text}
+            </p>
+          ))}
         </div>
         <a className="ty-button ty-outline" href="/nosotros" onClick={(event) => { event.preventDefault(); navigateToPath("/nosotros"); }}>
           Conoce más sobre nosotros →
         </a>
       </section>
+      </div>
       <section
         id="tecnicos"
         data-landing="CTA técnicos"
-        className="ty-section ty-split"
+        className="ty-section ty-split ty-frame"
         data-reveal
       >
         <img
@@ -269,9 +279,12 @@ export default function Home({ catalog }) {
             <em>Recibe trabajos cerca de ti.</em>
           </h2>
           <ul className="ty-benefits">
-            <li>Clientes de tu zona</li>
-            <li>Tú pones tu tarifa</li>
-            <li>Construyes reputación</li>
+            {["Clientes de tu zona", "Tú pones tu tarifa", "Construyes reputación"].map((text) => (
+              <li key={text}>
+                <span className="ty-icon-dot" aria-hidden="true">✓</span>
+                {text}
+              </li>
+            ))}
           </ul>
           <AuthLink role="technician">Registrarme como técnico ↗</AuthLink>
         </div>
@@ -284,19 +297,29 @@ export default function Home({ catalog }) {
       <section
         id="preguntas"
         data-landing="FAQ"
-        className="ty-section ty-faq"
+        className="ty-section ty-faq ty-frame"
         data-reveal
       >
-        <div>
+        <div className="ty-faq-intro">
           <span className="ty-eyebrow">ANTES DE EMPEZAR</span>
           <h2>
             Resolvemos <em>tus dudas.</em>
           </h2>
+          <p>
+            Reunimos lo que más nos preguntan antes de pedir un técnico. Si no
+            encuentras tu respuesta, escríbenos.
+          </p>
+          <a className="ty-button ty-outline" href="/nosotros" onClick={goTo("/nosotros", "contacto")}>
+            Ir a contacto →
+          </a>
         </div>
-        <div>
+        <div className="ty-faq-list">
           {faqs.map(([q, a]) => (
             <details key={q}>
-              <summary>{q}</summary>
+              <summary>
+                {q}
+                <span className="ty-faq-icon" aria-hidden="true" />
+              </summary>
               <p>{a}</p>
             </details>
           ))}
