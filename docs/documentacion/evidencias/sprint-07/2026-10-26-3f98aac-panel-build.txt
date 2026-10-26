@@ -1,0 +1,5 @@
+# 2026-10-26 · commit 3f98aac · npm run build
+dist/index.html                   1.07 kB │ gzip:   0.66 kB
+dist/assets/index-BVJWky9R.css  125.40 kB │ gzip:  24.80 kB
+dist/assets/index-F3_isu9P.js   419.22 kB │ gzip: 122.42 kB
+[32m✓ built in 3.26s[39m

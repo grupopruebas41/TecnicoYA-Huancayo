@@ -2,6 +2,37 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-26 · Adelanto S7 · Fase 1 del panel del administrador (D-73 a D-79, D-81)
+
+- **Rama:** `feature/pimentel/admin/panel-base`, creada desde `main` tras el PR #31, con backend y frontend.
+- **Commits:**
+  - `ff7009c`: plan;
+  - `ba479ea`: Pest en rojo;
+  - `16b38b0`: API;
+  - `35316af`: Vitest en rojo;
+  - `3f98aac`: frontend;
+  - `786bc84`: Cypress S1;
+  - `48dc495`: ajuste de S01-TC-063 y S02-TC-039.
+- **API:**
+  - nuevos `GET /admin/dashboard` (`dashboard.view`) y `POST /me/password`;
+  - `PATCH /me` y `GET /me` ampliados (nombres, tema y avatar);
+  - finalidad de media `avatar`;
+  - contrato S07, §7.
+- **Datos:** migración `000026`; permisos `dashboard.view` y `users.manage` en `AuthorizationSeeder` (D-81).
+  - En desarrollo hay que correr `php artisan migrate` y `php artisan db:seed --class=AuthorizationSeeder`.
+- **Frontend:**
+  - `src/features/panel/` (`PanelShell`, `NotificationBell`, `AdminHome`, `ProfilePage`, `useTheme`, `useDismiss`, `panel.css`);
+  - `AccountApp` monta el panel para los tres roles;
+  - Verificación con suspender y reactivar.
+- **Pruebas:**
+  - Pest S07-TC-046 a 056; Pest completo 305/305 en `48dc495`; S01-TC-063 y S02-TC-039 se ajustaron por los permisos y la finalidad nuevos;
+  - Vitest S07-TC-057 a 071; suite completa 277/277;
+  - lint y build aprobados; `composer audit` y `npm audit` limpios;
+  - 71 IDs S07 en total (32 Pest y 39 Vitest).
+- **Cypress (sin ejecutar):** S01-TC-025, 073, 074, 076 y 077 usan `openProfile()`. Se corren en la regresión S4.6.
+- **Capturas:** 44 con la API real del slot A (`evidencias/sprint-07/2026-10-26-3f98aac-panel-*`). Para hacerlas, `tecnicoya_testing` se rehízo con `migrate:fresh`: quedó a medias cuando se cortó una corrida anterior de Pest.
+- **Pendiente:** Fase 2 (Usuarios, con `users.manage`).
+
 ## 2026-10-26 · Adelanto S7 · registro detallado y recuperación de contraseña (D-73, D-80)
 
 - **Rama:** `feature/mayhuasca/auth/registro-detallado`, creada desde `main` `01b93ee`, con backend y frontend.

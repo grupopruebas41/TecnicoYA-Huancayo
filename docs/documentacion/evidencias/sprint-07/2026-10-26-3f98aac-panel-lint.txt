@@ -1,0 +1,6 @@
+# 2026-10-26 · commit 3f98aac · npm run lint
+
+> tecnicoya-web@1.0.0 lint
+> eslint src vite.config.js --max-warnings 0
+
+código de salida: 0
