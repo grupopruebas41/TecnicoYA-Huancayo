@@ -14,6 +14,18 @@ function pressEnter() {
   }));
 }
 
+function pressSpace() {
+  if (Cypress.browser.family !== 'chromium') return cy.press(Cypress.Keyboard.Keys.SPACE);
+  // Igual que pressEnter: la tecla completa por CDP marca radios y casillas de forma nativa.
+  return cy.then(() => Cypress.automation('remote:debugger:protocol', {
+    command: 'Input.dispatchKeyEvent',
+    params: {type: 'keyDown', key: ' ', code: 'Space', windowsVirtualKeyCode: 32, text: ' ', unmodifiedText: ' '},
+  })).then(() => Cypress.automation('remote:debugger:protocol', {
+    command: 'Input.dispatchKeyEvent',
+    params: {type: 'keyUp', key: ' ', code: 'Space', windowsVirtualKeyCode: 32},
+  }));
+}
+
 function focusOn(selector) {
   cy.focused().should('match', selector).and('be.visible').and('have.css', 'outline-style', 'solid');
   cy.focused().should($element => expect(parseFloat($element.css('outline-width'))).to.be.greaterThan(0));
@@ -30,15 +42,25 @@ it('S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter', () =
   const activations = [];
   cy.focused().then($button => $button[0].addEventListener('click', event => activations.push(event.isTrusted), {once: true}));
   pressEnter();
-  // Enter cambia de formulario: esperar el render observable antes del siguiente Tab.
-  cy.get('[data-cy=register-name]').should('be.visible');
+  // Registro en 2 pasos (D-80). Enter cambia de modo: tras el deslizamiento (600 ms) el foco llega a la primera tarjeta.
+  cy.get('[data-cy=register-type-client]').should('exist');
   cy.then(() => expect(activations, 'activación nativa por teclado').to.deep.eq([true]));
-  // Al terminar el deslizamiento del panel (600 ms) el foco pasa solo al primer campo del registro.
-  focusOn('[data-cy=register-name]'); cy.focused().type('Cliente teclado');
-  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-account-type]');
-  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-client-type]');
+  cy.focused().should('match', '[data-cy=register-type-client]');
+  // El radio es invisible: el foco visible lo dibuja su tarjeta.
+  cy.get('.register-role:focus-within').should('have.css', 'outline-style', 'solid');
+  pressSpace();
+  cy.get('[data-cy=register-type-client]').should('be.checked');
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-next]');
+  pressEnter();
+  focusOn('[data-cy=register-given-names]'); cy.focused().type('Cliente');
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-family-names]'); cy.focused().type('Teclado');
   cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-email]');
   cy.focused().type(`teclado-${crypto.randomUUID()}@example.test`);
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-phone]'); cy.focused().type('987654321');
+  // cy.type() no escribe en un select: se elige la opción sobre el elemento enfocado, sin clic.
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-district]'); cy.focused().select('Huancayo');
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-client-type]');
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-reference-address]');
   cy.env(['E2E_PASSWORD'], {log: false}).then(({E2E_PASSWORD}) => {
     cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-password]'); cy.focused().type(E2E_PASSWORD, {log: false});
     // Cada contraseña tiene después su botón Mostrar/Ocultar, también alcanzable con Tab.
@@ -46,6 +68,10 @@ it('S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter', () =
     cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-password-confirmation]'); cy.focused().type(E2E_PASSWORD, {log: false});
     cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[aria-label="Mostrar confirmación de contraseña"]');
   });
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-terms]'); pressSpace();
+  cy.get('[data-cy=register-terms]').should('be.checked');
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('.register-terms .text-button'); // Leer Términos y Privacidad.
+  cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-back]');
   cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-submit]');
   pressEnter();
   cy.wait('@keyboardRegister').its('response.statusCode').should('eq', 201);

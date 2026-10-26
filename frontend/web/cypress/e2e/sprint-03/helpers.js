@@ -1,3 +1,4 @@
+import { fillRegistration } from "../../support/registration";
 export const api = () => Cypress.expose("apiUrl");
 export const wizard = () => cy.get('[aria-label="Nueva solicitud"]');
 export const observe = (method, path, alias) =>
@@ -12,14 +13,7 @@ export function loginClient(kind = "fresh") {
   cy.env(["E2E_PASSWORD"], { log: false }).then(({ E2E_PASSWORD }) => {
     expect(E2E_PASSWORD).to.be.a("string");
     if (kind === "fresh") {
-      cy.get("[data-cy=show-register]").click();
-      cy.get("[data-cy=register-name]").type("Cliente sintético");
-      cy.get("[data-cy=register-email]").type(email);
-      cy.get("[data-cy=register-password]").type(E2E_PASSWORD, { log: false });
-      cy.get("[data-cy=register-password-confirmation]").type(E2E_PASSWORD, {
-        log: false,
-      });
-      cy.get("[data-cy=register-submit]").click();
+      fillRegistration({ type: "client", email, password: E2E_PASSWORD, givenNames: "Cliente" });
       cy.get("[data-cy=register-success]").should("be.visible");
     } else cy.get("[data-cy=login-email]").type(email);
     cy.get("[data-cy=login-password]").type(E2E_PASSWORD, { log: false });

@@ -1,4 +1,5 @@
 // Requiere el contrato de selectores y usuarios E2E descrito en la guía.
+import {fillRegistration} from '../../support/registration';
 const api = Cypress.expose('apiUrl');
 const site = Cypress.config('baseUrl');
 let fixturePassword;
@@ -36,14 +37,7 @@ describe('Sprint 1: UI real con sesión', () => {
   it('S01-TC-015 [TC-001] registra un cliente mediante formulario', () => {
     cy.intercept('POST', `${api}/api/v1/auth/register`).as('register');
     cy.visit('/#cuenta');
-    cy.get('[data-cy=show-register]').click();
-    cy.get('[data-cy=register-name]').type('Cliente E2E');
-    cy.get('[data-cy=register-email]').type(`e2e-${crypto.randomUUID()}@example.test`);
-    cy.get('[data-cy=register-account-type]').select('client');
-    cy.get('[data-cy=register-client-type]').select('household');
-    cy.get('[data-cy=register-password]').type(password(), { log: false });
-    cy.get('[data-cy=register-password-confirmation]').type(password(), { log: false });
-    cy.get('[data-cy=register-submit]').click();
+    fillRegistration({type: 'client', email: `e2e-${crypto.randomUUID()}@example.test`, password: password(), givenNames: 'Cliente'});
     cy.wait('@register').its('response.statusCode').should('eq', 201);
     cy.get('[data-cy=register-success]').should('be.visible');
   });

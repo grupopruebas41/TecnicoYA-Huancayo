@@ -15,7 +15,8 @@ final class Sprint01E2ESeeder extends Seeder
         if (!is_string($password) || strlen($password) < 24) {
             throw new SeedingRefused('Configurar una contraseña sintética de prueba.');
         }
-        $this->call([AuthorizationSeeder::class, CatalogSeeder::class]);
+        // D-80: el registro detallado de las Cypress del S1 necesita distritos activos.
+        $this->call([AuthorizationSeeder::class, CatalogSeeder::class, DistrictSeeder::class]);
         DB::transaction(function () use ($password) {
             foreach (['client', 'technician', 'admin'] as $code) {
                 $user = User::firstOrNew(['email' => "e2e-{$code}@example.test"]);
