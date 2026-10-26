@@ -698,8 +698,8 @@
   padding: 6px 14px 6px 10px;
   line-height: 1.2;
 }
-/* Especialidades en dos niveles (D-80). */
-.specialty-list {
+/* Especialidades en dos niveles (D-80). La lista no es una fila de chips (.register-choices > div). */
+.register-choices.specialty-picker > .specialty-list {
   display: grid;
   gap: 10px;
 }
