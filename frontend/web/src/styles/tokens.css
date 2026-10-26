@@ -1,5 +1,5 @@
 :root {
-  --ty-header-height: 92px;
+  --ty-header-height: 72px;
   --ty-match-history: #3b5956;
   --ty-match-fee: #635d48;
   --ty-match-experience: #d9bd8b;
@@ -21,11 +21,7 @@
   --ty-serif: "Instrument Serif", Georgia, serif;
   --ty-xs: 0.5rem;
   --ty-sm: 1rem;
-  --ty-md: 1.5rem;
-  --ty-lg: 2rem;
-  --ty-xl: 3rem;
-  --ty-2xl: 5rem;
-  --ty-section: clamp(4rem, 7vw, 7rem);
+  --ty-section: clamp(56px, 8vh, 96px);
   --ty-radius: 1.5rem;
   --ty-pill: 999px;
   --ty-shadow: 0 22px 60px #0003;

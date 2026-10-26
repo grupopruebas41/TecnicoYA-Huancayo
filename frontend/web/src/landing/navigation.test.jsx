@@ -26,7 +26,7 @@ test("S02-TC-090 navegar a una sección desplaza con suavidad y no conserva el h
 
   scrollToSection("servicios");
 
-  expect(section.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
+  expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
   expect(section.querySelector("h2")).toHaveFocus();
   expect(section.querySelector("h2")).toHaveAttribute("tabindex", "-1");
   expect(window.location.hash).toBe("");
@@ -41,7 +41,7 @@ test("S02-TC-090 movimiento reducido usa desplazamiento inmediato", () => {
 
   scrollToSection("preguntas");
 
-  expect(section.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
+  expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "auto" });
   section.remove();
 });
 
@@ -69,7 +69,7 @@ test("S02-TC-092 el menú móvil se cierra después de navegar a una sección", 
   expect(screen.getByRole("button", { name: "Cerrar menú" })).toHaveAttribute("aria-expanded", "true");
   fireEvent.click(screen.getByRole("link", { name: "Servicios" }));
 
-  expect(section.scrollIntoView).toHaveBeenCalled();
+  expect(window.scrollTo).toHaveBeenCalled();
   expect(screen.getByRole("button", { name: "Abrir menú" })).toHaveAttribute("aria-expanded", "false");
   expect(window.location.hash).toBe("");
   section.remove();

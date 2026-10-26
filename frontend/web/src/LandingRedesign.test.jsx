@@ -126,14 +126,14 @@ test("S02-TC-090 submenú de Nosotros desplaza y enfoca su sección sin hash", a
   render(<App />);
   await act(async () => {});
   const section = document.getElementById("seguridad");
-  section.scrollIntoView = vi.fn();
+
   fireEvent.click(
     within(screen.getByRole("navigation", { name: "Acerca de TécnicoYa" })).getByRole(
       "link",
       { name: "Tu seguridad" },
     ),
   );
-  expect(section.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" });
+  expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "auto" });
   expect(section.querySelector("h2")).toHaveFocus();
   expect(window.location.hash).toBe("");
 });

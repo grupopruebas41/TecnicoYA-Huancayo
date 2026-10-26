@@ -137,13 +137,23 @@ export default function About({ catalog }) {
     const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
     const root = document.querySelector(".about-page");
     if (typeof IntersectionObserver === "undefined") return undefined;
+    const setSectionFromNavigation = (event) => {
+      if (sectionIds.includes(event.detail?.id)) setActiveSection(event.detail.id);
+    };
+    const updateSectionAtViewportCenter = () => {
+      const headerBottom = document.querySelector(".ty-header")?.getBoundingClientRect().bottom || 0;
+      const navBottom = document.querySelector(".ty-about-nav")?.getBoundingClientRect().bottom || 0;
+      const anchorY = Math.max(headerBottom, navBottom) + 16 +
+        Math.max(0, window.innerHeight - Math.max(headerBottom, navBottom) - 32) / 2;
+      const centered = sections.find((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top <= anchorY && rect.bottom >= anchorY;
+      });
+      if (centered) setActiveSection(centered.id);
+    };
+    window.addEventListener("tecnicoya:section-active", setSectionFromNavigation);
     const activeObserver = new IntersectionObserver(
-      (entries) => {
-        const current = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (current) setActiveSection(current.target.id);
-      },
+      () => updateSectionAtViewportCenter(),
       { rootMargin: "-18% 0px -62% 0px", threshold: [0, 0.15, 0.4] },
     );
     sections.forEach((section) => activeObserver.observe(section));
@@ -156,6 +166,7 @@ export default function About({ catalog }) {
       : null;
     if (hero) heroObserver.observe(hero);
     return () => {
+      window.removeEventListener("tecnicoya:section-active", setSectionFromNavigation);
       activeObserver.disconnect();
       heroObserver?.disconnect();
       root?.classList.remove("about-has-scrolled");

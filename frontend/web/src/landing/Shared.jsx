@@ -28,7 +28,10 @@ const links = [
 ];
 export function Header() {
   const [open, setOpen] = useState(false),
-    [scrolled, setScrolled] = useState(false);
+    [scrolled, setScrolled] = useState(false),
+    [activeLink, setActiveLink] = useState(() =>
+      window.location.pathname.replace(/\/$/, "") === "/nosotros" ? "nosotros" : "inicio",
+    );
   const toggle = useRef(null),
     nav = useRef(null);
   useEffect(() => {
@@ -36,6 +39,11 @@ export function Header() {
     scroll();
     window.addEventListener("scroll", scroll, { passive: true });
     return () => window.removeEventListener("scroll", scroll);
+  }, []);
+  useEffect(() => {
+    const updateActiveLink = (event) => setActiveLink(event.detail?.id || "inicio");
+    window.addEventListener("tecnicoya:section-active", updateActiveLink);
+    return () => window.removeEventListener("tecnicoya:section-active", updateActiveLink);
   }, []);
   useEffect(() => {
     if (open) nav.current?.querySelector("a")?.focus();
@@ -104,6 +112,7 @@ export function Header() {
           <a
             key={id}
             href={id === "nosotros" ? "/nosotros" : "#" + id}
+            aria-current={activeLink === id ? "location" : undefined}
             onClick={(event) => {
               event.preventDefault();
               if (id === "nosotros") navigateToPath("/nosotros");
