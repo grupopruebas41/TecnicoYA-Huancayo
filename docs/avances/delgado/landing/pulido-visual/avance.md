@@ -10,7 +10,7 @@
   - `2076753`: pruebas en rojo;
   - `febb525`: implementación;
   - `e2b7850`: ajuste de ancho de la vitrina.
-- **PR:** se registra en HANDOFF-claude.md.
+- **PR:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/27
 
 ## Qué se cambió
 

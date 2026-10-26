@@ -9,7 +9,8 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - `2076753`: pruebas en rojo;
   - `febb525`: implementación;
   - `e2b7850`: ajuste de ancho de la vitrina;
-  - un commit final de documentación.
+  - `9d747e2`: documentación.
+- **PR:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/27 (CI: ver los checks del PR).
 - **Cambios:** puntos A1 a A4, B1 a B6 y C1 a C9 de la revisión visual. El detalle está en `docs/avances/delgado/landing/pulido-visual/avance.md`.
   - **Causa raíz de A1:** los tokens `--ty-md/lg/xl/2xl` no estaban definidos.
   - **Encuadre:** alineación superior bajo la cabecera, o bajo cabecera + barra del submenú en Nosotros. Cómo funciona se centra en un grupo con `data-frame="center"`.
