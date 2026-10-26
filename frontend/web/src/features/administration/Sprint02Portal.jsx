@@ -23,7 +23,7 @@ export default function Sprint02Portal({ user }) {
     <RealtimeProvider>
       <RoleAnnouncements key={user.id} />
       <Notifications key={"notifications-" + user.id} userId={user.id} />
-      {role === "client" && <ClientPortal key={user.id} />}
+      {role === "client" && <ClientPortal key={user.id} defaultDistrictId={user.client_profile?.district_id} />}
       {role === "technician" && (
         <>
           <OffersInbox technicianId={user.technician_profile?.id} />

@@ -210,7 +210,8 @@ test("S02-TC-089 rediseño: iniciar sesión y registro técnico seleccionan el f
   expect(
     screen.getByRole("heading", { name: "Crea tu cuenta" }),
   ).toBeInTheDocument();
-  expect(screen.getByLabelText("Tipo de cuenta")).toHaveValue("technician");
+  // Registro en 2 pasos (D-80): el tipo de cuenta es una tarjeta del paso 1.
+  expect(screen.getByRole("radio", { name: /Soy técnico/ })).toBeChecked();
   expect(
     screen.getByText(/quedará pendiente de verificación/),
   ).toBeInTheDocument();

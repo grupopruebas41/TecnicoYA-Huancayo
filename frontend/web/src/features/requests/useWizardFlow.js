@@ -56,11 +56,11 @@ function useWizardCatalog(specialtyId, target, retry, setError) {
   }, [specialtyId, retry]);
   return { specialties, subcategories, districts };
 }
-export default function useWizardFlow(initialRecord, target, onExit, onBusy) {
+export default function useWizardFlow(initialRecord, target, onExit, onBusy, defaultDistrictId = null) {
   const [state, dispatch] = useReducer(
       wizardReducer,
       initialRecord,
-      stateFromRecord,
+      (record) => stateFromRecord(record, defaultDistrictId ? { district_id: String(defaultDistrictId) } : {}),
     ),
     [record, setRecord] = useState(initialRecord),
     [media, setMedia] = useState([]);

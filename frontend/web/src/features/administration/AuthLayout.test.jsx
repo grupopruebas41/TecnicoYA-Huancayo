@@ -41,16 +41,21 @@ test('S01-TC-084 complemento: Comprobando tu sesión usa el mismo encuadre centr
   expect(status.closest('.auth-page')).not.toBeNull();
 });
 
-test('S01-TC-075 complemento: el registro agrupa campos en filas sin cambiar el orden de tabulación', () => {
+test('S01-TC-075 complemento: el registro agrupa campos en filas sin cambiar el orden de tabulación', async () => {
+  // Registro en 2 pasos (D-80): las filas se comprueban en el paso 2 del cliente.
   setAuthIntent('register', 'client');
   render(<SessionForm onLogin={vi.fn()}/>);
+  fireEvent.click(screen.getByRole('button', {name: 'Continuar'}));
+  await screen.findByRole('heading', {name: 'Tus datos'});
   const order = [...document.querySelectorAll('.auth-shell [data-cy]')].map(node => node.dataset.cy)
     .filter(cy => cy.startsWith('register-'));
 
-  expect(order).toEqual(['register-name', 'register-account-type', 'register-client-type', 'register-email',
-    'register-password', 'register-password-confirmation', 'register-submit']);
+  expect(order).toEqual(['register-given-names', 'register-family-names', 'register-email', 'register-phone',
+    'register-district', 'register-client-type', 'register-reference-address', 'register-password',
+    'register-password-confirmation', 'register-terms', 'register-back', 'register-submit']);
   const rows = [...document.querySelectorAll('.auth-row')].map(row => [...row.querySelectorAll('[data-cy]')].map(node => node.dataset.cy));
-  expect(rows).toEqual([['register-account-type', 'register-client-type'], ['register-password', 'register-password-confirmation']]);
+  expect(rows).toEqual([['register-given-names', 'register-family-names'], ['register-email', 'register-phone'],
+    ['register-district', 'register-client-type'], ['register-password', 'register-password-confirmation']]);
   // El panel de marca va antes del formulario en el DOM: Cypress S01-TC-075 tabula marca → Volver → Crear/Ya tengo cuenta.
   const panel = document.querySelector('.auth-welcome');
   expect(panel.compareDocumentPosition(document.querySelector('.auth-form')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -60,7 +65,9 @@ test('S01-TC-075 complemento: el cambio de modo vive solo en el botón del panel
   render(<SessionForm onLogin={vi.fn()}/>);
   const card = document.querySelector('.auth-shell');
 
-  expect(card.querySelector('.auth-form .text-button')).toBeNull();
+  const form = card.querySelector('.auth-form');
+  expect(within(form).queryByRole('button', {name: /Crear una cuenta/})).not.toBeInTheDocument();
+  expect(within(form).getByRole('button', {name: '¿Olvidaste tu contraseña?'})).toBeInTheDocument();
   const toRegister = within(card).getByRole('button', {name: 'Crear una cuenta ↗'});
   expect(toRegister).toHaveAttribute('data-cy', 'show-register');
   expect(toRegister).toHaveClass('auth-switch');
@@ -85,9 +92,9 @@ test('S01-TC-075 complemento: tras la animación el foco va al primer campo del 
     render(<SessionForm onLogin={vi.fn()}/>);
     fireEvent.click(screen.getByRole('button', {name: 'Crear una cuenta ↗'}));
     act(() => vi.advanceTimersByTime(599));
-    expect(document.querySelector('[data-cy=register-name]')).not.toHaveFocus();
+    expect(document.querySelector('[data-cy=register-type-client]')).not.toHaveFocus();
     act(() => vi.advanceTimersByTime(1));
-    expect(document.querySelector('[data-cy=register-name]')).toHaveFocus();
+    expect(document.querySelector('[data-cy=register-type-client]')).toHaveFocus();
 
     fireEvent.click(screen.getByRole('button', {name: 'Ya tengo una cuenta ↗'}));
     act(() => vi.advanceTimersByTime(600));
@@ -105,7 +112,7 @@ test('S01-TC-075 complemento: con movimiento reducido el cambio de modo enfoca s
     render(<SessionForm onLogin={vi.fn()}/>);
     fireEvent.click(screen.getByRole('button', {name: 'Crear una cuenta ↗'}));
     act(() => vi.advanceTimersByTime(0));
-    expect(document.querySelector('[data-cy=register-name]')).toHaveFocus();
+    expect(document.querySelector('[data-cy=register-type-client]')).toHaveFocus();
   } finally {
     vi.useRealTimers();
     vi.unstubAllGlobals();
@@ -115,6 +122,7 @@ test('S01-TC-075 complemento: con movimiento reducido el cambio de modo enfoca s
 test('S01-TC-084 complemento: cada contraseña tiene su botón Mostrar/Ocultar accesible', () => {
   setAuthIntent('register', 'client');
   render(<SessionForm onLogin={vi.fn()}/>);
+  fireEvent.click(screen.getByRole('button', {name: 'Continuar'}));
   const password = document.querySelector('[data-cy=register-password]');
   const confirmation = document.querySelector('[data-cy=register-password-confirmation]');
   const showPassword = screen.getByRole('button', {name: 'Mostrar contraseña'});

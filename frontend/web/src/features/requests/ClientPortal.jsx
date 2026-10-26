@@ -4,7 +4,7 @@ import MyRequests from "./MyRequests";
 import TechnicianSearch from "../matching/TechnicianSearch";
 import "./requests.css";
 import {consumeSearch} from "../../landing/config";
-export default function ClientPortal() {
+export default function ClientPortal({ defaultDistrictId = null }) {
   const [searchIntent] = useState(consumeSearch);
   const [workBusy, setWorkBusy] = useState(false);
   const [view, setView] = useState(searchIntent ? "search" : "list"),
@@ -49,6 +49,7 @@ export default function ClientPortal() {
         <RequestWizard
           key={instance}
           initialRecord={draft}
+          defaultDistrictId={defaultDistrictId}
           target={target}
           onBusy={setWorkBusy}
           onExit={() => {

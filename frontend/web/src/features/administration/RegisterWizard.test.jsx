@@ -42,8 +42,9 @@ function fillCommon() {
 }
 
 test('S07-TC-017 el paso 1 pregunta quién eres con dos tarjetas y un indicador 1 de 2', () => {
-  setAuthIntent('register');
+  // Desde el botón del panel no hay rol previo; los botones de la landing sí lo traen (setAuthIntent).
   render(<SessionForm onLogin={vi.fn()}/>);
+  fireEvent.click(screen.getByRole('button', {name: 'Crear una cuenta ↗'}));
 
   expect(screen.getByText('Paso 1 de 2')).toBeInTheDocument();
   expect(screen.getByRole('heading', {name: '¿Quién eres?'})).toBeInTheDocument();
