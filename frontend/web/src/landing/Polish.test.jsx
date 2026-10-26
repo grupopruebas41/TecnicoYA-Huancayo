@@ -1,7 +1,8 @@
 import React from "react";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { Footer } from "./Shared";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { FinalCTA, Footer } from "./Shared";
+import { takeAuthIntent } from "./config";
 import About from "./About";
 import { SpecialtyCards } from "../ServiceCarousel";
 import { CONTACT, CONTACT_PENDING, contactItems, isContactConfigured } from "./contact";
@@ -180,4 +181,89 @@ test("S02-TC-089 complemento: tarjetas de especialidad usan la imagen local por 
   expect(screen.getByRole("img", { name: "Electricidad" })).toHaveAttribute("src", "/api/media/electricidad.webp");
   expect(screen.queryByRole("img", { name: "Gasfitería" })).not.toBeInTheDocument();
   expect(screen.getAllByText("Imagen no disponible")).toHaveLength(1);
+});
+
+function controllableObserver() {
+  const observers = [];
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      constructor(callback, options) {
+        this.callback = callback;
+        this.options = options;
+        this.targets = [];
+        observers.push(this);
+      }
+      observe(target) {
+        this.targets.push(target);
+      }
+      disconnect() {}
+    },
+  );
+  return (selector, isIntersecting) => {
+    for (const observer of observers) {
+      const target = observer.targets.find((el) => el.matches(selector));
+      if (target) act(() => observer.callback([{ target, isIntersecting }]));
+    }
+  };
+}
+
+test("S02-TC-089 complemento: el submenú de Nosotros se oculta sobre la portada y aparece al salir de ella", () => {
+  const report = controllableObserver();
+  render(<div className="landing-page about-page"><About catalog={{ data: { districts: [], specialties: [], subcategories: [] } }} /></div>);
+  const bar = document.querySelector(".ty-about-navbar");
+
+  report(".ty-about-hero", true);
+  expect(bar).toHaveAttribute("aria-hidden", "true");
+  expect(bar).toHaveAttribute("inert");
+  expect(screen.queryByRole("navigation", { name: "Acerca de TécnicoYa" })).not.toBeInTheDocument();
+
+  report(".ty-about-hero", false);
+  expect(bar).not.toHaveAttribute("aria-hidden");
+  expect(bar).not.toHaveAttribute("inert");
+  expect(bar).toHaveClass("is-visible");
+  expect(screen.getByRole("navigation", { name: "Acerca de TécnicoYa" })).toBeInTheDocument();
+
+  report(".ty-about-hero", true);
+  expect(bar).toHaveAttribute("aria-hidden", "true");
+});
+
+test("S02-TC-092 complemento: el encuadre cuenta el submenú aunque aún esté oculto sobre la portada", () => {
+  document.body.innerHTML = `
+    <div class="landing-page about-page">
+      <header class="ty-header"></header>
+      <div class="ty-about-navbar is-hidden" aria-hidden="true"><nav class="ty-about-nav"></nav></div>
+      <section id="contacto"><h2>Estamos cerca.</h2></section>
+    </div>`;
+  document.querySelector(".ty-header").getBoundingClientRect = () => rect(0, 77);
+  // Oculto se desplaza hacia arriba bajo la cabecera; su altura sigue siendo 56 px.
+  document.querySelector(".ty-about-navbar").getBoundingClientRect = () => rect(21, 56);
+  document.getElementById("contacto").getBoundingClientRect = () => rect(5000, 640);
+
+  scrollToSection("contacto");
+
+  expect(window.scrollTo).toHaveBeenCalledWith({ top: 4867, behavior: "smooth" });
+});
+
+test("S02-TC-089 complemento: Empieza ahora ofrece dos caminos con su registro correcto", () => {
+  render(<FinalCTA />);
+  const client = screen.getByRole("article", { name: "Necesito un técnico" });
+  const technician = screen.getByRole("article", { name: "Soy técnico" });
+
+  for (const text of ["Describe la falla", "Recibe recomendaciones", "Sigue la atención"]) {
+    expect(within(client).getByText(text)).toBeInTheDocument();
+  }
+  for (const text of ["Clientes de tu zona", "Tú pones tu tarifa", "Construye reputación"]) {
+    expect(within(technician).getByText(text)).toBeInTheDocument();
+  }
+
+  const ask = within(client).getByRole("link", { name: "Pedir un técnico ↗" });
+  expect(ask).toHaveAttribute("href", "#cuenta");
+  fireEvent.click(ask);
+  expect(takeAuthIntent()).toEqual({ mode: "register", role: "client" });
+
+  const join = within(technician).getByRole("link", { name: "Registrarme como técnico" });
+  expect(join).toHaveAttribute("href", "#cuenta");
+  fireEvent.click(join);
+  expect(takeAuthIntent()).toEqual({ mode: "register", role: "technician" });
 });

@@ -124,6 +124,19 @@ test("S02-TC-090 desde Nosotros el menú vuelve a servicios sin hash", async () 
 });
 test("S02-TC-090 submenú de Nosotros desplaza y enfoca su sección sin hash", async () => {
   window.history.replaceState(null, "", "/nosotros");
+  // El submenú solo se muestra cuando la portada ya salió de la vista.
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      constructor(cb) {
+        this.cb = cb;
+      }
+      observe(target) {
+        this.cb([{ isIntersecting: !target.classList.contains("ty-about-hero"), target }]);
+      }
+      disconnect() {}
+    },
+  );
   render(<App />);
   await act(async () => {});
   const section = document.getElementById("seguridad");
