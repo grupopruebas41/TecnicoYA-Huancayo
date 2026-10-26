@@ -39,7 +39,7 @@ it('S02-TC-022 sirve sin sesión solo las subcategorías activas con imagen púb
 
     $items = $response->json('data');
     expect(array_column($items, 'subcategory_id'))->toBe([$withImage])
-        ->and(array_keys($items[0]))->toEqualCanonicalizing(['subcategory_id', 'specialty_id', 'specialty_name', 'name', 'description', 'image_url'])
+        ->and(array_keys($items[0]))->toEqualCanonicalizing(['subcategory_id', 'specialty_id', 'specialty_name', 'name', 'description', 'image_url', 'reference_fee'])
         ->and($items[0]['specialty_name'])->toBe('Cómputo')
         ->and($items[0]['image_url'])->toEndWith("/api/v1/media/$image");
     expect($response->getContent())->not->toContain('storage_key')->not->toContain('owner_id');

@@ -1,0 +1,80 @@
+
+   FAIL  Tests\Feature\Sprint04\CatalogLandingFieldsTest
+  ⨯ carrusel → it S04-TC-134 el carrusel expone la tarifa de referencia con 2 decimales y null sin tarifa [TC-… 66.55s  
+  ✓ carrusel → it S04-TC-135 el carrusel se arma con una sola consulta aunque crezca el número de subcategorías  1.92s  
+  ⨯ it S04-TC-136 DatabaseSeeder siembra permisos, catálogo y los distritos activos sin duplicar ni pisar cambi… 0.06s  
+
+   FAIL  Tests\Feature\Sprint02\CarouselTest
+  ⨯ it S02-TC-022 sirve sin sesión solo las subcategorías activas con imagen pública revisada [TC-013]           0.67s  
+  ✓ it S02-TC-023 excluye del carrusel la imagen retirada, la subcategoría inactiva y la especialidad inactiva   0.34s  
+
+   PASS  Tests\Feature\Sprint04\SpecialtyImageTest
+  ✓ it S04-TC-133 expone la foto de la especialidad solo si es pública, revisada y no retirada [TC-012]          0.53s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\CatalogLandingFieldsTest > `carrusel` → it S04-TC-134 el carrusel…   ErrorException   
+  Undefined array key "reference_fee"
+
+  at tests\Feature\Sprint04\CatalogLandingFieldsTest.php:46
+     42▕         DB::table('subcategories')->where('id', $withoutFee)->update(['reference_fee' => null]);
+     43▕ 
+     44▕         $items = collect($this->getJson('/api/v1/catalog/carousel')->assertOk()->json('data'))->keyBy('subcategory_id');
+     45▕ 
+  ➜  46▕         expect($items[$withFee]['reference_fee'])->toBe('45.50')
+     47▕             ->and($items[$round]['reference_fee'])->toBe('120.00')
+     48▕             ->and($items[$withoutFee])->toHaveKey('reference_fee')
+     49▕             ->and($items[$withoutFee]['reference_fee'])->toBeNull();
+     50▕     });
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\CatalogLandingFieldsTest > it S04-TC-136 DatabaseSeede…  BindingResolutionException   
+  Target class [DatabaseSeeder] does not exist.
+
+  at vendor\laravel\framework\src\Illuminate\Container\Container.php:1122
+    1118▕             }
+    1119▕         }
+    1120▕ 
+    1121▕         try {
+  ➜ 1122▕             $reflector = new ReflectionClass($concrete);
+    1123▕         } catch (ReflectionException $e) {
+    1124▕             throw new BindingResolutionException("Target class [$concrete] does not exist.", 0, $e);
+    1125▕         }
+    1126▕
+
+  1   vendor\laravel\framework\src\Illuminate\Container\Container.php:1122
+  2   vendor\laravel\framework\src\Illuminate\Container\Container.php:933
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint02\CarouselTest > it S02-TC-022 sirve sin sesión solo las subcategorías activas con i…   
+  Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+     0 => 'description'
+     1 => 'image_url'
+     2 => 'name'
+-    3 => 'reference_fee'
+-    4 => 'specialty_id'
+-    5 => 'specialty_name'
+-    6 => 'subcategory_id'
++    3 => 'specialty_id'
++    4 => 'specialty_name'
++    5 => 'subcategory_id'
+ )
+
+  at tests\Feature\Sprint02\CarouselTest.php:42
+     38▕     $response = $this->getJson('/api/v1/catalog/carousel')->assertOk();
+     39▕ 
+     40▕     $items = $response->json('data');
+     41▕     expect(array_column($items, 'subcategory_id'))->toBe([$withImage])
+  ➜  42▕         ->and(array_keys($items[0]))->toEqualCanonicalizing(['subcategory_id', 'specialty_id', 'specialty_name', 'name', 'description', 'image_url', 'reference_fee'])
+     43▕         ->and($items[0]['specialty_name'])->toBe('Cómputo')
+     44▕         ->and($items[0]['image_url'])->toEndWith("/api/v1/media/$image");
+     45▕     expect($response->getContent())->not->toContain('storage_key')->not->toContain('owner_id');
+     46▕     expect(array_column($items, 'subcategory_id'))->not->toContain($withoutImage);
+
+  1   tests\Feature\Sprint02\CarouselTest.php:42
+
+
+  Tests:    3 failed, 3 passed (22 assertions)
+  Duration: 77.32s
+
