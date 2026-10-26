@@ -320,10 +320,10 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
         if (event.key === "ArrowLeft") { event.preventDefault(); move(-1); }
       }}
     >
-      <header className="ty-product-heading">
+      <div className="ty-product-heading">
         <p className="ty-product-kicker"><span aria-hidden="true" /><span>SUBESPECIALIDADES</span><span aria-hidden="true" /></p>
         {visibleItems[index] && <h3 className="ty-product-title" key={visibleItems[index].id || visibleItems[index].subcategory_id} aria-live="polite">{visibleItems[index].name}</h3>}
-      </header>
+      </div>
       <div className={`ty-product-stage subcategory-deck${reduced ? " is-reduced" : ""}${shufflePhase ? ` is-shuffling-${shufflePhase}` : ""}`} style={{ height: mobile ? "360px" : "380px" }} aria-live="polite">
         {visibleCards.map(({ itemIndex, offset }) => {
           const item = visibleItems[itemIndex];
