@@ -5,3 +5,39 @@
 
 /* Las salidas semánticas mantienen la presentación de los avisos. */
 output.notice, .session-page > output { display: block; }
+
+/* Cabecera de #cuenta tan compacta como la de la landing: logo y «Volver al inicio» pequeño. */
+.account-page {
+  --account-header-height: 72px;
+}
+.account-page > .header {
+  min-height: var(--account-header-height);
+  padding: 12px max(clamp(16px, 4vw, 48px), calc((100% - 1200px) / 2));
+  gap: 16px;
+}
+.account-page > .header .brand {
+  gap: 10px;
+  font-size: 1.25rem;
+}
+.account-page > .header .monogram {
+  width: 44px;
+  height: 44px;
+  padding-bottom: 3px;
+  font-size: 32px;
+}
+.account-page > .header .button {
+  min-height: 40px;
+  gap: 8px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.9rem;
+}
+@media (max-width: 650px) {
+  .account-page > .header {
+    flex-wrap: nowrap;
+    padding: 12px 16px;
+  }
+  .account-page > .header .button {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+  }
+}

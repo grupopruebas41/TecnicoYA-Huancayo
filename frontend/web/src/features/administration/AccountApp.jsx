@@ -58,9 +58,10 @@ export default function AccountApp() {
       }
     } finally { setBusy(false); }
   }
-  if (loading) return <section className="session-page"><output>Comprobando tu sesión…</output></section>;
-  if (blocked) return <section className="session-page"><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></section>;
-  if (!user) return <section className="session-page"><Notice error={error}/>{error && <button type="button" className="button outline" onClick={() => setReload(reload + 1)}>Reintentar conexión</button>}<SessionForm onLogin={(value, warning = '') => { setUser(value); setError(warning); }}/></section>;
+  // Sin sesión, la tarjeta se centra en el alto disponible bajo la cabecera (auth-page).
+  if (loading) return <section className="session-page auth-page"><div className="auth-status"><span className="auth-emblem" aria-hidden="true">t</span><output>Comprobando tu sesión…</output></div></section>;
+  if (blocked) return <section className="session-page auth-page"><div className="auth-status"><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></div></section>;
+  if (!user) return <section className="session-page auth-page"><SessionForm connectionError={error} onRetry={() => setReload(reload + 1)} onLogin={(value, warning = '') => { setUser(value); setError(warning); }}/></section>;
   const role = user.role?.code;
   if (!roles[role]) return <section className="session-page"><Notice error="Tu cuenta no tiene un rol habilitado."/><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></section>;
   return <section className="session-page" data-cy={'portal-' + role}>

@@ -2,6 +2,27 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-26 · Sesión · encuadre de la pantalla #cuenta (frontend, D-72)
+
+- **Rama:** `feature/delgado/auth/encuadre-login`, creada desde `main` `16cf3cb`.
+- **Commits:** `f20bb97` en rojo; `4aa5ff6` en verde.
+- **Cambios:**
+  - cabecera compacta;
+  - tarjeta centrada de 1080 px, con formulario al 60 % y panel de marca al 40 %;
+  - error de conexión y «Reintentar» dentro de la tarjeta;
+  - registro con dos campos por fila;
+  - «Comprobando tu sesión» en la misma tarjeta;
+  - panel de marca reducido en móvil.
+- **Pruebas:** Vitest 234/234; lint y build aprobados; Cypress no se ejecutó.
+- **Pruebas Cypress afectadas:** S01-TC-075 depende del orden del DOM y los `data-cy`, y ambos se conservan.
+- **Evidencias:** `docs/documentacion/evidencias/login/`.
+- **Ajuste del 2026-10-26:**
+  - `a1b1498` en rojo; `3ad452d` en verde;
+  - el cambio de modo queda solo en el panel, con deslizamiento de 600 ms y foco al primer campo;
+  - botón Mostrar contraseña;
+  - Vitest 238/238;
+  - Cypress S01-TC-075 ajustada (sin ejecutar): foco automático y un Tab por cada botón Mostrar.
+
 ## 2026-10-26 · Sprint 4 · catálogo público: image_url, reference_fee y DatabaseSeeder
 
 - **Rama:** `feature/mayhuasca/catalogo/campos-landing`, creada desde `main` `16cf3cb`.

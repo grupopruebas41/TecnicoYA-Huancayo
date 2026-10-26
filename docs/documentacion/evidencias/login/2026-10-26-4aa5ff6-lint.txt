@@ -1,0 +1,4 @@
+
+> tecnicoya-web@1.0.0 lint
+> eslint src vite.config.js --max-warnings 0
+

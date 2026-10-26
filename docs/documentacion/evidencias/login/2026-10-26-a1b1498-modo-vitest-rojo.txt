@@ -1,0 +1,859 @@
+
+ RUN  v5.0.3 <repo>/frontend/web
+
+ ❯ src/features/administration/AuthLayout.test.jsx (7 tests | 4 failed) 283ms
+   ✓ S01-TC-084 complemento: el error de conexión y Reintentar quedan dentro de la tarjeta, sobre el formulario 133ms
+   ✓ S01-TC-084 complemento: Comprobando tu sesión usa el mismo encuadre centrado 5ms
+   ✓ S01-TC-075 complemento: el registro agrupa campos en filas sin cambiar el orden de tabulación 10ms
+   × S01-TC-075 complemento: el cambio de modo vive solo en el botón del panel, que cambia su texto 28ms
+   × S01-TC-075 complemento: tras la animación el foco va al primer campo del formulario visible 25ms
+   × S01-TC-075 complemento: con movimiento reducido el cambio de modo enfoca sin esperar el deslizamiento 20ms
+   × S01-TC-084 complemento: cada contraseña tiene su botón Mostrar/Ocultar accesible 62ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/administration/AuthLayout.test.jsx > S01-TC-075 complemento: el cambio de modo vive solo en el botón del panel, que cambia su texto
+AssertionError: expected <button …(3)></button> to be null
+
+- Expected:
+null
+
++ Received:
+<button
+  class="text-button"
+  data-cy="show-register"
+  type="button"
+>
+  Crear una cuenta
+</button>
+
+ ❯ src/features/administration/AuthLayout.test.jsx:63:57
+     61|   const card = document.querySelector('.auth-shell');
+     62|
+     63|   expect(card.querySelector('.auth-form .text-button')).toBeNull();
+       |                                                         ^
+     64|   const toRegister = within(card).getByRole('button', {name: 'Crear un…
+     65|   expect(toRegister).toHaveAttribute('data-cy', 'show-register');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/features/administration/AuthLayout.test.jsx > S01-TC-075 complemento: tras la animación el foco va al primer campo del formulario visible
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <input
+  aria-invalid="false"
+  autocomplete="name"
+  data-cy="register-name"
+  id="field-name"
+  name="name"
+/>
+Received element with focus:
+  <body>
+  <div>
+    <div
+      class="auth-shell is-register"
+    >
+      <aside
+        class="auth-welcome"
+      >
+        <span
+          aria-hidden="true"
+          class="auth-emblem"
+        >
+          t
+        </span>
+        <div
+          class="auth-welcome-copy"
+        >
+          <span
+            class="kicker"
+          >
+            TALENTO LOCAL. CONEXIONES DE CONFIANZA.
+          </span>
+          <h2>
+            Tu solución
+            <br />
+            <em>
+              empieza aquí.
+            </em>
+          </h2>
+          <p>
+            Conecta con especialistas de Huancayo desde tu cuenta personal.
+          </p>
+          <button
+            class="button auth-switch"
+            type="button"
+          >
+            Ya tengo una cuenta
+             ↗
+          </button>
+        </div>
+        <span
+          class="auth-location"
+        >
+          TÉCNICOYA · HUANCAYO
+        </span>
+      </aside>
+      <div
+        class="auth-form-side"
+      >
+        <form
+          aria-busy="false"
+          class="auth-form"
+          novalidate=""
+        >
+          <span
+            class="kicker"
+          >
+            TU ESPACIO EN TÉCNICOYA
+          </span>
+          <h1>
+            Crea tu cuenta
+          </h1>
+          <div
+            class="form-field"
+          >
+            <label
+              for="field-name"
+            >
+              Nombre
+            </label>
+            <input
+              aria-invalid="false"
+              autocomplete="name"
+              data-cy="register-name"
+              id="field-name"
+              name="name"
+            />
+          </div>
+          <div
+            class="auth-row"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-account_type"
+              >
+                Tipo de cuenta
+              </label>
+              <select
+                aria-invalid="false"
+                data-cy="register-account-type"
+                id="field-account_type"
+                name="account_type"
+              >
+                <option
+                  value="client"
+                >
+                  Cliente
+                </option>
+                <option
+                  value="technician"
+                >
+                  Técnico independiente
+                </option>
+              </select>
+            </div>
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-client_type"
+              >
+                Tipo de cliente
+              </label>
+              <select
+                aria-invalid="false"
+                data-cy="register-client-type"
+                id="field-client_type"
+                name="client_type"
+              >
+                <option
+                  value="household"
+                >
+                  Hogar
+                </option>
+                <option
+                  value="mype"
+                >
+                  MYPE
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            class="form-field"
+          >
+            <label
+              for="field-email"
+            >
+              Correo
+            </label>
+            <input
+              aria-invalid="false"
+              autocomplete="email"
+              data-cy="register-email"
+              id="field-email"
+              maxlength="254"
+              name="email"
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            class="auth-row"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-password"
+              >
+                Contraseña
+              </label>
+              <input
+                aria-invalid="false"
+                autocomplete="new-password"
+                data-cy="register-password"
+                id="field-password"
+                name="password"
+                type="password"
+              />
+            </div>
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-password_confirmation"
+              >
+                Confirmar contraseña
+              </label>
+              <input
+                aria-invalid="false"
+                autocomplete="new-password"
+                data-cy="register-password-confirmation"
+                id="field-password_confirmation"
+                name="password_confirmation"
+                type="password"
+              />
+            </div>
+          </div>
+          <button
+            class="button primary submit"
+            data-cy="register-submit"
+            type="submit"
+          >
+            Registrarme
+          </button>
+          <button
+            class="text-button"
+            data-cy="show-login"
+            type="button"
+          >
+            Iniciar sesión
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ src/features/administration/AuthLayout.test.jsx:90:63
+     88|     expect(document.querySelector('[data-cy=register-name]')).not.toHa…
+     89|     act(() => vi.advanceTimersByTime(1));
+     90|     expect(document.querySelector('[data-cy=register-name]')).toHaveFo…
+       |                                                               ^
+     91|
+     92|     fireEvent.click(screen.getByRole('button', {name: 'Ya tengo una cu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/features/administration/AuthLayout.test.jsx > S01-TC-075 complemento: con movimiento reducido el cambio de modo enfoca sin esperar el deslizamiento
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <input
+  aria-invalid="false"
+  autocomplete="name"
+  data-cy="register-name"
+  id="field-name"
+  name="name"
+/>
+Received element with focus:
+  <body>
+  <div>
+    <div
+      class="auth-shell is-register"
+    >
+      <aside
+        class="auth-welcome"
+      >
+        <span
+          aria-hidden="true"
+          class="auth-emblem"
+        >
+          t
+        </span>
+        <div
+          class="auth-welcome-copy"
+        >
+          <span
+            class="kicker"
+          >
+            TALENTO LOCAL. CONEXIONES DE CONFIANZA.
+          </span>
+          <h2>
+            Tu solución
+            <br />
+            <em>
+              empieza aquí.
+            </em>
+          </h2>
+          <p>
+            Conecta con especialistas de Huancayo desde tu cuenta personal.
+          </p>
+          <button
+            class="button auth-switch"
+            type="button"
+          >
+            Ya tengo una cuenta
+             ↗
+          </button>
+        </div>
+        <span
+          class="auth-location"
+        >
+          TÉCNICOYA · HUANCAYO
+        </span>
+      </aside>
+      <div
+        class="auth-form-side"
+      >
+        <form
+          aria-busy="false"
+          class="auth-form"
+          novalidate=""
+        >
+          <span
+            class="kicker"
+          >
+            TU ESPACIO EN TÉCNICOYA
+          </span>
+          <h1>
+            Crea tu cuenta
+          </h1>
+          <div
+            class="form-field"
+          >
+            <label
+              for="field-name"
+            >
+              Nombre
+            </label>
+            <input
+              aria-invalid="false"
+              autocomplete="name"
+              data-cy="register-name"
+              id="field-name"
+              name="name"
+            />
+          </div>
+          <div
+            class="auth-row"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-account_type"
+              >
+                Tipo de cuenta
+              </label>
+              <select
+                aria-invalid="false"
+                data-cy="register-account-type"
+                id="field-account_type"
+                name="account_type"
+              >
+                <option
+                  value="client"
+                >
+                  Cliente
+                </option>
+                <option
+                  value="technician"
+                >
+                  Técnico independiente
+                </option>
+              </select>
+            </div>
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-client_type"
+              >
+                Tipo de cliente
+              </label>
+              <select
+                aria-invalid="false"
+                data-cy="register-client-type"
+                id="field-client_type"
+                name="client_type"
+              >
+                <option
+                  value="household"
+                >
+                  Hogar
+                </option>
+                <option
+                  value="mype"
+                >
+                  MYPE
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            class="form-field"
+          >
+            <label
+              for="field-email"
+            >
+              Correo
+            </label>
+            <input
+              aria-invalid="false"
+              autocomplete="email"
+              data-cy="register-email"
+              id="field-email"
+              maxlength="254"
+              name="email"
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            class="auth-row"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-password"
+              >
+                Contraseña
+              </label>
+              <input
+                aria-invalid="false"
+                autocomplete="new-password"
+                data-cy="register-password"
+                id="field-password"
+                name="password"
+                type="password"
+              />
+            </div>
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-password_confirmation"
+              >
+                Confirmar contraseña
+              </label>
+              <input
+                aria-invalid="false"
+                autocomplete="new-password"
+                data-cy="register-password-confirmation"
+                id="field-password_confirmation"
+                name="password_confirmation"
+                type="password"
+              />
+            </div>
+          </div>
+          <button
+            class="button primary submit"
+            data-cy="register-submit"
+            type="submit"
+          >
+            Registrarme
+          </button>
+          <button
+            class="text-button"
+            data-cy="show-login"
+            type="button"
+          >
+            Iniciar sesión
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ src/features/administration/AuthLayout.test.jsx:108:63
+    106|     fireEvent.click(screen.getByRole('button', {name: 'Crear una cuent…
+    107|     act(() => vi.advanceTimersByTime(0));
+    108|     expect(document.querySelector('[data-cy=register-name]')).toHaveFo…
+       |                                                               ^
+    109|   } finally {
+    110|     vi.useRealTimers();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/features/administration/AuthLayout.test.jsx > S01-TC-084 complemento: cada contraseña tiene su botón Mostrar/Ocultar accesible
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Mostrar contraseña"
+
+Here are the accessible roles:
+
+  complementary:
+
+  Name "":
+  <aside
+    class="auth-welcome"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Tu solución empieza aquí.":
+  <h2 />
+
+  Name "Crea tu cuenta":
+  <h1 />
+
+  --------------------------------------------------
+  emphasis:
+
+  Name "":
+  <em />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  button:
+
+  Name "Ya tengo una cuenta ↗":
+  <button
+    class="button auth-switch"
+    type="button"
+  />
+
+  Name "Registrarme":
+  <button
+    class="button primary submit"
+    data-cy="register-submit"
+    type="submit"
+  />
+
+  Name "Iniciar sesión":
+  <button
+    class="text-button"
+    data-cy="show-login"
+    type="button"
+  />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Nombre":
+  <input
+    aria-invalid="false"
+    autocomplete="name"
+    data-cy="register-name"
+    id="field-name"
+    name="name"
+  />
+
+  Name "Correo":
+  <input
+    aria-invalid="false"
+    autocomplete="email"
+    data-cy="register-email"
+    id="field-email"
+    maxlength="254"
+    name="email"
+    type="email"
+    value=""
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Tipo de cuenta":
+  <select
+    aria-invalid="false"
+    data-cy="register-account-type"
+    id="field-account_type"
+    name="account_type"
+  />
+
+  Name "Tipo de cliente":
+  <select
+    aria-invalid="false"
+    data-cy="register-client-type"
+    id="field-client_type"
+    name="client_type"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "Cliente":
+  <option
+    value="client"
+  />
+
+  Name "Técnico independiente":
+  <option
+    value="technician"
+  />
+
+  Name "Hogar":
+  <option
+    value="household"
+  />
+
+  Name "MYPE":
+  <option
+    value="mype"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="auth-shell is-register"
+    >
+      <aside
+        class="auth-welcome"
+      >
+        <span
+          aria-hidden="true"
+          class="auth-emblem"
+        >
+          t
+        </span>
+        <div
+          class="auth-welcome-copy"
+        >
+          <span
+            class="kicker"
+          >
+            TALENTO LOCAL. CONEXIONES DE CONFIANZA.
+          </span>
+          <h2>
+            Tu solución
+            <br />
+            <em>
+              empieza aquí.
+            </em>
+          </h2>
+          <p>
+            Conecta con especialistas de Huancayo desde tu cuenta personal.
+          </p>
+          <button
+            class="button auth-switch"
+            type="button"
+          >
+            Ya tengo una cuenta
+             ↗
+          </button>
+        </div>
+        <span
+          class="auth-location"
+        >
+          TÉCNICOYA · HUANCAYO
+        </span>
+      </aside>
+      <div
+        class="auth-form-side"
+      >
+        <form
+          aria-busy="false"
+          class="auth-form"
+          novalidate=""
+        >
+          <span
+            class="kicker"
+          >
+            TU ESPACIO EN TÉCNICOYA
+          </span>
+          <h1>
+            Crea tu cuenta
+          </h1>
+          <div
+            class="form-field"
+          >
+            <label
+              for="field-name"
+            >
+              Nombre
+            </label>
+            <input
+              aria-invalid="false"
+              autocomplete="name"
+              data-cy="register-name"
+              id="field-name"
+              name="name"
+            />
+          </div>
+          <div
+            class="auth-row"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-account_type"
+              >
+                Tipo de cuenta
+              </label>
+              <select
+                aria-invalid="false"
+                data-cy="register-account-type"
+                id="field-account_type"
+                name="account_type"
+              >
+                <option
+                  value="client"
+                >
+                  Cliente
+                </option>
+                <option
+                  value="technician"
+                >
+                  Técnico independiente
+                </option>
+              </select>
+            </div>
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-client_type"
+              >
+                Tipo de cliente
+              </label>
+              <select
+                aria-invalid="false"
+                data-cy="register-client-type"
+                id="field-client_type"
+                name="client_type"
+              >
+                <option
+                  value="household"
+                >
+                  Hogar
+                </option>
+                <option
+                  value="mype"
+                >
+                  MYPE
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            class="form-field"
+          >
+            <label
+              for="field-email"
+            >
+              Correo
+            </label>
+            <input
+              aria-invalid="false"
+              autocomplete="email"
+              data-cy="register-email"
+              id="field-email"
+              maxlength="254"
+              name="email"
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            class="auth-row"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-password"
+              >
+                Contraseña
+              </label>
+              <input
+                aria-invalid="false"
+                autocomplete="new-password"
+                data-cy="register-password"
+                id="field-password"
+                name="password"
+                type="password"
+              />
+            </div>
+            <div
+              class="form-field"
+            >
+              <label
+                for="field-password_confirmation"
+              >
+                Confirmar contraseña
+              </label>
+              <input
+                aria-invalid="false"
+                autocomplete="new-password"
+                data-cy="register-password-confirmation"
+                id="field-password_confirmation"
+                name="password_confirmation"
+                type="password"
+              />
+            </div>
+          </div>
+          <button
+            class="button primary submit"
+            data-cy="register-submit"
+            type="submit"
+          >
+            Registrarme
+          </button>
+          <button
+            class="text-button"
+            data-cy="show-login"
+            type="button"
+          >
+            Iniciar sesión
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/administration/AuthLayout.test.jsx:120:31
+    118|   const password = document.querySelector('[data-cy=register-password]…
+    119|   const confirmation = document.querySelector('[data-cy=register-passw…
+    120|   const showPassword = screen.getByRole('button', {name: 'Mostrar cont…
+       |                               ^
+    121|   const showConfirmation = screen.getByRole('button', {name: 'Mostrar …
+    122|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 3 passed (7)
+   Start at  02:26:23
+   Duration  1.96s (environment 50%, tests 17%, import 13%, setup 10%, transform 9%)
+
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml

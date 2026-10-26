@@ -1,0 +1,121 @@
+{
+  "1366x768-login": {
+    "panel": [
+      791,
+      1222
+    ],
+    "form": [
+      144,
+      791
+    ],
+    "heading": "Tu soluciónempieza aquí.",
+    "focus": "BODY",
+    "card": [
+      198,
+      642
+    ],
+    "linksInForm": 0
+  },
+  "1366x768-intermedio": {
+    "panel": [
+      212,
+      643
+    ],
+    "form": [
+      530,
+      1176
+    ],
+    "heading": "¿Ya tienes cuenta?Vuelve a tu espacio.",
+    "focus": "BODY",
+    "card": [
+      142,
+      698
+    ],
+    "linksInForm": 0
+  },
+  "1366x768-registro": {
+    "panel": [
+      144,
+      575
+    ],
+    "form": [
+      575,
+      1222
+    ],
+    "heading": "¿Ya tienes cuenta?Vuelve a tu espacio.",
+    "focus": "register-password",
+    "card": [
+      142,
+      698
+    ],
+    "linksInForm": 0
+  },
+  "1366x768-vuelta": {
+    "panel": [
+      791,
+      1222
+    ],
+    "form": [
+      144,
+      791
+    ],
+    "heading": "Tu soluciónempieza aquí.",
+    "focus": "login-email",
+    "card": [
+      198,
+      642
+    ],
+    "linksInForm": 0
+  },
+  "390x844-login": {
+    "panel": [
+      17,
+      373
+    ],
+    "form": [
+      17,
+      373
+    ],
+    "heading": "Tu soluciónempieza aquí.",
+    "focus": "BODY",
+    "card": [
+      97,
+      639
+    ],
+    "linksInForm": 0
+  },
+  "390x844-registro": {
+    "panel": [
+      17,
+      373
+    ],
+    "form": [
+      17,
+      373
+    ],
+    "heading": "¿Ya tienes cuenta?Vuelve a tu espacio.",
+    "focus": "register-password",
+    "card": [
+      97,
+      993
+    ],
+    "linksInForm": 0
+  },
+  "390x844-vuelta": {
+    "panel": [
+      17,
+      373
+    ],
+    "form": [
+      17,
+      373
+    ],
+    "heading": "Tu soluciónempieza aquí.",
+    "focus": "login-email",
+    "card": [
+      97,
+      639
+    ],
+    "linksInForm": 0
+  }
+}

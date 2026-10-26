@@ -1,0 +1,362 @@
+{
+  "1366x768-login": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1366,
+      "height": 72
+    },
+    "card": {
+      "top": 198,
+      "bottom": 642,
+      "left": 143,
+      "right": 1223,
+      "height": 445
+    },
+    "panel": {
+      "top": 199,
+      "bottom": 641,
+      "left": 791,
+      "right": 1222,
+      "height": 443
+    },
+    "form": {
+      "top": 199,
+      "bottom": 641,
+      "left": 144,
+      "right": 791,
+      "height": 443
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "1366x768-registro": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1366,
+      "height": 72
+    },
+    "card": {
+      "top": 128,
+      "bottom": 712,
+      "left": 143,
+      "right": 1223,
+      "height": 584
+    },
+    "panel": {
+      "top": 129,
+      "bottom": 711,
+      "left": 791,
+      "right": 1222,
+      "height": 582
+    },
+    "form": {
+      "top": 129,
+      "bottom": 711,
+      "left": 144,
+      "right": 791,
+      "height": 582
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "1366x768-error-conexion": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1366,
+      "height": 72
+    },
+    "card": {
+      "top": 175,
+      "bottom": 665,
+      "left": 143,
+      "right": 1223,
+      "height": 489
+    },
+    "panel": {
+      "top": 176,
+      "bottom": 664,
+      "left": 791,
+      "right": 1222,
+      "height": 487
+    },
+    "form": {
+      "top": 176,
+      "bottom": 664,
+      "left": 144,
+      "right": 791,
+      "height": 487
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "1366x768-comprobando": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1366,
+      "height": 72
+    },
+    "card": {
+      "top": 335,
+      "bottom": 506,
+      "left": 473,
+      "right": 893,
+      "height": 171
+    },
+    "panel": null,
+    "form": null,
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "1920x1080-login": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1920,
+      "height": 72
+    },
+    "card": {
+      "top": 344,
+      "bottom": 808,
+      "left": 420,
+      "right": 1500,
+      "height": 464
+    },
+    "panel": {
+      "top": 345,
+      "bottom": 807,
+      "left": 1068,
+      "right": 1499,
+      "height": 462
+    },
+    "form": {
+      "top": 345,
+      "bottom": 807,
+      "left": 421,
+      "right": 1068,
+      "height": 462
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "1920x1080-registro": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1920,
+      "height": 72
+    },
+    "card": {
+      "top": 271,
+      "bottom": 881,
+      "left": 420,
+      "right": 1500,
+      "height": 610
+    },
+    "panel": {
+      "top": 272,
+      "bottom": 880,
+      "left": 1068,
+      "right": 1499,
+      "height": 608
+    },
+    "form": {
+      "top": 272,
+      "bottom": 880,
+      "left": 421,
+      "right": 1068,
+      "height": 608
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "1920x1080-error-conexion": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1920,
+      "height": 72
+    },
+    "card": {
+      "top": 318,
+      "bottom": 834,
+      "left": 420,
+      "right": 1500,
+      "height": 515
+    },
+    "panel": {
+      "top": 319,
+      "bottom": 833,
+      "left": 1068,
+      "right": 1499,
+      "height": 513
+    },
+    "form": {
+      "top": 319,
+      "bottom": 833,
+      "left": 421,
+      "right": 1068,
+      "height": 513
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "1920x1080-comprobando": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 1920,
+      "height": 72
+    },
+    "card": {
+      "top": 491,
+      "bottom": 662,
+      "left": 750,
+      "right": 1170,
+      "height": 171
+    },
+    "panel": null,
+    "form": null,
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "390x844-login": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 390,
+      "height": 72
+    },
+    "card": {
+      "top": 97,
+      "bottom": 667,
+      "left": 16,
+      "right": 374,
+      "height": 570
+    },
+    "panel": {
+      "top": 98,
+      "bottom": 281,
+      "left": 17,
+      "right": 373,
+      "height": 183
+    },
+    "form": {
+      "top": 281,
+      "bottom": 666,
+      "left": 17,
+      "right": 373,
+      "height": 385
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "390x844-registro": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 390,
+      "height": 72
+    },
+    "card": {
+      "top": 97,
+      "bottom": 1021,
+      "left": 16,
+      "right": 374,
+      "height": 924
+    },
+    "panel": {
+      "top": 98,
+      "bottom": 281,
+      "left": 17,
+      "right": 373,
+      "height": 183
+    },
+    "form": {
+      "top": 281,
+      "bottom": 1020,
+      "left": 17,
+      "right": 373,
+      "height": 739
+    },
+    "fits": false,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "390x844-error-conexion": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 390,
+      "height": 72
+    },
+    "card": {
+      "top": 97,
+      "bottom": 797,
+      "left": 16,
+      "right": 374,
+      "height": 700
+    },
+    "panel": {
+      "top": 98,
+      "bottom": 281,
+      "left": 17,
+      "right": 373,
+      "height": 183
+    },
+    "form": {
+      "top": 281,
+      "bottom": 796,
+      "left": 17,
+      "right": 373,
+      "height": 515
+    },
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  },
+  "390x844-comprobando": {
+    "header": {
+      "top": 0,
+      "bottom": 72,
+      "left": 0,
+      "right": 390,
+      "height": 72
+    },
+    "card": {
+      "top": 97,
+      "bottom": 190,
+      "left": 16,
+      "right": 374,
+      "height": 93
+    },
+    "panel": null,
+    "form": null,
+    "fits": true,
+    "alertOutside": 0,
+    "overflowX": false
+  }
+}
