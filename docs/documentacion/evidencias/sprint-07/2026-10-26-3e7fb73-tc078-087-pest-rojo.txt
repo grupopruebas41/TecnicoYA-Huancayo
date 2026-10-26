@@ -1,0 +1,49 @@
+  ⨯ it S07-TC-078 la imagen de comunicado exige announcements.manage, JPG o WebP de hasta 600 KB y se guarda s… 51.41s  
+  ⨯ it S07-TC-079 el comunicado de imagen exige imagen 3:1 de al menos 1440 × 480, texto alternativo y tipo      0.17s  
+  ⨯ it S07-TC-080 la imagen móvil es opcional, solo para el origen imagen y en proporción 3:2 de al menos 810 ×… 0.16s  
+  ⨯ it S07-TC-081 el enlace de Genially solo acepta https://view.genially.com/<id> y se normaliza                    0.15s  
+  ⨯ it S07-TC-082 el panel recibe los comunicados vigentes de su audiencia en el orden del carrusel, con sus da… 0.19s  
+  ⨯ it S07-TC-083 reordena el carrusel de una audiencia con el conjunto completo, sin tocar la otra, con permis… 0.19s  
+  ⨯ it S07-TC-084 despublica un comunicado: vuelve a borrador, sale del panel, controla la versión y deja audit… 0.15s  
+  ⨯ it S07-TC-085 duplicar copia el origen, la imagen, el tipo y el texto alternativo, y la copia va al final d… 0.15s  
+  ⨯ it S07-TC-086 el listado del administrador indica la fase: borrador, programado, vigente, vencido o retirad… 0.12s  
+  ⨯ it S07-TC-087 no publica un comunicado de imagen cuya imagen se retiró después de guardarlo                  0.13s  
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-078 la imagen de comunicado exige announcemen…   
+  Expected response status code [403] but received 422.
+Failed asserting that 422 is identical to 403.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-079 el comunicado de imagen exige imagen 3:1…    
+Failed asserting that an array has the key 'image_media_id'.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-080 la imagen móvil es opcional, solo para el…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-081 el enlace de Genially solo acepta https:/<id>…   
+Failed asserting that an array has the key 'genially_url'.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-082 el panel recibe los comunicados vigentes…    
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-083 reordena el carrusel de una audiencia con…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-084 despublica un comunicado: vuelve a borrad…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-085 duplicar copia el origen, la imagen, el t…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-086 el listado del administrador indica la fa…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+        "code": "VALIDATION_FAILED",
+   FAILED  Tests\Feature\Sprint07\AnnouncementCarouselTest > it S07-TC-087 no publica un comunicado de imagen cuya i…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+        "code": "VALIDATION_FAILED",
+  Tests:    10 failed (14 assertions)
