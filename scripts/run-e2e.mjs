@@ -3,6 +3,9 @@
 //
 //   node scripts/run-e2e.mjs --sprint 01 [--slot A|B] [--browser chrome] [--junit]
 //
+// --spec <patrón>: ejecuta otros specs con los datos del sprint (por ejemplo, las capturas de
+// cypress/capturas/). No cuentan como pruebas del sprint, así que no se combina con --junit.
+//
 // --junit: reporte JUnit en frontend/web/test-results/cypress/sprint-NN-*.xml (reporter junit
 // incluido en Cypress) para scripts/contar-pruebas-sprint.mjs; reemplaza los del mismo sprint.
 //
@@ -34,6 +37,7 @@ const php = process.env.PHP_BINARY || (process.platform === 'win32' ? 'C:/xampp/
 
 const {values: options} = parseArgs({options: {
   sprint: {type: 'string'}, slot: {type: 'string'}, browser: {type: 'string'}, junit: {type: 'boolean', default: false},
+  spec: {type: 'string'},
 }});
 const sprint = (options.sprint || '').padStart(2, '0');
 if (!/^0[1-8]$/.test(sprint)) {
@@ -52,7 +56,11 @@ if (!slot) {
 const apiUrl = `http://127.0.0.1:${slot.api}`;
 const webUrl = `http://127.0.0.1:${slot.web}`;
 const seeder = `Sprint${sprint}E2ESeeder`;
-const specs = `cypress/e2e/sprint-${sprint}/**/*.cy.js`;
+if (options.spec && options.junit) {
+  console.error('--spec no se combina con --junit: esos specs no cuentan para el sprint.');
+  process.exit(2);
+}
+const specs = options.spec || `cypress/e2e/sprint-${sprint}/**/*.cy.js`;
 
 const env = {...process.env, ...fixture, TECNICOYA_SLOT: slotName, APP_ENV: 'testing', APP_DEBUG: 'false',
   APP_KEY: `base64:${randomBytes(32).toString('base64')}`, APP_URL: apiUrl,
