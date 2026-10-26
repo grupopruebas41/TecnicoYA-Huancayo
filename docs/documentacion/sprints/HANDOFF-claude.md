@@ -2,6 +2,24 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-26 · Ajustes de la revisión del PR #32 (bloque A, D-82)
+
+- **Rama:** `feature/pimentel/admin/panel-base` (la misma del PR #32).
+- **Commits:** `f9e2663`, `c5b7798`, `d2d51b6`, `525f424` y `788a88f`.
+- **A1 (foto de perfil):**
+  - La causa fue la migración 000026 sin aplicar en el SQLite de desarrollo al subir la foto; ya está aplicada.
+  - El log de errores ahora incluye el `request_id` (S07-TC-072).
+- **A2:** catálogo en lista compacta (S07-TC-073 a 076).
+- **A3:** paleta clara nueva (S07-TC-077, con contrastes AA calculados).
+- **A4:** vista previa de comunicados legible.
+- **Pruebas:**
+  - Pest 306/306 y Vitest 282/282, con lint, build, `npm audit` y `composer audit` en verde;
+  - la Cypress S02-TC-063 está adaptada, sin ejecutar.
+- **Siguiente:**
+  - **Bloque B** (comunicados en carrusel), en `feature/pimentel/admin/comunicados-carrusel`, cuando se integre el #32;
+  - **Bloque C** (usuarios y solicitudes), en `feature/pimentel/admin/usuarios`, después del B.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-26 · Adelanto S7 · Fase 1 del panel del administrador (D-73 a D-79, D-81)
 
 - **Rama:** `feature/pimentel/admin/panel-base`, creada desde `main` tras el PR #31, con backend y frontend.

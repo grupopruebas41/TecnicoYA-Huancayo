@@ -146,3 +146,9 @@ Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG
   - `users.avatar_media_id`, FK a `media_files` con `nullOnDelete`;
   - el `CHECK chk_media_purpose` se rehace para incluir `avatar`.
 - `AuthorizationSeeder` (idempotente) agrega `dashboard.view` «Ver el inicio del panel de administración» y `users.manage` «Administrar usuarios», ambos para el administrador. `users.manage` todavía no protege ningún endpoint: lo usará la Fase 2 (Usuarios).
+
+### 7.8 Ajustes de la revisión del PR #32 (D-82)
+
+- **Errores:** sin cambio en la respuesta. El `meta.request_id` que la SPA muestra como «Referencia» se escribe también en el contexto del log (`request_id`) de cada excepción reportada, para rastrear un error a partir de la captura del usuario (S07-TC-072).
+- **Catálogo:** la lista compacta usa los mismos endpoints de §7 del S2. La tarifa sale de `reference_fee` y la miniatura de `image_url`: `hero_media_id` en las especialidades y `carousel_media_id` en las subcategorías. El cambio de estado sigue siendo `PATCH` con `active` y `expected_version`.
+

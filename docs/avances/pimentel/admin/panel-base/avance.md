@@ -68,9 +68,30 @@
 - `-panel-capturas.json`: indicadores leídos y comprobación de desbordamiento horizontal.
 - El script `-playwright-panel.mjs`.
 
+## Ajustes de la revisión del PR #32 (bloque A, D-82)
+
+- **A1, foto de perfil:**
+  - El error de desarrollo era `no such column: avatar_media_id` en `database/local.sqlite`: la foto se subió antes de aplicar la migración 000026. GD no interviene, porque `ImageSanitizer` quita el EXIF sin volver a codificar la imagen.
+  - La referencia que veía el usuario no estaba en el log. Ahora el contexto del log lleva `request_id`, con la regresión S07-TC-072 (Pest).
+  - Las capturas suben una foto real con la API del slot A en los cuatro contextos.
+- **A2:** catálogo en lista compacta, con interruptor y confirmación, filtro y buscador (S07-TC-073 a 076).
+- **A3:** paleta clara nueva con contraste AA; el tema oscuro no cambia (S07-TC-077).
+- **A4:** la vista previa de comunicados y el diálogo de confirmación usan los tokens del tema.
+- **Commits:**
+  - `f9e2663`: TC-072 en rojo;
+  - `c5b7798`: arreglo;
+  - `d2d51b6`: TC-073 a 077 en rojo;
+  - `525f424`: implementación;
+  - `788a88f`: ajustes vistos en las capturas.
+- **Pruebas ajustadas sin cambiar su ID:**
+  - S02-TC-076 (Vitest) abre «Editar X» por su nombre accesible;
+  - S02-TC-076 complemento y S02-TC-063 (Cypress, sin ejecutar) confirman el cambio de estado en el diálogo.
+- **Resultados:** Pest 306/306, Vitest 282/282, lint, build y audits en verde.
+- **Evidencias:** `2026-10-26-788a88f-*`, con 56 capturas y su JSON (sin desbordamiento horizontal).
+
 ## Pendientes
 
-- Ejecutar las Cypress del S1 en la regresión del cierre S4.6.
+- Ejecutar las Cypress del S1 en la regresión del cierre S4.6, y la S02-TC-063 adaptada.
 - En la base de desarrollo: `php artisan migrate` (000026) y `php artisan db:seed --class=AuthorizationSeeder`.
 - **Fase 2:** Usuarios, con `users.manage`.
 - **SonarQube:** no aplica; corresponde al cierre del sprint.
@@ -82,7 +103,8 @@
 - **Qué se corrigió:**
   - la sesión actual se cerraba al cambiar la contraseña: faltaba refrescar el usuario para `AuthenticateSession`;
   - una aserción vacía en S07-TC-052;
-  - los defectos visuales de la lista de pruebas.
+  - los defectos visuales de la lista de pruebas;
+  - en el bloque A, el selector de la miniatura decorativa en S07-TC-073 y 076 (una `img` con alt vacío no tiene rol img), y los ajustes visuales que se vieron en las capturas.
 - **Revisó:** [PENDIENTE].
 
 ## Revisión

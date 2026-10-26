@@ -1,0 +1,15 @@
+
+> tecnicoya-web@1.0.0 build
+> vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 95 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.07 kB │ gzip:   0.65 kB
+dist/assets/index-ByDAJnjA.css  131.87 kB │ gzip:  26.13 kB
+dist/assets/index-B0m175Ph.js   422.40 kB │ gzip: 123.27 kB
+
+✓ built in 2.00s
+exit=0
