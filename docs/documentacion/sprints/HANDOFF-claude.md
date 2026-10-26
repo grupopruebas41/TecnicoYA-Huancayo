@@ -16,6 +16,12 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Pruebas:** Vitest 234/234; lint y build aprobados; Cypress no se ejecutó.
 - **Pruebas Cypress afectadas:** S01-TC-075 depende del orden del DOM y los `data-cy`, y ambos se conservan.
 - **Evidencias:** `docs/documentacion/evidencias/login/`.
+- **Ajuste del 2026-10-26:**
+  - `a1b1498` en rojo; `3ad452d` en verde;
+  - el cambio de modo queda solo en el panel, con deslizamiento de 600 ms y foco al primer campo;
+  - botón Mostrar contraseña;
+  - Vitest 238/238;
+  - Cypress S01-TC-075 ajustada (sin ejecutar): foco automático y un Tab por cada botón Mostrar.
 
 ## 2026-10-26 · Sprint 4 · catálogo público: image_url, reference_fee y DatabaseSeeder
 

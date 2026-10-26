@@ -18,3 +18,16 @@
   - En 390 px el registro hace scroll dentro de la página; es lo esperado en móvil.
 - **Cypress:** no se ejecutó. Se conservan los `data-cy` y el orden del DOM que recorre S01-TC-075: marca → Volver al inicio → `.auth-switch` → campos.
 - **Revisor:** [PENDIENTE].
+
+## Cambio de modo y Mostrar contraseña (2026-10-26)
+
+- **Commits:** `a1b1498` pruebas en rojo · `3ad452d` implementación.
+- **Rojo** (`2026-10-26-a1b1498-modo-vitest-rojo.txt`): fallan las 4 pruebas nuevas; las 3 anteriores siguen en verde.
+- **Verde:** Vitest 238/238, lint aprobado y build aprobado (`2026-10-26-3ad452d-{vitest,lint,build}.txt`).
+- **Capturas:** script `*-playwright-modos.cjs`, con movimiento normal.
+  - 1366 px: inicio de sesión, un fotograma intermedio a 300 ms del clic, registro con la contraseña visible y vuelta al inicio de sesión.
+  - 390 px: los mismos estados sin deslizamiento lateral.
+  - Medidas en `*-modos.json`. En registro, el panel ocupa x 144–575 y el formulario x 575–1222. Al volver, el foco cae en `login-email`. No queda ningún enlace de cambio de modo dentro del formulario.
+- **Cypress S01-TC-075:** ajustada, pero no ejecutada.
+  - Tras pulsar Enter en el panel, el foco llega solo a «Nombre», así que se quita el Tab que había antes.
+  - Después de cada contraseña se suma un Tab por su botón Mostrar.
