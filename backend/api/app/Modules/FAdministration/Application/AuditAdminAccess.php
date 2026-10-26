@@ -38,6 +38,23 @@ final class AuditAdminAccess
         }
     }
 
+    /** D-80: la recuperación no tiene actor autenticado; la cuenta afectada queda como sujeto, sin token. */
+    public function passwordResetRequested(User $user): void
+    {
+        if ($this->isAdmin($user)) {
+            $this->audit->record(null, 'auth.password_reset_requested', null, 'user', $user->id,
+                'Solicitud de enlace para restablecer la contraseña de un administrador.');
+        }
+    }
+
+    public function passwordReset(User $user): void
+    {
+        if ($this->isAdmin($user)) {
+            $this->audit->record(null, 'auth.password_reset', null, 'user', $user->id,
+                'Contraseña de administrador restablecida con enlace; sesiones cerradas.');
+        }
+    }
+
     private function isAdmin(User $user): bool
     {
         return DB::table('roles')->where('id', $user->role_id)->value('code') === 'admin';

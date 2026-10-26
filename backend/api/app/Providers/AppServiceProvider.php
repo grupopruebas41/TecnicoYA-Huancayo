@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Modules\CNotifications\Application\DeliveryChannel;
 use App\Modules\CNotifications\Application\MailSandboxChannel;
+use App\Modules\FAdministration\Application\PasswordResetLink;
 use App\Shared\Database\DestructiveCommandGuard;
 use App\Shared\Testing\E2EClock;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -30,6 +32,14 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('spa-auth', fn (Request $request) => Limit::perMinute(
             max(1, (int) config('security.auth_attempts_per_minute'))
         )->by($request->ip()));
+        // D-80: límite del pedido de enlace por IP y por correo; el enlace apunta a la SPA y el correo va en español.
+        RateLimiter::for('password-forgot', fn (Request $request) => [
+            Limit::perMinute(max(1, (int) config('security.password_reset_per_ip_per_minute')))->by('ip:'.$request->ip()),
+            Limit::perMinutes(15, max(1, (int) config('security.password_reset_per_email_per_15_minutes')))
+                ->by('email:'.mb_strtolower(trim((string) $request->input('email')))),
+        ]);
+        ResetPassword::createUrlUsing(fn ($user, string $token) => PasswordResetLink::url($user, $token));
+        ResetPassword::toMailUsing(fn ($user, string $token) => PasswordResetLink::mail($user, $token));
         if (E2EClock::enabled()) {
             E2EClock::install(); // S4: reloj del servidor que adelanta la tarea serverClock de Cypress
         }

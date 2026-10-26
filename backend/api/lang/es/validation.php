@@ -4,6 +4,8 @@ return [
     'required' => 'El campo :attribute es obligatorio.',
     'required_if' => 'El campo :attribute es obligatorio cuando :other es :value.',
     'required_with' => 'El campo :attribute es obligatorio cuando se indica :values.',
+    'required_without' => 'El campo :attribute es obligatorio cuando no se indica :values.',
+    'prohibits' => 'El campo :attribute no se puede enviar junto con :other.',
     'string' => 'El campo :attribute debe ser un texto.',
     'email' => 'El campo :attribute debe ser un correo válido.',
     'unique' => 'El valor de :attribute ya está registrado.',
@@ -51,6 +53,11 @@ return [
         'version' => 'versión', 'user_id' => 'usuario', 'id' => 'identificador',
         'client_id' => 'cliente', 'email_verified_at' => 'verificación de correo',
         'anonymized_at' => 'anonimización',
+        // Adelanto del Sprint 7 (D-80): registro detallado y recuperación de contraseña.
+        'given_names' => 'nombres', 'family_names' => 'apellidos', 'terms_accepted' => 'aceptación de los Términos y la Privacidad',
+        'business_name' => 'razón social', 'reference_address' => 'dirección de referencia', 'base_district_id' => 'distrito base',
+        'specialty_ids' => 'especialidades', 'specialty_ids.*' => 'especialidad', 'experience_years' => 'años de experiencia',
+        'whatsapp' => 'WhatsApp', 'token' => 'enlace de recuperación',
         // Sprint 2: catálogo, comunicados, revisión técnica, portafolio, disponibilidad y servicios.
         'specialty_id' => 'especialidad', 'image_id' => 'imagen', 'reference_fee' => 'tarifa referencial',
         'active' => 'estado activo', 'decision' => 'decisión', 'reason' => 'motivo',

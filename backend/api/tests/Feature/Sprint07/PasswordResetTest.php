@@ -20,9 +20,10 @@ beforeEach(function () {
     $this->seed(AuthorizationSeeder::class);
     Sprint01::actAsSpa($this);
     Notification::fake();
-    $this->password = Str::password(32);
+    // Dentro de state() $this es la factory: la contraseña viaja en una variable local.
+    $password = $this->password = Str::password(32);
     $this->user = UserFactory::new()->state(fn () => [
-        'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $this->password,
+        'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $password,
     ])->create();
 });
 
@@ -112,7 +113,8 @@ it('S07-TC-014 limita las solicitudes por correo y por IP con respuesta 429 en e
         s07Forgot($this, $this->user->email)->assertAccepted();
     }
     $limited = s07Forgot($this, $this->user->email)->assertStatus(429);
-    Sprint01::assertSpanishText((string) $limited->json('message'));
+    expect($limited->json('message'))->toBe(__('api.too_many_requests'))
+        ->and($limited->json('message'))->toStartWith('Hay demasiados intentos');
 
     // Otra IP con correos distintos agota su propio límite.
     $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.77']);
