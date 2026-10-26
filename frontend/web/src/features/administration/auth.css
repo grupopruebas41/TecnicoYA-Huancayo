@@ -500,10 +500,23 @@
   background: #e7d9bf14;
   color: #f5eddf;
 }
-.register-chip input {
+/* .session-page input y .session-page label (account.css) dan ancho completo y grid: aquí no aplican. */
+.auth-shell .register-chip input {
+  flex: none;
   width: 16px;
   height: 16px;
   min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: #e7d9bf;
+}
+.auth-shell .register-terms .checkbox-label input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
   accent-color: #e7d9bf;
 }
 .register-terms {
@@ -588,6 +601,32 @@
 }
 .auth-reset .auth-form {
   display: grid;
+}
+/* La tarjeta del enlace no está dentro de .auth-shell: repite sus medidas de campos y botón. */
+.auth-reset .form-field {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.auth-reset .form-field label {
+  margin: 0;
+  color: #d8e0dc;
+  font-size: 13px;
+}
+.auth-reset .password-meter {
+  margin: 0 0 16px;
+}
+.auth-reset .submit {
+  width: 100%;
+  min-height: 46px;
+  justify-content: center;
+  background: #e7d9bf;
+  border-color: #e7d9bf;
+  color: #192629;
+  font-size: 15px;
+}
+.auth-reset .auth-alert {
+  margin-bottom: 16px;
 }
 .auth-reset input {
   width: 100%;

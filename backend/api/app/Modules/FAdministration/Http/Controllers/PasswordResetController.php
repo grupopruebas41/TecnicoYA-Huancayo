@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Modules\FAdministration\Application\AuditAdminAccess;
 use App\Modules\FAdministration\Http\Requests\ForgotPasswordRequest;
 use App\Modules\FAdministration\Http\Requests\ResetPasswordRequest;
+use App\Shared\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
@@ -24,7 +25,8 @@ final class PasswordResetController
             $audit->passwordResetRequested($user);
         }
 
-        return response()->json(['message' => __('api.password_reset_link_sent')], 202);
+        // Mismo sobre data que el resto de la API: la SPA lo exige para confirmar el resultado.
+        return ApiResponse::data(['message' => __('api.password_reset_link_sent')], 202);
     }
 
     public function reset(ResetPasswordRequest $request, AuditAdminAccess $audit): JsonResponse
@@ -45,6 +47,6 @@ final class PasswordResetController
         }
         $audit->passwordReset($resetUser);
 
-        return response()->json(['message' => __('api.password_reset_done')]);
+        return ApiResponse::data(['message' => __('api.password_reset_done')]);
     }
 }

@@ -20,7 +20,7 @@ export function ForgotPassword({onBack}) {
     setError(''); setSent('');
     if (!isValidEmail(normalized)) { setErrors({email: ['Ingresa un correo válido.']}); return; }
     setErrors({}); setBusy(true);
-    try { setSent((await request('/auth/password/forgot', {email: normalized}))?.message || NEUTRAL); }
+    try { setSent((await request('/auth/password/forgot', {email: normalized}))?.data?.message || NEUTRAL); }
     catch (failure) { setError(failure.message); setErrors(failure.fields || {}); }
     finally { setBusy(false); }
   }
@@ -52,7 +52,7 @@ export function ResetPassword({token, email}) {
     setBusy(true);
     try {
       const response = await request('/auth/password/reset', {email, token, password, password_confirmation: confirmation});
-      setDone(response?.message || 'Tu contraseña se actualizó.');
+      setDone(response?.data?.message || 'Tu contraseña se actualizó.');
     } catch (failure) {
       const {token: tokenError, ...fields} = failure.fields || {};
       setErrors(fields); setError(tokenError?.[0] || failure.message);

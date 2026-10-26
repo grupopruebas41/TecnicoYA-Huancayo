@@ -210,7 +210,7 @@ test('S07-TC-027 «¿Olvidaste tu contraseña?» pide el correo y responde siemp
   expect(screen.getByText('Ingresa un correo válido.')).toBeInTheDocument();
   expect(submitted).toEqual([]);
 
-  request.mockImplementation(async (path, body) => { submitted.push([path, body]); return {message: 'Si el correo existe, te enviamos un enlace para restablecer tu contraseña.'}; });
+  request.mockImplementation(async (path, body) => { submitted.push([path, body]); return {data: {message: 'Si el correo existe, te enviamos un enlace para restablecer tu contraseña.'}}; });
   type('Correo', 'Ana@Example.test ');
   fireEvent.click(screen.getByRole('button', {name: 'Enviar enlace'}));
 
@@ -233,7 +233,7 @@ test('S07-TC-028 el enlace abre la pantalla de nueva contraseña con medidor y l
   expect(submitted).toEqual([]);
 
   type('Confirmar contraseña', 'Abcdefgh12!x');
-  request.mockImplementation(async (path, body) => { submitted.push([path, body]); return {message: 'Tu contraseña se actualizó. Inicia sesión con la nueva contraseña.'}; });
+  request.mockImplementation(async (path, body) => { submitted.push([path, body]); return {data: {message: 'Tu contraseña se actualizó. Inicia sesión con la nueva contraseña.'}}; });
   fireEvent.click(screen.getByRole('button', {name: 'Guardar contraseña'}));
 
   expect(await screen.findByText('Tu contraseña se actualizó. Inicia sesión con la nueva contraseña.')).toBeInTheDocument();

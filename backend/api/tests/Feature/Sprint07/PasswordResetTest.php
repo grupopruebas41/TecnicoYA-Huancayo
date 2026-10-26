@@ -59,8 +59,8 @@ it('S07-TC-011 responde igual exista o no el correo y solo envía el enlace a la
     $known = s07Forgot($this, $this->user->email)->assertAccepted();
     $unknown = s07Forgot($this, 'nadie-'.Str::uuid().'@example.test')->assertAccepted();
 
-    expect($known->json())->toBe($unknown->json())
-        ->and($known->json('message'))->toBe('Si el correo existe, te enviamos un enlace para restablecer tu contraseña.');
+    expect($known->json('data'))->toBe($unknown->json('data'))
+        ->and($known->json('data.message'))->toBe('Si el correo existe, te enviamos un enlace para restablecer tu contraseña.');
     Notification::assertSentTo($this->user, ResetPassword::class, function (ResetPassword $notification) {
         $mail = $notification->toMail($this->user);
 
@@ -82,7 +82,7 @@ it('S07-TC-012 el enlace cambia la contraseña una sola vez y cierra las demás 
     $authVersion = $this->user->auth_version;
 
     s07Reset($this, $this->user, $token, $newPassword)->assertOk()
-        ->assertJsonPath('message', 'Tu contraseña se actualizó. Inicia sesión con la nueva contraseña.');
+        ->assertJsonPath('data.message', 'Tu contraseña se actualizó. Inicia sesión con la nueva contraseña.');
 
     $fresh = $this->user->fresh();
     expect(Hash::check($newPassword, $fresh->password))->toBeTrue()
