@@ -2,12 +2,12 @@
 
 | Campo | Valor |
 |---|---|
-| Versión | 1.0 (2026-10-26) |
+| Versión | 1.1 (2026-10-26: rubros declarados por especialidad, ver §6) · 1.0 (2026-10-26) |
 | Autor | Claude Code |
 | Revisor | [PENDIENTE] |
 | Base | `main` `01b93ee` (rama `feature/mayhuasca/auth/registro-detallado`) |
 | Decisiones | D-73 (adelanto del S7 con IDs S07-TC), D-75 (nombres y apellidos) y D-80 (campos del registro y recuperación de contraseña) |
-| Catálogo de casos | [CATALOGO-S07.csv](CATALOGO-S07.csv): S07-TC-001 a 016 en Pest y S07-TC-017 a 030 en Vitest |
+| Catálogo de casos | [CATALOGO-S07.csv](CATALOGO-S07.csv): S07-TC-001 a 016 y 031 a 035 en Pest; S07-TC-017 a 030 y 036 a 045 en Vitest |
 
 Todas las rutas van bajo `/api/v1`, usan la sesión SPA de Sanctum y siguen las mismas convenciones que el contrato v1 (S1 a S4):
 - el sobre `data` en las respuestas correctas;
@@ -33,6 +33,7 @@ Este endpoint es la ampliación del registro del S1 (D-80). Su respuesta 201 no 
 | `base_district_id` | prohibido | obligatorio | Distrito activo (D-64). |
 | `district_ids` | prohibido | obligatorio | Lista de distritos activos y distintos. El distrito base **siempre** se agrega (`technician_districts`). |
 | `specialty_ids` | prohibido | obligatorio | De 1 a 10 especialidades activas y distintas (`technician_specialties`). **No** crea servicios ni tarifas; eso sigue en el panel del técnico. |
+| `subcategory_ids` | prohibido | obligatorio | Rubros activos y distintos, de 1 a 60; cada uno de una especialidad declarada y activa (si no, 422 en `subcategory_ids.N`: «El rubro no pertenece a una especialidad que elegiste.») y al menos uno por especialidad declarada (si no, 422 en `subcategory_ids`: «Elige al menos un rubro de <especialidad>.»). Se guardan en `technician_declared_subcategories`. |
 | `experience_years` | prohibido | obligatorio | Entero de 0 a 50. |
 | `whatsapp` | prohibido | opcional | Mismo formato que `phone`. |
 
@@ -41,7 +42,7 @@ Este endpoint es la ampliación del registro del S1 (D-80). Su respuesta 201 no 
 ```json
 { "account_type": "technician", "given_names": "Ana Lucía", "family_names": "Quispe Rojas", "email": "ana@example.test",
   "phone": "987654321", "password": "…", "password_confirmation": "…", "terms_accepted": true,
-  "base_district_id": 2, "district_ids": [2, 1], "specialty_ids": [10], "experience_years": 4 }
+  "base_district_id": 2, "district_ids": [2, 1], "specialty_ids": [10], "subcategory_ids": [101, 103], "experience_years": 4 }
 ```
 
 Los errores devuelven 422 con el campo afectado, por ejemplo `district_id`, `district_ids.0`, `specialty_ids.0`, `phone`, `terms_accepted` o `business_name`. El mensaje del teléfono es «El teléfono debe tener 9 dígitos y empezar en 9.».
@@ -83,3 +84,10 @@ Migración `2026_10_26_000024_add_registration_details`:
 - tabla `password_reset_tokens`, si no existe.
 
 `Sprint01E2ESeeder` llama ahora también a `DistrictSeeder`, porque el registro de las Cypress del S1 necesita distritos activos.
+
+## 6. Cambios de la versión 1.1 (2026-10-26): rubros declarados
+
+- **`POST /auth/register`** (técnico): campo obligatorio `subcategory_ids` (ver §1). Los rubros declarados **no** son servicios: no se crean `technician_services` ni versiones de tarifa, y el matching sigue excluyendo al técnico (`not_active` al registrarse; `service_not_offered` aunque ya esté verificado) hasta que cargue su tarifa. Casos S07-TC-031 a 035.
+- **`GET /me`** (técnico): `technician_profile.declared_subcategories`: `[{id, name, specialty_id}]`.
+- **`GET /technicians/me/profile`**: `declared_subcategories`: `[{subcategory_id, subcategory_name, specialty_id, specialty_name, has_rate}]`. `has_rate` es verdadero si ya hay un servicio activo de ese rubro. «Servicios y tarifas» muestra los que no tienen tarifa con «Agrega tu tarifa para empezar a recibir solicitudes de este rubro.».
+- **Datos:** migración aditiva `2026_10_26_000025_create_technician_declared_subcategories` (`technician_id`, `subcategory_id`, `created_at`).

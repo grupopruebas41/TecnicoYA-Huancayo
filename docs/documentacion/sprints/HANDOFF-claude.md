@@ -26,6 +26,14 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - `composer audit` y `npm audit` limpios;
   - 30 IDs S07-TC (16 Pest y 14 Vitest).
 - **Cypress (sin ejecutar):** se ajustaron las del S1 y el S3 que llenan el registro, con el helper `fillRegistration()` y S01-TC-075 por teclado. **La Cypress S01-TC-075 quedó ajustada sin ejecutar y se corre en la regresión del cierre S4.6**, junto con portals, technician-signup, validation y el helper del S3.
+- **Ajuste del PR #31 (rubros por especialidad):**
+  - `subcategory_ids` en el registro del técnico;
+  - tabla `technician_declared_subcategories` (migración `000025`: hay que volver a correr `artisan migrate`);
+  - selector en dos niveles;
+  - rubros pendientes de tarifa en «Servicios y tarifas»;
+  - DEF-48 corregido;
+  - Pest 294/294 y Vitest 262/262;
+  - commits de `9d460cc` a `239e373`.
 - **Pendiente:** después de integrar, empezar la Fase 1 del panel del administrador.
 
 ## 2026-10-26 · Sesión · encuadre de la pantalla #cuenta (frontend, D-72)

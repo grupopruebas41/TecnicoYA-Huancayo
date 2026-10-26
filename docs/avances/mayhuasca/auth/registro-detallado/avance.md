@@ -64,7 +64,26 @@
 
 - **Revisor:** [PENDIENTE].
 
-## Uso de IA
+## Ajuste: rubros por especialidad · 2026-10-26
+
+- **Commits:**
+  - `9d460cc` Pest en rojo;
+  - `253adec` backend;
+  - `209a5fc` Vitest en rojo;
+  - `3421c9a` frontend;
+  - `239e373` ancho del panel.
+- **Backend:** `subcategory_ids` obligatorio para el técnico (activo, de una especialidad declarada y activa, al menos uno por especialidad). Se guarda en `technician_declared_subcategories` (migración aditiva `000025`) sin servicios ni tarifas. Se devuelve en `/me` y en el perfil propio con `has_rate`.
+- **Frontend:**
+  - selector en dos niveles con buscador, Seleccionar/Quitar todas, contador, error por especialidad, confirmación al desmarcar, resumen, foco y Reintentar;
+  - «Servicios y tarifas» con los rubros pendientes de tarifa;
+  - chips con la casilla en línea.
+- **DEF-48** (corregido): salir de un campo vacío insertaba su error y movía el contenido entre `mousedown` y `mouseup`, así que el clic se perdía. Lo detectaron las capturas reales. S07-TC-045 falla sin el arreglo y pasa con él.
+- **Pruebas:**
+  - Pest 294/294;
+  - Vitest 262/262; lint y build aprobados;
+  - S07-TC-031 a 035 (Pest) y 036 a 045 (Vitest). S07-TC-035 ya pasaba y queda como regresión.
+
+
 
 - **Herramienta y modelo:** Claude Code (Claude Opus 5.5).
 - **Fecha:** 2026-10-26.
