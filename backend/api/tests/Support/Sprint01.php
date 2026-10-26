@@ -39,7 +39,13 @@ final class Sprint01
             $payload['client_type'] = 'household';
         }
 
-        return $payload;
+        // D-80: campos obligatorios del registro detallado. Se conserva 'name' (D-75) para las pruebas del S1.
+        $detailed = $accountType === 'client' ? Sprint07::clientPayload() : Sprint07::technicianPayload();
+        foreach (['given_names', 'family_names', 'email', 'password', 'password_confirmation', 'account_type', 'client_type'] as $own) {
+            unset($detailed[$own]);
+        }
+
+        return $payload + $detailed;
     }
 
     /** Registra por la API pública y devuelve el usuario persistido junto con el cuerpo enviado. */

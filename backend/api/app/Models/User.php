@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
+    // Notifiable: el enlace de recuperación de contraseña (D-80) se envía como notificación por correo.
+    use HasApiTokens, Notifiable;
 
     protected $attributes = ['is_active' => true, 'version' => 1, 'auth_version' => 1];
 
@@ -18,6 +20,7 @@ class User extends Authenticatable
 
     protected function casts(): array
     {
-        return ['password' => 'hashed', 'is_active' => 'boolean', 'version' => 'integer', 'auth_version' => 'integer'];
+        return ['password' => 'hashed', 'is_active' => 'boolean', 'version' => 'integer', 'auth_version' => 'integer',
+            'terms_accepted_at' => 'datetime'];
     }
 }

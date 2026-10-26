@@ -190,7 +190,7 @@ const paths = [
     className: "ty-button ty-outline-gold",
   },
 ];
-const legalTexts = {
+export const legalTexts = {
   terms: [
     "Términos",
     "Versión académica MVP. Los servicios los realizan técnicos independientes. Los pagos son simulados. Las condiciones definitivas de publicación están pendientes.",

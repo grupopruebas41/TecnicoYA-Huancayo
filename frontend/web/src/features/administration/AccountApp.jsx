@@ -2,6 +2,7 @@ import Sprint02Portal from './Sprint02Portal';
 import React, {useEffect, useState} from 'react';
 import {request} from './http';
 import SessionForm from './SessionForm';
+import {ResetPassword} from './PasswordRecovery';
 import ProfileForm from './ProfileForm';
 import {Notice} from './forms';
 import './account.css';
@@ -9,6 +10,9 @@ import {permissionLabel, verificationLabel} from './labels';
 
 const roles = {client: 'Cliente', technician: 'Especialista técnico', admin: 'Administrador'};
 const routes = {client: '#cuenta/cliente', technician: '#cuenta/tecnico', admin: '#cuenta/administrador'};
+// D-80: enlace del correo de recuperación (#cuenta/restablecer?token=…&email=…).
+const RESET_ROUTE = '#cuenta/restablecer';
+const resetParams = hash => Object.fromEntries(new URLSearchParams(hash.split('?')[1] || ''));
 export default function AccountApp() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,6 +20,12 @@ export default function AccountApp() {
   const [blocked, setBlocked] = useState(false);
   const [busy, setBusy] = useState(false);
   const [reload, setReload] = useState(0);
+  const [hash, setHash] = useState(() => window.location.hash);
+  useEffect(() => {
+    const update = () => setHash(window.location.hash);
+    window.addEventListener('hashchange', update);
+    return () => window.removeEventListener('hashchange', update);
+  }, []);
   useEffect(() => {
     let active = true;
     setLoading(true); setError(''); setBlocked(false);
@@ -31,6 +41,8 @@ export default function AccountApp() {
     // El servidor decide el rol. Cambiar el hash nunca concede permisos.
     const redirect = () => {
       const hash = window.location.hash;
+      // Sin sesión, el enlace de recuperación se queda en su ruta.
+      if (!user && hash.startsWith(RESET_ROUTE)) return;
       if (hash === '#cuenta' || hash === '#plataforma' || hash.startsWith('#cuenta/')) {
         const destination = routes[user?.role?.code] || '#cuenta';
         if (hash !== destination) window.location.replace(destination);
@@ -61,6 +73,10 @@ export default function AccountApp() {
   // Sin sesión, la tarjeta se centra en el alto disponible bajo la cabecera (auth-page).
   if (loading) return <section className="session-page auth-page"><div className="auth-status"><span className="auth-emblem" aria-hidden="true">t</span><output>Comprobando tu sesión…</output></div></section>;
   if (blocked) return <section className="session-page auth-page"><div className="auth-status"><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></div></section>;
+  if (!user && hash.startsWith(RESET_ROUTE)) {
+    const {token = '', email = ''} = resetParams(hash);
+    return <section className="session-page auth-page"><ResetPassword key={token} token={token} email={email}/></section>;
+  }
   if (!user) return <section className="session-page auth-page"><SessionForm connectionError={error} onRetry={() => setReload(reload + 1)} onLogin={(value, warning = '') => { setUser(value); setError(warning); }}/></section>;
   const role = user.role?.code;
   if (!roles[role]) return <section className="session-page"><Notice error="Tu cuenta no tiene un rol habilitado."/><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></section>;

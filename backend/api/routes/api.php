@@ -11,6 +11,7 @@ use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\CatalogController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
+use App\Modules\FAdministration\Http\Controllers\PasswordResetController;
 use App\Modules\FAdministration\Http\Controllers\ProfileController;
 use App\Modules\FAdministration\Http\Controllers\TechnicianProfileController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,11 @@ Route::prefix('v1')->group(function () {
             ->middleware('session.none'); // D-43
         Route::post('auth/login', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'login']);
     });
+    // D-80: recuperación de contraseña; respuesta neutra y límite por IP y por correo.
+    Route::post('auth/password/forgot', [PasswordResetController::class, 'forgot'])
+        ->middleware('throttle:password-forgot');
+    Route::post('auth/password/reset', [PasswordResetController::class, 'reset'])
+        ->middleware('throttle:spa-auth');
     Route::post('auth/logout', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'logout'])
         ->middleware('auth:sanctum');
     // Público: imágenes revisadas; los archivos privados exigen sesión y relación (MediaController).

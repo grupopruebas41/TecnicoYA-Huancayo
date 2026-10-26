@@ -1,0 +1,561 @@
+
+   FAIL  Tests\Feature\Sprint07\PasswordResetTest
+  ⨯ it S07-TC-011 responde igual exista o no el correo y solo envía el enlace a la cuenta real
+  ⨯ it S07-TC-012 el enlace cambia la contraseña una sola vez y cierra las demás sesiones
+  ⨯ it S07-TC-013 un enlace vencido a los 60 minutos o ajeno no cambia la contraseña
+  ⨯ it S07-TC-014 limita las solicitudes por correo y por IP con respuesta 429 en español
+  ⨯ it S07-TC-015 audita la recuperación de un administrador sin guardar el token ni la contraseña [D-44]
+  ⨯ it S07-TC-016 la nueva contraseña cumple las reglas del registro y debe confirmarse
+
+   FAIL  Tests\Feature\Sprint07\RegistrationDetailsTest
+  ⨯ it S07-TC-001 registra un cliente MYPE con nombres, teléfono, distrito principal y dirección privada [TC-00… 0.37s  
+  ⨯ it S07-TC-002 registra un técnico con distrito base, distritos atendidos, especialidades y experiencia, sin… 0.29s  
+  ⨯ it S07-TC-003 rechaza teléfonos que no son celulares peruanos de 9 dígitos que empiezan en 9                 0.25s  
+  ⨯ it S07-TC-004 rechaza un distrito inexistente o inactivo para el cliente y para el técnico                   0.34s  
+  ⨯ it S07-TC-005 exige al técnico al menos una especialidad activa y experiencia entre 0 y 50 años              0.32s  
+  ⨯ it S07-TC-006 no crea la cuenta si no se aceptan los Términos y la Privacidad                                0.23s  
+  ⨯ it S07-TC-007 prohíbe los campos que no corresponden al tipo de cuenta                                       0.30s  
+  ⨯ it S07-TC-008 el mismo correo con otra capitalización no crea una segunda cuenta [TC-002]                    0.23s  
+  ✓ it S07-TC-009 el registro detallado tampoco permite crear administradores [TC-008]                           0.23s  
+  ⨯ it S07-TC-010 /me devuelve nombres, apellidos y el distrito principal del cliente para precargar la solicit… 0.27s  
+
+   PASS  Tests\Feature\Sprint01\RegistrationBoundariesTest
+  ✓ it S01-TC-034 acepta nombres de 2 y de 100 caracteres en el registro [TC-001]                                0.40s  
+  ✓ it S01-TC-035 rechaza nombres de 1 y de 101 caracteres sin crear usuario ni perfil                           0.29s  
+  ✓ it S01-TC-036 acepta una contraseña de 8 caracteres y otra de 72 bytes y ambas sirven para iniciar sesión    0.47s  
+  ✓ it S01-TC-037 rechaza una contraseña de 7 caracteres                                                         0.35s  
+  ✓ it S01-TC-038 rechaza una contraseña de más de 72 bytes aunque tenga menos de 72 caracteres                  0.46s  
+  ✓ it S01-TC-039 rechaza una confirmación de contraseña distinta                                                0.33s  
+  ✓ it S01-TC-040 acepta un correo de 254 caracteres y lo guarda completo                                        0.28s  
+  ✓ it S01-TC-041 rechaza un correo de 255 caracteres                                                            0.27s  
+  ✓ it S01-TC-042 normaliza el correo al guardarlo y permite iniciar sesión con otra capitalización [TC-002]     0.30s  
+  ✓ it S01-TC-043 rechaza al cliente sin tipo de cliente o con un tipo fuera del dominio                         0.35s  
+  ✓ it S01-TC-044 rechaza al técnico que envía tipo de cliente                                                   0.23s  
+  ✓ it S01-TC-045 responde al registro vacío con el mensaje general y errores por campo en español               0.10s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\PasswordResetTest > it S07-TC-011 responde igual exista o no el co…  ErrorException   
+  Undefined property: Database\Factories\UserFactory::$password
+
+  at tests\Feature\Sprint07\PasswordResetTest.php:25
+     21▕     Sprint01::actAsSpa($this);
+     22▕     Notification::fake();
+     23▕     $this->password = Str::password(32);
+     24▕     $this->user = UserFactory::new()->state(fn () => [
+  ➜  25▕         'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $this->password,
+     26▕     ])->create();
+     27▕ });
+     28▕ 
+     29▕ function s07Forgot(object $test, string $email)
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:553
+  2   vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:850
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\PasswordResetTest > it S07-TC-012 el enlace cambia la contraseña u…  ErrorException   
+  Undefined property: Database\Factories\UserFactory::$password
+
+  at tests\Feature\Sprint07\PasswordResetTest.php:25
+     21▕     Sprint01::actAsSpa($this);
+     22▕     Notification::fake();
+     23▕     $this->password = Str::password(32);
+     24▕     $this->user = UserFactory::new()->state(fn () => [
+  ➜  25▕         'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $this->password,
+     26▕     ])->create();
+     27▕ });
+     28▕ 
+     29▕ function s07Forgot(object $test, string $email)
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:553
+  2   vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:850
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\PasswordResetTest > it S07-TC-013 un enlace vencido a los 60 minut…  ErrorException   
+  Undefined property: Database\Factories\UserFactory::$password
+
+  at tests\Feature\Sprint07\PasswordResetTest.php:25
+     21▕     Sprint01::actAsSpa($this);
+     22▕     Notification::fake();
+     23▕     $this->password = Str::password(32);
+     24▕     $this->user = UserFactory::new()->state(fn () => [
+  ➜  25▕         'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $this->password,
+     26▕     ])->create();
+     27▕ });
+     28▕ 
+     29▕ function s07Forgot(object $test, string $email)
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:553
+  2   vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:850
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\PasswordResetTest > it S07-TC-014 limita las solicitudes por corre…  ErrorException   
+  Undefined property: Database\Factories\UserFactory::$password
+
+  at tests\Feature\Sprint07\PasswordResetTest.php:25
+     21▕     Sprint01::actAsSpa($this);
+     22▕     Notification::fake();
+     23▕     $this->password = Str::password(32);
+     24▕     $this->user = UserFactory::new()->state(fn () => [
+  ➜  25▕         'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $this->password,
+     26▕     ])->create();
+     27▕ });
+     28▕ 
+     29▕ function s07Forgot(object $test, string $email)
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:553
+  2   vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:850
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\PasswordResetTest > it S07-TC-015 audita la recuperación de un adm…  ErrorException   
+  Undefined property: Database\Factories\UserFactory::$password
+
+  at tests\Feature\Sprint07\PasswordResetTest.php:25
+     21▕     Sprint01::actAsSpa($this);
+     22▕     Notification::fake();
+     23▕     $this->password = Str::password(32);
+     24▕     $this->user = UserFactory::new()->state(fn () => [
+  ➜  25▕         'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $this->password,
+     26▕     ])->create();
+     27▕ });
+     28▕ 
+     29▕ function s07Forgot(object $test, string $email)
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:553
+  2   vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:850
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\PasswordResetTest > it S07-TC-016 la nueva contraseña cumple las r…  ErrorException   
+  Undefined property: Database\Factories\UserFactory::$password
+
+  at tests\Feature\Sprint07\PasswordResetTest.php:25
+     21▕     Sprint01::actAsSpa($this);
+     22▕     Notification::fake();
+     23▕     $this->password = Str::password(32);
+     24▕     $this->user = UserFactory::new()->state(fn () => [
+  ➜  25▕         'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'password' => $this->password,
+     26▕     ])->create();
+     27▕ });
+     28▕ 
+     29▕ function s07Forgot(object $test, string $email)
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:553
+  2   vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:850
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-001 registra un cliente MYPE con nombres, telé…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "1190919d-58cc-4bec-a29f-e7bb4d71dfa1",
+        "server_time": "2026-10-26T07:41:00.209221Z"
+    }
+}
+
+  at tests\Feature\Sprint07\RegistrationDetailsTest.php:33
+     29▕ it('S07-TC-001 registra un cliente MYPE con nombres, teléfono, distrito principal y dirección privada [TC-001]', function () {
+     30▕     $payload = Sprint07::clientPayload(['client_type' => 'mype', 'business_name' => 'Bodega Sintética',
+     31▕         'reference_address' => 'Jr. Ejemplo 123, frente al parque']);
+     32▕ 
+  ➜  33▕     $response = s07Register($this, $payload)->assertCreated();
+     34▕ 
+     35▕     $user = User::query()->where('email', $payload['email'])->firstOrFail();
+     36▕     expect($user->name)->toBe('Ana Lucía Quispe Rojas')
+     37▕         ->and($user->given_names)->toBe('Ana Lucía')
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-002 registra un técnico con distrito base, dis…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "78bf369c-a668-4832-b4f5-353c79756409",
+        "server_time": "2026-10-26T07:41:00.517825Z"
+    }
+}
+
+  at tests\Feature\Sprint07\RegistrationDetailsTest.php:54
+     50▕ it('S07-TC-002 registra un técnico con distrito base, distritos atendidos, especialidades y experiencia, sin servicios ni tarifas [TC-003]', function () {
+     51▕     $payload = Sprint07::technicianPayload(['whatsapp' => '912345678',
+     52▕         'specialty_ids' => [Sprint07::specialtyId('computo'), Sprint07::specialtyId('electricidad')]]);
+     53▕ 
+  ➜  54▕     s07Register($this, $payload)->assertCreated();
+     55▕ 
+     56▕     $user = User::query()->where('email', $payload['email'])->firstOrFail();
+     57▕     $profile = DB::table('technician_profiles')->where('user_id', $user->id)->first();
+     58▕     expect((int) $profile->base_district_id)->toBe(Sprint07::districtId('EL-TAMBO'))
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-003 rechaza teléfonos que no son celulares per…   
+  Failed to find a validation error in the response for key: 'phone'
+
+Response has the following JSON validation errors:
+
+{
+    "name": [
+        "El campo nombre es obligatorio."
+    ]
+}
+
+Failed asserting that an array has the key 'phone'.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "7dfe9a5c-e8a4-465e-9f10-8bed6f26cccf",
+        "server_time": "2026-10-26T07:41:00.766827Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\RegistrationDetailsTest.php:76
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-004 rechaza un distrito inexistente o inactivo…   
+  Failed to find a validation error in the response for key: 'district_id'
+
+Response has the following JSON validation errors:
+
+{
+    "name": [
+        "El campo nombre es obligatorio."
+    ]
+}
+
+Failed asserting that an array has the key 'district_id'.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "442ba6f5-61c0-4851-8b8d-e8c8904cb45b",
+        "server_time": "2026-10-26T07:41:01.112306Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\RegistrationDetailsTest.php:90
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-005 exige al técnico al menos una especialidad…   
+  Failed to find a validation error in the response for key: 'specialty_ids'
+
+Response has the following JSON validation errors:
+
+{
+    "name": [
+        "El campo nombre es obligatorio."
+    ]
+}
+
+Failed asserting that an array has the key 'specialty_ids'.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "676123a5-3217-464e-87d1-82be62451c34",
+        "server_time": "2026-10-26T07:41:01.429016Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\RegistrationDetailsTest.php:114
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-006 no crea la cuenta si no se aceptan los Tér…   
+  Failed to find a validation error in the response for key: 'terms_accepted'
+
+Response has the following JSON validation errors:
+
+{
+    "name": [
+        "El campo nombre es obligatorio."
+    ]
+}
+
+Failed asserting that an array has the key 'terms_accepted'.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "4dcf3b25-419d-42ad-b6b3-bac0f110bd03",
+        "server_time": "2026-10-26T07:41:01.664655Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\RegistrationDetailsTest.php:125
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-007 prohíbe los campos que no corresponden al…    
+  Failed to find a validation error in the response for key: 'specialty_ids'
+
+Response has the following JSON validation errors:
+
+{
+    "name": [
+        "El campo nombre es obligatorio."
+    ]
+}
+
+Failed asserting that an array has the key 'specialty_ids'.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "8e041502-b702-47a6-a667-1b79726f4dcc",
+        "server_time": "2026-10-26T07:41:01.967761Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\RegistrationDetailsTest.php:132
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-008 el mismo correo con otra capitalización no…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "811d96b3-5fa9-4251-8418-ef299aa3f829",
+        "server_time": "2026-10-26T07:41:02.202323Z"
+    }
+}
+
+  at tests\Feature\Sprint07\RegistrationDetailsTest.php:145
+    141▕ });
+    142▕ 
+    143▕ it('S07-TC-008 el mismo correo con otra capitalización no crea una segunda cuenta [TC-002]', function () {
+    144▕     $first = Sprint07::clientPayload();
+  ➜ 145▕     s07Register($this, $first)->assertCreated();
+    146▕ 
+    147▕     $again = Sprint07::clientPayload(['email' => strtoupper($first['email'])]);
+    148▕     Sprint01::assertSpanishValidation(s07Register($this, $again), ['email']);
+    149▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\RegistrationDetailsTest > it S07-TC-010 /me devuelve nombres, apellidos y el distr…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "name": [
+            "El campo nombre es obligatorio."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "name": [
+                "El campo nombre es obligatorio."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "0f6ee277-9790-4f73-b569-4abe9bc821d3",
+        "server_time": "2026-10-26T07:41:02.701100Z"
+    }
+}
+
+  at tests\Feature\Sprint07\RegistrationDetailsTest.php:164
+    160▕ });
+    161▕ 
+    162▕ it('S07-TC-010 /me devuelve nombres, apellidos y el distrito principal del cliente para precargar la solicitud', function () {
+    163▕     $payload = Sprint07::clientPayload(['reference_address' => 'Privada 1']);
+  ➜ 164▕     s07Register($this, $payload)->assertCreated();
+    165▕     $user = User::query()->where('email', $payload['email'])->firstOrFail();
+    166▕ 
+    167▕     $me = $this->actingAs($user)->getJson('/api/v1/me')->assertOk();
+    168▕
+
+
+  Tests:    15 failed, 13 passed (156 assertions)
+  Duration: 56.74s
+

@@ -27,6 +27,7 @@ export default function RequestWizard({
   target = null,
   onExit = () => {},
   onBusy = () => {},
+  defaultDistrictId = null,
 }) {
   const {
     state,
@@ -56,7 +57,7 @@ export default function RequestWizard({
     specialties,
     districts,
     setUploading,
-  } = useWizardFlow(initialRecord, target, onExit, onBusy);
+  } = useWizardFlow(initialRecord, target, onExit, onBusy, defaultDistrictId);
   return (
     <section className="s02-panel request-wizard" aria-label="Nueva solicitud">
       <StepIndicator step={state.step} />

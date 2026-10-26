@@ -1,3 +1,4 @@
+import {fillRegistration} from '../../support/registration';
 const api = Cypress.expose('apiUrl');
 const site = Cypress.config('baseUrl');
 let password;
@@ -16,15 +17,16 @@ describe('Alertas y validación del incremento Sprint 1', () => {
     let submitted = 0;
     cy.intercept('POST', `${api}/api/v1/auth/register`, req => { submitted++; req.continue(); }).as('register');
     cy.visit('/#cuenta');
+    // Registro en 2 pasos (D-80): el envío vacío del paso 2 se valida sin llamar a la API.
     cy.get('[data-cy=show-register]').click();
+    cy.get('[data-cy=register-type-client]').check();
+    cy.get('[data-cy=register-next]').click();
     cy.get('[data-cy=register-submit]').click();
     cy.get('[role=alert]').should('contain', 'Revisa los campos');
     cy.then(() => expect(submitted).to.eq(0));
-    cy.get('[data-cy=register-name]').type('Cliente duplicado');
-    cy.get('[data-cy=register-email]').type('e2e-client@example.test');
-    cy.get('[data-cy=register-password]').type(password, {log: false});
-    cy.get('[data-cy=register-password-confirmation]').type(password, {log: false});
-    cy.get('[data-cy=register-submit]').click();
+    cy.get('[data-cy=register-back]').click();
+    cy.get('[data-cy=show-login]').click();
+    fillRegistration({type: 'client', email: 'e2e-client@example.test', password, givenNames: 'Cliente', familyNames: 'Duplicado'});
     cy.wait('@register').its('response.statusCode').should('eq', 422);
     cy.get('[data-cy=register-email]').should('have.attr', 'aria-invalid', 'true');
     cy.get('#email-error').should('be.visible').and('contain', 'correo');

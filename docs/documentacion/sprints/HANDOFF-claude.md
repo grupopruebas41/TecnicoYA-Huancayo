@@ -2,6 +2,40 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-26 · Adelanto S7 · registro detallado y recuperación de contraseña (D-73, D-80)
+
+- **Rama:** `feature/mayhuasca/auth/registro-detallado`, creada desde `main` `01b93ee`, con backend y frontend.
+- **Decisiones:** D-73 a D-79 (plan del panel, opciones recomendadas) y D-80 (campos del registro y recuperación), registradas aquí.
+- **Commits:**
+  - `d4fb090`: decisiones;
+  - `c172023`, `880b410` y `2fd0b6e`: pruebas en rojo;
+  - `b839954` y `ec19c4d`: implementación;
+  - `f3e9ffb`: Cypress y seeder;
+  - `1e3a00b`: sobre `data` y CSS.
+- **API:**
+  - `POST /auth/register` ampliado; acepta todavía `name` por compatibilidad con el S1;
+  - `GET /me` con nombres y `client_profile.district_id`;
+  - nuevos `POST /auth/password/forgot` y `POST /auth/password/reset`.
+  - Contrato en `plan-pruebas-v3/sprint-07/CONTRATO-API.md`.
+- **Migración:** `2026_10_26_000024_add_registration_details`.
+  - En la base de desarrollo hay que correr `php artisan migrate` con el `.env` de desarrollo.
+  - En desarrollo, el enlace de recuperación queda en `storage/logs` (`MAIL_MAILER=log`).
+- **Pruebas:**
+  - Pest 289/289 en el slot A;
+  - Vitest 252/252; lint y build aprobados;
+  - `composer audit` y `npm audit` limpios;
+  - 30 IDs S07-TC (16 Pest y 14 Vitest).
+- **Cypress (sin ejecutar):** se ajustaron las del S1 y el S3 que llenan el registro, con el helper `fillRegistration()` y S01-TC-075 por teclado. **La Cypress S01-TC-075 quedó ajustada sin ejecutar y se corre en la regresión del cierre S4.6**, junto con portals, technician-signup, validation y el helper del S3.
+- **Ajuste del PR #31 (rubros por especialidad):**
+  - `subcategory_ids` en el registro del técnico;
+  - tabla `technician_declared_subcategories` (migración `000025`: hay que volver a correr `artisan migrate`);
+  - selector en dos niveles;
+  - rubros pendientes de tarifa en «Servicios y tarifas»;
+  - DEF-48 corregido;
+  - Pest 294/294 y Vitest 262/262;
+  - commits de `9d460cc` a `239e373`.
+- **Pendiente:** después de integrar, empezar la Fase 1 del panel del administrador.
+
 ## 2026-10-26 · Sesión · encuadre de la pantalla #cuenta (frontend, D-72)
 
 - **Rama:** `feature/delgado/auth/encuadre-login`, creada desde `main` `16cf3cb`.

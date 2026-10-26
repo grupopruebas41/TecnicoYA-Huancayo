@@ -44,8 +44,9 @@ function localDate(value) {
     .toISOString()
     .slice(0, 16);
 }
-export function stateFromRecord(record) {
-  if (!record) return initialWizard;
+// defaults: valores de una solicitud nueva, como el distrito principal del cliente (D-80).
+export function stateFromRecord(record, defaults = {}) {
+  if (!record) return { ...initialWizard, ...defaults };
   return {
     ...initialWizard,
     ...record,

@@ -1,0 +1,30 @@
+{
+  "1366x768": {
+    "summary": "Ofrecerás 5 rubros en 2 especialidades",
+    "counters": [
+      "3 de 10 seleccionadas",
+      "2 de 5 seleccionadas"
+    ],
+    "expanded": [
+      "true",
+      "false",
+      "true"
+    ],
+    "checkInline": true,
+    "overflowX": false
+  },
+  "390x844": {
+    "summary": "Ofrecerás 5 rubros en 2 especialidades",
+    "counters": [
+      "3 de 10 seleccionadas",
+      "2 de 5 seleccionadas"
+    ],
+    "expanded": [
+      "true",
+      "false",
+      "true"
+    ],
+    "checkInline": true,
+    "overflowX": false
+  }
+}

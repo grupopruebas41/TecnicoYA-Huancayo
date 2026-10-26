@@ -1,0 +1,52 @@
+{
+  "1366x768-cliente": {
+    "phoneInvalid": "true",
+    "meter": "5",
+    "overflowX": false
+  },
+  "1366x768-tecnico": {
+    "enviado": {
+      "account_type": "technician",
+      "given_names": "Ana Lucía",
+      "family_names": "Quispe Rojas",
+      "email": "ana@example.test",
+      "phone": "987654321",
+      "terms_accepted": true,
+      "base_district_id": 2,
+      "district_ids": [
+        2,
+        1
+      ],
+      "specialty_ids": [
+        10
+      ],
+      "experience_years": 4
+    },
+    "conservoNombres": true
+  },
+  "390x844-cliente": {
+    "phoneInvalid": "true",
+    "meter": "5",
+    "overflowX": false
+  },
+  "390x844-tecnico": {
+    "enviado": {
+      "account_type": "technician",
+      "given_names": "Ana Lucía",
+      "family_names": "Quispe Rojas",
+      "email": "ana@example.test",
+      "phone": "987654321",
+      "terms_accepted": true,
+      "base_district_id": 2,
+      "district_ids": [
+        2,
+        1
+      ],
+      "specialty_ids": [
+        10
+      ],
+      "experience_years": 4
+    },
+    "conservoNombres": true
+  }
+}
