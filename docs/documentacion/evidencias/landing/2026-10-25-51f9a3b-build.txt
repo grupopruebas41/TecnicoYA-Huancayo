@@ -1,0 +1,4 @@
+Commit de código verificado: 51f9a3b
+Fecha: 2026-10-25
+Comando: cd frontend/web && npm run build
+Resultado: salida 0; Vite 8.3.4, 80 módulos transformados; build de producción generado.

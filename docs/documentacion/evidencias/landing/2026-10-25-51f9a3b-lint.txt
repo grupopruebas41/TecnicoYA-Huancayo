@@ -1,0 +1,4 @@
+Commit de código verificado: 51f9a3b
+Fecha: 2026-10-25
+Comando: cd frontend/web && npm run lint
+Resultado: salida 0; eslint src vite.config.js --max-warnings 0, sin advertencias.

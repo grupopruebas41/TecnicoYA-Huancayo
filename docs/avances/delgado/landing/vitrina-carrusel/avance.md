@@ -1,3 +1,12 @@
+## Ajuste de escala y encuadre · 2026-10-25
+
+- **PR:** #25, rama `feature/delgado/landing/vitrina-carrusel`.
+- **Commits:** `d2f837b` pruebas de cálculo en rojo; `a9aa340` escala/navegación; `51f9a3b` ajuste de altura de Testimonios.
+- **Cambios:** escala más compacta para landing y Nosotros; vitrina 3D conservada y escalada para caber en escritorio; cálculo de desplazamiento con medidas reales del header y submenú, centrado cuando la sección cabe y alineación superior cuando excede; foco accesible, URL sin hash y estado activo sincronizado. Añadido margen inferior a Contacto/Preguntas y transparencia del submenú sin franja rectangular.
+- **Verificación real:** Chromium con Vite en `127.0.0.1:5175` y API local `:3000`; 1366×768 y 1920×1080, después de clicar Hero, Especialidades, Para técnicos, Testimonios y Equipo. Móvil 390×844: Hero. Todos los registros mostraron `hash: ""` y `overflow: false`. En 1366×768 las alturas fueron: Especialidades 634 px, Para técnicos 513 px, Testimonios 600 px y Equipo 405 px; todas dentro de la zona visible bajo header/submenú. Reporte: `docs/documentacion/evidencias/landing/2026-10-25-51f9a3b-playwright-layout.json`; capturas con el mismo prefijo.
+- **Vitest:** `npm test` aprobado, 218/218 (27 archivos). `npm run lint` aprobado. `npm run build` aprobado (80 módulos). Cypress no ejecutado.
+- **Archivos de código:** `frontend/web/src/landing.css`, `src/styles/tokens.css`, `src/landing/navigation.js`, `navigation.test.jsx`, `LandingRedesign.test.jsx`, `landing/Shared.jsx`, `landing/About.jsx`.
+- **Revisor:** [PENDIENTE].
 # Avance · Delgado · vitrina de subespecialidades
 
 ## Corrección visual · 2026-10-25

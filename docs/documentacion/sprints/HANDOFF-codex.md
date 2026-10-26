@@ -1,3 +1,10 @@
+## 2026-10-25 · PR #25 · escala y encuadre landing
+
+- Rama `feature/delgado/landing/vitrina-carrusel`; commits `d2f837b`, `a9aa340`, `51f9a3b`.
+- Landing/Nosotros escaladas; secciones centradas bajo el header y submenú medidos; navegación sin hash, foco y menú activo alineados. El abanico conserva diseño y escala reducida para caber en escritorio. Sin cambios en backend ni dependencias.
+- Evidencia Playwright Chromium: `docs/documentacion/evidencias/landing/2026-10-25-51f9a3b-*`; archivo JSON de medidas indica header/submenú, rectángulos, hash vacío y ausencia de overflow. Capturas posteriores a clic en destinos, 1366×768 y 1920×1080; Hero en 390×844. API local :3000 disponible.
+- `npm test`: 218/218, 27 archivos; `npm run lint`: aprobado; `npm run build`: aprobado. Cypress no ejecutado.
+- Revisor: [PENDIENTE]. PR #25 por actualizar tras push.
 # HANDOFF · Codex (frontend)
 
 Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cada tarea o antes de quedarse sin límite de uso. Al empezar, leer también [HANDOFF-claude.md](HANDOFF-claude.md).
