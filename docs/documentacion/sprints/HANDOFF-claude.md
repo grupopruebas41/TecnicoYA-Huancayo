@@ -17,6 +17,20 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Pruebas Cypress afectadas:** S01-TC-075 depende del orden del DOM y los `data-cy`, y ambos se conservan.
 - **Evidencias:** `docs/documentacion/evidencias/login/`.
 
+## 2026-10-26 · Sprint 4 · catálogo público: image_url, reference_fee y DatabaseSeeder
+
+- **Rama:** `feature/mayhuasca/catalogo/campos-landing`, creada desde `main` `16cf3cb`.
+- **Commits:** cherry-pick de S04-TC-133 (`9d8a068` y `6b94db0`); `e0415f5` en rojo; `ac293d8` en verde.
+- **Cambios:** `reference_fee` en `GET /catalog/carousel` y `DatabaseSeeder` idempotente. Contrato S4 v1.3.
+- **Pruebas:** Pest 273/273 en el slot A; `composer audit` limpio.
+- **Distritos en la base de desarrollo:** el problema era que no existía `DatabaseSeeder`. Ahora basta con `artisan db:seed`, que no borra datos.
+- **Rama local `feature/pimentel/ui/rediseno-visual`:**
+  - `045618f` y `be6708e` → este PR;
+  - `42123bb` → PR #28, solo la opción `--spec`;
+  - `cb47276` → descartado;
+  - la rama se borra cuando el usuario lo confirme.
+- **Pendiente:** registrar D-73 a D-79 y empezar la Fase 1 del panel del administrador, después de integrar este PR y el del login.
+
 ## 2026-10-26 · Landing · pulido visual de landing y Nosotros (frontend, D-72)
 
 - **Rama:** `feature/delgado/landing/pulido-visual` desde `main` `441644b`.

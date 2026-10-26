@@ -1,8 +1,8 @@
 # Contrato de API · Sprint 4
 
-**Versión:** 1.1 (2026-10-17, S4.3: lo que fijó la implementación, ver §11) · 1.0 (decisiones D-62 a D-71 aplicadas; análisis en [ANALISIS-S04.md](ANALISIS-S04.md)) · **Fecha:** 2026-10-16 · **Autor:** Claude Code (S4.1 y S4.3) · **Revisor:** [PENDIENTE]
+**Versión:** 1.3 (2026-10-26: `reference_fee` en `GET /catalog/carousel` y `DatabaseSeeder`, ver §13) · 1.2 (2026-10-19: `image_url` en `GET /catalog/specialties`, ver §12) · 1.1 (2026-10-17, S4.3: lo que fijó la implementación, ver §11) · 1.0 (decisiones D-62 a D-71 aplicadas; análisis en [ANALISIS-S04.md](ANALISIS-S04.md)) · **Fecha:** 2026-10-16 · **Autor:** Claude Code (S4.1 y S4.3) · **Revisor:** [PENDIENTE]
 **Base:** `main` `cced99e`; rama `feature/mayhuasca/b-matching/s04`.
-**Catálogo:** [CATALOGO-S04.csv](CATALOGO-S04.csv): 132 casos ejecutables (101 Pest, 18 Cypress y 13 Vitest). La v1.0 tenía 119; se agregaron S04-TC-120 a 127 (guarda de comandos destructivos, PR #19) y 128 a 132 (distrito base y herramientas E2E).
+**Catálogo:** [CATALOGO-S04.csv](CATALOGO-S04.csv): 136 casos ejecutables (105 Pest, 18 Cypress y 13 Vitest). La v1.0 tenía 119; se agregaron S04-TC-120 a 127 (guarda de comandos destructivos, PR #19), 128 a 132 (distrito base y herramientas E2E); en la v1.2, 133 (foto de la especialidad), y en la v1.3, 134 a 136 (tarifa del carrusel, consulta única y `DatabaseSeeder`).
 **Decisiones aplicadas:** D-11, D-18 a D-25, D-32, D-33, D-36 y D-57 a D-71.
 
 > **Estado de las rutas:**
@@ -442,3 +442,28 @@ Lo que fijó la implementación del backend. No cambia ninguna ruta ni código d
 | Carga de `notification.created` | `event_id`, `type`, `notification_id` y `occurred_at` (§8). |
 | Aislamiento de MySQL | La conexión usa **READ COMMITTED** (`DB_ISOLATION_LEVEL`): tras esperar el bloqueo de la solicitud se lee lo confirmado y no hay bloqueos de hueco (deadlocks hallados con S04-TC-040 y 045). |
 | Datos E2E (§9) | Sin cambios de cuentas. Las ofertas del seeder duran 10 min desde la siembra: usar `serverClock` y reponerlo con `serverClock('reset')`. Tareas en `scripts/e2e-tareas-s04.mjs`: `on('task', tareasSprint04())` en la configuración de Cypress. |
+
+## 12. Cambios de la versión 1.2 (2026-10-19)
+
+Pedido de Codex en el PR #22 (landing). Compatible con la v1.1: solo se agrega un campo.
+
+| Ruta | Cambio |
+|---|---|
+| `GET /catalog/specialties` **[cambia]** | Cada elemento añade `image_url` (string o `null`): `/api/v1/media/{id}` de `specialties.hero_media_id` **solo si el medio es público, revisado (`clean`) y no retirado**, igual que `GET /catalog/carousel`. En cualquier otro caso, o sin foto, va en `null`. No expone `hero_media_id` ni `storage_key`. Caso S04-TC-133. |
+
+## 13. Cambios de la versión 1.3 (2026-10-26)
+
+Pedidos pendientes de la landing (HANDOFF-codex, 2026-10-19). Compatible con la v1.2: solo se agrega un campo.
+
+| Ruta o pieza | Cambio |
+|---|---|
+| `GET /catalog/carousel` **[cambia]** | Cada elemento añade `reference_fee`: la tarifa de referencia de la subcategoría (`subcategories.reference_fee`, D-52), como **texto con 2 decimales** (`"45.50"`, igual que en `/technicians/me/services`) o `null` si la subcategoría no tiene tarifa. No se calcula ni se inventa ningún monto. La respuesta se arma con **una sola consulta**, sin N+1. Casos S04-TC-134 y 135. |
+| `database/seeders/DatabaseSeeder.php` **[nuevo]** | `php artisan db:seed` llama a `AuthorizationSeeder`, `CatalogSeeder` y `DistrictSeeder`. Los tres son idempotentes: no duplican, no reactivan un distrito desactivado por el administrador y **no crean cuentas**. Así una base de desarrollo nueva ya tiene los distritos activos de D-15 (Huancayo, El Tambo y Chilca) y sus distancias de D-64, que devuelve `GET /catalog/districts`. Caso S04-TC-136. |
+
+**Base de desarrollo existente** (no borra datos): desde `backend/api`, con el `.env` de desarrollo:
+
+```powershell
+C:\xampp\php\php.exe artisan db:seed
+```
+
+Con `APP_ENV=testing`, `DestructiveCommandGuard` solo permite `db:seed` sobre una base que termine en `_testing`.
