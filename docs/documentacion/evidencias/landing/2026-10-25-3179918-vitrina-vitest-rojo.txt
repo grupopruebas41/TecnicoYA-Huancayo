@@ -1,0 +1,12 @@
+TDD — prueba en rojo
+Fecha: 2026-10-25
+Rama: feature/delgado/landing/vitrina-carrusel
+Commit de pruebas: 3179918 test(landing): detect hidden carousel cards
+Comando: npm test -- --run src/Sprint02Landing.test.jsx
+Resultado: 23 aprobadas, 2 fallidas de 25.
+
+Fallos observados antes de la implementación:
+- regresión visual: `parseFloat(stage.style.height)` produjo NaN (el escenario no declaraba altura inline comprobable); esperaba un valor mayor que cero.
+- título sobre el abanico: el nodo `.ty-product-title` no existía.
+
+La implementación que resuelve estos fallos quedó en los commits 61b9542 y 5be135d. La suite focalizada pasó 25/25 y la suite completa final pasó 216/216.

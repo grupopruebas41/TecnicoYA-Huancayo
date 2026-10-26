@@ -22,11 +22,11 @@
   overflow-wrap: break-word;
 }
 .landing-page h1 {
-  font-size: clamp(3.5rem, 6.2vw, 6rem);
+  font-size: clamp(2.75rem, 6.5vw, 6.25rem);
   max-width: 1000px;
 }
 .landing-page h2 {
-  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
 }
 .landing-page h3 {
   font-size: 1.5rem;
@@ -35,7 +35,7 @@
 .landing-page p {
   color: var(--ty-muted);
   margin: 0 0 var(--ty-md);
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 1.05vw, 1.05rem);
 }
 .landing-page em {
   font-family: var(--ty-serif);
@@ -76,18 +76,18 @@
 }
 .landing-page section,
 .landing-page footer {
-  scroll-margin-top: 8rem;
+  scroll-margin-top: calc(var(--ty-header-height) + 1rem);
 }
 .landing-page .ty-section,
 .landing-page .service-carousel {
   padding: var(--ty-section)
-    max(var(--ty-md), calc((100% - var(--ty-width)) / 2));
+    max(clamp(16px, 4vw, 48px), calc((100% - var(--ty-width)) / 2));
   margin: 0;
   position: relative;
 }
 .ty-eyebrow {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   color: var(--ty-accent);
@@ -101,7 +101,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--ty-sm);
-  padding: 1rem max(var(--ty-md), calc((100% - 1400px) / 2));
+  min-height: var(--ty-header-height);
+  padding: 0.5rem max(clamp(16px, 4vw, 48px), calc((100% - 1200px) / 2));
   background: linear-gradient(var(--ty-bg), transparent);
   transition:
     background var(--ty-fast),
@@ -116,7 +117,7 @@
   display: flex;
   align-items: center;
   gap: var(--ty-xs);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -130,19 +131,19 @@
   place-items: center;
   border: 1px solid var(--ty-border);
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  font: italic 2.5rem var(--ty-serif);
+  width: 44px;
+  height: 44px;
+  font: italic 2rem var(--ty-serif);
 }
 .ty-header nav {
   display: flex;
   align-items: center;
   gap: clamp(0.55rem, 1vw, 1rem);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   white-space: nowrap;
   border: 1px solid color-mix(in srgb, var(--ty-cream) 30%, transparent);
   border-radius: var(--ty-pill);
-  padding: 0.85rem 1.15rem;
+  padding: 0.5rem 0.8rem;
   background: color-mix(in srgb, var(--ty-bg) 40%, transparent);
   backdrop-filter: blur(12px);
 }
@@ -257,7 +258,7 @@
   font-weight: 400;
   width: min(1200px, 88vw);
   max-width: none;
-  font-size: clamp(3rem, 8.5vw, 8.5rem);
+  font-size: clamp(2.75rem, 6.5vw, 6.25rem);
   line-height: 0.95;
   letter-spacing: -0.01em;
   margin: 0 auto clamp(1.5rem, 3vh, 2.4rem);
@@ -1221,6 +1222,154 @@
   .about-page .ty-coverflow-card.is-current { transform: translateX(0) !important; }
   .about-page .ty-coverflow-card.side--1 { transform: translateX(-65%) scale(.78) !important; }
   .about-page .ty-coverflow-card.side-1 { transform: translateX(65%) scale(.78) !important; }
+}
+
+/* Escala y encuadre compactos para que las secciones principales respiren en una pantalla. */
+.landing-page .ty-section,
+.landing-page .service-carousel {
+  padding-block: clamp(56px, 8vh, 96px);
+  padding-inline: max(clamp(16px, 4vw, 48px), calc((100% - 1200px) / 2));
+}
+.landing-page .ty-section > h2,
+.landing-page .ty-section > div > h2,
+.landing-page .service-carousel-heading h2 {
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+}
+.landing-page .ty-section p,
+.landing-page .service-slide-copy p {
+  font-size: 1rem;
+}
+.landing-page .ty-eyebrow,
+.landing-page .ty-about-kicker {
+  font-size: 0.78rem;
+}
+.ty-header {
+  min-height: 72px;
+  padding: 0.5rem max(clamp(16px, 4vw, 48px), calc((100% - 1200px) / 2));
+}
+.ty-brand { font-size: 1.25rem; }
+.ty-monogram { width: 44px; height: 44px; font-size: 2rem; }
+.ty-header nav { gap: clamp(0.5rem, 1vw, 0.85rem); padding: 0.5rem 0.8rem; font-size: 0.95rem; }
+.ty-header nav > a { padding: 0.15rem 0.25rem; }
+.ty-header-login { padding: 0.7rem 1.5rem; font-size: 0.95rem; }
+.ty-menu-toggle { min-height: 40px; }
+.ty-hero-centered { padding: 6.5rem max(clamp(16px, 4vw, 48px), calc((100% - 1200px) / 2)) 2rem; }
+.landing-page .ty-hero h1 { font-size: clamp(2.75rem, 6.5vw, 6.25rem); }
+.ty-hero-pill { font-size: 0.95rem; padding: 0.55rem 1.1rem; }
+.ty-hero-content > p { font-size: clamp(1rem, 1.35vw, 1.2rem); }
+.ty-hero .ty-actions .ty-button { padding: 0.85rem 1.8rem; font-size: 1rem; }
+.landing-page #tecnicos > img { width: min(100%, 520px); justify-self: center; }
+.landing-page #tecnicos h2 em { display: block; text-wrap: balance; }
+.landing-page .ty-vitrine .service-carousel-heading { margin-bottom: 16px; }
+.landing-page .ty-vitrine .service-carousel-heading h2 { font-size: clamp(2rem, 3.6vw, 3.25rem); }
+.landing-page .ty-specialty-nav { margin-bottom: 2px; }
+.landing-page .ty-specialty-chips { padding-block: 2px 8px; }
+.landing-page .ty-specialty-chips button { padding: 0.5rem 0.9rem; min-height: 40px; font-size: 0.9rem; }
+.landing-page .ty-specialty-progress { margin-bottom: 18px; }
+.landing-page .ty-vitrine-layout { max-width: 1200px; gap: clamp(24px, 4vw, 56px); }
+.landing-page .ty-vitrine .service-main-photo > img { aspect-ratio: 1.6; }
+.landing-page .ty-vitrine .service-slide-copy { padding-top: 14px; }
+.landing-page .ty-vitrine .service-slide-copy h3 { font-size: clamp(2rem, 3.6vw, 3.25rem); margin: 0.7rem 0; }
+.landing-page .ty-vitrine .service-slide-copy p { margin-bottom: 0.8rem; }
+.landing-page .ty-vitrine .ty-vitrine-cta { min-height: 40px; padding: 0.6rem 1.2rem; font-size: 0.92rem; }
+.landing-page .ty-product-stage { height: 320px !important; }
+.landing-page .ty-product-heading { gap: 4px; margin-bottom: 6px; }
+.landing-page .ty-product-title { font-size: clamp(1.55rem, 2vw, 1.9rem); }
+.landing-page .ty-product-controls { gap: 8px; }
+.landing-page .ty-product-controls > button { width: 40px; height: 40px; min-height: 40px; }
+.landing-page .ty-product-thumbnails button { width: 36px; height: 46px; min-width: 36px; min-height: 46px; }
+.ty-about-nav { top: calc(var(--ty-header-height) + 0.35rem); font-size: 0.88rem; gap: 0.55rem; padding: 0.45rem 0.7rem; }
+.ty-about-nav.is-floating { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; }
+.ty-about-nav.is-floating a { padding: 0.4rem 0.65rem; border: 1px solid color-mix(in srgb, var(--ty-accent) 42%, transparent); border-radius: var(--ty-pill); background: color-mix(in srgb, var(--ty-bg) 92%, transparent); backdrop-filter: blur(12px); text-shadow: none; }
+.ty-about-hero { min-height: min(760px, 100svh); padding-block: 11rem clamp(3rem, 7vh, 5rem); }
+.ty-about-hero h1 { font-size: clamp(2.75rem, 6.5vw, 6.25rem); }
+.about-page .ty-section { padding-block: clamp(56px, 8vh, 96px); }
+.about-page .ty-purpose-map { max-width: 1200px; margin: 2rem auto 0; padding: clamp(1rem, 2.5vw, 2rem); gap: 1rem clamp(1.2rem, 3vw, 2.5rem); }
+.ty-purpose-card { min-height: 150px; padding: 1.2rem; }
+.ty-purpose-card h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+.about-page .ty-coverflow { width: min(100%, 760px); margin: 1rem auto 0; }
+.about-page .ty-coverflow-stage { height: clamp(270px, 28vw, 330px); }
+.about-page .ty-coverflow-card { width: min(74%, 560px); }
+.about-page .ty-coverflow-card > img { height: 52%; }
+.ty-testimonial-note { margin-top: -0.35rem !important; margin-bottom: 0.6rem !important; font-size: 0.9rem !important; }
+.ty-testimonial-copy { padding: 0.8rem 1.2rem; }
+.ty-testimonial-copy p { margin: 0 0 0.45rem; font-size: clamp(0.98rem, 1.2vw, 1.05rem); }
+.ty-testimonial-copy > span:not(.ty-quote-mark) { font-size: 0.82rem; }
+.ty-testimonial-copy .ty-fiction-rating { margin-top: 0.35rem; font-size: 0.82rem; }
+.ty-quote-mark { font-size: 3.6rem; }
+.ty-coverflow-controls { gap: 0.6rem; margin-top: 0.7rem; }
+.ty-round-control { width: 42px; height: 42px; font-size: 1.2rem; }
+.ty-rotation-control { min-height: 40px; padding: 0.35rem 0.8rem; font-size: 0.9rem; }
+.ty-coverflow-dots { gap: 0.55rem; margin-top: 0.55rem; }
+.ty-coverflow-dots button { width: 9px; height: 9px; }
+.about-page #equipo .ty-grid { gap: 1rem; margin: 1rem 0; }
+.about-page #equipo .ty-card { padding: 1.1rem; }
+.ty-avatar { width: 64px; height: 64px; font-size: 1.35rem; margin-bottom: 0.8rem; }
+.about-page #equipo h3 { font-size: 1.2rem; }
+.about-page #equipo p { font-size: 0.95rem; }
+.about-page #testimonios { padding-block: clamp(36px, 6vh, 48px); }
+.about-page #contacto { margin-bottom: clamp(220px, 40vh, 360px); }
+.landing-page:not(.about-page) #preguntas { margin-bottom: clamp(220px, 40vh, 360px); }
+
+/* La vitrina conserva el abanico, pero sus dos columnas caben bajo la cabecera. */
+@media (min-width: 901px) {
+  .landing-page .ty-vitrine { padding-block: 32px; }
+  .landing-page .ty-vitrine .service-carousel-heading { margin-bottom: 8px; }
+  .landing-page .ty-vitrine .service-carousel-heading h2 { font-size: clamp(2rem, 3vw, 2.7rem); }
+  .landing-page .ty-specialty-nav { min-height: 40px; }
+  .landing-page .ty-specialty-nav > button { width: 38px; height: 38px; }
+  .landing-page .ty-specialty-chips button { min-height: 38px; padding: 0.4rem 0.8rem; }
+  .landing-page .ty-specialty-progress { margin-bottom: 12px; }
+  .landing-page .ty-vitrine-layout { align-items: center; gap: clamp(24px, 3.5vw, 48px); }
+  .landing-page .ty-vitrine .service-main-photo > img { height: clamp(210px, 18vw, 250px); aspect-ratio: auto; }
+  .landing-page .ty-vitrine .service-slide-copy { padding-top: 8px; }
+  .landing-page .ty-vitrine .service-slide-copy h3 { font-size: clamp(1.8rem, 2.7vw, 2.5rem); margin: 0.4rem 0; }
+  .landing-page .ty-vitrine .service-slide-copy p { font-size: 0.95rem; line-height: 1.4; margin-bottom: 0.5rem; }
+  .landing-page .ty-vitrine .ty-eyebrow { margin-bottom: 0.4rem; }
+  .landing-page .ty-vitrine .ty-vitrine-cta { min-height: 36px; padding: 0.45rem 1rem; }
+  .landing-page .ty-product-heading { gap: 3px; margin-bottom: 6px; }
+  .landing-page .ty-product-kicker { font-size: 0.85rem; }
+  .landing-page .ty-product-title { font-size: clamp(1.45rem, 1.9vw, 1.8rem); }
+  .landing-page .ty-product-stage { height: 230px !important; }
+  .landing-page .ty-product-stage .ty-product-card { width: 42%; max-height: calc(100% - 8px); }
+  .landing-page .ty-product-stage .ty-product-caption { padding: 16px; }
+  .landing-page .ty-product-stage .ty-product-caption h3 { font-size: clamp(1.25rem, 1.7vw, 1.65rem); }
+  .landing-page .ty-product-controls { gap: 6px; margin-top: 4px; font-size: 0.85rem; }
+  .landing-page .ty-product-controls > button { width: 34px; height: 34px; min-height: 34px; }
+  .landing-page .ty-product-thumbnails button { width: 30px; height: 38px; min-width: 30px; min-height: 38px; }
+  .landing-page .ty-product-progress { margin-top: 4px; }
+}
+
+@media (max-width: 900px) {
+  .ty-header { min-height: 72px; padding: 0.45rem clamp(16px, 4vw, 32px); }
+  .ty-header-login { min-height: 40px; padding: 0.55rem 1rem; font-size: 0.9rem; }
+  .ty-about-nav { top: var(--ty-header-height); }
+  .ty-about-nav.is-floating { background: transparent; }
+  .ty-about-nav.is-floating a { padding: 0.35rem 0.55rem; }
+  .about-page .ty-coverflow-stage { height: 350px; }
+  .about-page .ty-coverflow-card { width: min(82%, 440px); }
+  .about-page .ty-coverflow-card > img { height: 49%; }
+}
+@media (max-width: 640px) {
+  .ty-header { gap: 0.5rem; }
+  .ty-brand { font-size: 1.1rem; }
+  .ty-monogram { width: 40px; height: 40px; }
+  .ty-header-login { padding: 0.5rem 0.75rem; font-size: 0.85rem; }
+  .ty-hero-centered { padding: 7rem 1rem 2rem; }
+  .landing-page .ty-hero h1 { width: min(90vw, 560px); font-size: clamp(2.4rem, 10vw, 3.4rem); line-height: 1; }
+  .ty-hero-pill { max-width: calc(100vw - 32px); font-size: 0.82rem; }
+  .ty-hero .ty-actions .ty-button { padding: 0.7rem 1rem; font-size: 0.9rem; }
+  .landing-page .ty-product-stage { height: 360px !important; }
+  .ty-about-nav { top: var(--ty-header-height); font-size: 0.78rem; }
+  .ty-about-nav.is-floating a { padding: 0.35rem 0.5rem; }
+  .about-page .ty-coverflow-stage { height: 350px; }
+  .about-page .ty-coverflow-card { width: min(84%, 380px); }
+  .about-page .ty-about-hero { min-height: min(700px, 100svh); padding-top: 12rem; padding-bottom: 3rem; }
+  .about-page .ty-about-hero h1 { font-size: clamp(2.4rem, 10vw, 3.4rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ty-header, .ty-about-nav, .ty-about-nav a { transition: none !important; }
 }
 
 .landing-page .ty-zones svg {

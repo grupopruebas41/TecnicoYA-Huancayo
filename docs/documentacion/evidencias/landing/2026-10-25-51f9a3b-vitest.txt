@@ -1,0 +1,4 @@
+Commit de código verificado: 51f9a3b
+Fecha: 2026-10-25
+Comando: cd frontend/web && npm test
+Resultado: salida 0; 27 archivos de prueba aprobados; 218/218 pruebas aprobadas.

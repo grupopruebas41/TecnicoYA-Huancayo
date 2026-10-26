@@ -1,3 +1,10 @@
+## 2026-10-25 · PR #25 · escala y encuadre landing
+
+- Rama `feature/delgado/landing/vitrina-carrusel`; commits `d2f837b`, `a9aa340`, `51f9a3b`.
+- Landing/Nosotros escaladas; secciones centradas bajo el header y submenú medidos; navegación sin hash, foco y menú activo alineados. El abanico conserva diseño y escala reducida para caber en escritorio. Sin cambios en backend ni dependencias.
+- Evidencia Playwright Chromium: `docs/documentacion/evidencias/landing/2026-10-25-51f9a3b-*`; archivo JSON de medidas indica header/submenú, rectángulos, hash vacío y ausencia de overflow. Capturas posteriores a clic en destinos, 1366×768 y 1920×1080; Hero en 390×844. API local :3000 disponible.
+- `npm test`: 218/218, 27 archivos; `npm run lint`: aprobado; `npm run build`: aprobado. Cypress no ejecutado.
+- Revisor: [PENDIENTE]. PR #25 por actualizar tras push.
 # HANDOFF · Codex (frontend)
 
 Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cada tarea o antes de quedarse sin límite de uso. Al empezar, leer también [HANDOFF-claude.md](HANDOFF-claude.md).
@@ -20,6 +27,29 @@ Archivo de relevo de Codex (regla 12 de AGENTS.md). Se actualiza al terminar cad
 ```
 
 ## Entradas
+
+## 2026-10-25 · PR #25 · corrección visual del abanico de especialidades
+
+- **Rama:** `feature/delgado/landing/vitrina-carrusel` (PR abierto #25: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/25).
+- **Commits:** `3179918` pruebas de regresión en rojo; `61b9542` restauración del abanico; `5be135d` ajuste de landmark.
+- **Causa:** selectores más específicos de `landing.css` sobrescribían `.subcategory-card` de la vitrina: cartas en flujo normal, las laterales ocultas. El escenario tenía altura; las cartas se apilaban fuera de la zona visible.
+- **Cambios:** estilos aislados bajo `.landing-page .ty-product-stage`, altura 380 px (escritorio) / 360 px (móvil), 5 cartas en escritorio y 3 en móvil, prioridad `loading="eager"` para centro y vecinas, kicker de 1 rem y título activo serif itálico encima del abanico con fundido. El encabezado visual se cambió de `header` a `div` para evitar landmark `banner` duplicado.
+- **Pruebas:** `npm test` 216/216 (27 archivos); `npm run lint` aprobado; `npm run build` aprobado (80 módulos). Cypress no ejecutado.
+- **Visual:** Playwright con Chromium instalado, API `:3000` (health HTTP 200): 1366/1920 muestran 5 cartas, 390 muestra 3; imágenes cargadas, ancho sin desbordamiento, escenario 380/360 px y centro eager con la misma URL que miniatura activa. Capturas y salidas en `docs/documentacion/evidencias/landing/2026-10-25-5be135d-*`.
+- **CI:** frontend, backend y conteo de pruebas aprobados en la ejecución https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/40251523217. Revisión humana [PENDIENTE].
+- **Pendiente:** continuar cambios futuros en la rama del PR #25; no se ejecutó Cypress.
+- **Sin cambios:** `backend/`, dependencias y pruebas Cypress.
+
+## 2026-10-22 · Vitrina de subespecialidades · abanico 3D
+
+- **Rama:** `feature/delgado/landing/vitrina-carrusel`, base `origin/main` actualizado (no fue posible hacer checkout de `main` porque está activo en el worktree principal).
+- **Commits:** `b747eab` test Vitest en rojo; `b06775e` implementación.
+- **Cambios:** se retiraron las cifras de la sección «¿Qué necesitas resolver?» y el carrusel pasó a un abanico 3D con hasta 5 cartas (3 en móvil), miniaturas, flechas, teclado, clic en lateral, arrastre, autoplay de 3 s, pausa por hover/foco/visibilidad, inclinación y brillo en escritorio, cambio escalonado de especialidad, precio referencial opcional y precarga. Se garantiza imagen principal distinta de la subespecialidad activa cuando hay alternativa local/API.
+- **Pruebas:** Vitest 214/214 (27 archivos), `npm run lint` aprobado, `npm run build` aprobado. No Cypress.
+- **Evidencias:** `docs/documentacion/evidencias/landing/2026-10-22-b06775e-{vitest,lint,build}.txt` y `README.md`.
+- **Avance:** `docs/avances/delgado/landing/vitrina-carrusel/avance.md`. Sin cambios de backend ni dependencias.
+- **PR:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/25; backend y frontend pendientes de CI. Revisor [PENDIENTE].
+- **Pendientes:** revisión e integración del equipo.
 
 ## 2026-10-19 · DEF-47 · edición de subcategorías
 

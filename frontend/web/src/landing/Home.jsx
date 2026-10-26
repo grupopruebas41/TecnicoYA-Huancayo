@@ -209,7 +209,7 @@ export default function Home({ catalog }) {
   return (
     <>
       <Hero />
-      <ServiceCarousel catalog={catalog} />
+      <ServiceCarousel />
       <section
         id="proceso"
         data-landing="Cómo funciona"
