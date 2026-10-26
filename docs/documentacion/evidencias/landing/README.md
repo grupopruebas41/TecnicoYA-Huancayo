@@ -53,3 +53,6 @@ Rama `feature/delgado/landing/pulido-visual`. Pruebas en rojo en `2076753`, impl
 - **Capturas, medidas y scripts:** `2026-10-26-e2b7850-*`. El detalle está en `2026-10-26-e2b7850-pulido-verificacion.md`.
 - No se instaló nada, no se tocó el backend y Cypress no se ejecutó.
 - Revisor: [PENDIENTE].
+- **Correcciones adicionales del 2026-10-26** (pruebas en rojo en `70efaa6`, implementación en `a48812f`): «Empieza ahora» con dos caminos, submenú de Nosotros oculto sobre la portada y cabecera + submenú sin hueco.
+  - Vitest 231/231; lint y build aprobados.
+  - Capturas en `2026-10-26-a48812f-*` y detalle en `2026-10-26-e2b7850-pulido-verificacion.md`.

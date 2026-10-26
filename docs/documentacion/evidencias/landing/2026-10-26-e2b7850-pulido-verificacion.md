@@ -40,3 +40,18 @@
 
 - El marcador ✦ del mapa Misión/Visión/Valores sigue cerca del texto «PUNTO 1 DE 3», como estaba antes del cambio. Se conservó por ser diseño aprobado.
 - Cypress no se ejecutó.
+
+## Correcciones adicionales · 2026-10-26 (`70efaa6` rojo, `a48812f` implementación)
+
+- **Empieza ahora:** encabezado a la izquierda y dos tarjetas con imagen («Necesito un técnico» y «Soy técnico»). La sección se ajusta a su contenido: mide 687 px a 1366×768 y 837 px a 1920×1080. Las dos tarjetas terminan la entrada con opacidad 1. A 390 px se apilan, sin desbordamiento horizontal.
+- **Submenú de Nosotros** (`*-a48812f-submenu-layout.json`, capturas con movimiento normal):
+  - arriba del todo está oculto: `visibility: hidden`, `aria-hidden="true"` e `inert`;
+  - tras bajar de la portada aparece;
+  - al volver arriba se oculta de nuevo.
+- **Hueco cabecera/submenú:** 0 px en todas las vistas.
+  - Causa: el submenú se colocaba con el `getBoundingClientRect` de la cabecera, medido durante su animación de entrada, que la desplaza 16 px. Ahora usa la altura de layout (`offsetHeight`).
+  - El borde inferior pasa al final del bloque.
+- **Encuadre:** tras hacer clic en «Quiénes somos» y en «Testimonios», la sección empieza en 134 px. El observer de la portada descuenta cabecera + submenú + 2 px: antes, el borde de la portada detrás del submenú lo ocultaba al llegar a «Quiénes somos».
+- **Sección activa:** se recalcula en `scrollend`. Antes podía quedar resaltada «Cómo verificamos» tras saltar a «Quiénes somos».
+- **Sin cambio, a propósito:** el vidrio al 85 % deja ver difuminados los elementos claros que pasan por detrás de la barra.
+- **Pruebas:** Vitest 231/231, lint aprobado y build aprobado (`*-a48812f-{vitest,lint,build}.txt`). Rojo: `2026-10-26-70efaa6-submenu-vitest-rojo.txt`, con 3 fallos esperados.

@@ -24,6 +24,11 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Vite en el puerto 5180, porque el 5173 estaba ocupado por otro proceso que no se tocó;
   - Playwright tomado de `~/.cache/codex-runtimes/.../node_modules/playwright`, con el Chromium 1248 ya instalado;
   - no se instaló nada.
+- **Correcciones adicionales en el mismo PR:**
+  - `70efaa6`: pruebas en rojo;
+  - `a48812f`: «Empieza ahora» con dos caminos; submenú de Nosotros oculto sobre la portada (`aria-hidden`, `inert`); cabecera + submenú en un solo bloque sin hueco;
+  - **causa del hueco:** el rect de la cabecera se medía durante su animación de entrada;
+  - Vitest 231/231; lint y build aprobados; evidencias en `2026-10-26-a48812f-*`.
 - **Pendiente:** revisión humana; datos reales de contacto; marcador ✦ del mapa MVV junto a «PUNTO 1 DE 3» (diseño previo que se conservó).
 - **Bloqueos:** ninguno.
 

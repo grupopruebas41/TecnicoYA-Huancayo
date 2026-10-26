@@ -76,6 +76,16 @@
 - **Revisor:** [PENDIENTE].
 - **Decisiones:** D-72 (Claude Code asume el frontend).
 
+## Correcciones adicionales · 2026-10-26
+
+- **Commits:** `70efaa6` pruebas en rojo; `a48812f` implementación.
+- **Empieza ahora:** encabezado y dos tarjetas con imagen, viñetas doradas y botones a los mismos destinos de antes (registro de cliente y registro de técnico). La sección se ajusta a su contenido; las tarjetas tienen entrada escalonada (sin animación con movimiento reducido) y se apilan en móvil.
+- **Submenú de Nosotros:** oculto mientras la portada está en pantalla (con `aria-hidden` e `inert`). Al salir de ella aparece con fundido y deslizamiento de 250 ms.
+- **Cabecera y submenú:** forman un solo bloque, sin hueco entre ellos y con un único borde al final.
+- **Encuadre:** cuenta el submenú aunque esté oculto. La sección activa del submenú se recalcula al terminar el desplazamiento.
+- **Pruebas:** 3 nuevas. La prueba S02-TC-090 del submenú ahora simula que la portada ya salió de la vista, porque el submenú deja de mostrarse sobre ella. Vitest 231/231; lint y build aprobados.
+- **Evidencias:** `docs/documentacion/evidencias/landing/2026-10-26-a48812f-*`.
+
 ## Uso de IA
 
 - **Herramienta y modelo:** Claude Code (Claude Opus 5.5).
