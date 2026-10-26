@@ -33,7 +33,7 @@ it('S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter', () =
   // Enter cambia de formulario: esperar el render observable antes del siguiente Tab.
   cy.get('[data-cy=register-name]').should('be.visible');
   cy.then(() => expect(activations, 'activación nativa por teclado').to.deep.eq([true]));
-  cy.press(Cypress.Keyboard.Keys.TAB);
+  // Al terminar el deslizamiento del panel (600 ms) el foco pasa solo al primer campo del registro.
   focusOn('[data-cy=register-name]'); cy.focused().type('Cliente teclado');
   cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-account-type]');
   cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-client-type]');
@@ -41,7 +41,10 @@ it('S01-TC-075 registro por teclado: Tab, foco visible y envío con Enter', () =
   cy.focused().type(`teclado-${crypto.randomUUID()}@example.test`);
   cy.env(['E2E_PASSWORD'], {log: false}).then(({E2E_PASSWORD}) => {
     cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-password]'); cy.focused().type(E2E_PASSWORD, {log: false});
+    // Cada contraseña tiene después su botón Mostrar/Ocultar, también alcanzable con Tab.
+    cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[aria-label="Mostrar contraseña"]');
     cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-password-confirmation]'); cy.focused().type(E2E_PASSWORD, {log: false});
+    cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[aria-label="Mostrar confirmación de contraseña"]');
   });
   cy.press(Cypress.Keyboard.Keys.TAB); focusOn('[data-cy=register-submit]');
   pressEnter();

@@ -302,3 +302,84 @@
     animation: none;
   }
 }
+
+/* Cambio de modo: el panel (40 %) se desliza a la izquierda y el formulario (60 %) a la derecha.
+   -150 % del panel = 60 % de la tarjeta; 66,667 % del formulario = 40 % de la tarjeta. */
+.auth-welcome,
+.auth-form-side {
+  transition: transform 600ms cubic-bezier(0.65, 0, 0.35, 1), border-radius 600ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.auth-welcome {
+  z-index: 1;
+}
+.is-register .auth-welcome {
+  transform: translateX(-150%);
+  border-radius: 0 140px 140px 0;
+}
+.is-register .auth-form-side {
+  transform: translateX(66.667%);
+}
+/* El formulario nuevo aparece con fundido cuando el panel ya pasó por encima. */
+.is-register .auth-form,
+.auth-shell:not(.is-register) .auth-form {
+  animation: auth-form-in 0.45s 0.25s both;
+}
+/* Mostrar / Ocultar contraseña. */
+.password-input {
+  position: relative;
+}
+.auth-shell .password-input input {
+  width: 100%;
+  padding-right: 48px;
+}
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #d5c3a0;
+  cursor: pointer;
+}
+.password-toggle:hover,
+.password-toggle[aria-pressed="true"] {
+  background: #ffffff12;
+  color: #f5eddf;
+}
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+@media (max-width: 760px) {
+  .auth-welcome,
+  .auth-form-side,
+  .is-register .auth-welcome,
+  .is-register .auth-form-side {
+    transform: none;
+    transition: none;
+  }
+  .is-register .auth-welcome {
+    border-radius: 0 0 40px 40px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-welcome,
+  .auth-form-side {
+    transition: none;
+  }
+  .is-register .auth-form,
+  .auth-shell:not(.is-register) .auth-form {
+    animation: none;
+  }
+}
