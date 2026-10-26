@@ -108,6 +108,9 @@ Route::prefix('v1')->group(function () {
                 Route::patch('announcements/{announcement}', [AdminAnnouncementController::class, 'update']);
                 Route::post('announcements/{announcement}/publication', [AdminAnnouncementController::class, 'publish']);
                 Route::delete('announcements/{announcement}', [AdminAnnouncementController::class, 'retire']);
+                // D-83: despublicar y orden del carrusel por audiencia.
+                Route::delete('announcements/{announcement}/publication', [AdminAnnouncementController::class, 'unpublish']);
+                Route::put('announcements/order', [AdminAnnouncementController::class, 'reorder']);
                 Route::post('announcements/{announcement}/duplicates', [AnnouncementController::class, 'duplicate']);
             });
             Route::prefix('technicians')->middleware('permission:technicians.verify')->group(function () {

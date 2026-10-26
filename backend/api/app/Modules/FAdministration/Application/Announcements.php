@@ -11,11 +11,15 @@ use Illuminate\Support\Str;
 /** Comunicados v1: audiencia por rol (announcement_audiences) y vigencia [starts_at, ends_at). */
 final class Announcements
 {
-    private const COPIED = ['title', 'body', 'audience', 'priority', 'image', 'link_url', 'link_label', 'duration_days'];
+    private const COPIED = ['title', 'body', 'audience', 'priority', 'image', 'link_url', 'link_label', 'duration_days',
+        'source', 'kind', 'image_media_id', 'mobile_media_id', 'genially_url', 'alt_text'];
 
-    public function __construct(private readonly AuditTrail $audit) {}
+    public function __construct(private readonly AuditTrail $audit, private readonly ManageAnnouncements $manage) {}
 
-    /** Comunicados publicados y vigentes para el rol del lector. */
+    /**
+     * Comunicados publicados y vigentes para el rol del lector, en el orden del carrusel de su audiencia (D-83).
+     * Los anteriores al orden manual (posición 0) van al final, por prioridad e inicio como en el S2.
+     */
     public function visibleTo(User $reader): Collection
     {
         $now = now();
@@ -26,11 +30,13 @@ final class Announcements
             ->where('a.status', 'published')->whereNull('a.retired_at')
             ->where(fn ($q) => $q->whereNull('a.starts_at')->orWhere('a.starts_at', '<=', $now))
             ->where(fn ($q) => $q->whereNull('a.ends_at')->orWhere('a.ends_at', '>', $now))
+            ->orderByRaw('CASE WHEN aud.position = 0 THEN 1 ELSE 0 END')->orderBy('aud.position')
             ->orderByDesc('a.priority')->orderByDesc('a.starts_at')
-            ->get(['a.id', 'a.title', 'a.body', 'a.link_url', 'a.link_label', 'a.priority', 'a.starts_at', 'a.ends_at']);
+            ->get(['a.id', 'a.title', 'a.body', 'a.source', 'a.kind', 'a.image_media_id', 'a.mobile_media_id', 'a.genially_url',
+                'a.alt_text', 'a.link_url', 'a.link_label', 'a.priority', 'a.starts_at', 'a.ends_at', 'aud.position']);
     }
 
-    /** Copia un comunicado como borrador sin fechas: no se publica automáticamente. */
+    /** Copia un comunicado como borrador sin fechas: no se publica automáticamente. Va al final de cada carrusel. */
     public function duplicate(User $actor, string $id): object
     {
         return DB::transaction(function () use ($actor, $id) {
@@ -44,7 +50,8 @@ final class Announcements
             ]);
             $roles = DB::table('announcement_audiences')->where('announcement_id', $id)->pluck('role_id');
             foreach ($roles as $roleId) {
-                DB::table('announcement_audiences')->insert(['announcement_id' => $copyId, 'role_id' => $roleId]);
+                DB::table('announcement_audiences')->insert(['announcement_id' => $copyId, 'role_id' => $roleId,
+                    'position' => $this->manage->nextPosition($roleId)]);
             }
             $this->audit->record($actor, 'announcement.duplicated', 'announcements.manage', 'announcement', null,
                 'Copia en borrador de un comunicado.', ['source_id' => $id], ['copy_id' => $copyId]);

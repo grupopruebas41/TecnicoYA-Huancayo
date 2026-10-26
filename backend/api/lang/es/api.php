@@ -53,6 +53,14 @@ return [
     'rate_decimals' => 'La tarifa admite como máximo 2 decimales.',
     'announcement_not_editable' => 'Solo se pueden editar comunicados en borrador. Retíralo o duplícalo.',
     'announcement_expired' => 'La vigencia ya terminó.',
+    // Comunicados en carrusel (D-83).
+    'announcement_image_type' => 'La imagen del comunicado debe ser JPG o WebP.',
+    'announcement_image_size' => 'La imagen del comunicado debe pesar como máximo 600 KB.',
+    'announcement_image' => 'Elige una imagen de comunicado revisada en proporción 3:1 de al menos 1440 × 480 px.',
+    'announcement_mobile_image' => 'La imagen móvil debe ser una imagen de comunicado revisada en proporción 3:2 de al menos 810 × 540 px.',
+    'genially_url' => 'Pega un enlace de Genially con la forma https://view.genially.com/<código>.',
+    'announcement_not_published' => 'El comunicado no está publicado.',
+    'announcement_order' => 'El orden debe incluir una sola vez cada comunicado activo de esa audiencia.',
     'performed_on_future' => 'La fecha del trabajo no puede ser futura.',
     'link_scheme' => 'El enlace debe empezar con http:// o https://.',
     // Sprint 3 (D-11, D-12, D-55 a D-58).
