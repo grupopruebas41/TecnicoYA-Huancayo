@@ -62,7 +62,8 @@ it('S02-TC-039 VAL-02 rechaza en español un texto con extensión .jpg, un GIF y
 
     Sprint01::assertSpanishValidation(s02Upload($this, Sprint02::upload('no-es-imagen.jpg', 'foto.jpg')), ['file']);
     Sprint01::assertSpanishValidation(s02Upload($this, Sprint02::upload('foto.gif')), ['file']);
-    Sprint01::assertSpanishValidation(s02Upload($this, Sprint02::upload('foto.png'), 'avatar'), ['purpose']);
+    // Desde D-77 «avatar» es una finalidad válida: la desconocida es otra.
+    Sprint01::assertSpanishValidation(s02Upload($this, Sprint02::upload('foto.png'), 'banner'), ['purpose']);
     s02Upload($this, Sprint02::upload('foto.png'), 'catalog')->assertForbidden();
     Sprint01::forgetSession();
     Sanctum::actingAs(UserFactory::new()->client()->create());

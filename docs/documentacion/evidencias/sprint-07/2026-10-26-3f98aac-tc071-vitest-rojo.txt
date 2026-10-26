@@ -1,0 +1,4 @@
+# 2026-10-26 · S07-TC-071 contra la versión anterior (sin cierre por Escape desde el botón ni clic fuera), antes de 3f98aac
+   × S07-TC-071 la campana y el menú del avatar se cierran con Escape desde su botón o con un clic fuera 166ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 14 skipped (15)

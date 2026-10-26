@@ -1,7 +1,8 @@
-import {api, login} from '../../support/sprint01';
+import {api, login, openProfile} from '../../support/sprint01';
 
 it('S01-TC-073 teléfono inválido sin enviar PATCH y con alerta accesible', () => {
   login();
+  openProfile();
   let patches = 0;
   cy.intercept('PATCH', `${api}/api/v1/me`, req => {patches++; req.continue();});
   cy.get('[data-cy=profile-phone]').clear().type('064-ABC');
@@ -14,6 +15,7 @@ it('S01-TC-073 teléfono inválido sin enviar PATCH y con alerta accesible', () 
 
 it('S01-TC-074 red interrumpida: resultado incierto y consulta del estado real', () => {
   login();
+  openProfile();
   cy.get('[data-cy=profile-name]').invoke('val').then(originalName => {
     cy.intercept('PATCH', `${api}/api/v1/me`, {forceNetworkError: true}).as('uncertainSave');
     cy.intercept('GET', `${api}/api/v1/me`).as('readProfile');
@@ -32,6 +34,7 @@ it('S01-TC-074 red interrumpida: resultado incierto y consulta del estado real',
 
 it('S01-TC-077 sesión vencida al guardar vuelve al formulario de acceso', () => {
   login();
+  openProfile();
   cy.clearCookie(Cypress.expose('sessionCookie'), {log: false});
   cy.intercept('PATCH', `${api}/api/v1/me`).as('expiredSave');
   cy.get('[data-cy=profile-submit]').click();

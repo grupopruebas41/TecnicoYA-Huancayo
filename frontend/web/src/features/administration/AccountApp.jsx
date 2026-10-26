@@ -3,10 +3,15 @@ import React, {useEffect, useState} from 'react';
 import {request} from './http';
 import SessionForm from './SessionForm';
 import {ResetPassword} from './PasswordRecovery';
-import ProfileForm from './ProfileForm';
+import PanelShell from '../panel/PanelShell';
+import AdminHome from '../panel/AdminHome';
+import ProfilePage from '../panel/ProfilePage';
+import CatalogAdmin from './CatalogAdmin';
+import VerificationAdmin from './VerificationAdmin';
+import AnnouncementsAdmin from './AnnouncementsAdmin';
 import {Notice} from './forms';
 import './account.css';
-import {permissionLabel, verificationLabel} from './labels';
+import {verificationLabel} from './labels';
 
 const roles = {client: 'Cliente', technician: 'Especialista técnico', admin: 'Administrador'};
 const routes = {client: '#cuenta/cliente', technician: '#cuenta/tecnico', admin: '#cuenta/administrador'};
@@ -80,10 +85,23 @@ export default function AccountApp() {
   if (!user) return <section className="session-page auth-page"><SessionForm connectionError={error} onRetry={() => setReload(reload + 1)} onLogin={(value, warning = '') => { setUser(value); setError(warning); }}/></section>;
   const role = user.role?.code;
   if (!roles[role]) return <section className="session-page"><Notice error="Tu cuenta no tiene un rol habilitado."/><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></section>;
-  return <section className="session-page" data-cy={'portal-' + role}>
-    <div className="session-heading"><div><span className="kicker">{roles[role]}</span><h1>Hola, <em>{user.name}</em></h1><p>Tu cuenta, tus datos y tu acceso en un solo lugar.</p></div><button type="button" className="button outline" data-cy="logout" disabled={busy} onClick={logout}>Cerrar sesión</button></div>
-    <Notice error={error}/>{role === 'technician' && <p className="notice">Estado de verificación: {verificationLabel(user.technician_profile?.verification_status)}. La disponibilidad se habilita después de la revisión.</p>}
-    <Sprint02Portal user={user}/><div className="session-grid"><ProfileForm key={user.id} user={user} onUpdate={setUser} onExpired={failure => { clearSession(); setBlocked(failure.status === 403); setError(failure.status === 403 ? failure.message : 'Tu sesión venció. Inicia sesión nuevamente.'); }}/>
-      <aside className="session-details"><h2>Tu acceso</h2><p>{roles[role]}</p>{user.permissions?.length ? <ul>{user.permissions.map(code => <li key={code}>{permissionLabel(code)}</li>)}</ul> : <p>Acceso a tu perfil personal.</p>}<a className="button glass" href="#catalogo">Explorar especialidades ↗</a></aside></div>
-  </section>;
+  const expire = failure => { clearSession(); setBlocked(failure.status === 403); setError(failure.status === 403 ? failure.message : 'Tu sesión venció. Inicia sesión nuevamente.'); };
+  const can = code => user.permissions?.includes(code);
+  const profile = {id: 'profile', label: 'Mi perfil', icon: '☺', render: () => <ProfilePage key={user.id} user={user} onUpdate={setUser} onExpired={expire}/>};
+  // Fase 1 del panel (D-73): el administrador tiene su menú por permisos; cliente y técnico conservan su contenido actual.
+  const sections = role === 'admin' ? [
+    can('dashboard.view') && {id: 'home', label: 'Inicio', icon: '⌂', render: () => <AdminHome/>},
+    can('catalog.manage') && {id: 'catalog', label: 'Catálogo', icon: '▦', render: () => <CatalogAdmin/>},
+    can('technicians.verify') && {id: 'verification', label: 'Verificación', icon: '✓', render: () => <VerificationAdmin/>},
+    can('announcements.manage') && {id: 'announcements', label: 'Comunicados', icon: '✉', render: () => <AnnouncementsAdmin/>},
+    profile,
+  ].filter(Boolean) : [
+    {id: 'home', label: 'Inicio', icon: '⌂', render: () => <>
+      {role === 'technician' && <p className="notice">Estado de verificación: {verificationLabel(user.technician_profile?.verification_status)}. La disponibilidad se habilita después de la revisión.</p>}
+      <Sprint02Portal user={user}/>
+    </>},
+    profile,
+  ];
+  return <PanelShell key={user.id} user={user} role={role} roleLabel={roles[role]} navLabel={role === 'admin' ? 'Administración' : 'Mi cuenta'}
+    sections={sections} onLogout={logout} onUserChange={setUser} busy={busy} notice={error}/>;
 }

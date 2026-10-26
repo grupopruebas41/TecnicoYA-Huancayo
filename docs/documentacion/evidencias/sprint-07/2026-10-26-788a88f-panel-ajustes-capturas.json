@@ -1,0 +1,114 @@
+{
+  "1366-dark": {
+    "theme": "dark",
+    "overflowX": false,
+    "kpis": [
+      "Solicitudes 10 Borradores 1 Enviadas 7 Pendientes de disponibilidad 1 Asignadas 1 En curso 0 Completadas 0 Cerradas 0 Sin calificar 0 Canceladas 0 Vencidas 0",
+      "Técnicos por verificar 3",
+      "Usuarios nuevos 16 en los últimos 7 días 7 clientes · 8 técnicos · 1 administrador 16 en los últimos 30 días 7 clientes · 8 técnicos · 1 administrador",
+      "Calificaciones No disponible hasta el Sprint 6: las calificaciones todavía no existen."
+    ]
+  },
+  "1366-dark-especialidades": {
+    "overflowX": false
+  },
+  "1366-dark-subcategorias": {
+    "overflowX": false,
+    "rows": 30
+  },
+  "1366-dark-distritos": {
+    "overflowX": false
+  },
+  "1366-dark-vista-previa": {
+    "color": "rgb(242, 235, 223)",
+    "background": "rgb(32, 59, 62)"
+  },
+  "1366-dark-avatar": {
+    "uploaded": true,
+    "topbarImage": 1
+  },
+  "1366-light": {
+    "theme": "light",
+    "overflowX": false,
+    "kpis": [
+      "Solicitudes 10 Borradores 1 Enviadas 7 Pendientes de disponibilidad 1 Asignadas 1 En curso 0 Completadas 0 Cerradas 0 Sin calificar 0 Canceladas 0 Vencidas 0",
+      "Técnicos por verificar 3",
+      "Usuarios nuevos 16 en los últimos 7 días 7 clientes · 8 técnicos · 1 administrador 16 en los últimos 30 días 7 clientes · 8 técnicos · 1 administrador",
+      "Calificaciones No disponible hasta el Sprint 6: las calificaciones todavía no existen."
+    ]
+  },
+  "1366-light-especialidades": {
+    "overflowX": false
+  },
+  "1366-light-subcategorias": {
+    "overflowX": false,
+    "rows": 30
+  },
+  "1366-light-distritos": {
+    "overflowX": false
+  },
+  "1366-light-vista-previa": {
+    "color": "rgb(19, 34, 42)",
+    "background": "rgb(234, 240, 238)"
+  },
+  "1366-light-avatar": {
+    "uploaded": true,
+    "topbarImage": 1
+  },
+  "390-dark": {
+    "theme": "dark",
+    "overflowX": false,
+    "kpis": [
+      "Solicitudes 10 Borradores 1 Enviadas 7 Pendientes de disponibilidad 1 Asignadas 1 En curso 0 Completadas 0 Cerradas 0 Sin calificar 0 Canceladas 0 Vencidas 0",
+      "Técnicos por verificar 3",
+      "Usuarios nuevos 16 en los últimos 7 días 7 clientes · 8 técnicos · 1 administrador 16 en los últimos 30 días 7 clientes · 8 técnicos · 1 administrador",
+      "Calificaciones No disponible hasta el Sprint 6: las calificaciones todavía no existen."
+    ]
+  },
+  "390-dark-especialidades": {
+    "overflowX": false
+  },
+  "390-dark-subcategorias": {
+    "overflowX": false,
+    "rows": 30
+  },
+  "390-dark-distritos": {
+    "overflowX": false
+  },
+  "390-dark-vista-previa": {
+    "color": "rgb(242, 235, 223)",
+    "background": "rgb(32, 59, 62)"
+  },
+  "390-dark-avatar": {
+    "uploaded": true,
+    "topbarImage": 1
+  },
+  "390-light": {
+    "theme": "light",
+    "overflowX": false,
+    "kpis": [
+      "Solicitudes 10 Borradores 1 Enviadas 7 Pendientes de disponibilidad 1 Asignadas 1 En curso 0 Completadas 0 Cerradas 0 Sin calificar 0 Canceladas 0 Vencidas 0",
+      "Técnicos por verificar 3",
+      "Usuarios nuevos 16 en los últimos 7 días 7 clientes · 8 técnicos · 1 administrador 16 en los últimos 30 días 7 clientes · 8 técnicos · 1 administrador",
+      "Calificaciones No disponible hasta el Sprint 6: las calificaciones todavía no existen."
+    ]
+  },
+  "390-light-especialidades": {
+    "overflowX": false
+  },
+  "390-light-subcategorias": {
+    "overflowX": false,
+    "rows": 30
+  },
+  "390-light-distritos": {
+    "overflowX": false
+  },
+  "390-light-vista-previa": {
+    "color": "rgb(19, 34, 42)",
+    "background": "rgb(234, 240, 238)"
+  },
+  "390-light-avatar": {
+    "uploaded": true,
+    "topbarImage": 1
+  }
+}

@@ -1,0 +1,22 @@
+
+   FAIL  Tests\Feature\Sprint07\ErrorReferenceTest
+  ⨯ it S07-TC-072 un error interno registra en el log la misma referencia que devuelve al usuario                0.34s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\ErrorReferenceTest > it S07-TC-072 un error interno registra en el log la misma re…   
+  Failed asserting that null is identical to '5019db3e-e3e6-4752-b6dd-6a33a9b744f8'.
+
+  at tests\Feature\Sprint07\ErrorReferenceTest.php:22
+     18▕ 
+     19▕     expect($reference)->toBeString()->not->toBe('')
+     20▕         ->and($logged)->toHaveCount(1)
+     21▕         ->and($logged[0]->level)->toBe('error')
+  ➜  22▕         ->and($logged[0]->context['request_id'] ?? null)->toBe($reference);
+     23▕ });
+     24▕
+
+  1   tests\Feature\Sprint07\ErrorReferenceTest.php:22
+
+
+  Tests:    1 failed (7 assertions)
+  Duration: 0.65s
+

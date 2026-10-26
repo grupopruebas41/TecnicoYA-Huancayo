@@ -1,5 +1,6 @@
 // Requiere el contrato de selectores y usuarios E2E descrito en la guía.
 import {fillRegistration} from '../../support/registration';
+import {openProfile} from '../../support/sprint01';
 const api = Cypress.expose('apiUrl');
 const site = Cypress.config('baseUrl');
 let fixturePassword;
@@ -20,12 +21,14 @@ function login(role) {
 describe('Sprint 1: UI real con sesión', () => {
   it('S01-TC-076 cambia de cliente a técnico sin conservar datos de la cuenta anterior', () => {
     login('client');
+    openProfile();
     cy.get('[data-cy=profile-name]').invoke('val').then(clientName => {
       cy.get('[data-cy=logout]').click();
       cy.get('[data-cy=login-submit]').should('be.visible');
       login('technician');
       cy.get('[data-cy=portal-client]').should('not.exist');
       cy.get('[data-cy=portal-technician]').should('not.contain', clientName);
+      openProfile();
       cy.request({url: `${api}/api/v1/me`, headers: {Origin: site}}).then(({body}) => {
         cy.get('[data-cy=profile-name]').should('have.value', body.data.name);
         cy.get('[data-cy=profile-phone]').should('have.value', body.data.phone || '');

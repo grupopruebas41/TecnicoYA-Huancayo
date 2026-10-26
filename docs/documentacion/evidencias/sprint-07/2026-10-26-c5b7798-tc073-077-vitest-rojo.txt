@@ -1,0 +1,16 @@
+ × src/styles/palette.test.js > S07-TC-077 tema claro con la paleta pedida y contraste AA; el tema oscuro y la vista previa no dependen de colores fijos 16ms
+ × src/features/administration/catalogList.test.jsx > S07-TC-073 subcategorías en lista compacta con miniatura o marcador, especialidad, tarifa y estado de color 224ms
+ × src/features/administration/catalogList.test.jsx > S07-TC-074 filtra las subcategorías por especialidad y busca por nombre sin distinguir tildes 43ms
+ × src/features/administration/catalogList.test.jsx > S07-TC-075 el interruptor de estado pide confirmación: cancelar no envía y confirmar guarda con versión 41ms
+ × src/features/administration/catalogList.test.jsx > S07-TC-076 especialidades conservan su foto y distritos usan la misma lista sin miniatura 20ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected { …(10) } to match object { '--ty-bg': '#F4F7F6', …(14) }
+TestingLibraryElementError: Unable to find an element with the text: Cómputo. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+TestingLibraryElementError: Unable to find a label with the text of: Filtrar por especialidad
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+TestingLibraryElementError: Unable to find an accessible element with the role "switch" and name "Estado de Redes"
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+TestingLibraryElementError: Unable to find an element with the text: 2 subcategorías. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+      Tests  5 failed (5)

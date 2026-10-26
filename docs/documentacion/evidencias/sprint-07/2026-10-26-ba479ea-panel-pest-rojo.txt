@@ -1,0 +1,335 @@
+
+   FAIL  Tests\Feature\Sprint07\AdminPanelBaseTest
+  ⨯ Inicio del administrador → it S07-TC-046 exige sesión y el permiso dashboard.view [D-74]                    80.54s  
+  ⨯ Inicio del administrador → it S07-TC-047 cuenta las solicitudes por estado con ceros explícitos para los es… 1.14s  
+  ⨯ Inicio del administrador → it S07-TC-048 cuenta solo los técnicos pendientes de verificación                 0.49s  
+  ⨯ Inicio del administrador → it S07-TC-049 cuenta los usuarios nuevos de 7 y 30 días por rol, sin cuentas ano… 0.66s  
+  ⨯ Inicio del administrador → it S07-TC-050 declara las calificaciones no disponibles hasta el Sprint 6 y no e… 0.41s  
+  ⨯ Mi perfil → it S07-TC-051 rechaza el cambio de contraseña sin la actual correcta o con una nueva inválida    0.18s  
+  ⨯ Mi perfil → it S07-TC-052 cambia la contraseña, conserva la sesión actual y cierra las demás [D-44]          1.09s  
+  ⨯ Mi perfil → it S07-TC-053 guarda la preferencia de tema en /me y rechaza valores fuera del dominio [D-76]    0.39s  
+  ⨯ Mi perfil → it S07-TC-054 nombres y apellidos actualizan el nombre para mostrar y no se mezclan con name [D… 0.57s  
+  ⨯ Mi perfil → it S07-TC-055 la foto de perfil es una imagen revisada propia con finalidad avatar [D-77]        0.71s  
+  ⨯ it S07-TC-056 AuthorizationSeeder concede dashboard.view y users.manage al administrador sin duplicar [D-74… 0.15s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Inicio del administrador` → it S07-TC-046 exige sesión y el…    
+  Expected response status code [401] but received 404.
+Failed asserting that 404 is identical to 401.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "06f51e62-ad45-4309-8c1c-6fd61ed970a8",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:36
+     32▕         $this->admin = Sprint02::admin();
+     33▕     });
+     34▕ 
+     35▕     it('S07-TC-046 exige sesión y el permiso dashboard.view [D-74]', function () {
+  ➜  36▕         $this->getJson('/api/v1/admin/dashboard')->assertUnauthorized();
+     37▕         $this->actingAs(s07UserWithRole('client'))->getJson('/api/v1/admin/dashboard')->assertForbidden();
+     38▕ 
+     39▕         $permission = DB::table('permissions')->where('code', 'dashboard.view')->value('id');
+     40▕         DB::table('role_permissions')->where('permission_id', $permission)->delete();
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Inicio del administrador` → it S07-TC-047 cuenta las solicit…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "ec4fbb06-2729-42a1-b14c-9ee4bf1ef587",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:49
+     45▕         foreach (['sent', 'sent', 'assigned', 'cancelled'] as $status) {
+     46▕             Sprint04::sentRequest(['status' => $status]);
+     47▕         }
+     48▕ 
+  ➜  49▕         $data = $this->actingAs($this->admin)->getJson('/api/v1/admin/dashboard')->assertOk()->json('data');
+     50▕ 
+     51▕         expect(array_keys($data['requests_by_status']))->toBe(S07_STATUSES)
+     52▕             ->and($data['requests_by_status']['sent'])->toBe(2)
+     53▕             ->and($data['requests_by_status']['assigned'])->toBe(1)
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Inicio del administrador` → it S07-TC-048 cuenta solo los té…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "f1a90539-9b53-4709-bf7b-7a8aec66b9e3",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:64
+     60▕         TechnicianProfileFactory::new()->count(2)->create();
+     61▕         TechnicianProfileFactory::new()->approved()->create();
+     62▕         TechnicianProfileFactory::new()->create(['verification_status' => 'rejected']);
+     63▕ 
+  ➜  64▕         $data = $this->actingAs($this->admin)->getJson('/api/v1/admin/dashboard')->assertOk()->json('data');
+     65▕ 
+     66▕         expect($data['technicians_pending_verification'])->toBe(2);
+     67▕     });
+     68▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Inicio del administrador` → it S07-TC-049 cuenta los usuario…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "9a4978e9-e96a-4fa2-97ee-dd683739ce67",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:85
+     81▕         s07UserWithRole('client');
+     82▕         $this->travelBack();
+     83▕         Sprint04::boot($this);
+     84▕ 
+  ➜  85▕         $new = $this->actingAs($this->admin)->getJson('/api/v1/admin/dashboard')->assertOk()->json('data.new_users');
+     86▕ 
+     87▕         // El administrador de beforeEach se creó «hoy» y cuenta en ambas ventanas.
+     88▕         expect($new['last_7_days'])->toBe(['client' => 1, 'technician' => 1, 'admin' => 1, 'total' => 3])
+     89▕             ->and($new['last_30_days'])->toBe(['client' => 2, 'technician' => 1, 'admin' => 1, 'total' => 4]);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Inicio del administrador` → it S07-TC-050 declara las califi…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "6c9c9935-8f86-42d0-b5ab-80e9b367e59d",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:95
+     91▕ 
+     92▕     it('S07-TC-050 declara las calificaciones no disponibles hasta el Sprint 6 y no expone datos personales', function () {
+     93▕         ClientProfileFactory::new()->create();
+     94▕ 
+  ➜  95▕         $response = $this->actingAs($this->admin)->getJson('/api/v1/admin/dashboard')->assertOk();
+     96▕ 
+     97▕         expect($response->json('data.ratings'))->toBe(['available' => false, 'average' => null, 'count' => 0, 'available_from' => 'Sprint 6'])
+     98▕             ->and($response->json('data.generated_at'))->toBe(now()->toISOString());
+     99▕         expect($response->getContent())->not->toContain('@example')->not->toContain('password');
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Mi perfil` → it S07-TC-051 rechaza el cambio de contraseña s…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "dd15ac8a-2676-4dce-a746-b6fde537d628",
+        "server_time": "2026-10-26T15:59:58.831266Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\AdminPanelBaseTest.php:122
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Mi perfil` → it S07-TC-052 cambia la contraseña, conserva la…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "f0aa68d5-0eed-4a96-999f-c1390bd827fa",
+        "server_time": "2026-10-26T15:59:59.899311Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:140
+    136▕         $cookie = config('session.cookie');
+    137▕ 
+    138▕         $this->withUnencryptedCookie($cookie, $current)->postJson('/api/v1/me/password', [
+    139▕             'current_password' => $this->password, 'password' => $new, 'password_confirmation' => $new,
+  ➜ 140▕         ])->assertOk()->assertJsonPath('data.message', 'Tu contraseña se actualizó. Cerramos tus otras sesiones.');
+    141▕ 
+    142▕         $fresh = $admin->fresh();
+    143▕         expect(Hash::check($new, $fresh->password))->toBeTrue()
+    144▕             ->and($fresh->auth_version)->toBe($admin->auth_version + 1)
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Mi perfil` → it S07-TC-053 guarda la preferencia de tema en…    
+  Failed asserting that null is identical to 'light'.
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:157
+    153▕ 
+    154▕     it('S07-TC-053 guarda la preferencia de tema en /me y rechaza valores fuera del dominio [D-76]', function () {
+    155▕         foreach (['light', 'dark', 'system'] as $index => $theme) {
+    156▕             $this->actingAs($this->user)->patchJson('/api/v1/me', ['theme_preference' => $theme, 'expected_version' => $index + 1])
+  ➜ 157▕                 ->assertOk()->assertJsonPath('data.theme_preference', $theme);
+    158▕         }
+    159▕         Sprint01::assertSpanishValidation($this->actingAs($this->user)->patchJson('/api/v1/me',
+    160▕             ['theme_preference' => 'azul', 'expected_version' => 4]), ['theme_preference']);
+    161▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Mi perfil` → it S07-TC-054 nombres y apellidos actualizan el…   
+  Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'Rosa María Huamán Soto'
++'Usuario de prueba'
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:168
+    164▕ 
+    165▕     it('S07-TC-054 nombres y apellidos actualizan el nombre para mostrar y no se mezclan con name [D-75]', function () {
+    166▕         $this->actingAs($this->user)->patchJson('/api/v1/me', [
+    167▕             'given_names' => 'Rosa María', 'family_names' => 'Huamán Soto', 'phone' => '+51 987 654 321', 'expected_version' => 1,
+  ➜ 168▕         ])->assertOk()->assertJsonPath('data.name', 'Rosa María Huamán Soto')->assertJsonPath('data.given_names', 'Rosa María');
+    169▕ 
+    170▕         Sprint01::assertSpanishValidation($this->actingAs($this->user)->patchJson('/api/v1/me',
+    171▕             ['given_names' => 'Rosa', 'expected_version' => 2]), ['family_names']);
+    172▕         Sprint01::assertSpanishValidation($this->actingAs($this->user)->patchJson('/api/v1/me',
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > `Mi perfil` → it S07-TC-055 la foto de perfil es una imagen r…   
+  Expected response status code [201] but received 422.
+Failed asserting that 422 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Revisa los campos indicados.",
+    "errors": {
+        "purpose": [
+            "El valor de finalidad no está permitido."
+        ]
+    },
+    "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Revisa los campos indicados.",
+        "fields": {
+            "purpose": [
+                "El valor de finalidad no está permitido."
+            ]
+        }
+    },
+    "meta": {
+        "request_id": "8508e9be-a065-4483-93a3-18c23a9f2d2b",
+        "server_time": "2026-10-26T16:00:01.575067Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:179
+    175▕ 
+    176▕     it('S07-TC-055 la foto de perfil es una imagen revisada propia con finalidad avatar [D-77]', function () {
+    177▕         $upload = $this->actingAs($this->user)->post('/api/v1/media', [
+    178▕             'purpose' => 'avatar', 'file' => Sprint02::upload('foto.webp'),
+  ➜ 179▕         ], ['Accept' => 'application/json'])->assertCreated();
+    180▕         $avatar = $upload->json('data.id');
+    181▕         expect($upload->json('data.purpose'))->toBe('avatar');
+    182▕ 
+    183▕         $this->actingAs($this->user)->patchJson('/api/v1/me', ['avatar_media_id' => $avatar, 'expected_version' => 1])
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminPanelBaseTest > it S07-TC-056 AuthorizationSeeder concede dashboard.view y us…   
+  Expecting null not to be null .
+
+  at tests\Feature\Sprint07\AdminPanelBaseTest.php:208
+    204▕ 
+    205▕     $admin = DB::table('roles')->where('code', 'admin')->value('id');
+    206▕     foreach (['dashboard.view', 'users.manage'] as $code) {
+    207▕         $permission = DB::table('permissions')->where('code', $code)->value('id');
+  ➜ 208▕         expect($permission)->not->toBeNull()
+    209▕             ->and(DB::table('role_permissions')->where('role_id', $admin)->where('permission_id', $permission)->count())->toBe(1);
+    210▕     }
+    211▕     Sprint01::actAsSpa($this);
+    212▕     $this->actingAs(Sprint02::admin())->getJson('/api/v1/me')->assertOk()
+
+  1   tests\Feature\Sprint07\AdminPanelBaseTest.php:208
+
+
+  Tests:    11 failed (18 assertions)
+  Duration: 87.52s
+

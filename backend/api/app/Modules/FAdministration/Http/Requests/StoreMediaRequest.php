@@ -30,7 +30,8 @@ final class StoreMediaRequest extends FormRequest
         $types = $this->isDocument() ? 'application/pdf,image/jpeg,image/png' : 'image/jpeg,image/png,image/webp';
 
         return [
-            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence'])],
+            // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
+            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar'])],
             'file' => ['required', 'file', 'max:'.self::MAX_KILOBYTES, 'mimetypes:'.$types],
         ];
     }

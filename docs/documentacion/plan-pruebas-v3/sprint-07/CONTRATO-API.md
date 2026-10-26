@@ -91,3 +91,64 @@ Migración `2026_10_26_000024_add_registration_details`:
 - **`GET /me`** (técnico): `technician_profile.declared_subcategories`: `[{id, name, specialty_id}]`.
 - **`GET /technicians/me/profile`**: `declared_subcategories`: `[{subcategory_id, subcategory_name, specialty_id, specialty_name, has_rate}]`. `has_rate` es verdadero si ya hay un servicio activo de ese rubro. «Servicios y tarifas» muestra los que no tienen tarifa con «Agrega tu tarifa para empezar a recibir solicitudes de este rubro.».
 - **Datos:** migración aditiva `2026_10_26_000025_create_technician_declared_subcategories` (`technician_id`, `subcategory_id`, `created_at`).
+
+## 7. Cambios de la versión 1.2 (2026-10-26): Fase 1 del panel del administrador
+
+Plan: `docs/documentacion/sprints/PLAN-PANEL-ADMIN.md`, con las decisiones D-73 a D-79. Casos: Pest S07-TC-046 a 056; Vitest S07-TC-057 a 071.
+
+### 7.1 `GET /admin/dashboard` **[nuevo]**
+
+| | |
+|---|---|
+| Permiso | `dashboard.view` (PERM-01). 401 sin sesión, 403 sin el permiso. |
+| Respuesta | **200** `{ "data": { requests_by_status, requests_total, technicians_pending_verification, new_users, ratings, generated_at } }` |
+| `requests_by_status` | Los 10 estados de `service_requests` en el orden del ciclo de vida (`registered`, `sent`, `pending_availability`, `assigned`, `in_progress`, `completed`, `closed`, `unrated`, `cancelled`, `expired`), con 0 si no hay. `requests_total` es la suma. |
+| `technicians_pending_verification` | Perfiles con `verification_status = pending`. |
+| `new_users` | `last_7_days` y `last_30_days`: `{client, technician, admin, total}` por `created_at`. Excluye cuentas anonimizadas. |
+| `ratings` | `{available: false, average: null, count: 0, available_from: "Sprint 6"}`. No se inventan cifras: las calificaciones llegan en el S6. |
+| Datos personales | Ninguno, solo conteos. |
+
+### 7.2 `POST /me/password` **[nuevo]**
+
+| | |
+|---|---|
+| Cuerpo | `{ "current_password", "password", "password_confirmation" }` |
+| Reglas | `current_password` obligatorio y correcto: si no, 422 «La contraseña actual no es correcta.». `password` con las reglas del registro (8 caracteres como mínimo y 72 bytes como máximo), confirmada y distinta de la actual: si no, 422 «La nueva contraseña debe ser distinta de la actual.». |
+| Respuesta | **200** `{ "data": { "message": "Tu contraseña se actualizó. Cerramos tus otras sesiones." } }` |
+| Efectos | Cambia la contraseña e incrementa `auth_version`. Borra las **demás** sesiones de la cuenta y **conserva la actual**: el hash que guarda `AuthenticateSession` se refresca. |
+| Límites | `throttle:spa-auth`. |
+| Auditoría | `auth.password_changed` solo para administradores (D-44), sin contraseñas. |
+
+### 7.3 `PATCH /me` **[cambia]**
+
+- **`given_names` y `family_names`** (D-75): van juntos (`required_with`), de 2 a 50 caracteres cada uno, y componen `name`. `name` sigue aceptándose en las cuentas anteriores, pero no junto con ellos (`prohibits`).
+- **`theme_preference`** (D-76): `light`, `dark`, `system` o `null`.
+- **`avatar_media_id`** (D-77): `id` de un medio **propio**, con finalidad `avatar`, `scan_status = clean` y no retirado. Si no, 422 «La foto debe ser una imagen tuya, subida como foto de perfil y revisada.». `null` quita la foto.
+- Se mantiene `expected_version`, que responde 409 si la versión está desactualizada.
+
+### 7.4 `GET /me` **[cambia]**
+
+Agrega `theme_preference` y `avatar_url`. `avatar_url` es `/api/v1/media/{id}` solo si el medio está limpio y no retirado; si no, es `null` y la SPA muestra las iniciales.
+
+### 7.5 `POST /media` **[cambia]**
+
+Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG o WebP de hasta 5 MB, y se le quita el EXIF.
+
+### 7.6 Endpoints existentes que la SPA usa ahora
+
+- `GET /notifications`, para la campana de la barra superior.
+- `POST /admin/technicians/{id}/suspension` y `/reactivation`, con `{reason, expected_version}`. Ahora tienen pantalla en Verificación.
+
+### 7.7 Datos y permisos
+
+- Migración aditiva `2026_10_26_000026_add_panel_preferences_to_users`:
+  - `users.theme_preference` (string 10, nullable, `CHECK chk_users_theme` en MySQL);
+  - `users.avatar_media_id`, FK a `media_files` con `nullOnDelete`;
+  - el `CHECK chk_media_purpose` se rehace para incluir `avatar`.
+- `AuthorizationSeeder` (idempotente) agrega `dashboard.view` «Ver el inicio del panel de administración» y `users.manage` «Administrar usuarios», ambos para el administrador. `users.manage` todavía no protege ningún endpoint: lo usará la Fase 2 (Usuarios).
+
+### 7.8 Ajustes de la revisión del PR #32 (D-82)
+
+- **Errores:** sin cambio en la respuesta. El `meta.request_id` que la SPA muestra como «Referencia» se escribe también en el contexto del log (`request_id`) de cada excepción reportada, para rastrear un error a partir de la captura del usuario (S07-TC-072).
+- **Catálogo:** la lista compacta usa los mismos endpoints de §7 del S2. La tarifa sale de `reference_fee` y la miniatura de `image_url`: `hero_media_id` en las especialidades y `carousel_media_id` en las subcategorías. El cambio de estado sigue siendo `PATCH` con `active` y `expected_version`.
+

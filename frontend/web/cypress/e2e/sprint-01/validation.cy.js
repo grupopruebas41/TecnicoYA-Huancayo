@@ -1,4 +1,5 @@
 import {fillRegistration} from '../../support/registration';
+import {openProfile} from '../../support/sprint01';
 const api = Cypress.expose('apiUrl');
 const site = Cypress.config('baseUrl');
 let password;
@@ -45,6 +46,7 @@ describe('Alertas y validación del incremento Sprint 1', () => {
 
   it('S01-TC-025 [TC-009, TC-010, TC-137]: valida el perfil, confirma el guardado y conserva una edición concurrente', () => {
     login();
+    openProfile();
     cy.get('[data-cy=profile-name]').clear().type('A');
     cy.get('[data-cy=profile-submit]').click();
     cy.get('#name-error').should('be.visible');

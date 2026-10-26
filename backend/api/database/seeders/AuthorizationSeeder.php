@@ -24,6 +24,9 @@ class AuthorizationSeeder extends Seeder
                 'catalog.manage' => 'Administrar el catálogo de servicios',
                 'announcements.manage' => 'Administrar los comunicados',
                 'technicians.verify' => 'Revisar y habilitar técnicos',
+                // D-74 (PERM-01): Inicio del panel y gestión de usuarios (Fase 2).
+                'dashboard.view' => 'Ver el inicio del panel de administración',
+                'users.manage' => 'Administrar usuarios',
             ];
             foreach ($permissions as $code => $description) {
                 $this->grantToAdmin($code, $description);

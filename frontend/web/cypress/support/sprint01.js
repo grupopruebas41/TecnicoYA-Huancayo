@@ -10,3 +10,8 @@ export function login(role = 'client') {
   cy.get('[data-cy=login-submit]').click();
   cy.get(`[data-cy=portal-${role}]`).should('be.visible');
 }
+// Fase 1 del panel (D-73): los datos de la cuenta viven en la sección «Mi perfil» del menú lateral.
+export function openProfile() {
+  cy.get('nav[aria-label="Administración"], nav[aria-label="Mi cuenta"]').contains('button', 'Mi perfil').click();
+  cy.get('[data-cy=profile-submit]').should('be.visible');
+}

@@ -118,7 +118,7 @@ it('S01-TC-063 devuelve en GET /me del administrador los permisos del rol y sus 
     Sanctum::actingAs($admin);
 
     $this->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.role.code', 'admin')
-        ->assertJsonPath('data.permissions', ['announcements.manage', 'catalog.manage', 'reports.read', 'technicians.verify']);
+        ->assertJsonPath('data.permissions', ['announcements.manage', 'catalog.manage', 'dashboard.view', 'reports.read', 'technicians.verify', 'users.manage']);
 });
 
 it('S01-TC-071 sirve el mismo catálogo público a anónimo, cliente, técnico, administrador y cuenta suspendida [TC-012]', function () {

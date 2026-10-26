@@ -6,6 +6,7 @@ use App\Http\Middleware\RejectSuspendedTechnician;
 use App\Http\Middleware\RequirePermission;
 use App\Http\Middleware\RequireRole;
 use App\Shared\Http\ApiExceptionRenderer;
+use App\Shared\Http\ApiResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,5 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(fn (Request $r, Throwable $e) => true);
+        // La «Referencia» que ve el usuario (meta.request_id) queda también en el log para rastrear el error.
+        $exceptions->context(fn () => ['request_id' => ApiResponse::meta()['request_id']]);
         $exceptions->render(fn (Throwable $error, Request $request) => (new ApiExceptionRenderer)($error, $request));
     })->create();

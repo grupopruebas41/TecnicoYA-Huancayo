@@ -59,6 +59,7 @@ return [
         'specialty_ids' => 'especialidades', 'specialty_ids.*' => 'especialidad',
         'whatsapp' => 'WhatsApp', 'token' => 'enlace de recuperación',
         'subcategory_ids' => 'rubros', 'subcategory_ids.*' => 'rubro',
+        'current_password' => 'contraseña actual', 'theme_preference' => 'tema', 'avatar_media_id' => 'foto de perfil',
         // Sprint 2: catálogo, comunicados, revisión técnica, portafolio, disponibilidad y servicios.
         'specialty_id' => 'especialidad', 'image_id' => 'imagen', 'reference_fee' => 'tarifa referencial',
         'active' => 'estado activo', 'decision' => 'decisión', 'reason' => 'motivo',
