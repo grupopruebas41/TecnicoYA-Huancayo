@@ -424,6 +424,35 @@
   border-color: var(--ty-accent);
   color: var(--ty-on-accent);
 }
+/* Botones primarios de los módulos S2 en el tema claro: acento verde azulado. El oscuro no cambia. */
+[data-theme="light"] .panel-shell .s02-panel button[type="submit"],
+[data-theme="light"] .panel-shell .s02-panel .catalog-create,
+[data-theme="light"] .panel-shell .s02-modal dialog button:last-of-type {
+  background: var(--ty-accent);
+  border-color: var(--ty-accent);
+  color: var(--ty-on-accent);
+}
+/* Carrusel de comunicados S2 (cliente y técnico) en el tema claro: tarjeta blanca en vez de beige. Lo reemplaza
+   el carrusel nuevo de comunicados (bloque B). */
+[data-theme="light"] .panel-shell .s02-announcements .subcategory-card {
+  background: var(--ty-surface);
+  color: var(--ty-text);
+  border-color: var(--ty-border);
+  box-shadow: var(--ty-card-shadow);
+}
+[data-theme="light"] .panel-shell .s02-announcements .subcategory-caption p {
+  color: var(--ty-text);
+}
+[data-theme="light"] .panel-shell .deck-total {
+  color: var(--ty-muted);
+}
+/* Dentro del panel, los módulos S2 no repiten el relleno superior: ya lo da .panel-content. */
+.panel-content > .s02-panel {
+  padding-top: 0;
+}
+.panel-content > .s02-panel > h2 {
+  margin-top: 0;
+}
 /* El botón de pausa del carrusel S2 no lleva .deck-pause: sin esto queda en 46 px y su texto desborda. */
 .panel-shell .deck-controls > button:last-child {
   width: auto;

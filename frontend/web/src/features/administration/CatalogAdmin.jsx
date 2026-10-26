@@ -190,10 +190,12 @@ function StatusSwitch({ kind, row, reload }) {
 }
 function CatalogRow({ kind, row, onEdit, reload }) {
   const detail = rowDetail(kind, row);
+  // Si la imagen no carga (archivo ausente o retirado), se muestra el marcador con la inicial.
+  const [broken, setBroken] = useState(false);
   return (
     <article className={"catalog-row" + (kind === "districts" ? "" : " has-thumb")}>
-      {kind !== "districts" && (row.image_url
-        ? <img className="catalog-thumb" src={row.image_url} alt="" />
+      {kind !== "districts" && (row.image_url && !broken
+        ? <img className="catalog-thumb" src={row.image_url} alt="" onError={() => setBroken(true)} />
         : <span className="catalog-thumb is-empty" aria-hidden="true">{Array.from(row.name)[0]}</span>)}
       <div className="catalog-main">
         <h3>{row.name}</h3>

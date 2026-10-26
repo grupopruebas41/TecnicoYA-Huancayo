@@ -6,7 +6,7 @@
   gap: 12px 16px;
   margin: 20px 0 8px;
 }
-.catalog-toolbar label {
+.s02-panel .catalog-toolbar label {
   display: grid;
   gap: 6px;
   margin: 0;
@@ -19,6 +19,7 @@
 .s02-panel .catalog-toolbar .catalog-create {
   margin: 0 0 0 auto;
   min-height: 46px;
+  padding-block: 0;
 }
 .catalog-count {
   margin: 8px 0;
@@ -62,6 +63,8 @@
   border-radius: 8px;
   object-fit: cover;
   background: var(--ty-raised);
+  border: 1px solid var(--ty-border);
+  box-sizing: border-box;
 }
 .catalog-thumb.is-empty {
   display: grid;
@@ -213,12 +216,15 @@
     clip-path: inset(50%);
     white-space: nowrap;
   }
-  .catalog-toolbar label {
+  .s02-panel .catalog-toolbar label {
     min-width: 0;
     flex: 1 1 100%;
   }
   .s02-panel .catalog-toolbar .catalog-create {
     margin: 0;
+  }
+  .panel-shell .s02-panel nav button {
+    padding: 10px 14px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
