@@ -165,13 +165,13 @@ function usePausedCarousel(root, reduced, paused) {
   return !reduced && !paused && visible && !hidden;
 }
 
-function ProductImage({ src, alt, className = "", width = "720", height = "480" }) {
+function ProductImage({ src, alt, className = "", width = "720", height = "480", loading = "lazy" }) {
   return (
     <img
       className={className}
       src={src}
       alt={alt}
-      loading="lazy"
+      loading={loading}
       width={width}
       height={height}
       onError={(event) => {
@@ -275,7 +275,7 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
     const distance = Math.abs(offset);
     return {
       "--card-offset": offset,
-      "--card-x": `${offset * 52}%`,
+      "--card-x": `${offset * 42}%`,
       "--card-z": distance === 0 ? "70px" : distance === 1 ? "-45px" : "-150px",
       "--card-rotate": `${offset === 0 ? 0 : offset < 0 ? 25 + (distance - 1) * 15 : -25 - (distance - 1) * 15}deg`,
       "--card-scale": distance === 0 ? 1 : distance === 1 ? 0.88 : 0.76,
@@ -320,7 +320,11 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
         if (event.key === "ArrowLeft") { event.preventDefault(); move(-1); }
       }}
     >
-      <div className={`ty-product-stage subcategory-deck${reduced ? " is-reduced" : ""}${shufflePhase ? ` is-shuffling-${shufflePhase}` : ""}`} aria-live="polite">
+      <header className="ty-product-heading">
+        <p className="ty-product-kicker"><span aria-hidden="true" /><span>SUBESPECIALIDADES</span><span aria-hidden="true" /></p>
+        {visibleItems[index] && <h3 className="ty-product-title" key={visibleItems[index].id || visibleItems[index].subcategory_id} aria-live="polite">{visibleItems[index].name}</h3>}
+      </header>
+      <div className={`ty-product-stage subcategory-deck${reduced ? " is-reduced" : ""}${shufflePhase ? ` is-shuffling-${shufflePhase}` : ""}`} style={{ height: mobile ? "360px" : "380px" }} aria-live="polite">
         {visibleCards.map(({ itemIndex, offset }) => {
           const item = visibleItems[itemIndex];
           const distance = Math.abs(offset);
@@ -344,7 +348,7 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
               }}
               onClick={() => { if (!current) select(itemIndex); }}
             >
-              <ProductImage src={itemImage(item)} alt={`${item.name} — ${specialty?.name}`} width="720" height="960" />
+              <ProductImage src={itemImage(item)} alt={`${item.name} — ${specialty?.name}`} width="720" height="960" loading={distance <= 1 ? "eager" : "lazy"} />
               <span className="ty-product-glare" aria-hidden="true" />
               <span className="ty-product-number">{String(itemIndex + 1).padStart(2, "0")} / {String(size).padStart(2, "0")}</span>
               <div className="ty-product-caption subcategory-caption">
@@ -356,7 +360,6 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
         })}
       </div>
       <div className="ty-product-progress" aria-hidden="true"><span key={index} className={canRotate ? "is-running" : ""} /></div>
-      <div className="ty-product-kicker">SUBESPECIALIDADES</div>
       <div className="ty-product-controls">
         <button type="button" aria-label="Subcategoría anterior" disabled={size < 2} onClick={() => move(-1)}>‹</button>
         <div className="ty-product-thumbnails" role="group" aria-label="Elegir subespecialidad">

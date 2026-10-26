@@ -358,7 +358,8 @@ test("S02-TC-089 regresión visual: escenario con altura positiva y cartas visib
  const center=stage.querySelector(".ty-product-card.is-center");
  expect(Number.parseFloat(stage.style.height)).toBeGreaterThan(0);
  expect(center.querySelector("img")).toHaveAttribute("loading","eager");
- expect([...stage.querySelectorAll(".ty-product-card.is-side img")].every((image)=>image.loading==="eager")).toBe(true);
+ expect([...stage.querySelectorAll(".ty-product-card.is-side img")].every((image)=>image.getAttribute("loading")==="eager")).toBe(true);
+ expect(center.querySelector("img").getAttribute("src")).toBe(container.querySelector(".ty-product-thumbnails [aria-current=true] img").getAttribute("src"));
  expect(center).toHaveClass("is-center");
 });
 
