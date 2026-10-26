@@ -2,6 +2,30 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-26 · Landing · pulido visual de landing y Nosotros (frontend, D-72)
+
+- **Rama:** `feature/delgado/landing/pulido-visual` desde `main` `441644b`.
+- **Commits:**
+  - `2076753`: pruebas en rojo;
+  - `febb525`: implementación;
+  - `e2b7850`: ajuste de ancho de la vitrina;
+  - un commit final de documentación.
+- **Cambios:** puntos A1 a A4, B1 a B6 y C1 a C9 de la revisión visual. El detalle está en `docs/avances/delgado/landing/pulido-visual/avance.md`.
+  - **Causa raíz de A1:** los tokens `--ty-md/lg/xl/2xl` no estaban definidos.
+  - **Encuadre:** alineación superior bajo la cabecera, o bajo cabecera + barra del submenú en Nosotros. Cómo funciona se centra en un grupo con `data-frame="center"`.
+  - **Contacto:** datos centralizados en `frontend/web/src/landing/contact.js`, en `null`, y mostrados como «Por confirmar».
+- **Pruebas:**
+  - Vitest 228/228 en 28 archivos (antes 218), lint aprobado y build aprobado;
+  - Cypress no ejecutado;
+  - en una corrida intermedia, 3 pruebas de otros módulos se pasaron del límite de 5 s por carga del equipo; al repetir pasaron.
+- **Evidencias:** `docs/documentacion/evidencias/landing/2026-10-26-*`, con 40 capturas anonimizadas, el JSON de medidas, los scripts de Playwright y la nota de verificación.
+- **Entorno:**
+  - Vite en el puerto 5180, porque el 5173 estaba ocupado por otro proceso que no se tocó;
+  - Playwright tomado de `~/.cache/codex-runtimes/.../node_modules/playwright`, con el Chromium 1248 ya instalado;
+  - no se instaló nada.
+- **Pendiente:** revisión humana; datos reales de contacto; marcador ✦ del mapa MVV junto a «PUNTO 1 DE 3» (diseño previo que se conservó).
+- **Bloqueos:** ninguno.
+
 ## 2026-10-17 · Sprint 4 · paso 5: cobertura, mutación, audit, avance y PR
 
 - **Rama:** `feature/mayhuasca/b-matching/s04` publicada. **PR #21:** https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/21

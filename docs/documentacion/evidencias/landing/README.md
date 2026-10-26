@@ -38,3 +38,18 @@ Rama `feature/delgado/landing/vitrina-carrusel`. Commit de pruebas en rojo `b747
 - Resultado verde, captura real de comandos: `2026-10-22-b06775e-vitest.txt` (214/214, 27 archivos), `2026-10-22-b06775e-lint.txt` y `2026-10-22-b06775e-build.txt` (Vite build aprobado).
 - No se instaló nada, no se tocó backend y Cypress no se ejecutó.
 - Revisor: [PENDIENTE].
+
+## Pulido visual de landing y Nosotros · 2026-10-26
+
+Rama `feature/delgado/landing/pulido-visual`. Pruebas en rojo en `2076753`, implementación en `febb525` y ajuste de la vitrina en `e2b7850`. Lo hizo Claude Code, que asume el frontend según D-72.
+
+- **Rojo** (`2026-10-26-2076753-pulido-vitest-rojo.txt`): `Polish.test.jsx` no carga porque `landing/contact.js` aún no existe, y las 2 pruebas de `calculateScrollTarget` fallan por el criterio nuevo de alineación superior.
+- **Verde:**
+  - `2026-10-26-e2b7850-vitest.txt`: 228/228 en 28 archivos;
+  - `2026-10-26-e2b7850-lint.txt`: lint aprobado;
+  - `2026-10-26-e2b7850-build.txt`: build aprobado.
+
+  En una corrida intermedia, 3 pruebas de otros módulos fallaron por el límite de 5 s con el equipo cargado (Vite y Chromium abiertos). Al repetir pasaron.
+- **Capturas, medidas y scripts:** `2026-10-26-e2b7850-*`. El detalle está en `2026-10-26-e2b7850-pulido-verificacion.md`.
+- No se instaló nada, no se tocó el backend y Cypress no se ejecutó.
+- Revisor: [PENDIENTE].
