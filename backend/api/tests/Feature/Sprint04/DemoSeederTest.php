@@ -5,6 +5,7 @@
 // (D-83). Es idempotente y no pisa la foto que el administrador ya eligió.
 use App\Models\User;
 use App\Modules\FAdministration\Domain\AnnouncementImages;
+use Database\Factories\UserFactory;
 use Database\Seeders\CatalogSeeder;
 use Database\Seeders\DemoSeeder;
 use Database\Seeders\SeedingRefused;
@@ -58,7 +59,8 @@ it('S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, foto
 
     // El administrador ya eligió la foto de una subcategoría: el seeder no la pisa.
     $this->seed(CatalogSeeder::class);
-    $chosen = DB::table('media_files')->insertGetId(['owner_id' => null, 'disk' => 'public', 'storage_key' => 'media/elegida.png',
+    $owner = UserFactory::new()->create(['email' => 'admin-previo@example.test'])->id;
+    $chosen = DB::table('media_files')->insertGetId(['owner_id' => $owner, 'disk' => 'public', 'storage_key' => 'media/elegida.png',
         'original_name' => 'elegida.png', 'mime_type' => 'image/png', 'byte_size' => 1, 'sha256' => str_repeat('a', 64),
         'visibility' => 'public', 'scan_status' => 'clean', 'purpose' => 'catalog']);
     DB::table('subcategories')->where('code', 'computo-redes')->update(['carousel_media_id' => $chosen]);
@@ -73,7 +75,7 @@ it('S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, foto
     expect($accounts->pluck('email')->every(fn ($email) => str_ends_with($email, '@example.test')))->toBeTrue()
         ->and($accounts->pluck('email')->all())->toContain('demo-admin@example.test', 'demo-cliente@example.test', 'demo-mype@example.test',
             'demo-tecnico-computo@example.test', 'demo-tecnico-pendiente@example.test')
-        ->and($accounts->every(fn (User $user) => Hash::check($password, $user->password)))->toBeTrue()
+        ->and($accounts->where('email', '!=', 'admin-previo@example.test')->every(fn (User $user) => Hash::check($password, $user->password)))->toBeTrue()
         ->and(DB::table('users')->where('password', $password)->exists())->toBeFalse()
         ->and(DB::table('technician_profiles')->where('verification_status', 'approved')->whereNotNull('base_district_id')->count())->toBe(3)
         ->and(DB::table('technician_profiles')->where('verification_status', 'pending')->count())->toBe(1);
