@@ -1,0 +1,39 @@
+{
+  "crop": "Recorte de 2400 × 800 px; se guarda en 1920 × 640 px.",
+  "1366-light-menu": {
+    "overflowX": false
+  },
+  "1366-light-editor-vigente": {
+    "overflowX": false
+  },
+  "1366-light-dialogo": {
+    "overflowX": false
+  },
+  "1366-light-editor-retirado": {
+    "overflowX": false
+  },
+  "1366-dark-menu": {
+    "overflowX": false
+  },
+  "1366-dark-editor-vigente": {
+    "overflowX": false
+  },
+  "1366-dark-dialogo": {
+    "overflowX": false
+  },
+  "1366-dark-editor-retirado": {
+    "overflowX": false
+  },
+  "390-light-menu": {
+    "overflowX": false
+  },
+  "390-light-editor-vigente": {
+    "overflowX": false
+  },
+  "390-light-dialogo": {
+    "overflowX": false
+  },
+  "390-light-editor-retirado": {
+    "overflowX": false
+  }
+}

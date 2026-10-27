@@ -2,6 +2,52 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-27 · Ajuste del PR #33 · editar, restaurar y eliminar comunicados (D-84)
+
+- **Rama:** `feature/pimentel/admin/comunicados-carrusel`, la misma del PR #33.
+- **Commits:** `aa3b168`, `6a57f7f`, `5e8b6a7`, `c9302aa`, `610b83d`, `3eea65b` y `968fe50`, más los de documentación.
+- **API (contrato S07 §8.9):**
+  - `PATCH` admite publicados;
+  - nuevos `POST /admin/announcements/{id}/restoration` y `DELETE /admin/announcements/{id}/permanent` (con `confirmation=ELIMINAR`).
+- **Sin migración nueva.**
+- **D-84** reemplaza a D-51.
+- **Pruebas en `968fe50`:**
+  - Pest 323/323 y Vitest 296/296; lint y build aprobados; audits limpios;
+  - IDs nuevos: Pest S07-TC-098 a 104 y Vitest S07-TC-105 a 108; el catálogo S07 queda con 108 IDs;
+  - 12 capturas D-84.
+- **Pruebas ajustadas:** S02-TC-026, S07-TC-094, S02-TC-079 (complemento) y la Cypress S02-TC-066, esta sin ejecutar.
+- **Pendiente:** los dos valores de D-83 y la regresión Cypress S4.6.
+- **Pedidos a Codex:** ninguno.
+
+## 2026-10-27 · Bloque B · comunicados en carrusel (D-83)
+
+- **Rama:** `feature/pimentel/admin/comunicados-carrusel`, creada desde `main` tras el PR #32.
+- **Commits:**
+  - `0d54c67`, `da854c4` y `685c060`: Pest en rojo y restauración del helper `Sprint07.php`;
+  - `62a90bf`: API;
+  - `4f03b4a`: Vitest en rojo;
+  - `7ec18ca`: SPA;
+  - `58ca594` y `3d549eb`: ajustes vistos en las capturas;
+  - después, documentación y evidencias.
+- **API:**
+  - migración `000027`;
+  - finalidad de media `announcement` (JPG o WebP de hasta 600 KB);
+  - origen `image` y `genially`;
+  - `PUT /admin/announcements/order` y `DELETE /admin/announcements/{id}/publication`;
+  - contrato S07, §8.
+- **Pruebas en `3d549eb`:**
+  - Pest 316/316 y Vitest 292/292;
+  - lint y build aprobados; los dos audits, limpios;
+  - S07-TC-078 a 097, con 97 IDs en el catálogo S07;
+  - 35 capturas con la API real del slot A.
+- **Cypress (sin ejecutar):** S02-TC-065 a 068 están adaptadas; se corren en la regresión S4.6.
+- **Pendiente:**
+  - confirmar los dos valores de D-83: el mínimo de la imagen móvil y la tolerancia de proporción;
+  - en desarrollo, correr `php artisan migrate`;
+  - después, el bloque C en `feature/pimentel/admin/usuarios`.
+- **Nota del entorno:** con poca memoria libre, Chromium falló con `ERR_BLOB_OUT_OF_MEMORY` y `goto` con `networkidle` se colgó. El script de capturas espera `load` y las imágenes.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-26 · Ajustes de la revisión del PR #32 (bloque A, D-82)
 
 - **Rama:** `feature/pimentel/admin/panel-base` (la misma del PR #32).

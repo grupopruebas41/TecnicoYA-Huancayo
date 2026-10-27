@@ -88,11 +88,12 @@ it('S02-TC-026 CRUD-02 edita un borrador con su versión, rechaza la versión vi
         ->assertOk()->assertJsonPath('data.title', 'Mantenimiento reprogramado')->assertJsonPath('data.version', 2);
     $this->patchJson("/api/v1/admin/announcements/$draft", ['title' => 'Título perdido', 'expected_version' => 1])
         ->assertConflict()->assertJsonPath('error.code', 'STALE_VERSION');
-    $this->patchJson("/api/v1/admin/announcements/{$published->id}", ['title' => 'Cambio silencioso', 'expected_version' => 1])
-        ->assertConflict()->assertJsonPath('error.code', 'ANNOUNCEMENT_NOT_EDITABLE');
+    // D-84 reemplaza a D-51: un publicado también se edita, con su versión y auditoría propia (S07-TC-098).
+    $this->patchJson("/api/v1/admin/announcements/{$published->id}", ['title' => 'Cambio auditado', 'expected_version' => 1])
+        ->assertOk()->assertJsonPath('data.status', 'published')->assertJsonPath('data.version', 2);
 
     $this->assertDatabaseHas('announcements', ['id' => $draft, 'title' => 'Mantenimiento reprogramado', 'version' => 2]);
-    $this->assertDatabaseHas('announcements', ['id' => $published->id, 'title' => $published->title, 'version' => 1]);
+    $this->assertDatabaseHas('announcements', ['id' => $published->id, 'title' => 'Cambio auditado', 'version' => 2]);
 
     // Refuerzo S2.6 (mutación): vigencia, audiencias, autor y auditoría de la edición; un fin que no es posterior al inicio guardado.
     Carbon::setTestNow('2026-10-12 12:30:00');

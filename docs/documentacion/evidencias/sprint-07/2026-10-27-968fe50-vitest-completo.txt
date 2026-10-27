@@ -1,0 +1,96 @@
+
+ RUN  v5.0.3 <repo>/frontend/web
+
+ ✓ src/features/announcements/announcementLifecycle.test.jsx (4 tests) 2865ms
+   ✓ S07-TC-105 el menú ofrece Editar en todo estado y Eliminar solo en borrador, vencido y retirado; la tarjeta abre el editor 1681ms
+   ✓ S07-TC-106 eliminar muestra miniatura y título, exige escribir ELIMINAR y borra con su versión 481ms
+   ✓ S07-TC-107 al editar un vigente avisa que los cambios se ven de inmediato y guarda con su versión 464ms
+ ✓ src/features/panel/panel.test.jsx (15 tests) 3391ms
+   ✓ S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa 902ms
+   ✓ S07-TC-058 la barra lateral se contrae, conserva nombres accesibles y recuerda el estado 331ms
+   ✓ S07-TC-061 el avatar muestra iniciales o la foto y abre el menú Mi perfil / Tema / Cerrar sesión 363ms
+ ✓ src/Sprint02Landing.test.jsx (25 tests) 2432ms
+   ✓ S02-TC-084 carrusel reducido y teclado 389ms
+   ✓ S02-TC-089 diez secciones de landing en orden 438ms
+ ✓ src/features/administration/sprint02Panels.test.jsx (8 tests) 3438ms
+   ✓ S02-TC-076 complemento: catálogo guarda y cambia estado con versión 1010ms
+   ✓ S02-TC-078 complemento: comunicado borrador publicación duplicación y retiro 1097ms
+   ✓ S02-TC-081 complemento: técnico guarda bio tarifa disponibilidad y pausa 356ms
+   ✓ S02-TC-079 complemento: portafolio cancela y retira trabajo 348ms
+   ✓ S02-TC-079 complemento: el aviso de retiro persiste al desmontar el botón 323ms
+ ✓ src/LandingRedesign.test.jsx (17 tests) 3086ms
+   ✓ S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape 651ms
+   ✓ S02-TC-089 rediseño: Nosotros completo y testimonios rotulados 354ms
+   ✓ S02-TC-090 navegar a Nosotros usa la ruta propia y empieza arriba 465ms
+ ✓ src/features/announcements/announcements.test.jsx (8 tests) 4366ms
+   ✓ S07-TC-090 el editor tiene secciones plegables, origen en tarjetas, audiencia y tipo seleccionables y atajos de vigencia 1493ms
+   ✓ S07-TC-091 el selector de imagen muestra las medidas, rechaza las menores al mínimo y recorta a 3:1 con encuadre ajustable 455ms
+   ✓ S07-TC-092 guarda el borrador o publica con doble validación y conserva el formulario ante un error 500 927ms
+   ✓ S07-TC-094 el listado es una cuadrícula con miniatura, etiquetas, estado de color, fechas, menú de acciones y filtros 660ms
+ ✓ src/landing/AboutExperience.test.jsx (13 tests) 1807ms
+   ✓ S02-TC-089 Nosotros: navegación y portada presentan la propuesta renovada 380ms
+ ✓ src/features/administration/AuthLayout.test.jsx (7 tests) 912ms
+   ✓ S01-TC-084 complemento: el error de conexión y Reintentar quedan dentro de la tarjeta, sobre el formulario 335ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 1085ms
+   ✓ S01-TC-016 [TC-005] complemento unitario: portal client desde identidad del servidor 473ms
+ ✓ src/features/administration/catalogList.test.jsx (4 tests) 1089ms
+   ✓ S07-TC-073 subcategorías en lista compacta con miniatura o marcador, especialidad, tarifa y estado de color 493ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 1475ms
+   ✓ S01-TC-083 429 en español sin éxito y botón habilitado nuevamente 481ms
+   ✓ S01-TC-083 contrato D-43: registro rechazado por sesión activa conserva el formulario y no afirma creación 449ms
+   ✓ S01-TC-072 [TC-003] complemento unitario: registro técnico sin client_type, creación confirmada sin iniciar sesión 543ms
+ ✓ src/features/requests/requestFlows.test.jsx (13 tests) 1649ms
+   ✓ S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio 876ms
+ ✓ src/features/administration/RegisterWizard.test.jsx (22 tests) 7568ms
+   ✓ S07-TC-017 el paso 1 pregunta quién eres con dos tarjetas y un indicador 1 de 2 737ms
+   ✓ S07-TC-018 el cliente ve distrito del catálogo, tipo y razón social solo si es MYPE 428ms
+   ✓ S07-TC-022 volver al paso 1 no pierde lo escrito 330ms
+   ✓ S07-TC-023 la casilla de Términos es obligatoria y abre el texto vigente 326ms
+   ✓ S07-TC-025 el técnico envía distritos con el base, especialidades y años, y queda pendiente de verificación 665ms
+   ✓ S07-TC-026 sin especialidad el técnico no envía y los errores del servidor se muestran en su campo 677ms
+   ✓ S07-TC-036 marcar una especialidad despliega sus rubros reales y enfoca el primero 411ms
+   ✓ S07-TC-038 «Seleccionar todas» y «Quitar todas» actualizan el contador 321ms
+   ✓ S07-TC-039 una especialidad sin rubros muestra su error y no deja enviar 596ms
+   ✓ S07-TC-040 desmarcar una especialidad con rubros pide confirmación y luego los limpia 457ms
+   ✓ S07-TC-041 el resumen cuenta rubros y especialidades y el envío incluye los rubros 576ms
+   ✓ S07-TC-042 volver con «Atrás» conserva especialidades y rubros elegidos 338ms
+ ✓ src/features/offers/sprint04.test.jsx (14 tests) 540ms
+ ✓ src/features/administration/CatalogEdit.test.jsx (4 tests) 1154ms
+   ✓ S02-TC-076 complemento DEF-47: PATCH conserva foto y versión sin enviar specialty_id 591ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 439ms
+ ✓ src/landing/Polish.test.jsx (13 tests) 828ms
+ ✓ src/features/requests/sprint03.test.jsx (13 tests) 762ms
+   ✓ S03-TC-070 cambiar de rubro limpia subcategoría y catálogo 474ms
+ ✓ src/features/offers/sprint04Flows.test.jsx (11 tests) 925ms
+ ✓ src/landing/Intro.test.jsx (4 tests) 720ms
+   ✓ S02-TC-089 intro muestra solo video y después transición y contenido 374ms
+ ✓ src/landing/navigation.test.jsx (6 tests) 281ms
+ ✓ src/features/administration/ServicesEditor.test.jsx (1 test) 230ms
+ ✓ src/VideoExperience.test.jsx (4 tests) 203ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 364ms
+   ✓ S01-TC-085 [TC-012] error, reintento real y subcategorías desde API 309ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 211ms
+ ✓ src/features/administration/sprint02.test.jsx (12 tests) 397ms
+ ✓ src/features/administration/accessibility.test.jsx (6 tests) 459ms
+ ✓ src/features/announcements/announcementRules.test.js (2 tests) 13ms
+ ✓ src/features/administration/http.test.js (4 tests) 41ms
+ ✓ src/features/realtime/Realtime.test.jsx (1 test) 73ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 85ms
+ ✓ src/features/administration/sprint025.test.js (2 tests) 12ms
+ ✓ src/landing/HeroBackground.test.jsx (6 tests) 148ms
+ ✓ src/features/offers/channelIdentity.test.jsx (2 tests) 215ms
+ ✓ src/features/administration/labels.test.js (9 tests) 7ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 11ms
+ ✓ src/features/requests/defaultDistrict.test.js (1 test) 4ms
+ ✓ src/styles/palette.test.js (1 test) 10ms
+
+ Test Files  38 passed (38)
+      Tests  296 passed (296)
+   Start at  03:04:48
+   Duration  19.77s (environment 39%, tests 36%, import 10%, setup 8%, transform 7%)
+
+Environment  jsdom was created 38 times · 47.02s total, 39% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml

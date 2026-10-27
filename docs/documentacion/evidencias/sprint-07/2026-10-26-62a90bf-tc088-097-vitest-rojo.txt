@@ -1,0 +1,22 @@
+ × src/features/announcements/announcementRules.test.js > S07-TC-088 analiza la imagen: rechaza las menores al mínimo, avisa si no es 3:1 y calcula el recorte ajustable 14ms
+ × src/features/announcements/announcementRules.test.js > S07-TC-089 valida Genially como el servidor, los atajos de vigencia, los campos obligatorios y arma el payload 2ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-090 el editor tiene secciones plegables, origen en tarjetas, audiencia y tipo seleccionables y atajos de vigencia 25ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-091 el selector de imagen muestra las medidas, rechaza las menores al mínimo y recorta a 3:1 con encuadre ajustable 8ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-092 guarda el borrador o publica con doble validación y conserva el formulario ante un error 500 43ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-093 la vista previa en vivo muestra el carrusel como en el panel, con escritorio o móvil y la zona segura 4ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-094 el listado es una cuadrícula con miniatura, etiquetas, estado de color, fechas, menú de acciones y filtros 1016ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-095 la pestaña Orden del carrusel reordena por audiencia con botones, teclado o arrastrando y guarda el orden 1008ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-096 el carrusel rota cada 6 s (12 s con Genially) y se detiene con pausa, puntero, foco, pestaña oculta o movimiento reducido 5ms
+ × src/features/announcements/announcements.test.jsx > S07-TC-097 el carrusel se maneja con flechas, teclado y deslizamiento, abre pantalla completa, enlaza la imagen y aísla Genially 4ms
+AssertionError: expected null to deeply equal { error: '', warning: '', …(3) }
+  "summary": "1920 × 640 px · 400 KB",
+AssertionError: expected null to be 'https://view.genially.com/66f1c2a0b3e…' // Object.is equality
+AssertionError: expected [] to deeply equal [ '1 Contenido', '2 Audiencia', …(2) ]
+TestingLibraryElementError: Unable to find a label with the text of: Imagen principal
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Guardar borrador"
+TestingLibraryElementError: Unable to find an accessible element with the role "region" and name "Vista previa"
+TestingLibraryElementError: Found multiple elements with the role "heading" and name "Promo mantenimiento"
+TestingLibraryElementError: Found multiple elements with the role "heading" and name "Promo mantenimiento"
+TestingLibraryElementError: Unable to find an element by: [data-testid="carousel-counter"]
+TestingLibraryElementError: Unable to find an accessible element with the role "link" and name `/Promoción de noviembre/`
+      Tests  10 failed (10)

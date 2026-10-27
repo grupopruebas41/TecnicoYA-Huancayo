@@ -15,10 +15,14 @@ final class StoreMediaRequest extends FormRequest
 {
     public const MAX_KILOBYTES = 5120;
 
+    /** D-83: las imágenes de comunicado (carrusel) pesan hasta 600 KB y son JPG o WebP. */
+    public const ANNOUNCEMENT_KILOBYTES = 600;
+
     public function authorize(EffectivePermissions $permissions): bool
     {
         return match ($this->input('purpose')) {
             'catalog' => $permissions->allows($this->user(), 'catalog.manage'),
+            'announcement' => $permissions->allows($this->user(), 'announcements.manage'),
             'portfolio', 'document' => $this->roleCode() === 'technician',
             'evidence' => $this->roleCode() === 'client',
             default => true, // La validación rechaza la finalidad desconocida.
@@ -27,26 +31,40 @@ final class StoreMediaRequest extends FormRequest
 
     public function rules(): array
     {
-        $types = $this->isDocument() ? 'application/pdf,image/jpeg,image/png' : 'image/jpeg,image/png,image/webp';
+        $types = match (true) {
+            $this->isDocument() => 'application/pdf,image/jpeg,image/png',
+            $this->isAnnouncement() => 'image/jpeg,image/webp',
+            default => 'image/jpeg,image/png,image/webp',
+        };
+        $max = $this->isAnnouncement() ? self::ANNOUNCEMENT_KILOBYTES : self::MAX_KILOBYTES;
 
         return [
             // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
-            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar'])],
-            'file' => ['required', 'file', 'max:'.self::MAX_KILOBYTES, 'mimetypes:'.$types],
+            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+            'file' => ['required', 'file', 'max:'.$max, 'mimetypes:'.$types],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'file.mimetypes' => __($this->isDocument() ? 'api.document_type' : 'api.image_type'),
-            'file.max' => __('api.file_too_large'),
+            'file.mimetypes' => __(match (true) {
+                $this->isDocument() => 'api.document_type',
+                $this->isAnnouncement() => 'api.announcement_image_type',
+                default => 'api.image_type',
+            }),
+            'file.max' => __($this->isAnnouncement() ? 'api.announcement_image_size' : 'api.file_too_large'),
         ];
     }
 
     private function roleCode(): ?string
     {
         return DB::table('roles')->where('id', $this->user()->role_id)->value('code');
+    }
+
+    private function isAnnouncement(): bool
+    {
+        return $this->input('purpose') === 'announcement';
     }
 
     private function isDocument(): bool
