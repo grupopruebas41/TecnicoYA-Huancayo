@@ -49,14 +49,15 @@ function s07uCreate(object $test, array $payload): array
     return $test->actingAs($test->admin)->postJson('/api/v1/admin/users', $payload)->assertCreated()->json('data');
 }
 
-/** Contraseña conocida y sesión abierta para comprobar bloqueos y cierres. */
+/**
+ * Contraseña conocida y una sesión abierta de la cuenta, escrita en la tabla: un login por la API dejaría su identidad
+ * en memoria y la petición siguiente del administrador abriría otra sesión a nombre de esa cuenta.
+ */
 function s07uWithSession(object $test, User $user): string
 {
     $password = Str::password(24);
     $user->forceFill(['password' => $password])->save();
-    Sprint01::forgetSession();
-    Sprint01::loginThroughApi($test, $user->email, $password);
-    Sprint01::forgetSession();
+    DB::table('sessions')->insert(['id' => Str::random(40), 'user_id' => $user->id, 'payload' => base64_encode('sintética'), 'last_activity' => now()->timestamp]);
 
     return $password;
 }
@@ -132,7 +133,7 @@ it('S07-TC-110 da de alta un cliente sin contraseña, pendiente de activación, 
         return str_contains($mail->actionUrl, '/#cuenta/activar?token=') && $mail->subject === 'Activa tu cuenta de TécnicoYa';
     });
     // La cuenta nueva no entra con ninguna contraseña hasta activarse.
-    expect(s07uLoginStatus($this, $user->email, 'Secreta123'))->toBe(422);
+    expect(s07uLoginStatus($this, $user->email, 'Secreta123'))->toBe(401);
     $audit = s07uAudit('user.created');
     expect($audit)->toHaveCount(1)->and($audit[0])->toMatchArray(['reason' => 'Alta pedida por soporte telefónico.', 'subject_id' => $user->id,
         'actor_id' => $this->admin->id, 'after' => ['id' => $user->id, 'role' => 'client']]);
@@ -299,7 +300,7 @@ it('S07-TC-117 restablecer acceso invalida la contraseña, cierra sesiones y env
         ['reason' => 'El cliente reporta acceso de terceros.', 'expected_version' => $version])->assertOk()->assertJsonPath('data.status', 'active');
 
     expect(DB::table('sessions')->where('user_id', $client->id)->count())->toBe(0)
-        ->and(s07uLoginStatus($this, $client->email, $password))->toBe(422)
+        ->and(s07uLoginStatus($this, $client->email, $password))->toBe(401)
         ->and($client->refresh()->auth_version)->toBe(2);
     Notification::assertSentTo($client, ResetPassword::class);
     expect(s07uAudit('user.access_reset')[0])->toMatchArray(['reason' => 'El cliente reporta acceso de terceros.', 'subject_id' => $client->id]);
