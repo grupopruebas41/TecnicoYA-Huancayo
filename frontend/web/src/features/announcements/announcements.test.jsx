@@ -182,13 +182,16 @@ test('S07-TC-094 el listado es una cuadrícula con miniatura, etiquetas, estado 
 
   const menu = title => { fireEvent.click(screen.getByRole('button', {name: `Acciones de «${title}»`}));
     return within(screen.getByRole('menu')).getAllByRole('menuitem').map(node => node.textContent); };
-  expect(menu('Promo mantenimiento')).toEqual(['Duplicar', 'Despublicar', 'Retirar']);
+  // D-84: Editar está en todo estado y Eliminar es la acción nueva (detalle en S07-TC-105); los retirados se ven con «Mostrar retirados».
+  expect(menu('Promo mantenimiento')).toEqual(['Editar', 'Duplicar', 'Despublicar', 'Retirar', 'Eliminar']);
   fireEvent.keyDown(screen.getByRole('menu'), {key: 'Escape'});
   expect(screen.queryByRole('menu')).not.toBeInTheDocument();
-  expect(menu('Novedades')).toEqual(['Editar', 'Publicar', 'Duplicar', 'Retirar']);
+  expect(menu('Novedades')).toEqual(['Editar', 'Publicar', 'Duplicar', 'Retirar', 'Eliminar']);
   fireEvent.keyDown(screen.getByRole('menu'), {key: 'Escape'});
-  expect(menu('Aviso viejo')).toEqual(['Duplicar']);
+  fireEvent.click(screen.getByLabelText('Mostrar retirados'));
+  expect(menu('Aviso viejo')).toEqual(['Editar', 'Duplicar', 'Eliminar']);
   fireEvent.keyDown(screen.getByRole('menu'), {key: 'Escape'});
+  fireEvent.click(screen.getByLabelText('Mostrar retirados'));
 
   menu('Promo mantenimiento');
   fireEvent.click(screen.getByRole('menuitem', {name: 'Despublicar'}));

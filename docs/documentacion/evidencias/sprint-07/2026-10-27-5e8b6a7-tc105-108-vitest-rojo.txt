@@ -1,0 +1,532 @@
+
+ RUN  v5.0.3 <repo>/frontend/web
+
+ ✓ src/features/announcements/announcementRules.test.js (2 tests) 11ms
+ ❯ src/features/announcements/announcementLifecycle.test.jsx (4 tests | 4 failed) 313ms
+   × S07-TC-105 el menú ofrece Editar en todo estado y Eliminar solo en borrador, vencido y retirado; la tarjeta abre el editor 158ms
+   × S07-TC-106 eliminar muestra miniatura y título, exige escribir ELIMINAR y borra con su versión 75ms
+   × S07-TC-107 al editar un vigente avisa que los cambios se ven de inmediato y guarda con su versión 52ms
+   × S07-TC-108 un retirado se ve en solo lectura hasta restaurarlo como borrador, y luego se corrige y publica 26ms
+ ❯ src/features/announcements/announcements.test.jsx (8 tests | 1 failed) 892ms
+   ✓ S07-TC-090 el editor tiene secciones plegables, origen en tarjetas, audiencia y tipo seleccionables y atajos de vigencia 299ms
+   ✓ S07-TC-091 el selector de imagen muestra las medidas, rechaza las menores al mínimo y recorta a 3:1 con encuadre ajustable 152ms
+   ✓ S07-TC-092 guarda el borrador o publica con doble validación y conserva el formulario ante un error 500 203ms
+   ✓ S07-TC-093 la vista previa en vivo muestra el carrusel como en el panel, con escritorio o móvil y la zona segura 40ms
+   × S07-TC-094 el listado es una cuadrícula con miniatura, etiquetas, estado de color, fechas, menú de acciones y filtros 52ms
+   ✓ S07-TC-095 la pestaña Orden del carrusel reordena por audiencia con botones, teclado o arrastrando y guarda el orden 79ms
+   ✓ S07-TC-096 el carrusel rota cada 6 s (12 s con Genially) y se detiene con pausa, puntero, foco, pestaña oculta o movimiento reducido 41ms
+   ✓ S07-TC-097 el carrusel se maneja con flechas, teclado y deslizamiento, abre pantalla completa, enlaza la imagen y aísla Genially 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/announcements/announcementLifecycle.test.jsx > S07-TC-105 el menú ofrece Editar en todo estado y Eliminar solo en borrador, vencido y retirado; la tarjeta abre el editor
+AssertionError: expected [ 'Promo mantenimiento', …(4) ] to deeply equal [ 'Promo mantenimiento', …(3) ]
+
+- Expected
++ Received
+
+  [
+    "Promo mantenimiento",
+    "Encuesta",
+    "Sorteo técnicos",
+    "Campaña de octubre",
++   "Aviso viejo",
+  ]
+
+ ❯ src/features/announcements/announcementLifecycle.test.jsx:46:20
+     44|   render(<AnnouncementsAdmin/>);
+     45|   await screen.findByRole('heading', {name: 'Promo mantenimiento'});
+     46|   expect(titles()).toEqual(['Promo mantenimiento', 'Encuesta', 'Sorteo…
+       |                    ^
+     47|   fireEvent.click(screen.getByLabelText('Mostrar retirados'));
+     48|   expect(titles()).toContain('Aviso viejo');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/features/announcements/announcementLifecycle.test.jsx > S07-TC-106 eliminar muestra miniatura y título, exige escribir ELIMINAR y borra con su versión
+TestingLibraryElementError: Unable to find an accessible element with the role "menuitem" and name "Eliminar"
+
+Here are the accessible roles:
+
+  menuitem:
+
+  Name "Duplicar":
+  <button
+    role="menuitem"
+    type="button"
+  />
+
+  --------------------------------------------------menuitem:
+
+  Name "Despublicar":
+  <button
+    role="menuitem"
+    type="button"
+  />
+
+  --------------------------------------------------menuitem:
+
+  Name "Retirar":
+  <button
+    role="menuitem"
+    type="button"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<div
+  aria-label="Acciones de «Campaña de octubre»"
+  class="panel-popover announcement-menu-list"
+  role="menu"
+>
+  <button
+    role="menuitem"
+    type="button"
+  >
+    Duplicar
+  </button>
+  <button
+    role="menuitem"
+    type="button"
+  >
+    Despublicar
+  </button>
+  <button
+    role="menuitem"
+    type="button"
+  >
+    Retirar
+  </button>
+</div>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/announcements/announcementLifecycle.test.jsx:84:58
+     82|   render(<AnnouncementsAdmin/>);
+     83|   await screen.findByRole('heading', {name: 'Campaña de octubre'});
+     84|   fireEvent.click(within(openMenu('Campaña de octubre')).getByRole('me…
+       |                                                          ^
+     85|   let dialog = screen.getByRole('dialog', {name: 'Eliminar comunicado'…
+     86|   expect(within(dialog).getByRole('img', {hidden: true})).toHaveAttrib…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/features/announcements/announcementLifecycle.test.jsx > S07-TC-107 al editar un vigente avisa que los cambios se ven de inmediato y guarda con su versión
+TestingLibraryElementError: Unable to find an element with the text: Los cambios se verán de inmediato en los paneles.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="announcement-editor-title"
+      class="s02-panel announcement-editor-page"
+    >
+      <header
+        class="announcement-editor-head"
+      >
+        <button
+          class="text-button"
+          type="button"
+        >
+          ← Volver al listado
+        </button>
+        <h2
+          id="announcement-editor-title"
+        >
+          Editar comunicado
+        </h2>
+      </header>
+      <div
+        class="announcement-editor-layout"
+      >
+        <form
+          aria-busy="false"
+          class="announcement-editor-form"
+          novalidate=""
+        >
+          <details
+            open=""
+          >
+            <summary>
+              1 Contenido
+            </summary>
+            <div
+              class="announcement-section"
+            >
+              <span
+                class="choice-label"
+              >
+                Origen
+              </span>
+              <div
+                aria-label="Origen del comunicado"
+                class="choice-cards"
+                role="radiogroup"
+              >
+                <label
+                  class="choice is-selected"
+                >
+                  <input
+                    checked=""
+                    name="source"
+                    type="radio"
+                    value="image"
+                  />
+                  <strong>
+                    Imagen
+                  </strong>
+                  <small>
+                    Banner ancho JPG o WebP que rota en el carrusel.
+                  </small>
+                </label>
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="source"
+                    type="radio"
+                    value="genially"
+                  />
+                  <strong>
+                    Genially
+                  </strong>
+                  <small>
+                    Presentación interactiva de view.genially.com en un marco 3:1.
+                  </small>
+                </label>
+              </div>
+              <div
+                class="form-field"
+              >
+                <label
+                  for="field-title"
+                >
+                  Título interno
+                </label>
+                <input
+                  aria-invalid="false"
+                  id="field-title"
+                  maxlength="120"
+                  name="title"
+                  value="Promo mantenimiento"
+                />
+              </div>
+              <p
+                class="muted field-help"
+              >
+                Solo lo ve el equipo de administración.
+              </p>
+              <span
+                class="choice-label"
+              >
+                Tipo
+              </span>
+              <div
+                aria-label="Tipo"
+                class="choice-chips"
+                role="radiogroup"
+              >
+                <label
+                  class="choice is-selected"
+                >
+                  <input
+                    checked=""
+                    name="kind"
+                    type="radio"
+                    value="promotion"
+                  />
+                  <strong>
+                    Promoción
+                  </strong>
+                </label>
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="kind"
+                    type="radio"
+                    value="raffle"
+                  />
+                  <strong>
+                    Sorteo
+                  </strong>
+                </label>
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="kind"
+                    type="radio"
+                    value="news"
+                  />
+                  <strong>
+                    Novedad
+                  </strong>
+                </label>
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="kind"
+                    type="radio"
+                    value="notice"
+                  />
+                  <strong>
+                    Aviso
+                  </strong>
+                </label>
+              </div>
+              <div
+                aria-busy="false"
+                class="image-slot"
+              >
+                <div
+                  class="image-slot-head"
+                >
+                  <span
+                    class="image-slot-title"
+                  >
+                    Imagen principal
+                  </span>
+                  <p
+                    class=[32...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/announcements/announcementLifecycle.test.jsx:116:17
+    114|   const onSaved = vi.fn();
+    115|   render(<AnnouncementEditor item={items[0]} onClose={vi.fn()} onSaved…
+    116|   expect(screen.getByText('Los cambios se verán de inmediato en los pa…
+       |                 ^
+    117|   expect(screen.queryByRole('button', {name: 'Publicar'})).not.toBeInT…
+    118|   expect(screen.queryByRole('button', {name: 'Guardar borrador'})).not…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/features/announcements/announcementLifecycle.test.jsx > S07-TC-108 un retirado se ve en solo lectura hasta restaurarlo como borrador, y luego se corrige y publica
+TestingLibraryElementError: Unable to find an element with the text: Este comunicado está retirado. Restáuralo como borrador para corregirlo y publicarlo de nuevo.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="announcement-editor-title"
+      class="s02-panel announcement-editor-page"
+    >
+      <header
+        class="announcement-editor-head"
+      >
+        <button
+          class="text-button"
+          type="button"
+        >
+          ← Volver al listado
+        </button>
+        <h2
+          id="announcement-editor-title"
+        >
+          Editar comunicado
+        </h2>
+      </header>
+      <div
+        class="announcement-editor-layout"
+      >
+        <form
+          aria-busy="false"
+          class="announcement-editor-form"
+          novalidate=""
+        >
+          <details
+            open=""
+          >
+            <summary>
+              1 Contenido
+            </summary>
+            <div
+              class="announcement-section"
+            >
+              <span
+                class="choice-label"
+              >
+                Origen
+              </span>
+              <div
+                aria-label="Origen del comunicado"
+                class="choice-cards"
+                role="radiogroup"
+              >
+                <label
+                  class="choice is-selected"
+                >
+                  <input
+                    checked=""
+                    name="source"
+                    type="radio"
+                    value="image"
+                  />
+                  <strong>
+                    Imagen
+                  </strong>
+                  <small>
+                    Banner ancho JPG o WebP que rota en el carrusel.
+                  </small>
+                </label>
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="source"
+                    type="radio"
+                    value="genially"
+                  />
+                  <strong>
+                    Genially
+                  </strong>
+                  <small>
+                    Presentación interactiva de view.genially.com en un marco 3:1.
+                  </small>
+                </label>
+              </div>
+              <div
+                class="form-field"
+              >
+                <label
+                  for="field-title"
+                >
+                  Título interno
+                </label>
+                <input
+                  aria-invalid="false"
+                  id="field-title"
+                  maxlength="120"
+                  name="title"
+                  value="Aviso viejo"
+                />
+              </div>
+              <p
+                class="muted field-help"
+              >
+                Solo lo ve el equipo de administración.
+              </p>
+              <span
+                class="choice-label"
+              >
+                Tipo
+              </span>
+              <div
+                aria-label="Tipo"
+                class="choice-chips"
+                role="radiogroup"
+              >
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="kind"
+                    type="radio"
+                    value="promotion"
+                  />
+                  <strong>
+                    Promoción
+                  </strong>
+                </label>
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="kind"
+                    type="radio"
+                    value="raffle"
+                  />
+                  <strong>
+                    Sorteo
+                  </strong>
+                </label>
+                <label
+                  class="choice"
+                >
+                  <input
+                    name="kind"
+                    type="radio"
+                    value="news"
+                  />
+                  <strong>
+                    Novedad
+                  </strong>
+                </label>
+                <label
+                  class="choice is-selected"
+                >
+                  <input
+                    checked=""
+                    name="kind"
+                    type="radio"
+                    value="notice"
+                  />
+                  <strong>
+                    Aviso
+                  </strong>
+                </label>
+              </div>
+              <div
+                aria-busy="false"
+                class="image-slot"
+              >
+                <div
+                  class="image-slot-head"
+                >
+                  <span
+                    class="image-slot-title"
+                  >
+                    Imagen principal
+                  </span>
+                  <p
+                    class="muted"...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/announcements/announcementLifecycle.test.jsx:143:17
+    141|   request.mockResolvedValueOnce({data: {...items[4], status: 'draft', …
+    142|   render(<AnnouncementEditor item={items[4]} onClose={vi.fn()} onSaved…
+    143|   expect(screen.getByText('Este comunicado está retirado. Restáuralo c…
+       |                 ^
+    144|   expect(screen.getByLabelText('Título interno')).toBeDisabled();
+    145|   expect(screen.queryByRole('button', {name: 'Publicar'})).not.toBeInT…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/features/announcements/announcements.test.jsx > S07-TC-094 el listado es una cuadrícula con miniatura, etiquetas, estado de color, fechas, menú de acciones y filtros
+AssertionError: expected [ Array(3) ] to deeply equal [ 'Editar', 'Duplicar', …(3) ]
+
+- Expected
++ Received
+
+  [
+-   "Editar",
+    "Duplicar",
+    "Despublicar",
+    "Retirar",
+-   "Eliminar",
+  ]
+
+ ❯ src/features/announcements/announcements.test.jsx:186:39
+    184|     return within(screen.getByRole('menu')).getAllByRole('menuitem').m…
+    185|   // D-84: Editar está en todo estado y Eliminar es la acción nueva (d…
+    186|   expect(menu('Promo mantenimiento')).toEqual(['Editar', 'Duplicar', '…
+       |                                       ^
+    187|   fireEvent.keyDown(screen.getByRole('menu'), {key: 'Escape'});
+    188|   expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  5 failed | 9 passed (14)
+   Start at  02:52:18
+   Duration  4.35s (environment 64%, tests 11%, setup 9%, import 8%, transform 8%)
+
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml
