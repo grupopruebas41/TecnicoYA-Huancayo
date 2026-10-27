@@ -1,0 +1,560 @@
+
+   PASS  Tests\Unit\Sprint04\RankerTest
+  ✓ it S04-TC-015 normaliza por ejecución y puntúa 73, 50 y 30 calculados a mano                                 0.20s  
+  ✓ it S04-TC-016 con datos iguales no divide por cero y deja a los tres empatados                               0.01s  
+  ✓ it S04-TC-017 desempata por promedio real 4,8 antes que 4,2 [TC-042]                                         0.01s  
+  ✓ it S04-TC-018 informa el empate persistente sin depender del id ni del orden de entrada                      0.01s  
+  ✓ it S04-TC-019 ordena por el puntaje sin redondear aunque ambos se muestren como 75                           0.01s  
+
+   PASS  Tests\Unit\Sprint04\ScorerTest
+  ✓ it S04-TC-014 puntúa 75 sobre 100 con cuatro aportes calculados a mano [TC-041]                              0.04s  
+
+   PASS  Tests\Feature\Sprint01\AdminAccessAuditTest
+  ✓ it S01-TC-087 audita el inicio fallido, el inicio y el cierre de sesión de un administrador y no los de un… 32.92s  
+
+   PASS  Tests\Feature\Sprint01\AuthorizationMatrixTest
+  ✓ it S01-TC-055 responde 401 en español a GET /me sin sesión                                                   0.27s  
+  ✓ it S01-TC-056 responde 403 a GET /me de una cuenta suspendida sin exponer sus datos                          0.31s  
+  ✓ it S01-TC-057 responde 403 a PATCH /me de una cuenta suspendida sin cambiar el perfil                        0.24s  
+  ✓ it S01-TC-058 deniega con 403 la ruta administrativa a un técnico y audita el rechazo [TC-007]               0.37s  
+  ✓ it S01-TC-059 responde 401 a la ruta administrativa sin sesión [TC-007]                                      0.28s  
+  ✓ it S01-TC-060 deniega la ruta administrativa a un administrador suspendido aunque su rol tenga el permiso [… 0.25s  
+  ✓ it S01-TC-061 permite la ruta administrativa al administrador activo con catalog.manage [TC-007]             0.43s  
+  ✓ it S01-TC-062 devuelve en GET /me del cliente solo lo propio de su rol y ningún secreto [TC-005]             0.26s  
+  ✓ it S01-TC-063 devuelve en GET /me del administrador los permisos del rol y sus concesiones individuales [TC… 0.25s  
+  ✓ it S01-TC-071 sirve el mismo catálogo público a anónimo, cliente, técnico, administrador y cuenta suspendid… 0.29s  
+
+   PASS  Tests\Feature\Sprint01\ProfileBoundariesTest
+  ✓ it S01-TC-064 rechaza nombres de 1 y de 101 caracteres en el perfil sin cambiar la versión                   0.16s  
+  ✓ it S01-TC-065 acepta un teléfono de 20 caracteres con prefijo, espacios, paréntesis y guion                  0.12s  
+  ✓ it S01-TC-066 rechaza un teléfono de 21 caracteres                                                           0.12s  
+  ✓ it S01-TC-067 rechaza un teléfono con letras                                                                 0.11s  
+  ✓ it S01-TC-068 borra el teléfono cuando se envía nulo e incrementa la versión                                 0.12s  
+  ✓ it S01-TC-069 no permite cambiar correo, contraseña ni tipo de cuenta desde el perfil                        0.13s  
+  ✓ it S01-TC-070 rechaza la edición del perfil sin expected_version [TC-010]                                    0.11s  
+
+   PASS  Tests\Feature\Sprint01\ProvisionAdminTest
+  ✓ it S01-TC-012 crea un administrador con secretos ocultos y auditoría atómica                                 0.22s  
+  ✓ it S01-TC-013 rechaza correo existente y confirmación incorrecta sin sobrescribir                            0.14s  
+  ✓ it S01-TC-014 revierte el alta si no puede persistir la auditoría                                            0.16s  
+
+   PASS  Tests\Feature\Sprint01\RegisterWithSessionTest
+  ✓ it S01-TC-086 rechaza el registro con una sesión abierta sin crear la cuenta ni cambiar la sesión            0.44s  
+
+   PASS  Tests\Feature\Sprint01\RegistrationBoundariesTest
+  ✓ it S01-TC-034 acepta nombres de 2 y de 100 caracteres en el registro [TC-001]                                0.33s  
+  ✓ it S01-TC-035 rechaza nombres de 1 y de 101 caracteres sin crear usuario ni perfil                           0.36s  
+  ✓ it S01-TC-036 acepta una contraseña de 8 caracteres y otra de 72 bytes y ambas sirven para iniciar sesión    0.42s  
+  ✓ it S01-TC-037 rechaza una contraseña de 7 caracteres                                                         0.26s  
+  ✓ it S01-TC-038 rechaza una contraseña de más de 72 bytes aunque tenga menos de 72 caracteres                  0.35s  
+  ✓ it S01-TC-039 rechaza una confirmación de contraseña distinta                                                0.26s  
+  ✓ it S01-TC-040 acepta un correo de 254 caracteres y lo guarda completo                                        0.25s  
+  ✓ it S01-TC-041 rechaza un correo de 255 caracteres                                                            0.28s  
+  ✓ it S01-TC-042 normaliza el correo al guardarlo y permite iniciar sesión con otra capitalización [TC-002]     0.25s  
+  ✓ it S01-TC-043 rechaza al cliente sin tipo de cliente o con un tipo fuera del dominio                         0.30s  
+  ✓ it S01-TC-044 rechaza al técnico que envía tipo de cliente                                                   0.28s  
+  ✓ it S01-TC-045 responde al registro vacío con el mensaje general y errores por campo en español               0.09s  
+
+   PASS  Tests\Feature\Sprint01\SessionSecurityTest
+  ✓ it S01-TC-046 no deja iniciar sesión a una cuenta suspendida y responde con el mensaje genérico [TC-005]     0.54s  
+  ✓ it S01-TC-047 responde igual a un correo inexistente y a una contraseña incorrecta                           0.50s  
+  ✓ it S01-TC-048 regenera el identificador de sesión al iniciar sesión                                          0.14s  
+  ✓ it S01-TC-049 emite la cookie de sesión HttpOnly con SameSite=Lax y deja legible XSRF-TOKEN                  0.15s  
+  ✓ it S01-TC-050 responde 429 en español al intento siguiente al límite aunque las credenciales sean válidas    0.79s  
+  ✓ it S01-TC-051 restablece el límite de intentos después del minuto                                            0.88s  
+  ✓ it S01-TC-052 rechaza PATCH /me sin token CSRF y no cambia el perfil                                         0.10s  
+  ✓ it S01-TC-053 responde 401 en español al cerrar sesión sin sesión                                            0.15s  
+  ✓ it S01-TC-054 permite a una cuenta suspendida cerrar su sesión e invalida la cookie                          0.15s  
+
+   PASS  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+  ✓ it S01-TC-001 rechaza el correo duplicado normalizado sin crear otro usuario ni perfil [TC-002]              0.33s  
+
+   PASS  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+  ✓ it S01-TC-002 registra al técnico como pendiente de verificación y solo le deja editar datos básicos [TC-00… 0.35s  
+
+   PASS  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+  ✓ it S01-TC-003 rechaza que el técnico se autoactive y conserva el estado persistido [TC-004]                  0.27s  
+
+   PASS  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+  ✓ it S01-TC-004 invalida la sesión al cerrar sesión y responde 401 si se reutiliza la cookie [TC-006]          0.33s  
+
+   PASS  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+  ✓ it S01-TC-005 deniega con 403 una ruta administrativa a un cliente autenticado [TC-007]                      0.12s  
+
+   PASS  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+  ✓ it S01-TC-006 rechaza el alta administrativa desde el registro público [TC-008]                              0.23s  
+
+   PASS  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+  ✓ it S01-TC-007 guarda nombre y teléfono propios e incrementa la versión sin cambiar permisos [TC-009]         0.30s  
+
+   PASS  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+  ✓ it S01-TC-008 responde 409 ante una versión obsoleta y conserva la edición más reciente [TC-010]             0.28s  
+
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+  ✓ it S01-TC-009 repite la semilla del catálogo sin duplicados y con relaciones válidas [TC-011]                0.21s  
+
+   PASS  Tests\Feature\Sprint01\TC012CatalogApiTest
+  ✓ it S01-TC-010 sirve solo categorías activas y valida el filtro sin inventar resultados [TC-012]              0.41s  
+
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+  ✓ it S01-TC-011 guarda la contraseña con bcrypt y no la expone en respuestas, auditoría ni logs [TC-137]       0.34s  
+
+   PASS  Tests\Feature\Sprint02\AnnouncementAdminTest
+  ✓ it S02-TC-024 CRUD-01 crea un comunicado en borrador con audiencias y vigencia, sin mostrarlo en paneles     0.31s  
+  ✓ it S02-TC-025 VAL-02 rechaza fechas invertidas, audiencia vacía y un enlace javascript: sin guardar nada     0.16s  
+  ✓ it S02-TC-026 CRUD-02 edita un borrador con su versión, rechaza la versión vieja y no edita uno publicado    0.39s  
+  ✓ it S02-TC-027 CRUD-01 publica un borrador vigente para su audiencia y no publica uno ya vencido              0.27s  
+  ✓ it S02-TC-028 CRUD-01 elimina un comunicado retirándolo de los paneles, con auditoría y sin borrar la fila   0.34s  
+  ✓ it S02-TC-029 muestra el comunicado desde su inicio exacto y lo oculta exactamente al terminar [inicio, fin… 0.16s  
+  ✓ it S02-TC-030 AUTH-01 niega a cliente y técnico toda la administración de comunicados sin cambiar nada       0.33s  
+
+   PASS  Tests\Feature\Sprint02\AvailabilityBoundariesTest
+  ✓ it S02-TC-046 VAL-02 rechaza dos franjas solapadas del mismo día y conserva el horario anterior              0.29s  
+  ✓ it S02-TC-047 acepta franjas contiguas y una franja de exactamente 30 minutos                                0.12s  
+  ✓ it S02-TC-048 VAL-02 rechaza una franja de 29 minutos, días 0 y 8 y la hora 24:00 sin guardar nada           0.15s  
+  ✓ it S02-TC-049 VAL-02 rechaza una pausa invertida y una que empieza antes del minuto actual                   0.15s  
+  ✓ it S02-TC-050 mantiene pausado al técnico con una pausa sin fin y lo libera al quitarla                      0.22s  
+  ✓ it S02-TC-051 VAL-02 conserva un distrito desactivado que el técnico ya tenía y rechaza uno inactivo nuevo   0.18s  
+  ✓ it S02-TC-052 CRUD-02 rechaza con 409 un horario enviado con una versión vieja                               0.14s  
+
+   PASS  Tests\Feature\Sprint02\CarouselTest
+  ✓ it S02-TC-022 sirve sin sesión solo las subcategorías activas con imagen pública revisada [TC-013]           0.24s  
+  ✓ it S02-TC-023 excluye del carrusel la imagen retirada, la subcategoría inactiva y la especialidad inactiva   0.44s  
+
+   PASS  Tests\Feature\Sprint02\DistrictsTest
+  ✓ it S02-TC-020 siembra Huancayo, El Tambo y Chilca una sola vez y no pisa lo que cambió el administrador      0.12s  
+  ✓ it S02-TC-021 CRUD-01 crea y desactiva un distrito con auditoría; el inactivo sale del catálogo público      0.27s  
+
+   PASS  Tests\Feature\Sprint02\MediaUploadTest
+  ✓ it S02-TC-038 CRUD-01 sube imágenes de portafolio JPG, PNG y WebP como públicas, revisadas y sin EXIF [TC-0… 0.82s  
+  ✓ it S02-TC-039 VAL-02 rechaza en español un texto con extensión .jpg, un GIF y un propósito ajeno al rol, si… 0.28s  
+  ✓ it S02-TC-040 acepta una imagen de exactamente 5 MB (5 242 880 bytes)                                        0.22s  
+  ✓ it S02-TC-041 VAL-02 rechaza una imagen de 5 MB más un byte sin guardar nada                                 0.18s  
+
+   PASS  Tests\Feature\Sprint02\PortfolioAndProfileTest
+  ✓ it S02-TC-042 CRUD-01 edita y retira un trabajo propio: sale de la galería y se conservan filas e imágenes   0.43s  
+  ✓ it S02-TC-090 devuelve subcategory_id del trabajo en el perfil propio y al editarlo, aunque la subcategoría… 0.49s  
+  ✓ it S02-TC-043 AUTH-01 no deja editar ni retirar el trabajo de otro técnico                                   0.21s  
+  ✓ it S02-TC-044 CRUD-01 guarda documentos privados: solo el dueño y el verificador los descargan y hay un máx… 0.44s  
+  ✓ it S02-TC-045 CRUD-01 lee el perfil técnico propio completo y edita bio y experiencia con versión            0.44s  
+
+   PASS  Tests\Feature\Sprint02\RateBoundariesTest
+  ✓ it S02-TC-053 VAL-02 acepta la tarifa mínima de S/ 1,00 y rechaza S/ 0,99 sin crear versión                  0.44s  
+  ✓ it S02-TC-054 VAL-02 acepta la tarifa máxima de S/ 5 000,00 y rechaza S/ 5 000,01                            0.29s  
+  ✓ it S02-TC-055 VAL-02 rechaza una tarifa con tres decimales sin crear el servicio                             0.34s  
+  ✓ it S02-TC-056 no crea una versión nueva cuando se reenvía la misma tarifa                                    0.29s  
+  ✓ it S02-TC-057 VAL-02 rechaza una subcategoría inactiva o de una especialidad inactiva sin crear servicio     0.25s  
+  ✓ it S02-TC-058 audita el cambio de tarifa con el valor anterior y el nuevo                                    0.25s  
+
+   PASS  Tests\Feature\Sprint02\SpecialtyCatalogTest
+  ✓ it S02-TC-013 CRUD-01 crea una especialidad con foto revisada, código estable y auditoría                    0.37s  
+  ✓ it S02-TC-014 VAL-02 rechaza en español una especialidad sin nombre o con un nombre repetido, sin escribir…  0.27s  
+  ✓ it S02-TC-015 CRUD-01 desactiva una especialidad: sale del catálogo público y del carrusel y conserva subca… 0.33s  
+  ✓ it S02-TC-016 CRUD-01 reactiva una subcategoría: vuelve al catálogo y el técnico puede ofrecerla             0.33s  
+  ✓ it S02-TC-017 VAL-02 rechaza una subcategoría con especialidad inactiva, nombre repetido o imagen no revisa… 0.34s  
+  ✓ it S02-TC-018 CRUD-02 rechaza con 409 la edición de una especialidad o subcategoría con versión vieja        0.35s  
+  ✓ it S02-TC-019 AUTH-01 niega el catálogo administrativo a cliente, técnico y administrador sin catalog.manag… 0.58s  
+
+   PASS  Tests\Feature\Sprint02\TC015CreateSubcategoryTest
+  ✓ it S02-TC-001 crea una subcategoría con imagen revisada y la ofrece en su especialidad con la foto del carr… 0.29s  
+
+   PASS  Tests\Feature\Sprint02\TC016DeactivateSubcategoryTest
+  ✓ it S02-TC-002 desactiva una subcategoría usada sin borrar su identidad ni sus referencias [TC-016]           0.31s  
+
+   PASS  Tests\Feature\Sprint02\TC017AnnouncementAudienceTest
+  ✓ it S02-TC-003 entrega el comunicado vigente dirigido a técnicos solo al técnico [TC-017]                     0.14s  
+
+   PASS  Tests\Feature\Sprint02\TC018DuplicateAnnouncementTest
+  ✓ it S02-TC-004 duplica un comunicado publicado como borrador que no aparece en ningún panel [TC-018]          0.21s  
+
+   PASS  Tests\Feature\Sprint02\TC019DocumentedApprovalTest
+  ✓ it S02-TC-005 aprueba al técnico pendiente y registra la decisión, su autor y su fecha [TC-019]              0.47s  
+
+   PASS  Tests\Feature\Sprint02\TC020ForeignDocumentDeniedTest
+  ✓ it S02-TC-006 deniega a un técnico el documento privado de otro sin revelar su contenido [TC-020]            0.19s  
+
+   PASS  Tests\Feature\Sprint02\TC021PublishedPortfolioWorkTest
+  ✓ it S02-TC-007 publica un trabajo con su imagen en la galería pública sin documentos de verificación [TC-021… 0.38s  
+
+   PASS  Tests\Feature\Sprint02\TC023ValidAvailabilityTest
+  ✓ it S02-TC-008 guarda horarios, zonas y una pausa válida que el filtro de elegibilidad reconoce [TC-023]      0.29s  
+
+   PASS  Tests\Feature\Sprint02\TC024InvalidIntervalTest
+  ✓ it S02-TC-009 rechaza en español una franja que termina antes de empezar y conserva el horario anterior [TC… 0.20s  
+
+   PASS  Tests\Feature\Sprint02\TC025NewRateVersionTest
+  ✓ it S02-TC-010 crea la versión 2 de la tarifa y conserva la versión 1 sin sobrescribirla [TC-025]             0.38s  
+
+   PASS  Tests\Feature\Sprint02\TC026NegativeRateTest
+  ✓ it S02-TC-011 rechaza en español una tarifa negativa sin crear versión ni cambiar la vigente [TC-026]        0.23s  
+
+   PASS  Tests\Feature\Sprint02\TC134ForeignAvailabilityOrRateTest
+  ✓ it S02-TC-012 impide que otro técnico o un cliente cambien la disponibilidad o la tarifa ajena [TC-134]      0.37s  
+
+   PASS  Tests\Feature\Sprint02\TechnicianVerificationTest
+  ✓ it S02-TC-031 lista la bandeja de técnicos por estado sin correo, teléfono ni contraseña                     0.39s  
+  ✓ it S02-TC-032 muestra la ficha con checklist, servicios, zonas y documentos sin exponer el archivo ni datos… 0.35s  
+  ✓ it S02-TC-033 VAL-02 no aprueba a un técnico con requisitos faltantes y lista en español lo que falta        0.28s  
+  ✓ it S02-TC-034 CRUD-01 rechaza con motivo sin habilitar y deja que el técnico pida una nueva revisión         0.46s  
+  ✓ it S02-TC-035 suspende con motivo cerrando sesiones y conservando el portafolio, y lo reactiva con motivo    0.35s  
+  ✓ it S02-TC-036 rechaza con 409 las transiciones de verificación no permitidas sin cambiar estado ni versión   0.29s  
+  ✓ it S02-TC-037 AUTH-01 impide la autoaprobación y la verificación a un administrador sin technicians.verify   0.42s  
+
+   PASS  Tests\Feature\Sprint03\ActiveRequestLimitTest
+  ✓ it S03-TC-030 rechaza la cuarta solicitud activa, no cuenta las registradas y guarda la versión de reglas [… 0.59s  
+  ✓ it S03-TC-031 el reintento del tercer envío con su clave no cuenta dos veces [TC-122]                        0.66s  
+
+   PASS  Tests\Feature\Sprint03\E2ESeederGuardTest
+  ✓ it S03-TC-082 Sprint01E2ESeeder rechaza la base de desarrollo «tecnicoya» sin consultar                      0.04s  
+  ✓ it S03-TC-083 Sprint02E2ESeeder rechaza una base cuyo nombre solo contiene _testing                          0.03s  
+  ✓ it S03-TC-084 Sprint03E2ESeeder rechaza una base _testing que no es de los slots A o B                       0.03s  
+  ✓ it S03-TC-085 Sprint03E2ESeeder siembra en el slot de pruebas y es idempotente                               0.81s  
+
+   PASS  Tests\Feature\Sprint03\RequestConcurrencyTest
+  ✓ it S03-TC-025 rechaza adjuntar con la versión que otra pestaña ya cambió                                     0.35s  
+  ✓ it S03-TC-026 conserva la primera corrección cuando otra llega con la misma versión [TC-027]                 0.34s  
+
+   PASS  Tests\Feature\Sprint03\RequestDescriptionLimitsTest
+  ✓ it S03-TC-016 rechaza una descripción de 19 caracteres, también rodeada de espacios, y acepta 20 [TC-123]    0.36s  
+  ✓ it S03-TC-017 acepta 1000 caracteres, rechaza 1001 al registrar y al corregir sin cambiar versión ni texto…  0.30s  
+
+   PASS  Tests\Feature\Sprint03\RequestEvidenceUploadTest
+  ✓ it S03-TC-018 guarda la evidencia del cliente como privada, revisada y sin EXIF [TC-130]                     0.30s  
+  ✓ it S03-TC-019 acepta una evidencia de 5 MB exactos y rechaza 5 MB más 1 KB sin guardar nada [TC-130]         0.35s  
+  ✓ it S03-TC-020 rechaza por su contenido un PDF y un GIF renombrados como JPG [TC-130]                         0.24s  
+  ✓ it S03-TC-021 admite la quinta foto y rechaza la sexta sin cambiar adjuntos ni versión [TC-130]              0.50s  
+  ✓ it S03-TC-022 solo el cliente sube evidencias: técnico y administrador 403 y anónimo 401                     0.29s  
+
+   PASS  Tests\Feature\Sprint03\RequestEvidenceVisibilityTest
+  ✓ it S03-TC-023 solo el titular descarga la foto de su solicitud; los demás reciben 404 [TC-127]               0.48s  
+  ✓ it S03-TC-024 no retira la foto de una solicitud enviada y no registra evento [TC-129]                       0.54s  
+
+   PASS  Tests\Feature\Sprint03\RequestIdempotencyTest
+  ✓ it S03-TC-032 el doble clic con dos claves distintas envía una sola vez [TC-037]                             0.41s  
+  ✓ it S03-TC-033 la misma clave con otro cuerpo no altera la respuesta guardada ni la solicitud [TC-037]        0.41s  
+  ✓ it S03-TC-034 exige una clave de 1 a 255 caracteres                                                          0.38s  
+  ✓ it S03-TC-035 no envía con el resumen marcado como no confirmado [TC-028]                                    0.27s  
+  ✓ it S03-TC-036 otro cliente no puede enviar la solicitud ajena ni consumir una clave [TC-038]                 0.31s  
+  ✓ it S03-TC-037 la misma clave en dos clientes produce dos envíos independientes [TC-037]                      0.36s  
+
+   PASS  Tests\Feature\Sprint03\RequestListAndAccessTest
+  ✓ it S03-TC-038 la búsqueda automática no guarda un técnico objetivo enviado por el cliente [TC-035]           0.30s  
+  ✓ it S03-TC-039 Mis solicitudes lista solo las propias, de la más nueva a la más antigua y sin datos privados  0.41s  
+  ✓ it S03-TC-040 una cuenta de cliente suspendida no registra ni envía solicitudes                              0.27s  
+  ✓ it S03-TC-041 registra un evento por cambio con actor, estados y versión correlativa sin datos privados      0.39s  
+
+   PASS  Tests\Feature\Sprint03\RequestScheduleAndAddressTest
+  ✓ it S03-TC-049 rechaza un inicio programado anterior a la hora del servidor, acepta el exacto y revalida al…  0.28s  
+  ✓ it S03-TC-050 acepta direcciones de 5 y 255 caracteres y rechaza 4 y 256 al registrar y al corregir          0.35s  
+
+   PASS  Tests\Feature\Sprint03\RequestSubmissionRevalidationTest
+  ✓ it S03-TC-027 no envía si la subcategoría se desactivó después del registro [TC-120]                         0.32s  
+  ✓ it S03-TC-028 no envía si el distrito quedó fuera de cobertura después del registro [TC-032]                 0.33s  
+  ✓ it S03-TC-029 no envía si el técnico elegido se suspendió o dejó de ofrecer el servicio, sin sustituirlo [T… 0.50s  
+
+   PASS  Tests\Feature\Sprint03\TC029OwnPhotoLinkedTest
+  ✓ it S03-TC-001 vincula la foto propia solo a su solicitud y la muestra al propietario en el resumen [TC-029]  0.40s  
+
+   PASS  Tests\Feature\Sprint03\TC030ForeignFileReferenceTest
+  ✓ it S03-TC-002 deniega vincular el archivo privado de otro cliente y lo mantiene privado [TC-030]             0.29s  
+
+   PASS  Tests\Feature\Sprint03\TC031ReferenceFeeVisibleTest
+  ✓ it S03-TC-003 muestra la tarifa como referencial con su procedencia y conserva la fotografía al cambiar el…  0.27s  
+
+   PASS  Tests\Feature\Sprint03\TC032OutOfCoverageTest
+  ✓ it S03-TC-004 informa fuera de cobertura y no registra la solicitud de un distrito fuera del catálogo activ… 0.33s  
+
+   PASS  Tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest
+  ✓ it S03-TC-005 muestra al cliente bio, servicios y portafolio del técnico sin documentos ni contacto privado… 0.38s  
+
+   PASS  Tests\Feature\Sprint03\TC035DirectedOriginPreservedTest
+  ✓ it S03-TC-006 conserva el origen desde perfil y el técnico elegido sin asignarlo automáticamente [TC-035]    0.34s  
+
+   PASS  Tests\Feature\Sprint03\TC036IncompatibleTargetTest
+  ✓ it S03-TC-007 rechaza un técnico objetivo que no ofrece la subcategoría sin sustituirlo por otro [TC-036]    0.35s  
+
+   PASS  Tests\Feature\Sprint03\TC037IdempotentSubmissionTest
+  ✓ it S03-TC-008 repite el mismo envío con su clave y obtiene el mismo resultado sin duplicar solicitud ni eve… 0.47s  
+
+   PASS  Tests\Feature\Sprint03\TC038ForeignRequestTest
+  ✓ it S03-TC-009 deniega el detalle de la solicitud de otro cliente sin descripción, dirección ni evidencias [… 0.32s  
+
+   PASS  Tests\Feature\Sprint03\TC119RequiredDataRejectedTest
+  ✓ it S03-TC-010 rechaza en la API, sin React, una solicitud con datos obligatorios ausentes o inválidos [TC-1… 0.38s  
+
+   PASS  Tests\Feature\Sprint03\TC120InactiveSubcategoryTest
+  ✓ it S03-TC-011 rechaza una subcategoría inactiva o de rubro inactivo identificándola y sin guardar la solici… 0.28s  
+
+   PASS  Tests\Feature\Sprint03\TC121ScheduledWithoutDateTest
+  ✓ it S03-TC-012 rechaza en español la modalidad programada sin fecha u hora y acepta la completa [TC-121]      0.31s  
+
+   PASS  Tests\Feature\Sprint03\TC126SubmittedRequestImmutableTest
+  ✓ it S03-TC-013 rechaza modificar o eliminar una solicitud ya enviada y conserva solicitud, evidencias y even… 0.44s  
+
+   PASS  Tests\Feature\Sprint03\TC127PhotosHiddenFromUnnotifiedTechnicianTest
+  ✓ it S03-TC-014 oculta fotos, descripción y dirección de una solicitud a un técnico no notificado [TC-127]     0.43s  
+
+   PASS  Tests\Feature\Sprint03\TC129RemovePhotoByApiTest
+  ✓ it S03-TC-015 solo el titular retira la foto de una solicitud no enviada; otro cliente es denegado [TC-129]  0.44s  
+
+   PASS  Tests\Feature\Sprint03\TechnicianSearchTest
+  ✓ it S03-TC-042 combina especialidad, subcategoría y distrito y devuelve vacío si nada coincide [TC-033]       0.54s  
+  ✓ it S03-TC-043 solo muestra técnicos activos y verificados con un servicio y rubro activos [TC-033]           0.43s  
+  ✓ it S03-TC-044 sin calificaciones el técnico aparece sin promedio y no pasa un filtro de calificación mínima… 0.29s  
+  ✓ it S03-TC-045 cada tarjeta trae solo la proyección pública, sin contacto ni documentos [TC-034]              0.30s  
+  ✓ it S03-TC-046 rechaza en español los parámetros de búsqueda inválidos sin errores del servidor               0.34s  
+  ✓ it S03-TC-047 pagina de forma estable por nombre visible e id                                                0.46s  
+  ✓ it S03-TC-048 la búsqueda exige sesión activa                                                                0.24s  
+  ✓ it S03-TC-051 excluye de la búsqueda al técnico con pausa vigente pero mantiene su perfil por enlace [TC-03… 0.30s  
+
+   PASS  Tests\Feature\Sprint04\CatalogLandingFieldsTest
+  ✓ carrusel → it S04-TC-134 el carrusel expone la tarifa de referencia con 2 decimales y null sin tarifa [TC-0… 0.27s  
+  ✓ carrusel → it S04-TC-135 el carrusel se arma con una sola consulta aunque crezca el número de subcategorías  0.28s  
+  ✓ it S04-TC-136 DatabaseSeeder siembra permisos, catálogo y los distritos activos sin duplicar ni pisar cambi… 0.33s  
+
+   PASS  Tests\Feature\Sprint04\DemoSeederTest
+  ✓ it S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, fotos de subcategorías y comunica… 1.93s  
+
+   PASS  Tests\Feature\Sprint04\DestructiveCommandGuardTest
+  ✓ it S04-TC-120 rechaza migrate:fresh con --env=testing y la base por defecto tecnicoya                        0.49s  
+  ✓ it S04-TC-121 rechaza migrate:refresh contra una base sin _testing                                           0.64s  
+  ✓ it S04-TC-122 rechaza migrate:reset contra una base sin _testing                                             0.44s  
+  ✓ it S04-TC-123 rechaza db:wipe contra una base sin _testing                                                   0.43s  
+  ✓ it S04-TC-124 rechaza db:seed contra una base sin _testing                                                   0.43s  
+  ✓ it S04-TC-125 rechaza la opción --database que apunta a una base sin _testing                                0.42s  
+  ✓ it S04-TC-127 tabla de decisión de la guarda dentro del proceso (entorno, comando, conexión y driver)        0.01s  
+  ✓ it S04-TC-126 permite db:seed en la base _testing del slot                                                   0.62s  
+
+   PASS  Tests\Feature\Sprint04\DirectRouteTest
+  ✓ it S04-TC-013 no activa a otros técnicos cuando el objetivo de la solicitud dirigida no es elegible [TC-052… 0.55s  
+  ✓ it S04-TC-032 abre una ronda directa de un solo destinatario aunque otros puntúen mejor                      0.40s  
+  ✓ it S04-TC-056 ofrece alternativas sin contactar a nadie cuando el objetivo no responde [TC-052]              0.57s  
+  ✓ it S04-TC-057 solo el titular autoriza la búsqueda alternativa, que excluye al técnico objetivo              0.58s  
+
+   PASS  Tests\Feature\Sprint04\DistanceTest
+  ✓ it S04-TC-115 mide la distancia desde el distrito base con la matriz de distritos [TC-043]                   0.53s  
+  ✓ it S04-TC-138 un técnico sin distrito base sigue elegible con cercanía 0 y distancia null (DIST-02, opción…  0.54s  
+
+   PASS  Tests\Feature\Sprint04\E2ESupportTest
+  ✓ it S04-TC-129 rechaza el seeder y las tareas E2E fuera de la base de un slot                                 0.03s  
+  ✓ it S04-TC-130 siembra los datos del contrato S4 §9 y es idempotente                                          1.84s  
+  ✓ it S04-TC-131 adelanta y repone el reloj del servidor del slot                                               0.07s  
+  ✓ it S04-TC-132 abre una ronda dirigida al técnico indicado y vacía la cola                                    1.56s  
+  ✓ it S04-TC-137 republica dos veces el mismo evento real de una solicitud del cliente sin escribir en la base… 1.65s  
+
+   PASS  Tests\Feature\Sprint04\EligibilityTest
+  ✓ it S04-TC-001 deja elegible al técnico que cumple todos los filtros, con fotografía [TC-039]                 0.45s  
+  ✓ it S04-TC-002 nunca ofrece al suspendido aunque tenga el mejor puntaje potencial [TC-040]                    0.42s  
+  ✓ it S04-TC-003 excluye al técnico sin verificación aprobada y deja la solicitud pendiente                     0.35s  
+  ✓ it S04-TC-004 excluye al técnico con la cuenta deshabilitada                                                 0.39s  
+  ✓ it S04-TC-005 excluye al técnico que no ofrece la subcategoría o la tiene inactiva                           0.37s  
+  ✓ it S04-TC-006 excluye al técnico que no cubre el distrito de la solicitud                                    0.37s  
+  ✓ it S04-TC-007 excluye al técnico con una pausa vigente sin fin [TC-132]                                      0.41s  
+  ✓ it S04-TC-008 no excluye por una pausa que termina exactamente ahora                                         0.34s  
+  ✓ it S04-TC-009 excluye al técnico cuya franja semanal no contiene la franja programada                        0.37s  
+  ✓ it S04-TC-010 deja no disponible al técnico con una cita solapada y acepta la contigua [TC-133]              0.40s  
+  ✓ it S04-TC-011 excluye en una inmediata al técnico con una cita que empieza a 1:59 h                          0.36s  
+  ✓ it S04-TC-012 no excluye en una inmediata por una cita que empieza a 2:00 h exactas                          0.38s  
+
+   PASS  Tests\Feature\Sprint04\MatchingPerformanceTest
+  ✓ it S04-TC-024 ejecuta el matching de 300 técnicos en 3 segundos o menos                                      0.60s  
+
+   PASS  Tests\Feature\Sprint04\MatchingRulesTest
+  ✓ it S04-TC-020 rechaza en MySQL los pesos que no suman 100 y no aplica pesos inválidos                        0.33s  
+  ✓ it S04-TC-025 conserva la fotografía de la ejecución anterior al ejecutar otra generación                    0.47s  
+  ✓ it S04-TC-026 aplica la versión de reglas de la solicitud aunque otra esté vigente                           0.54s  
+
+   PASS  Tests\Feature\Sprint04\MediaDeletionTest
+  ✓ it S04-TC-079 retira una evidencia propia no vinculada                                                       0.31s  
+  ✓ it S04-TC-080 no retira una evidencia adjunta a una solicitud                                                0.28s  
+  ✓ it S04-TC-081 borra archivos según la tabla de decisión por rol                                              0.29s  
+  ✓ it S04-TC-082 no vuelve a retirar una evidencia ya retirada                                                  0.35s  
+
+   PASS  Tests\Feature\Sprint04\NewTechnicianTest
+  ✓ it S04-TC-021 muestra al técnico nuevo con historial neutro y sin estimación [TC-044]                        0.49s  
+  ✓ it S04-TC-022 mantiene H neutro con tres servicios finalizados y ninguna reseña                              0.49s  
+  ✓ it S04-TC-116 estima por la mediana de la misma subcategoría con historial suficiente [TC-140]               0.56s  
+
+   PASS  Tests\Feature\Sprint04\NotificationDeliveryTest
+  ✓ it S04-TC-031 hace correr el SLA desde la bandeja aunque falle el correo                                     0.39s  
+  ✓ it S04-TC-071 hace como máximo tres reintentos y ningún quinto intento [TC-057]                              0.37s  
+  ✓ it S04-TC-072 se detiene cuando la entrega funciona al tercer intento                                        0.41s  
+  ✓ it S04-TC-075 guarda el error de entrega saneado, sin el token ni la traza                                   0.38s  
+  ✓ it S04-TC-118 respeta los intervalos de 1, 2 y 4 minutos entre reintentos                                    0.43s  
+
+   PASS  Tests\Feature\Sprint04\OfferAccessTest
+  ✓ it S04-TC-037 no deja que un técnico responda la oferta de otro                                              0.55s  
+  ✓ it S04-TC-038 responde ofertas según la tabla de decisión por rol                                            0.42s  
+  ✓ it S04-TC-052 muestra la dirección exacta solo al técnico asignado                                           0.66s  
+  ✓ it S04-TC-069 muestra en ofertas y bandeja solo lo propio                                                    0.39s  
+
+   PASS  Tests\Feature\Sprint04\OfferConcurrencyTest
+  ✓ it S04-TC-040 deja una sola respuesta cuando llegan a la vez aceptar y rechazar                             40.87s  
+
+   PASS  Tests\Feature\Sprint04\OfferResponseTest
+  ✓ it S04-TC-033 acepta a los 9:59 dentro del plazo sin asignar todavía [TC-047]                                0.48s  
+  ✓ it S04-TC-034 rechaza a los 10:00 exactos aunque el job de vencimiento no corrió [TC-048]                    0.45s  
+  ✓ it S04-TC-035 rechaza a los 10:01 y el job vence la oferta una sola vez                                      0.52s  
+  ✓ it S04-TC-036 guarda el rechazo con motivo y mantiene la ronda si quedan pendientes                          0.44s  
+  ✓ it S04-TC-039 no vence una aceptación confirmada antes de que corra el job                                   0.54s  
+  ✓ it S04-TC-041 revalida la elegibilidad del técnico al aceptar                                                0.48s  
+  ✓ it S04-TC-042 responde igual con la misma clave y rechaza otro cuerpo con esa clave                          0.51s  
+  ✓ it S04-TC-043 rechaza en el servidor una respuesta inválida                                                  0.42s  
+
+   PASS  Tests\Feature\Sprint04\OfferRoundTest
+  ✓ it S04-TC-023 conserva en la oferta la tarifa notificada aunque el técnico la cambie                         0.40s  
+  ✓ it S04-TC-027 abre la primera ronda con exactamente tres ofertas a los tres primeros [TC-045]                0.46s  
+  ✓ it S04-TC-028 ofrece a todos cuando hay menos elegibles que el máximo                                        0.39s  
+  ✓ it S04-TC-030 no duplica la ronda al preparar dos veces la misma generación                                  0.45s  
+  ✓ it S04-TC-114 resuelve el empate del corte por la verificación más antigua                                   0.46s  
+
+   PASS  Tests\Feature\Sprint04\OutboxTest
+  ✓ it S04-TC-029 no publica avisos cuando la apertura de la ronda se revierte [TC-046]                          0.42s  
+  ✓ it S04-TC-068 publica una sola vez la fila del outbox aunque el job corra dos veces                          0.39s  
+
+   PASS  Tests\Feature\Sprint04\PendingAvailabilityTest
+  ✓ it S04-TC-059 deja pendiente con plazo de 24 h cuando no hay elegibles [TC-053]                              0.38s  
+  ✓ it S04-TC-060 no expira el pendiente a las 23:59                                                             0.40s  
+  ✓ it S04-TC-061 expira el pendiente a las 24:00 una sola vez [TC-054]                                          0.35s  
+  ✓ it S04-TC-062 conserva el primer plazo al volver al pendiente                                                0.47s  
+  ✓ it S04-TC-063 libera el cupo de activas cuando una solicitud expira                                          0.39s  
+  ✓ it S04-TC-119 reintenta el pendiente cada 5 minutos solo con técnicos nuevos                                31.82s  
+
+   PASS  Tests\Feature\Sprint04\RealtimeTest
+  ✓ it S04-TC-064 publica solo lo confirmado, con identificador de evento y versión                              0.51s  
+  ✓ it S04-TC-065 autoriza el canal privado de la solicitud solo al titular [TC-056]                             0.46s  
+  ✓ it S04-TC-066 autoriza el canal privado del técnico solo a ese técnico activo                                0.31s  
+  ✓ it S04-TC-067 publica eventos sin dirección, descripción, teléfono ni correo                                 0.38s  
+
+   PASS  Tests\Feature\Sprint04\ReassignmentTest
+  ✓ it S04-TC-053 abre una sola ronda nueva aunque el vencimiento corra dos veces [TC-051]                       0.67s  
+  ✓ it S04-TC-054 abre la siguiente ronda al tercer rechazo sin esperar el plazo                                 0.68s  
+  ✓ it S04-TC-055 espera la elección cuando la ronda tiene alguna aceptación                                     0.60s  
+  ✓ it S04-TC-058 no vuelve a ofrecer a quien ya tuvo oferta en la solicitud                                     0.61s  
+
+   PASS  Tests\Feature\Sprint04\RequestCreationIdempotencyTest
+  ✓ it S04-TC-076 no duplica el borrador al crear dos veces con la misma clave                                   0.26s  
+  ✓ it S04-TC-077 rechaza la misma clave con otro cuerpo                                                         0.35s  
+  ✓ it S04-TC-078 sigue creando sin clave porque la cabecera es opcional en la API                               0.29s  
+
+   PASS  Tests\Feature\Sprint04\ResponseShapeTest
+  ✓ it S04-TC-140 la bandeja, el detalle y la respuesta de una oferta tienen la forma completa del contrato §4   0.47s  
+  ✓ it S04-TC-141 los candidatos y la elección tienen la forma completa del contrato §5.1 y §5.2, con distancia… 0.63s  
+  ✓ it S04-TC-142 el detalle de la solicitud del titular tiene la forma completa del contrato §5.4 durante la b… 0.40s  
+  ✓ it S04-TC-143 la bandeja de notificaciones tiene la forma completa del contrato §7.1 y pagina                0.44s  
+
+   PASS  Tests\Feature\Sprint04\SelectionConcurrencyTest
+  ✓ it S04-TC-045 confirma una sola cita cuando dos clientes eligen al mismo técnico en franjas solapadas [TC-… 34.40s  
+  ✓ it S04-TC-046 acepta una sola elección cuando el mismo cliente elige dos veces a la vez                     39.39s  
+
+   PASS  Tests\Feature\Sprint04\SelectionTest
+  ✓ it S04-TC-044 crea la participación y la reserva al elegir una aceptación válida [TC-049]                    0.52s  
+  ✓ it S04-TC-047 no deja elegir mientras la ronda sigue abierta                                                 0.57s  
+  ✓ it S04-TC-048 no deja elegir una oferta de una solicitud ajena                                               0.59s  
+  ✓ it S04-TC-049 revalida al elegir que el técnico siga disponible                                              0.53s  
+  ✓ it S04-TC-050 abre la siguiente ronda si la única aceptada deja de estar disponible                          0.73s  
+  ✓ it S04-TC-051 responde igual a la misma elección con la misma clave                                          0.47s  
+  ✓ it S04-TC-070 muestra al titular solo las aceptaciones de su solicitud, sin puntaje                          0.56s  
+  ✓ it S04-TC-117 reserva dos horas al elegir en una solicitud inmediata                                         0.49s  
+
+   PASS  Tests\Feature\Sprint04\SpecialtyImageTest
+  ✓ it S04-TC-133 expone la foto de la especialidad solo si es pública, revisada y no retirada [TC-012]          0.33s  
+
+   PASS  Tests\Feature\Sprint04\StaleJobTest
+  ✓ it S04-TC-073 ignora un job de ronda con una generación anterior [TC-058]                                    0.52s  
+  ✓ it S04-TC-074 no expira con un job antiguo una solicitud que pasó de pendiente a asignada                    0.61s  
+
+   PASS  Tests\Feature\Sprint04\TechnicianBaseDistrictTest
+  ✓ it S04-TC-128 guarda un distrito base activo y rechaza uno inactivo                                          0.48s  
+
+   PASS  Tests\Feature\Sprint07\AdminInsightsTest
+  ✓ it S07-TC-121 las estadísticas exigen dashboard.view, aceptan 7, 30 o 90 días y devuelven un día por fecha…  0.44s  
+  ✓ it S07-TC-122 agrega solicitudes por día, especialidad y distrito, y el embudo enviado, con ofertas, asigna… 0.73s  
+  ✓ it S07-TC-123 calcula la tasa de aceptación de ofertas y el tiempo medio de respuesta; sin respuestas devue… 0.72s  
+  ✓ it S07-TC-124 cuenta técnicos por estado, usuarios nuevos por rol y comunicados vigentes por audiencia       0.34s  
+  ✓ it S07-TC-125 las estadísticas usan un número fijo de consultas, sin importar cuántas solicitudes haya       0.70s  
+  ✓ it S07-TC-126 lista las solicitudes en solo lectura con filtros por estado, distrito, especialidad, fecha y… 0.80s  
+  ✓ it S07-TC-127 el detalle de una solicitud muestra la línea de tiempo en orden, el cliente y el técnico asig… 0.72s  
+  ✓ it S07-TC-128 el Inicio entrega los contadores del menú y los últimos 5 eventos relevantes, sin datos perso… 0.40s  
+
+   PASS  Tests\Feature\Sprint07\AdminPanelBaseTest
+  ✓ Inicio del administrador → it S07-TC-046 exige sesión y el permiso dashboard.view [D-74]                     0.31s  
+  ✓ Inicio del administrador → it S07-TC-047 cuenta las solicitudes por estado con ceros explícitos para los es… 0.30s  
+  ✓ Inicio del administrador → it S07-TC-048 cuenta solo los técnicos pendientes de verificación                 0.28s  
+  ✓ Inicio del administrador → it S07-TC-049 cuenta los usuarios nuevos de 7 y 30 días por rol, sin cuentas ano… 0.48s  
+  ✓ Inicio del administrador → it S07-TC-050 declara las calificaciones no disponibles hasta el Sprint 6 y no e… 0.24s  
+  ✓ Mi perfil → it S07-TC-051 rechaza el cambio de contraseña sin la actual correcta o con una nueva inválida    0.18s  
+  ✓ Mi perfil → it S07-TC-052 cambia la contraseña, conserva la sesión actual y cierra las demás [D-44]          0.19s  
+  ✓ Mi perfil → it S07-TC-053 guarda la preferencia de tema en /me y rechaza valores fuera del dominio [D-76]    0.18s  
+  ✓ Mi perfil → it S07-TC-054 nombres y apellidos actualizan el nombre para mostrar y no se mezclan con name [D… 0.12s  
+  ✓ Mi perfil → it S07-TC-055 la foto de perfil es una imagen revisada propia con finalidad avatar [D-77]        0.22s  
+  ✓ it S07-TC-056 AuthorizationSeeder concede dashboard.view y users.manage al administrador sin duplicar [D-74… 0.13s  
+
+   PASS  Tests\Feature\Sprint07\AnnouncementCarouselTest
+  ✓ it S07-TC-078 la imagen de comunicado exige announcements.manage, JPG o WebP de hasta 600 KB y se guarda si… 0.25s  
+  ✓ it S07-TC-079 el comunicado de imagen exige imagen 3:1 de al menos 1440 × 480, texto alternativo y tipo      0.36s  
+  ✓ it S07-TC-080 la imagen móvil es opcional, solo para el origen imagen y en proporción 3:2 de al menos 810 ×… 0.38s  
+  ✓ it S07-TC-081 el enlace de Genially solo acepta https://view.genially.com/<id> y se normaliza                    0.53s  
+  ✓ it S07-TC-082 el panel recibe los comunicados vigentes de su audiencia en el orden del carrusel, con sus da… 0.38s  
+  ✓ it S07-TC-083 reordena el carrusel de una audiencia con el conjunto completo, sin tocar la otra, con permis… 0.54s  
+  ✓ it S07-TC-084 despublica un comunicado: vuelve a borrador, sale del panel, controla la versión y deja audit… 0.26s  
+  ✓ it S07-TC-085 duplicar copia el origen, la imagen, el tipo y el texto alternativo, y la copia va al final d… 0.25s  
+  ✓ it S07-TC-086 el listado del administrador indica la fase: borrador, programado, vigente, vencido o retirad… 0.58s  
+  ✓ it S07-TC-087 no publica un comunicado de imagen cuya imagen se retiró después de guardarlo                  0.22s  
+
+   PASS  Tests\Feature\Sprint07\AnnouncementLifecycleTest
+  ✓ it S07-TC-098 edita un comunicado vigente con su versión: se ve de inmediato en el panel, rechaza la versió… 0.27s  
+  ✓ it S07-TC-099 reemplaza la imagen principal y la móvil de un publicado, y el enlace de un Genially, validan… 0.49s  
+  ✓ it S07-TC-100 restaura un retirado como borrador con su versión y auditoría; antes de restaurarlo no se edi… 0.46s  
+  ✓ it S07-TC-101 elimina de forma definitiva un borrador, un vencido y un retirado, con auditoría de la foto p… 0.59s  
+  ✓ it S07-TC-102 al eliminar retira las imágenes que ningún otro comunicado usa y reordena el carrusel que que… 0.56s  
+  ✓ it S07-TC-103 no elimina un vigente ni un programado, ni sin escribir ELIMINAR ni con la versión vieja       0.41s  
+  ✓ it S07-TC-104 niega a cliente y técnico editar un publicado, restaurar y eliminar, sin cambiar nada          0.48s  
+
+   PASS  Tests\Feature\Sprint07\DeclaredSubcategoriesTest
+  ✓ it S07-TC-031 guarda los rubros declarados sin crear servicios y los devuelve en /me y en el perfil propio   0.51s  
+  ✓ it S07-TC-032 rechaza un rubro de una especialidad que el técnico no declaró                                 0.45s  
+  ✓ it S07-TC-033 exige al menos un rubro por cada especialidad declarada                                        0.40s  
+  ✓ it S07-TC-034 rechaza rubros inactivos, de una especialidad inactiva o repetidos                             0.48s  
+  ✓ it S07-TC-035 el técnico recién registrado no es candidato del matching hasta tener servicio con tarifa      0.37s  
+
+   PASS  Tests\Feature\Sprint07\ErrorReferenceTest
+  ✓ it S07-TC-072 un error interno registra en el log la misma referencia que devuelve al usuario                0.02s  
+
+   PASS  Tests\Feature\Sprint07\PasswordResetTest
+  ✓ it S07-TC-011 responde igual exista o no el correo y solo envía el enlace a la cuenta real                   0.35s  
+  ✓ it S07-TC-012 el enlace cambia la contraseña una sola vez y cierra las demás sesiones                        0.38s  
+  ✓ it S07-TC-013 un enlace vencido a los 60 minutos o ajeno no cambia la contraseña                             0.94s  
+  ✓ it S07-TC-014 limita las solicitudes por correo y por IP con respuesta 429 en español                        0.85s  
+  ✓ it S07-TC-015 audita la recuperación de un administrador sin guardar el token ni la contraseña [D-44]        0.39s  
+  ✓ it S07-TC-016 la nueva contraseña cumple las reglas del registro y debe confirmarse                          0.37s  
+
+   PASS  Tests\Feature\Sprint07\RegistrationDetailsTest
+  ✓ it S07-TC-001 registra un cliente MYPE con nombres, teléfono, distrito principal y dirección privada [TC-00… 0.27s  
+  ✓ it S07-TC-002 registra un técnico con distrito base, distritos atendidos, especialidades y experiencia, sin… 0.54s  
+  ✓ it S07-TC-003 rechaza teléfonos que no son celulares peruanos de 9 dígitos que empiezan en 9                 0.66s  
+  ✓ it S07-TC-004 rechaza un distrito inexistente o inactivo para el cliente y para el técnico                   0.77s  
+  ✓ it S07-TC-005 exige al técnico al menos una especialidad activa y experiencia entre 0 y 50 años              0.87s  
+  ✓ it S07-TC-006 no crea la cuenta si no se aceptan los Términos y la Privacidad                                0.40s  
+  ✓ it S07-TC-007 prohíbe los campos que no corresponden al tipo de cuenta                                       0.44s  
+  ✓ it S07-TC-008 el mismo correo con otra capitalización no crea una segunda cuenta [TC-002]                    0.30s  
+  ✓ it S07-TC-009 el registro detallado tampoco permite crear administradores [TC-008]                           0.29s  
+  ✓ it S07-TC-010 /me devuelve nombres, apellidos y el distrito principal del cliente para precargar la solicit… 0.32s  
+
+   PASS  Tests\Feature\Sprint07\UserAdministrationTest
+  ✓ it S07-TC-109 lista usuarios con búsqueda por nombre o correo y filtros por rol, estado, distrito y fecha d… 0.54s  
+  ✓ it S07-TC-110 da de alta un cliente sin contraseña, pendiente de activación, con enlace por correo y audito… 0.57s  
+  ✓ it S07-TC-111 da de alta un técnico y un administrador, y rechaza correo repetido o datos incompletos        0.40s  
+  ✓ it S07-TC-112 el enlace de activación vale 72 horas, define la contraseña, verifica el correo y se puede re… 0.63s  
+  ✓ it S07-TC-113 el detalle muestra datos, historial de solicitudes y auditoría de la cuenta                    0.36s  
+  ✓ it S07-TC-114 edita datos con versión y motivo, audita antes y después y no cambia rol ni contraseña         0.40s  
+  ✓ it S07-TC-115 bloquea con motivo, cierra sesiones e impide entrar; desbloquea con motivo; rechaza repetir    0.57s  
+  ✓ it S07-TC-116 nunca actúa sobre la propia cuenta ni bloquea o elimina al último administrador activo         0.49s  
+  ✓ it S07-TC-117 restablecer acceso invalida la contraseña, cierra sesiones y envía el enlace de restablecimie… 0.57s  
+  ✓ it S07-TC-118 cierra todas las sesiones de una cuenta sin bloquearla y lo audita                             0.38s  
+  ✓ it S07-TC-119 eliminar anonimiza la cuenta con ELIMINAR y motivo: borra datos personales y conserva las sol… 0.39s  
+  ✓ it S07-TC-120 niega toda la administración de usuarios a cliente, técnico y administrador sin users.manage   0.78s  
+
+  Tests:    350 passed (4077 assertions)
+  Duration: 317.36s
+

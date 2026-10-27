@@ -407,6 +407,7 @@ Los eventos se publican **solo después del commit**, desde `outbox_events` (TC-
 - `serverClock('+10m')`: adelanta el reloj del **servidor** por medio de `App\Shared\Clock`. `cy.clock` solo mueve el del navegador; el reloj vuelve a la hora real al terminar cada spec.
 - `runJobs()`: ejecuta `queue:work --stop-when-empty` y el barrido del scheduler una vez.
 - `openRoundFor('<cuenta técnico>')`: abre una ronda para el técnico indicado, para probar el tiempo real.
+- `replayEvent(<id de solicitud | correo de cliente E2E>)` **[nuevo en el cierre S4.6]**: republica dos veces por Reverb el último evento ya publicado de esa solicitud (o de las del cliente), con el mismo `event_id`, la misma carga y sin escribir en la base. Responde `{event_id, event_type, channel, request_id, version, broadcasts: 2}`. Desbloquea S04-TC-094 (Pest: S04-TC-137).
 
 El arrancador levanta también Reverb, la cola y el scheduler del slot (D-70). El bloqueo `tmp/e2e-cypress.lock` sigue siendo global.
 
