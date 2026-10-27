@@ -1,5 +1,5 @@
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+ RUN  v5.0.3 <repo>/frontend/web
 
  ❯ src/features/admin/admin.test.jsx (13 tests | 1 failed | 12 skipped) 116ms
    ↓ S07-TC-129 el menú agrupa las secciones con título, muestra contadores accesibles y tooltips con el menú contraído
@@ -219,4 +219,4 @@ Ignored nodes: comments, script, style
    Start at  12:16:32
    Duration  2.68s (import 39%, transform 32%, environment 20%, tests 5%, setup 5%)
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/test-results/junit.xml
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml
