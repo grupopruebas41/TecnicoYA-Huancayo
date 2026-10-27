@@ -1,0 +1,142 @@
+{
+  "1366-light-inicio": {
+    "overflowX": false
+  },
+  "1366-light-badge": null,
+  "1366-light-estadisticas": {
+    "overflowX": false
+  },
+  "1366-light-estadisticas-datos": [
+    "Solicitudes por día",
+    "Por especialidad",
+    "Por distrito",
+    "Embudo de solicitudes",
+    "Ofertas",
+    "Técnicos por estado",
+    "Usuarios nuevos",
+    "Comunicados vigentes"
+  ],
+  "1366-light-usuarios": {
+    "overflowX": false
+  },
+  "1366-light-usuario-detalle": {
+    "overflowX": false
+  },
+  "1366-light-dialogo-eliminar": {
+    "overflowX": false
+  },
+  "1366-light-solicitudes": {
+    "overflowX": false
+  },
+  "1366-light-solicitud-detalle": {
+    "overflowX": false
+  },
+  "1366-light-activacion": {
+    "overflowX": false
+  },
+  "1366-dark-inicio": {
+    "overflowX": false
+  },
+  "1366-dark-badge": null,
+  "1366-dark-estadisticas": {
+    "overflowX": false
+  },
+  "1366-dark-estadisticas-datos": [
+    "Solicitudes por día",
+    "Por especialidad",
+    "Por distrito",
+    "Embudo de solicitudes",
+    "Ofertas",
+    "Técnicos por estado",
+    "Usuarios nuevos",
+    "Comunicados vigentes"
+  ],
+  "1366-dark-usuarios": {
+    "overflowX": false
+  },
+  "1366-dark-usuario-detalle": {
+    "overflowX": false
+  },
+  "1366-dark-dialogo-eliminar": {
+    "overflowX": false
+  },
+  "1366-dark-solicitudes": {
+    "overflowX": false
+  },
+  "1366-dark-solicitud-detalle": {
+    "overflowX": false
+  },
+  "1366-dark-activacion": {
+    "overflowX": false
+  },
+  "390-light-inicio": {
+    "overflowX": false
+  },
+  "390-light-badge": null,
+  "390-light-estadisticas": {
+    "overflowX": false
+  },
+  "390-light-estadisticas-datos": [
+    "Solicitudes por día",
+    "Por especialidad",
+    "Por distrito",
+    "Embudo de solicitudes",
+    "Ofertas",
+    "Técnicos por estado",
+    "Usuarios nuevos",
+    "Comunicados vigentes"
+  ],
+  "390-light-usuarios": {
+    "overflowX": false
+  },
+  "390-light-usuario-detalle": {
+    "overflowX": false
+  },
+  "390-light-dialogo-eliminar": {
+    "overflowX": false
+  },
+  "390-light-solicitudes": {
+    "overflowX": false
+  },
+  "390-light-solicitud-detalle": {
+    "overflowX": false
+  },
+  "390-light-activacion": {
+    "overflowX": false
+  },
+  "390-dark-inicio": {
+    "overflowX": false
+  },
+  "390-dark-badge": null,
+  "390-dark-estadisticas": {
+    "overflowX": false
+  },
+  "390-dark-estadisticas-datos": [
+    "Solicitudes por día",
+    "Por especialidad",
+    "Por distrito",
+    "Embudo de solicitudes",
+    "Ofertas",
+    "Técnicos por estado",
+    "Usuarios nuevos",
+    "Comunicados vigentes"
+  ],
+  "390-dark-usuarios": {
+    "overflowX": false
+  },
+  "390-dark-usuario-detalle": {
+    "overflowX": false
+  },
+  "390-dark-dialogo-eliminar": {
+    "overflowX": false
+  },
+  "390-dark-solicitudes": {
+    "overflowX": false
+  },
+  "390-dark-solicitud-detalle": {
+    "overflowX": false
+  },
+  "390-dark-activacion": {
+    "overflowX": false
+  }
+}

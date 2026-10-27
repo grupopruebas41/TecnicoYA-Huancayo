@@ -1,0 +1,81 @@
+
+ RUN  v5.0.3 <repo>/frontend/web
+
+ ❯ src/features/admin/admin.test.jsx (0 test)
+ ❯ src/features/panel/panel.test.jsx (15 tests | 1 failed) 831ms
+   × S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa 107ms
+   ✓ S07-TC-058 la barra lateral se contrae, conserva nombres accesibles y recuerda el estado 96ms
+   ✓ S07-TC-059 en móvil el menú es un cajón que se cierra con Escape y devuelve el foco 34ms
+   ✓ S07-TC-060 la campana cuenta las notificaciones sin leer y las lista 67ms
+   ✓ S07-TC-061 el avatar muestra iniciales o la foto y abre el menú Mi perfil / Tema / Cerrar sesión 72ms
+   ✓ S07-TC-062 el tema claro u oscuro se aplica con data-theme y se guarda en /me 48ms
+   ✓ S07-TC-063 sin /me ni almacenamiento el tema funciona igual y avisa que no se guardó 47ms
+   ✓ S07-TC-064 el Inicio muestra los indicadores reales del dashboard 17ms
+   ✓ S07-TC-065 el Inicio informa con honestidad cuando no hay datos o falla la consulta 30ms
+   ✓ S07-TC-066 Verificación permite suspender con motivo y confirmación, y reactivar 52ms
+   ✓ S07-TC-067 Mi perfil edita nombres y apellidos; las cuentas anteriores conservan Nombre completo 43ms
+   ✓ S07-TC-068 la foto de perfil se sube como avatar, se aplica y se puede quitar 64ms
+   ✓ S07-TC-069 el cambio de contraseña pide la actual y muestra el error del servidor en su campo 75ms
+   ✓ S07-TC-070 cliente y técnico usan la misma base con su contenido actual 23ms
+   ✓ S07-TC-071 la campana y el menú del avatar se cierran con Escape desde su botón o con un clic fuera 55ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/admin/admin.test.jsx [ src/features/admin/admin.test.jsx ]
+Error: Failed to resolve import "./StatisticsPage" from "src/features/admin/admin.test.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: <repo>/frontend/web/src/features/admin/admin.test.jsx:8:0
+  18 |  const __vi_import_1__ = await import("@testing-library/react");
+  19 |  const __vi_import_2__ = await import("../administration/AccountApp");
+  20 |  const __vi_import_3__ = await import("./StatisticsPage");
+     |                                       ^
+  21 |  const __vi_import_4__ = await import("./UsersAdmin");
+  22 |  const __vi_import_5__ = await import("./RequestsAdmin");
+ ❯ TransformPluginContext._formatLog ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/panel/panel.test.jsx > S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa
+AssertionError: expected [ 'Inicio', 'Catálogo', …(3) ] to deeply equal [ 'Inicio', 'Estadísticas', …(6) ]
+
+- Expected
++ Received
+
+  [
+    "Inicio",
+-   "Estadísticas",
+-   "Usuarios",
+-   "Verificación",
+-   "Solicitudes",
+    "Catálogo",
++   "Verificación",
+    "Comunicados",
+    "Mi perfil",
+  ]
+
+ ❯ src/features/panel/panel.test.jsx:49:6
+     47|   // Bloque C (D-85): el menú se agrupa en General, Gestión, Contenido…
+     48|   expect(within(nav).getAllByRole('button').map(b => b.querySelector('…
+     49|     .toEqual(['Inicio', 'Estadísticas', 'Usuarios', 'Verificación', 'S…
+       |      ^
+     50|   expect(within(nav).getByRole('button', {name: 'Inicio'})).toHaveAttr…
+     51|   expect(document.querySelector('[data-cy=portal-admin]')).toBeInTheDo…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  1 failed | 14 passed (15)
+   Start at  03:53:13
+   Duration  2.61s (environment 33%, tests 27%, import 18%, transform 14%, setup 8%)
+
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml

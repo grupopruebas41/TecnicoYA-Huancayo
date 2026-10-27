@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {request} from '../administration/http';
+import {eventLabel, formatDateTime} from '../admin/adminRules';
 
 // Estados de service_requests en el orden del ciclo de vida (contrato S07 §7).
 const statusLabels = {
@@ -17,8 +18,15 @@ function NewUsers({label, counts}) {
     <small>{Object.entries(roleLabels).map(([role, [one, many]]) => `${counts[role]} ${counts[role] === 1 ? one : many}`).join(' · ')}</small></p>;
 }
 
+// Bloque C (D-85): accesos rápidos según permisos; cada uno abre su sección (y el formulario de alta si corresponde).
+const QUICK_LINKS = [
+  ['technicians.verify', 'verification', null, 'Verificar técnicos'],
+  ['announcements.manage', 'announcements', 'create', 'Crear comunicado'],
+  ['users.manage', 'users', 'create', 'Crear usuario'],
+];
+
 /** Inicio del administrador: indicadores reales de GET /admin/dashboard, sin cifras inventadas. */
-export default function AdminHome() {
+export default function AdminHome({navigate, permissions = []}) {
   const [state, setState] = useState({loading: true, data: null, error: ''});
   const load = useCallback(() => {
     setState(current => ({...current, loading: true, error: ''}));
@@ -32,6 +40,10 @@ export default function AdminHome() {
     <h2>Inicio</h2>
     {state.loading && !data && <p className="muted">Cargando indicadores…</p>}
     {state.error && <div className="error" role="alert">{state.error} <button type="button" className="text-button" onClick={load}>Reintentar</button></div>}
+    {navigate && <nav className="panel-quick" aria-label="Accesos rápidos">
+      {QUICK_LINKS.filter(([permission]) => permissions.includes(permission)).map(([, section, intent, label]) =>
+        <button key={section} type="button" className="button outline" onClick={() => navigate(section, intent)}>{label}</button>)}
+    </nav>}
     {data && <>
       <p className="muted">Actualizado: {new Date(data.generated_at).toLocaleTimeString('es-PE', {hour: '2-digit', minute: '2-digit'})}</p>
       <div className="panel-cards">
@@ -48,6 +60,14 @@ export default function AdminHome() {
         <Card id="kpi-users" title="Usuarios nuevos">
           <NewUsers label="en los últimos 7 días" counts={data.new_users.last_7_days}/>
           <NewUsers label="en los últimos 30 días" counts={data.new_users.last_30_days}/>
+        </Card>
+        <Card id="kpi-events" title="Últimos eventos">
+          {!data.recent_events?.length ? <p className="muted">Todavía no hay acciones registradas en el panel.</p>
+            : <ol className="panel-events">{data.recent_events.map((event, index) => <li key={index}>
+              <strong>{eventLabel(event.action)}</strong>
+              <span className="muted">{formatDateTime(event.occurred_at)}{event.actor ? ` · ${event.actor}` : ''}</span>
+              {event.reason && <span>{event.reason}</span>}
+            </li>)}</ol>}
         </Card>
         <Card id="kpi-ratings" title="Calificaciones">
           {data.ratings.available

@@ -44,7 +44,9 @@ const openAdmin = async (user = admin) => { routes(user); render(<AccountApp/>);
 test('S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa', async () => {
   const nav = await openAdmin();
 
-  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent)).toEqual(['Inicio', 'Catálogo', 'Verificación', 'Comunicados', 'Mi perfil']);
+  // Bloque C (D-85): el menú se agrupa en General, Gestión, Contenido y Cuenta (detalle en S07-TC-129).
+  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent))
+    .toEqual(['Inicio', 'Estadísticas', 'Usuarios', 'Verificación', 'Solicitudes', 'Catálogo', 'Comunicados', 'Mi perfil']);
   expect(within(nav).getByRole('button', {name: 'Inicio'})).toHaveAttribute('aria-current', 'page');
   expect(document.querySelector('[data-cy=portal-admin]')).toBeInTheDocument();
   expect(screen.getByRole('button', {name: 'Cerrar sesión'})).toHaveAttribute('data-cy', 'logout');

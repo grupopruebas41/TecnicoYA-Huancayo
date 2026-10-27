@@ -27,11 +27,26 @@ final class AdminDashboard
             'requests_by_status' => $byStatus,
             'requests_total' => array_sum($byStatus),
             'technicians_pending_verification' => DB::table('technician_profiles')->where('verification_status', 'pending')->count(),
+            // Bloque C (D-85): contador del menú «Comunicados» y últimos eventos para el Inicio.
+            'announcements_active' => DB::table('announcements')->where('status', 'published')->whereNull('retired_at')
+                ->where('starts_at', '<=', $now)->where('ends_at', '>', $now)->count(),
+            'recent_events' => $this->recentEvents(),
             'new_users' => ['last_7_days' => $this->newUsers($now->subDays(7)), 'last_30_days' => $this->newUsers($now->subDays(30))],
             // Las calificaciones llegan en el Sprint 6: no hay datos que promediar.
             'ratings' => ['available' => false, 'average' => null, 'count' => 0, 'available_from' => 'Sprint 6'],
             'generated_at' => $now->toISOString(),
         ];
+    }
+
+    /** Últimos 5 eventos hechos por una persona en el panel (sin sesiones ni la siembra de permisos); acción, motivo, actor y fecha. */
+    private function recentEvents(): array
+    {
+        return DB::table('audit_entries as a')->leftJoin('users as actor', 'actor.id', '=', 'a.actor_id')
+            ->whereNotNull('a.actor_id')->where('a.action', 'not like', 'auth.%')->where('a.action', 'not like', 'authorization.%')
+            ->orderByDesc('a.id')->limit(5)
+            ->get(['a.action', 'a.reason', 'a.subject_type', 'a.occurred_at', 'actor.name as actor'])
+            ->map(fn (object $row) => ['action' => $row->action, 'reason' => $row->reason, 'subject_type' => $row->subject_type,
+                'actor' => $row->actor, 'occurred_at' => CarbonImmutable::parse($row->occurred_at)->toISOString()])->all();
     }
 
     private function newUsers(CarbonImmutable $since): array

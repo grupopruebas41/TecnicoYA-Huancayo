@@ -32,11 +32,14 @@ final class PasswordResetController
     public function reset(ResetPasswordRequest $request, AuditAdminAccess $audit): JsonResponse
     {
         $resetUser = null;
-        $status = Password::broker()->reset($request->validated(), function (User $user, string $password) use (&$resetUser) {
-            DB::transaction(function () use ($user, $password) {
+        // D-85: una cuenta dada de alta por un administrador se activa con el mismo formulario y el broker de 72 horas.
+        $target = User::query()->where('email', $request->validated('email'))->first();
+        $activating = $target !== null && $target->invited_at !== null && $target->activated_at === null;
+        $status = Password::broker($activating ? 'activations' : null)->reset($request->validated(), function (User $user, string $password) use (&$resetUser, $activating) {
+            DB::transaction(function () use ($user, $password, $activating) {
                 $user->forceFill([
                     'password' => $password, 'remember_token' => Str::random(60), 'auth_version' => $user->auth_version + 1,
-                ])->save();
+                ] + ($activating ? ['activated_at' => now(), 'email_verified_at' => $user->email_verified_at ?? now()] : []))->save();
                 // Cierra todas las sesiones de la cuenta, como la suspensión de D-32.
                 DB::table('sessions')->where('user_id', $user->id)->delete();
             });

@@ -8,7 +8,9 @@ use App\Modules\CNotifications\Http\Controllers\NotificationController;
 use App\Modules\FAdministration\Http\Controllers\AdminAnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
 use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
+use App\Modules\FAdministration\Http\Controllers\AdminUserController;
 use App\Modules\FAdministration\Http\Controllers\AdminDashboardController;
+use App\Modules\FAdministration\Http\Controllers\AdminInsightsController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\CatalogController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
@@ -92,6 +94,12 @@ Route::prefix('v1')->group(function () {
         Route::prefix('admin')->group(function () {
             // Fase 1 del panel: indicadores del Inicio (D-74).
             Route::get('dashboard', [AdminDashboardController::class, 'show'])->middleware('permission:dashboard.view');
+            // Bloque C (D-85): estadísticas y solicitudes en solo lectura, con el mismo permiso del Inicio.
+            Route::middleware('permission:dashboard.view')->group(function () {
+                Route::get('statistics', [AdminInsightsController::class, 'statistics']);
+                Route::get('requests', [AdminInsightsController::class, 'requests']);
+                Route::get('requests/{serviceRequest}', [AdminInsightsController::class, 'request'])->whereNumber('serviceRequest');
+            });
             Route::middleware('permission:catalog.manage')->group(function () {
                 Route::get('specialties', [AdminCatalogController::class, 'specialties']);
                 Route::post('specialties', [AdminCatalogController::class, 'storeSpecialty']);
@@ -115,6 +123,19 @@ Route::prefix('v1')->group(function () {
                 Route::post('announcements/{announcement}/restoration', [AdminAnnouncementController::class, 'restore']);
                 Route::delete('announcements/{announcement}/permanent', [AdminAnnouncementController::class, 'destroy']);
                 Route::post('announcements/{announcement}/duplicates', [AnnouncementController::class, 'duplicate']);
+            });
+            // Bloque C (D-85): usuarios; toda acción exige motivo y queda auditada.
+            Route::prefix('users')->middleware('permission:users.manage')->group(function () {
+                Route::get('/', [AdminUserController::class, 'index']);
+                Route::post('/', [AdminUserController::class, 'store']);
+                Route::get('{user}', [AdminUserController::class, 'show'])->whereNumber('user');
+                Route::patch('{user}', [AdminUserController::class, 'update'])->whereNumber('user');
+                Route::delete('{user}', [AdminUserController::class, 'destroy'])->whereNumber('user');
+                Route::post('{user}/block', [AdminUserController::class, 'block'])->whereNumber('user');
+                Route::post('{user}/unblock', [AdminUserController::class, 'unblock'])->whereNumber('user');
+                Route::post('{user}/access-reset', [AdminUserController::class, 'resetAccess'])->whereNumber('user');
+                Route::delete('{user}/sessions', [AdminUserController::class, 'closeSessions'])->whereNumber('user');
+                Route::post('{user}/activation-link', [AdminUserController::class, 'activationLink'])->whereNumber('user');
             });
             Route::prefix('technicians')->middleware('permission:technicians.verify')->group(function () {
                 Route::get('/', [AdminTechnicianController::class, 'index']);

@@ -2,6 +2,26 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-27 · Bloque C · usuarios, menú agrupado, estadísticas, solicitudes e Inicio (D-85)
+
+- **Rama:** `feature/pimentel/admin/usuarios`, creada desde `main` tras el PR #33.
+- **Commits:** de `94c4bcf` a `d926e19` (detalle en `docs/avances/pimentel/admin/usuarios/avance.md`).
+- **API (contrato S07 §9):**
+  - `/admin/users` (`users.manage`);
+  - `/admin/statistics` y `/admin/requests` en solo lectura (`dashboard.view`);
+  - `/admin/dashboard` agrega contadores y eventos;
+  - el restablecimiento activa las cuentas pendientes.
+- **Datos:** migración `000028`, más el broker `activations` (72 horas).
+- **Pruebas en `d926e19`:**
+  - Pest 343/343 y Vitest 308/308; lint y build aprobados; audits limpios;
+  - IDs nuevos: S07-TC-109 a 140; el catálogo S07 queda con 140 IDs;
+  - 41 capturas.
+- **Pendiente:**
+  - confirmar los cuatro valores de D-85;
+  - en desarrollo, correr `php artisan migrate`;
+  - la regresión Cypress S4.6.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Ajuste del PR #33 · editar, restaurar y eliminar comunicados (D-84)
 
 - **Rama:** `feature/pimentel/admin/comunicados-carrusel`, la misma del PR #33.

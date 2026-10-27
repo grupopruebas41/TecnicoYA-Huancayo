@@ -229,3 +229,96 @@ Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG
 - `DELETE /admin/announcements/{id}` sigue siendo **retirar** (S02-TC-028, sin cambios).
 - Sin `announcements.manage`, las tres operaciones responden 403.
 
+## 9. Cambios de la versión 1.5 (2026-10-27): bloque C · usuarios, estadísticas, solicitudes e Inicio (D-85)
+
+### 9.1 Usuarios (`users.manage`)
+
+**Reglas comunes:**
+- Toda acción que cambia algo exige `reason` (5 a 500 caracteres); salvo el alta y el reenvío de activación, también `expected_version`.
+- **Errores:**
+  - 409 `STALE_VERSION` si la versión no coincide;
+  - 409 `USER_SELF_ACTION` sobre la propia cuenta (salvo editar);
+  - 409 `USER_ANONYMIZED` sobre una cuenta eliminada;
+  - 409 `USER_LAST_ADMIN` si dejaría el sistema sin administradores activos.
+- **Auditoría** en `audit_entries`, con `subject_type=user`, el motivo, los estados y los campos editados; nunca contraseñas ni tokens.
+- **Estado del usuario** (`status`), en orden de prioridad: `anonymized`, `blocked` (`is_active=false`), `pending_activation` (con `invited_at` y sin `activated_at`) y `active`.
+
+**`GET /admin/users`**
+- Filtros:
+  - `q`: nombre o correo, sin distinguir mayúsculas;
+  - `role`: `client`, `technician` o `admin`;
+  - `status`;
+  - `district_id`: distrito del cliente o distrito base del técnico;
+  - `created_from` y `created_to`: `Y-m-d`;
+  - `page` y `per_page` (hasta 100).
+- Sin `status`, oculta los anonimizados.
+- Responde `{items, page, per_page, total}`. Cada ítem trae `id`, `name`, `given_names`, `family_names`, `email`, `phone`, `role`, `status`, `district` (`{id, name}` o null), `created_at` y `version`.
+
+**`GET /admin/users/{id}`**
+- Responde `{user, client, technician, requests, audit}`:
+  - `requests`: las últimas 20 solicitudes de la cuenta como cliente, o las que atendió como técnico;
+  - `audit`: las últimas 20 entradas de la cuenta, con acción, motivo, actor y fecha.
+
+**`POST /admin/users`** (alta)
+- Datos: `account_type` (`client`, `technician` o `admin`), `given_names`, `family_names`, `email`, `phone` y `reason`.
+- Según el tipo:
+  - cliente: los campos de D-80 (`client_type`, `district_id`, `business_name` y `reference_address`);
+  - técnico: `base_district_id`, `district_ids`, `specialty_ids`, `subcategory_ids` y `experience_years`.
+- `password` y `terms_accepted` están prohibidos.
+- Crea la cuenta con una contraseña aleatoria que nadie conoce y `invited_at`, y envía `AccountActivation` con el enlace `#cuenta/activar?token=…&email=…` (broker `activations`, 72 horas, un solo uso).
+- Responde 201 con el usuario.
+
+**`PATCH /admin/users/{id}`**
+- Campos: `given_names`, `family_names`, `email` (único), `phone`, `district_id` (el del cliente o el distrito base del técnico), `client_type`, `business_name` y `reference_address`.
+- Exige `reason` y `expected_version`. `role` y `password` están prohibidos.
+- Audita `user.updated` con antes y después de los campos que cambiaron.
+
+**Acciones sobre la cuenta:**
+
+| Ruta | Efecto | Auditoría |
+|---|---|---|
+| `POST /admin/users/{id}/block` | `is_active=false`, cierra las sesiones y sube `auth_version` (D-32). Si ya está bloqueada, 409 `USER_ALREADY_BLOCKED` | `user.blocked` |
+| `POST /admin/users/{id}/unblock` | Vuelve a activa. Si no está bloqueada, 409 `USER_NOT_BLOCKED` | `user.unblocked` |
+| `POST /admin/users/{id}/access-reset` | Invalida la contraseña, cierra las sesiones y envía el enlace de restablecimiento (el de activación si la cuenta está pendiente) | `user.access_reset` |
+| `DELETE /admin/users/{id}/sessions` | Cierra todas las sesiones sin bloquear. Responde con `closed_sessions` | `user.sessions_closed` |
+| `POST /admin/users/{id}/activation-link` | Solo con `reason`. Reenvía la activación y anula el enlace anterior. Si la cuenta ya está activa, 409 `USER_ALREADY_ACTIVE` | `user.activation_sent` |
+| `DELETE /admin/users/{id}` | Eliminar = anonimizar, con `confirmation: "ELIMINAR"`. Nombre «Usuario eliminado»; correo `anonimo-<id>@anonimo.invalid`; sin teléfono, nombres, foto, razón social ni dirección; inactiva y con sesiones y tokens borrados. Las solicitudes se conservan | `user.anonymized` |
+
+**`POST /auth/password/reset`** **[cambia]**
+- Si la cuenta está pendiente de activación, usa el broker `activations` (72 horas).
+- Al terminar, marca `activated_at` y `email_verified_at`.
+
+### 9.2 `GET /admin/statistics?days=7|30|90` (`dashboard.view`)
+
+- Por defecto, 30 días, contados hasta hoy en UTC. La respuesta trae:
+  - `range`: `{days, from, to}`;
+  - `requests_per_day`: un elemento por día, con ceros explícitos;
+  - `requests_by_specialty` y `requests_by_district`: `{id, name, total}`, de mayor a menor;
+  - `funnel`: `{sent, with_offers, assigned, completed}`;
+  - `offers`: `{total, accepted, rejected, expired, acceptance_rate, avg_response_seconds}`. Los dos últimos son null si no hay respuestas;
+  - `technicians_by_status`, `new_users_by_role` (sin anonimizados) y `active_announcements_by_audience`;
+  - `generated_at`.
+- Son 8 agregados SQL, con un número fijo de consultas, sin datos personales.
+
+### 9.3 Solicitudes en solo lectura (`dashboard.view`)
+
+**`GET /admin/requests`**
+- Filtros: `status`, `district_id`, `specialty_id`, `created_from`, `created_to`, `q` (número de solicitud) y la paginación.
+- Cada ítem trae `id`, `status`, `specialty`, `subcategory`, `district`, `client` (nombre), `technician` (`{id, name}` o null), `created_at` y `submitted_at`. Sin dirección.
+
+**`GET /admin/requests/{id}`**
+- Responde `{request, client, technician, offers, timeline}`:
+  - `request` agrega `description`, `mode`, la ventana preferida, `reference_fee` y `cancellation_reason`;
+  - `offers` cuenta por estado;
+  - `timeline` trae los `request_events` en orden.
+- No hay rutas de escritura: `POST`, `PATCH` y `DELETE` responden 405.
+
+### 9.4 `GET /admin/dashboard` **[cambia]**
+
+- Agrega `announcements_active` (contador del menú «Comunicados»).
+- Agrega `recent_events`: las últimas 5 acciones hechas por una persona, sin sesiones ni siembra, con `action`, `reason`, `subject_type`, `actor` y `occurred_at`.
+
+### 9.5 Datos
+
+- **Migración `2026_10_27_000028_add_activation_to_users`:** `users.invited_at` y `users.activated_at`. Las cuentas existentes quedan activas. En una base existente basta `php artisan migrate`.
+- **Configuración:** broker `activations` en `config/auth.php`, con la misma tabla `password_reset_tokens` y 4320 minutos. No hay permisos nuevos.
