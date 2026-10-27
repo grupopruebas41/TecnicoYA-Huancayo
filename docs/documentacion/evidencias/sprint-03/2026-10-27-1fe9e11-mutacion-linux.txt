@@ -1,4 +1,4 @@
-# Mutación s03 · 2026-10-27T17:48Z · commit cb9cb28 · Linux · PHP 8.2.35
+# Mutación s03 · 2026-10-27T17:48Z · commit cb9cb28 · Linux · PHP 8.2.35 (merge del PR #36 sobre la rama; cabeza de la rama en el nombre del archivo)
 # Pruebas: tests/Feature/Sprint02 tests/Feature/Sprint03
 # Clases: app/Modules/ARequests/Application/ManageServiceRequests.php,app/Modules/ARequests/Application/SubmissionPolicy.php,app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php,app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php,app/Modules/FAdministration/Application/StoreMedia.php,app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php,app/Modules/BMatching/Application/TechnicianSearch.php,app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php,app/Modules/BMatching/Http/Controllers/TechnicianSearchController.php,app/Shared/Rules/RuleBook.php
 

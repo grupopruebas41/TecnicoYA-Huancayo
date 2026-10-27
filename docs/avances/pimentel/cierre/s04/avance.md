@@ -47,7 +47,7 @@
 
 - `51d8ca7` (rojo) y `c5067a9`: tarea `replay` y S04-TC-094.
 - `82e9cfa`: D-86 y S04-TC-138.
-- `cf4b9bf`, `9079e5d` y `cb9cb28`: mutación en Linux y CI sin `docs/**`.
+- `cf4b9bf`, `9079e5d` y `1fe9e11`: mutación en Linux y CI sin `docs/**`.
 - `2cc55c5` (rojo) y `ea47cb6`: `DemoSeeder`.
 - `dbb59f1`: `qs` en el lockfile.
 - `35d2153`: README.
@@ -65,10 +65,11 @@
   - lint y build aprobados;
   - `composer audit` y `npm audit` sin avisos.
 - **Conteo S04 sin Cypress:** Pest 112, Vitest 13 y Cypress 0, con 125 IDs aprobados. No llega a la meta porque falta la cuota Cypress (14).
-- **Mutación:**
-  - S3 en Linux: 63,21 %;
-  - S4 en Linux: ver la entrada del HANDOFF;
-  - control negativo: 4 sobrevivientes, así que la corrida es confiable.
+- **Mutación en Linux** (job «Mutación», con control negativo de 4 sobrevivientes en cada corrida):
+  - **S3**, en `1fe9e11`: **63,21 %**, con 268 eliminados, 125 sobrevivientes y 31 sin cubrir, de 424 mutantes. Antes se informó 93,05 %, que era falso;
+  - **S4**, en `8db658f`, con el refuerzo: **68,61 %**, con 1038 eliminados, 379 sobrevivientes y 96 sin cubrir, de 1513 mutantes, en 4115 s. La corrida válida anterior (Windows con parche) dio 63,12 %, con 439 sobrevivientes y 119 sin cubrir;
+  - sobrevivientes por clase, antes y después: OfferView 50 → 17, ServiceRequestView 44 → 11, CandidatesView 48 → 21 y NotificationController 42 → 23;
+  - siguen altos MatchingFlow (59), Matcher (33) y ClientSelection (30), con escrituras de auditoría y eventos sin aserción y casts equivalentes. Quedan para el S5.
 
 ## Pendientes
 

@@ -17,7 +17,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Pest 350/350 y Vitest 308/308; lint y build aprobados; audits limpios;
   - conteo S04 sin Cypress: Pest 112 y Vitest 13.
 - **Bloqueado por RAM** (0,83 a 0,87 GB libres, por debajo de 1,5 GB): la regresión Cypress S1 a S4, el conteo final y SonarQube. `INFORME-SPRINT-04` espera esos datos.
-- **Mutación del S4 (Linux):** ver el avance.
+- **Mutación en Linux:** S3 63,21 % (`1fe9e11`) y S4 68,61 % (`8db658f`, antes 63,12 %). Controles negativos aprobados. Siguen altos MatchingFlow, Matcher y ClientSelection.
 - **Para la PR #35 y `main`:** la auditoría npm falla por GHSA-6pq8-jhm2-2vcw hasta integrar `dbb59f1` (`qs` 6.17.0).
 - **Pedidos a Codex:** ninguno.
 
