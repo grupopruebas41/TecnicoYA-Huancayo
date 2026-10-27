@@ -26,14 +26,21 @@ const deleteBlocked = item => ['active', 'scheduled'].includes(phaseOf(item));
 
 function ActionsMenu({item, onAction}) {
   const [open, setOpen] = useState(false);
+  const [up, setUp] = useState(false);
   const button = useRef(null);
   const root = useDismiss(open, () => setOpen(false));
   const close = () => { setOpen(false); button.current?.focus(); };
   const reasonId = `announcement-delete-reason-${item.id}`;
+  // En la última fila el menú se abre hacia arriba para no salir del contenido (mide unos 280 px).
+  const toggle = () => {
+    const rect = button.current?.getBoundingClientRect();
+    setUp(Boolean(rect) && window.innerHeight - rect.bottom < 290 && rect.top > 290);
+    setOpen(!open);
+  };
   return <div className="announcement-menu" ref={root}>
     <button ref={button} type="button" className="announcement-menu-button" aria-haspopup="menu" aria-expanded={open}
-      aria-label={`Acciones de «${item.title}»`} onClick={() => setOpen(!open)}><span aria-hidden="true">⋯</span></button>
-    {open && <div role="menu" className="panel-popover announcement-menu-list" aria-label={`Acciones de «${item.title}»`}
+      aria-label={`Acciones de «${item.title}»`} onClick={toggle}><span aria-hidden="true">⋯</span></button>
+    {open && <div role="menu" className={'panel-popover announcement-menu-list' + (up ? ' opens-up' : '')} aria-label={`Acciones de «${item.title}»`}
       onKeyDown={event => { if (event.key === 'Escape') close(); }}>
       {actionsFor(item).map(action => {
         const blocked = action === 'delete' && deleteBlocked(item);

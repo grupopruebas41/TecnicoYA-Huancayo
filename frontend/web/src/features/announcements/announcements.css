@@ -1071,3 +1071,7 @@
 .announcement-editor-head h2:focus {
   outline: none;
 }
+.announcement-menu-list.opens-up {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
