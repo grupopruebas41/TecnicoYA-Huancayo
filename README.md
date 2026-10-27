@@ -25,6 +25,50 @@ Histórico que no se sigue:
 - el plan de 10 iteraciones de los PDF 08 a 17 de `docs/documentacion/`;
 - la implementación anterior de `docs/legacy/`.
 
+## Desarrollo local
+
+Requisitos:
+- PHP 8.2 (XAMPP, `C:\xampp\php\php.exe`) con Composer;
+- Node 24;
+- MySQL 8.4 con la base `tecnicoya` y el usuario `tecnicoya` de `backend/api/.env.example`.
+
+El MySQL/MariaDB de XAMPP no se usa.
+
+```powershell
+# 1. Backend en http://127.0.0.1:3000
+cd backend/api
+copy .env.example .env           # completa DB_PASSWORD y las claves de Reverb; .env no se versiona
+composer install
+php artisan key:generate
+php artisan migrate              # aplica las migraciones pendientes; repítelo tras integrar un PR con migraciones
+php artisan db:seed              # permisos, catálogo y distritos (idempotente; no crea cuentas)
+php artisan storage:link         # sirve las fotos públicas de /storage
+php artisan serve --port=3000
+
+# 2. Frontend en http://127.0.0.1:5173 (otra terminal). Vite reenvía /api y /sanctum al puerto 3000.
+cd frontend/web
+copy .env.example .env
+npm ci
+npm run dev
+```
+
+**Cuentas:**
+- **Administrador:** `php artisan tecnicoya:provision-admin`.
+- **Datos de demostración** (solo con `APP_ENV=local`):
+  1. define `TECNICOYA_DEMO_PASSWORD` con 12 caracteres o más, en la terminal o en `.env`;
+  2. ejecuta `php artisan db:seed --class=DemoSeeder`.
+
+  Crea cuentas `demo-*@example.test` con esa contraseña:
+  - administrador;
+  - cliente hogar y cliente MYPE;
+  - tres técnicos verificados y uno pendiente.
+
+  También pone la foto de cada subcategoría y tres comunicados de ejemplo. Repetirlo no duplica nada.
+- **Tiempo real, cola y avisos** (opcionales):
+  - `php artisan reverb:start`;
+  - `php artisan queue:work`;
+  - `php artisan schedule:work`.
+
 ## Ejecutar las pruebas
 
 Requisitos: PHP 8.2 (XAMPP, `C:\xampp\php\php.exe`) con Composer, Node 24, Docker Desktop y Chrome. Copia `backend/api/.env.testing.example` a `backend/api/.env.testing` y completa `DB_PASSWORD`; ese archivo no se versiona.
