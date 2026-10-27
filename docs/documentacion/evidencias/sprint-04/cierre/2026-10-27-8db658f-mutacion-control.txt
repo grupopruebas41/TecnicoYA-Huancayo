@@ -1,0 +1,128 @@
+# Mutación control · 2026-10-27T18:02Z · commit 28c04cf · Linux · PHP 8.2.35 (merge del PR #36 sobre la rama; cabeza de la rama en el nombre del archivo)
+# Pruebas: tests/Feature/Sprint04/EligibilityTest.php
+# Clases: app/Modules/BMatching/Domain/Scorer.php
+
+  ............
+
+  Tests:    12 passed (30 assertions)
+  Duration: 2.68s
+
+  Mutating application files...
+  11 Mutations for 1 Files created
+
+   RUN  app/Modules/BMatching/Domain/Scorer.php
+  - Line 8: RemoveArrayItem
+  - Line 8: RemoveArrayItem
+  - Line 8: RemoveArrayItem
+  - Line 8: RemoveArrayItem
+  ⨯ Line 18: ForeachEmptyIterable
+  ✓ Line 19: MultiplicationToDivision
+  ⨯ Line 19: RemoveDoubleCast
+  ⨯ Line 19: RemoveDoubleCast
+  ✓ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ✓ Line 22: AlwaysReturnEmptyArray
+   UNCOVERED  app/Modules/BMatching/Domain/Scorer.php  > Line 8: RemoveArrayItem - ID: d4cb234f7033a15d
+
+   /** D-20: P = wC·C + wT·T + wH·H + wE·E, con los pesos en puntos sobre 100 de la versión de reglas. */
+   final class Scorer
+   {
+  -    public const FACTORS = ['proximity', 'price', 'history', 'experience'];
+  +    public const FACTORS = ['price', 'history', 'experience'];
+       /**
+        * @param  array<string, float>  $factors  valores de 0 a 1
+        * @param  array<string, float>  $weights  pesos que suman 100
+  
+
+   UNCOVERED  app/Modules/BMatching/Domain/Scorer.php  > Line 8: RemoveArrayItem - ID: 984c3148a3afde5d
+
+   /** D-20: P = wC·C + wT·T + wH·H + wE·E, con los pesos en puntos sobre 100 de la versión de reglas. */
+   final class Scorer
+   {
+  -    public const FACTORS = ['proximity', 'price', 'history', 'experience'];
+  +    public const FACTORS = ['proximity', 'history', 'experience'];
+       /**
+        * @param  array<string, float>  $factors  valores de 0 a 1
+        * @param  array<string, float>  $weights  pesos que suman 100
+  
+
+   UNCOVERED  app/Modules/BMatching/Domain/Scorer.php  > Line 8: RemoveArrayItem - ID: 9ae25fb5d2ecedb4
+
+   /** D-20: P = wC·C + wT·T + wH·H + wE·E, con los pesos en puntos sobre 100 de la versión de reglas. */
+   final class Scorer
+   {
+  -    public const FACTORS = ['proximity', 'price', 'history', 'experience'];
+  +    public const FACTORS = ['proximity', 'price', 'experience'];
+       /**
+        * @param  array<string, float>  $factors  valores de 0 a 1
+        * @param  array<string, float>  $weights  pesos que suman 100
+  
+
+   UNCOVERED  app/Modules/BMatching/Domain/Scorer.php  > Line 8: RemoveArrayItem - ID: ce2b9d824b35d2c7
+
+   /** D-20: P = wC·C + wT·T + wH·H + wE·E, con los pesos en puntos sobre 100 de la versión de reglas. */
+   final class Scorer
+   {
+  -    public const FACTORS = ['proximity', 'price', 'history', 'experience'];
+  +    public const FACTORS = ['proximity', 'price', 'history'];
+       /**
+        * @param  array<string, float>  $factors  valores de 0 a 1
+        * @param  array<string, float>  $weights  pesos que suman 100
+  
+
+   UNTESTED  app/Modules/BMatching/Domain/Scorer.php  > Line 18: ForeachEmptyIterable - ID: 9e033509787ec959
+
+       public function score(array $factors, array $weights): array
+       {
+           $contributions = [];
+  -        foreach (self::FACTORS as $factor) {
+  +        foreach ([] as $factor) {
+               $contributions[$factor] = (float) $weights[$factor] * (float) $factors[$factor];
+           }
+           return ['score' => array_sum($contributions), 'contributions' => $contributions];
+       }
+   }
+  
+
+   UNTESTED  app/Modules/BMatching/Domain/Scorer.php  > Line 19: RemoveDoubleCast - ID: 03aca96d15043bd9
+
+       {
+           $contributions = [];
+           foreach (self::FACTORS as $factor) {
+  -            $contributions[$factor] = (float) $weights[$factor] * (float) $factors[$factor];
+  +            $contributions[$factor] = $weights[$factor] * (float) $factors[$factor];
+           }
+           return ['score' => array_sum($contributions), 'contributions' => $contributions];
+       }
+   }
+  
+
+   UNTESTED  app/Modules/BMatching/Domain/Scorer.php  > Line 19: RemoveDoubleCast - ID: eb39b9a8c0bdc0ea
+
+       {
+           $contributions = [];
+           foreach (self::FACTORS as $factor) {
+  -            $contributions[$factor] = (float) $weights[$factor] * (float) $factors[$factor];
+  +            $contributions[$factor] = (float) $weights[$factor] * $factors[$factor];
+           }
+           return ['score' => array_sum($contributions), 'contributions' => $contributions];
+       }
+   }
+  
+
+   UNTESTED  app/Modules/BMatching/Domain/Scorer.php  > Line 22: RemoveArrayItem - ID: 283b4b3e5d3404d5
+
+           foreach (self::FACTORS as $factor) {
+               $contributions[$factor] = (float) $weights[$factor] * (float) $factors[$factor];
+           }
+  -        return ['score' => array_sum($contributions), 'contributions' => $contributions];
+  +        return ['score' => array_sum($contributions)];
+       }
+   }
+  
+
+  Mutations: 4 untested, 4 uncovered, 3 tested
+  Score:     27.27%
+  Duration:  7.22s
+
+# Resumen:   Mutations: 4 untested, 4 uncovered, 3 tested · código 0

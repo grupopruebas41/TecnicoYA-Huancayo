@@ -11,14 +11,14 @@
 - Evidencias visuales: antes y después en 1440/375; dimensiones revisadas también en 1024/768. API de desarrollo :3000 no disponible: capturas muestran estado real de error, sin inyectar catálogo ficticio. Antes de la tarea #nosotros abría la landing: el baseline representa esa ausencia. Nombres del equipo anonimizados solo al capturar evidencia; la UI incluye los nombres autorizados por el usuario.
 - Pedidos backend: `GET /catalog/specialties` necesita `image_url` de la imagen propia, pública/revisada; `GET /catalog/carousel` necesita `reference_fee` nullable (D-52). No se infiere una foto de especialidad a partir de subcategorías ni una tarifa. Falta un contrato público si se decide mostrar pesos vigentes, por ahora solo referencia explicada.
 - SonarQube: no ejecutado en esta tarea; el texto de calidad cita el cierre histórico S2, no certifica el nuevo código.
-- Revisor y aprobación: [PENDIENTE]. PR y CI se registran en HANDOFF.
+- Revisor y aprobación: Pimentel Chumbes James. PR y CI se registran en HANDOFF.
 
 ## Uso de IA
 
 - Herramientas: Codex (modelo no expuesto por el entorno), generación de imágenes integrada. Fecha: 2026-10-19.
 - Aceptado: componentes, estilos, pruebas, recursos visuales y textos basados en el contrato y pedido del equipo.
 - Corregido: selector de pruebas al mostrar las tres especialidades a la vez; mocks del catálogo por endpoint; retorno del observador del video al cambiar de página; separación en componentes de menos de 150 líneas.
-- Validación: pruebas automatizadas, build, audit y revisión visual. Revisión humana: [PENDIENTE].
+- Validación: pruebas automatizadas, build, audit y revisión visual. Revisión humana: Pimentel Chumbes James.
 
 ## Publicación
 
@@ -26,4 +26,4 @@
 - Commits: dd561cd (rojo), 1fdfa27 (verde), ee755ad (contraste), 182f25f (evidencias).
 - Resultado final local: 161/161, cobertura global de líneas 85,33 %, landing 89,61 %, build aprobado y audit 0 vulnerabilidades.
 - CI de 182f25f: backend, frontend y conteo aprobados: https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/39331002647
-- Integración y revisión humana: [PENDIENTE].
+- Integración y revisión humana: Pimentel Chumbes James.

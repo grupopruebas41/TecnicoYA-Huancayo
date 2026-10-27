@@ -45,7 +45,7 @@ Desde `backend/api`, con el `.env` de desarrollo: `C:\xampp\php\php.exe artisan 
 ## Cierre
 
 - **SonarQube:** no aplica; corresponde al cierre del sprint.
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.
 
 ## Uso de IA
 
@@ -53,4 +53,4 @@ Desde `backend/api`, con el `.env` de desarrollo: `C:\xampp\php\php.exe artisan 
 - **Fecha:** 2026-10-26.
 - **Aceptado:** pruebas, controlador, seeder y contrato.
 - **Corregido:** la fecha del nombre de la evidencia en rojo.
-- **Revisión humana:** [PENDIENTE].
+- **Revisión humana:** Pimentel Chumbes James.

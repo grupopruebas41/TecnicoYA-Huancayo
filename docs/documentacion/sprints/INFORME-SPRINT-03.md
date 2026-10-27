@@ -59,7 +59,7 @@ Plan: [CANVAS-Sprint-03.md](../editables/sprints-01-08/CANVAS-Sprint-03.md). Com
 | **Cobertura del backend** | Total 96,5 % (2856/2959 sentencias); módulos del sprint `ARequests` **100 %** (189/189) y `BMatching` **100 %** (69/69) | PCOV y Clover |
 | **Cobertura del frontend** | Líneas 83,42 % (sentencias 75,05 %); `features/requests` **84,67 %** y `features/matching` **83,92 %** en líneas | V8 y LCOV |
 | Cobertura en SonarQube | Código nuevo **86,2 %** (umbral 70 %); total 86,1 % | Análisis `sprint-03` |
-| **Mutación** | Clases nuevas o modificadas en el cierre (`E2EDatabaseGuard` y los 3 seeders E2E): **98,29 %**, con 344/350 eliminados, 0 sobrevivientes y 6 sin cubrir (constantes). Las 10 clases de S3.3: **93,05 %**, con 375/403 eliminados y 0 sobrevivientes | `pest --mutate`: [mutacion-seeders.txt](../evidencias/sprint-03/cierre/mutacion-seeders.txt) y `04-mutacion.txt` |
+| **Mutación** | **Corregido el 2026-10-27 (DEF-46).** Las 10 clases de S3.3, medidas en Linux con control negativo: **63,21 %**, con 268 eliminados, **125 sobrevivientes** y 31 sin cubrir, de 424 mutantes. El 93,05 % informado (375/403 en 12,67 s, Windows) era **falso**: el plugin contaba como eliminados los mutantes cuyo proceso moría. El 98,29 % de los seeders del cierre se midió en Windows de la misma forma y **no es confiable**; no se repitió porque esas clases son de pruebas | Linux: [2026-10-27-1fe9e11-mutacion-linux.txt](../evidencias/sprint-03/2026-10-27-1fe9e11-mutacion-linux.txt), con el job «Mutación» y `scripts/mutacion.sh`; la corrida anterior queda en `04-mutacion.txt` y [mutacion-seeders.txt](../evidencias/sprint-03/cierre/mutacion-seeders.txt) como historial |
 | **Densidad de defectos** | 2 defectos del sprint / 4,168 KLOC nuevas = **0,48 por KLOC**. Del código de producto: **0** (DEF-43 viene de dependencias externas y DEF-44 de los datos de prueba). Sobre todo el código analizado (9,857 KLOC): 0,20 por KLOC | DEF-43 y 44; `new_lines` y `ncloc` de SonarQube |
 | **Eficacia de corrección** | Sprint: 2/2 cerrados (**100 %**). Registro acumulado: 32 cerrados de 41 no duplicados (**78,0 %**; en S2 era 69,2 %) | `REGISTRO-DEFECTOS.csv` |
 | **Deuda técnica** | 861 min (~14,4 h) frente a 952 en S2; 85 min en código nuevo. Rating de mantenibilidad A. 120 code smells (32 críticos) frente a 143 (34 críticos) | SonarQube |
@@ -151,7 +151,7 @@ Ejecuta cada comando desde la raíz del repositorio en PowerShell, salvo que se 
 **Qué funcionó**
 - Contrato v1.0 y catálogo antes que el código, otra vez. Codex construyó las pantallas sin pedir cambios de contrato, y los dos límites que encontró los anotó en vez de inventar endpoints.
 - Revalidar al enviar y la idempotencia del envío quedaron cubiertas por tablas de decisión y por pruebas de concurrencia (doble clic y la misma clave con otro cuerpo).
-- La mutación de S3.3 dejó 0 sobrevivientes en las 10 clases sin necesidad de un refuerzo posterior: las aserciones de campos de respuesta y de eventos se escribieron desde el principio, como se acordó en S2.
+- ~~La mutación de S3.3 dejó 0 sobrevivientes en las 10 clases sin necesidad de un refuerzo posterior.~~ **Corrección del 2026-10-27 (DEF-46):** ese resultado era falso. Medida en Linux, la mutación da 63,21 % con 125 sobrevivientes; ver la fila «Mutación» de §3.
 - El Gate pasó a la primera, sin reclasificar incidencias, y los code smells bajaron de 143 a 120.
 
 **Qué no funcionó**
@@ -231,7 +231,7 @@ Los capítulos siguen `informe-final/contenido-editable.md`. El capítulo 14 sig
 - **§13.2:** DEF-43 y DEF-44, cerrados. El registro tiene 44 defectos: 32 cerrados, 9 abiertos y 3 duplicados (§4).
 - **§13.3:**
   - cobertura del 100 % en `ARequests` y `BMatching` y de 84,67 % y 83,92 % en `features/requests` y `features/matching`;
-  - mutación de 93,05 % (S3.3) y 98,29 % (cierre), con 0 sobrevivientes;
+  - mutación: **63,21 %** en las 10 clases de S3.3, medida en Linux el 2026-10-27 (el 93,05 % y el 98,29 % originales eran falsos por DEF-46);
   - densidad de 0,48 defectos por KLOC nueva (0 de producto);
   - eficacia de corrección de 100 % en el sprint.
 - **§13.3.1, comparación con SonarQube:**

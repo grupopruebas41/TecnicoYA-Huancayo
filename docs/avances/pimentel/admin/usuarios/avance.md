@@ -9,7 +9,7 @@
 - **Fecha:** 2026-10-27.
 - **Rama:** `feature/pimentel/admin/usuarios`, creada desde `main` después de integrar el PR #33.
 - **Decisiones:**
-  - D-85, nueva, con cuatro valores **[PENDIENTE de confirmar]**: vigencia de la activación, alcance de «restablecer acceso», alta de administradores y permiso de Estadísticas y Solicitudes;
+  - D-85, nueva, con cuatro valores que se confirmaron después (2026-10-27, PR #35, con la reconfirmación de contraseña al crear administradores): vigencia de la activación, alcance de «restablecer acceso», alta de administradores y permiso de Estadísticas y Solicitudes;
   - D-83: el mínimo móvil y la tolerancia quedan confirmados.
 
 ## Commits
@@ -75,8 +75,8 @@
   - en mis pruebas Pest: un login fallido es 401 y no 422; el helper de sesión dejaba la identidad en memoria; `sentRequest` usa el reloj de MySQL; la cota de consultas no contaba la sesión;
   - en la SPA: el contador del menú chocaba con la clase `.panel-badge` de la campana; las barras de Estadísticas se rompían con flex en la celda; los eventos del Inicio mostraban la siembra de permisos;
   - en el orden de trabajo de la SPA: los componentes se escribieron antes que las pruebas. El rojo se reconstruyó corriendo las pruebas contra el código de `main` (evidencia `2026-10-27-02042f3-tc129-140-vitest-rojo.txt`) antes del commit de la implementación.
-- **Revisó:** [PENDIENTE].
+- **Revisó:** Pimentel Chumbes James.
 
 ## Revisión
 
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.

@@ -1,0 +1,17 @@
+Reportes JUnit:
+  Pest    tmp\pest-junit.xml
+  Cypress no encontrado (tmp\sin-cypress)
+  Vitest  tmp\vitest-junit.xml
+
+Meta por sprint: ≥ 60 IDs aprobados distintos (Pest ≥ 36, Cypress ≥ 14, Vitest ≥ 10).
+Columnas por herramienta: aprobados / fallidos / omitidos (IDs distintos).
+
+Sprint | Pest        | Cypress     | Vitest      | Aprobados | ¿Llega a 60?
+-------|-------------|-------------|-------------|-----------|-------------
+S01    | 54 / 0 / 0  | 0 / 0 / 0   | 25 / 0 / 0  | 79        | No (faltan Pest 0, Cypress 14, Vitest 0; total 0)
+S02    | 59 / 0 / 0  | 0 / 0 / 0   | 17 / 0 / 0  | 75        | No (faltan Pest 0, Cypress 14, Vitest 0; total 0)
+S03    | 55 / 0 / 0  | 0 / 0 / 0   | 13 / 0 / 0  | 68        | No (faltan Pest 0, Cypress 14, Vitest 0; total 0)
+S04    | 112 / 0 / 0 | 0 / 0 / 0   | 13 / 0 / 0  | 125       | No (faltan Pest 0, Cypress 14, Vitest 0; total 0)
+S07    | 70 / 0 / 0  | 0 / 0 / 0   | 70 / 0 / 0  | 140       | No (faltan Pest 0, Cypress 14, Vitest 0; total 0)
+
+Pruebas sin ID (no cuentan): Pest 0, Cypress 0, Vitest 8.

@@ -1,0 +1,23 @@
+
+   FAIL  Tests\Feature\Sprint04\E2ESupportTest
+  ⨯ it S04-TC-137 republica dos veces el mismo evento real de una solicitud del cliente sin escribir en la bas… 41.72s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\E2ESupportTest > it S04-TC-137 republica dos veces el mismo evento real de una sol…   
+  Expected status code 0 but received 1.
+Failed asserting that 1 matches expected 0.
+
+  at tests\Feature\Sprint04\E2ESupportTest.php:136
+    132▕     $before = collect($tables)->mapWithKeys(fn ($t) => [$t => DB::table($t)->get()->toJson()])->all();
+    133▕     Event::fake([OutboxBroadcast::class]);
+    134▕ 
+    135▕     $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'e2e-client-direct@example.test'])
+  ➜ 136▕         ->expectsOutputToContain('"event_id":"'.$expected->event_id.'"')->expectsOutputToContain('"broadcasts":2')->assertSuccessful();
+    137▕ 
+    138▕     $payload = json_decode($expected->payload, true);
+    139▕     $sent = [];
+    140▕     Event::assertDispatched(OutboxBroadcast::class, function (OutboxBroadcast $event) use (&$sent) {
+
+
+  Tests:    1 failed (7 assertions)
+  Duration: 41.92s
+

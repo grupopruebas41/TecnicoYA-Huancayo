@@ -5,7 +5,7 @@
 - Archivos: .github/workflows/ci.yml, docs/documentacion/calidad/CI.md, evidencias de CI y HANDOFF-codex.md.
 - Pruebas previstas y ejecutadas: Pest completo 102/102, Vitest 92/92, build, auditorías y conteo; https://github.com/grupopruebas41/TecnicoYA-Huancayo/actions/runs/38028328415.
 - SonarQube: no ejecutado; se mantiene local al cierre. Cypress también local.
-- Pendiente: revisión e integración del PR. Revisor: [PENDIENTE].
+- Pendiente: revisión e integración del PR. Revisor: Pimentel Chumbes James.
 - Decisiones: docs/documentacion/sprints/DECISIONES.md, D-39 y D-42.
 
 ## S2.6 · Cierre del Sprint 2 (integración y calidad)
@@ -49,7 +49,7 @@
 
   Detalle en [evidencias/sprint-02/cierre/](../../../documentacion/evidencias/sprint-02/cierre/README.md).
 - **SonarQube:** análisis `sprint-02` de `e176a6b`. **Quality Gate APROBADO** después de marcar `php:S5693` (StoreMediaRequest:33) como falso positivo por D-46. Cobertura de código nuevo: 82,5 % ([gate.json](../../../documentacion/evidencias/sprint-02/cierre/sonar/gate.json)).
-- **Revisor:** [PENDIENTE]
+- **Revisor:** Pimentel Chumbes James
 - **Fecha:** 2026-10-15
 - **Pendientes y bloqueos:**
   - Confirmar en equipo el falso positivo `php:S5693` y si TC-131 y TC-135 se vinculan a S02-TC-074 y 073.
@@ -63,6 +63,6 @@
 
 | Herramienta y modelo | Fecha | Qué se aceptó | Qué se corrigió | Quién lo revisó |
 |---|---|---|---|---|
-| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | Del 2026-10-13 al 2026-10-15 | Refuerzo de aserciones, refactor `CatalogEntries`, DEF-40 con TDD, incidencias seguras de SonarQube, diagnóstico de DEF-42, regresión, mutación, análisis, registro, matriz e informe | La primera versión del script de la matriz leía `classname` en lugar de `name` y marcaba PARCIAL a todas las filas; se detectó al revisar el resultado y se corrigió antes de guardar. El aviso de RAM del arrancador afirmaba una causa de DEF-42 que no estaba demostrada; se reescribió para describir solo lo observado. `php:S5693` no era un hotspot sino una incidencia: se marcó como falso positivo, no como «Safe» | [PENDIENTE] |
+| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | Del 2026-10-13 al 2026-10-15 | Refuerzo de aserciones, refactor `CatalogEntries`, DEF-40 con TDD, incidencias seguras de SonarQube, diagnóstico de DEF-42, regresión, mutación, análisis, registro, matriz e informe | La primera versión del script de la matriz leía `classname` en lugar de `name` y marcaba PARCIAL a todas las filas; se detectó al revisar el resultado y se corrigió antes de guardar. El aviso de RAM del arrancador afirmaba una causa de DEF-42 que no estaba demostrada; se reescribió para describir solo lo observado. `php:S5693` no era un hotspot sino una incidencia: se marcó como falso positivo, no como «Safe» | Pimentel Chumbes James |
 
-Codex (modelo no expuesto por la sesión), 2026-10-10: elaboración del workflow y documentación; se incorporó la configuración solicitada y se corrigió el entorno dotenv tras leer la evidencia remota. No se alteraron pruebas ni código de producto. Revisión humana: [PENDIENTE].
+Codex (modelo no expuesto por la sesión), 2026-10-10: elaboración del workflow y documentación; se incorporó la configuración solicitada y se corrigió el entorno dotenv tras leer la evidencia remota. No se alteraron pruebas ni código de producto. Revisión humana: Pimentel Chumbes James.

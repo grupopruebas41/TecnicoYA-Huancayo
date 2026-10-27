@@ -7,6 +7,6 @@
 - Mapa: tres zonas SVG enfocables y tocables, estado seleccionado, capas de volumen, elevación 3D, entrada escalonada y modo de movimiento reducido.
 - Catálogo: proxy y HTTP client no difieren de `origin/main`; `.env.development` no existe. Backend no escuchaba en `127.0.0.1:3000`, Vite devolvió 502 por `ECONNREFUSED` en `/api/v1/catalog/specialties`; no se puede atribuir 404/500.
 - Validación de código: `npm run test` 183/183 (24 archivos), `npm run lint` aprobado, `npm run build` aprobado. Cypress no ejecutado.
-- Evidencias de rojo/verde, lint, build y proxy: `frontend/web/evidencias/landing/`.
+- Evidencias de rojo/verde, lint, build y proxy: `docs/documentacion/evidencias/landing/` (archivos `2026-10-20-*`; movidos desde `frontend/web/evidencias/` en el cierre S4.6).
 - PR #24: https://github.com/grupopruebas41/TecnicoYa-Huancayo/pull/24. `git push origin feature/delgado/landing/rediseno-landing` actualiza el PR; revisar CI. Para comprobar catálogo real, iniciar Laravel en puerto 3000 y volver a cargar la landing.
 - Revisor: [PENDIENTE].

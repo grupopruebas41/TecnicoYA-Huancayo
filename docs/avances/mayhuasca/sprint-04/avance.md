@@ -46,7 +46,7 @@
   - **`composer audit`:** sin avisos. [05-composer-audit](../../../documentacion/evidencias/sprint-04/05-composer-audit.txt)
   - **Cypress (083 a 100) y Vitest (101 a 113):** a cargo de Codex (S4.4 y S4.5).
 - **SonarQube:** no se ejecuta en este paso (regla 12b); se analiza en el cierre del sprint.
-- **Revisor:** [PENDIENTE]
+- **Revisor:** Pimentel Chumbes James
 - **Fecha:** 2026-10-17
 - **Pendientes y bloqueos:**
   - reforzar las aserciones de las clases con sobrevivientes y repetir su mutación; repetir la mutación del S3 (DEF-46);
@@ -59,4 +59,4 @@
 
 | Herramienta y modelo | Fecha | Qué se aceptó | Qué se corrigió | Quién lo revisó |
 |---|---|---|---|---|
-| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | 2026-10-16 y 2026-10-17 | Las 101 pruebas Pest, el backend del matching, las ofertas y las notificaciones, el seeder y las tareas E2E | **Elegibilidad:** `codeFor` convertía el `null` (elegible) en exclusión por un `??`. **Concurrencia real:** aparecieron un deadlock en `Idempotency` y otro por `FOR UPDATE` por rango con REPEATABLE READ; se cambió la reserva de la clave y la conexión a READ COMMITTED. **Mutación:** la primera puntuación (92,13 %) era falsa (DEF-46); se detectó por la duración y se confirmó con un control negativo. **Pruebas:** `DatabaseMigrations` dejaba la base a medias al revertir (se reemplazó por `CommittedDatabase`); tres comparaciones de respuestas repetidas dependían del orden de claves de una columna JSON; S03-TC-030 dependía de la fecha real. Cada cambio de prueba se explica en su commit. **Diseño sin decisión:** la cercanía sin distrito base quedó como DIST-02 pendiente | [PENDIENTE] |
+| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | 2026-10-16 y 2026-10-17 | Las 101 pruebas Pest, el backend del matching, las ofertas y las notificaciones, el seeder y las tareas E2E | **Elegibilidad:** `codeFor` convertía el `null` (elegible) en exclusión por un `??`. **Concurrencia real:** aparecieron un deadlock en `Idempotency` y otro por `FOR UPDATE` por rango con REPEATABLE READ; se cambió la reserva de la clave y la conexión a READ COMMITTED. **Mutación:** la primera puntuación (92,13 %) era falsa (DEF-46); se detectó por la duración y se confirmó con un control negativo. **Pruebas:** `DatabaseMigrations` dejaba la base a medias al revertir (se reemplazó por `CommittedDatabase`); tres comparaciones de respuestas repetidas dependían del orden de claves de una columna JSON; S03-TC-030 dependía de la fecha real. Cada cambio de prueba se explica en su commit. **Diseño sin decisión:** la cercanía sin distrito base quedó como DIST-02 pendiente | Pimentel Chumbes James |
