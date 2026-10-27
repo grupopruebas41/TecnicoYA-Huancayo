@@ -2,7 +2,7 @@
 
 - **Fecha:** 2026-10-27.
 - **Autor:** Claude Code. Asume backend y frontend según D-72.
-- **Estado:** Fase 0. Es un borrador para que el equipo lo confirme; no hay código todavía.
+- **Estado:** confirmado por Pimentel el 2026-10-27, con las cinco decisiones en la opción A (D-87 a D-91; ASES-01 sigue pendiente). La Fase C1 va en dos PR: primero la API (`feature/mayhuasca/cliente/cercania`) y después la SPA (`feature/delgado/cliente/panel-base`). En la API se agregó `unread_count` dentro de `data` y no se necesitó ningún índice nuevo.
 - **Base revisada:** `main` en `c7dc292` (después del PR #37).
 - **Reutiliza:** `PanelShell`, `NotificationBell`, `ProfilePage`, los tokens y el estilo del panel del administrador (D-82 y D-85).
 
