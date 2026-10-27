@@ -1,0 +1,20 @@
+{
+  "1366-light-admin-sin-contrasena": {
+    "overflowX": false
+  },
+  "1366-light-admin-contrasena-incorrecta": {
+    "overflowX": false
+  },
+  "1366-light-admin-creado": {
+    "overflowX": false
+  },
+  "390-dark-admin-sin-contrasena": {
+    "overflowX": false
+  },
+  "390-dark-admin-contrasena-incorrecta": {
+    "overflowX": false
+  },
+  "390-dark-admin-creado": {
+    "overflowX": false
+  }
+}

@@ -265,6 +265,7 @@ Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG
   - cliente: los campos de D-80 (`client_type`, `district_id`, `business_name` y `reference_address`);
   - técnico: `base_district_id`, `district_ids`, `specialty_ids`, `subcategory_ids` y `experience_years`.
 - `password` y `terms_accepted` están prohibidos.
+- **Alta de un administrador** (D-85 confirmada): exige `current_password`, la contraseña del administrador que crea. Si falta o no coincide, 422 en `current_password` («La contraseña actual no es correcta.»). Tras 5 fallos en 15 minutos por cuenta, 422 «Demasiados intentos con la contraseña…» hasta que pase el plazo, aunque la contraseña sea correcta. Para clientes y técnicos, `current_password` está prohibido. La contraseña no se guarda en la auditoría.
 - Crea la cuenta con una contraseña aleatoria que nadie conoce y `invited_at`, y envía `AccountActivation` con el enlace `#cuenta/activar?token=…&email=…` (broker `activations`, 72 horas, un solo uso).
 - Responde 201 con el usuario.
 

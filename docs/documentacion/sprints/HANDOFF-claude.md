@@ -2,6 +2,15 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-27 · D-85 confirmada · reconfirmar la contraseña al crear un administrador
+
+- **Rama:** `feature/pimentel/admin/reconfirmar-admin`, desde `main` tras el PR #34.
+- **Commits:** de `590c20b` a `a4854b5` (detalle en `docs/avances/pimentel/admin/reconfirmar-admin/avance.md`).
+- **API:** `POST /admin/users` con `account_type=admin` exige `current_password` (5 fallos cada 15 minutos por cuenta).
+- **Pruebas en `a4854b5`:** Pest 345/345 y Vitest 309/309; lint y build aprobados; IDs nuevos S07-TC-141 a 143; 6 capturas.
+- **Pendiente:** nada de este cambio.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Bloque C · usuarios, menú agrupado, estadísticas, solicitudes e Inicio (D-85)
 
 - **Rama:** `feature/pimentel/admin/usuarios`, creada desde `main` tras el PR #33.
