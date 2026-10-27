@@ -140,6 +140,10 @@ it('S07-TC-110 da de alta un cliente sin contraseña, pendiente de activación, 
 });
 
 it('S07-TC-111 da de alta un técnico y un administrador, y rechaza correo repetido o datos incompletos', function () {
+    // D-85: el alta de un administrador exige reingresar la contraseña de quien lo crea (S07-TC-141). Se fija antes de
+    // la primera petición: cambiarla después cerraría la sesión del administrador (D-32).
+    $password = Str::password(24);
+    $this->admin->forceFill(['password' => $password])->save();
     $technician = s07uCreate($this, ['account_type' => 'technician', 'given_names' => 'Jorge', 'family_names' => 'Rivera',
         'email' => 'jorge.tecnico@example.test', 'phone' => '912345678', 'base_district_id' => Sprint07::districtId('EL-TAMBO'),
         'district_ids' => [Sprint07::districtId()], 'specialty_ids' => [Sprint07::specialtyId()], 'subcategory_ids' => Sprint07::subcategoryIds(),
@@ -148,7 +152,8 @@ it('S07-TC-111 da de alta un técnico y un administrador, y rechaza correo repet
         ->and(DB::table('technician_profiles')->where('user_id', $technician['id'])->value('verification_status'))->toBe('pending');
 
     $admin = s07uCreate($this, ['account_type' => 'admin', 'given_names' => 'Carla', 'family_names' => 'Paredes',
-        'email' => 'carla.admin@example.test', 'phone' => '923456789', 'reason' => 'Nueva integrante del equipo de soporte.']);
+        'email' => 'carla.admin@example.test', 'phone' => '923456789', 'reason' => 'Nueva integrante del equipo de soporte.',
+        'current_password' => $password]);
     expect($admin['role'])->toBe('admin')->and(DB::table('client_profiles')->where('user_id', $admin['id'])->exists())->toBeFalse();
 
     Sprint01::assertSpanishValidation($this->actingAs($this->admin)->postJson('/api/v1/admin/users',

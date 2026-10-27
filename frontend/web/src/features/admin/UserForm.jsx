@@ -84,6 +84,7 @@ export default function UserForm({user = null, profile = null, onCancel, onSaved
     } catch (failure) {
       setErrors(failure.fields || {});
       setError(failure.message);
+      set({current_password: ''});
     } finally { setBusy(false); }
   }
 
@@ -126,6 +127,8 @@ export default function UserForm({user = null, profile = null, onCancel, onSaved
         </div>
         <TechnicianSkills specialties={catalog.specialties} values={values} onChange={set} errors={errors}/>
       </>)}
+    {type === 'admin' && !editing && <Field name="current_password" label="Tu contraseña (para confirmar)" type="password" autoComplete="current-password"
+      maxLength={72} errors={errors} {...bind('current_password')}/>}
     <Field name="reason" label="Motivo (queda en la auditoría)" errors={errors}><textarea rows={2} maxLength={500} {...bind('reason')}/></Field>
     <Notice error={error}/>
     <div className="admin-form-actions">
