@@ -10,13 +10,16 @@
 }
 .request-steps li {
   padding: 1rem;
-  border: 1px solid #607772;
+  border: 1px solid var(--ty-control-border, #607772);
   border-radius: 12px;
-  color: #c7d6d0;
+  color: var(--ty-muted, #c7d6d0);
+  background: var(--ty-surface, transparent);
 }
+/* Panel del cliente (D-87): el paso actual usa el acento del tema (claro u oscuro) con su texto de contraste. */
 .request-steps [aria-current="step"] {
-  color: #162827;
-  background: #e7d6ac;
+  color: var(--ty-on-accent, #162827);
+  background: var(--ty-accent, #e7d6ac);
+  border-color: var(--ty-accent, #e7d6ac);
   font-weight: 600;
 }
 .request-steps span {
@@ -35,19 +38,26 @@
 }
 .request-fee {
   font-size: 1.6rem;
-  color: #e7d6ac;
+  color: var(--ty-accent, #e7d6ac);
 }
 .request-fee small {
   display: block;
   font-size: 1rem;
-  color: #c7d6d0;
+  color: var(--ty-muted, #c7d6d0);
 }
 .request-wizard h2:focus {
-  outline: 3px solid #e7d6ac;
+  outline: 3px solid var(--ty-accent, #e7d6ac);
   outline-offset: 5px;
 }
 .request-wizard .field-error {
-  color: #ffc7bb;
+  color: var(--ty-error, #ffc7bb);
+}
+.panel-shell .request-wizard {
+  padding: 24px;
+  border: 1px solid var(--ty-border);
+  border-radius: 20px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
 }
 .client-requests button:focus-visible,
 .client-requests a:focus-visible {

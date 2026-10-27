@@ -5,6 +5,7 @@ import { OfferError } from "./offerErrors";
 import CandidateList from "./CandidateList";
 import SelectionDialog from "./SelectionDialog";
 import { ConnectionStatus, useRealtimeResource } from "../realtime/Realtime";
+import RequestTimeline from "../client/RequestTimeline";
 export default function RequestTracking({ requestId }) {
   const [record, setRecord] = useState(null),
     [candidates, setCandidates] = useState(null),
@@ -159,6 +160,7 @@ function TrackingPhase({ record }) {
           {record.phase === "expired" && (
             <p>La búsqueda venció. Puedes crear otra solicitud.</p>
           )}
+          <RequestTimeline events={record.timeline} />
           {record.assignment?.appointment && (
             <p>
               Franja confirmada:{" "}

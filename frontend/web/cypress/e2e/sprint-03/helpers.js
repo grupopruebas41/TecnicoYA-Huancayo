@@ -21,6 +21,12 @@ export function loginClient(kind = "fresh") {
     cy.get("[data-cy=portal-client]").should("be.visible");
   });
 }
+// D-87: el cliente entra a su Inicio; las solicitudes están en la sección «Mis solicitudes» del menú.
+export function openMyRequests() {
+  cy.get('nav[aria-label="Gestión del cliente"]')
+    .contains("button", "Mis solicitudes")
+    .click();
+}
 export function toDescription() {
   cy.get('nav[aria-label="Gestión del cliente"]')
     .contains("button", "Nueva solicitud")

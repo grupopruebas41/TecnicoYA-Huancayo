@@ -12,7 +12,7 @@ import {request} from '../administration/http';
 vi.mock('../administration/http', () => ({request: vi.fn()}));
 const realtime = vi.hoisted(() => ({handlers: {}}));
 vi.mock('../realtime/connection', () => ({
-  makeEcho: () => ({}),
+  makeEcho: () => ({disconnect: () => {}}),
   subscribeRealtime: (echo, name, events, onEvent, onRecover, onStatus) => {
     realtime.handlers[name] = onEvent; onStatus(true);
     return () => { delete realtime.handlers[name]; };
@@ -303,7 +303,7 @@ test('S05-TC-039 «Solicitar servicio» desde un perfil abre el asistente dirigi
 
   const wizard = await screen.findByRole('region', {name: 'Nueva solicitud'});
   expect(navButton(nav, 'Nueva solicitud')).toHaveAttribute('aria-current', 'page');
-  expect(await within(wizard).findByText(/Solicitud dirigida a Técnico Tambo/)).toBeInTheDocument();
+  expect(await within(wizard).findByText(/Técnico elegido: Técnico Tambo/)).toBeInTheDocument();
   expect(within(wizard).getByLabelText('Especialidad')).toBeInTheDocument();
 });
 

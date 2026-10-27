@@ -11,6 +11,10 @@ const PATHS = {
   catalog: <><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></>,
   announcements: <><path d="M4.5 10v4h3l6 4V6l-6 4z"/><path d="M17 9.5a3.5 3.5 0 0 1 0 5"/></>,
   profile: <><circle cx="12" cy="9" r="3.5"/><path d="M5.5 19.5a6.5 6.5 0 0 1 13 0"/></>,
+  // Panel del cliente (D-87): nueva solicitud, búsqueda y notificaciones.
+  plus: <><circle cx="12" cy="12" r="8"/><path d="M12 8.5v7"/><path d="M8.5 12h7"/></>,
+  search: <><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4.5 4.5"/></>,
+  bell: <><path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></>,
   collapse: <><path d="m14.5 7-5 5 5 5"/><path d="M19 5v14"/></>,
   expand: <><path d="m9.5 7 5 5-5 5"/><path d="M5 5v14"/></>,
   site: <><path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M17 14v4a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 5 18V8.5A1.5 1.5 0 0 1 6.5 7H10"/></>,

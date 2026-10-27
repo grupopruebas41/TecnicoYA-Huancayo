@@ -218,9 +218,8 @@ test("S02-TC-089 rediseño: iniciar sesión y registro técnico seleccionan el f
 });
 test("S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su búsqueda", async () => {
   const { CatalogSearch } = await import("./landing/Home");
-  const { default: ClientPortal } = await import(
-    "./features/requests/ClientPortal"
-  );
+  // D-87: el portal del cliente es ahora ClientPanel; con el distrito del filtro, la búsqueda ordena por cercanía (D-88).
+  const { default: ClientPanel } = await import("./features/client/ClientPanel");
   request.mockImplementation(async (path) =>
     path === "/me"
       ? { data: { role: { code: "client" } } }
@@ -249,10 +248,18 @@ test("S02-TC-089 rediseño: un cliente con sesión conserva filtros y abre su b�
   await act(async () => {});
   expect(window.location.hash).toBe("#cuenta/cliente");
   view.unmount();
-  render(<ClientPortal />);
+  render(
+    <ClientPanel
+      user={{ id: "5", name: "Cliente", version: 1, role: { code: "client" }, permissions: [] }}
+      roleLabel="Cliente"
+      onLogout={() => {}}
+      onUserChange={() => {}}
+      onExpired={() => {}}
+    />,
+  );
   await act(async () => {});
   expect(request).toHaveBeenCalledWith(
-    "/technicians?specialty_id=1&district_id=2&page=1",
+    "/technicians?specialty_id=1&district_id=2&sort=proximity&page=1",
   );
   expect(
     screen.getByText("No hay técnicos que coincidan con los filtros elegidos."),

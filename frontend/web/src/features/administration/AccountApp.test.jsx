@@ -10,6 +10,9 @@ vi.mock('./CatalogAdmin', () => ({default: () => null}));
 vi.mock('./VerificationAdmin', () => ({default: () => null}));
 vi.mock('./AnnouncementsAdmin', () => ({default: () => null}));
 vi.mock('./http', () => ({request: vi.fn()}));
+// Panel del cliente (D-87): igual que con Sprint02Portal, se aíslan su Inicio y el tiempo real; aquí solo importa la sesión.
+vi.mock('../client/ClientHome', () => ({default: () => null}));
+vi.mock('../realtime/Realtime', () => ({RealtimeProvider: ({children}) => children, useRealtimeResource: () => false, ConnectionStatus: () => null}));
 afterEach(() => {cleanup(); vi.resetAllMocks(); window.history.replaceState(null, '', '/');});
 // Comprobaciones unitarias complementarias: no sustituyen ni acreditan los casos Cypress.
 test.each([['S01-TC-016', 'client', 'cliente'], ['S01-TC-017', 'technician', 'tecnico'], ['S01-TC-018', 'admin', 'administrador']])('%s [TC-005] complemento unitario: portal %s desde identidad del servidor', async (id, role, route) => {

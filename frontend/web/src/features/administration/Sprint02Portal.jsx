@@ -1,7 +1,6 @@
 import { RealtimeProvider } from "../realtime/Realtime";
 import Notifications from "../realtime/Notifications";
 import OffersInbox from "../offers/OffersInbox";
-import ClientPortal from "../requests/ClientPortal";
 import React, { useState } from "react";
 import CatalogAdmin from "./CatalogAdmin";
 import AnnouncementsAdmin from "./AnnouncementsAdmin";
@@ -23,7 +22,6 @@ export default function Sprint02Portal({ user }) {
     <RealtimeProvider>
       <RoleAnnouncements key={user.id} />
       <Notifications key={"notifications-" + user.id} userId={user.id} />
-      {role === "client" && <ClientPortal key={user.id} defaultDistrictId={user.client_profile?.district_id} />}
       {role === "technician" && (
         <>
           <OffersInbox technicianId={user.technician_profile?.id} />

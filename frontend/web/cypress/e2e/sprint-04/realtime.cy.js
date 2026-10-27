@@ -1,6 +1,6 @@
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
-import { login, observe, offline } from "./helpers";
+import { login, observe, offline, openMyRequests } from "./helpers";
 it("S04-TC-093 oferta por Reverb sin recargar", () => {
   login("e2e-technician-electro");
   cy.get('[aria-label="Solicitudes entrantes"]')
@@ -17,6 +17,7 @@ it("S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una 
   cy.task("openRoundFor", "e2e-technician-electro@example.test").then(({ request_id: id }) => {
     cy.task("runJobs");
     login("e2e-client-direct");
+    openMyRequests();
     cy.contains("button", "Ver solicitud #" + id).click();
     cy.get('[aria-label="Seguimiento de solicitud"]')
       .contains("Conexión en tiempo real activa.")

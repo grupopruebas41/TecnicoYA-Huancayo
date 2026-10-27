@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { request } from "../administration/http";
 import { Notice } from "../administration/forms";
 import { useResource, ResourceState } from "../administration/Sprint02Common";
-import { searchQuery, changeFilters } from "./searchQuery";
+import { searchQuery, changeFilters, withProximity } from "./searchQuery";
+import { MAX_FEES } from "../client/clientRules";
 import TechnicianCard from "./TechnicianCard";
 import TechnicianProfile from "./TechnicianProfile";
-export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
+export default function TechnicianSearch({ onRequest, initialFilters = {}, defaultDistrictId = null }) {
   const [filters, setFilters] = useState({ ...initialFilters, page: 1 }),
     [result, setResult] = useState(null),
     [error, setError] = useState(""),
@@ -33,7 +34,7 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
     let active = true;
     setResult(null);
     setError("");
-    request("/technicians?" + searchQuery(filters))
+    request("/technicians?" + searchQuery(withProximity(filters, defaultDistrictId)))
       .then((r) => {
         if (active) setResult(r.data);
       })
@@ -43,7 +44,7 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
     return () => {
       active = false;
     };
-  }, [filters, retry]);
+  }, [filters, retry, defaultDistrictId]);
   const change = (name, value) =>
     setFilters((current) => changeFilters(current, name, value));
   if (selected)
@@ -57,8 +58,10 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
   return (
     <section aria-label="Buscar técnicos">
       <h2>Buscar técnicos</h2>
-      <p>
-        Explora perfiles por especialidad y zona. El orden no es un ranking.
+      <p className="muted">
+        {filters.district_id || defaultDistrictId
+          ? "Ordenados por cercanía a tu distrito; no es una recomendación."
+          : "Explora perfiles por especialidad y zona. Registra tu distrito principal en Mi perfil para verlos por cercanía."}
       </p>
       <ResourceState resource={specialties} />
       <ResourceState resource={districts} />
@@ -84,6 +87,20 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
           </label>
         ))}
         <label>
+          Tarifa máxima
+          <select
+            value={filters.max_fee || ""}
+            onChange={(e) => change("max_fee", e.target.value)}
+          >
+            <option value="">Cualquiera</option>
+            {MAX_FEES.map((fee) => (
+              <option key={fee} value={fee}>
+                Hasta S/ {fee}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
           Calificación mínima
           <select
             value={filters.min_rating || ""}
@@ -108,7 +125,7 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
       {result?.items.length === 0 && (
         <p>No hay técnicos que coincidan con los filtros elegidos.</p>
       )}
-      <div className="s02-list">
+      <div className="s02-list client-technician-list">
         {result?.items.map((t) => (
           <TechnicianCard key={t.id} technician={t} onOpen={setSelected} />
         ))}

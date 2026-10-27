@@ -9,7 +9,7 @@ const store = {
   get(area, key) { try { return window[area].getItem(key); } catch { return null; } },
   set(area, key, value) { try { window[area].setItem(key, value); } catch { /* sin almacenamiento */ } },
 };
-const ICONS = new Set(['home', 'chart', 'users', 'verify', 'requests', 'catalog', 'announcements', 'profile']);
+const ICONS = new Set(['home', 'chart', 'users', 'verify', 'requests', 'catalog', 'announcements', 'profile', 'plus', 'search', 'bell']);
 
 /** Agrupa las secciones por su título de grupo, en el orden en que llegan; las que no tienen grupo van sueltas. */
 function groupsOf(sections) {
@@ -53,11 +53,15 @@ function AvatarMenu({user, theme, onTheme, onProfile, onLogout, busy}) {
  * avatar, tema claro/oscuro (D-76) y cajón en móvil. Cada sección trae su contenido; el panel no lo cambia.
  * Bloque C (D-85): secciones agrupadas con título, iconos SVG, contadores (badges) y tooltips con el menú contraído;
  * render recibe {navigate, intent} para los accesos rápidos.
+ * Panel del cliente (D-87): initialSection e initialIntent abren una sección al entrar (la búsqueda de la portada),
+ * locked bloquea el menú mientras una sección guarda y bellKey vuelve a cargar la campana.
  */
-export default function PanelShell({user, role, roleLabel, navLabel, sections, onLogout, onUserChange, busy, notice, badges, onNavigate}) {
+export default function PanelShell({user, role, roleLabel, navLabel, sections, onLogout, onUserChange, busy, notice, badges, onNavigate,
+  initialSection, initialIntent = null, locked = false, bellKey}) {
   const sectionKey = `tecnicoya.panel.${user.id}.section`;
   const [active, setActive] = useState(() => {
     const saved = store.get('sessionStorage', sectionKey);
+    if (sections.some(section => section.id === initialSection)) return initialSection;
     return sections.some(section => section.id === saved) ? saved : sections[0]?.id;
   });
   const [collapsed, setCollapsed] = useState(() => store.get('localStorage', 'tecnicoya.panel.collapsed') === '1');
@@ -66,7 +70,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   const nav = useRef(null);
   const {theme, toggle, notice: themeNotice} = useTheme(user, onUserChange);
   useEffect(() => { if (drawer) nav.current?.querySelector('button')?.focus(); }, [drawer]);
-  const [intent, setIntent] = useState(null);
+  const [intent, setIntent] = useState(initialIntent);
   const [visit, setVisit] = useState(0);
   const current = sections.find(section => section.id === active) || sections[0];
   // intent: lo que la sección debe abrir al llegar (p. ej. el formulario de alta desde un acceso rápido del Inicio).
@@ -80,7 +84,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     const badgeId = `panel-badge-${section.id}`;
     return <React.Fragment key={section.id}><button type="button" className="panel-nav-item"
       aria-current={section.id === current?.id ? 'page' : undefined} data-tooltip={collapsed ? section.label : undefined}
-      aria-describedby={badge?.count ? badgeId : undefined} onClick={() => go(section.id)}>
+      aria-describedby={badge?.count ? badgeId : undefined} disabled={locked} onClick={() => go(section.id)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
       <span className="panel-label">{section.label}</span>
       {badge?.count > 0 && <span className="panel-nav-badge" aria-hidden="true">{badge.count > 99 ? '99+' : badge.count}</span>}
@@ -114,7 +118,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
         </button>
         <a className="panel-nav-item" href="/" data-tooltip={collapsed ? 'Ir al sitio' : undefined}>
           <span className="panel-nav-icon" aria-hidden="true"><Icon name="site"/></span><span className="panel-label">Ir al sitio</span></a>
-        <button type="button" className="panel-nav-item" data-cy="logout" disabled={busy} onClick={onLogout} data-tooltip={collapsed ? 'Cerrar sesión' : undefined}>
+        <button type="button" className="panel-nav-item" data-cy="logout" disabled={busy || locked} onClick={onLogout} data-tooltip={collapsed ? 'Cerrar sesión' : undefined}>
           <span className="panel-nav-icon" aria-hidden="true"><Icon name="logout"/></span><span className="panel-label">Cerrar sesión</span>
         </button>
       </div>
@@ -126,12 +130,14 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           aria-expanded={drawer} onClick={() => setDrawer(!drawer)}><span aria-hidden="true">☰</span></button>
         <span className="panel-title">{current?.label}</span>
         <div className="panel-actions">
-          <NotificationBell/>
+          <NotificationBell key={bellKey} userId={user.id}
+            onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
           <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>
         </div>
       </header>
-      {(notice || themeNotice) && <div className="panel-notices">
+      {(notice || themeNotice || locked) && <div className="panel-notices">
         {notice && <p className="error" role="alert">{notice}</p>}
+        {locked && <output className="notice">Espera a que termine de guardarse tu solicitud.</output>}
         {themeNotice && <output className="notice">{themeNotice}</output>}
       </div>}
       {/* AccountApp ya está dentro del <main> de App: el contenido va en un div. */}

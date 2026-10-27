@@ -12,7 +12,7 @@ import RequestWizard from "./RequestWizard";
 import RequestSummary from "./RequestSummary";
 import EvidencePicker from "./EvidencePicker";
 import MyRequests from "./MyRequests";
-import ClientPortal from "./ClientPortal";
+import ClientPanel from "../client/ClientPanel";
 import TechnicianSearch from "../matching/TechnicianSearch";
 import { request } from "../administration/http";
 import { registrationPayload, stateFromRecord } from "./wizardState";
@@ -323,13 +323,17 @@ test("S03-TC-080 complemento: detalle enviado sin controles de edición", async 
   expect(screen.queryByText("Enviar solicitud")).toBeNull();
   expect(screen.queryByText(/Retirar foto/)).toBeNull();
 });
+// D-87: el portal del cliente ahora es el panel (ClientPanel); la navegación conserva la etiqueta y los textos.
 test("S03-TC-080 complemento: portal abre solicitud y retoma la registrada", async () => {
   request.mockImplementation(async (p) => {
     if (p === "/requests") return { data: [{ id: 31, status: "registered" }] };
     if (p === "/requests/31") return { data: doc };
+    if (p.startsWith("/notifications")) return { data: { items: [], pagination: { page: 1, last_page: 1 }, unread_count: 0 } };
+    if (p === "/announcements") return { data: [] };
     return catalogs(p);
   });
-  render(<ClientPortal />);
+  render(<ClientPanel user={{ id: "5", name: "Cliente sintético", version: 1, role: { code: "client" }, permissions: [] }} roleLabel="Cliente" onLogout={() => {}} onUserChange={() => {}} onExpired={() => {}} />);
+  fireEvent.click(within(screen.getByRole("navigation", { name: "Gestión del cliente" })).getByText("Mis solicitudes"));
   fireEvent.click(await screen.findByText("Ver solicitud #31"));
   fireEvent.click(await screen.findByText("Continuar solicitud #31"));
   expect(await screen.findByText("Paso 5: Resumen y envío")).toHaveFocus();
