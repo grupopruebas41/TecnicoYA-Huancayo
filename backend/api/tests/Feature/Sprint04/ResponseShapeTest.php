@@ -132,7 +132,9 @@ it('S04-TC-143 la bandeja de notificaciones tiene la forma completa del contrato
     $item = ['id' => 'int', 'type' => 'string', 'title' => 'string', 'body' => 'string', 'subject' => ['type' => 'string', 'id' => 'int'],
         'event_id' => 'string', 'created_at' => 'string', 'read_at' => 'null'];
 
-    expect(s04Shape($page))->toBe(['items' => [$item], 'pagination' => ['page' => 'int', 'per_page' => 'int', 'total' => 'int', 'last_page' => 'int']])
+    // D-90 (NOTIF-02): unread_count se agregó para la campana del panel del cliente; el resto de la forma no cambia.
+    expect(s04Shape($page))->toBe(['items' => [$item], 'pagination' => ['page' => 'int', 'per_page' => 'int', 'total' => 'int', 'last_page' => 'int'],
+        'unread_count' => 'int'])
         ->and([$page['items'][0]['type'], $page['items'][0]['subject']])->toBe(['offer.created', ['type' => 'offer', 'id' => (int) $this->offer->id]])
         ->and($page['pagination'])->toBe(['page' => 1, 'per_page' => 1, 'total' => 1, 'last_page' => 1])
         ->and($page['items'][0]['event_id'])->toBe(DB::table('notifications')->where('id', $page['items'][0]['id'])->value('event_id'));
