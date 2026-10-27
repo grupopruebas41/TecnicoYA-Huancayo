@@ -2,6 +2,25 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-27 · Cierre del Sprint 4 (S4.6) · en curso
+
+- **Rama:** `feature/pimentel/cierre/s04`, desde `main` `4d1ba16`. PR #36, en **borrador**. El detalle está en `docs/avances/pimentel/cierre/s04/avance.md`.
+- **Hecho:**
+  - tarea E2E `replay` y Cypress S04-TC-094 sin `skip` (S04-TC-137);
+  - D-86 (DIST-02 A, S04-TC-138);
+  - mutación en Linux (`scripts/mutacion.sh` y workflow «Mutación»), S3 rehecho en 63,21 % e informe del S3 corregido;
+  - refuerzo del S4 (S04-TC-140 a 143);
+  - `DemoSeeder` (S04-TC-139) y README de desarrollo;
+  - CI sin `docs/**` y `qs` 6.17.0;
+  - evidencias movidas de `frontend/web/` y revisores en los avances.
+- **Pruebas en `2e7f87c`:**
+  - Pest 350/350 y Vitest 308/308; lint y build aprobados; audits limpios;
+  - conteo S04 sin Cypress: Pest 112 y Vitest 13.
+- **Bloqueado por RAM** (0,83 a 0,87 GB libres, por debajo de 1,5 GB): la regresión Cypress S1 a S4, el conteo final y SonarQube. `INFORME-SPRINT-04` espera esos datos.
+- **Mutación del S4 (Linux):** ver el avance.
+- **Para la PR #35 y `main`:** la auditoría npm falla por GHSA-6pq8-jhm2-2vcw hasta integrar `dbb59f1` (`qs` 6.17.0).
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Bloque C · usuarios, menú agrupado, estadísticas, solicitudes e Inicio (D-85)
 
 - **Rama:** `feature/pimentel/admin/usuarios`, creada desde `main` tras el PR #33.
