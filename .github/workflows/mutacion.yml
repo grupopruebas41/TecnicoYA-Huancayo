@@ -1,0 +1,107 @@
+name: Mutación
+
+# DEF-46: la mutación de Pest se mide en Linux. En Windows el plugin contaba como eliminados los mutantes cuyo proceso
+# moría o se cortaba por tiempo. Se lanza a mano (workflow_dispatch) o poniendo la etiqueta «mutacion» a un PR; no
+# corre en cada push porque tarda más de una hora. Primero un control negativo, que debe dejar sobrevivientes.
+on:
+  workflow_dispatch:
+    inputs:
+      conjunto:
+        description: 'Qué medir: s03, s04 o ambos'
+        required: true
+        default: ambos
+        type: choice
+        options: [ambos, s03, s04]
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: read
+
+jobs:
+  mutacion:
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'mutacion'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        sprint: [s03, s04]
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: tecnicoya_ci_testing
+      DB_USERNAME: tecnicoya_test
+      # Exclusiva del servicio efímero de este job; no es una credencial real.
+      DB_PASSWORD: ci-ephemeral-only
+      TECNICOYA_SLOT: A
+      CACHE_STORE: array
+      SESSION_DRIVER: database
+      QUEUE_CONNECTION: "null"
+      MAIL_MAILER: array
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: tecnicoya_ci_testing
+          MYSQL_USER: tecnicoya_test
+          MYSQL_PASSWORD: ci-ephemeral-only
+          MYSQL_ROOT_PASSWORD: ci-root-ephemeral-only
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci-root-ephemeral-only --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - name: Saltar el conjunto no pedido
+        id: pedido
+        shell: bash
+        env:
+          CONJUNTO: ${{ github.event.inputs.conjunto || 'ambos' }}
+          SPRINT: ${{ matrix.sprint }}
+        run: |
+          if [ "$CONJUNTO" = ambos ] || [ "$CONJUNTO" = "$SPRINT" ]; then echo "correr=true" >> "$GITHUB_OUTPUT"; else echo "correr=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        if: steps.pedido.outputs.correr == 'true'
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        if: steps.pedido.outputs.correr == 'true'
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql
+          coverage: pcov
+          tools: composer:v2
+      - name: Preparar entorno de pruebas aislado
+        if: steps.pedido.outputs.correr == 'true'
+        working-directory: backend/api
+        shell: bash
+        run: |
+          mkdir -p test-results storage/framework/{cache/data,sessions,views} bootstrap/cache
+          # Dotenv requiere un archivo presente; los valores vienen del entorno del job.
+          touch .env.testing
+          echo "APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));')" >> "$GITHUB_ENV"
+      - name: Instalar dependencias bloqueadas
+        if: steps.pedido.outputs.correr == 'true'
+        working-directory: backend/api
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Control negativo (debe dejar sobrevivientes)
+        if: steps.pedido.outputs.correr == 'true'
+        shell: bash
+        run: bash scripts/mutacion.sh control backend/api/test-results/mutacion-control-${{ matrix.sprint }}.txt
+      - name: Mutación ${{ matrix.sprint }}
+        if: steps.pedido.outputs.correr == 'true'
+        shell: bash
+        run: bash scripts/mutacion.sh ${{ matrix.sprint }} backend/api/test-results/mutacion-${{ matrix.sprint }}.txt
+      - name: Resumen
+        if: always() && steps.pedido.outputs.correr == 'true'
+        shell: bash
+        run: grep -H '^# Resumen' backend/api/test-results/mutacion-*.txt >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always() && steps.pedido.outputs.correr == 'true'
+        with:
+          name: mutacion-${{ matrix.sprint }}
+          path: backend/api/test-results/mutacion-*.txt
+          retention-days: 30
