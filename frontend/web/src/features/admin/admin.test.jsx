@@ -379,6 +379,8 @@ test('S07-TC-143 crear un administrador pide reingresar tu contraseña, la enví
 
   // Al volver a Cliente, el campo desaparece y la contraseña no viaja.
   sent.length = 0;
+  // El mock toma la primera ruta cuyo prefijo coincide: sin limpiar, «/admin/users» respondería al detalle.
+  for (const key of Object.keys(routes)) delete routes[key];
   routes['/admin/users/30'] = () => ({data: detail({id: 30, status: 'pending_activation'})});
   routes['/admin/users'] = (path, body, method) => {
     if (method === 'POST') { sent.push(body); return {data: user({id: 30, status: 'pending_activation'})}; }
