@@ -10,6 +10,7 @@ use App\Modules\FAdministration\Http\Controllers\AdminCatalogController;
 use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
 use App\Modules\FAdministration\Http\Controllers\AdminUserController;
 use App\Modules\FAdministration\Http\Controllers\AdminDashboardController;
+use App\Modules\FAdministration\Http\Controllers\AdminInsightsController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\CatalogController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
@@ -93,6 +94,12 @@ Route::prefix('v1')->group(function () {
         Route::prefix('admin')->group(function () {
             // Fase 1 del panel: indicadores del Inicio (D-74).
             Route::get('dashboard', [AdminDashboardController::class, 'show'])->middleware('permission:dashboard.view');
+            // Bloque C (D-85): estadísticas y solicitudes en solo lectura, con el mismo permiso del Inicio.
+            Route::middleware('permission:dashboard.view')->group(function () {
+                Route::get('statistics', [AdminInsightsController::class, 'statistics']);
+                Route::get('requests', [AdminInsightsController::class, 'requests']);
+                Route::get('requests/{serviceRequest}', [AdminInsightsController::class, 'request'])->whereNumber('serviceRequest');
+            });
             Route::middleware('permission:catalog.manage')->group(function () {
                 Route::get('specialties', [AdminCatalogController::class, 'specialties']);
                 Route::post('specialties', [AdminCatalogController::class, 'storeSpecialty']);
