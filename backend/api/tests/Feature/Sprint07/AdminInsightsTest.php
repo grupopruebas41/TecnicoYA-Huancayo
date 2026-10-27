@@ -39,9 +39,10 @@ function s07iDataset(object $test): array
 {
     $computo = Sprint04::technician();
     $electro = Sprint04::technician(['subcategory' => 'electricidad-tableros']);
-    $r1 = Sprint04::sentRequest();
-    $r2 = Sprint04::sentRequest(['subcategory_id' => Sprint04::subcategory('electricidad-tableros')]);
-    $r3 = Sprint04::sentRequest(['status' => 'registered', 'submitted_at' => null, 'district_id' => Sprint04::district('EL-TAMBO')]);
+    // created_at explícito: el valor por defecto de la columna es el reloj de MySQL, no el reloj controlado.
+    $r1 = Sprint04::sentRequest(['created_at' => now()]);
+    $r2 = Sprint04::sentRequest(['created_at' => now(), 'subcategory_id' => Sprint04::subcategory('electricidad-tableros')]);
+    $r3 = Sprint04::sentRequest(['created_at' => now(), 'status' => 'registered', 'submitted_at' => null, 'district_id' => Sprint04::district('EL-TAMBO')]);
     $r4 = Sprint04::sentRequest(['created_at' => now()->subDays(40), 'submitted_at' => now()->subDays(40)]);
     Sprint04::prepare($r1->id);
     Sprint04::prepare($r2->id);
@@ -128,12 +129,13 @@ it('S07-TC-125 las estadísticas usan un número fijo de consultas, sin importar
 
         return $queries;
     };
-    Sprint04::sentRequest();
+    Sprint04::sentRequest(['created_at' => now()]);
     $few = $count();
     foreach (range(1, 25) as $index) {
-        Sprint04::sentRequest(['district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+        Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
     }
-    expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(15);
+    // 8 agregados de las estadísticas más las consultas fijas de sesión y permisos.
+    expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
 });
 
 it('S07-TC-126 lista las solicitudes en solo lectura con filtros por estado, distrito, especialidad, fecha y número', function () {
