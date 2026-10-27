@@ -1,0 +1,263 @@
+
+   FAIL  Tests\Feature\Sprint07\AdminInsightsTest
+  ⨯ it S07-TC-121 las estadísticas exigen dashboard.view, aceptan 7, 30 o 90 días y devuelven un día por fecha… 41.56s  
+  ⨯ it S07-TC-122 agrega solicitudes por día, especialidad y distrito, y el embudo enviado, con ofertas, asigna… 0.89s  
+  ⨯ it S07-TC-123 calcula la tasa de aceptación de ofertas y el tiempo medio de respuesta; sin respuestas devue… 0.28s  
+  ⨯ it S07-TC-124 cuenta técnicos por estado, usuarios nuevos por rol y comunicados vigentes por audiencia       0.38s  
+  ⨯ it S07-TC-125 las estadísticas usan un número fijo de consultas, sin importar cuántas solicitudes haya       0.30s  
+  ⨯ it S07-TC-126 lista las solicitudes en solo lectura con filtros por estado, distrito, especialidad, fecha y… 0.79s  
+  ⨯ it S07-TC-127 el detalle de una solicitud muestra la línea de tiempo en orden, el cliente y el técnico asig… 0.77s  
+  ⨯ it S07-TC-128 el Inicio entrega los contadores del menú y los últimos 5 eventos relevantes, sin datos perso… 0.34s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-121 las estadísticas exigen dashboard.view, aceptan…    
+  Expected response status code [401] but received 404.
+Failed asserting that 404 is identical to 401.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "1ce9739b-d210-46d2-99f5-77f779587668",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:60
+     56▕ }
+     57▕ 
+     58▕ it('S07-TC-121 las estadísticas exigen dashboard.view, aceptan 7, 30 o 90 días y devuelven un día por fecha con ceros', function () {
+     59▕     Sprint01::forgetSession();
+  ➜  60▕     $this->getJson('/api/v1/admin/statistics')->assertUnauthorized();
+     61▕     Sanctum::actingAs(UserFactory::new()->client()->create());
+     62▕     $this->getJson('/api/v1/admin/statistics')->assertForbidden();
+     63▕ 
+     64▕     Sprint01::forgetSession();
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-122 agrega solicitudes por día, especialidad y distr…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "80056ac9-7235-49dd-b1b4-7764014d469f",
+        "server_time": "2026-10-20T14:04:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:31
+     27▕ {
+     28▕     Sprint01::forgetSession();
+     29▕     Sanctum::actingAs($test->admin);
+     30▕ 
+  ➜  31▕     return $test->getJson("/api/v1/admin/statistics?days=$days")->assertOk()->json('data');
+     32▕ }
+     33▕ 
+     34▕ /**
+     35▕  * Datos del flujo real del S4: R1 (Cómputo, Huancayo) aceptada a los 2 min, asignada y terminada; R2 (Electricidad,
+
+  1   tests\Feature\Sprint07\AdminInsightsTest.php:79
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-123 calcula la tasa de aceptación de ofertas y el ti…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "cbeb401b-ad0b-466b-811a-15c77a2c32cf",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:31
+     27▕ {
+     28▕     Sprint01::forgetSession();
+     29▕     Sanctum::actingAs($test->admin);
+     30▕ 
+  ➜  31▕     return $test->getJson("/api/v1/admin/statistics?days=$days")->assertOk()->json('data');
+     32▕ }
+     33▕ 
+     34▕ /**
+     35▕  * Datos del flujo real del S4: R1 (Cómputo, Huancayo) aceptada a los 2 min, asignada y terminada; R2 (Electricidad,
+
+  1   tests\Feature\Sprint07\AdminInsightsTest.php:91
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-124 cuenta técnicos por estado, usuarios nuevos por…    
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "a29e9e1c-a455-465e-a95a-1bb8882cbe84",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:31
+     27▕ {
+     28▕     Sprint01::forgetSession();
+     29▕     Sanctum::actingAs($test->admin);
+     30▕ 
+  ➜  31▕     return $test->getJson("/api/v1/admin/statistics?days=$days")->assertOk()->json('data');
+     32▕ }
+     33▕ 
+     34▕ /**
+     35▕  * Datos del flujo real del S4: R1 (Cómputo, Huancayo) aceptada a los 2 min, asignada y terminada; R2 (Electricidad,
+
+  1   tests\Feature\Sprint07\AdminInsightsTest.php:112
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-125 las estadísticas usan un número fijo de consulta…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "92677995-1645-4be3-b69a-55dcf258c8d9",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:125
+    121▕         Sprint01::forgetSession();
+    122▕         Sanctum::actingAs($this->admin);
+    123▕         DB::flushQueryLog();
+    124▕         DB::enableQueryLog();
+  ➜ 125▕         $this->getJson('/api/v1/admin/statistics?days=30')->assertOk();
+    126▕         $queries = count(DB::getQueryLog());
+    127▕         DB::disableQueryLog();
+    128▕ 
+    129▕         return $queries;
+
+  1   tests\Feature\Sprint07\AdminInsightsTest.php:132
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-126 lista las solicitudes en solo lectura con filtro…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "1f20fc3f-460b-4669-b9ee-e7d02b962659",
+        "server_time": "2026-10-20T14:04:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:143
+    139▕ it('S07-TC-126 lista las solicitudes en solo lectura con filtros por estado, distrito, especialidad, fecha y número', function () {
+    140▕     ['r1' => $r1, 'r2' => $r2, 'r3' => $r3, 'r4' => $r4] = s07iDataset($this);
+    141▕     Sprint01::forgetSession();
+    142▕     Sanctum::actingAs($this->admin);
+  ➜ 143▕     $ids = fn (string $query = '') => collect($this->getJson("/api/v1/admin/requests$query")->assertOk()->json('data.items'))->pluck('id')->all();
+    144▕ 
+    145▕     expect($ids())->toBe([$r3->id, $r2->id, $r1->id, $r4->id])
+    146▕         ->and($ids('?status=assigned'))->toBe([$r1->id])
+    147▕         ->and($ids('?district_id='.Sprint04::district('EL-TAMBO')))->toBe([$r3->id])
+
+  1   tests\Feature\Sprint07\AdminInsightsTest.php:145
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-127 el detalle de una solicitud muestra la línea de…    
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "7161305f-96e2-47af-87de-b1a57e51ae6c",
+        "server_time": "2026-10-20T14:04:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:166
+    162▕ it('S07-TC-127 el detalle de una solicitud muestra la línea de tiempo en orden, el cliente y el técnico asignado', function () {
+    163▕     ['r1' => $r1, 'computo' => $computo] = s07iDataset($this);
+    164▕     Sprint01::forgetSession();
+    165▕     Sanctum::actingAs($this->admin);
+  ➜ 166▕     $detail = $this->getJson("/api/v1/admin/requests/{$r1->id}")->assertOk()->json('data');
+    167▕ 
+    168▕     $events = DB::table('request_events')->where('request_id', $r1->id)->orderBy('occurred_at')->orderBy('id')->pluck('event_type')->all();
+    169▕     expect($detail['request'])->toMatchArray(['id' => $r1->id, 'status' => 'assigned', 'subcategory' => 'Reparación de hardware', 'district' => 'Huancayo'])
+    170▕         ->and($detail['technician'])->toMatchArray(['id' => $computo->id, 'name' => $computo->display_name])
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminInsightsTest > it S07-TC-128 el Inicio entrega los contadores…  ErrorException   
+  Undefined array key "announcements_active"
+
+  at tests\Feature\Sprint07\AdminInsightsTest.php:205
+    201▕     Sanctum::actingAs($this->admin);
+    202▕     $response = $this->getJson('/api/v1/admin/dashboard')->assertOk();
+    203▕     $data = $response->json('data');
+    204▕     expect($data['technicians_pending_verification'])->toBe(3)
+  ➜ 205▕         ->and($data['announcements_active'])->toBe(1)
+    206▕         ->and(collect($data['recent_events'])->pluck('reason')->all())->toBe(['Evento sintético 7', 'Evento sintético 6', 'Evento sintético 5', 'Evento sintético 4', 'Evento sintético 3'])
+    207▕         ->and($data['recent_events'][0])->toMatchArray(['action' => 'user.blocked', 'actor' => 'Administración de prueba']);
+    208▕     expect($response->getContent())->not->toContain('@example');
+    209▕ });
+
+
+  Tests:    8 failed (18 assertions)
+  Duration: 45.55s
+
