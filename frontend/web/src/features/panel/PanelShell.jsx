@@ -83,7 +83,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       aria-describedby={badge?.count ? badgeId : undefined} onClick={() => go(section.id)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
       <span className="panel-label">{section.label}</span>
-      {badge?.count > 0 && <span className="panel-badge" aria-hidden="true">{badge.count > 99 ? '99+' : badge.count}</span>}
+      {badge?.count > 0 && <span className="panel-nav-badge" aria-hidden="true">{badge.count > 99 ? '99+' : badge.count}</span>}
     </button>
     {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
     {badge?.count > 0 && <span id={badgeId} hidden>{badge.label}</span>}</React.Fragment>;

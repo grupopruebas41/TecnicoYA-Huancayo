@@ -466,6 +466,7 @@
 }
 .admin-bars th {
   width: 42%;
+  white-space: normal;
   overflow-wrap: anywhere;
   padding-right: 10px;
   font-weight: 500;
@@ -495,6 +496,7 @@
 }
 .admin-bar-value {
   flex: 0 0 auto;
+  color: var(--ty-text);
   min-width: 2.5em;
   text-align: right;
   font-variant-numeric: tabular-nums;
