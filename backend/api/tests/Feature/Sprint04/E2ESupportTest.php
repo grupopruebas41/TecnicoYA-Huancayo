@@ -118,3 +118,37 @@ it('S04-TC-132 abre una ronda dirigida al técnico indicado y vacía la cola', f
         ->and(DB::table('offer_rounds')->where('request_id', $latest->id)->value('kind'))->toBe('direct')
         ->and(s04OfferStatus($latest->id, 'electro'))->toBe('pending');
 });
+
+it('S04-TC-137 republica dos veces el mismo evento real de una solicitud del cliente sin escribir en la base [TC-055]', function () {
+    $this->seed(Sprint04E2ESeeder::class);
+    $this->artisan('tecnicoya:e2e', ['task' => 'open-round', 'argument' => 'e2e-technician-electro@example.test'])->assertSuccessful();
+    $this->artisan('tecnicoya:e2e', ['task' => 'jobs'])->assertSuccessful();
+    $requestIds = DB::table('service_requests as r')->join('client_profiles as c', 'c.id', '=', 'r.client_id')
+        ->join('users as u', 'u.id', '=', 'c.user_id')->where('u.email', 'e2e-client-direct@example.test')->pluck('r.id')->all();
+    $expected = DB::table('outbox_events')->whereNotNull('published_at')
+        ->whereIn('channel', array_map(fn ($id) => "requests.$id", $requestIds))->orderByDesc('id')->first();
+    expect($expected)->not->toBeNull();
+    $tables = ['outbox_events', 'outbox_deliveries', 'service_requests', 'offers', 'offer_rounds', 'notifications'];
+    $before = collect($tables)->mapWithKeys(fn ($t) => [$t => DB::table($t)->get()->toJson()])->all();
+    Event::fake([OutboxBroadcast::class]);
+
+    $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'e2e-client-direct@example.test'])
+        ->expectsOutputToContain('"event_id":"'.$expected->event_id.'"')->expectsOutputToContain('"broadcasts":2')->assertSuccessful();
+
+    $payload = json_decode($expected->payload, true);
+    $sent = [];
+    Event::assertDispatched(OutboxBroadcast::class, function (OutboxBroadcast $event) use (&$sent) {
+        $sent[] = [$event->channel, $event->type, $event->payload];
+
+        return true;
+    });
+    expect($sent)->toEqual(array_fill(0, 2, [$expected->channel, $expected->event_type, $payload]))
+        ->and($payload['event_id'])->toBe($expected->event_id)
+        ->and(collect($tables)->mapWithKeys(fn ($t) => [$t => DB::table($t)->get()->toJson()])->all())->toBe($before);
+
+    $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'e2e-technician-electro@example.test'])->assertFailed();
+    $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'nadie@example.test'])->assertFailed();
+    config(['database.connections.mysql.database' => 'tecnicoya']);
+    expect(fn () => $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'e2e-client-direct@example.test'])->run())
+        ->toThrow(SeedingRefused::class, '«tecnicoya»');
+});
