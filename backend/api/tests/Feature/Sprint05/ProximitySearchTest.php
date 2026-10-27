@@ -46,8 +46,9 @@ it('S05-TC-002 cada tarjeta por cercanía trae la distancia aproximada y el orde
 
     $items = collect($this->getJson('/api/v1/technicians?sort=proximity')->assertOk()->json('data.items'))->keyBy('display_name');
 
-    expect($items['Técnico Huancayo']['distance'])->toBe(['km' => 1.0, 'same_district' => true, 'approximate' => true, 'label' => 'aproximada por zona'])
-        ->and($items['Técnico Tambo']['distance'])->toBe(['km' => 3.5, 'same_district' => false, 'approximate' => true, 'label' => 'aproximada por zona'])
+    // JSON no distingue 1.0 de 1: los km se comparan por valor.
+    expect($items['Técnico Huancayo']['distance'])->toEqual(['km' => 1.0, 'same_district' => true, 'approximate' => true, 'label' => 'aproximada por zona'])
+        ->and($items['Técnico Tambo']['distance'])->toEqual(['km' => 3.5, 'same_district' => false, 'approximate' => true, 'label' => 'aproximada por zona'])
         ->and($items['Técnico sin base']['distance'])->toBeNull();
     foreach ($this->getJson('/api/v1/technicians')->assertOk()->json('data.items') as $item) {
         expect($item)->not->toHaveKey('distance');
@@ -63,7 +64,7 @@ it('S05-TC-003 el filtro de distrito es el origen de la cercanía en lugar del d
     $response = $this->getJson('/api/v1/technicians?'.http_build_query(['sort' => 'proximity', 'district_id' => $this->tambo]));
 
     expect(Sprint03::ids($response))->toBe([$tambo->id, $huancayo->id, $chilca->id])
-        ->and(array_column(array_column($response->json('data.items'), 'distance'), 'km'))->toBe([1.0, 3.5, 5.5]);
+        ->and(array_column(array_column($response->json('data.items'), 'distance'), 'km'))->toEqual([1.0, 3.5, 5.5]);
 });
 
 it('S05-TC-004 sin distrito en el perfil ni en el filtro, el orden por cercanía se rechaza en español', function () {

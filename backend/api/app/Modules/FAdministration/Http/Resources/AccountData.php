@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 final class AccountData
 {
-    public static function from(User $user): array
+    /** $private: incluye la dirección de referencia del cliente (D-91); solo GET /me y PATCH /me la piden. */
+    public static function from(User $user, bool $private = false): array
     {
         $role = DB::table('roles')->where('id', $user->role_id)->value('code');
         $data = [
@@ -22,11 +23,12 @@ final class AccountData
             'permissions' => app(EffectivePermissions::class)->codes($user),
         ];
         if ($role === 'client') {
-            // D-80: el distrito principal precarga la nueva solicitud; la dirección de referencia no se expone.
-            $client = DB::table('client_profiles')->where('user_id', $user->id)->first(['client_type', 'district_id']);
+            // D-80: el distrito principal precarga la nueva solicitud. D-91: la dirección de referencia solo la ve su
+            // dueño en GET y PATCH /me, para editarla en Mi perfil; el registro y el inicio de sesión no la devuelven.
+            $client = DB::table('client_profiles')->where('user_id', $user->id)->first(['client_type', 'district_id', 'default_address']);
             $data['client_profile'] = $client ? [
                 'client_type' => $client->client_type, 'district_id' => $client->district_id === null ? null : (int) $client->district_id,
-            ] : null;
+            ] + ($private ? ['reference_address' => $client->default_address] : []) : null;
         }
         if ($role === 'technician') {
             $profile = DB::table('technician_profiles')->where('user_id', $user->id)

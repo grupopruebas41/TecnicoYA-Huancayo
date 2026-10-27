@@ -26,9 +26,27 @@ class UpdateProfileRequest extends AccountRequest
                     $fail(__('api.avatar_not_allowed'));
                 }
             }],
+            // D-91 (PERFIL-02): solo el cliente edita su distrito principal y su dirección de referencia privada.
+            'district_id' => [$this->clientOnly(), 'sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)],
+            'reference_address' => [$this->clientOnly(), 'sometimes', 'nullable', 'string', 'max:255'],
             'expected_version' => ['required', 'integer', 'min:1'],
             'email' => ['prohibited'], 'password' => ['prohibited'], 'password_confirmation' => ['prohibited'],
             'account_type' => ['prohibited'], 'client_type' => ['prohibited'],
         ];
+    }
+
+    public function messages(): array
+    {
+        return ['district_id.exists' => __('api.district_inactive')];
+    }
+
+    /** Rechaza el campo si la cuenta no tiene perfil de cliente (técnicos y administradores). */
+    private function clientOnly(): Closure
+    {
+        return function (string $attribute, mixed $value, Closure $fail) {
+            if (! DB::table('client_profiles')->where('user_id', $this->user()->id)->exists()) {
+                $fail(__('api.client_fields_only'));
+            }
+        };
     }
 }

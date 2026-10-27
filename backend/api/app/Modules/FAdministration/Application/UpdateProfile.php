@@ -24,6 +24,13 @@ final class UpdateProfile
             if (array_key_exists('given_names', $data)) {
                 $user->name = trim($data['given_names'].' '.$data['family_names']);
             }
+            // D-91 (PERFIL-02): distrito principal y dirección de referencia del cliente, con la versión del usuario.
+            $client = array_intersect_key(['district_id' => 'district_id', 'reference_address' => 'default_address'], $data);
+            if ($client !== []) {
+                $profile = DB::table('client_profiles')->where('user_id', $user->id)->lockForUpdate()->first();
+                DB::table('client_profiles')->where('id', $profile->id)->update(array_combine(array_values($client),
+                    array_map(fn (string $field) => $data[$field], array_keys($client))) + ['version' => $profile->version + 1, 'updated_at' => now()]);
+            }
             $user->version++;
             $user->save();
 

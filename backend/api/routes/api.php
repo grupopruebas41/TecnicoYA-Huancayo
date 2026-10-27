@@ -77,7 +77,12 @@ Route::prefix('v1')->group(function () {
             Route::get('offers/{offer}', [OfferController::class, 'show'])->whereNumber('offer');
             Route::post('offers/{offer}/response', [OfferController::class, 'respond'])->whereNumber('offer');
         });
-        Route::get('notifications', [NotificationController::class, 'index'])->middleware('technician.not_suspended');
+        Route::middleware('technician.not_suspended')->group(function () {
+            Route::get('notifications', [NotificationController::class, 'index']);
+            // D-90 (NOTIF-02): marca de leída solo del dueño, adelanto de HU-S08-03.
+            Route::post('notifications/read-all', [NotificationController::class, 'readAll']);
+            Route::post('notifications/{notification}/read', [NotificationController::class, 'read'])->whereNumber('notification');
+        });
 
         Route::prefix('technicians/me')->middleware('role:technician')->group(function () {
             Route::get('profile', [TechnicianProfileController::class, 'profile']);

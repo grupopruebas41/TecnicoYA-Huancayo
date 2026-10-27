@@ -107,6 +107,9 @@ it('S04-TC-141 los candidatos y la elección tienen la forma completa del contra
 it('S04-TC-142 el detalle de la solicitud del titular tiene la forma completa del contrato §5.4 durante la búsqueda', function () {
     Sanctum::actingAs($this->client);
     $detail = $this->getJson("/api/v1/requests/{$this->request->id}")->assertOk()->json('data');
+    // D-89 (TIMELINE-01): el titular recibe además timeline, cuya forma prueban S05-TC-010 y 011; el resto no cambia.
+    expect($detail['timeline'])->toBeArray();
+    $detail = array_diff_key($detail, ['timeline' => 1]);
 
     expect(s04Shape($detail))->toBe(['id' => 'int', 'status' => 'string', 'version' => 'int', 'subcategory' => S04_REF, 'district' => S04_REF,
         'description' => 'string', 'address' => 'string', 'mode' => 'string', 'preferred_start_at' => 'null', 'preferred_end_at' => 'null',
