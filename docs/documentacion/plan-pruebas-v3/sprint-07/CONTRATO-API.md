@@ -152,3 +152,49 @@ Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG
 - **Errores:** sin cambio en la respuesta. El `meta.request_id` que la SPA muestra como «Referencia» se escribe también en el contexto del log (`request_id`) de cada excepción reportada, para rastrear un error a partir de la captura del usuario (S07-TC-072).
 - **Catálogo:** la lista compacta usa los mismos endpoints de §7 del S2. La tarifa sale de `reference_fee` y la miniatura de `image_url`: `hero_media_id` en las especialidades y `carousel_media_id` en las subcategorías. El cambio de estado sigue siendo `PATCH` con `active` y `expected_version`.
 
+## 8. Cambios de la versión 1.3 (2026-10-26): comunicados en carrusel (bloque B, D-83)
+
+### 8.1 `POST /media` **[cambia]**
+- Finalidad nueva `announcement`, con el permiso `announcements.manage` (si falta, responde 403).
+- Admite solo `image/jpeg` o `image/webp`, de hasta 600 KB (`errors.file`: «…como máximo 600 KB.»). Pasa por `ImageSanitizer` y se guarda sin EXIF.
+
+### 8.2 `POST /admin/announcements` y `PATCH /admin/announcements/{id}` **[cambia]**
+- **Campos nuevos:**
+  - `source`: `image`, `genially` o `text`;
+  - `kind`: `promotion`, `raffle`, `news` o `notice`;
+  - `image_media_id`, `mobile_media_id`, `genially_url` y `alt_text`.
+- **`source=image`:** exige `kind`, `alt_text` (5 a 250 caracteres) e `image_media_id`. La imagen debe ser media `announcement` revisada, en proporción 3:1 (±1 %) y de al menos 1440 × 480. `mobile_media_id` es opcional: 3:2 de al menos 810 × 540.
+- **`source=genially`:** exige `kind`, `alt_text` y `genially_url`, que se normaliza a `https://view.genially.com/<código>`. `image_media_id` es opcional (portada) y `mobile_media_id` se rechaza.
+- **Sin `source`:** el alta es el comunicado de texto del S2 y `body` es obligatorio. Con imagen o Genially, `body` es opcional y se guarda `""`.
+- **En `PATCH`:** las exigencias del origen se aplican cuando se envía `source`.
+
+### 8.3 `POST /admin/announcements/{id}/publication` **[cambia]**
+- Vuelve a comprobar la imagen y el enlace (por ejemplo, una imagen retirada después de guardar). Si algo falla, responde 422 con el campo afectado.
+
+### 8.4 `DELETE /admin/announcements/{id}/publication` **[nuevo]**
+- Cuerpo: `{ "expected_version": n }`.
+- Pasa de publicado a borrador, con 200 y la representación del comunicado. Audita `announcement.unpublished`.
+- Si no está publicado, responde 409 `ANNOUNCEMENT_NOT_PUBLISHED`; con versión vieja, 409.
+
+### 8.5 `PUT /admin/announcements/order` **[nuevo]**
+- Cuerpo: `{ "audience": "client" | "technician", "ids": [uuid…] }`. `ids` debe contener una vez cada comunicado no retirado de esa audiencia, borradores incluidos.
+- Respuesta 200: `{ "data": { "audience", "ids" } }`. Audita `announcement.reordered` con el orden anterior y el nuevo.
+- Con un conjunto incompleto o ajeno responde 422 `ids`; sin permiso, 403.
+
+### 8.6 `GET /admin/announcements` **[cambia]**
+- Cada fila agrega:
+  - `phase`: `draft`, `scheduled`, `active`, `expired` o `retired`;
+  - `positions`: por ejemplo `{ "client": 2, "technician": 1 }`;
+  - `source`, `kind`, `image_media_id`, `image_url`, `mobile_media_id`, `mobile_image_url`, `genially_url` y `alt_text`.
+
+### 8.7 `GET /announcements` **[cambia]**
+- Ordena por la posición en la audiencia del lector; la posición 0 va al final, por prioridad e inicio como en el S2.
+- Cada elemento agrega `source`, `kind`, `image_url`, `mobile_image_url`, `genially_url`, `alt_text` y `position`. Los ids de media no se exponen.
+
+### 8.8 Datos
+- **Migración `2026_10_26_000027_add_carousel_to_announcements`:**
+  - `announcements.source` (por defecto `text`, `CHECK`), `kind` (`CHECK`), `image_media_id` y `mobile_media_id` (FK a `media_files` con `nullOnDelete`), `genially_url` y `alt_text`;
+  - `announcement_audiences.position`, con índice `(role_id, position)`;
+  - el `CHECK chk_media_purpose` suma `announcement`.
+- En una base existente basta `php artisan migrate`. No hay permisos nuevos.
+
