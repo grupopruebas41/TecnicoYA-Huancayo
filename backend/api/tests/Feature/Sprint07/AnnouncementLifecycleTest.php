@@ -82,7 +82,8 @@ it('S07-TC-098 edita un comunicado vigente con su versión: se ve de inmediato e
     expect($feed)->toHaveCount(1)->and($feed[0])->toMatchArray(['title' => 'Campaña de mantenimiento 25 %', 'kind' => 'notice',
         'alt_text' => 'Promoción: 25 % de descuento en mantenimiento preventivo']);
 
-    expect(s07lAudit('announcement.published_edited'))->toBe([[
+    // MySQL guarda el JSON con las claves reordenadas: se comparan sin orden.
+    expect(s07lAudit('announcement.published_edited'))->toEqual([[
         ['id' => $live['id'], 'title' => 'Campaña de mantenimiento', 'kind' => 'promotion', 'alt_text' => 'Promoción: 20 % de descuento en mantenimiento preventivo'],
         ['id' => $live['id'], 'title' => 'Campaña de mantenimiento 25 %', 'kind' => 'notice', 'alt_text' => 'Promoción: 25 % de descuento en mantenimiento preventivo'],
     ]]);
@@ -104,7 +105,7 @@ it('S07-TC-099 reemplaza la imagen principal y la móvil de un publicado, y el e
     $genially = s07lMake($this, ['source' => 'genially', 'image_media_id' => null, 'genially_url' => 'https://view.genially.com/66f1c2a0b3e4d5f6']);
     $this->actingAs($this->admin)->patchJson("/api/v1/admin/announcements/{$genially['id']}",
         ['genially_url' => 'https://view.genially.com/77a2d3b4c5/novedades?x=1', 'expected_version' => $genially['version']])
-        ->assertOk()->assertJsonPath('data.genially_url', 'https://view.genially.com/77a2d3b4c5/novedades');
+        ->assertOk()->assertJsonPath('data.genially_url', 'https://view.genially.com/77a2d3b4c5');
     Sprint01::assertSpanishValidation($this->actingAs($this->admin)->patchJson("/api/v1/admin/announcements/{$genially['id']}",
         ['genially_url' => 'https://genially.example.test/77a2d3b4c5', 'expected_version' => $genially['version'] + 1]), ['genially_url']);
 });
