@@ -5,9 +5,13 @@
 export async function readImage(file) {
   const url = URL.createObjectURL(file);
   const image = new Image();
-  image.src = url;
   try {
-    await image.decode();
+    // Se espera el evento load y no image.decode(): Chrome rechaza a veces decode() con imágenes grandes válidas.
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = reject;
+      image.src = url;
+    });
   } catch {
     URL.revokeObjectURL(url);
     throw new Error('No pudimos leer la imagen. Prueba con otro archivo JPG, PNG o WebP.');

@@ -2,9 +2,13 @@
    sobre un velo oscuro para contrastar con cualquier foto. Los selectores llevan dos clases o más para ganar a
    «.panel-shell .s02-panel button», que pinta los botones heredados del S2. */
 
-.sr-only {
+/* El selector largo gana a «.panel-shell .s02-panel input», que daba al input de archivo oculto el ancho
+   completo y desbordaba la página a lo ancho. */
+.sr-only,
+.panel-shell .s02-panel input.sr-only {
   position: absolute;
   width: 1px;
+  min-height: 0;
   height: 1px;
   padding: 0;
   margin: -1px;
@@ -24,6 +28,8 @@
   background: var(--ty-raised);
   box-shadow: var(--ty-card-shadow, none);
   isolation: isolate;
+  margin: 0 0 28px;
+  container-type: inline-size;
 }
 .carousel:focus-visible {
   outline: 3px solid var(--ty-accent);
@@ -183,7 +189,7 @@
   color: #ffffff;
   pointer-events: auto;
 }
-.carousel .carousel-bar button {
+.carousel .carousel-bar .carousel-controls button, .carousel .carousel-bar .carousel-actions button {
   display: grid;
   place-items: center;
   width: 38px;
@@ -196,10 +202,12 @@
   color: #ffffff;
   cursor: pointer;
 }
-.carousel .carousel-bar button:hover:not(:disabled) {
+.carousel .carousel-bar .carousel-controls button:hover:not(:disabled),
+.carousel .carousel-bar .carousel-actions button:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.18);
 }
-.carousel .carousel-bar button:disabled {
+.carousel .carousel-bar .carousel-controls button:disabled,
+.carousel .carousel-bar .carousel-actions button:disabled {
   opacity: 0.45;
   cursor: default;
 }
@@ -244,7 +252,9 @@
   .carousel.has-mobile .carousel-stage {
     aspect-ratio: 3 / 2;
   }
-  /* En móvil la imagen 3:1 es baja: los controles van debajo para no taparla. */
+}
+/* Con el carrusel angosto, la imagen 3:1 es baja: los controles van debajo para no taparla. */
+@container (max-width: 460px) {
   .carousel-bar {
     position: static;
     padding: 6px 8px;
@@ -258,16 +268,6 @@
 }
 .carousel.is-mobile.has-mobile .carousel-stage {
   aspect-ratio: 3 / 2;
-}
-.carousel.is-mobile .carousel-bar {
-  position: static;
-  padding: 6px 8px;
-  background: var(--ty-sidebar-bg, #0f2a2e);
-}
-.carousel.is-mobile .carousel-controls,
-.carousel.is-mobile .carousel-actions {
-  background: none;
-  padding: 0;
 }
 @media (prefers-reduced-motion: reduce) {
   .carousel-slide,
@@ -924,4 +924,19 @@
   .s02-panel .announcement-editor-actions button.button[type] {
     flex: 1 1 0;
   }
+}
+
+/* Ajustes vistos en las capturas: la vista previa no lleva el margen del Inicio y «Quitar imagen» queda como
+   enlace, sin el fondo de los botones del S2. */
+.carousel.is-preview {
+  margin: 0;
+}
+
+.s02-panel .image-slot .text-button {
+  min-height: 44px;
+  padding: 0 4px;
+  color: var(--ty-accent);
+  background: none;
+  border: 0;
+  text-decoration: underline;
 }
