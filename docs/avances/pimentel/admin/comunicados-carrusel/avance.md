@@ -8,7 +8,7 @@
 - **HU/RF:** HU-S02-03 (RF-C04 y RF-C09) ampliada; RNF de accesibilidad y de seguridad (iframe de Genially).
 - **Fecha:** 2026-10-26 y 2026-10-27.
 - **Rama:** `feature/pimentel/admin/comunicados-carrusel`, creada desde `main` después de integrar el PR #32.
-- **Decisiones:** D-83 y D-84 (esta reemplaza a D-51), nuevas. Tiene dos valores **[PENDIENTE de confirmar]**: el mínimo de la imagen móvil y la tolerancia de la proporción.
+- **Decisiones:** D-83 y D-84 (esta reemplaza a D-51), nuevas. El 2026-10-27 Pimentel confirmó los dos valores de D-83: mínimo móvil de 810 × 540 y tolerancia del 1 %.
 
 ## Commits
 
@@ -78,9 +78,6 @@
 
 ## Pendientes
 
-- **Confirmar en D-83:**
-  - el mínimo de la imagen móvil: 810 × 540, o 1080 × 720;
-  - la tolerancia de proporción: 1 %, o 0 %.
 - Ejecutar las Cypress S02-TC-065 a 068 en la regresión del cierre S4.6.
 - En la base de desarrollo: `php artisan migrate` (000027).
 
