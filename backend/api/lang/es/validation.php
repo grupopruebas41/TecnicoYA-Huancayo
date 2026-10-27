@@ -43,7 +43,7 @@ return [
     ],
     'attributes' => [
         'source' => 'origen', 'kind' => 'tipo', 'image_media_id' => 'imagen principal', 'mobile_media_id' => 'imagen móvil',
-        'genially_url' => 'enlace de Genially', 'alt_text' => 'texto alternativo', 'audience' => 'audiencia', 'ids' => 'orden',
+        'genially_url' => 'enlace de Genially', 'alt_text' => 'texto alternativo', 'audience' => 'audiencia', 'ids' => 'orden', 'confirmation' => 'confirmación',
         'name' => 'nombre', 'email' => 'correo', 'phone' => 'teléfono',
         'password' => 'contraseña', 'password_confirmation' => 'confirmación de contraseña',
         'account_type' => 'tipo de cuenta', 'client_type' => 'tipo de cliente',

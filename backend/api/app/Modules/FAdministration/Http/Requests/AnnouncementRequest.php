@@ -6,6 +6,8 @@ use App\Modules\FAdministration\Domain\AnnouncementImages;
 use App\Modules\FAdministration\Domain\GeniallyUrl;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 /**
@@ -31,23 +33,26 @@ final class AnnouncementRequest extends FormRequest
     {
         $editing = $this->isMethod('patch');
         $required = $editing ? ['sometimes', 'required'] : ['required'];
-        $source = $this->input('source', $editing ? null : 'text');
+        // D-84: en PATCH sin `source` se valida contra el origen guardado (p. ej. reemplazar la imagen de un publicado).
+        $changing = ! $editing || $this->has('source');
+        $source = $this->input('source', $editing ? $this->storedSource() : 'text');
         $rich = in_array($source, ['image', 'genially'], true);
+        $needs = fn (bool $condition) => $condition ? ($changing ? ['required'] : ['sometimes', 'required']) : [];
 
         return [
             'source' => ['sometimes', 'string', Rule::in(['text', 'image', 'genially'])],
-            'kind' => [Rule::requiredIf($rich), 'nullable', 'string', Rule::in(self::KINDS)],
+            'kind' => [...$needs($rich), 'nullable', 'string', Rule::in(self::KINDS)],
             'title' => [...$required, 'string', 'min:3', 'max:120'],
             // En imagen y Genially, el mensaje está en la imagen: el cuerpo es opcional.
             'body' => $source === 'text' ? [...$required, 'string', 'max:5000'] : ['sometimes', 'nullable', 'string', 'max:5000'],
-            'alt_text' => [Rule::requiredIf($rich), 'nullable', 'string', 'min:5', 'max:250'],
-            'image_media_id' => [Rule::requiredIf($source === 'image'), 'nullable', 'integer', $this->image('main', 'api.announcement_image')],
+            'alt_text' => [...$needs($rich), 'nullable', 'string', 'min:5', 'max:250'],
+            'image_media_id' => [...$needs($source === 'image'), 'nullable', 'integer', $this->image('main', 'api.announcement_image')],
             'mobile_media_id' => ['nullable', 'integer', function (string $attribute, mixed $value, Closure $fail) use ($source) {
                 if ($source !== 'image' || ! app(AnnouncementImages::class)->valid($value, 'mobile')) {
                     $fail(__('api.announcement_mobile_image'));
                 }
             }],
-            'genially_url' => [Rule::requiredIf($source === 'genially'), 'nullable', 'string', function (string $attribute, mixed $value, Closure $fail) {
+            'genially_url' => [...$needs($source === 'genially'), 'nullable', 'string', function (string $attribute, mixed $value, Closure $fail) {
                 if (GeniallyUrl::normalize($value) !== $value) {
                     $fail(__('api.genially_url'));
                 }
@@ -71,6 +76,13 @@ final class AnnouncementRequest extends FormRequest
             'image_media_id.required' => __('api.announcement_image'),
             'genially_url.required' => __('api.genially_url'),
         ];
+    }
+
+    private function storedSource(): ?string
+    {
+        $id = (string) $this->route('announcement');
+
+        return Str::isUuid($id) ? DB::table('announcements')->where('id', $id)->value('source') : null;
     }
 
     private function image(string $slot, string $message): Closure

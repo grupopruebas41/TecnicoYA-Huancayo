@@ -62,6 +62,26 @@ final class AdminAnnouncementController
         return ApiResponse::data($this->announcements->reorder($request->user(), $data['audience'], $data['ids']));
     }
 
+    /** D-84: restaurar un retirado como borrador. */
+    public function restore(Request $request, string $announcement): JsonResponse
+    {
+        $data = $request->validate(['expected_version' => ['required', 'integer', 'min:1']]);
+
+        return $this->respond($this->announcements->restore($request->user(), $announcement, (int) $data['expected_version']));
+    }
+
+    /** D-84: eliminar de forma definitiva; se confirma escribiendo ELIMINAR (también lo exige la SPA). */
+    public function destroy(Request $request, string $announcement): JsonResponse
+    {
+        $data = $request->validate([
+            'expected_version' => ['required', 'integer', 'min:1'],
+            'confirmation' => ['required', 'string', 'in:ELIMINAR'],
+        ], ['confirmation.in' => __('api.announcement_delete_confirmation'), 'confirmation.required' => __('api.announcement_delete_confirmation')]);
+        $this->announcements->destroy($request->user(), $announcement, (int) $data['expected_version']);
+
+        return ApiResponse::data(['id' => $announcement, 'deleted' => true]);
+    }
+
     public function retire(Request $request, string $announcement): Response
     {
         $this->announcements->retire($request->user(), $announcement);
