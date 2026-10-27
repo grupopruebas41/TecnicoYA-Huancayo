@@ -31,7 +31,7 @@
 
   Detalle en [evidencias/sprint-01/cierre/](../../../documentacion/evidencias/sprint-01/cierre/README.md).
 - **SonarQube:** análisis `sprint-01` de la revisión `4171f06` (el producto es `main` `8c570e9`). **Quality Gate APROBADO**, con cobertura de código nuevo de 77,8 % ([gate.json](../../../documentacion/evidencias/sprint-01/cierre/sonar/gate.json)).
-- **Revisor:** [PENDIENTE]
+- **Revisor:** Pimentel Chumbes James
 - **Fecha:** 2026-10-10
 - **Pendientes y bloqueos:**
   - Workflow de GitHub Actions (D-39, DEF-27).
@@ -45,4 +45,4 @@
 
 | Herramienta y modelo | Fecha | Qué se aceptó | Qué se corrigió | Quién lo revisó |
 |---|---|---|---|---|
-| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | 2026-10-09 y 2026-10-10 | Aserciones de S01-TC-010, ejecución de la regresión, la mutación y SonarQube, actualización de la matriz, del registro de defectos y de los avances, e informe del sprint | La prueba reforzada escribía imágenes en el disco real; Claude Code lo detectó en `git status` tras la regresión y lo corrigió con `Storage::fake('public')` (DEF-38). La vista Markdown del registro de defectos estaba desfasada (sin DEF-36 ni DEF-37) y se regeneró desde el CSV | [PENDIENTE] |
+| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | 2026-10-09 y 2026-10-10 | Aserciones de S01-TC-010, ejecución de la regresión, la mutación y SonarQube, actualización de la matriz, del registro de defectos y de los avances, e informe del sprint | La prueba reforzada escribía imágenes en el disco real; Claude Code lo detectó en `git status` tras la regresión y lo corrigió con `Storage::fake('public')` (DEF-38). La vista Markdown del registro de defectos estaba desfasada (sin DEF-36 ni DEF-37) y se regeneró desde el CSV | Pimentel Chumbes James |

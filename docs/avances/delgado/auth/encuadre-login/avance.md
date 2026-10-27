@@ -49,7 +49,7 @@
 
 ## Revisión
 
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.
 
 ## Uso de IA
 
@@ -57,4 +57,4 @@
 - **Fecha:** 2026-10-26.
 - **Aceptado:** pruebas, estilos y marcado.
 - **Corregido:** en móvil el aviso de conexión quedaba apretado; «Reintentar» pasó debajo del texto.
-- **Revisión humana:** [PENDIENTE].
+- **Revisión humana:** Pimentel Chumbes James.

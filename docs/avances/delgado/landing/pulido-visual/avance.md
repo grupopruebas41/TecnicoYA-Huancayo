@@ -73,7 +73,7 @@
 ## Revisión
 
 - **SonarQube:** no aplica en esta tarea; corresponde al cierre del sprint.
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.
 - **Decisiones:** D-72 (Claude Code asume el frontend).
 
 ## Correcciones adicionales · 2026-10-26
@@ -96,4 +96,4 @@
   - el logo del pie salía apilado;
   - el pie de foto de Quiénes somos salía recortado;
   - las capturas de Equipo mostraban nombres reales y se repitieron anonimizadas.
-- **Revisión humana:** [PENDIENTE].
+- **Revisión humana:** Pimentel Chumbes James.

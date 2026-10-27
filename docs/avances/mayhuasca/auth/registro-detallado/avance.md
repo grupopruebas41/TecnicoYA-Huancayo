@@ -62,7 +62,7 @@
 
 ## Revisión
 
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.
 
 ## Ajuste: rubros por especialidad · 2026-10-26
 
@@ -91,4 +91,4 @@
 - **Corregido:**
   - en las pruebas nuevas: `$this` dentro de `state()` de la factory, los IDs leídos antes de sembrar, la entrada sin rol de S07-TC-017 y el detector heurístico de español con la 429;
   - en el código: el sobre `data` de las respuestas de recuperación, el `pointer-events` del radio que bloqueaba a Cypress y la especificidad del CSS de los chips.
-- **Revisión humana:** [PENDIENTE].
+- **Revisión humana:** Pimentel Chumbes James.

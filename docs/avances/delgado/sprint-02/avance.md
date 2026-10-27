@@ -8,11 +8,11 @@
 - Previsto y ejecutado: 14 IDs Vitest S02-TC-076–089; suite total 112/112, seis complementos. npm test con cobertura salida 0; administración 86,40 % líneas y global 82,66 %. npm run build salida 0. npm audit 0 vulnerabilidades.
 - Cypress S02-TC-059–075 preparado (17); sintaxis comprobada, ejecución pendiente S2.5. Sin Docker ni Pest local. SonarQube no ejecutado: cierre del sprint.
 - Evidencias: ../../../documentacion/evidencias/sprint-02/frontend/README.md. Decisiones: ../../../documentacion/sprints/DECISIONES.md.
-- Pendientes: integración S2.3, seeder/credenciales/precondiciones E2E, precisiones de contrato anotadas en HANDOFF y revisión del PR. Revisor: [PENDIENTE].
+- Pendientes: integración S2.3, seeder/credenciales/precondiciones E2E, precisiones de contrato anotadas en HANDOFF y revisión del PR. Revisor: Pimentel Chumbes James.
 
 ## Registro de uso de IA
 
-Codex (modelo no expuesto por la sesión), 2026-10-10. Se incorporaron pruebas antes de código, paneles y documentación generados con asistencia. Se corrigieron errores de JSX, consultas de subcategorías sin especialidad, aislamiento de pruebas de sesión, preservación de alertas y manejo de conflictos. Se verificaron 112 pruebas y build; no se atribuyen ejecuciones Cypress o aprobación humana inexistentes. Revisión: [PENDIENTE].
+Codex (modelo no expuesto por la sesión), 2026-10-10. Se incorporaron pruebas antes de código, paneles y documentación generados con asistencia. Se corrigieron errores de JSX, consultas de subcategorías sin especialidad, aislamiento de pruebas de sesión, preservación de alertas y manejo de conflictos. Se verificaron 112 pruebas y build; no se atribuyen ejecuciones Cypress o aprobación humana inexistentes. Revisión: Pimentel Chumbes James.
 
 ## 2026-10-13 · S2.5 · Integración y regresión (slot B)
 
@@ -25,16 +25,16 @@ Codex (modelo no expuesto por la sesión), 2026-10-10. Se incorporaron pruebas a
 - Solo una corrida Cypress a la vez, bloqueo global del arrancador, TECNICOYA_SLOT=B y tecnicoya_b_testing. No se levantó MySQL desde este worktree, no se ejecutó Pest local ni SonarQube.
 - DEF-40 para Claude Code: falta subcategory_id en respuesta del portafolio propio; contrato y prueba Pest de ida/vuelta pendientes. Backend sin modificaciones propias; almacenamiento sintético generado por el runner sin versionar.
 - Evidencias: ../../../documentacion/evidencias/sprint-02/cypress/README.md. Decisiones: ../../../documentacion/sprints/DECISIONES.md.
-- SonarQube: [PENDIENTE], corresponde a S2.6. Revisor: [PENDIENTE]. Push realizado (a9574f5 diagnóstico, c05f61e evidencias). CI iniciada; estado actualizado: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10/checks. La CI no sustituye los E2E fallidos ni el Quality Gate.
+- SonarQube: [PENDIENTE], corresponde a S2.6. Revisor: Pimentel Chumbes James. Push realizado (a9574f5 diagnóstico, c05f61e evidencias). CI iniciada; estado actualizado: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/10/checks. La CI no sustituye los E2E fallidos ni el Quality Gate.
 
 ### Uso de IA en S2.5
 
-Codex (variante de modelo no expuesta por la sesión), 2026-10-13. Se aceptaron validaciones alineadas al contrato, pruebas y manejo persistente del aviso de retiro. Se corrigieron selectores ambiguos, datos de precondición del seeder, lectura de horarios antes de cargar el perfil y sincronización con respuestas HTTP; el retiro se reprodujo en Vitest antes de corregirlo. Los intentos fallidos se conservan y no se acreditan como aprobados. No se modificó backend ni se inventaron respuestas exitosas. Revisión humana: [PENDIENTE].
+Codex (variante de modelo no expuesta por la sesión), 2026-10-13. Se aceptaron validaciones alineadas al contrato, pruebas y manejo persistente del aviso de retiro. Se corrigieron selectores ambiguos, datos de precondición del seeder, lectura de horarios antes de cargar el perfil y sincronización con respuestas HTTP; el retiro se reprodujo en Vitest antes de corregirlo. Los intentos fallidos se conservan y no se acreditan como aprobados. No se modificó backend ni se inventaron respuestas exitosas. Revisión humana: Pimentel Chumbes James.
 
 Pendiente adicional: Claude Code debe contrastar recepción multipart/preflight de /media (DEF-42); la instrumentación y el PNG físico solo facilitan reproducción y no solucionan ese defecto. Todos los intentos fallidos están preservados.
 
 ## 2026-10-19 · DEF-47
 
-Delgado, administración de catálogo S2; S02-TC-076 complementos. Rama feature/delgado/f-administracion/s02-catalog-edit. Rojo 84a0f63, verde 25065ab. Cambios: CatalogAdmin.jsx y CatalogEdit.test.jsx; PATCH omite campo inmutable, creación lo conserva. Revisión de especialidades/distritos sin el defecto. Vitest 154/154, líneas 84,49 %; build aprobado y audit 0. Evidencias: docs/documentacion/evidencias/sprint-02/def-47. Sin Cypress/SonarQube local; Quality Gate pendiente de cierre. Revisor [PENDIENTE].
+Delgado, administración de catálogo S2; S02-TC-076 complementos. Rama feature/delgado/f-administracion/s02-catalog-edit. Rojo 84a0f63, verde 25065ab. Cambios: CatalogAdmin.jsx y CatalogEdit.test.jsx; PATCH omite campo inmutable, creación lo conserva. Revisión de especialidades/distritos sin el defecto. Vitest 154/154, líneas 84,49 %; build aprobado y audit 0. Evidencias: docs/documentacion/evidencias/sprint-02/def-47. Sin Cypress/SonarQube local; Quality Gate pendiente de cierre. Revisor Pimentel Chumbes James.
 
-IA: Codex, modelo no expuesto verificablemente; se aceptó payload explícito y pruebas de regresión, se verificó la regla en contrato/Requests sin editar backend. Revisión humana [PENDIENTE].
+IA: Codex, modelo no expuesto verificablemente; se aceptó payload explícito y pruebas de regresión, se verificó la regla en contrato/Requests sin editar backend. Revisión humana Pimentel Chumbes James.

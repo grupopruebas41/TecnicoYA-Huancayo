@@ -105,8 +105,8 @@
   - una aserción vacía en S07-TC-052;
   - los defectos visuales de la lista de pruebas;
   - en el bloque A, el selector de la miniatura decorativa en S07-TC-073 y 076 (una `img` con alt vacío no tiene rol img), y los ajustes visuales que se vieron en las capturas.
-- **Revisó:** [PENDIENTE].
+- **Revisó:** Pimentel Chumbes James.
 
 ## Revisión
 
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.
