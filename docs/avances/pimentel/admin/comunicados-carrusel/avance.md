@@ -8,7 +8,7 @@
 - **HU/RF:** HU-S02-03 (RF-C04 y RF-C09) ampliada; RNF de accesibilidad y de seguridad (iframe de Genially).
 - **Fecha:** 2026-10-26 y 2026-10-27.
 - **Rama:** `feature/pimentel/admin/comunicados-carrusel`, creada desde `main` después de integrar el PR #32.
-- **Decisiones:** D-83, nueva. Tiene dos valores **[PENDIENTE de confirmar]**: el mínimo de la imagen móvil y la tolerancia de la proporción.
+- **Decisiones:** D-83 y D-84 (esta reemplaza a D-51), nuevas. Tiene dos valores **[PENDIENTE de confirmar]**: el mínimo de la imagen móvil y la tolerancia de la proporción.
 
 ## Commits
 
@@ -18,6 +18,32 @@
 - `4f03b4a`: Vitest en rojo (S07-TC-088 a 097), con esqueletos vacíos.
 - `7ec18ca`: frontend.
 - `58ca594` y `3d549eb`: ajustes vistos en las capturas (input oculto que desbordaba a lo ancho, margen bajo el carrusel, «Quitar imagen», selector de audiencia del orden, lectura de la imagen y especificidad de los botones).
+
+## Ajuste del PR #33 (2026-10-27, D-84)
+
+- **Commits:**
+  - `aa3b168` y `6a57f7f`: Pest en rojo (S07-TC-098 a 104) y corrección de dos expectativas mías;
+  - `5e8b6a7`: API;
+  - `c9302aa`: Vitest en rojo (S07-TC-105 a 108);
+  - `610b83d`: SPA;
+  - `3eea65b` y `968fe50`: ajustes vistos en las capturas.
+- **Editar en cualquier estado:**
+  - `PATCH` acepta publicados con su versión y audita `announcement.published_edited` con antes y después;
+  - sin `source`, valida contra el origen guardado, lo que permite reemplazar la imagen o el Genially;
+  - el editor de un vigente avisa «Los cambios se verán de inmediato en los paneles».
+- **Restaurar:** el retirado se ve en solo lectura con «Restaurar como borrador» (`POST …/restoration`).
+- **Eliminar:**
+  - `DELETE …/permanent` con la confirmación ELIMINAR, solo para borradores, vencidos y retirados;
+  - retira las imágenes sin otro uso, renumera el carrusel y audita la foto previa;
+  - el menú lo muestra deshabilitado con el motivo en vigentes y programados.
+- **Listado:** «Mostrar retirados», desmarcado por defecto; un clic en la tarjeta abre el editor; el menú de la última fila se abre hacia arriba.
+- **Pruebas ajustadas sin cambiar su ID:**
+  - S02-TC-026: un publicado ahora se edita (200);
+  - S07-TC-094, S02-TC-079 (complemento) y la Cypress S02-TC-066, sin ejecutar: marcan «Mostrar retirados».
+- **Suites en `968fe50`:**
+  - Pest 323/323 y Vitest 296/296;
+  - lint y build aprobados; audits limpios;
+  - 12 capturas D-84 (`evidencias/sprint-07/2026-10-27-968fe50-*-d84-*`).
 
 ## Cambios
 
@@ -67,6 +93,11 @@
   - el texto de movimiento duplicado en el orden;
   - `readImage` dejó de usar `image.decode()`, que Chrome rechazó con una JPEG válida al recortar;
   - la especificidad de los botones del carrusel frente a los estilos heredados del S2.
+- **2026-10-27 (D-84), qué se corrigió:**
+  - dos expectativas de mis pruebas: el orden de las claves del JSON de MySQL y el enlace de Genially sin el nombre;
+  - la casilla «Mostrar retirados», que una regla global de label ponía en columna;
+  - el editor, que se abría a media página;
+  - el menú, que salía del contenido en la última fila.
 - **Revisó:** [PENDIENTE].
 
 ## Revisión

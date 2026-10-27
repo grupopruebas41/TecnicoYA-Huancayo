@@ -166,7 +166,7 @@ Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG
 - **`source=image`:** exige `kind`, `alt_text` (5 a 250 caracteres) e `image_media_id`. La imagen debe ser media `announcement` revisada, en proporción 3:1 (±1 %) y de al menos 1440 × 480. `mobile_media_id` es opcional: 3:2 de al menos 810 × 540.
 - **`source=genially`:** exige `kind`, `alt_text` y `genially_url`, que se normaliza a `https://view.genially.com/<código>`. `image_media_id` es opcional (portada) y `mobile_media_id` se rechaza.
 - **Sin `source`:** el alta es el comunicado de texto del S2 y `body` es obligatorio. Con imagen o Genially, `body` es opcional y se guarda `""`.
-- **En `PATCH`:** las exigencias del origen se aplican cuando se envía `source`.
+- **En `PATCH`:** las exigencias del origen se aplican cuando se envía `source`; sin él, contra el origen guardado (D-84, §8.9).
 
 ### 8.3 `POST /admin/announcements/{id}/publication` **[cambia]**
 - Vuelve a comprobar la imagen y el enlace (por ejemplo, una imagen retirada después de guardar). Si algo falla, responde 422 con el campo afectado.
@@ -197,4 +197,35 @@ Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG
   - `announcement_audiences.position`, con índice `(role_id, position)`;
   - el `CHECK chk_media_purpose` suma `announcement`.
 - En una base existente basta `php artisan migrate`. No hay permisos nuevos.
+
+### 8.9 Edición en cualquier estado, restauración y eliminación (versión 1.4, 2026-10-27, D-84)
+
+**`PATCH /admin/announcements/{id}`** **[cambia]**
+- Acepta borradores y publicados (programados, vigentes o vencidos), con `expected_version`. Si otro administrador lo cambió antes, responde 409 `STALE_VERSION`.
+- Sin `source`, las exigencias se validan contra el origen guardado. Así se reemplaza la imagen principal o la móvil, o el enlace de Genially, sin reenviar todo.
+- **En un publicado:**
+  - el cambio se ve de inmediato en `GET /announcements`;
+  - se vuelve a comprobar el contenido;
+  - se audita `announcement.published_edited` con los valores de antes y después de los campos que cambiaron (y de `audiences`, si cambia).
+- **En un borrador:** sigue auditando `announcement.updated`, como en el S2.
+- **En un retirado:** responde 409 `ANNOUNCEMENT_RETIRED`; primero hay que restaurarlo.
+
+**`POST /admin/announcements/{id}/restoration`** **[nuevo]**
+- Cuerpo: `{ "expected_version": n }`.
+- El retirado pasa a borrador (`retired_at` vuelve a nulo) y entra al final del carrusel de cada audiencia. Responde 200 con la representación del comunicado y audita `announcement.restored`.
+- Si no está retirado, responde 409 `ANNOUNCEMENT_NOT_RETIRED`; con versión vieja, 409.
+
+**`DELETE /admin/announcements/{id}/permanent`** **[nuevo]**
+- Cuerpo: `{ "expected_version": n, "confirmation": "ELIMINAR" }`. Cualquier otra confirmación responde 422 `confirmation`.
+- Solo admite borradores, vencidos y retirados. Un vigente o programado responde 409 `ANNOUNCEMENT_DELETE_PUBLISHED` («despublícalo primero»); si no existe, 404.
+- **Efectos:**
+  - borra el comunicado y sus filas de `announcement_audiences`;
+  - las imágenes (principal o móvil) que ningún otro comunicado usa quedan con `retired_at`;
+  - las posiciones del carrusel que quedan se renumeran sin huecos.
+- **Respuesta:** 200 con `{ "data": { "id", "deleted": true } }`.
+- **Auditoría:** `announcement.deleted`.
+  - Antes: foto previa con título, estado, origen, tipo, audiencias, fechas, imágenes, Genially y versión.
+  - Después: `{ id, deleted, retired_media }`.
+- `DELETE /admin/announcements/{id}` sigue siendo **retirar** (S02-TC-028, sin cambios).
+- Sin `announcements.manage`, las tres operaciones responden 403.
 

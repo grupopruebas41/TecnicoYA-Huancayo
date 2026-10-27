@@ -2,6 +2,23 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-27 · Ajuste del PR #33 · editar, restaurar y eliminar comunicados (D-84)
+
+- **Rama:** `feature/pimentel/admin/comunicados-carrusel`, la misma del PR #33.
+- **Commits:** `aa3b168`, `6a57f7f`, `5e8b6a7`, `c9302aa`, `610b83d`, `3eea65b` y `968fe50`, más los de documentación.
+- **API (contrato S07 §8.9):**
+  - `PATCH` admite publicados;
+  - nuevos `POST /admin/announcements/{id}/restoration` y `DELETE /admin/announcements/{id}/permanent` (con `confirmation=ELIMINAR`).
+- **Sin migración nueva.**
+- **D-84** reemplaza a D-51.
+- **Pruebas en `968fe50`:**
+  - Pest 323/323 y Vitest 296/296; lint y build aprobados; audits limpios;
+  - IDs nuevos: Pest S07-TC-098 a 104 y Vitest S07-TC-105 a 108; el catálogo S07 queda con 108 IDs;
+  - 12 capturas D-84.
+- **Pruebas ajustadas:** S02-TC-026, S07-TC-094, S02-TC-079 (complemento) y la Cypress S02-TC-066, esta sin ejecutar.
+- **Pendiente:** los dos valores de D-83 y la regresión Cypress S4.6.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Bloque B · comunicados en carrusel (D-83)
 
 - **Rama:** `feature/pimentel/admin/comunicados-carrusel`, creada desde `main` tras el PR #32.
