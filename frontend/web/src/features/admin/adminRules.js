@@ -52,7 +52,7 @@ export function validateReason(reason) {
 export const emptyUser = {
   account_type: 'client', given_names: '', family_names: '', email: '', phone: '',
   client_type: 'household', district_id: '', business_name: '', reference_address: '',
-  base_district_id: '', district_ids: [], specialty_ids: [], subcategory_ids: [], experience_years: '', reason: '',
+  base_district_id: '', district_ids: [], specialty_ids: [], subcategory_ids: [], experience_years: '', reason: '', current_password: '',
 };
 
 /** Validación de cliente del alta (o de la edición, con editing: sin rol ni datos de técnico salvo el distrito). */
@@ -71,10 +71,12 @@ export function validateUser(values, {editing = false} = {}) {
     const years = Number(values.experience_years);
     if (values.experience_years === '' || !Number.isInteger(years) || years < 0 || years > 50) errors.experience_years = ['Indica los años de experiencia (0 a 50).'];
   }
+  // D-85: el alta de un administrador se confirma con la contraseña de quien lo crea.
+  if (values.account_type === 'admin' && !editing && !values.current_password) errors.current_password = ['Escribe tu contraseña para confirmar el alta de un administrador.'];
   return {...errors, ...validateReason(values.reason)};
 }
 
-/** Cuerpo del alta: sin contraseña; solo los campos del tipo de cuenta. */
+/** Cuerpo del alta: sin contraseña de la cuenta nueva; solo los campos del tipo de cuenta (en un administrador, la de quien lo crea). */
 export function userPayload(values) {
   const base = {account_type: values.account_type, given_names: values.given_names.trim(), family_names: values.family_names.trim(),
     email: values.email.trim().toLowerCase(), phone: values.phone, reason: values.reason.trim()};
@@ -88,7 +90,7 @@ export function userPayload(values) {
     return {...base, base_district_id, district_ids: [...new Set([base_district_id, ...values.district_ids.map(Number)])],
       specialty_ids: values.specialty_ids.map(Number), subcategory_ids: values.subcategory_ids.map(Number), experience_years: Number(values.experience_years)};
   }
-  return base;
+  return {...base, current_password: values.current_password};
 }
 
 /** Cuerpo de la edición: solo lo que cambió, con el motivo y la versión. */

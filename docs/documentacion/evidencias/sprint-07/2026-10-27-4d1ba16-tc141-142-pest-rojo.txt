@@ -1,0 +1,42 @@
+
+   FAIL  Tests\Feature\Sprint07\AdminReconfirmationTest
+  ⨯ it S07-TC-141 crear un administrador exige la contraseña correcta de quien lo crea y no la guarda en la au… 43.18s  
+  ⨯ it S07-TC-142 tras 5 intentos fallidos bloquea la reconfirmación 15 minutos; clientes y técnicos no la pide… 0.29s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminReconfirmationTest > it S07-TC-141 crear un administrador exige la contraseña…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\AdminReconfirmationTest.php:41
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\AdminReconfirmationTest > it S07-TC-142 tras 5 intentos fallidos bloquea la reconf…   
+  Expected response status code [422] but received 201.
+Failed asserting that 201 is identical to 422.
+
+  at tests\Feature\Sprint07\AdminReconfirmationTest.php:56
+     52▕ });
+     53▕ 
+     54▕ it('S07-TC-142 tras 5 intentos fallidos bloquea la reconfirmación 15 minutos; clientes y técnicos no la piden', function () {
+     55▕     for ($i = 0; $i < 5; $i++) {
+  ➜  56▕         $this->actingAs($this->admin)->postJson('/api/v1/admin/users', s07rAdmin(['current_password' => 'incorrecta-'.$i]))->assertUnprocessable();
+     57▕     }
+     58▕     $locked = $this->actingAs($this->admin)->postJson('/api/v1/admin/users', s07rAdmin(['current_password' => $this->password]));
+     59▕     Sprint01::assertSpanishValidation($locked, ['current_password']);
+     60▕     expect($locked->json('errors.current_password.0'))->toContain('Demasiados intentos')->and(User::query()->count())->toBe(1);
+
+
+  Tests:    2 failed (2 assertions)
+  Duration: 43.68s
+

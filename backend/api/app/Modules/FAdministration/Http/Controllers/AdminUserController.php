@@ -38,7 +38,7 @@ final class AdminUserController
 
     public function store(AdminCreateUserRequest $request): JsonResponse
     {
-        return ApiResponse::data($this->users->create($request->user(), $request->validated()), 201);
+        return ApiResponse::data($this->users->create($request->user(), $request->safe()->except('current_password')), 201);
     }
 
     public function update(AdminUpdateUserRequest $request, int $user): JsonResponse

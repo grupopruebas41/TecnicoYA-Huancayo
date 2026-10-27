@@ -21,6 +21,7 @@ return [
     'password_reset_invalid' => 'El enlace no es válido o venció. Pide uno nuevo.',
     // Fase 1 del panel: Mi perfil.
     'current_password_invalid' => 'La contraseña actual no es correcta.',
+    'reconfirm_locked' => 'Demasiados intentos con la contraseña. Vuelve a intentarlo en :minutes minutos.',
     'password_same_as_current' => 'La nueva contraseña debe ser distinta de la actual.',
     'password_changed' => 'Tu contraseña se actualizó. Cerramos tus otras sesiones.',
     'avatar_not_allowed' => 'La foto debe ser una imagen tuya, subida como foto de perfil y revisada.',

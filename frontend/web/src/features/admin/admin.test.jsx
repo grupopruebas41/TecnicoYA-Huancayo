@@ -340,3 +340,61 @@ test('S07-TC-140 la activación de una cuenta creada por un administrador define
   expect(screen.getByText('Tu cuenta está activa. Ya puedes iniciar sesión con tu contraseña.')).toBeInTheDocument();
   expect(window.location.hash).toBe('#cuenta/activar?token=tok123&email=rosa%40example.test');
 });
+
+test('S07-TC-143 crear un administrador pide reingresar tu contraseña, la envía solo en ese caso y la borra si falla', async () => {
+  const sent = [];
+  routes['/admin/users/31'] = () => ({data: detail({id: 31, role: 'admin', status: 'pending_activation'})});
+  routes['/admin/users'] = (path, body, method) => {
+    if (method !== 'POST') return {data: {items: [], page: 1, per_page: 20, total: 0}};
+    sent.push(body);
+    if (sent.length === 1) throw Object.assign(new Error('Revisa los datos enviados.'), {status: 422, fields: {current_password: ['La contraseña actual no es correcta.']}});
+    return {data: user({id: 31, role: 'admin', status: 'pending_activation'})};
+  };
+  render(<UsersAdmin currentUserId={7} intent="create"/>);
+  await screen.findByRole('heading', {name: 'Crear usuario'});
+  expect(screen.queryByLabelText('Tu contraseña (para confirmar)')).not.toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('radio', {name: 'Administrador'}));
+  const password = screen.getByLabelText('Tu contraseña (para confirmar)');
+  expect(password).toHaveAttribute('type', 'password');
+  expect(password).toHaveAttribute('autocomplete', 'current-password');
+  fill('Nombres', 'Carla'); fill('Apellidos', 'Paredes'); fill('Correo', 'carla@example.test'); fill('Teléfono', '923456789');
+  fill('Motivo (queda en la auditoría)', 'Nueva integrante de soporte.');
+  fireEvent.click(screen.getByRole('button', {name: 'Crear y enviar activación'}));
+  expect(await screen.findByText('Escribe tu contraseña para confirmar el alta de un administrador.')).toBeInTheDocument();
+  expect(sent).toHaveLength(0);
+
+  fill('Tu contraseña (para confirmar)', 'clave-equivocada');
+  fireEvent.click(screen.getByRole('button', {name: 'Crear y enviar activación'}));
+  expect(await screen.findByText('La contraseña actual no es correcta.')).toBeInTheDocument();
+  expect(sent[0]).toMatchObject({account_type: 'admin', current_password: 'clave-equivocada'});
+  expect(screen.getByLabelText('Tu contraseña (para confirmar)')).toHaveValue('');
+  expect(screen.getByLabelText('Correo')).toHaveValue('carla@example.test');
+
+  fill('Tu contraseña (para confirmar)', 'Clave-Correcta-2026');
+  fireEvent.click(screen.getByRole('button', {name: 'Crear y enviar activación'}));
+  expect(await screen.findByText('Usuario creado: le enviamos el enlace de activación a su correo.')).toBeInTheDocument();
+  expect(sent[1].current_password).toBe('Clave-Correcta-2026');
+  cleanup();
+
+  // Al volver a Cliente, el campo desaparece y la contraseña no viaja.
+  sent.length = 0;
+  // El mock toma la primera ruta cuyo prefijo coincide: sin limpiar, «/admin/users» respondería al detalle.
+  for (const key of Object.keys(routes)) delete routes[key];
+  routes['/admin/users/30'] = () => ({data: detail({id: 30, status: 'pending_activation'})});
+  routes['/admin/users'] = (path, body, method) => {
+    if (method === 'POST') { sent.push(body); return {data: user({id: 30, status: 'pending_activation'})}; }
+    return {data: {items: [], page: 1, per_page: 20, total: 0}};
+  };
+  render(<UsersAdmin currentUserId={7} intent="create"/>);
+  await screen.findByRole('heading', {name: 'Crear usuario'});
+  fireEvent.click(screen.getByRole('radio', {name: 'Administrador'}));
+  fill('Tu contraseña (para confirmar)', 'Clave-Correcta-2026');
+  fireEvent.click(screen.getByRole('radio', {name: 'Cliente'}));
+  expect(screen.queryByLabelText('Tu contraseña (para confirmar)')).not.toBeInTheDocument();
+  fill('Nombres', 'Rosa'); fill('Apellidos', 'Huamán'); fill('Correo', 'rosa@example.test'); fill('Teléfono', '987654321');
+  fill('Distrito', '1'); fill('Motivo (queda en la auditoría)', 'Alta por soporte.');
+  fireEvent.click(screen.getByRole('button', {name: 'Crear y enviar activación'}));
+  await waitFor(() => expect(sent).toHaveLength(1));
+  expect(sent[0]).not.toHaveProperty('current_password');
+});

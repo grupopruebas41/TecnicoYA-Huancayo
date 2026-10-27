@@ -1,0 +1,222 @@
+
+ RUN  v5.0.3 <repo>/frontend/web
+
+ ❯ src/features/admin/admin.test.jsx (13 tests | 1 failed | 12 skipped) 116ms
+   ↓ S07-TC-129 el menú agrupa las secciones con título, muestra contadores accesibles y tooltips con el menú contraído
+   ↓ S07-TC-130 el Inicio ofrece accesos rápidos según permisos y lista los últimos eventos
+   ↓ S07-TC-131 las estadísticas cambian de período, dibujan con equivalente en tabla y formatean tasa y tiempo
+   ↓ S07-TC-132 las estadísticas sin datos muestran estados vacíos honestos y el error permite reintentar
+   ↓ S07-TC-133 el listado de usuarios busca y filtra con la consulta del servidor y pagina
+   ↓ S07-TC-134 el alta valida en el cliente, no pide contraseña y envía solo los datos del tipo de cuenta
+   ↓ S07-TC-135 el alta muestra los errores del servidor por campo y conserva el formulario
+   ↓ S07-TC-136 el detalle muestra datos, historial y auditoría, con acciones según el estado y sin acciones sobre la propia cuenta
+   ↓ S07-TC-137 bloquear exige motivo y confirmación, envía la versión y muestra el éxito o el error del servidor
+   ↓ S07-TC-138 eliminar pide motivo y escribir ELIMINAR; editar envía solo lo que cambió con motivo y versión
+   ↓ S07-TC-139 las solicitudes se filtran y su detalle muestra la línea de tiempo sin acciones de escritura
+   ↓ S07-TC-140 la activación de una cuenta creada por un administrador define la contraseña desde #cuenta/activar
+   × S07-TC-143 crear un administrador pide reingresar tu contraseña, la envía solo en ese caso y la borra si falla 115ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/admin/admin.test.jsx > S07-TC-143 crear un administrador pide reingresar tu contraseña, la envía solo en ese caso y la borra si falla
+TestingLibraryElementError: Unable to find a label with the text of: Tu contraseña (para confirmar)
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33mclass[39m=[32m"s02-panel admin-page"[39m
+    [36m>[39m
+      [36m<form[39m
+        [33maria-busy[39m=[32m"false"[39m
+        [33mclass[39m=[32m"admin-form"[39m
+        [33mnovalidate[39m=[32m""[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0mCrear usuario[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"muted"[39m
+        [36m>[39m
+          [0mNo se define contraseña: la persona recibe un enlace de activación por correo (vence en 72 horas) y elige la suya.[0m
+        [36m</p>[39m
+        [36m<fieldset[39m
+          [33mclass[39m=[32m"admin-fieldset"[39m
+        [36m>[39m
+          [36m<legend>[39m
+            [0mTipo de cuenta[0m
+          [36m</legend>[39m
+          [36m<div[39m
+            [33maria-label[39m=[32m"Tipo de cuenta"[39m
+            [33mclass[39m=[32m"admin-segmented"[39m
+            [33mrole[39m=[32m"radiogroup"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"admin-segment"[39m
+            [36m>[39m
+              [36m<input[39m
+                [33mchecked[39m=[32m""[39m
+                [33mname[39m=[32m"account_type"[39m
+                [33mtype[39m=[32m"radio"[39m
+                [33mvalue[39m=[32m"client"[39m
+              [36m/>[39m
+              [0mCliente[0m
+            [36m</label>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"admin-segment"[39m
+            [36m>[39m
+              [36m<input[39m
+                [33mname[39m=[32m"account_type"[39m
+                [33mtype[39m=[32m"radio"[39m
+                [33mvalue[39m=[32m"technician"[39m
+              [36m/>[39m
+              [0mTécnico[0m
+            [36m</label>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"admin-segment is-selected"[39m
+            [36m>[39m
+              [36m<input[39m
+                [33mname[39m=[32m"account_type"[39m
+                [33mtype[39m=[32m"radio"[39m
+                [33mvalue[39m=[32m"admin"[39m
+              [36m/>[39m
+              [0mAdministrador[0m
+            [36m</label>[39m
+          [36m</div>[39m
+        [36m</fieldset>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"admin-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"form-field"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"field-given_names"[39m
+            [36m>[39m
+              [0mNombres[0m
+            [36m</label>[39m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mautocomplete[39m=[32m"off"[39m
+              [33mid[39m=[32m"field-given_names"[39m
+              [33mmaxlength[39m=[32m"50"[39m
+              [33mname[39m=[32m"given_names"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"form-field"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"field-family_names"[39m
+            [36m>[39m
+              [0mApellidos[0m
+            [36m</label>[39m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mautocomplete[39m=[32m"off"[39m
+              [33mid[39m=[32m"field-family_names"[39m
+              [33mmaxlength[39m=[32m"50"[39m
+              [33mname[39m=[32m"family_names"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"admin-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"form-field"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"field-email"[39m
+            [36m>[39m
+              [0mCorreo[0m
+            [36m</label>[39m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mautocomplete[39m=[32m"off"[39m
+              [33mid[39m=[32m"field-email"[39m
+              [33mmaxlength[39m=[32m"254"[39m
+              [33mname[39m=[32m"email"[39m
+              [33mtype[39m=[32m"email"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"form-field"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"field-phone"[39m
+            [36m>[39m
+              [0mTeléfono[0m
+            [36m</label>[39m
+            [36m<input[39m
+              [33maria-invalid[39m=[32m"false"[39m
+              [33mid[39m=[32m"field-phone"[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mmaxlength[39m=[32m"9"[39m
+              [33mname[39m=[32m"phone"[39m
+              [33mplaceholder[39m=[32m"9XXXXXXXX"[39m
+              [33mtype[39m=[32m"tel"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"form-field"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mfor[39m=[32m"field-reason"[39m
+          [36m>[39m
+            [0mMotivo (queda en la auditoría)[0m
+          [36m</label>[39m
+          [36m<textarea[39m
+            [33maria-invalid[39m=[32m"false"[39m
+            [33mid[39m=[32m"field-reason"[39m
+            [33mmaxlength[39m=[32m"500"[39m
+            [33mname[39m=[32m"reason"[39m
+            [33mrows[39m=[32m"2"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"admin-form-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button outline"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mCancelar[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button primary"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m>[39m
+            [0mCrear y enviar activación[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</form>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/admin/admin.test.jsx:358:27
+    356|
+    357|   fireEvent.click(screen.getByRole('radio', {name: 'Administrador'}));
+    358|   const password = screen.getByLabelText('Tu contraseña (para confirma…
+       |                           ^
+    359|   expect(password).toHaveAttribute('type', 'password');
+    360|   expect(password).toHaveAttribute('autocomplete', 'current-password');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 skipped (13)
+   Start at  12:16:32
+   Duration  2.68s (import 39%, transform 32%, environment 20%, tests 5%, setup 5%)
+
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml

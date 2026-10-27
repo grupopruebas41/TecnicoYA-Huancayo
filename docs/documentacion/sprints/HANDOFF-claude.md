@@ -19,6 +19,15 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Bloqueado por RAM** (0,83 a 0,87 GB libres, por debajo de 1,5 GB): la regresión Cypress S1 a S4, el conteo final y SonarQube. `INFORME-SPRINT-04` espera esos datos.
 - **Mutación en Linux:** S3 63,21 % (`1fe9e11`) y S4 68,61 % (`8db658f`, antes 63,12 %). Controles negativos aprobados. Siguen altos MatchingFlow, Matcher y ClientSelection.
 - **Para la PR #35 y `main`:** la auditoría npm falla por GHSA-6pq8-jhm2-2vcw hasta integrar `dbb59f1` (`qs` 6.17.0).
+## 2026-10-27 · D-85 confirmada · reconfirmar la contraseña al crear un administrador
+
+- **Rama:** `feature/pimentel/admin/reconfirmar-admin`, desde `main` tras el PR #34.
+- **Commits:** de `590c20b` a `a4854b5` (detalle en `docs/avances/pimentel/admin/reconfirmar-admin/avance.md`).
+- **API:** `POST /admin/users` con `account_type=admin` exige `current_password` (5 fallos cada 15 minutos por cuenta).
+- **Tras integrar el PR #36:** `merge origin/main` en `70edd04`. Conflictos en HANDOFF (se conservan las dos entradas) y en DECISIONES (D-85 confirmada más D-86).
+- **Corrección:** `1016320` arregla S07-TC-143. El mock respondía el listado al detalle y dejaba un error no capturado: Vitest salía con código 1 aunque pasaban 309/309. Después del arreglo: Vitest 309/309 sin errores, lint, build y `npm audit` con 0, y la CI del #35 en verde.
+- **Pruebas en `a4854b5`:** Pest 345/345 y Vitest 309/309; lint y build aprobados; IDs nuevos S07-TC-141 a 143; 6 capturas.
+- **Pendiente:** nada de este cambio.
 - **Pedidos a Codex:** ninguno.
 
 ## 2026-10-27 · Bloque C · usuarios, menú agrupado, estadísticas, solicitudes e Inicio (D-85)
