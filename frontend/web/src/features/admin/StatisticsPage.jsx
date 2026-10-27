@@ -60,8 +60,8 @@ function BarTable({caption, rows, empty, valueLabel = 'Solicitudes', format = va
     <thead className="panel-sr"><tr><th scope="col">Categoría</th><th scope="col">{valueLabel}</th></tr></thead>
     <tbody>{rows.map(row => <tr key={row.name}>
       <th scope="row">{row.name}</th>
-      <td><span className="admin-bar-track" aria-hidden="true"><span className="admin-bar" style={{width: `${max ? (row.total / max) * 100 : 0}%`}}/></span>
-        <span className="admin-bar-value">{format(row.total, row)}</span></td>
+      <td><span className="admin-bar-cell"><span className="admin-bar-track" aria-hidden="true"><span className="admin-bar" style={{width: `${max ? (row.total / max) * 100 : 0}%`}}/></span>
+        <span className="admin-bar-value">{format(row.total, row)}</span></span></td>
     </tr>)}</tbody>
   </table>;
 }

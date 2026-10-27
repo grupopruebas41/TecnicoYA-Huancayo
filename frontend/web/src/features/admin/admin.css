@@ -459,21 +459,25 @@
 }
 .admin-bars {
   width: 100%;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0 8px;
   font-size: 0.9rem;
 }
 .admin-bars th {
-  width: 40%;
+  width: 42%;
+  overflow-wrap: anywhere;
   padding-right: 10px;
   font-weight: 500;
   text-align: left;
   vertical-align: middle;
 }
-.admin-bars td {
+/* El flex va en un contenedor de la celda: en la propia td rompe el ancho de la columna. */
+.admin-bar-cell {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 .admin-bar-track {
   flex: 1 1 auto;
@@ -510,6 +514,7 @@
 }
 .admin-tiles dd {
   margin: 0;
+  white-space: nowrap;
   font-size: 1.2rem;
   font-weight: 600;
 }
@@ -521,4 +526,18 @@
     grid-template-columns: 1fr;
     gap: 2px;
   }
+}
+
+/* Ajustes vistos en las capturas: el «Volver» es un enlace (sin el fondo de los botones del S2) y las tarjetas
+   de Estadísticas pasan a una columna en móvil. */
+.panel-shell .s02-panel .admin-detail > .text-button {
+  min-height: 0;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--ty-accent);
+  text-decoration: underline;
+}
+.panel-cards.admin-stats {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }

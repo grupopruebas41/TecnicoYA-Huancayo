@@ -38,11 +38,12 @@ final class AdminDashboard
         ];
     }
 
-    /** Últimos 5 eventos auditados del panel (sin inicios ni cierres de sesión); solo acción, motivo, actor y fecha. */
+    /** Últimos 5 eventos hechos por una persona en el panel (sin sesiones ni la siembra de permisos); acción, motivo, actor y fecha. */
     private function recentEvents(): array
     {
         return DB::table('audit_entries as a')->leftJoin('users as actor', 'actor.id', '=', 'a.actor_id')
-            ->where('a.action', 'not like', 'auth.%')->orderByDesc('a.id')->limit(5)
+            ->whereNotNull('a.actor_id')->where('a.action', 'not like', 'auth.%')->where('a.action', 'not like', 'authorization.%')
+            ->orderByDesc('a.id')->limit(5)
             ->get(['a.action', 'a.reason', 'a.subject_type', 'a.occurred_at', 'actor.name as actor'])
             ->map(fn (object $row) => ['action' => $row->action, 'reason' => $row->reason, 'subject_type' => $row->subject_type,
                 'actor' => $row->actor, 'occurred_at' => CarbonImmutable::parse($row->occurred_at)->toISOString()])->all();
