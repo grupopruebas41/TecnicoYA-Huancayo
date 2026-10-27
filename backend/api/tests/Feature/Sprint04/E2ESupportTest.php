@@ -133,7 +133,7 @@ it('S04-TC-137 republica dos veces el mismo evento real de una solicitud del cli
     Event::fake([OutboxBroadcast::class]);
 
     $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'e2e-client-direct@example.test'])
-        ->expectsOutputToContain('"event_id":"'.$expected->event_id.'"')->expectsOutputToContain('"broadcasts":2')->assertSuccessful();
+        ->expectsOutputToContain('"event_id":"'.$expected->event_id.'"')->assertSuccessful();
 
     $payload = json_decode($expected->payload, true);
     $sent = [];
@@ -146,8 +146,17 @@ it('S04-TC-137 republica dos veces el mismo evento real de una solicitud del cli
         ->and($payload['event_id'])->toBe($expected->event_id)
         ->and(collect($tables)->mapWithKeys(fn ($t) => [$t => DB::table($t)->get()->toJson()])->all())->toBe($before);
 
+    // Con el id de la solicitud se elige el evento de esa solicitud aunque el cliente tenga otras más recientes.
+    $older = DB::table('outbox_events')->whereNotNull('published_at')->where('channel', '!=', $expected->channel)
+        ->whereIn('channel', array_map(fn ($id) => "requests.$id", $requestIds))->orderByDesc('id')->first();
+    expect($older)->not->toBeNull();
+    $olderRequest = (string) json_decode($older->payload, true)['request_id'];
+    $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => $olderRequest])
+        ->expectsOutputToContain('"event_id":"'.$older->event_id.'"')->assertSuccessful();
+
     $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'e2e-technician-electro@example.test'])->assertFailed();
     $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'nadie@example.test'])->assertFailed();
+    $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => '999999'])->assertFailed();
     config(['database.connections.mysql.database' => 'tecnicoya']);
     expect(fn () => $this->artisan('tecnicoya:e2e', ['task' => 'replay', 'argument' => 'e2e-client-direct@example.test'])->run())
         ->toThrow(SeedingRefused::class, '«tecnicoya»');
