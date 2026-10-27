@@ -35,8 +35,11 @@ export function ForgotPassword({onBack}) {
   </form>;
 }
 
-/** D-80: pantalla del enlace (#cuenta/restablecer?token=…&email=…). Al guardar se cierran las demás sesiones. */
-export function ResetPassword({token, email}) {
+/**
+ * D-80: pantalla del enlace (#cuenta/restablecer?token=…&email=…). Al guardar se cierran las demás sesiones.
+ * D-85: con activation es la activación de una cuenta creada por un administrador (#cuenta/activar), con sus textos.
+ */
+export function ResetPassword({token, email, activation = false}) {
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
   const [errors, setErrors] = useState({});
@@ -52,7 +55,7 @@ export function ResetPassword({token, email}) {
     setBusy(true);
     try {
       const response = await request('/auth/password/reset', {email, token, password, password_confirmation: confirmation});
-      setDone(response?.data?.message || 'Tu contraseña se actualizó.');
+      setDone(activation ? 'Tu cuenta está activa. Ya puedes iniciar sesión con tu contraseña.' : response?.data?.message || 'Tu contraseña se actualizó.');
     } catch (failure) {
       const {token: tokenError, ...fields} = failure.fields || {};
       setErrors(fields); setError(tokenError?.[0] || failure.message);
@@ -61,17 +64,17 @@ export function ResetPassword({token, email}) {
   return <div className="auth-status auth-reset">
     <span className="auth-emblem" aria-hidden="true">t</span>
     {done ? <>
-      <h1>Contraseña actualizada</h1>
+      <h1>{activation ? 'Cuenta activada' : 'Contraseña actualizada'}</h1>
       <output className="notice" data-cy="reset-done">{done}</output>
       <a className="button primary submit" href="#cuenta">Ir a iniciar sesión</a>
     </> : <form className="auth-form" onSubmit={submit} noValidate aria-busy={busy}>
-      <h1>Elige una nueva contraseña</h1>
-      <p className="muted">Al guardarla se cerrarán las sesiones abiertas de tu cuenta.</p>
-      {error && <div className="auth-alert" role="alert"><span className="auth-alert-icon" aria-hidden="true">!</span><p>{error}</p><a className="text-button" href="#cuenta">Pedir un enlace nuevo</a></div>}
+      <h1>{activation ? 'Activa tu cuenta' : 'Elige una nueva contraseña'}</h1>
+      <p className="muted">{activation ? `Elige la contraseña de ${email || 'tu cuenta'}. El enlace vence 72 horas después del correo.` : 'Al guardarla se cerrarán las sesiones abiertas de tu cuenta.'}</p>
+      {error && <div className="auth-alert" role="alert"><span className="auth-alert-icon" aria-hidden="true">!</span><p>{error}</p><a className="text-button" href="#cuenta">{activation ? 'Pide al equipo de TécnicoYa un enlace nuevo' : 'Pedir un enlace nuevo'}</a></div>}
       <PasswordField name="password" label="Nueva contraseña" toggleLabel="nueva contraseña" errors={errors} autoComplete="new-password" data-cy="reset-password" value={password} onChange={event => setPassword(event.target.value)}/>
       <PasswordField name="password_confirmation" label="Confirmar contraseña" toggleLabel="confirmación de contraseña" errors={errors} autoComplete="new-password" data-cy="reset-password-confirmation" value={confirmation} onChange={event => setConfirmation(event.target.value)}/>
       <PasswordMeter password={password}/>
-      <button type="submit" className="button primary submit" data-cy="reset-submit" disabled={busy}>{busy ? 'Guardando…' : 'Guardar contraseña'}</button>
+      <button type="submit" className="button primary submit" data-cy="reset-submit" disabled={busy}>{busy ? 'Guardando…' : activation ? 'Activar mi cuenta' : 'Guardar contraseña'}</button>
     </form>}
   </div>;
 }

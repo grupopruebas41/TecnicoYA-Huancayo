@@ -593,3 +593,121 @@
     transition: none;
   }
 }
+
+/* ───── Bloque C (D-85): menú agrupado, iconos SVG, contadores y tooltips ───── */
+.panel-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.panel-svg-icon {
+  display: block;
+  margin: 0 auto;
+}
+.panel-nav-group {
+  display: grid;
+  gap: 4px;
+}
+.panel-nav-group + .panel-nav-group {
+  margin-top: 10px;
+}
+.panel-nav-heading {
+  margin: 0;
+  padding: 4px 12px 2px;
+  color: var(--ty-sidebar-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+/* Contraída: el título del grupo se vuelve una línea; su texto sigue en el árbol de accesibilidad. */
+.panel-shell.is-collapsed .panel-nav-heading {
+  height: 1px;
+  margin: 6px 10px;
+  padding: 0;
+  background: var(--ty-sidebar-border);
+}
+.panel-nav-item {
+  position: relative;
+}
+.panel-badge {
+  margin-left: auto;
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--ty-sidebar-mark);
+  color: var(--ty-sidebar-bg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+.panel-shell.is-collapsed .panel-badge {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  min-width: 18px;
+  padding: 0 5px;
+  font-size: 0.68rem;
+}
+/* Tooltip del menú contraído: al pasar el puntero o con el foco del teclado (la barra deja de recortar). */
+.panel-shell.is-collapsed .panel-sidebar {
+  overflow: visible;
+}
+.panel-shell.is-collapsed .panel-nav-item[data-tooltip]:hover::after,
+.panel-shell.is-collapsed .panel-nav-item[data-tooltip]:focus-visible::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--ty-text);
+  color: var(--ty-surface);
+  font-size: 0.82rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.panel-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+.panel-events {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.panel-events li {
+  display: grid;
+  gap: 2px;
+  font-size: 0.9rem;
+}
+@media (max-width: 760px) {
+  .panel-shell.is-collapsed .panel-nav-heading {
+    height: auto;
+    margin: 0;
+    padding: 4px 12px 2px;
+    background: none;
+  }
+  .panel-shell.is-collapsed .panel-badge {
+    position: static;
+  }
+  .panel-shell.is-collapsed .panel-sidebar {
+    overflow-y: auto;
+  }
+  .panel-shell.is-collapsed .panel-nav-item[data-tooltip]:hover::after,
+  .panel-shell.is-collapsed .panel-nav-item[data-tooltip]:focus-visible::after {
+    content: none;
+  }
+}
