@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import {Field, Notice} from '../administration/forms';
 import AnnouncementCarousel from './AnnouncementCarousel';
@@ -142,6 +142,9 @@ export default function AnnouncementEditor({item, onClose, onSaved}) {
   const [busy, setBusy] = useState(false);
   const [viewport, setViewport] = useState('desktop');
   const [restored, setRestored] = useState(false);
+  const heading = useRef(null);
+  // Al abrir el editor desde un listado con scroll, el foco va al título: se ve el inicio y el lector de pantalla lo anuncia.
+  useEffect(() => { heading.current?.focus(); }, []);
   const set = (name, value) => setV(current => ({...current, [name]: value}));
   const bind = name => ({value: v[name], onChange: event => set(name, event.target.value)});
   // D-84: el publicado se edita con «Guardar cambios»; el retirado queda en solo lectura hasta restaurarlo.
@@ -194,7 +197,7 @@ export default function AnnouncementEditor({item, onClose, onSaved}) {
   return <section className="s02-panel announcement-editor-page" aria-labelledby="announcement-editor-title">
     <header className="announcement-editor-head">
       <button type="button" className="text-button" onClick={onClose}>← Volver al listado</button>
-      <h2 id="announcement-editor-title">{item?.id ? 'Editar comunicado' : 'Crear comunicado'}</h2>
+      <h2 id="announcement-editor-title" ref={heading} tabIndex={-1}>{item?.id ? 'Editar comunicado' : 'Crear comunicado'}</h2>
     </header>
     <div className="announcement-editor-layout">
       <form className="announcement-editor-form" noValidate aria-busy={busy} onSubmit={event => { event.preventDefault(); if (!retired) save(false); }}>

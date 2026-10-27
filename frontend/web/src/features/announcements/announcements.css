@@ -981,6 +981,7 @@
 }
 .s02-panel .announcement-filters .announcement-show-retired {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 8px;
   min-width: 0;
@@ -1064,4 +1065,9 @@
 .panel-shell .s02-modal dialog .announcement-delete-actions button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* El título del editor recibe el foco al abrir (no es un control): sin contorno. */
+.announcement-editor-head h2:focus {
+  outline: none;
 }
