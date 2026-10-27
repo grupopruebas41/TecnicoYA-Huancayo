@@ -5,7 +5,7 @@ import AnnouncementCarousel from './AnnouncementCarousel';
 import {readImage, encodeCrop} from './imageTools';
 import {
   AUDIENCE_OPTIONS, IMAGE_GUIDE, KIND_LABELS, MAX_BYTES, MOBILE_GUIDE, addPeriod, analyzeImage, audienceOf, cropRect,
-  normalizeGenially, outputSize, toLocalInput, toPayload, validateCarousel,
+  normalizeGenially, outputSize, phaseOf, toLocalInput, toPayload, validateCarousel,
 } from './announcementRules';
 
 const SOURCES = [
@@ -141,8 +141,25 @@ export default function AnnouncementEditor({item, onClose, onSaved}) {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [viewport, setViewport] = useState('desktop');
+  const [restored, setRestored] = useState(false);
   const set = (name, value) => setV(current => ({...current, [name]: value}));
   const bind = name => ({value: v[name], onChange: event => set(name, event.target.value)});
+  // D-84: el publicado se edita con «Guardar cambios»; el retirado queda en solo lectura hasta restaurarlo.
+  const phase = saved ? phaseOf(saved) : 'draft';
+  const retired = phase === 'retired';
+  const published = ['active', 'scheduled', 'expired'].includes(phase);
+
+  async function restore() {
+    if (busy) return;
+    setBusy(true); setError('');
+    try {
+      const result = await request(`/admin/announcements/${saved.id}/restoration`, {expected_version: saved.version});
+      setSaved(result.data);
+      setRestored(true);
+    } catch (failure) {
+      setError(failure.message);
+    } finally { setBusy(false); }
+  }
 
   async function save(publish) {
     if (busy) return;
@@ -160,7 +177,7 @@ export default function AnnouncementEditor({item, onClose, onSaved}) {
         : await request('/admin/announcements', payload, 'POST');
       setSaved(result.data);
       if (publish) await request(`/admin/announcements/${result.data.id}/publication`, {expected_version: result.data.version});
-      onSaved(publish ? 'Comunicado publicado.' : 'Borrador guardado.');
+      onSaved(publish ? 'Comunicado publicado.' : published ? 'Cambios guardados.' : 'Borrador guardado.');
     } catch (failure) {
       setErrors(failure.fields || {});
       setError(failure.message);
@@ -180,7 +197,14 @@ export default function AnnouncementEditor({item, onClose, onSaved}) {
       <h2 id="announcement-editor-title">{item?.id ? 'Editar comunicado' : 'Crear comunicado'}</h2>
     </header>
     <div className="announcement-editor-layout">
-      <form className="announcement-editor-form" noValidate aria-busy={busy} onSubmit={event => { event.preventDefault(); save(false); }}>
+      <form className="announcement-editor-form" noValidate aria-busy={busy} onSubmit={event => { event.preventDefault(); if (!retired) save(false); }}>
+        {retired && <div className="announcement-state-note is-retired" role="note">
+          <p>Este comunicado está retirado. Restáuralo como borrador para corregirlo y publicarlo de nuevo.</p>
+          <button type="button" className="button primary" disabled={busy} onClick={restore}>Restaurar como borrador</button>
+        </div>}
+        {phase === 'active' && <p className="announcement-state-note is-live" role="note">Los cambios se verán de inmediato en los paneles.</p>}
+        <Notice success={restored && !retired ? 'Restaurado como borrador: ya puedes corregirlo y publicarlo.' : ''}/>
+        <fieldset className="announcement-editor-fields" disabled={retired}>
         {section('content', SECTIONS[0][1], <>
           <span className="choice-label">Origen</span>
           <ChoiceGroup name="source" label="Origen del comunicado" options={SOURCES} value={v.source} onChange={value => set('source', value)}/>
@@ -226,11 +250,16 @@ export default function AnnouncementEditor({item, onClose, onSaved}) {
           <Field name="link_label" label="Etiqueta del botón" errors={errors} maxLength={40} {...bind('link_label')}/>
           <p className="muted field-help">Con enlace, un clic en la imagen lo abre en otra pestaña.</p>
         </>)}
+        </fieldset>
         <Notice error={error}/>
-        <div className="announcement-editor-actions">
-          <button type="submit" className="button outline" disabled={busy}>Guardar borrador</button>
-          <button type="button" className="button primary" disabled={busy} onClick={() => save(true)}>Publicar</button>
-        </div>
+        {!retired && <div className="announcement-editor-actions">
+          {published
+            ? <button type="submit" className="button primary" disabled={busy}>Guardar cambios</button>
+            : <>
+              <button type="submit" className="button outline" disabled={busy}>Guardar borrador</button>
+              <button type="button" className="button primary" disabled={busy} onClick={() => save(true)}>Publicar</button>
+            </>}
+        </div>}
       </form>
       <aside className="announcement-preview-pane" role="region" aria-label="Vista previa">
         <div className="announcement-preview-head">

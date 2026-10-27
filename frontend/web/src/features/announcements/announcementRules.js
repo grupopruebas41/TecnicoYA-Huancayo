@@ -9,6 +9,8 @@ export const AUDIENCE_OPTIONS = [
 ];
 export const AUDIENCE_TAGS = {client: 'Clientes', technician: 'Técnicos'};
 export const PHASE_LABELS = {draft: 'Borrador', scheduled: 'Programado', active: 'Vigente', expired: 'Vencido', retired: 'Retirado'};
+/** Fase que calcula la API; si falta (respuestas anteriores a D-83), se deduce del estado. */
+export const phaseOf = item => item?.phase || (item?.retired_at || item?.status === 'retired' ? 'retired' : item?.status === 'draft' ? 'draft' : 'active');
 export const MAX_BYTES = 600 * 1024;
 export const IMAGE_GUIDE = 'Recomendado 1920 × 640 px (3:1), WebP o JPG hasta 600 KB. Mínimo 1440 × 480. Deja el texto importante en el 80 % central. Versión móvil opcional 1080 × 720.';
 export const MOBILE_GUIDE = 'Opcional. Recomendado 1080 × 720 px (3:2), WebP o JPG hasta 600 KB. Mínimo 810 × 540.';

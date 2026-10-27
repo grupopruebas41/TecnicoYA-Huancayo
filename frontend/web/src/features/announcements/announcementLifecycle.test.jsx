@@ -83,7 +83,7 @@ test('S07-TC-106 eliminar muestra miniatura y título, exige escribir ELIMINAR y
   await screen.findByRole('heading', {name: 'Campaña de octubre'});
   fireEvent.click(within(openMenu('Campaña de octubre')).getByRole('menuitem', {name: 'Eliminar'}));
   let dialog = screen.getByRole('dialog', {name: 'Eliminar comunicado'});
-  expect(within(dialog).getByRole('img', {hidden: true})).toHaveAttribute('src', '/e.jpg');
+  expect(dialog.querySelector('img')).toHaveAttribute('src', '/e.jpg'); // decorativa: el título va al lado
   expect(within(dialog).getByText('Campaña de octubre')).toBeInTheDocument();
   fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar'}));
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

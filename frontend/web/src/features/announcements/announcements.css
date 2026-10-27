@@ -943,3 +943,125 @@
   border: 0;
   text-decoration: underline;
 }
+
+/* ───── D-84: editar en todo estado, restaurar y eliminar ───── */
+.announcement-card.is-clickable {
+  cursor: pointer;
+}
+.announcement-card.is-clickable:hover {
+  border-color: var(--ty-accent);
+}
+.panel-shell .s02-panel .announcement-card-open {
+  display: inline;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.announcement-card-open:hover {
+  text-decoration: underline;
+}
+.s02-panel .announcement-menu-list [role="menuitem"].is-danger {
+  color: var(--ty-error);
+}
+.s02-panel .announcement-menu-list [role="menuitem"][aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.announcement-menu-reason {
+  padding: 2px 12px 6px;
+  color: var(--ty-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+.s02-panel .announcement-filters .announcement-show-retired {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 46px;
+}
+.panel-shell .s02-panel .announcement-show-retired input {
+  width: 18px;
+  min-height: 0;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--ty-accent);
+}
+.announcement-editor-fields {
+  display: grid;
+  gap: inherit;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.announcement-editor-fields:disabled {
+  opacity: 0.7;
+}
+.announcement-state-note {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  color: var(--ty-warning-text);
+  background: var(--ty-warning-bg);
+}
+.announcement-state-note.is-retired {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--ty-text);
+  background: var(--ty-neutral-bg, var(--ty-raised));
+}
+.announcement-state-note p {
+  margin: 0;
+}
+.announcement-delete-dialog {
+  width: min(100%, 460px);
+}
+.announcement-delete-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+.announcement-delete-item img,
+.announcement-delete-item .announcement-thumb-empty {
+  width: 120px;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--ty-raised);
+  display: grid;
+  place-items: center;
+}
+.announcement-delete-dialog form {
+  display: grid;
+  gap: 8px;
+}
+.announcement-delete-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+[data-theme] .panel-shell .s02-modal dialog .announcement-delete-actions button.is-danger {
+  border-color: var(--ty-error);
+  background: var(--ty-error);
+  color: var(--ty-surface);
+}
+.panel-shell .s02-modal dialog .announcement-delete-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

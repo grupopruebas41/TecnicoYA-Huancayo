@@ -27,8 +27,11 @@ test('S02-TC-079 complemento: el aviso de retiro persiste al desmontar el botón
   fireEvent.click(screen.getByRole('button', {name: 'Acciones de «Aviso publicado»'}));
   fireEvent.click(screen.getByRole('menuitem', {name: 'Retirar'}));
   click('Confirmar');
-  await screen.findByText('Retirado');
+  // D-84: el retirado se oculta del listado por defecto y se ve con «Mostrar retirados»; su menú es Editar, Duplicar y Eliminar.
+  await screen.findByText('Contenido retirado.');
+  fireEvent.click(screen.getByLabelText('Mostrar retirados'));
+  await screen.findByText('Retirado', {selector: '.announcement-phase'});
   fireEvent.click(screen.getByRole('button', {name: 'Acciones de «Aviso publicado»'}));
-  expect(within(screen.getByRole('menu')).getAllByRole('menuitem').map(node => node.textContent)).toEqual(['Duplicar']);
+  expect(within(screen.getByRole('menu')).getAllByRole('menuitem').map(node => node.textContent)).toEqual(['Editar', 'Duplicar', 'Eliminar']);
   expect(screen.getByText('Contenido retirado.')).toBeVisible();
 });
