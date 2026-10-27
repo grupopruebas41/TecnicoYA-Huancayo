@@ -1,0 +1,418 @@
+
+   FAIL  Tests\Feature\Sprint07\UserAdministrationTest
+  ⨯ it S07-TC-109 lista usuarios con búsqueda por nombre o correo y filtros por rol, estado, distrito y fecha…  44.38s  
+  ⨯ it S07-TC-110 da de alta un cliente sin contraseña, pendiente de activación, con enlace por correo y audito… 0.27s  
+  ⨯ it S07-TC-111 da de alta un técnico y un administrador, y rechaza correo repetido o datos incompletos        0.27s  
+  ⨯ it S07-TC-112 el enlace de activación vale 72 horas, define la contraseña, verifica el correo y se puede re… 0.27s  
+  ⨯ it S07-TC-113 el detalle muestra datos, historial de solicitudes y auditoría de la cuenta                    0.26s  
+  ⨯ it S07-TC-114 edita datos con versión y motivo, audita antes y después y no cambia rol ni contraseña         0.27s  
+  ⨯ it S07-TC-115 bloquea con motivo, cierra sesiones e impide entrar; desbloquea con motivo; rechaza repetir    0.45s  
+  ⨯ it S07-TC-116 nunca actúa sobre la propia cuenta ni bloquea o elimina al último administrador activo         0.30s  
+  ⨯ it S07-TC-117 restablecer acceso invalida la contraseña, cierra sesiones y envía el enlace de restablecimie… 0.28s  
+  ⨯ it S07-TC-118 cierra todas las sesiones de una cuenta sin bloquearla y lo audita                             0.35s  
+  ⨯ it S07-TC-119 eliminar anonimiza la cuenta con ELIMINAR y motivo: borra datos personales y conserva las sol… 0.30s  
+  ⨯ it S07-TC-120 niega toda la administración de usuarios a cliente, técnico y administrador sin users.manage   0.31s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-109 lista usuarios con búsqueda por nombre o co…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "b93392ce-3662-4c7c-9a6c-19ce73427796",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:49
+     45▕ }
+     46▕ 
+     47▕ function s07uCreate(object $test, array $payload): array
+     48▕ {
+  ➜  49▕     return $test->actingAs($test->admin)->postJson('/api/v1/admin/users', $payload)->assertCreated()->json('data');
+     50▕ }
+     51▕ 
+     52▕ /** Contraseña conocida y sesión abierta para comprobar bloqueos y cierres. */
+     53▕ function s07uWithSession(object $test, User $user): string
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:93
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-110 da de alta un cliente sin contraseña, pendi…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "762bd44d-9b75-4336-b21e-e9be4890baa4",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:118
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-111 da de alta un técnico y un administrador, y…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "164868b4-b795-4f84-84f8-95761ea8b566",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:49
+     45▕ }
+     46▕ 
+     47▕ function s07uCreate(object $test, array $payload): array
+     48▕ {
+  ➜  49▕     return $test->actingAs($test->admin)->postJson('/api/v1/admin/users', $payload)->assertCreated()->json('data');
+     50▕ }
+     51▕ 
+     52▕ /** Contraseña conocida y sesión abierta para comprobar bloqueos y cierres. */
+     53▕ function s07uWithSession(object $test, User $user): string
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:142
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-112 el enlace de activación vale 72 horas, defi…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "c2f8a8c5-794c-4c36-ab7c-73ca54fef18c",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:49
+     45▕ }
+     46▕ 
+     47▕ function s07uCreate(object $test, array $payload): array
+     48▕ {
+  ➜  49▕     return $test->actingAs($test->admin)->postJson('/api/v1/admin/users', $payload)->assertCreated()->json('data');
+     50▕ }
+     51▕ 
+     52▕ /** Contraseña conocida y sesión abierta para comprobar bloqueos y cierres. */
+     53▕ function s07uWithSession(object $test, User $user): string
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:163
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-113 el detalle muestra datos, historial de soli…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "f0858067-a121-40bf-b108-a180c16aa60a",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:49
+     45▕ }
+     46▕ 
+     47▕ function s07uCreate(object $test, array $payload): array
+     48▕ {
+  ➜  49▕     return $test->actingAs($test->admin)->postJson('/api/v1/admin/users', $payload)->assertCreated()->json('data');
+     50▕ }
+     51▕ 
+     52▕ /** Contraseña conocida y sesión abierta para comprobar bloqueos y cierres. */
+     53▕ function s07uWithSession(object $test, User $user): string
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:201
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-114 edita datos con versión y motivo, audita an…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "2fa17d59-07bd-46d4-8a08-6473a0c2af14",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:49
+     45▕ }
+     46▕ 
+     47▕ function s07uCreate(object $test, array $payload): array
+     48▕ {
+  ➜  49▕     return $test->actingAs($test->admin)->postJson('/api/v1/admin/users', $payload)->assertCreated()->json('data');
+     50▕ }
+     51▕ 
+     52▕ /** Contraseña conocida y sesión abierta para comprobar bloqueos y cierres. */
+     53▕ function s07uWithSession(object $test, User $user): string
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:220
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-115 bloquea con motivo, cierra sesiones e impid…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "2a29e48b-a45b-4383-b8d1-6666aa86df55",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Support\Sprint01.php:84
+     80▕      * Heurística: rechaza los textos por defecto en inglés de Laravel y exige marcas del español.
+     81▕      */
+     82▕     public static function assertSpanishValidation(TestResponse $response, array $fields): void
+     83▕     {
+  ➜  84▕         $response->assertUnprocessable()->assertJsonValidationErrors($fields);
+     85▕         foreach ($fields as $field) {
+     86▕             foreach ((array) $response->json("errors.$field") as $message) {
+     87▕                 self::assertSpanishText((string) $message, "errors.$field");
+     88▕             }
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:246
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-116 nunca actúa sobre la propia cuenta ni bloqu…   
+  Expected response status code [409] but received 404.
+Failed asserting that 404 is identical to 409.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "b70534e0-aff5-4092-9b08-3ad11eef1082",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:267
+    263▕ it('S07-TC-116 nunca actúa sobre la propia cuenta ni bloquea o elimina al último administrador activo', function () {
+    264▕     $me = $this->admin->refresh();
+    265▕     foreach (['block' => 'POST', 'sessions' => 'DELETE', 'access-reset' => 'POST'] as $path => $method) {
+    266▕         $this->actingAs($me)->json($method, "/api/v1/admin/users/{$me->id}/$path", ['reason' => 'Acción sobre mí mismo.', 'expected_version' => $me->version])
+  ➜ 267▕             ->assertStatus(409)->assertJsonPath('error.code', 'USER_SELF_ACTION');
+    268▕     }
+    269▕     $this->actingAs($me)->deleteJson("/api/v1/admin/users/{$me->id}", ['reason' => 'Acción sobre mí mismo.', 'confirmation' => 'ELIMINAR', 'expected_version' => $me->version])
+    270▕         ->assertStatus(409)->assertJsonPath('error.code', 'USER_SELF_ACTION');
+    271▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-117 restablecer acceso invalida la contraseña,…    
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "e748cb4c-540c-4e71-9294-7bfff1c3ed9f",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:299
+    295▕     $client = UserFactory::new()->client()->create();
+    296▕     $password = s07uWithSession($this, $client);
+    297▕     $version = (int) $client->refresh()->version;
+    298▕     $this->actingAs($this->admin)->postJson("/api/v1/admin/users/{$client->id}/access-reset",
+  ➜ 299▕         ['reason' => 'El cliente reporta acceso de terceros.', 'expected_version' => $version])->assertOk()->assertJsonPath('data.status', 'active');
+    300▕ 
+    301▕     expect(DB::table('sessions')->where('user_id', $client->id)->count())->toBe(0)
+    302▕         ->and(s07uLoginStatus($this, $client->email, $password))->toBe(422)
+    303▕         ->and($client->refresh()->auth_version)->toBe(2);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-118 cierra todas las sesiones de una cuenta sin…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "65f1bde6-9ab6-49e4-893a-38033d66372d",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:322
+    318▕     DB::table('sessions')->insert(['id' => Str::random(40), 'user_id' => $technician->id, 'payload' => base64_encode('x'), 'last_activity' => now()->timestamp]);
+    319▕     $version = (int) $technician->refresh()->version;
+    320▕ 
+    321▕     $closed = $this->actingAs($this->admin)->deleteJson("/api/v1/admin/users/{$technician->id}/sessions",
+  ➜ 322▕         ['reason' => 'Equipo extraviado del técnico.', 'expected_version' => $version])->assertOk()->json('data');
+    323▕     expect($closed)->toMatchArray(['closed_sessions' => 2, 'status' => 'active'])
+    324▕         ->and(DB::table('sessions')->where('user_id', $technician->id)->count())->toBe(0)
+    325▕         ->and(s07uLoginStatus($this, $technician->email, $password))->toBe(200);
+    326▕     expect(s07uAudit('user.sessions_closed')[0])->toMatchArray(['reason' => 'Equipo extraviado del técnico.', 'after' => ['closed_sessions' => 2]]);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-119 eliminar anonimiza la cuenta con ELIMINAR y…   
+  Expected response status code [201] but received 404.
+Failed asserting that 404 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "5d78236d-b979-4af6-9e40-d40f075d210d",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:49
+     45▕ }
+     46▕ 
+     47▕ function s07uCreate(object $test, array $payload): array
+     48▕ {
+  ➜  49▕     return $test->actingAs($test->admin)->postJson('/api/v1/admin/users', $payload)->assertCreated()->json('data');
+     50▕ }
+     51▕ 
+     52▕ /** Contraseña conocida y sesión abierta para comprobar bloqueos y cierres. */
+     53▕ function s07uWithSession(object $test, User $user): string
+
+  1   tests\Feature\Sprint07\UserAdministrationTest.php:330
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\UserAdministrationTest > it S07-TC-120 niega toda la administración de usuarios a…    
+  Expected response status code [403] but received 404.
+Failed asserting that 404 is identical to 403.
+
+The following errors occurred during the last request:
+
+{
+    "message": "El recurso solicitado no está disponible.",
+    "errors": [],
+    "error": {
+        "code": "NOT_FOUND",
+        "message": "El recurso solicitado no está disponible.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "97e0ef20-a727-4c5f-96ff-96b91596dc7b",
+        "server_time": "2026-10-27T12:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint07\UserAdministrationTest.php:374
+    370▕     foreach ($actors as $actor) {
+    371▕         Sprint01::forgetSession();
+    372▕         Sanctum::actingAs($actor);
+    373▕         foreach ($calls as [$method, $uri, $body]) {
+  ➜ 374▕             $this->json($method, $uri, $body)->assertForbidden();
+    375▕         }
+    376▕     }
+    377▕     expect(DB::table('users')->whereIn('id', collect($before)->pluck('id'))->orderBy('id')->get()->toArray())->toEqual($before);
+    378▕     Notification::assertNothingSent();
+
+
+  Tests:    12 failed (19 assertions)
+  Duration: 48.19s
+
