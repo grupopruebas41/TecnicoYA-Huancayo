@@ -7,7 +7,7 @@
 | Revisor | [PENDIENTE] |
 | Base | `main` `c7dc292` (rama `feature/mayhuasca/cliente/cercania`) |
 | Decisiones | D-87 (adelanto del S5 con IDs S05-TC), D-88 (cercanía), D-89 (línea de tiempo), D-90 (leídas) y D-91 (datos del cliente) |
-| Catálogo de casos | [CATALOGO-S05.csv](CATALOGO-S05.csv): S05-TC-001 a 024 en Pest |
+| Catálogo de casos | [CATALOGO-S05.csv](CATALOGO-S05.csv): S05-TC-001 a 024 en Pest y S05-TC-025 a 040 en Vitest (SPA, PR del frontend) |
 | Plan | [PLAN-PANEL-CLIENTE.md](../../sprints/PLAN-PANEL-CLIENTE.md) |
 
 Todas las rutas van bajo `/api/v1`, usan la sesión SPA de Sanctum y siguen las convenciones del contrato v1 (S1 a S4): el sobre `data` en las respuestas correctas y `error`, `errors` y `message` en español en los errores. **Todos los cambios son aditivos**: ningún campo existente cambia de nombre ni de tipo.

@@ -2,6 +2,22 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-27 · Panel del cliente, PR 2 de 2 · SPA (D-87 a D-91, DEF-49)
+
+- **Rama:** `feature/delgado/cliente/panel-base`, apilada sobre `feature/mayhuasca/cliente/cercania` (PR #38, todavía abierto). El detalle está en `docs/avances/delgado/cliente/panel-base/avance.md`.
+- **Commits:** `750c463` (Vitest en rojo) y `4eed58b` (SPA), más documentación.
+- **Hecho:**
+  - `ClientPanel` sobre `PanelShell`, con Inicio, búsqueda por cercanía, Mis solicitudes con pestañas y línea de tiempo, Notificaciones y datos de cliente;
+  - DEF-49 corregido;
+  - `ClientPortal` retirado.
+- **Pruebas en `4eed58b`:**
+  - Vitest 325/325, lint, build y `npm audit` en verde;
+  - IDs S05-TC-025 a 040; conteo S05: 24 Pest y 16 Vitest;
+  - 31 capturas sin desborde.
+- **Cypress:** adaptadas sin ejecutar (`openMyRequests()` y el menú del cliente en `support/sprint01.js`). Las corre la regresión pendiente.
+- **Nota del entorno:** con 0,3 GB libres (SonarQube levantado), las capturas tardaron más de 10 minutos.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Panel del cliente, PR 1 de 2 · API (D-87 a D-91)
 
 - **Rama:** `feature/mayhuasca/cliente/cercania`, desde `main` `c7dc292`. El detalle está en `docs/avances/mayhuasca/cliente/cercania/avance.md`.
