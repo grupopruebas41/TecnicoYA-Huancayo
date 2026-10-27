@@ -507,6 +507,9 @@
   display: grid;
   gap: 8px;
 }
+.carousel-order-head .announcement-viewports {
+  justify-self: start;
+}
 .carousel-order-head p,
 .carousel-order-live {
   margin: 0;
