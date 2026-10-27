@@ -7,7 +7,7 @@ Resultado esperado TDD: 7 fallos en 15 pruebas, antes de implementar.
 > vitest run --maxWorkers=2 src/Sprint02Landing.test.jsx
 
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web
+ RUN  v5.0.3 <home>/Documents/ChatGPT/TecnicoYa-cx/frontend/web
 
  ❯ src/Sprint02Landing.test.jsx (15 tests | 7 failed) 350ms
    ✓ S02-TC-084 carrusel reducido y teclado 91ms
@@ -456,4 +456,4 @@ AssertionError: expected  to have a length of 3 but got +0
    Start at  22:48:10
    Duration  4.14s (environment 33%, import 32%, transform 18%, tests 9%, setup 7%)
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
+JUNIT report written to <home>/Documents/ChatGPT/TecnicoYa-cx/frontend/web/test-results/junit.xml
