@@ -12,9 +12,32 @@ it("S04-TC-093 oferta por Reverb sin recargar", () => {
   cy.get('[aria-label^="Oferta "]').should("exist");
   cy.get("[role=timer]").should("exist");
 });
-it.skip("S04-TC-094 BLOQUEADO: contrato no define tarea para republicar el mismo event_id", () => {
-  // Desconectar transporte; republicar evento real dos veces desde outbox; reconectar;
-  // una notificación lógica y versión de la API. No inyectar datos al estado React.
+it("S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una vez al reconectar [TC-055]", () => {
+  // Evento real del outbox republicado por Reverb (tarea replayEvent, S04-TC-137); no se inyecta estado en React.
+  cy.task("openRoundFor", "e2e-technician-electro@example.test").then(({ request_id: id }) => {
+    cy.task("runJobs");
+    login("e2e-client-direct");
+    cy.contains("button", "Ver solicitud #" + id).click();
+    cy.get('[aria-label="Seguimiento de solicitud"]')
+      .contains("Conexión en tiempo real activa.")
+      .should("be.visible");
+    const reads = [];
+    cy.intercept("GET", "**/api/v1/requests/" + id, (req) =>
+      req.continue((res) => reads.push(res.body.data.version)),
+    ).as("read");
+    offline(true);
+    cy.contains("Sin conexión en tiempo real. Actualiza para ver cambios.").should("be.visible");
+    cy.task("serverClock", "+10m");
+    cy.task("runJobs"); // la oferta directa vence: request.updated real, perdido sin conexión
+    cy.task("replayEvent", id).then((first) => {
+      expect(first.request_id).to.eq(id);
+      cy.task("replayEvent", id).its("event_id").should("eq", first.event_id);
+      offline(false);
+      cy.wait("@read").its("response.body.data.version").should("eq", first.version);
+      cy.contains("Tu técnico no respondió a tiempo.").should("be.visible");
+      cy.wrap(reads).should("deep.equal", [first.version]);
+    });
+  });
 });
 it("S04-TC-095 reconexión recupera por API", () => {
   cy.task("openRoundFor", "e2e-technician-frio@example.test");

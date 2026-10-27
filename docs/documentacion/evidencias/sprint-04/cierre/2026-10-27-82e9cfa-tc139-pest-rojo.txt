@@ -1,0 +1,26 @@
+
+   FAIL  Tests\Feature\Sprint04\DemoSeederTest
+  ⨯ it S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, fotos de subcategorías y comunic… 36.28s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\DemoSeederTest > it S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por v…   
+  Expected: Target class [Database\Seeders\DemoSeeder] does not exist.
+
+  To contain: APP_ENV=local
+
+  at tests\Feature\Sprint04\DemoSeederTest.php:49
+     45▕ 
+     46▕ it('S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, fotos de subcategorías y comunicados válidos', function () {
+     47▕     $password = Str::password(20);
+     48▕     s04Demo($password);
+  ➜  49▕     expect(fn () => $this->seed(DemoSeeder::class))->toThrow(SeedingRefused::class, 'APP_ENV=local')
+     50▕         ->and(User::query()->count())->toBe(0);
+     51▕ 
+     52▕     $this->app['env'] = 'local';
+     53▕     s04Demo('corta');
+
+  1   tests\Feature\Sprint04\DemoSeederTest.php:49
+
+
+  Tests:    1 failed (1 assertions)
+  Duration: 36.57s
+

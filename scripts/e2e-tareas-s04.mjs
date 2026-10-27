@@ -7,6 +7,7 @@
 //   cy.task('serverClock', 'reset')     vuelve a la hora real (conviene en un after/afterEach de cada spec)
 //   cy.task('runJobs')                  barrido del scheduler y cola vaciada una vez
 //   cy.task('openRoundFor', 'e2e-technician-electro@example.test')  ronda dirigida a ese técnico (tiempo real)
+//   cy.task('replayEvent', 42)          republica dos veces el último evento publicado de esa solicitud (mismo event_id)
 //
 // Solo funcionan dentro de node scripts/run-e2e.mjs: el arrancador pone TECNICOYA_E2E_CLOCK=1, APP_ENV=testing, la base
 // del slot y las rutas de PHP y del backend. Detrás está `php artisan tecnicoya:e2e`, que también exige la base aislada.
@@ -30,5 +31,6 @@ export function tareasSprint04() {
     serverClock: change => artisan(['clock', String(change ?? 'reset')]),
     runJobs: () => artisan(['jobs']),
     openRoundFor: email => artisan(['open-round', String(email)]),
+    replayEvent: target => artisan(['replay', String(target)]),
   };
 }

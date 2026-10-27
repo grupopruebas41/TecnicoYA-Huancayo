@@ -407,6 +407,7 @@ Los eventos se publican **solo después del commit**, desde `outbox_events` (TC-
 - `serverClock('+10m')`: adelanta el reloj del **servidor** por medio de `App\Shared\Clock`. `cy.clock` solo mueve el del navegador; el reloj vuelve a la hora real al terminar cada spec.
 - `runJobs()`: ejecuta `queue:work --stop-when-empty` y el barrido del scheduler una vez.
 - `openRoundFor('<cuenta técnico>')`: abre una ronda para el técnico indicado, para probar el tiempo real.
+- `replayEvent(<id de solicitud | correo de cliente E2E>)` **[nuevo en el cierre S4.6]**: republica dos veces por Reverb el último evento ya publicado de esa solicitud (o de las del cliente), con el mismo `event_id`, la misma carga y sin escribir en la base. Responde `{event_id, event_type, channel, request_id, version, broadcasts: 2}`. Desbloquea S04-TC-094 (Pest: S04-TC-137).
 
 El arrancador levanta también Reverb, la cola y el scheduler del slot (D-70). El bloqueo `tmp/e2e-cypress.lock` sigue siendo global.
 
@@ -432,7 +433,7 @@ Lo que fijó la implementación del backend. No cambia ninguna ruta ni código d
 | Paso 1 y 2 (§3) | `PrepareMatching` ejecuta el matching **y abre la ronda en el mismo job** (S04-TC-030 exige una ronda tras preparar). `OpenOfferRound` queda para reintentos explícitos. |
 | Barrido (§3) | El scheduler ejecuta `php artisan tecnicoya:sweep` cada minuto: vence rondas, expira o reintenta pendientes (cada 5 min desde el pendiente o el último reintento, D-67), entrega notificaciones atrasadas y publica el outbox. |
 | Reasignación | Cada ronda nueva vuelve a ejecutar el matching (los datos pudieron cambiar) y excluye a quien ya tuvo oferta en la solicitud (RN-11.1). |
-| Distancia sin distrito base | Si el técnico no declaró distrito base, **C = 0** (la cercanía no aporta) y `distance` va en `null`. **Pendiente de confirmar: DIST-02 en DECISIONES.md.** |
+| Distancia sin distrito base | Si el técnico no declaró distrito base, **C = 0** (la cercanía no aporta) y `distance` va en `null`. Decisión definitiva: D-86 (DIST-02, opción A), probada en S04-TC-138. |
 | Respuestas 409 idempotentes | `POST /offers/{id}/response`, `…/selection` y `…/alternative-searches` guardan también sus 409 de negocio con la `Idempotency-Key`: repetir la misma clave y cuerpo devuelve el mismo 409. Tras un 409 la SPA genera una clave nueva. |
 | Retiro por indisponibilidad | En `selection`, `TECHNICIAN_UNAVAILABLE` o `SCHEDULE_CONFLICT` retiran la oferta y suben `request_version`; si no queda ninguna aceptada sigue la búsqueda (§5.2). |
 | Notificaciones de la bandeja | `offer.created` al técnico; `request.awaiting_choice`, `request.direct_declined`, `request.pending` y `request.expired` al cliente; `request.assigned` al técnico elegido. |

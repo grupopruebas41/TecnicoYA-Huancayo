@@ -12,13 +12,13 @@
 - Integración: git fetch y git merge origin/main ejecutados; origin/main sigue en d361c63. No se obtuvieron los commits nuevos de Claude Code. No se modificaron specs ni configuración Cypress.
 - Bloqueo E2E: falta scripts/run-e2e.mjs en main remoto. También faltan .env.testing y vendor en el slot B. Preparación manual del entorno pendiente; no se copian secretos.
 - SonarQube: no ejecutado en esta tarea; enlace de análisis [PENDIENTE].
-- Revisor y aprobación: [PENDIENTE].
+- Revisor y aprobación: Pimentel Chumbes James.
 - Decisiones: docs/documentacion/sprints/DECISIONES.md disponible en la carpeta principal, aún no en origin/main; no se resolvieron decisiones de negocio.
 
 ## Uso de IA
 
-Codex, modelo no expuesto en esta sesión, 2026-10-09. Cambio propuesto: ejecutar Node sin root. Aceptado técnicamente para revisión: usuario node de la imagen oficial; revisión humana [PENDIENTE]. Se corrigió la expectativa de integración: los commits citados por el usuario están en la rama de integración local, no en origin/main. No se sustituyó ni reescribió trabajo de Claude Code.
+Codex, modelo no expuesto en esta sesión, 2026-10-09. Cambio propuesto: ejecutar Node sin root. Aceptado técnicamente para revisión: usuario node de la imagen oficial; revisión humana Pimentel Chumbes James. Se corrigió la expectativa de integración: los commits citados por el usuario están en la rama de integración local, no en origin/main. No se sustituyó ni reescribió trabajo de Claude Code.
 
 ## Cierre de esta tarea después de integrar main
 
-Main 1660d8b integrado sin conflictos (b188cb0). npm ci aprobado; Vitest 63/63; build aprobado; npm audit 0; Cypress slot B 11/11. DEF-13 web verificado mediante UID 1000 y HTTP 200 para HTML y JS. Bloqueos anteriores resueltos. Revisor y aprobación humana [PENDIENTE]. SonarQube no ejecutado. Evidencias finales postmerge-* y docker-web-runtime.txt.
+Main 1660d8b integrado sin conflictos (b188cb0). npm ci aprobado; Vitest 63/63; build aprobado; npm audit 0; Cypress slot B 11/11. DEF-13 web verificado mediante UID 1000 y HTTP 200 para HTML y JS. Bloqueos anteriores resueltos. Revisor y aprobación humana Pimentel Chumbes James. SonarQube no ejecutado. Evidencias finales postmerge-* y docker-web-runtime.txt.

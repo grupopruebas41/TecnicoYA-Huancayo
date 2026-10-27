@@ -1,0 +1,2335 @@
+# Mutación s03 · 2026-10-27T17:48Z · commit cb9cb28 · Linux · PHP 8.2.35 (merge del PR #36 sobre la rama; cabeza de la rama en el nombre del archivo)
+# Pruebas: tests/Feature/Sprint02 tests/Feature/Sprint03
+# Clases: app/Modules/ARequests/Application/ManageServiceRequests.php,app/Modules/ARequests/Application/SubmissionPolicy.php,app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php,app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php,app/Modules/FAdministration/Application/StoreMedia.php,app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php,app/Modules/BMatching/Application/TechnicianSearch.php,app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php,app/Modules/BMatching/Http/Controllers/TechnicianSearchController.php,app/Shared/Rules/RuleBook.php
+
+  ............................................................................
+  ......................................
+
+  Tests:    114 passed (1470 assertions)
+  Duration: 17.04s
+
+  Mutating application files...
+  424 Mutations for 9 Files created
+
+   RUN  app/Modules/ARequests/Application/ManageServiceRequests.php
+  - Line 18: DecrementInteger
+  - Line 18: IncrementInteger
+  ⨯ Line 26: DecrementInteger
+  ⨯ Line 26: IncrementInteger
+  ⨯ Line 26: RemoveFunctionCall
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ✓ Line 34: TernaryNegated
+  ✓ Line 34: RemoveArrayItem
+  ✓ Line 35: TernaryNegated
+  ✓ Line 35: RemoveArrayItem
+  ✓ Line 36: RemoveArrayItem
+  ✓ Line 37: CoalesceRemoveLeft
+  ✓ Line 37: RemoveArrayItem
+  ✓ Line 39: RemoveArrayItem
+  ✓ Line 41: DecrementInteger
+  ✓ Line 41: IncrementInteger
+  ✓ Line 41: RemoveMethodCall
+  ⨯ Line 50: RemoveIntegerCast
+  ✓ Line 51: UnwrapArrayFlip
+  ✓ Line 51: UnwrapArrayIntersectKey
+  ✓ Line 51: RemoveArrayItem
+  ⨯ Line 51: RemoveArrayItem
+  ⨯ Line 51: RemoveArrayItem
+  ⨯ Line 60: RemoveIntegerCast
+  ✓ Line 61: IfNegated
+  ✓ Line 61: GreaterOrEqualToGreater
+  ✓ Line 61: GreaterOrEqualToSmaller
+  ✓ Line 62: RemoveArrayItem
+  ✓ Line 64: RemoveMethodCall
+  ✓ Line 65: RemoveArrayItem
+  ✓ Line 65: RemoveArrayItem
+  ✓ Line 65: RemoveArrayItem
+  ✓ Line 66: PlusToMinus
+  ⨯ Line 66: RemoveIntegerCast
+  ✓ Line 66: DecrementInteger
+  ⨯ Line 66: IncrementInteger
+  ✓ Line 66: RemoveArrayItem
+  ⨯ Line 67: CoalesceRemoveLeft
+  ⨯ Line 67: RemoveArrayItem
+  ⨯ Line 70: RemoveArrayItem
+  ✓ Line 79: IdenticalToNotIdentical
+  ✓ Line 79: DecrementInteger
+  ⨯ Line 79: DecrementInteger
+  ✓ Line 79: IncrementInteger
+  ⨯ Line 79: IncrementInteger
+  ⨯ Line 79: RemoveFunctionCall
+  ⨯ Line 81: RemoveArrayItem
+  ✓ Line 94: PlusToMinus
+  ⨯ Line 94: RemoveIntegerCast
+  ⨯ Line 94: DecrementInteger
+  ⨯ Line 94: IncrementInteger
+  ✓ Line 95: RemoveArrayItem
+  ⨯ Line 95: RemoveArrayItem
+  ✓ Line 95: RemoveArrayItem
+  ⨯ Line 96: RemoveArrayItem
+  ⨯ Line 97: RemoveMethodCall
+  ✓ Line 100: RemoveArrayItem
+  ⨯ Line 100: RemoveArrayItem
+  ✓ Line 100: RemoveArrayItem
+  ⨯ Line 100: RemoveArrayItem
+  ✓ Line 100: AlwaysReturnEmptyArray
+  ✓ Line 106: RemoveArrayItem
+  ✓ Line 107: DecrementInteger
+  ✓ Line 107: IncrementInteger
+  ✓ Line 107: RemoveFunctionCall
+  ⨯ Line 108: RemoveIntegerCast
+  ✓ Line 108: IdenticalToNotIdentical
+  ✓ Line 108: IdenticalToNotIdentical
+  ✓ Line 108: BooleanAndToBooleanOr
+  ✓ Line 108: DecrementInteger
+  ✓ Line 108: IncrementInteger
+  ✓ Line 108: RemoveFunctionCall
+  ✓ Line 116: PlusToMinus
+  ⨯ Line 116: RemoveIntegerCast
+  ✓ Line 116: DecrementInteger
+  ✓ Line 116: IncrementInteger
+  ✓ Line 117: PlusToMinus
+  ✓ Line 117: RemoveArrayItem
+  ⨯ Line 117: RemoveArrayItem
+  ✓ Line 117: RemoveMethodCall
+  ✓ Line 118: CoalesceRemoveLeft
+  ✓ Line 118: RemoveMethodCall
+
+   RUN  app/Modules/ARequests/Application/SubmissionPolicy.php
+  ✓ Line 27: RemoveArrayCast
+  ✓ Line 27: RemoveMethodCall
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 29: DecrementInteger
+  ✓ Line 29: IncrementInteger
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ✓ Line 31: RemoveArrayItem
+  ⨯ Line 35: RemoveMethodCall
+  ✓ Line 40: IfNegated
+  ✓ Line 40: GreaterOrEqualToGreater
+  ✓ Line 40: GreaterOrEqualToSmaller
+  ✓ Line 41: DecrementInteger
+  ✓ Line 41: IncrementInteger
+  ✓ Line 41: RemoveArrayItem
+
+   RUN  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php
+  ✓ Line 18: AlwaysReturnEmptyArray
+  ✓ Line 19: RemoveArrayItem
+  ⨯ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 19: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ✓ Line 21: DecrementInteger
+  ✓ Line 21: IncrementInteger
+  ✓ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 21: RemoveArrayItem
+  ✓ Line 22: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ⨯ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 24: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ✓ Line 25: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ⨯ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  - Line 33: RemoveArrayItem
+  - Line 33: RemoveArrayItem
+  - Line 33: RemoveArrayItem
+  - Line 33: RemoveArrayItem
+  - Line 35: RemoveArrayItem
+  - Line 35: RemoveArrayItem
+  - Line 35: RemoveArrayItem
+  - Line 35: RemoveArrayItem
+  ✓ Line 40: AlwaysReturnEmptyArray
+  ⨯ Line 41: RemoveArrayItem
+  ⨯ Line 41: RemoveArrayItem
+  ⨯ Line 42: RemoveArrayItem
+  ⨯ Line 42: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 50: PlusToMinus
+  ✓ Line 50: AlwaysReturnEmptyArray
+  ⨯ Line 51: RemoveArrayItem
+  ⨯ Line 52: RemoveArrayItem
+  ⨯ Line 53: RemoveArrayItem
+
+   RUN  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php
+  ✓ Line 16: AlwaysReturnEmptyArray
+  ⨯ Line 17: RemoveArrayItem
+  ✓ Line 17: RemoveArrayItem
+  ✓ Line 17: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ✓ Line 18: RemoveArrayItem
+  ⨯ Line 19: DecrementInteger
+  ⨯ Line 19: IncrementInteger
+  ✓ Line 19: RemoveArrayItem
+  ⨯ Line 19: RemoveArrayItem
+  ⨯ Line 19: RemoveArrayItem
+  ⨯ Line 19: RemoveArrayItem
+  ⨯ Line 19: RemoveArrayItem
+  ⨯ Line 20: RemoveArrayItem
+  ⨯ Line 20: RemoveArrayItem
+  ⨯ Line 20: RemoveArrayItem
+  ✓ Line 20: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 21: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 22: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ⨯ Line 23: RemoveArrayItem
+  ⨯ Line 29: AlwaysReturnEmptyArray
+
+   RUN  app/Modules/FAdministration/Application/StoreMedia.php
+  - Line 21: RemoveArrayItem
+  - Line 21: RemoveArrayItem
+  - Line 23: RemoveArrayItem
+  - Line 23: RemoveArrayItem
+  - Line 23: RemoveArrayItem
+  - Line 23: RemoveArrayItem
+  ⨯ Line 29: RemoveStringCast
+  ✓ Line 31: IfNegated
+  ✓ Line 31: NotIdenticalToIdentical
+  ✓ Line 32: CoalesceRemoveLeft
+  - Line 33: RemoveArrayItem
+  ✓ Line 35: RemoveNot
+  ✓ Line 36: TernaryNegated
+  ⨯ Line 37: ConcatRemoveLeft
+  ⨯ Line 37: ConcatRemoveLeft
+  ⨯ Line 37: ConcatRemoveLeft
+  ⨯ Line 37: ConcatRemoveRight
+  ⨯ Line 37: ConcatRemoveRight
+  ⨯ Line 37: ConcatRemoveRight
+  ⨯ Line 37: ConcatSwitchSides
+  ⨯ Line 37: ConcatSwitchSides
+  ⨯ Line 37: ConcatSwitchSides
+  ✓ Line 38: RemoveMethodCall
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ✓ Line 42: RemoveArrayItem
+  ⨯ Line 43: DecrementInteger
+  ⨯ Line 43: IncrementInteger
+  ✓ Line 43: RemoveArrayItem
+  ⨯ Line 43: EmptyStringToNotEmpty
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 45: TernaryNegated
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  ✓ Line 45: RemoveArrayItem
+  - Line 48: RemoveMethodCall
+
+   RUN  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php
+  - Line 16: DecrementInteger
+  - Line 16: IncrementInteger
+  - Line 19: DecrementInteger
+  - Line 19: IncrementInteger
+  ✓ Line 26: IdenticalToNotIdentical
+  ✓ Line 27: IdenticalToNotIdentical
+  ✓ Line 28: TrueToFalse
+  ✓ Line 34: TrueToFalse
+  ✓ Line 39: TernaryNegated
+  ✓ Line 41: AlwaysReturnEmptyArray
+  ⨯ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ⨯ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ⨯ Line 43: RemoveArrayItem
+  ⨯ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ✓ Line 43: RemoveArrayItem
+  ⨯ Line 44: RemoveArrayItem
+  ⨯ Line 44: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 44: RemoveArrayItem
+  ✓ Line 44: ConcatRemoveLeft
+  ✓ Line 44: ConcatRemoveLeft
+  ✓ Line 44: ConcatRemoveRight
+  ✓ Line 44: ConcatRemoveRight
+  ✓ Line 44: ConcatSwitchSides
+  ✓ Line 44: ConcatSwitchSides
+  ✓ Line 50: AlwaysReturnEmptyArray
+  ✓ Line 51: TrueToFalse
+  ✓ Line 51: RemoveArrayItem
+  ✓ Line 56: TernaryNegated
+  ✓ Line 56: RemoveArrayItem
+  ✓ Line 62: AlwaysReturnNull
+  ✓ Line 67: IdenticalToNotIdentical
+  ✓ Line 72: IdenticalToNotIdentical
+
+   RUN  app/Modules/BMatching/Application/TechnicianSearch.php
+  - Line 14: DecrementInteger
+  - Line 14: IncrementInteger
+  ✓ Line 20: RemoveIntegerCast
+  ✓ Line 20: CoalesceRemoveLeft
+  ✓ Line 21: RemoveIntegerCast
+  ✓ Line 21: CoalesceRemoveLeft
+  ⨯ Line 21: DecrementInteger
+  ✓ Line 21: IncrementInteger
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 23: RemoveArrayItem
+  ✓ Line 25: AlwaysReturnEmptyArray
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: DivisionToMultiplication
+  ⨯ Line 27: RemoveIntegerCast
+  ✓ Line 27: MaxToMin
+  ✓ Line 27: CeilToFloor
+  ✓ Line 27: CeilToRound
+  ⨯ Line 27: DecrementInteger
+  ⨯ Line 27: IncrementInteger
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 38: TrueToFalse
+  ✓ Line 41: DecrementInteger
+  ✓ Line 41: DecrementInteger
+  ✓ Line 41: DecrementInteger
+  ✓ Line 41: IncrementInteger
+  ✓ Line 41: IncrementInteger
+  ✓ Line 41: IncrementInteger
+  ✓ Line 45: DecrementInteger
+  ✓ Line 45: IncrementInteger
+  ✓ Line 55: UnwrapArrayColumn
+  ✓ Line 58: DecrementInteger
+  ✓ Line 58: DecrementInteger
+  ✓ Line 58: DecrementInteger
+  ✓ Line 58: IncrementInteger
+  ✓ Line 58: IncrementInteger
+  ✓ Line 58: IncrementInteger
+  ✓ Line 59: RemoveArrayItem
+  ✓ Line 59: RemoveArrayItem
+  ✓ Line 59: RemoveArrayItem
+  ✓ Line 59: RemoveArrayItem
+  ✓ Line 59: RemoveArrayItem
+  ✓ Line 62: DecrementInteger
+  ✓ Line 62: DecrementInteger
+  ✓ Line 62: IncrementInteger
+  ✓ Line 62: IncrementInteger
+  ✓ Line 63: RemoveArrayItem
+  ✓ Line 63: RemoveArrayItem
+  ✓ Line 63: RemoveArrayItem
+  ✓ Line 65: UnwrapArrayMap
+  ✓ Line 65: AlwaysReturnEmptyArray
+  ✓ Line 66: RemoveArrayItem
+  ✓ Line 66: RemoveArrayItem
+  ✓ Line 66: RemoveArrayItem
+  ⨯ Line 67: RemoveIntegerCast
+  ✓ Line 67: RemoveArrayItem
+  ✓ Line 68: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 69: RemoveArrayItem
+  ✓ Line 70: RemoveArrayItem
+  ✓ Line 70: RemoveArrayItem
+  ✓ Line 72: RemoveArrayItem
+  ✓ Line 72: RemoveArrayItem
+  ✓ Line 72: RemoveArrayItem
+  ✓ Line 73: DecrementInteger
+  ✓ Line 73: IncrementInteger
+  ✓ Line 73: RemoveArrayItem
+  ✓ Line 73: RemoveArrayItem
+  ✓ Line 73: RemoveArrayItem
+
+   RUN  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php
+  - Line 15: RemoveArrayItem
+  - Line 15: RemoveArrayItem
+  - Line 15: RemoveArrayItem
+  - Line 15: RemoveArrayItem
+  - Line 15: RemoveArrayItem
+  - Line 15: RemoveArrayItem
+  ✓ Line 19: DecrementInteger
+  ✓ Line 19: IncrementInteger
+  ✓ Line 20: IfNegated
+  ⨯ Line 21: RemoveIntegerCast
+  ✓ Line 21: RemoveMethodCall
+  ✓ Line 24: AlwaysReturnEmptyArray
+  ✓ Line 25: DecrementInteger
+  ✓ Line 25: IncrementInteger
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 25: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ⨯ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 26: RemoveArrayItem
+  ✓ Line 27: DecrementInteger
+  ✓ Line 27: IncrementInteger
+  ⨯ Line 27: RemoveArrayItem
+  ⨯ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ✓ Line 27: RemoveArrayItem
+  ⨯ Line 28: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ✓ Line 28: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ⨯ Line 29: RemoveArrayItem
+  ✓ Line 29: RemoveArrayItem
+  ⨯ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 30: RemoveArrayItem
+  ✓ Line 36: AlwaysReturnEmptyArray
+  ⨯ Line 37: RemoveArrayItem
+  ⨯ Line 38: RemoveArrayItem
+  ⨯ Line 39: RemoveArrayItem
+  ✓ Line 40: RemoveArrayItem
+  ✓ Line 41: RemoveArrayItem
+  ⨯ Line 42: RemoveArrayItem
+  ✓ Line 48: RemoveMethodCall
+  ✓ Line 49: UnwrapArrayDiff
+  ✓ Line 49: UnwrapArrayKeys
+  ✓ Line 49: ForeachEmptyIterable
+  ⨯ Line 50: RemoveStringCast
+  ✓ Line 50: RemoveMethodCall
+
+   RUN  app/Shared/Rules/RuleBook.php
+  ✓ Line 18: CoalesceRemoveLeft
+  ⨯ Line 25: RemoveIntegerCast
+  ✓ Line 25: TernaryNegated
+  ✓ Line 31: AlwaysReturnEmptyArray
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 32: RemoveArrayItem
+  ✓ Line 33: RemoveArrayItem
+  ⨯ Line 40: RemoveIntegerCast
+  ⨯ Line 41: RemoveDoubleCast
+  - Line 42: RemoveBooleanCast
+  ⨯ Line 43: RemoveStringCast
+   UNCOVERED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 18: DecrementInteger - ID: 5aebf354f6507347
+
+   final class ManageServiceRequests
+   {
+       /** D-12: fotos por solicitud. */
+  -    public const MAX_ATTACHMENTS = 5;
+  +    public const MAX_ATTACHMENTS = 4;
+       public function __construct(private readonly RequestTimeline $timeline, private readonly SubmissionPolicy $policy)
+       {
+       }
+  
+
+   UNCOVERED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 18: IncrementInteger - ID: f6d6860c8a194579
+
+   final class ManageServiceRequests
+   {
+       /** D-12: fotos por solicitud. */
+  -    public const MAX_ATTACHMENTS = 5;
+  +    public const MAX_ATTACHMENTS = 6;
+       public function __construct(private readonly RequestTimeline $timeline, private readonly SubmissionPolicy $policy)
+       {
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 26: DecrementInteger - ID: f276bc5c8af04191
+
+       {
+           return DB::transaction(function () use ($user, $data) {
+               $clientId = DB::table('client_profiles')->where('user_id', $user->id)->value('id');
+  -            abort_unless($clientId, 403);
+  +            abort_unless($clientId, 402);
+               $id = DB::table('service_requests')->insertGetId([
+                   'client_id' => $clientId,
+                   'subcategory_id' => $data['subcategory_id'],
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 26: IncrementInteger - ID: 139a35b6c9f17a0e
+
+       {
+           return DB::transaction(function () use ($user, $data) {
+               $clientId = DB::table('client_profiles')->where('user_id', $user->id)->value('id');
+  -            abort_unless($clientId, 403);
+  +            abort_unless($clientId, 404);
+               $id = DB::table('service_requests')->insertGetId([
+                   'client_id' => $clientId,
+                   'subcategory_id' => $data['subcategory_id'],
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 26: RemoveFunctionCall - ID: 1c6659e07e146f63
+
+       {
+           return DB::transaction(function () use ($user, $data) {
+               $clientId = DB::table('client_profiles')->where('user_id', $user->id)->value('id');
+  -            abort_unless($clientId, 403);
+  +            
+               $id = DB::table('service_requests')->insertGetId([
+                   'client_id' => $clientId,
+                   'subcategory_id' => $data['subcategory_id'],
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 50: RemoveIntegerCast - ID: 137bd3f64ef182a5
+
+       public function correct(User $user, int $id, array $data): int
+       {
+           return DB::transaction(function () use ($user, $id, $data) {
+  -            $request = $this->lockOwnRegistered($user, $id, (int) $data['expected_version']);
+  +            $request = $this->lockOwnRegistered($user, $id, $data['expected_version']);
+               $changes = array_intersect_key($data, array_flip(['description', 'address', 'district_id']));
+               return $this->bump($request, $changes, $user->id, 'request.corrected', 'Resumen corregido antes del envío.');
+           });
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 51: RemoveArrayItem - ID: 9fa8085591d11a01
+
+       {
+           return DB::transaction(function () use ($user, $id, $data) {
+               $request = $this->lockOwnRegistered($user, $id, (int) $data['expected_version']);
+  -            $changes = array_intersect_key($data, array_flip(['description', 'address', 'district_id']));
+  +            $changes = array_intersect_key($data, array_flip(['description', 'district_id']));
+               return $this->bump($request, $changes, $user->id, 'request.corrected', 'Resumen corregido antes del envío.');
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 51: RemoveArrayItem - ID: 44cb7dd16d9fc38d
+
+       {
+           return DB::transaction(function () use ($user, $id, $data) {
+               $request = $this->lockOwnRegistered($user, $id, (int) $data['expected_version']);
+  -            $changes = array_intersect_key($data, array_flip(['description', 'address', 'district_id']));
+  +            $changes = array_intersect_key($data, array_flip(['description', 'address']));
+               return $this->bump($request, $changes, $user->id, 'request.corrected', 'Resumen corregido antes del envío.');
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 60: RemoveIntegerCast - ID: 6e02336e4b411874
+
+       public function attach(User $user, int $id, array $data): int
+       {
+           return DB::transaction(function () use ($user, $id, $data) {
+  -            $request = $this->lockOwnRegistered($user, $id, (int) $data['expected_version']);
+  +            $request = $this->lockOwnRegistered($user, $id, $data['expected_version']);
+               if (DB::table('request_attachments')->where('request_id', $id)->count() >= self::MAX_ATTACHMENTS) {
+                   throw ValidationException::withMessages(['media_id' => __('api.attachment_limit')]);
+               }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 66: RemoveIntegerCast - ID: 51e14d2fd4ac7e5b
+
+               if (DB::table('request_attachments')->where('request_id', $id)->count() >= self::MAX_ATTACHMENTS) {
+                   throw ValidationException::withMessages(['media_id' => __('api.attachment_limit')]);
+               }
+  -            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1, 'caption' => $data['caption'] ?? null]);
+  +            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => DB::table('request_attachments')->where('request_id', $id)->max('position') + 1, 'caption' => $data['caption'] ?? null]);
+               return $this->bump($request, [], $user->id, 'request.attachment_added', 'Foto adjuntada.', ['media_id' => $data['media_id']]);
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 66: IncrementInteger - ID: 2d72159dd85df44b
+
+               if (DB::table('request_attachments')->where('request_id', $id)->count() >= self::MAX_ATTACHMENTS) {
+                   throw ValidationException::withMessages(['media_id' => __('api.attachment_limit')]);
+               }
+  -            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1, 'caption' => $data['caption'] ?? null]);
+  +            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 2, 'caption' => $data['caption'] ?? null]);
+               return $this->bump($request, [], $user->id, 'request.attachment_added', 'Foto adjuntada.', ['media_id' => $data['media_id']]);
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 67: CoalesceRemoveLeft - ID: aa5b9acc18086eeb
+
+               if (DB::table('request_attachments')->where('request_id', $id)->count() >= self::MAX_ATTACHMENTS) {
+                   throw ValidationException::withMessages(['media_id' => __('api.attachment_limit')]);
+               }
+  -            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1, 'caption' => $data['caption'] ?? null]);
+  +            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1, 'caption' => null]);
+               return $this->bump($request, [], $user->id, 'request.attachment_added', 'Foto adjuntada.', ['media_id' => $data['media_id']]);
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 67: RemoveArrayItem - ID: 17a595243fe8c818
+
+               if (DB::table('request_attachments')->where('request_id', $id)->count() >= self::MAX_ATTACHMENTS) {
+                   throw ValidationException::withMessages(['media_id' => __('api.attachment_limit')]);
+               }
+  -            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1, 'caption' => $data['caption'] ?? null]);
+  +            DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1]);
+               return $this->bump($request, [], $user->id, 'request.attachment_added', 'Foto adjuntada.', ['media_id' => $data['media_id']]);
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 70: RemoveArrayItem - ID: 65802da9db879a07
+
+                   throw ValidationException::withMessages(['media_id' => __('api.attachment_limit')]);
+               }
+               DB::table('request_attachments')->insert(['request_id' => $id, 'media_id' => $data['media_id'], 'uploaded_by' => $user->id, 'position' => (int) DB::table('request_attachments')->where('request_id', $id)->max('position') + 1, 'caption' => $data['caption'] ?? null]);
+  -            return $this->bump($request, [], $user->id, 'request.attachment_added', 'Foto adjuntada.', ['media_id' => $data['media_id']]);
+  +            return $this->bump($request, [], $user->id, 'request.attachment_added', 'Foto adjuntada.', []);
+           });
+       }
+       public function detach(User $user, int $id, int $mediaId, int $expectedVersion): int
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 79: DecrementInteger - ID: d08fff51b7bbc3e5
+
+           return DB::transaction(function () use ($user, $id, $mediaId, $expectedVersion) {
+               $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+               $deleted = DB::table('request_attachments')->where('request_id', $id)->where('media_id', $mediaId)->delete();
+  -            abort_unless($deleted === 1, 404);
+  +            abort_unless($deleted === 1, 403);
+               return $this->bump($request, [], $user->id, 'request.attachment_removed', 'Foto retirada antes del envío.', ['media_id' => $mediaId]);
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 79: IncrementInteger - ID: 75e88aac95cd2d63
+
+           return DB::transaction(function () use ($user, $id, $mediaId, $expectedVersion) {
+               $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+               $deleted = DB::table('request_attachments')->where('request_id', $id)->where('media_id', $mediaId)->delete();
+  -            abort_unless($deleted === 1, 404);
+  +            abort_unless($deleted === 1, 405);
+               return $this->bump($request, [], $user->id, 'request.attachment_removed', 'Foto retirada antes del envío.', ['media_id' => $mediaId]);
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 79: RemoveFunctionCall - ID: 49037cc6631574fd
+
+           return DB::transaction(function () use ($user, $id, $mediaId, $expectedVersion) {
+               $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+               $deleted = DB::table('request_attachments')->where('request_id', $id)->where('media_id', $mediaId)->delete();
+  -            abort_unless($deleted === 1, 404);
+  +            
+               return $this->bump($request, [], $user->id, 'request.attachment_removed', 'Foto retirada antes del envío.', ['media_id' => $mediaId]);
+           });
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 81: RemoveArrayItem - ID: ba9085f942fa596f
+
+               $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+               $deleted = DB::table('request_attachments')->where('request_id', $id)->where('media_id', $mediaId)->delete();
+               abort_unless($deleted === 1, 404);
+  -            return $this->bump($request, [], $user->id, 'request.attachment_removed', 'Foto retirada antes del envío.', ['media_id' => $mediaId]);
+  +            return $this->bump($request, [], $user->id, 'request.attachment_removed', 'Foto retirada antes del envío.', []);
+           });
+       }
+       /**
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 94: RemoveIntegerCast - ID: ec35d0dc857a0704
+
+       {
+           $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+           $ruleVersionId = $this->policy->check($request);
+  -        $generation = (int) $request->search_generation + 1;
+  +        $generation = $request->search_generation + 1;
+           $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+           PrepareMatching::dispatch($id, $generation)->afterCommit();
+           $row = DB::table('service_requests')->find($id);
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 94: DecrementInteger - ID: 03eab2c76cd9a36d
+
+       {
+           $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+           $ruleVersionId = $this->policy->check($request);
+  -        $generation = (int) $request->search_generation + 1;
+  +        $generation = (int) $request->search_generation + 0;
+           $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+           PrepareMatching::dispatch($id, $generation)->afterCommit();
+           $row = DB::table('service_requests')->find($id);
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 94: IncrementInteger - ID: 0965bfde6a1e7491
+
+       {
+           $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+           $ruleVersionId = $this->policy->check($request);
+  -        $generation = (int) $request->search_generation + 1;
+  +        $generation = (int) $request->search_generation + 2;
+           $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+           PrepareMatching::dispatch($id, $generation)->afterCommit();
+           $row = DB::table('service_requests')->find($id);
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 95: RemoveArrayItem - ID: 7fe9e11846a1b6ed
+
+           $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+           $ruleVersionId = $this->policy->check($request);
+           $generation = (int) $request->search_generation + 1;
+  -        $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+  +        $version = $this->bump($request, ['status' => 'sent', 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+           PrepareMatching::dispatch($id, $generation)->afterCommit();
+           $row = DB::table('service_requests')->find($id);
+           return ['id' => $row->id, 'status' => $row->status, 'version' => $version, 'submitted_at' => $row->submitted_at];
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 96: RemoveArrayItem - ID: 8bc6de1027d3e0c5
+
+           $request = $this->lockOwnRegistered($user, $id, $expectedVersion);
+           $ruleVersionId = $this->policy->check($request);
+           $generation = (int) $request->search_generation + 1;
+  -        $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+  +        $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+           PrepareMatching::dispatch($id, $generation)->afterCommit();
+           $row = DB::table('service_requests')->find($id);
+           return ['id' => $row->id, 'status' => $row->status, 'version' => $version, 'submitted_at' => $row->submitted_at];
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 97: RemoveMethodCall - ID: a8c72628929156d8
+
+           $ruleVersionId = $this->policy->check($request);
+           $generation = (int) $request->search_generation + 1;
+           $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+  -        PrepareMatching::dispatch($id, $generation)->afterCommit();
+  +        
+           $row = DB::table('service_requests')->find($id);
+           return ['id' => $row->id, 'status' => $row->status, 'version' => $version, 'submitted_at' => $row->submitted_at];
+       }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 100: RemoveArrayItem - ID: 07d23f8bfa335dd7
+
+           $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+           PrepareMatching::dispatch($id, $generation)->afterCommit();
+           $row = DB::table('service_requests')->find($id);
+  -        return ['id' => $row->id, 'status' => $row->status, 'version' => $version, 'submitted_at' => $row->submitted_at];
+  +        return ['id' => $row->id, 'version' => $version, 'submitted_at' => $row->submitted_at];
+       }
+       private function lockOwnRegistered(User $user, int $id, int $expectedVersion): object
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 100: RemoveArrayItem - ID: 131e84c25e64fe45
+
+           $version = $this->bump($request, ['status' => 'sent', 'submitted_at' => now(), 'rule_version_id' => $ruleVersionId, 'search_generation' => $generation], $user->id, 'request.submitted', 'Solicitud enviada por el cliente.', [], 'sent');
+           PrepareMatching::dispatch($id, $generation)->afterCommit();
+           $row = DB::table('service_requests')->find($id);
+  -        return ['id' => $row->id, 'status' => $row->status, 'version' => $version, 'submitted_at' => $row->submitted_at];
+  +        return ['id' => $row->id, 'status' => $row->status, 'version' => $version];
+       }
+       private function lockOwnRegistered(User $user, int $id, int $expectedVersion): object
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 108: RemoveIntegerCast - ID: 494fdb1735a66269
+
+       {
+           $request = DB::table('service_requests as r')->join('client_profiles as c', 'c.id', '=', 'r.client_id')->where('r.id', $id)->where('c.user_id', $user->id)->lockForUpdate()->first(['r.*']);
+           abort_unless($request, 404);
+  -        abort_unless($request->status === 'registered' && (int) $request->version === $expectedVersion, 409);
+  +        abort_unless($request->status === 'registered' && $request->version === $expectedVersion, 409);
+           return $request;
+       }
+       private function bump(object $request, array $changes, int $actorId, string $event, string $summary, array $metadata = [], ?string $toStatus = null): int
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 116: RemoveIntegerCast - ID: acf70442ed233833
+
+       }
+       private function bump(object $request, array $changes, int $actorId, string $event, string $summary, array $metadata = [], ?string $toStatus = null): int
+       {
+  -        $version = (int) $request->version + 1;
+  +        $version = $request->version + 1;
+           DB::table('service_requests')->where('id', $request->id)->update($changes + ['version' => $version, 'updated_at' => now()]);
+           $this->timeline->record($request->id, $actorId, $event, $request->status, $toStatus ?? $request->status, $summary, $version, $metadata);
+           return $version;
+       }
+   }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/ManageServiceRequests.php  > Line 117: RemoveArrayItem - ID: 85eeffe4c69a70a6
+
+       private function bump(object $request, array $changes, int $actorId, string $event, string $summary, array $metadata = [], ?string $toStatus = null): int
+       {
+           $version = (int) $request->version + 1;
+  -        DB::table('service_requests')->where('id', $request->id)->update($changes + ['version' => $version, 'updated_at' => now()]);
+  +        DB::table('service_requests')->where('id', $request->id)->update($changes + ['version' => $version]);
+           $this->timeline->record($request->id, $actorId, $event, $request->status, $toStatus ?? $request->status, $summary, $version, $metadata);
+           return $version;
+       }
+   }
+  
+
+   UNTESTED  app/Modules/ARequests/Application/SubmissionPolicy.php  > Line 35: RemoveMethodCall - ID: 0fef85fa9522ec5e
+
+       public function check(object $request): int
+       {
+           Validator::make((array) $request, ['subcategory_id' => [new ActiveSubcategory('api.subcategory_unavailable')], 'district_id' => [Rule::exists('districts', 'id')->where('active', 1)], 'target_technician_id' => ['exclude_unless:source,profile', new TargetTechnicianOffers($request->subcategory_id)], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'after_or_equal:now']], StoreServiceRequestRequest::sharedMessages())->validate();
+  -        // Serializa los envíos del mismo cliente para que dos solicitudes no superen juntas el máximo.
+  -        DB::table('client_profiles')->where('id', $request->client_id)->lockForUpdate()->first();
+  +        
+           $versionId = $this->rules->currentVersionId();
+           $max = $this->rules->integer($versionId, 'max_active_requests_per_client');
+           $active = DB::table('service_requests')->where('client_id', $request->client_id)->where('status', '<>', 'registered')->whereNull('closed_at')->whereNull('cancelled_at')->count();
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 19: RemoveArrayItem - ID: 99f7022c4a9bc82b
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 21: RemoveArrayItem - ID: da9431364f8aef8b
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: 98ae7ff7f7d8e4a0
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => [Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: 351b74f1fbfd55fe
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required'], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 24: RemoveArrayItem - ID: 88644c9700148b3e
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 25: RemoveArrayItem - ID: d2e25a4296677dc4
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 25: RemoveArrayItem - ID: 54cb1d473ed2ca6d
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 26: RemoveArrayItem - ID: d5f5aeea15c6de66
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => [Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 26: RemoveArrayItem - ID: 979f65c0f7675399
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required'], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 27: RemoveArrayItem - ID: 8c8d4351b9c8745b
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 29: RemoveArrayItem - ID: d3d681f7d7883321
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => [], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 29: RemoveArrayItem - ID: eb849ccd431e16b3
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 29: RemoveArrayItem - ID: 0e49232ecbfc6c56
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => []];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 29: RemoveArrayItem - ID: 44dfcb89a18f907e
+
+   {
+       public function rules(): array
+       {
+  -        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+  +        return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 33: RemoveArrayItem - ID: be50013239f79f9e
+
+       {
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+  -    public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  +    public const DESCRIPTION = ['string', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 33: RemoveArrayItem - ID: 514b6ea1e8279304
+
+       {
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+  -    public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  +    public const DESCRIPTION = ['required', 'min:20', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 33: RemoveArrayItem - ID: 54ae627508420dcf
+
+       {
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+  -    public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  +    public const DESCRIPTION = ['required', 'string', 'max:1000'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 33: RemoveArrayItem - ID: 17c08521cab91ebb
+
+       {
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+  -    public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  +    public const DESCRIPTION = ['required', 'string', 'min:20'];
+       public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 35: RemoveArrayItem - ID: 7e2da272717d634f
+
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  -    public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  +    public const ADDRESS = ['string', 'min:5', 'max:255'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 35: RemoveArrayItem - ID: dfefc208a75cf757
+
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  -    public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  +    public const ADDRESS = ['required', 'min:5', 'max:255'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 35: RemoveArrayItem - ID: 1425b5dff33cb1b3
+
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  -    public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  +    public const ADDRESS = ['required', 'string', 'max:255'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  
+
+   UNCOVERED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 35: RemoveArrayItem - ID: 2402622537961817
+
+           return ['subcategory_id' => ['required', 'integer', new ActiveSubcategory('api.subcategory_unavailable')], 'description' => self::DESCRIPTION, 'district_id' => ['required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'address' => self::ADDRESS, 'mode' => ['required', Rule::in(['asap', 'scheduled'])], 'preferred_start_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after_or_equal:now'], 'preferred_end_at' => ['exclude_unless:mode,scheduled', 'required', 'date', 'after:preferred_start_at'], 'source' => ['required', Rule::in(['automatic', 'profile'])], 'target_technician_id' => ['exclude_unless:source,profile', 'required', 'integer', new TargetTechnicianOffers($this->input('subcategory_id'))], 'reference_fee' => ['prohibited'], 'client_id' => ['prohibited'], 'status' => ['prohibited']];
+       }
+       public const DESCRIPTION = ['required', 'string', 'min:20', 'max:1000'];
+  -    public const ADDRESS = ['required', 'string', 'min:5', 'max:255'];
+  +    public const ADDRESS = ['required', 'string', 'min:5'];
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 41: RemoveArrayItem - ID: 2399044588d5fb07
+
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  -        return ['description.min' => __('api.description_length'), 'description.max' => __('api.description_length'), 'address.min' => __('api.address_length'), 'address.max' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+  +        return ['description.max' => __('api.description_length'), 'address.min' => __('api.address_length'), 'address.max' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 41: RemoveArrayItem - ID: e039385649951f2b
+
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  -        return ['description.min' => __('api.description_length'), 'description.max' => __('api.description_length'), 'address.min' => __('api.address_length'), 'address.max' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+  +        return ['description.min' => __('api.description_length'), 'address.min' => __('api.address_length'), 'address.max' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 42: RemoveArrayItem - ID: 78a6d29736c83ca7
+
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  -        return ['description.min' => __('api.description_length'), 'description.max' => __('api.description_length'), 'address.min' => __('api.address_length'), 'address.max' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+  +        return ['description.min' => __('api.description_length'), 'description.max' => __('api.description_length'), 'address.max' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 42: RemoveArrayItem - ID: b06d115cf0f5e64e
+
+       /** Mensajes compartidos con la corrección y la revalidación del envío. */
+       public static function sharedMessages(): array
+       {
+  -        return ['description.min' => __('api.description_length'), 'description.max' => __('api.description_length'), 'address.min' => __('api.address_length'), 'address.max' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+  +        return ['description.min' => __('api.description_length'), 'description.max' => __('api.description_length'), 'address.min' => __('api.address_length'), 'district_id.exists' => __('api.out_of_coverage'), 'preferred_start_at.after_or_equal' => __('api.scheduled_start_past')];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 51: RemoveArrayItem - ID: 82c5375dcbe25b7e
+
+       }
+       public function messages(): array
+       {
+  -        return self::sharedMessages() + ['preferred_start_at.required' => __('api.scheduled_start_required'), 'preferred_end_at.required' => __('api.scheduled_end_required'), 'preferred_end_at.after' => __('api.scheduled_end_order')];
+  +        return self::sharedMessages() + ['preferred_end_at.required' => __('api.scheduled_end_required'), 'preferred_end_at.after' => __('api.scheduled_end_order')];
+       }
+   }
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 52: RemoveArrayItem - ID: 85a198f29002e932
+
+       }
+       public function messages(): array
+       {
+  -        return self::sharedMessages() + ['preferred_start_at.required' => __('api.scheduled_start_required'), 'preferred_end_at.required' => __('api.scheduled_end_required'), 'preferred_end_at.after' => __('api.scheduled_end_order')];
+  +        return self::sharedMessages() + ['preferred_start_at.required' => __('api.scheduled_start_required'), 'preferred_end_at.after' => __('api.scheduled_end_order')];
+       }
+   }
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/StoreServiceRequestRequest.php  > Line 53: RemoveArrayItem - ID: 23dbaff6a6074e57
+
+       }
+       public function messages(): array
+       {
+  -        return self::sharedMessages() + ['preferred_start_at.required' => __('api.scheduled_start_required'), 'preferred_end_at.required' => __('api.scheduled_end_required'), 'preferred_end_at.after' => __('api.scheduled_end_order')];
+  +        return self::sharedMessages() + ['preferred_start_at.required' => __('api.scheduled_start_required'), 'preferred_end_at.required' => __('api.scheduled_end_required')];
+       }
+   }
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 17: RemoveArrayItem - ID: cfbf92be6f68fc54
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => [...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 19: DecrementInteger - ID: e046969684597f21
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 0)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 19: IncrementInteger - ID: 93fae9f824e0369d
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 2)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 19: RemoveArrayItem - ID: 000375260021b6ca
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 19: RemoveArrayItem - ID: 0627495d1fb0f480
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 19: RemoveArrayItem - ID: a5642c72122af421
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer'], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 19: RemoveArrayItem - ID: 1f1e06f72127f0d3
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 20: RemoveArrayItem - ID: a272fb49a1e87c81
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 20: RemoveArrayItem - ID: 471a8784bb05842d
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 20: RemoveArrayItem - ID: 8a39347cf07f5a6e
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 21: RemoveArrayItem - ID: 638473d40ce7db92
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => [], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 21: RemoveArrayItem - ID: c77ee756132d28d0
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 21: RemoveArrayItem - ID: 02c6d7c9b0fbf453
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => [], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 21: RemoveArrayItem - ID: dca29451132db673
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 21: RemoveArrayItem - ID: 0430e7ae55da9a23
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => [], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 21: RemoveArrayItem - ID: a6f3c7d84b99cc2a
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 22: RemoveArrayItem - ID: ad148c78e981578d
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => [], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 22: RemoveArrayItem - ID: c0fb4cf8ab6565f5
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 22: RemoveArrayItem - ID: d1e4a311c306517d
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => [], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 22: RemoveArrayItem - ID: 0cf20cd5666cfab7
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 22: RemoveArrayItem - ID: 115ecea6b26990f7
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => [], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 22: RemoveArrayItem - ID: 7819e93212d37c2c
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: cd4ac8c8db9e3756
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => [], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: c2653ea4b99282bc
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: 5fed6b223a9816a7
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => [], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: 9b95c09ba08e31c5
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'reference_fee' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: 172309d929853f99
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => []];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 23: RemoveArrayItem - ID: f7c2f02058425a2e
+
+   {
+       public function rules(): array
+       {
+  -        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited'], 'reference_fee' => ['prohibited']];
+  +        return ['description' => ['sometimes', ...StoreServiceRequestRequest::DESCRIPTION], 'address' => ['sometimes', ...StoreServiceRequestRequest::ADDRESS], 'district_id' => ['sometimes', 'required', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'expected_version' => ['required', 'integer', 'min:1'], 'subcategory_id' => ['prohibited'], 'source' => ['prohibited'], 'target_technician_id' => ['prohibited'], 'mode' => ['prohibited'], 'preferred_start_at' => ['prohibited'], 'preferred_end_at' => ['prohibited'], 'status' => ['prohibited'], 'client_id' => ['prohibited']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/ARequests/Http/Requests/UpdateServiceRequestRequest.php  > Line 29: AlwaysReturnEmptyArray - ID: ecd4c8c53fb7b6be
+
+       }
+       public function messages(): array
+       {
+  -        return StoreServiceRequestRequest::sharedMessages();
+  +        return [];
+       }
+   }
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 21: RemoveArrayItem - ID: 00163dc52067b5be
+
+    */
+   final class StoreMedia
+   {
+  -    private const PRIVATE_PURPOSES = ['document', 'evidence'];
+  +    private const PRIVATE_PURPOSES = ['evidence'];
+       private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+       public function __construct(private readonly ImageSanitizer $images)
+       {
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 21: RemoveArrayItem - ID: a9cef974056d0f81
+
+    */
+   final class StoreMedia
+   {
+  -    private const PRIVATE_PURPOSES = ['document', 'evidence'];
+  +    private const PRIVATE_PURPOSES = ['document'];
+       private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+       public function __construct(private readonly ImageSanitizer $images)
+       {
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 23: RemoveArrayItem - ID: cf530357821b40b7
+
+   final class StoreMedia
+   {
+       private const PRIVATE_PURPOSES = ['document', 'evidence'];
+  -    private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+  +    private const EXTENSIONS = ['image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+       public function __construct(private readonly ImageSanitizer $images)
+       {
+       }
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 23: RemoveArrayItem - ID: 5fa1bbf259506e3b
+
+   final class StoreMedia
+   {
+       private const PRIVATE_PURPOSES = ['document', 'evidence'];
+  -    private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+  +    private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+       public function __construct(private readonly ImageSanitizer $images)
+       {
+       }
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 23: RemoveArrayItem - ID: 095f2475131671f5
+
+   final class StoreMedia
+   {
+       private const PRIVATE_PURPOSES = ['document', 'evidence'];
+  -    private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+  +    private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'application/pdf' => 'pdf'];
+       public function __construct(private readonly ImageSanitizer $images)
+       {
+       }
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 23: RemoveArrayItem - ID: aa46d929bc5d9e51
+
+   final class StoreMedia
+   {
+       private const PRIVATE_PURPOSES = ['document', 'evidence'];
+  -    private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+  +    private const EXTENSIONS = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+       public function __construct(private readonly ImageSanitizer $images)
+       {
+       }
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 29: RemoveStringCast - ID: cb3cad9b11ed3f18
+
+       }
+       public function store(User $owner, UploadedFile $file, string $purpose): MediaFile
+       {
+  -        $mimeType = (string) $file->getMimeType();
+  +        $mimeType = $file->getMimeType();
+           $content = $file->getContent();
+           if ($mimeType !== 'application/pdf') {
+               $content = $this->images->clean($mimeType, $content) ?? throw ValidationException::withMessages(['file' => __('api.image_invalid')]);
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 33: RemoveArrayItem - ID: 4c8306baba666e9e
+
+           $mimeType = (string) $file->getMimeType();
+           $content = $file->getContent();
+           if ($mimeType !== 'application/pdf') {
+  -            $content = $this->images->clean($mimeType, $content) ?? throw ValidationException::withMessages(['file' => __('api.image_invalid')]);
+  +            $content = $this->images->clean($mimeType, $content) ?? throw ValidationException::withMessages([]);
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatRemoveLeft - ID: fc868e7a4094a238
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatRemoveLeft - ID: ca5852a718db6377
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = '.' . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatRemoveLeft - ID: f6f194e2fccb0034
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatRemoveRight - ID: 0ccdc4b181d39f02
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = 'media/' . '.' . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatRemoveRight - ID: a9f00138659c2da4
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = 'media/' . Str::uuid() . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatRemoveRight - ID: ae5b0b32b2ac62a8
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = 'media/' . Str::uuid() . '.';
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatSwitchSides - ID: 34ec3f7812de7e12
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = Str::uuid() . 'media/' . '.' . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatSwitchSides - ID: 888b6cd80d41612c
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = '.' . ('media/' . Str::uuid()) . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 37: ConcatSwitchSides - ID: b15b49cc60408e4c
+
+           }
+           $public = !in_array($purpose, self::PRIVATE_PURPOSES, true);
+           $disk = $public ? 'public' : 'local';
+  -        $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+  +        $key = self::EXTENSIONS[$mimeType] . ('media/' . Str::uuid() . '.');
+           Storage::disk($disk)->put($key, $content);
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 43: DecrementInteger - ID: 3c4eeffb8f498dfd
+
+           $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+  -            return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  +            return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 249, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+           } catch (Throwable $error) {
+               Storage::disk($disk)->delete($key);
+               throw $error;
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 43: IncrementInteger - ID: d36e34b5ef046b95
+
+           $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+  -            return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  +            return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 251, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+           } catch (Throwable $error) {
+               Storage::disk($disk)->delete($key);
+               throw $error;
+  
+
+   UNTESTED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 43: EmptyStringToNotEmpty - ID: 504d0df8a6ac75fb
+
+           $key = 'media/' . Str::uuid() . '.' . self::EXTENSIONS[$mimeType];
+           Storage::disk($disk)->put($key, $content);
+           try {
+  -            return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+  +            return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, 'PEST Mutator was here!'), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+           } catch (Throwable $error) {
+               Storage::disk($disk)->delete($key);
+               throw $error;
+  
+
+   UNCOVERED  app/Modules/FAdministration/Application/StoreMedia.php  > Line 48: RemoveMethodCall - ID: fa5523bf3f204a41
+
+           try {
+               return MediaFile::query()->create(['owner_id' => $owner->id, 'disk' => $disk, 'storage_key' => $key, 'original_name' => Str::limit(basename($file->getClientOriginalName()), 250, ''), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => $public ? 'public' : 'private', 'scan_status' => 'clean', 'purpose' => $purpose]);
+           } catch (Throwable $error) {
+  -            Storage::disk($disk)->delete($key);
+  +            
+               throw $error;
+           }
+       }
+   }
+  
+
+   UNCOVERED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 16: DecrementInteger - ID: 1f64500eb7309f5d
+
+    */
+   final class StoreMediaRequest extends FormRequest
+   {
+  -    public const MAX_KILOBYTES = 5120;
+  +    public const MAX_KILOBYTES = 5119;
+       /** D-83: las imágenes de comunicado (carrusel) pesan hasta 600 KB y son JPG o WebP. */
+       public const ANNOUNCEMENT_KILOBYTES = 600;
+       public function authorize(EffectivePermissions $permissions): bool
+  
+
+   UNCOVERED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 16: IncrementInteger - ID: e21a2f553fceff13
+
+    */
+   final class StoreMediaRequest extends FormRequest
+   {
+  -    public const MAX_KILOBYTES = 5120;
+  +    public const MAX_KILOBYTES = 5121;
+       /** D-83: las imágenes de comunicado (carrusel) pesan hasta 600 KB y son JPG o WebP. */
+       public const ANNOUNCEMENT_KILOBYTES = 600;
+       public function authorize(EffectivePermissions $permissions): bool
+  
+
+   UNCOVERED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 19: DecrementInteger - ID: 2d764d110f126175
+
+   {
+       public const MAX_KILOBYTES = 5120;
+       /** D-83: las imágenes de comunicado (carrusel) pesan hasta 600 KB y son JPG o WebP. */
+  -    public const ANNOUNCEMENT_KILOBYTES = 600;
+  +    public const ANNOUNCEMENT_KILOBYTES = 599;
+       public function authorize(EffectivePermissions $permissions): bool
+       {
+           return match ($this->input('purpose')) {
+  
+
+   UNCOVERED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 19: IncrementInteger - ID: 37d0a7cfcc916534
+
+   {
+       public const MAX_KILOBYTES = 5120;
+       /** D-83: las imágenes de comunicado (carrusel) pesan hasta 600 KB y son JPG o WebP. */
+  -    public const ANNOUNCEMENT_KILOBYTES = 600;
+  +    public const ANNOUNCEMENT_KILOBYTES = 601;
+       public function authorize(EffectivePermissions $permissions): bool
+       {
+           return match ($this->input('purpose')) {
+  
+
+   UNTESTED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 43: RemoveArrayItem - ID: ef42ea22a0d25e8d
+
+           $max = $this->isAnnouncement() ? self::ANNOUNCEMENT_KILOBYTES : self::MAX_KILOBYTES;
+           return [
+               // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
+  -            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+  +            'purpose' => [Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+               'file' => ['required', 'file', 'max:' . $max, 'mimetypes:' . $types],
+           ];
+       }
+  
+
+   UNTESTED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 43: RemoveArrayItem - ID: 3396ae85f05b1647
+
+           $max = $this->isAnnouncement() ? self::ANNOUNCEMENT_KILOBYTES : self::MAX_KILOBYTES;
+           return [
+               // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
+  -            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+  +            'purpose' => ['required', Rule::in(['portfolio', 'document', 'evidence', 'avatar', 'announcement'])],
+               'file' => ['required', 'file', 'max:' . $max, 'mimetypes:' . $types],
+           ];
+       }
+  
+
+   UNTESTED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 43: RemoveArrayItem - ID: 9947bc1ecfcb70eb
+
+           $max = $this->isAnnouncement() ? self::ANNOUNCEMENT_KILOBYTES : self::MAX_KILOBYTES;
+           return [
+               // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
+  -            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+  +            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'announcement'])],
+               'file' => ['required', 'file', 'max:' . $max, 'mimetypes:' . $types],
+           ];
+       }
+  
+
+   UNTESTED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 43: RemoveArrayItem - ID: e8f684e6fbf6bf85
+
+           $max = $this->isAnnouncement() ? self::ANNOUNCEMENT_KILOBYTES : self::MAX_KILOBYTES;
+           return [
+               // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
+  -            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+  +            'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar'])],
+               'file' => ['required', 'file', 'max:' . $max, 'mimetypes:' . $types],
+           ];
+       }
+  
+
+   UNTESTED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 44: RemoveArrayItem - ID: 3e3cb165c1f6416b
+
+           return [
+               // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
+               'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+  -            'file' => ['required', 'file', 'max:' . $max, 'mimetypes:' . $types],
+  +            'file' => ['file', 'max:' . $max, 'mimetypes:' . $types],
+           ];
+       }
+       public function messages(): array
+  
+
+   UNTESTED  app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php  > Line 44: RemoveArrayItem - ID: d8dac244a9805b7e
+
+           return [
+               // D-77: avatar es la foto de perfil de cualquier cuenta; pasa por ImageSanitizer como el portafolio.
+               'purpose' => ['required', Rule::in(['portfolio', 'catalog', 'document', 'evidence', 'avatar', 'announcement'])],
+  -            'file' => ['required', 'file', 'max:' . $max, 'mimetypes:' . $types],
+  +            'file' => ['required', 'max:' . $max, 'mimetypes:' . $types],
+           ];
+       }
+       public function messages(): array
+  
+
+   UNCOVERED  app/Modules/BMatching/Application/TechnicianSearch.php  > Line 14: DecrementInteger - ID: 191c0ff20af36287
+
+    */
+   final class TechnicianSearch
+   {
+  -    public const DEFAULT_PER_PAGE = 12;
+  +    public const DEFAULT_PER_PAGE = 11;
+       public function search(array $filters): array
+       {
+           $query = $this->eligible($filters);
+  
+
+   UNCOVERED  app/Modules/BMatching/Application/TechnicianSearch.php  > Line 14: IncrementInteger - ID: 656a333fc4de21f7
+
+    */
+   final class TechnicianSearch
+   {
+  -    public const DEFAULT_PER_PAGE = 12;
+  +    public const DEFAULT_PER_PAGE = 13;
+       public function search(array $filters): array
+       {
+           $query = $this->eligible($filters);
+  
+
+   UNTESTED  app/Modules/BMatching/Application/TechnicianSearch.php  > Line 21: DecrementInteger - ID: 127d1841c841833a
+
+           $query = $this->eligible($filters);
+           $total = (clone $query)->count();
+           $perPage = (int) ($filters['per_page'] ?? self::DEFAULT_PER_PAGE);
+  -        $page = (int) ($filters['page'] ?? 1);
+  +        $page = (int) ($filters['page'] ?? 0);
+           $rows = $query->orderBy('t.display_name')->orderBy('t.id')->forPage($page, $perPage)->get(['t.id', 't.display_name', 't.provider_type', 't.experience_years']);
+           return ['items' => $this->cards($rows->all()), 'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(1, (int) ceil($total / $perPage))]];
+       }
+  
+
+   UNTESTED  app/Modules/BMatching/Application/TechnicianSearch.php  > Line 27: RemoveIntegerCast - ID: ab53c8b06c7921da
+
+           $perPage = (int) ($filters['per_page'] ?? self::DEFAULT_PER_PAGE);
+           $page = (int) ($filters['page'] ?? 1);
+           $rows = $query->orderBy('t.display_name')->orderBy('t.id')->forPage($page, $perPage)->get(['t.id', 't.display_name', 't.provider_type', 't.experience_years']);
+  -        return ['items' => $this->cards($rows->all()), 'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(1, (int) ceil($total / $perPage))]];
+  +        return ['items' => $this->cards($rows->all()), 'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(1, ceil($total / $perPage))]];
+       }
+       /** Técnico activo y verificado, con cuenta habilitada, sin pausa vigente (D-57) y un servicio que cumpla los filtros. */
+       private function eligible(array $filters): Builder
+  
+
+   UNTESTED  app/Modules/BMatching/Application/TechnicianSearch.php  > Line 27: DecrementInteger - ID: e52056de62aacfb0
+
+           $perPage = (int) ($filters['per_page'] ?? self::DEFAULT_PER_PAGE);
+           $page = (int) ($filters['page'] ?? 1);
+           $rows = $query->orderBy('t.display_name')->orderBy('t.id')->forPage($page, $perPage)->get(['t.id', 't.display_name', 't.provider_type', 't.experience_years']);
+  -        return ['items' => $this->cards($rows->all()), 'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(1, (int) ceil($total / $perPage))]];
+  +        return ['items' => $this->cards($rows->all()), 'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(0, (int) ceil($total / $perPage))]];
+       }
+       /** Técnico activo y verificado, con cuenta habilitada, sin pausa vigente (D-57) y un servicio que cumpla los filtros. */
+       private function eligible(array $filters): Builder
+  
+
+   UNTESTED  app/Modules/BMatching/Application/TechnicianSearch.php  > Line 27: IncrementInteger - ID: 790ae23cf5baabae
+
+           $perPage = (int) ($filters['per_page'] ?? self::DEFAULT_PER_PAGE);
+           $page = (int) ($filters['page'] ?? 1);
+           $rows = $query->orderBy('t.display_name')->orderBy('t.id')->forPage($page, $perPage)->get(['t.id', 't.display_name', 't.provider_type', 't.experience_years']);
+  -        return ['items' => $this->cards($rows->all()), 'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(1, (int) ceil($total / $perPage))]];
+  +        return ['items' => $this->cards($rows->all()), 'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(2, (int) ceil($total / $perPage))]];
+       }
+       /** Técnico activo y verificado, con cuenta habilitada, sin pausa vigente (D-57) y un servicio que cumpla los filtros. */
+       private function eligible(array $filters): Builder
+  
+
+   UNTESTED  app/Modules/BMatching/Application/TechnicianSearch.php  > Line 67: RemoveIntegerCast - ID: 12b4454f9f16e8ed
+
+           $ids = array_column($rows, 'id');
+           $services = DB::table('technician_services as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')->join('specialties as p', 'p.id', '=', 'c.specialty_id')->whereIn('s.technician_id', $ids)->where('s.active', 1)->where('c.active', 1)->where('p.active', 1)->orderBy('c.display_order')->get(['s.technician_id', 's.subcategory_id', 'c.name as subcategory_name', 's.reference_fee', 's.currency'])->groupBy('technician_id');
+           $districts = DB::table('technician_districts as d')->join('districts as x', 'x.id', '=', 'd.district_id')->whereIn('d.technician_id', $ids)->where('d.active', 1)->where('x.active', 1)->orderBy('x.name')->get(['d.technician_id', 'x.id', 'x.name'])->groupBy('technician_id');
+  -        return array_map(fn(object $row) => ['id' => $row->id, 'display_name' => $row->display_name, 'provider_type' => $row->provider_type, 'experience_years' => (int) $row->experience_years, 'services' => $services->get($row->id, collect())->map(fn(object $s) => ['subcategory_id' => $s->subcategory_id, 'subcategory_name' => $s->subcategory_name, 'reference_fee' => $s->reference_fee, 'currency' => $s->currency])->values()->all(), 'districts' => $districts->get($row->id, collect())->map(fn(object $d) => ['id' => $d->id, 'name' => $d->name])->values()->all(), 'rating' => ['average' => null, 'count' => 0]], $rows);
+  +        return array_map(fn(object $row) => ['id' => $row->id, 'display_name' => $row->display_name, 'provider_type' => $row->provider_type, 'experience_years' => $row->experience_years, 'services' => $services->get($row->id, collect())->map(fn(object $s) => ['subcategory_id' => $s->subcategory_id, 'subcategory_name' => $s->subcategory_name, 'reference_fee' => $s->reference_fee, 'currency' => $s->currency])->values()->all(), 'districts' => $districts->get($row->id, collect())->map(fn(object $d) => ['id' => $d->id, 'name' => $d->name])->values()->all(), 'rating' => ['average' => null, 'count' => 0]], $rows);
+       }
+   }
+  
+
+   UNCOVERED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 15: RemoveArrayItem - ID: 9f7ae50eb39c0816
+
+    */
+   final class SearchTechniciansRequest extends FormRequest
+   {
+  -    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'page', 'per_page'];
+  +    public const FILTERS = ['subcategory_id', 'district_id', 'min_rating', 'page', 'per_page'];
+       public function rules(): array
+       {
+           $subcategory = Rule::exists('subcategories', 'id')->where('active', 1);
+  
+
+   UNCOVERED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 15: RemoveArrayItem - ID: 75e525430c53fa11
+
+    */
+   final class SearchTechniciansRequest extends FormRequest
+   {
+  -    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'page', 'per_page'];
+  +    public const FILTERS = ['specialty_id', 'district_id', 'min_rating', 'page', 'per_page'];
+       public function rules(): array
+       {
+           $subcategory = Rule::exists('subcategories', 'id')->where('active', 1);
+  
+
+   UNCOVERED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 15: RemoveArrayItem - ID: 4a6baaa0e255ab91
+
+    */
+   final class SearchTechniciansRequest extends FormRequest
+   {
+  -    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'page', 'per_page'];
+  +    public const FILTERS = ['specialty_id', 'subcategory_id', 'min_rating', 'page', 'per_page'];
+       public function rules(): array
+       {
+           $subcategory = Rule::exists('subcategories', 'id')->where('active', 1);
+  
+
+   UNCOVERED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 15: RemoveArrayItem - ID: e68ac9fcb6ef141d
+
+    */
+   final class SearchTechniciansRequest extends FormRequest
+   {
+  -    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'page', 'per_page'];
+  +    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'page', 'per_page'];
+       public function rules(): array
+       {
+           $subcategory = Rule::exists('subcategories', 'id')->where('active', 1);
+  
+
+   UNCOVERED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 15: RemoveArrayItem - ID: 20018720bdb4ddf6
+
+    */
+   final class SearchTechniciansRequest extends FormRequest
+   {
+  -    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'page', 'per_page'];
+  +    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'per_page'];
+       public function rules(): array
+       {
+           $subcategory = Rule::exists('subcategories', 'id')->where('active', 1);
+  
+
+   UNCOVERED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 15: RemoveArrayItem - ID: 7a157ea1a871676e
+
+    */
+   final class SearchTechniciansRequest extends FormRequest
+   {
+  -    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'page', 'per_page'];
+  +    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'page'];
+       public function rules(): array
+       {
+           $subcategory = Rule::exists('subcategories', 'id')->where('active', 1);
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 21: RemoveIntegerCast - ID: 7ce7b8b64c11dc4d
+
+       {
+           $subcategory = Rule::exists('subcategories', 'id')->where('active', 1);
+           if ($this->filled('specialty_id')) {
+  -            $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+  +            $subcategory->where('specialty_id', $this->query('specialty_id'));
+           }
+           return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 25: RemoveArrayItem - ID: 3342e83f8e4afd30
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 25: RemoveArrayItem - ID: efd60fddd251f6ba
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 25: RemoveArrayItem - ID: 048fb5dc1f9d467d
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer'], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 25: RemoveArrayItem - ID: 0b94c8b2451d9d32
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 26: RemoveArrayItem - ID: ad0a1a4f3557dd21
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 26: RemoveArrayItem - ID: 18b103f966cb1fd9
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 27: RemoveArrayItem - ID: 48f6e5d864c3903b
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 27: RemoveArrayItem - ID: 30b1cddae518d1d9
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 28: RemoveArrayItem - ID: 9672448ab8cf6bb3
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 29: RemoveArrayItem - ID: 0dcbb2eb9e5d9038
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 29: RemoveArrayItem - ID: beb16133f65f5c15
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 29: RemoveArrayItem - ID: 8751727c9196376b
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 30: RemoveArrayItem - ID: 66c8ea443c432066
+
+           if ($this->filled('specialty_id')) {
+               $subcategory->where('specialty_id', (int) $this->query('specialty_id'));
+           }
+  -        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['nullable', 'integer', 'between:1,50']];
+  +        return ['specialty_id' => ['nullable', 'integer', Rule::exists('specialties', 'id')->where('active', 1)], 'subcategory_id' => ['nullable', 'integer', $subcategory], 'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)], 'min_rating' => ['nullable', 'numeric', 'between:1,5'], 'page' => ['nullable', 'integer', 'min:1'], 'per_page' => ['integer', 'between:1,50']];
+       }
+       public function messages(): array
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 37: RemoveArrayItem - ID: 8b361856ef8e6f95
+
+       }
+       public function messages(): array
+       {
+  -        return ['specialty_id.exists' => __('api.specialty_unavailable'), 'subcategory_id.exists' => __('api.search_subcategory'), 'district_id.exists' => __('api.out_of_coverage'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range'), 'page.min' => __('api.page_invalid')];
+  +        return ['subcategory_id.exists' => __('api.search_subcategory'), 'district_id.exists' => __('api.out_of_coverage'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range'), 'page.min' => __('api.page_invalid')];
+       }
+       public function withValidator(Validator $validator): void
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 38: RemoveArrayItem - ID: a6d48c32b6ab4539
+
+       }
+       public function messages(): array
+       {
+  -        return ['specialty_id.exists' => __('api.specialty_unavailable'), 'subcategory_id.exists' => __('api.search_subcategory'), 'district_id.exists' => __('api.out_of_coverage'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range'), 'page.min' => __('api.page_invalid')];
+  +        return ['specialty_id.exists' => __('api.specialty_unavailable'), 'district_id.exists' => __('api.out_of_coverage'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range'), 'page.min' => __('api.page_invalid')];
+       }
+       public function withValidator(Validator $validator): void
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 39: RemoveArrayItem - ID: 650e2175c21329c9
+
+       }
+       public function messages(): array
+       {
+  -        return ['specialty_id.exists' => __('api.specialty_unavailable'), 'subcategory_id.exists' => __('api.search_subcategory'), 'district_id.exists' => __('api.out_of_coverage'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range'), 'page.min' => __('api.page_invalid')];
+  +        return ['specialty_id.exists' => __('api.specialty_unavailable'), 'subcategory_id.exists' => __('api.search_subcategory'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range'), 'page.min' => __('api.page_invalid')];
+       }
+       public function withValidator(Validator $validator): void
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 42: RemoveArrayItem - ID: 4e4452a873c59397
+
+       }
+       public function messages(): array
+       {
+  -        return ['specialty_id.exists' => __('api.specialty_unavailable'), 'subcategory_id.exists' => __('api.search_subcategory'), 'district_id.exists' => __('api.out_of_coverage'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range'), 'page.min' => __('api.page_invalid')];
+  +        return ['specialty_id.exists' => __('api.specialty_unavailable'), 'subcategory_id.exists' => __('api.search_subcategory'), 'district_id.exists' => __('api.out_of_coverage'), 'min_rating.between' => __('api.min_rating_range'), 'per_page.between' => __('api.per_page_range')];
+       }
+       public function withValidator(Validator $validator): void
+       {
+  
+
+   UNTESTED  app/Modules/BMatching/Http/Requests/SearchTechniciansRequest.php  > Line 50: RemoveStringCast - ID: 82a0853a5d5cde2d
+
+       {
+           $validator->after(function (Validator $validator) {
+               foreach (array_diff(array_keys($this->query()), self::FILTERS) as $unknown) {
+  -                $validator->errors()->add((string) $unknown, __('api.filter_not_allowed'));
+  +                $validator->errors()->add($unknown, __('api.filter_not_allowed'));
+               }
+           });
+       }
+   }
+  
+
+   UNTESTED  app/Shared/Rules/RuleBook.php  > Line 25: RemoveIntegerCast - ID: 2bedd61c941d1d3f
+
+       public function integer(int $versionId, string $code): int
+       {
+           $values = $this->values($versionId);
+  -        return array_key_exists($code, $values) ? (int) $values[$code] : throw new RulesUnavailable("Falta el parámetro {$code}.");
+  +        return array_key_exists($code, $values) ? $values[$code] : throw new RulesUnavailable("Falta el parámetro {$code}.");
+       }
+       /** @return array<string, int|float|bool|string> valores de la versión, con el tipo de su parámetro */
+       public function values(int $versionId): array
+  
+
+   UNTESTED  app/Shared/Rules/RuleBook.php  > Line 40: RemoveIntegerCast - ID: d6b2b91cd0dd0344
+
+       private function cast(string $type, mixed $value): int|float|bool|string
+       {
+           return match ($type) {
+  -            'integer' => (int) $value,
+  +            'integer' => $value,
+               'decimal' => (float) $value,
+               'boolean' => (bool) $value,
+               default => (string) $value,
+  
+
+   UNTESTED  app/Shared/Rules/RuleBook.php  > Line 41: RemoveDoubleCast - ID: 899cd224aca8aabb
+
+       {
+           return match ($type) {
+               'integer' => (int) $value,
+  -            'decimal' => (float) $value,
+  +            'decimal' => $value,
+               'boolean' => (bool) $value,
+               default => (string) $value,
+           };
+       }
+   }
+  
+
+   UNCOVERED  app/Shared/Rules/RuleBook.php  > Line 42: RemoveBooleanCast - ID: 371a30577fb3e3f7
+
+           return match ($type) {
+               'integer' => (int) $value,
+               'decimal' => (float) $value,
+  -            'boolean' => (bool) $value,
+  +            'boolean' => $value,
+               default => (string) $value,
+           };
+       }
+   }
+  
+
+   UNTESTED  app/Shared/Rules/RuleBook.php  > Line 43: RemoveStringCast - ID: 2e16fea6572aea6d
+
+               'integer' => (int) $value,
+               'decimal' => (float) $value,
+               'boolean' => (bool) $value,
+  -            default => (string) $value,
+  +            default => $value,
+           };
+       }
+   }
+  
+
+  Mutations: 125 untested, 31 uncovered, 268 tested
+  Score:     63.21%
+  Duration:  668.92s
+
+# Resumen:   Mutations: 125 untested, 31 uncovered, 268 tested · código 0

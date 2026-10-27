@@ -95,8 +95,8 @@
   - la casilla «Mostrar retirados», que una regla global de label ponía en columna;
   - el editor, que se abría a media página;
   - el menú, que salía del contenido en la última fila.
-- **Revisó:** [PENDIENTE].
+- **Revisó:** Pimentel Chumbes James.
 
 ## Revisión
 
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.

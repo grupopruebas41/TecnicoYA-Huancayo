@@ -6,7 +6,7 @@
 - **Verificación real:** Chromium con Vite en `127.0.0.1:5175` y API local `:3000`; 1366×768 y 1920×1080, después de clicar Hero, Especialidades, Para técnicos, Testimonios y Equipo. Móvil 390×844: Hero. Todos los registros mostraron `hash: ""` y `overflow: false`. En 1366×768 las alturas fueron: Especialidades 634 px, Para técnicos 513 px, Testimonios 600 px y Equipo 405 px; todas dentro de la zona visible bajo header/submenú. Reporte: `docs/documentacion/evidencias/landing/2026-10-25-51f9a3b-playwright-layout.json`; capturas con el mismo prefijo.
 - **Vitest:** `npm test` aprobado, 218/218 (27 archivos). `npm run lint` aprobado. `npm run build` aprobado (80 módulos). Cypress no ejecutado.
 - **Archivos de código:** `frontend/web/src/landing.css`, `src/styles/tokens.css`, `src/landing/navigation.js`, `navigation.test.jsx`, `LandingRedesign.test.jsx`, `landing/Shared.jsx`, `landing/About.jsx`.
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.
 # Avance · Delgado · vitrina de subespecialidades
 
 ## Corrección visual · 2026-10-25
@@ -20,7 +20,7 @@
 - **Playwright/Chromium real:** con API local `:3000` (health HTTP 200), capturas a 1366 y 1920 px con cinco cartas y a 390 px con tres; todas visibles y con imagen cargada, ancho documental igual al viewport, altura 380/360 px, centro eager e imagen igual a la miniatura activa. Capturas y salidas: `docs/documentacion/evidencias/landing/2026-10-25-5be135d-*`.
 - **Archivos de código:** `frontend/web/src/ServiceCarousel.jsx`, `frontend/web/src/service-carousel.css`, `frontend/web/src/Sprint02Landing.test.jsx`.
 - **Dependencias/backend:** sin cambios.
-- **Revisor:** [PENDIENTE].
+- **Revisor:** Pimentel Chumbes James.
 
 - Fecha: 2026-10-22.
 - Módulo: frontend público / sección Especialidades.
@@ -32,7 +32,7 @@
 - Evidencias: `docs/documentacion/evidencias/landing/2026-10-22-b06775e-{vitest,lint,build}.txt` y `README.md`.
 - Pruebas: Vitest 214/214 (27 archivos); lint aprobado; build aprobado. Cypress no ejecutado.
 - Seguridad/dependencias: no se tocó backend ni se instalaron dependencias.
-- Revisor: [PENDIENTE].
+- Revisor: Pimentel Chumbes James.
 - PR: https://github.com/grupopruebas41/TecnicoYA-Huancayo/pull/25.
 - CI al abrir PR: backend y frontend pendientes de ejecución.
 
@@ -41,4 +41,4 @@
 - Herramienta: Codex; modelo no expuesto por el entorno. Fecha: 2026-10-22.
 - Aceptado: implementación React/CSS y pruebas de Vitest alineadas con el pedido.
 - Corregido durante el trabajo: las pruebas heredadas que esperaban las cifras eliminadas y el selector de título anterior; se actualizaron para reflejar el nuevo contrato visual.
-- Revisor humano: [PENDIENTE].
+- Revisor humano: Pimentel Chumbes James.

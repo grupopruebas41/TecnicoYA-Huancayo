@@ -37,7 +37,7 @@
 
   Detalle en [evidencias/sprint-03/cierre/](../../../documentacion/evidencias/sprint-03/cierre/README.md).
 - **SonarQube:** análisis `sprint-03` de `2947a4d`. **Quality Gate APROBADO** a la primera, con cobertura de código nuevo de 86,2 % ([gate.json](../../../documentacion/evidencias/sprint-03/cierre/sonar/gate.json)).
-- **Revisor:** [PENDIENTE]
+- **Revisor:** Pimentel Chumbes James
 - **Fecha:** 2026-10-16
 - **Pendientes y bloqueos:**
   - Decidir IDEM-01 (idempotencia de `POST /requests`) y MEDIA-02 (borrar una evidencia no vinculada); opciones en `INFORME-SPRINT-03.md` §4.2.
@@ -50,4 +50,4 @@
 
 | Herramienta y modelo | Fecha | Qué se aceptó | Qué se corrigió | Quién lo revisó |
 |---|---|---|---|---|
-| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | Del 2026-10-15 al 2026-10-16 | Guarda común de los seeders con TDD, regresión completa, conteo, cobertura, mutación, análisis de SonarQube, matriz, registro, decisiones pendientes e informe | El script de la matriz repitió el error de S2: leía `classname` antes que `name` y dejaba fuera a Vitest (72 IDs en lugar de 85). Además, el patrón de `testcase` absorbía los casos autocerrados de Pest. Se detectó al comparar con el contador y se corrigió antes de escribir. La primera reescritura del catálogo cambió las comillas de 36 filas; se descartó y se cambió solo el estado de las 30 filas. Una edición del `.md` del registro reemplazó la cabecera; se restauró y se editó a mano. El primer intento de exportar SonarQube leía mal el token (401) y se repitió. S03-TC-085 suponía que la base del proceso era la del slot y falló en la CI (`tecnicoya_ci_testing`); se corrigió la prueba, no la guarda | [PENDIENTE] |
+| Claude Code · Claude Opus 5.5 (`claude-opus-5-5`) | Del 2026-10-15 al 2026-10-16 | Guarda común de los seeders con TDD, regresión completa, conteo, cobertura, mutación, análisis de SonarQube, matriz, registro, decisiones pendientes e informe | El script de la matriz repitió el error de S2: leía `classname` antes que `name` y dejaba fuera a Vitest (72 IDs en lugar de 85). Además, el patrón de `testcase` absorbía los casos autocerrados de Pest. Se detectó al comparar con el contador y se corrigió antes de escribir. La primera reescritura del catálogo cambió las comillas de 36 filas; se descartó y se cambió solo el estado de las 30 filas. Una edición del `.md` del registro reemplazó la cabecera; se restauró y se editó a mano. El primer intento de exportar SonarQube leía mal el token (401) y se repitió. S03-TC-085 suponía que la base del proceso era la del slot y falló en la CI (`tecnicoya_ci_testing`); se corrigió la prueba, no la guarda | Pimentel Chumbes James |
