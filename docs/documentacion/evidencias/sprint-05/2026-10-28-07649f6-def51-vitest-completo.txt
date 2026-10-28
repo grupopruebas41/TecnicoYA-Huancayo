@@ -1,0 +1,4 @@
+# Vitest completo tras DEF-51 · 2026-10-28 · commit 07649f6
+ ✓ src/features/client/problemSearch.test.jsx (9 tests) 2971ms
+ Test Files  43 passed (43)
+      Tests  349 passed (349)
