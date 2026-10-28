@@ -275,6 +275,18 @@
   white-space: nowrap;
 }
 
+/* Listas sin viñetas ni sangría del navegador (bandeja, línea de tiempo, servicios y chips). */
+.client-inbox,
+.client-timeline,
+.client-services,
+.client-chips {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 /* Avatares, chips y tarifas */
 .client-avatar {
   display: grid;
