@@ -2,6 +2,20 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-28 · Rediseño del panel del cliente tras la revisión del PR #39 (DEF-50)
+
+- **Rama:** `feature/delgado/cliente/panel-base` (PR #39), con `origin/main` integrado (`d505b96`) después del #38.
+- **Commits:** `c2e7cd6` (rojo), `7fc7002` (rediseño) y `96b0bbf` (ajustes vistos en las capturas), más documentación. El detalle está en el avance del panel base.
+- **Pruebas en `96b0bbf`:**
+  - Vitest 334/334, lint, build y `npm audit` limpios;
+  - IDs nuevos S05-TC-041 a 049; conteo S05: 24 Pest y 25 Vitest;
+  - 43 capturas revisadas una por una (claro y oscuro, 1366 y 390 px), sin desborde.
+- **DEF-50:** corregido en `7fc7002`.
+- **Cypress:** los pasos del asistente pasan de `select` a radios; adaptadas sin ejecutar.
+- **Entorno:** tras un reinicio del equipo, Docker Desktop no corría. Se inició y se levantó solo `tecnicoya-mysql-test`.
+- **Parte B (pedido múltiple):** no se programó. Se informaron a Pimentel los choques con los CANVAS S3/S4 y las decisiones pendientes antes de empezar.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Panel del cliente, PR 2 de 2 · SPA (D-87 a D-91, DEF-49)
 
 - **Rama:** `feature/delgado/cliente/panel-base`, apilada sobre `feature/mayhuasca/cliente/cercania` (PR #38, todavía abierto). El detalle está en `docs/avances/delgado/cliente/panel-base/avance.md`.

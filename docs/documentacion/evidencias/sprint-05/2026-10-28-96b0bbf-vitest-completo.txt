@@ -1,0 +1,17 @@
+# Vitest completo · 2026-10-28 · commit 96b0bbf (rama feature/delgado/cliente/panel-base, PR #39)
+Comando: npx vitest run (desde frontend/web)
+
+Archivos: 41 aprobados · Pruebas: 334/334 aprobadas · Sin errores no capturados
+Lint (eslint --max-warnings 0) y build (vite): aprobados
+npm audit: found 0 vulnerabilities
+
+IDs S05 del rediseño:
+  ✓ S05-TC-041 las opciones de los select del panel usan los colores del tema, no el fondo oscuro global [DEF-50]
+  ✓ S05-TC-042 la búsqueda pagina con números, página actual marcada y extremos deshabilitados
+  ✓ S05-TC-043 el progreso del seguimiento marca el paso actual según la fase y la búsqueda vencida
+  ✓ S05-TC-044 «¿Qué pasa ahora?» explica el estado y ofrece la acción que corresponde
+  ✓ S05-TC-045 el asistente elige especialidad y subcategoría en tarjetas con imagen y enfoca el título de cada paso
+  ✓ S05-TC-046 el Inicio saluda por nombre y distrito, muestra estados vacíos con acción y la última solicitud
+  ✓ S05-TC-047 la bandeja agrupa por día (Hoy, Ayer y fecha) y filtra con chips
+  ✓ S05-TC-048 las fotos de la solicitud se amplían al clic y se cierran con Escape devolviendo el foco
+  ✓ S05-TC-049 el perfil del técnico muestra cabecera verificada, servicios referenciales y estados vacíos formales

@@ -77,3 +77,33 @@
 ## Revisión
 
 - **Revisor:** [PENDIENTE].
+
+## Rediseño tras la revisión del PR #39 (2026-10-28)
+
+- **Base:** `merge origin/main` en `d505b96` (el PR #38 ya integrado).
+- **Commits:**
+  - `c2e7cd6`: Vitest en rojo (S05-TC-041 a 049) y DEF-50 registrado;
+  - `7fc7002`: rediseño y arreglo de DEF-50;
+  - `96b0bbf`: ajustes vistos en las capturas.
+- **DEF-50:** las opciones de los `<select>` eran ilegibles en tema claro, porque la regla global `option{background:#1d2629}` de la portada se combinaba con el texto oscuro. La corrige `.panel-shell option` con los tokens del tema.
+- **Pantallas:**
+  - **Inicio:** saludo con nombres y distrito; resumen con iconos y estado vacío con acción; «Tu última solicitud» con su siguiente paso; técnicos cerca en tarjetas; «¿Qué necesitas hoy?» con la imagen de cada especialidad; carrusel de hasta 320 px.
+  - **Asistente:** stepper con progreso, descripción de cada paso, especialidad y subcategoría como tarjetas (radios nativos) y Atrás/Siguiente fijos abajo.
+  - **Búsqueda:** paginación «‹ Anterior · 1 2 3 · Siguiente ›» y tarjetas con tarifa y distancia arriba.
+  - **Perfil del técnico:** cabecera con «Verificado», experiencia y distritos, servicios «Referencial S/ X» con nota orientativa, galería y estados vacíos formales. «Solicitar servicio» queda fijo abajo en móvil.
+  - **Mis solicitudes:** el rubro como título, el siguiente paso y fotos ampliables en un visor accesible.
+  - **Seguimiento:** pasos Registrada → Asignada según la fase, «¿Qué pasa ahora?» con su acción, historial y el aviso de tiempo real como chip.
+  - **Notificaciones:** agrupadas por día (Hoy, Ayer, fecha), con ícono por tipo, punto de no leída y filtros en chips.
+- **Animaciones:** de 150 a 250 ms; se desactivan con `prefers-reduced-motion`.
+- **Ajustes de las capturas:**
+  - el título del paso del asistente ya no muestra un recuadro al recibir el foco;
+  - el botón primario de «¿Qué pasa ahora?» se volvió legible en tema claro;
+  - el resumen mostraba la franja como en la base («2026-10-29 20:00:00.000000») y ahora va en hora de Lima;
+  - en móvil, las pestañas se desplazan en una fila.
+- **Pruebas adaptadas sin cambiar su ID:**
+  - S03-TC-069, 074 y 080 complementos y S03-TC-070: tarjetas en lugar de `<select>`;
+  - S04-TC-108 complemento: lee la frase de estado, porque «Asignada» también es un paso;
+  - S05-TC-032, 035 y 039: rediseño.
+- **Cypress, adaptadas sin ejecutar:** 11 llamadas `select[name=specialty_id|subcategory_id]` pasan a radios (`check()`). En S03-TC-053, la subcategoría vacía se obtiene cambiando de especialidad.
+- **Resultados en `96b0bbf`:** Vitest 334/334; lint, build y `npm audit` limpios. Conteo S05: 24 Pest y 25 Vitest.
+- **Entorno:** el equipo se había reiniciado y Docker Desktop no corría. Se inició y se levantó solo la base de pruebas del slot A.
