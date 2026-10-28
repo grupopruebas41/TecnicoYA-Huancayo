@@ -9,7 +9,8 @@ const store = {
   get(area, key) { try { return window[area].getItem(key); } catch { return null; } },
   set(area, key, value) { try { window[area].setItem(key, value); } catch { /* sin almacenamiento */ } },
 };
-const ICONS = new Set(['home', 'chart', 'users', 'verify', 'requests', 'catalog', 'announcements', 'profile', 'plus', 'search', 'bell']);
+const ICONS = new Set(['home', 'chart', 'users', 'verify', 'requests', 'catalog', 'announcements', 'profile', 'plus', 'search', 'bell',
+  'check', 'clock', 'alert', 'close', 'image', 'star', 'menu']);
 
 /** Agrupa las secciones por su título de grupo, en el orden en que llegan; las que no tienen grupo van sueltas. */
 function groupsOf(sections) {
@@ -127,7 +128,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     <div className="panel-main">
       <header className="panel-topbar">
         <button ref={drawerButton} type="button" className="panel-icon-button panel-drawer-toggle" aria-label="Abrir menú"
-          aria-expanded={drawer} onClick={() => setDrawer(!drawer)}><span aria-hidden="true">☰</span></button>
+          aria-expanded={drawer} onClick={() => setDrawer(!drawer)}><Icon name="menu"/></button>
         <span className="panel-title">{current?.label}</span>
         <div className="panel-actions">
           <NotificationBell key={bellKey} userId={user.id}

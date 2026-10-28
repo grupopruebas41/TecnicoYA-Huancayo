@@ -6,12 +6,12 @@ import {ResetPassword} from './PasswordRecovery';
 import PanelShell from '../panel/PanelShell';
 import AdminHome from '../panel/AdminHome';
 import ProfilePage from '../panel/ProfilePage';
-import CatalogAdmin from './CatalogAdmin';
 import VerificationAdmin from './VerificationAdmin';
 import AnnouncementsAdmin from './AnnouncementsAdmin';
 import StatisticsPage from '../admin/StatisticsPage';
 import UsersAdmin from '../admin/UsersAdmin';
 import RequestsAdmin from '../admin/RequestsAdmin';
+import CatalogSection from '../admin/CatalogSection';
 import {Notice} from './forms';
 import ClientPanel from '../client/ClientPanel';
 import './account.css';
@@ -106,7 +106,7 @@ export default function AccountApp() {
     can('users.manage') && {id: 'users', group: 'Gestión', label: 'Usuarios', icon: 'users', render: ({intent}) => <UsersAdmin currentUserId={user.id} intent={intent}/>},
     can('technicians.verify') && {id: 'verification', group: 'Gestión', label: 'Verificación', icon: 'verify', render: () => <VerificationAdmin/>},
     can('dashboard.view') && {id: 'requests', group: 'Gestión', label: 'Solicitudes', icon: 'requests', render: () => <RequestsAdmin/>},
-    can('catalog.manage') && {id: 'catalog', group: 'Contenido', label: 'Catálogo', icon: 'catalog', render: () => <CatalogAdmin/>},
+    can('catalog.manage') && {id: 'catalog', group: 'Contenido', label: 'Catálogo', icon: 'catalog', render: () => <CatalogSection/>},
     can('announcements.manage') && {id: 'announcements', group: 'Contenido', label: 'Comunicados', icon: 'announcements', render: ({intent}) => <AnnouncementsAdmin intent={intent}/>},
     {...profile, group: 'Cuenta'},
   ].filter(Boolean) : [

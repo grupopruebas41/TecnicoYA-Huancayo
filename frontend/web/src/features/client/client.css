@@ -266,14 +266,6 @@
 .client-technician:hover {
   transform: translateY(-2px);
 }
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
 
 /* Listas sin viñetas ni sangría del navegador (bandeja, línea de tiempo, servicios y chips). */
 .client-inbox,
@@ -942,5 +934,106 @@
   .client-technician:hover,
   .panel-shell .client-problem:hover {
     transform: none;
+  }
+}
+
+/* Buscador «¿Qué se malogró?» (D-94): combobox grande con sugerencias y chips de problemas frecuentes. */
+.problem-search {
+  position: relative;
+  display: grid;
+  gap: 10px;
+}
+.problem-search-label {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.problem-search-box {
+  position: relative;
+}
+.problem-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  color: var(--ty-muted);
+  transform: translateY(-50%);
+}
+.panel-shell .problem-search-box input {
+  min-height: 56px;
+  padding-left: 48px;
+  font-size: 1.05rem;
+  border-radius: 16px;
+}
+.problem-search-list {
+  position: absolute;
+  top: calc(100% - 4px);
+  right: 0;
+  left: 0;
+  z-index: 20;
+  display: grid;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid var(--ty-border);
+  border-radius: 14px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-shadow);
+  animation: client-fade 150ms ease-out both;
+}
+.problem-search-list[hidden] {
+  display: none;
+}
+.problem-search-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.problem-search-list li.is-active,
+.problem-search-list li:hover {
+  background: var(--ty-raised);
+}
+.client-chip.is-likely {
+  color: var(--ty-on-accent);
+  background: var(--ty-accent);
+}
+.problem-search-empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--ty-warning-text);
+  background: var(--ty-warning-bg);
+}
+.problem-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.panel-shell .problem-chips .client-filter-chip {
+  min-height: 32px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+}
+.client-problem-section {
+  overflow: visible;
+}
+.request-wizard .problem-search {
+  margin-bottom: 18px;
+}
+.client-inbox-icon .panel-svg-icon,
+.client-empty .panel-svg-icon {
+  width: 20px;
+  height: 20px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .problem-search-list {
+    animation: none;
   }
 }

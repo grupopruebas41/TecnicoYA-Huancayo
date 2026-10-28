@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import {useRealtimeResource} from '../realtime/Realtime';
 import useDismiss from './useDismiss';
+import Icon from './icons';
 
 /**
  * Campana de la barra superior: lista los avisos recientes de GET /notifications y cuenta los sin leer.
@@ -31,7 +32,7 @@ export default function NotificationBell({userId, onOpenAll}) {
   return <div className="panel-bell" ref={root} onKeyDown={event => { if (event.key === 'Escape' && open) close(); }}>
     <button ref={button} type="button" className="panel-icon-button" aria-label={`Notificaciones: ${unread} sin leer`}
       aria-expanded={open} aria-controls="panel-notifications" onClick={() => setOpen(!open)}>
-      <span aria-hidden="true">🔔</span>
+      <Icon name="bell"/>
       {unread > 0 && <span className="panel-badge" aria-hidden="true">{unread > 9 ? '9+' : unread}</span>}
     </button>
     {open && <section id="panel-notifications" className="panel-popover" aria-label="Notificaciones recientes">

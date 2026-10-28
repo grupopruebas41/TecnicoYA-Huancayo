@@ -181,7 +181,7 @@ test('S05-TC-082 Palabras clave: probar una frase, búsquedas sin resultado y ap
   fireEvent.click(within(tabs).getByRole('tab', {name: 'Frases sugeridas por IA'}));
   fireEvent.click(await screen.findByRole('button', {name: 'Aprobar «pantallita parpadea»'}));
   expect(await screen.findByText('Agregamos «pantallita parpadea» a Reparación de hardware.')).toBeInTheDocument();
-  expect(approved).toHaveBeenCalledWith('/admin/keyword-suggestions/5/approval', {}, 'POST');
+  expect(approved).toHaveBeenCalledWith('/admin/keyword-suggestions/5/approval', {});
   await waitFor(() => expect(within(tabs).getByRole('tab', {name: 'Frases sugeridas por IA (1)'})).toBeInTheDocument());
   fireEvent.click(screen.getByRole('button', {name: 'Descartar «pantallita parpadea»'}));
   expect(await screen.findByText('Descartamos «pantallita parpadea».')).toBeInTheDocument();

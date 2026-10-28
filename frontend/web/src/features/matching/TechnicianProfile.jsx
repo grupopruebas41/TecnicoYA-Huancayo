@@ -1,6 +1,7 @@
 import React from "react";
 import { useResource, ResourceState } from "../administration/Sprint02Common";
 import { initialsOf } from "../client/clientRules";
+import Icon from "../panel/icons";
 // Perfil público del técnico (S3, sin contacto ni documentos). Revisión del PR #39: cabecera con avatar, rubros,
 // distritos, experiencia y «Solicitar servicio» arriba (fija abajo en móvil). Los distritos y la marca «Verificado»
 // vienen de la tarjeta de búsqueda (preview): la búsqueda solo devuelve técnicos verificados y activos.
@@ -61,7 +62,7 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
             <h3>Portafolio público</h3>
             {!profile.portfolio?.length && (
               <div className="client-empty">
-                <span aria-hidden="true">🖼</span>
+                <span aria-hidden="true"><Icon name="image" /></span>
                 <p>Este técnico aún no publicó trabajos.</p>
               </div>
             )}
@@ -82,7 +83,7 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
           <section className="panel-card client-block">
             <h3>Reseñas</h3>
             <div className="client-empty">
-              <span aria-hidden="true">★</span>
+              <span aria-hidden="true"><Icon name="star" /></span>
               <p><strong>Este técnico aún no tiene reseñas</strong></p>
               <p className="muted"><span>Sin reseñas publicadas todavía.</span> Cuando complete servicios, aquí verás las opiniones de sus clientes.</p>
             </div>

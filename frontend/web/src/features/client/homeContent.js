@@ -1,19 +1,19 @@
 // Contenido del Inicio del cliente que define el equipo (revisión del PR #39). Cambiarlo no requiere tocar componentes.
 
 /**
- * D-93 (RECO-00): atajos de «¿Qué se malogró?» mientras el buscador con IA está en pausa. Cada atajo apunta al código
+ * D-93/D-94: atajos de «¿Qué se malogró?»; bajo el buscador son chips que rellenan la búsqueda. Cada uno apunta al código
  * de una subcategoría real del catálogo (database/seeders/data/catalog.csv); si no existe o está inactiva, no se
- * muestra. icon es un símbolo decorativo.
+ * muestra.
  */
 export const PROBLEMS = [
-  {key: 'laptop', label: 'Laptop no prende', icon: '💻', subcategory: 'computo-hardware'},
-  {key: 'internet', label: 'Internet lento', icon: '📶', subcategory: 'computo-redes'},
-  {key: 'virus', label: 'PC lenta o con virus', icon: '🛡', subcategory: 'computo-seguridad'},
-  {key: 'impresora', label: 'Impresora no imprime', icon: '🖨', subcategory: 'computo-impresoras'},
-  {key: 'congeladora', label: 'Congeladora no enfría', icon: '❄', subcategory: 'frio-congeladores'},
-  {key: 'vitrina', label: 'Vitrina con escarcha', icon: '🧊', subcategory: 'frio-vitrinas'},
-  {key: 'luz', label: 'Corte de luz', icon: '⚡', subcategory: 'electricidad-tableros'},
-  {key: 'enchufe', label: 'Enchufe que chispea', icon: '🔌', subcategory: 'electricidad-residencial'},
+  {key: 'laptop', label: 'Laptop no prende', subcategory: 'computo-hardware'},
+  {key: 'internet', label: 'Internet lento', subcategory: 'computo-redes'},
+  {key: 'virus', label: 'PC lenta o con virus', subcategory: 'computo-seguridad'},
+  {key: 'impresora', label: 'Impresora no imprime', subcategory: 'computo-impresoras'},
+  {key: 'congeladora', label: 'Congeladora no enfría', subcategory: 'frio-congeladores'},
+  {key: 'vitrina', label: 'Vitrina con escarcha', subcategory: 'frio-vitrinas'},
+  {key: 'luz', label: 'Corte de luz', subcategory: 'electricidad-tableros'},
+  {key: 'enchufe', label: 'Enchufe que chispea', subcategory: 'electricidad-residencial'},
 ];
 
 /** Consejo del mes: uno por mes (enero = 0), según la fecha de Lima. */
