@@ -1,0 +1,12 @@
+# Pest completo · slot A (tecnicoya_testing)
+Fecha: 2026-10-28 · Commit: b9dfa35 (rama feature/delgado/cliente/panel-base)
+Comando: C:\xampp\php\php.exe vendor/bin/pest --log-junit (desde backend/api)
+
+Pruebas: 381 · Aserciones: 4345 · Errores: 0 · Fallos: 0 · Omitidas: 0 · Tiempo: 343 s
+
+IDs S05-TC-05 (5):
+  ✓ it S05-TC-050 cuenta solo los técnicos verificados, activos, sin pausa y con servicio que atienden el distrito del cliente
+  ✓ it S05-TC-051 da el «desde S/ X» por especialidad con las tarifas de técnicos elegibles y omite las especialidades sin tarifa
+  ✓ it S05-TC-052 sin distrito principal no cuenta la zona pero sí devuelve precios y subcategorías activas para los atajos
+  ✓ it S05-TC-053 solo el cliente con sesión lo consulta y la respuesta no trae datos privados
+  ✓ it S05-TC-054 usa un número fijo de consultas sin importar cuántos técnicos haya

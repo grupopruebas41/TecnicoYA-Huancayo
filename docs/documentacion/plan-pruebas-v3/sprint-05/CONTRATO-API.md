@@ -104,3 +104,22 @@ Un técnico o administrador que los envía recibe **422** («Este dato solo se g
 ## 6. Datos
 
 Sin migraciones. Se usan `district_distances` (D-64), `request_events`, `notifications.read_at` y `client_profiles.default_address`, que ya existían.
+
+## 7. `GET /client/home` **[nuevo]** (Inicio del cliente aprobado en la revisión del PR #39, versión 1.1 del 2026-10-28)
+
+Solo para clientes (`role:client`; un técnico recibe 403). Número fijo de consultas, sin importar cuántos técnicos haya (S05-TC-054).
+
+```json
+{"district": {"id": 1, "name": "Huancayo"}, "technicians_in_zone": 7,
+ "prices": [{"specialty_id": 1, "name": "Cómputo", "from_fee": "60.00", "currency": "PEN"}],
+ "subcategories": [{"id": 4, "specialty_id": 1, "code": "computo-hardware", "name": "Reparación de hardware"}]}
+```
+
+| Campo | Detalle |
+|---|---|
+| `district` | Distrito principal del cliente, o `null` si no lo registró |
+| `technicians_in_zone` | Técnicos elegibles (los mismos que `GET /technicians?district_id=`): verificados, activos, con cuenta habilitada, sin pausa vigente y con un servicio activo, que atienden ese distrito. `null` sin distrito |
+| `prices` | Tarifa vigente más baja por especialidad activa entre técnicos elegibles. Las especialidades sin técnicos con tarifa no aparecen. Es referencial, no un cobro |
+| `subcategories` | Subcategorías activas de especialidades activas, para resolver los atajos por problema (D-93) |
+
+No incluye nombres, contacto ni identificadores de técnicos, ni la dirección del cliente.

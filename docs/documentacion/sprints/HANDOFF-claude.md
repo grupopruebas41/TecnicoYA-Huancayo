@@ -2,6 +2,14 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-28 · Inicio del cliente aprobado (PR #39) y decisiones D-92 y D-93
+
+- **Rama:** `feature/delgado/cliente/panel-base` (PR #39). Commits `266bb9c` (rojo), `b9dfa35` (Inicio y `GET /client/home`) y `b7a95b4` (listas), más documentación.
+- **Decisiones:** D-92 (PEDIDO-01, Parte B) y D-93 (RECO-00) registradas.
+- **Pruebas:** Pest 381/381; Vitest 340/340; lint, build y audits limpios. Conteo S05: 29 Pest y 31 Vitest (60).
+- **Siguiente:** la Parte B (`feature/mayhuasca/cliente/pedido-multiple`), solo cuando Pimentel integre el #39.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-28 · Rediseño del panel del cliente tras la revisión del PR #39 (DEF-50)
 
 - **Rama:** `feature/delgado/cliente/panel-base` (PR #39), con `origin/main` integrado (`d505b96`) después del #38.

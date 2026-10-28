@@ -107,3 +107,28 @@
 - **Cypress, adaptadas sin ejecutar:** 11 llamadas `select[name=specialty_id|subcategory_id]` pasan a radios (`check()`). En S03-TC-053, la subcategoría vacía se obtiene cambiando de especialidad.
 - **Resultados en `96b0bbf`:** Vitest 334/334; lint, build y `npm audit` limpios. Conteo S05: 24 Pest y 25 Vitest.
 - **Entorno:** el equipo se había reiniciado y Docker Desktop no corría. Se inició y se levantó solo la base de pruebas del slot A.
+
+## Inicio del cliente aprobado (2026-10-28)
+
+- **Decisiones registradas:** D-92 (PEDIDO-01, Parte B, todavía sin programar) y D-93 (RECO-00: buscador con IA en pausa, atajos por problema mientras tanto).
+- **Commits:**
+  - `266bb9c`: rojo (Pest S05-TC-050 a 054; Vitest S05-TC-055 a 060 y reescritura de 027, 028, 029, 034 y 046);
+  - `b9dfa35`: implementación;
+  - `b7a95b4`: corrección de la regresión de listas vista en las capturas.
+- **Backend:** `GET /client/home` (solo clientes), con el distrito, los técnicos elegibles de la zona, el «desde S/ X» por especialidad con tarifas vigentes y las subcategorías activas. Número fijo de consultas y sin datos privados. Contrato S5 §7.
+- **Inicio, en este orden y debajo del carrusel:**
+  - bienvenida con nombres, distrito, técnicos de la zona y «Perfil completo X %» (se oculta al 100 %);
+  - «¿Qué se malogró?», con 8 atajos de `homeContent.js` mapeados a subcategorías reales (se ocultan si la subcategoría no existe o está inactiva) que abren el asistente en el paso 3;
+  - «Tu pedido en curso», con mini stepper y su acción, junto a «Precios de referencia» (dos columnas en escritorio);
+  - «Técnicos cerca de ti» (3 tarjetas, «Ver perfil» abre el perfil);
+  - «Consejo del mes» (rota según el mes en Lima) y «Tu seguridad».
+- **Comportamiento:** entrada escalonada de 200 ms (sin ella con movimiento reducido), esqueleto y error con «Reintentar» por sección.
+- **Se quitaron:** «¿Qué necesitas hoy?», los contadores sueltos, «Solicitudes en curso» y «Tu última solicitud».
+- **Pruebas reescritas con su ID**, porque el Inicio aprobado reemplaza al de la Parte A: S05-TC-027, 028, 029, 034 y 046.
+- **Ajustes antes del verde:**
+  - S05-TC-054 mide las consultas después de una petición de calentamiento;
+  - S05-TC-055 compara la etiqueta del atajo y no su ícono decorativo.
+- **Resultados:**
+  - Pest 381/381 en `b9dfa35` y Vitest 340/340 en `b7a95b4`;
+  - lint, build, `composer audit` y `npm audit` limpios;
+  - conteo S05: 29 Pest y 31 Vitest (60 IDs).
