@@ -220,3 +220,14 @@ test('S05-TC-084 el panel usa una sola familia de íconos de línea: no quedan e
 
   expect(found).toEqual([]);
 });
+
+test('S05-TC-085 al pasar el cursor, el botón primario del panel conserva su color en el tema claro [DEF-51]', () => {
+  const panel = readFileSync(resolve('src/features/panel/panel.css'), 'utf8').replace(/\r\n/g, '\n');
+  const global = readFileSync(resolve('src/styles.css'), 'utf8');
+  const rule = panel.match(/\.panel-content \.primary:hover[^{]*\{[^}]*\}/)?.[0] || '';
+
+  // La portada pinta de blanco el primario al pasar el cursor; en el tema claro su texto también es blanco.
+  expect(global).toContain('.primary:hover{background:#fff}');
+  expect(rule).toContain('background: var(--ty-primary)');
+  expect(rule).toContain('color: var(--ty-on-accent)');
+});
