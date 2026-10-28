@@ -8,4 +8,6 @@ return [
     // D-80: solicitudes de enlace de recuperación por IP (por minuto) y por correo (cada 15 minutos).
     'password_reset_per_ip_per_minute' => (int) env('PASSWORD_RESET_PER_IP_PER_MINUTE', 10),
     'password_reset_per_email_per_15_minutes' => (int) env('PASSWORD_RESET_PER_EMAIL', 3),
+    // D-94: consultas por minuto e IP al buscador «¿Qué se malogró?» (público; protege también el gasto en IA).
+    'suggestions_per_minute' => (int) env('SUGGESTIONS_PER_MINUTE', 30),
 ];

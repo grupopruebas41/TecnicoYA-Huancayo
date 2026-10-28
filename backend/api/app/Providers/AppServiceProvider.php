@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Modules\BMatching\Suggestions\KeywordProvider;
+use App\Modules\BMatching\Suggestions\LlmProvider;
+use App\Modules\BMatching\Suggestions\SuggestionProvider;
 use App\Modules\CNotifications\Application\DeliveryChannel;
 use App\Modules\CNotifications\Application\MailSandboxChannel;
 use App\Modules\FAdministration\Application\PasswordResetLink;
@@ -22,6 +25,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // S4: el canal externo de las notificaciones es el correo de sandbox; las pruebas lo sustituyen.
         $this->app->bind(DeliveryChannel::class, MailSandboxChannel::class);
+        // D-94: la IA del buscador solo existe si AI_PROVIDER, AI_API_KEY y AI_MODEL están completos; si no, el diccionario.
+        $this->app->bind(SuggestionProvider::class, function ($app) {
+            $llm = LlmProvider::fromConfig();
+
+            return $llm->enabled() ? $llm : $app->make(KeywordProvider::class);
+        });
     }
 
     public function boot(): void
@@ -38,6 +47,9 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinutes(15, max(1, (int) config('security.password_reset_per_email_per_15_minutes')))
                 ->by('email:'.mb_strtolower(trim((string) $request->input('email')))),
         ]);
+        RateLimiter::for('catalog-suggestions', fn (Request $request) => Limit::perMinute(
+            max(1, (int) config('security.suggestions_per_minute'))
+        )->by('suggest:'.$request->ip()));
         ResetPassword::createUrlUsing(fn ($user, string $token) => PasswordResetLink::url($user, $token));
         ResetPassword::toMailUsing(fn ($user, string $token) => PasswordResetLink::mail($user, $token));
         if (E2EClock::enabled()) {
