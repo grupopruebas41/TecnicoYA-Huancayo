@@ -35,6 +35,8 @@ function routes({rows = [], fail = {}} = {}) {
     if (path === '/requests') return {data: rows};
     if (path.startsWith('/technicians?')) return {data: {items: near, pagination: {page: 1, per_page: 3, total: 3, last_page: 1}}};
     if (path === '/announcements') return {data: []};
+    if (path.startsWith('/catalog/suggestions')) return {data: {source: 'keywords', level: 'alta', items: [{subcategory_id: 4,
+      subcategory_name: 'Reparación de hardware', specialty_id: 1, specialty_name: 'Cómputo', score: 9}]}};
     return {data: []};
   });
 }
@@ -75,12 +77,14 @@ test('S05-TC-027 el Inicio no muestra contadores sueltos, «¿Qué necesitas hoy
     'Tu pedido en curso', 'Precios de referencia', 'Técnicos cerca de ti', 'Consejo del mes', 'Tu seguridad']);
 });
 
-test('S05-TC-029 los atajos de «¿Qué se malogró?» abren Nueva solicitud con especialidad y subcategoría precargadas [D-93]', async () => {
+// D-94: el buscador reemplazó a la grilla de atajos; elegir una sugerencia abre el asistente con lo elegido.
+test('S05-TC-029 elegir una sugerencia de «¿Qué se malogró?» abre Nueva solicitud con especialidad y subcategoría [D-94]', async () => {
   routes();
   const navigate = renderHome();
   const problems = await screen.findByRole('region', {name: '¿Qué se malogró?'});
 
-  fireEvent.click(await within(problems).findByRole('button', {name: 'Laptop no prende'}));
+  fireEvent.change(within(problems).getByRole('combobox', {name: '¿Qué se malogró?'}), {target: {value: 'mi laptop no prende'}});
+  fireEvent.click(await within(problems).findByRole('option', {name: /Reparación de hardware/}));
   expect(navigate).toHaveBeenCalledWith('new', {preset: {specialty_id: 1, subcategory_id: 4}});
   cleanup();
 
@@ -96,14 +100,14 @@ test('S05-TC-029 los atajos de «¿Qué se malogró?» abren Nueva solicitud con
   expect(await screen.findByRole('radio', {name: 'Reparación de hardware'})).toBeChecked();
 });
 
-test('S05-TC-055 «¿Qué se malogró?» oculta los atajos cuya subcategoría no existe o está inactiva', async () => {
+// D-94: los atajos ahora son chips debajo del buscador (sin íconos).
+test('S05-TC-055 «¿Qué se malogró?» oculta los chips cuya subcategoría no existe o está inactiva', async () => {
   routes();
   renderHome();
   const problems = await screen.findByRole('region', {name: '¿Qué se malogró?'});
-  await within(problems).findByRole('button', {name: 'Laptop no prende'});
+  const chips = await within(problems).findByRole('group', {name: 'Problemas frecuentes'});
 
-  // El ícono es decorativo (aria-hidden): se compara la etiqueta, no el textContent completo del botón.
-  const visible = within(problems).getAllByRole('button').map(button => button.lastChild.textContent);
+  const visible = within(chips).getAllByRole('button').map(button => button.textContent);
   const expected = PROBLEMS.filter(problem => home.subcategories.some(sub => sub.code === problem.subcategory)).map(problem => problem.label);
   expect(PROBLEMS.length).toBeGreaterThanOrEqual(6);
   expect(PROBLEMS.length).toBeLessThanOrEqual(8);
