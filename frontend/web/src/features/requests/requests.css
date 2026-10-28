@@ -66,7 +66,7 @@
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--ty-accent, #e7d6ac) 22%, transparent);
 }
 .request-hint {
-  margin: -4px 0 8px;
+  margin: 4px 0 12px;
 }
 .request-step {
   animation: request-step-in 220ms ease-out both;
@@ -159,6 +159,10 @@
   display: block;
   font-size: 1rem;
   color: var(--ty-muted, #c7d6d0);
+}
+/* El título recibe el foco al cambiar de paso (lectores de pantalla); en el panel no se dibuja un recuadro. */
+.panel-shell .request-wizard h2:focus {
+  outline: none;
 }
 .request-wizard h2:focus {
   outline: 3px solid var(--ty-accent, #e7d6ac);

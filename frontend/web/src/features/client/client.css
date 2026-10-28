@@ -549,6 +549,12 @@
 .client-next .button {
   justify-self: start;
 }
+/* El seguimiento vive en un .s02-panel, cuyos botones genéricos pisaban el primario (ilegible en tema claro). */
+.panel-shell .s02-panel .client-next .button.primary {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
 /* La fase del S4 sigue visible (y anunciada) como chip sobre los pasos. */
 .client-phase {
   justify-self: start;
@@ -792,6 +798,19 @@
   }
   .client-profile-head {
     grid-template-columns: auto minmax(0, 1fr);
+    padding: 18px;
+  }
+  .client-profile-title h2 {
+    font-size: 1.4rem;
+  }
+  /* Las pestañas se desplazan en una fila en lugar de ocupar tres. */
+  .client-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .panel-shell .client-tabs [role="tab"] {
+    flex: none;
   }
   /* «Solicitar servicio» queda fijo abajo en móvil. */
   .panel-shell .client-profile-cta {
