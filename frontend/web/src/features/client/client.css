@@ -1,11 +1,31 @@
-/* Panel del cliente (D-87): mismos tokens y tarjetas que el panel del administrador (D-82); claro y oscuro. */
+/* Panel del cliente (D-87; rediseño de la revisión del PR #39): mismos tokens y tarjetas que el panel del
+   administrador (D-82), en claro y oscuro. Animaciones leves de 150 a 250 ms, sin ellas con prefers-reduced-motion. */
+@keyframes client-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes client-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.client-home > *,
+.client-notifications > *,
+.client-requests-page > *,
+.client-profile > * {
+  animation: client-in 220ms ease-out both;
+}
+
+/* Inicio */
+.client-home .carousel-stage {
+  max-height: 320px;
+}
 .client-hero {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 24px;
+  padding: 24px 28px;
   border: 1px solid var(--ty-border);
   border-radius: 20px;
   background: var(--ty-surface);
@@ -18,13 +38,66 @@
   margin: 0;
 }
 .client-summary {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.client-stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.client-stat h3 {
+  margin: 0 0 6px;
+}
+.client-stat .panel-kpi {
+  margin: 0 0 4px;
+}
+.client-stat-icon,
+.client-shortcut-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  color: var(--ty-accent);
+  background: var(--ty-raised);
+}
+.client-stat .text-button,
+.client-block-head .text-button,
+.client-last .text-button {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+.client-empty {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 18px;
+  text-align: center;
+}
+.client-summary .client-empty {
+  grid-column: 1 / -1;
+}
+.client-empty > span {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  color: var(--ty-accent);
+  background: var(--ty-raised);
+}
+.client-empty p {
+  margin: 0;
 }
 .client-block {
   display: grid;
   gap: 12px;
 }
 .client-block > h3,
+.client-section > h3,
 .client-block-head h3,
 .client-block-head h2 {
   margin: 0;
@@ -36,10 +109,30 @@
   justify-content: space-between;
   gap: 12px;
 }
+.client-last-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.client-last-body small,
+.client-active-list small {
+  display: block;
+}
+.client-next-line {
+  margin: 0;
+  font-weight: 500;
+}
+.client-last .button {
+  justify-self: start;
+}
 .client-active-list,
 .client-nearby,
 .client-inbox,
-.client-timeline {
+.client-timeline,
+.client-services,
+.client-chips {
   display: grid;
   gap: 10px;
   margin: 0;
@@ -58,23 +151,130 @@
   border-bottom: 0;
 }
 .client-active-list small {
-  display: block;
   color: var(--ty-muted);
 }
 .client-nearby {
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
 }
 .client-nearby li {
   display: grid;
-  gap: 6px;
-  align-content: start;
-  padding: 14px;
+  gap: 12px;
+  align-content: space-between;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.client-nearby li:hover,
+.client-technician:hover {
+  transform: translateY(-2px);
+}
+.client-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+}
+.panel-shell .client-shortcut {
+  display: grid;
+  gap: 10px;
+  padding: 0 0 14px;
+  overflow: hidden;
+  text-align: left;
+  font-weight: 600;
+  color: var(--ty-text);
   border: 1px solid var(--ty-border);
-  border-radius: 16px;
+  border-radius: 18px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+.panel-shell .client-shortcut:hover {
+  transform: translateY(-2px);
+  border-color: var(--ty-accent);
+}
+.client-shortcut img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.client-shortcut > span {
+  padding: 0 14px;
+}
+.client-shortcut-icon {
+  margin: 14px 14px 0;
+}
+
+/* Avatares, chips y tarifas */
+.client-avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-weight: 700;
+  color: var(--ty-on-accent);
+  background: var(--ty-accent);
+}
+.client-avatar.is-large {
+  width: 72px;
+  height: 72px;
+  font-size: 1.5rem;
+}
+.client-technician-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.client-technician-head small {
+  display: block;
+}
+.client-technician-head h3,
+.client-technician-head p {
+  margin: 0;
+}
+.client-technician-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+}
+.client-chip,
+.client-chips li {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ty-text);
   background: var(--ty-raised);
 }
-.client-nearby .button {
-  margin-top: 6px;
+.client-chip.is-verified {
+  color: var(--ty-success-text);
+  background: var(--ty-success-bg);
+}
+.client-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.client-chips li {
+  font-weight: 500;
+}
+.client-chips-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0;
+}
+.client-fee {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ty-accent);
+}
+.client-distance {
+  color: var(--ty-muted);
 }
 
 /* Estado de la solicitud: texto + fondo suave, nunca solo color (mismo criterio que .admin-status). */
@@ -105,66 +305,120 @@
 .client-status.is-closed {
   color: var(--ty-muted);
 }
-.client-distance {
-  color: var(--ty-muted);
-  font-size: 0.9rem;
-}
 
-/* Búsqueda: tarjetas con iniciales, distancia y tarifa. */
+/* Búsqueda */
 .client-technician-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 16px;
 }
 .panel-shell .s02-card.client-technician {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 8px 14px;
+  gap: 12px;
   align-content: start;
-}
-.client-technician h3 {
-  margin: 0;
-}
-.client-technician p {
-  margin: 0;
+  transition: transform 180ms ease;
 }
 .client-technician > .button {
-  grid-column: 1 / -1;
+  width: 100%;
 }
-.client-technician-avatar {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  font-weight: 700;
-  color: var(--ty-on-accent);
-  background: var(--ty-accent);
+.client-districts {
+  margin: 0;
+  font-size: 0.9rem;
 }
-.client-technician-body {
-  display: grid;
-  gap: 6px;
-  min-width: 0;
-}
-.client-technician-services {
+.client-pagination {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.client-pagination ol {
+  display: flex;
   gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.client-technician-services li {
-  padding: 2px 8px;
+.panel-shell .client-pagination button {
+  min-width: 42px;
+  min-height: 40px;
+  padding: 6px 14px;
+  color: var(--ty-text);
+  border: 1px solid var(--ty-control-border);
   border-radius: 999px;
-  font-size: 0.8rem;
-  background: var(--ty-raised);
+  background: var(--ty-surface);
+  transition: background 150ms ease, color 150ms ease;
 }
-.client-technician-meta {
+.panel-shell .client-pagination button:hover:not(:disabled) {
+  border-color: var(--ty-accent);
+}
+.panel-shell .client-pagination button[aria-current="page"] {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+  font-weight: 700;
+}
+.panel-shell .client-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* Perfil del técnico */
+.client-profile {
+  display: grid;
+  gap: 16px;
+}
+.client-back {
+  justify-self: start;
+}
+.client-profile-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--ty-border);
+  border-radius: 20px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
+}
+.client-profile-title h2 {
+  margin: 0;
+}
+.client-profile-title p {
+  margin: 2px 0;
+}
+.client-profile-bio {
+  margin: 0;
+}
+.client-services li {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ty-border);
+}
+.client-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.client-gallery h4,
+.client-gallery p {
+  margin: 0 0 6px;
+}
+.client-gallery-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.client-gallery-images img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 /* Mis solicitudes */
@@ -179,6 +433,7 @@
   border-radius: 0;
   background: none;
   color: var(--ty-muted);
+  transition: color 150ms ease, border-color 150ms ease;
 }
 .panel-shell .client-tabs [role="tab"][aria-selected="true"] {
   border-bottom-color: var(--ty-accent);
@@ -187,7 +442,7 @@
 }
 .client-request-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 14px;
 }
 .panel-shell .client-request-card {
@@ -204,9 +459,179 @@
   gap: 16px;
   margin-top: 8px;
 }
-.client-request-detail:focus-visible {
+.client-request-detail:focus-visible,
+.client-candidates:focus-visible {
   outline: 3px solid var(--ty-accent);
   outline-offset: 4px;
+}
+
+/* Seguimiento: pasos horizontales en escritorio y verticales en móvil */
+.client-progress {
+  display: grid;
+  gap: 16px;
+}
+.client-stepper {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.client-stepper li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 0 4px;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--ty-muted);
+  counter-increment: step;
+}
+.client-stepper li::before {
+  content: counter(step);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--ty-control-border);
+  border-radius: 50%;
+  font-weight: 700;
+  background: var(--ty-surface);
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.client-stepper li + li::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: 50%;
+  left: -50%;
+  height: 2px;
+  background: var(--ty-border);
+}
+.client-stepper li.is-done,
+.client-stepper li[aria-current="step"] {
+  color: var(--ty-text);
+}
+.client-stepper li.is-done::before {
+  content: "✓";
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.client-stepper li.is-done + li::after,
+.client-stepper li.is-done::after {
+  background: var(--ty-accent);
+}
+.client-stepper li[aria-current="step"] {
+  font-weight: 700;
+}
+.client-stepper li[aria-current="step"]::before {
+  color: var(--ty-accent);
+  border-color: var(--ty-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ty-accent) 22%, transparent);
+}
+.client-next {
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--ty-border);
+  border-left: 4px solid var(--ty-accent);
+  border-radius: 16px;
+  background: var(--ty-surface);
+}
+.client-next h3,
+.client-next p {
+  margin: 0;
+}
+.client-next .button {
+  justify-self: start;
+}
+/* La fase del S4 sigue visible (y anunciada) como chip sobre los pasos. */
+.client-phase {
+  justify-self: start;
+  width: fit-content;
+  margin: 0;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--ty-on-accent);
+  background: var(--ty-accent);
+}
+.client-history summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.client-history[open] summary {
+  margin-bottom: 12px;
+}
+.realtime-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--ty-muted);
+  background: var(--ty-raised);
+}
+.realtime-chip::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ty-warning);
+}
+.realtime-chip.is-live::before {
+  background: var(--ty-success);
+}
+
+/* Fotos ampliables */
+.client-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.panel-shell .client-thumb {
+  width: 96px;
+  height: 96px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--ty-border);
+  border-radius: 12px;
+  background: var(--ty-raised);
+}
+.client-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.client-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  padding: 24px;
+  background: rgba(8, 20, 23, 0.82);
+  animation: client-fade 180ms ease-out both;
+}
+.client-lightbox figure {
+  margin: 0;
+  max-width: min(960px, 100%);
+}
+.client-lightbox img {
+  max-width: 100%;
+  max-height: 75vh;
+  border-radius: 14px;
+}
+.client-lightbox figcaption {
+  color: #f2ebdf;
 }
 
 /* Línea de tiempo (D-89) */
@@ -245,21 +670,78 @@
 }
 
 /* Notificaciones (D-90) */
-.client-inbox li {
+.client-filters {
+  display: grid;
+  gap: 10px;
+}
+.client-chip-group {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.panel-shell .client-filter-chip {
+  min-height: 36px;
+  padding: 6px 14px;
+  color: var(--ty-text);
+  border: 1px solid var(--ty-control-border);
+  border-radius: 999px;
+  background: var(--ty-surface);
+  transition: background 150ms ease, color 150ms ease;
+}
+.panel-shell .client-filter-chip[aria-pressed="true"] {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.client-day {
+  display: grid;
+  gap: 10px;
+}
+.client-day h3 {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ty-muted);
+}
+.client-inbox li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: start;
   gap: 12px;
   padding: 14px 16px;
   border: 1px solid var(--ty-border);
   border-radius: 16px;
   background: var(--ty-surface);
+  transition: background 150ms ease;
 }
 .client-inbox li.is-unread {
-  border-left: 4px solid var(--ty-accent);
+  background: color-mix(in srgb, var(--ty-accent) 7%, var(--ty-surface));
+}
+.client-inbox-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-weight: 700;
+  color: var(--ty-accent);
+  background: var(--ty-raised);
+}
+.client-unread-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: var(--ty-accent);
 }
 .client-inbox p {
   margin: 4px 0;
+}
+.client-inbox .text-button {
+  margin: 0;
 }
 
 /* Mi perfil: datos de cliente (D-91) */
@@ -272,11 +754,12 @@
   margin: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 760px) {
   .client-hero {
     padding: 18px;
   }
-  .client-hero .button {
+  .client-hero .button,
+  .client-last .button {
     width: 100%;
   }
   .client-active-list li {
@@ -284,6 +767,67 @@
     gap: 6px;
   }
   .client-inbox li {
-    flex-direction: column;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .client-inbox .text-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .client-stepper {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .client-stepper li {
+    grid-template-columns: 32px 1fr;
+    justify-items: start;
+    align-items: center;
+    text-align: left;
+  }
+  .client-stepper li + li::after {
+    top: -14px;
+    right: auto;
+    left: 19px;
+    width: 2px;
+    height: 14px;
+  }
+  .client-profile-head {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  /* «Solicitar servicio» queda fijo abajo en móvil. */
+  .panel-shell .client-profile-cta {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    z-index: 30;
+    box-shadow: var(--ty-shadow);
+  }
+  .client-profile {
+    padding-bottom: 72px;
+  }
+  .client-pagination ol {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .client-home > *,
+  .client-notifications > *,
+  .client-requests-page > *,
+  .client-profile > *,
+  .client-lightbox {
+    animation: none;
+  }
+  .client-nearby li,
+  .client-technician,
+  .panel-shell .client-shortcut,
+  .client-stepper li::before {
+    transition: none;
+  }
+  .client-nearby li:hover,
+  .client-technician:hover,
+  .panel-shell .client-shortcut:hover {
+    transform: none;
   }
 }

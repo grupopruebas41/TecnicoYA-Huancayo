@@ -13,7 +13,7 @@ import ClientHome from './ClientHome';
 import {request} from '../administration/http';
 // Rediseño del panel del cliente (revisión del PR #39): DEF-50, paginación, progreso del seguimiento, tarjetas del
 // asistente, Inicio, bandeja por día, fotos ampliables y perfil del técnico. Adelanto del S5 (D-87).
-vi.mock('../administration/http', () => ({request: vi.fn()}));
+vi.mock('../administration/http', () => ({request: vi.fn(), serverNow: () => Date.now()}));
 vi.mock('../realtime/connection', () => ({makeEcho: () => null, subscribeRealtime: (echo, name, events, onEvent, onRecover, onStatus) => { onStatus(false); return () => {}; }}));
 afterEach(() => { cleanup(); vi.resetAllMocks(); vi.useRealTimers(); });
 

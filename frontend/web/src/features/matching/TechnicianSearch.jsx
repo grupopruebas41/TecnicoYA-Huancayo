@@ -6,9 +6,11 @@ import { searchQuery, changeFilters, withProximity } from "./searchQuery";
 import { MAX_FEES } from "../client/clientRules";
 import TechnicianCard from "./TechnicianCard";
 import TechnicianProfile from "./TechnicianProfile";
+import Pagination from "../client/Pagination";
 export default function TechnicianSearch({ onRequest, initialFilters = {}, defaultDistrictId = null }) {
   const [filters, setFilters] = useState({ ...initialFilters, page: 1 }),
     [result, setResult] = useState(null),
+    [loading, setLoading] = useState(true),
     [error, setError] = useState(""),
     [selected, setSelected] = useState(null),
     [retry, setRetry] = useState(0),
@@ -32,14 +34,21 @@ export default function TechnicianSearch({ onRequest, initialFilters = {}, defau
   }, [filters.specialty_id]);
   useEffect(() => {
     let active = true;
-    setResult(null);
+    // La página anterior se conserva mientras carga la siguiente: la paginación no desaparece al cambiar de página.
+    setLoading(true);
     setError("");
     request("/technicians?" + searchQuery(withProximity(filters, defaultDistrictId)))
       .then((r) => {
         if (active) setResult(r.data);
       })
       .catch((error) => {
-        if (active) setError(error.message);
+        if (active) {
+          setResult(null);
+          setError(error.message);
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
     return () => {
       active = false;
@@ -50,13 +59,14 @@ export default function TechnicianSearch({ onRequest, initialFilters = {}, defau
   if (selected)
     return (
       <TechnicianProfile
-        id={selected}
+        id={selected.id}
+        preview={selected}
         onRequest={onRequest}
         onBack={() => setSelected(null)}
       />
     );
   return (
-    <section aria-label="Buscar técnicos">
+    <section aria-label="Buscar técnicos" aria-busy={loading}>
       <h2>Buscar técnicos</h2>
       <p className="muted">
         {filters.district_id || defaultDistrictId
@@ -121,36 +131,23 @@ export default function TechnicianSearch({ onRequest, initialFilters = {}, defau
           Reintentar búsqueda
         </button>
       )}
-      {!error && !result && <output>Buscando técnicos…</output>}
+      {!error && loading && <output>Buscando técnicos…</output>}
       {result?.items.length === 0 && (
         <p>No hay técnicos que coincidan con los filtros elegidos.</p>
       )}
       <div className="s02-list client-technician-list">
         {result?.items.map((t) => (
-          <TechnicianCard key={t.id} technician={t} onOpen={setSelected} />
+          <TechnicianCard key={t.id} technician={t} onOpen={() => setSelected(t)} />
         ))}
       </div>
       {result && (
-        <nav aria-label="Páginas de técnicos">
-          <button
-            type="button"
-            disabled={result.pagination.page <= 1}
-            onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
-          >
-            Página anterior
-          </button>
-          <span>
-            Página {result.pagination.page} de{" "}
-            {Math.max(1, result.pagination.last_page)}
-          </span>
-          <button
-            type="button"
-            disabled={result.pagination.page >= result.pagination.last_page}
-            onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
-          >
-            Página siguiente
-          </button>
-        </nav>
+        <Pagination
+          label="Páginas de técnicos"
+          page={result.pagination.page}
+          lastPage={result.pagination.last_page}
+          disabled={loading}
+          onChange={(page) => setFilters({ ...filters, page })}
+        />
       )}
     </section>
   );

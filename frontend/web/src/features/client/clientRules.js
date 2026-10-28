@@ -27,6 +27,16 @@ export function countByGroup(rows) {
   return counts;
 }
 
+// Siguiente paso en una línea (tarjetas de Mis solicitudes y «Tu última solicitud» del Inicio).
+const NEXT_STEPS = {
+  drafts: 'Siguiente paso: completa y envía tu solicitud.',
+  searching: 'Siguiente paso: espera a que los técnicos respondan; te avisaremos.',
+  choice: 'Elige a tu técnico entre los que aceptaron.',
+  assigned: 'Tu técnico está asignado; te avisaremos cualquier cambio.',
+  closed: 'Sin acciones pendientes.',
+};
+export const nextStep = row => NEXT_STEPS[requestGroup(row)];
+
 // Clase de color del estado; el texto siempre acompaña al color (nunca solo color).
 export const statusTone = row => ({drafts: 'is-draft', searching: 'is-search', choice: 'is-choice', assigned: 'is-assigned', closed: 'is-closed'})[requestGroup(row)];
 
@@ -37,6 +47,11 @@ export function distanceLabel(distance) {
   // Coma decimal explícita: es-PE usa punto y el resto del panel escribe «3,5 km».
   const km = Number(distance.km);
   return `A ${Number.isInteger(km) ? km : km.toFixed(1).replace('.', ',')} km · ${distance.label}`;
+}
+
+/** Dos iniciales del nombre visible (tarjetas y avatares sin foto). */
+export function initialsOf(name = '') {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map(part => Array.from(part)[0]).join('').toUpperCase() || '·';
 }
 
 /** Tarifa de referencia más baja de los servicios de la tarjeta; nunca es un cobro (RF-04). */
@@ -65,6 +80,17 @@ export function validateClientDetails({district_id: district, reference_address:
   if (address.trim().length > ADDRESS_MAX) errors.reference_address = `La dirección puede tener hasta ${ADDRESS_MAX} caracteres.`;
   return errors;
 }
+
+const LIMA = 'America/Lima';
+const limaDay = date => date.toLocaleDateString('en-CA', {timeZone: LIMA});
+/** «Hoy», «Ayer» o la fecha larga, según el día en Lima (bandeja agrupada por día). */
+export function dayLabel(value, now = new Date()) {
+  const day = limaDay(new Date(value));
+  if (day === limaDay(now)) return 'Hoy';
+  if (day === limaDay(new Date(now.getTime() - 86400000))) return 'Ayer';
+  return new Date(value).toLocaleDateString('es-PE', {timeZone: LIMA, day: 'numeric', month: 'long', year: 'numeric'});
+}
+export const formatTime = value => new Date(value).toLocaleTimeString('es-PE', {timeZone: LIMA, hour: '2-digit', minute: '2-digit'});
 
 export function formatDate(value) {
   return value ? new Date(value).toLocaleString('es-PE', {timeZone: 'America/Lima', dateStyle: 'medium', timeStyle: 'short'}) : '';

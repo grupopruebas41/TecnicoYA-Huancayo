@@ -6,6 +6,7 @@ import CandidateList from "./CandidateList";
 import SelectionDialog from "./SelectionDialog";
 import { ConnectionStatus, useRealtimeResource } from "../realtime/Realtime";
 import RequestTimeline from "../client/RequestTimeline";
+import RequestProgress from "../client/RequestProgress";
 export default function RequestTracking({ requestId }) {
   const [record, setRecord] = useState(null),
     [candidates, setCandidates] = useState(null),
@@ -14,7 +15,8 @@ export default function RequestTracking({ requestId }) {
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false);
   const lock = useRef(false),
-    attempt = useRef(null);
+    attempt = useRef(null),
+    accepted = useRef(null);
   async function refresh() {
     try {
       const [r, c] = await Promise.all([
@@ -99,13 +101,15 @@ export default function RequestTracking({ requestId }) {
       </button>
       <OfferError error={error} />
       {notice && <p role="status">{notice}</p>}
-      <TrackingPhase record={record} />
+      <TrackingPhase record={record} onChoose={() => accepted.current?.focus()} />
       {candidates?.phase === "awaiting_choice" && (
-        <CandidateList
-          candidates={candidates.accepted}
-          onChoose={setSelected}
-          disabled={busy}
-        />
+        <div ref={accepted} tabIndex={-1} className="client-candidates" aria-label="Técnicos que aceptaron" role="group">
+          <CandidateList
+            candidates={candidates.accepted}
+            onChoose={setSelected}
+            disabled={busy}
+          />
+        </div>
       )}
       {candidates?.phase === "direct_declined" && (
         <>
@@ -137,12 +141,14 @@ export default function RequestTracking({ requestId }) {
   );
 }
 
-function TrackingPhase({ record }) {
+function TrackingPhase({ record, onChoose }) {
   return (
     <>
       {record && (
         <>
-          <RequestPhase phase={record.phase} />
+          <RequestPhase phase={record.phase} className="client-phase" />
+          {/* Revisión del PR #39: pasos y «¿Qué pasa ahora?» con la acción que le toca al cliente. */}
+          <RequestProgress record={record} onChoose={onChoose} />
           {record.phase === "awaiting_responses" && (
             <p>Espera a que respondan todos o venza el plazo.</p>
           )}
@@ -160,7 +166,12 @@ function TrackingPhase({ record }) {
           {record.phase === "expired" && (
             <p>La búsqueda venció. Puedes crear otra solicitud.</p>
           )}
-          <RequestTimeline events={record.timeline} />
+          {record.timeline?.length > 0 && (
+            <details className="client-history" open>
+              <summary>Historial</summary>
+              <RequestTimeline events={record.timeline} />
+            </details>
+          )}
           {record.assignment?.appointment && (
             <p>
               Franja confirmada:{" "}

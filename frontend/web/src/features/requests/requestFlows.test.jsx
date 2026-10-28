@@ -46,16 +46,11 @@ function catalogs(path) {
     return { data: [{ id: 4, name: "Hardware" }] };
   throw new Error("Ruta inesperada " + path);
 }
+// Revisión del PR #39: especialidad y subcategoría se eligen en tarjetas (radios) en lugar de select.
 async function stepFour() {
-  await screen.findByRole("option", { name: "Cómputo" });
-  fireEvent.change(screen.getByLabelText("Especialidad"), {
-    target: { value: "1" },
-  });
+  fireEvent.click(await screen.findByRole("radio", { name: "Cómputo" }));
   fireEvent.click(screen.getByText("Siguiente"));
-  await screen.findByRole("option", { name: "Hardware" });
-  fireEvent.change(screen.getByLabelText("Subcategoría"), {
-    target: { value: "4" },
-  });
+  fireEvent.click(await screen.findByRole("radio", { name: "Hardware" }));
   fireEvent.click(screen.getByText("Siguiente"));
   fireEvent.change(screen.getByLabelText("Descripción de la falla"), {
     target: { value: doc.description },
@@ -109,8 +104,10 @@ test("S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el 
 test("S03-TC-069 complemento: validación enfoca el campo y no registra", async () => {
   request.mockImplementation(async (p) => catalogs(p));
   render(<RequestWizard />);
+  // Con tarjetas, el foco de la validación va al primer radio del grupo «Especialidad».
+  await screen.findByRole("radio", { name: "Cómputo" });
   fireEvent.click(screen.getByText("Siguiente"));
-  expect(screen.getByLabelText("Especialidad")).toHaveFocus();
+  expect(screen.getByRole("radio", { name: "Cómputo" })).toHaveFocus();
   expect(screen.getByText("Selecciona una especialidad.")).toBeVisible();
   expect(request.mock.calls.some(([p]) => p === "/requests")).toBe(false);
 });
@@ -339,7 +336,7 @@ test("S03-TC-080 complemento: portal abre solicitud y retoma la registrada", asy
   expect(await screen.findByText("Paso 5: Resumen y envío")).toHaveFocus();
   const nav = screen.getByRole("navigation", { name: "Gestión del cliente" });
   fireEvent.click(within(nav).getByText("Nueva solicitud"));
-  expect(await screen.findByLabelText("Especialidad")).toHaveValue("");
+  expect(await screen.findByRole("radio", { name: "Cómputo" })).not.toBeChecked();
 });
 test("S03-TC-073 complemento: fechas de registro y reanudación", () => {
   const state = {

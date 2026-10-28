@@ -9,7 +9,7 @@ import {RealtimeProvider} from '../realtime/Realtime';
 import {request} from '../administration/http';
 // Panel del cliente (adelanto del S5, D-87): menú, Inicio, cercanía (D-88), Mis solicitudes con línea de tiempo (D-89),
 // Notificaciones con marca de leída (D-90), datos del cliente en Mi perfil (D-91) y la campana con la forma real (DEF-49).
-vi.mock('../administration/http', () => ({request: vi.fn()}));
+vi.mock('../administration/http', () => ({request: vi.fn(), serverNow: () => Date.now()}));
 const realtime = vi.hoisted(() => ({handlers: {}}));
 vi.mock('../realtime/connection', () => ({
   makeEcho: () => ({disconnect: () => {}}),
@@ -186,7 +186,9 @@ test('S05-TC-032 Mis solicitudes agrupa por estado en pestañas con contador y e
   const cards = within(list).getAllByRole('article');
   expect(cards).toHaveLength(1);
   expect(within(cards[0]).getByText('Elige a tu técnico')).toHaveClass('client-status', 'is-choice');
-  expect(within(cards[0]).getByText(/Reparación de hardware · Huancayo/)).toBeInTheDocument();
+  // Rediseño del PR #39: el rubro es el título de la tarjeta y el distrito va en su línea.
+  expect(within(cards[0]).getByRole('heading', {name: 'Reparación de hardware'})).toBeInTheDocument();
+  expect(within(cards[0]).getByText(/Huancayo · Actualizada/)).toBeInTheDocument();
 });
 
 test('S05-TC-033 el detalle muestra la línea de tiempo y la actualiza con request.updated [TC-067]', async () => {
@@ -222,9 +224,10 @@ test('S05-TC-035 la bandeja filtra por estado y tipo y marca una notificación c
   const page = await screen.findByRole('region', {name: 'Notificaciones'});
 
   await within(page).findByText('Elige a tu técnico');
-  fireEvent.change(within(page).getByLabelText('Estado'), {target: {value: 'unread'}});
+  // Rediseño del PR #39: los filtros son chips (botones con aria-pressed) en lugar de select.
+  fireEvent.click(within(within(page).getByRole('group', {name: 'Filtrar por estado'})).getByRole('button', {name: 'No leídas'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/notifications?state=unread&per_page=20'));
-  fireEvent.change(within(page).getByLabelText('Tipo'), {target: {value: 'request.pending'}});
+  fireEvent.click(within(within(page).getByRole('group', {name: 'Filtrar por tipo'})).getByRole('button', {name: 'Búsqueda pendiente'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/notifications?state=unread&type=request.pending&per_page=20'));
 
   const item = (await within(page).findByText('Elige a tu técnico')).closest('li');
@@ -304,7 +307,7 @@ test('S05-TC-039 «Solicitar servicio» desde un perfil abre el asistente dirigi
   const wizard = await screen.findByRole('region', {name: 'Nueva solicitud'});
   expect(navButton(nav, 'Nueva solicitud')).toHaveAttribute('aria-current', 'page');
   expect(await within(wizard).findByText(/Técnico elegido: Técnico Tambo/)).toBeInTheDocument();
-  expect(within(wizard).getByLabelText('Especialidad')).toBeInTheDocument();
+  expect(await within(wizard).findByRole('group', {name: 'Especialidad'})).toBeInTheDocument();
 });
 
 test('S05-TC-040 mientras el asistente guarda, el menú queda bloqueado y lo anuncia', async () => {

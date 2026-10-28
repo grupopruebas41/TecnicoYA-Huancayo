@@ -62,7 +62,8 @@ export function useRealtimeResource(name, events, refresh, version = 0) {
 }
 export function ConnectionStatus({ connected }) {
   return (
-    <p role="status">
+    // Chip discreto (revisión del PR #39); el texto no cambia: lo usan las E2E del S4.
+    <p role="status" className={"realtime-chip" + (connected ? " is-live" : "")}>
       {connected
         ? "Conexión en tiempo real activa."
         : "Sin conexión en tiempo real. Actualiza para ver cambios."}

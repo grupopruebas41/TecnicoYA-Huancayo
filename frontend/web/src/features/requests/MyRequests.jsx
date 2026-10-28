@@ -5,7 +5,9 @@ import { request } from "../administration/http";
 import { Notice } from "../administration/forms";
 import RequestSummary from "./RequestSummary";
 import RequestTimeline from "../client/RequestTimeline";
-import { REQUEST_TABS, countByGroup, formatDate, requestGroup, statusTone } from "../client/clientRules";
+import RequestProgress from "../client/RequestProgress";
+import PhotoGallery from "../client/PhotoGallery";
+import { REQUEST_TABS, countByGroup, formatDate, nextStep, requestGroup, statusTone } from "../client/clientRules";
 // Panel del cliente (D-87): pestañas por estado con contador y tarjetas con el estado en texto y color. openId abre el
 // detalle al llegar desde el Inicio. El detalle sigue debajo de la lista, como en el S3 (las E2E abren varias seguidas).
 export default function MyRequests({ onContinue = () => {}, openId = null }) {
@@ -70,7 +72,9 @@ export default function MyRequests({ onContinue = () => {}, openId = null }) {
       <div className="client-request-list">
         {visible.map((row) => (
           <article className="s02-card client-request-card" key={row.id}>
-            <h3>Solicitud #{row.id}</h3>
+            {/* Revisión del PR #39: el rubro es el título; el número y el siguiente paso van en una línea. */}
+            <h3>{row.subcategory?.name || `Solicitud #${row.id}`}</h3>
+            {row.subcategory && <small className="muted">Solicitud #{row.id}</small>}
             {row.phase ? (
               <RequestPhase phase={row.phase} className={"client-status " + statusTone(row)} />
             ) : (
@@ -78,10 +82,11 @@ export default function MyRequests({ onContinue = () => {}, openId = null }) {
             )}
             {row.subcategory && (
               <p className="muted">
-                {row.subcategory.name} · {row.district?.name}
+                {row.district?.name}
                 {row.updated_at && <> · Actualizada {formatDate(row.updated_at)}</>}
               </p>
             )}
+            <p className="client-next-line">{nextStep(row)}</p>
             <button type="button" className="button outline" onClick={() => open(row)}>
               Ver solicitud #{row.id}
             </button>
@@ -91,24 +96,20 @@ export default function MyRequests({ onContinue = () => {}, openId = null }) {
       {detail && (
         <div className="client-request-detail" ref={detailRef} tabIndex={-1}>
           <RequestSummary record={detail} disabled />
-          {detail.phase && detail.status !== "registered" ? (
+          <PhotoGallery photos={detail.attachments} requestId={detail.id} />
+          {detail.status === "registered" ? (
+            <>
+              <RequestProgress record={detail}>
+                <button type="button" className="button primary" onClick={() => onContinue(detail)}>
+                  Continuar solicitud #{detail.id}
+                </button>
+              </RequestProgress>
+              <RequestTimeline events={detail.timeline} />
+            </>
+          ) : detail.phase ? (
             <RequestTracking key={detail.id} requestId={detail.id} />
           ) : (
             <RequestTimeline events={detail.timeline} />
-          )}
-          <div className="s02-images">
-            {detail.attachments?.map((a) => (
-              <img
-                key={a.media_id}
-                src={a.url}
-                alt={a.caption || "Evidencia de la solicitud"}
-              />
-            ))}
-          </div>
-          {detail.status === "registered" && (
-            <button type="button" className="button primary" onClick={() => onContinue(detail)}>
-              Continuar solicitud #{detail.id}
-            </button>
           )}
         </div>
       )}

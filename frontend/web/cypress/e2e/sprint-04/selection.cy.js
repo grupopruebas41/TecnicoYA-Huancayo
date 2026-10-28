@@ -6,9 +6,10 @@ describe("S4 selección", () => {
   it("S04-TC-087 cliente sigue la búsqueda hasta dos aceptaciones", () => {
     loginClient();
     cy.get('nav[aria-label="Gestión del cliente"]').contains("button", "Nueva solicitud").click();
-    wizard().find("select[name=specialty_id] option").contains("Refrigeración").then(option => wizard().find("select[name=specialty_id]").select(option.val()));
+    // Revisión del PR #39: tarjetas con radio en lugar de select.
+    wizard().contains("label", "Refrigeración").find("input[name=specialty_id]").check();
     wizard().contains("button", "Siguiente").click();
-    wizard().find("select[name=subcategory_id] option").contains("Cámaras").then(option => wizard().find("select[name=subcategory_id]").select(option.val()));
+    wizard().contains("label", "Cámaras").find("input[name=subcategory_id]").check();
     wizard().contains("button", "Siguiente").click();
     wizard().find("textarea[name=description]").type("La cámara de frío no mantiene la temperatura adecuada.");
     wizard().contains("button", "Siguiente").click();

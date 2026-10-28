@@ -11,11 +11,20 @@ const steps = [
   "Ubicación y horario",
   "Resumen y envío",
 ];
+// Revisión del PR #39: descripción breve de cada paso, debajo de su título.
+const hints = [
+  "Elige el tipo de servicio que necesitas.",
+  "Elige el trabajo específico para que te lleguen técnicos de ese rubro.",
+  "Cuéntanos qué pasa y, si quieres, agrega fotos de la falla.",
+  "Indica dónde y cuándo quieres la atención.",
+  "Revisa el resumen y envía tu solicitud.",
+];
+// Stepper: círculos numerados unidos por una línea cuyo avance marca --progress (los pasos hechos llevan is-done).
 export function StepIndicator({ step }) {
   return (
-    <ol className="request-steps" aria-label="Pasos de la solicitud">
+    <ol className="request-steps" aria-label="Pasos de la solicitud" style={{ "--progress": (step - 1) / (steps.length - 1) }}>
       {steps.map((name, i) => (
-        <li key={name} aria-current={step === i + 1 ? "step" : undefined}>
+        <li key={name} aria-current={step === i + 1 ? "step" : undefined} className={i + 1 < step ? "is-done" : undefined}>
           <span>{i + 1}</span> {name}
         </li>
       ))}
@@ -64,6 +73,7 @@ export default function RequestWizard({
       <h2 ref={title} tabIndex={-1}>
         Paso {state.step}: {steps[state.step - 1]}
       </h2>
+      <p className="muted request-hint">{hints[state.step - 1]}</p>
       <WizardContext target={target} record={record} />
       <div ref={notice} tabIndex={-1}>
         <Notice error={error} success={success} />
@@ -89,7 +99,7 @@ export default function RequestWizard({
         </>
       )}
       {state.step < 5 && (
-        <form ref={form} noValidate onSubmit={next}>
+        <form ref={form} key={state.step} className="request-step" noValidate onSubmit={next}>
           <fieldset
             disabled={
               busy || uploading || uncertain || record?.status === "sent"
@@ -105,7 +115,7 @@ export default function RequestWizard({
               registered={!!record}
             />
           </fieldset>
-          <div className="request-actions">
+          <div className="request-actions request-actions-sticky">
             {state.step > 1 && (
               <button
                 type="button"
