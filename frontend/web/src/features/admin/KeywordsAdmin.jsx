@@ -124,12 +124,13 @@ function Phrases({subcategories, onNotice}) {
           <td>{KINDS.find(([code]) => code === keyword.kind)?.[1]}</td><td>{keyword.weight}</td>
           <td><span className={'admin-status ' + (keyword.active ? 'is-active' : 'is-anonymized')}>{keyword.active ? 'Activa' : 'Inactiva'}</span></td>
           <td className="admin-row-actions">
-            <button type="button" className="text-button" onClick={() => setEditing(keyword)}>Editar {keyword.phrase}</button>
+            {/* El texto visible es corto; la frase completa queda para lectores de pantalla. */}
+            <button type="button" className="text-button" onClick={() => setEditing(keyword)}>Editar<span className="sr-only"> {keyword.phrase}</span></button>
             {confirming === keyword.id ? <span role="group" aria-label={`Confirmar desactivación de ${keyword.phrase}`}>
               <button ref={confirmButton} type="button" className="text-button" onClick={() => toggle(keyword)}>Sí, desactivar</button>
               <button type="button" className="text-button" onClick={() => setConfirming(null)}>Cancelar</button>
             </span> : <button type="button" className="text-button" onClick={() => (keyword.active ? setConfirming(keyword.id) : toggle(keyword))}>
-              {keyword.active ? 'Desactivar' : 'Activar'} {keyword.phrase}</button>}
+              {keyword.active ? 'Desactivar' : 'Activar'}<span className="sr-only"> {keyword.phrase}</span></button>}
           </td>
         </tr>)}</tbody>
       </table>
@@ -149,7 +150,7 @@ function TestPhrase() {
   }
   return <form className="panel-card admin-keyword-test" aria-label="Probar una frase" onSubmit={submit} noValidate>
     <label>Frase de un cliente<input value={text} onChange={event => setText(event.target.value)} placeholder="Ej.: mi congeladora no enfría"/></label>
-    <button type="submit" className="button primary">Probar</button>
+    <button type="submit" className="button primary admin-keyword-try">Probar</button>
     {error && <p className="error" role="alert">{error}</p>}
     {result && (!result.items.length ? <p className="admin-empty">El diccionario no reconoce esta frase.</p> : <>
       <p><strong>{LEVELS[result.level]}</strong></p>

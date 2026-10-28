@@ -414,6 +414,13 @@
   --ty-primary: var(--ty-accent);
   color: var(--ty-on-accent);
 }
+/* DEF-51: la portada pinta de blanco el primario al pasar el cursor (.primary:hover); en el panel se conserva el color
+   del tema (en oscuro, --ty-on-accent es el mismo fondo que ya usa el texto del primario). */
+.panel-content .primary:hover {
+  background: var(--ty-primary);
+  color: var(--ty-on-accent);
+  filter: brightness(1.08);
+}
 .panel-content .outline {
   border: 1px solid var(--ty-border);
   color: var(--ty-text);

@@ -592,3 +592,6 @@
     grid-template-columns: 1fr;
   }
 }
+.admin-keyword-try {
+  justify-self: start;
+}
