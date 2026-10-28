@@ -96,6 +96,8 @@ it('S05-TC-054 usa un número fijo de consultas sin importar cuántos técnicos 
         return $count;
     };
     Sprint04::technician();
+    // La primera petición carga datos que quedan en memoria (una consulta más); se mide después de calentar.
+    $queries();
     $few = $queries();
     foreach (range(1, 8) as $n) {
         Sprint04::technician(['fee' => (50 + $n).'.00', 'subcategory' => $n % 2 ? 'frio-vitrinas' : 'computo-redes']);

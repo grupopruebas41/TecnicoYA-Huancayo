@@ -54,10 +54,11 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
   const sections = [
     {id: 'home', group: 'General', label: 'Inicio', icon: 'home', render: ({navigate}) => <ClientHome user={user} navigate={navigate}/>},
     {id: 'new', group: 'Servicios', label: 'Nueva solicitud', icon: 'plus', render: ({navigate, intent}) => <RequestWizard
-      initialRecord={intent?.record || null} target={intent?.technician || null} defaultDistrictId={district}
+      initialRecord={intent?.record || null} target={intent?.technician || null} defaultDistrictId={district} preset={intent?.preset || null}
       onBusy={setLocked} onExit={() => { setLocked(false); navigate('requests'); }}/>},
     {id: 'search', group: 'Servicios', label: 'Buscar técnicos', icon: 'search', render: ({navigate, intent}) => <TechnicianSearch
-      initialFilters={intent?.filters || {}} defaultDistrictId={district} onRequest={technician => navigate('new', {technician})}/>},
+      initialFilters={intent?.filters || {}} defaultDistrictId={district} initialTechnician={intent?.technician || null}
+      onRequest={technician => navigate('new', {technician})}/>},
     {id: 'requests', group: 'Servicios', label: 'Mis solicitudes', icon: 'requests', render: ({navigate, intent}) => <MyRequests
       openId={intent?.open || null} onContinue={record => navigate('new', {record})}/>},
     {id: 'notifications', group: 'Cuenta', label: 'Notificaciones', icon: 'bell', render: () => <NotificationsPage userId={user.id} onChange={refresh}/>},

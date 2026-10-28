@@ -102,7 +102,8 @@ test('S05-TC-055 «¿Qué se malogró?» oculta los atajos cuya subcategoría no
   const problems = await screen.findByRole('region', {name: '¿Qué se malogró?'});
   await within(problems).findByRole('button', {name: 'Laptop no prende'});
 
-  const visible = within(problems).getAllByRole('button').map(button => button.textContent);
+  // El ícono es decorativo (aria-hidden): se compara la etiqueta, no el textContent completo del botón.
+  const visible = within(problems).getAllByRole('button').map(button => button.lastChild.textContent);
   const expected = PROBLEMS.filter(problem => home.subcategories.some(sub => sub.code === problem.subcategory)).map(problem => problem.label);
   expect(PROBLEMS.length).toBeGreaterThanOrEqual(6);
   expect(PROBLEMS.length).toBeLessThanOrEqual(8);

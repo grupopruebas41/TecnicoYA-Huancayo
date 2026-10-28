@@ -4,7 +4,7 @@ import React from 'react';
 const STEPS = ['Registrada', 'Enviada', 'Buscando técnicos', 'Ofertas recibidas', 'Elige a tu técnico', 'Asignada'];
 const CURRENT = {registered: 0, sent: 1, matching: 2, pending_availability: 2, awaiting_responses: 3, direct_declined: 3,
   awaiting_choice: 4, assigned: 5, in_progress: 5};
-const NEXT = {
+export const NEXT_TEXT = {
   registered: 'Tu solicitud está guardada como borrador. Revisa el resumen y envíala para empezar la búsqueda.',
   sent: 'Recibimos tu solicitud y estamos preparando la búsqueda.',
   matching: 'Estamos enviando tu pedido a técnicos verificados; te avisaremos cuando acepten.',
@@ -32,7 +32,7 @@ export default function RequestProgress({record, onChoose, children}) {
     </ol>
     <section className="client-next" aria-label="¿Qué pasa ahora?">
       <h3>¿Qué pasa ahora?</h3>
-      <p>{NEXT[phase] || 'Estamos actualizando el estado de tu solicitud.'}</p>
+      <p>{NEXT_TEXT[phase] || 'Estamos actualizando el estado de tu solicitud.'}</p>
       {phase === 'awaiting_choice' && onChoose &&
         <button type="button" className="button primary" onClick={onChoose}>Ver técnicos que aceptaron</button>}
       {children}

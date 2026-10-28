@@ -7,12 +7,13 @@ import { MAX_FEES } from "../client/clientRules";
 import TechnicianCard from "./TechnicianCard";
 import TechnicianProfile from "./TechnicianProfile";
 import Pagination from "../client/Pagination";
-export default function TechnicianSearch({ onRequest, initialFilters = {}, defaultDistrictId = null }) {
+// initialTechnician: «Ver perfil» desde el Inicio abre directamente ese perfil (la búsqueda queda detrás de «Volver»).
+export default function TechnicianSearch({ onRequest, initialFilters = {}, defaultDistrictId = null, initialTechnician = null }) {
   const [filters, setFilters] = useState({ ...initialFilters, page: 1 }),
     [result, setResult] = useState(null),
     [loading, setLoading] = useState(true),
     [error, setError] = useState(""),
-    [selected, setSelected] = useState(null),
+    [selected, setSelected] = useState(initialTechnician),
     [retry, setRetry] = useState(0),
     [subcategories, setSubcategories] = useState([]);
   const specialties = useResource("/catalog/specialties"),
