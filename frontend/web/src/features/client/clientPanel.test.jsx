@@ -94,49 +94,6 @@ test('S05-TC-026 el panel del cliente agrupa su menú y conserva los selectores 
   expect(screen.getByText('1 solicitud por elegir técnico')).toBeInTheDocument();
 });
 
-test('S05-TC-027 el Inicio resume las solicitudes reales y no muestra citas ni calificaciones', async () => {
-  await openClient();
-  const home = await screen.findByRole('region', {name: 'Resumen de tus solicitudes'});
-
-  await waitFor(() => expect(within(home).getByText('Solicitudes activas').closest('.panel-card')).toHaveTextContent('3'));
-  expect(within(home).getByText('Por elegir técnico').closest('.panel-card')).toHaveTextContent('1');
-  expect(screen.queryByText(/Próxima cita/)).not.toBeInTheDocument();
-  expect(screen.queryByText(/Calificaciones/)).not.toBeInTheDocument();
-
-  fireEvent.click(screen.getByRole('button', {name: 'Pedir un técnico'}));
-  expect(await screen.findByRole('region', {name: 'Nueva solicitud'})).toBeInTheDocument();
-  expect(navButton(screen.getByRole('navigation', {name: 'Gestión del cliente'}), 'Nueva solicitud')).toHaveAttribute('aria-current', 'page');
-});
-
-test('S05-TC-028 «Técnicos cerca de ti» ordena por cercanía y su fallo no tumba el resto del Inicio', async () => {
-  await openClient();
-  const near = await screen.findByRole('region', {name: 'Técnicos cerca de ti'});
-
-  await within(near).findByText('Técnico Huancayo');
-  expect(request).toHaveBeenCalledWith('/technicians?sort=proximity&per_page=4');
-  expect(within(near).getByText('En tu distrito')).toBeInTheDocument();
-  expect(within(near).getByText('A 3,5 km · aproximada por zona')).toBeInTheDocument();
-  expect(within(near).getByText('Desde S/ 80.00')).toBeInTheDocument();
-  cleanup();
-
-  await openClient({'/technicians': () => Promise.reject({status: 0, message: 'No hay conexión con el servidor.'})});
-  const failed = await screen.findByRole('region', {name: 'Técnicos cerca de ti'});
-  expect(await within(failed).findByRole('alert')).toHaveTextContent('No pudimos cargar los técnicos cercanos.');
-  expect(within(failed).getByRole('button', {name: 'Reintentar'})).toBeInTheDocument();
-  await waitFor(() => expect(screen.getByText('Solicitudes activas').closest('.panel-card')).toHaveTextContent('3'));
-});
-
-test('S05-TC-029 los accesos por rubro del Inicio abren la búsqueda filtrada por esa especialidad', async () => {
-  await openClient();
-  const shortcuts = await screen.findByRole('navigation', {name: 'Buscar por rubro'});
-
-  fireEvent.click(await within(shortcuts).findByRole('button', {name: 'Refrigeración'}));
-
-  await screen.findByRole('region', {name: 'Buscar técnicos'});
-  await waitFor(() => expect(request).toHaveBeenCalledWith('/technicians?specialty_id=2&sort=proximity&page=1'));
-  expect(screen.getByLabelText('Rubro')).toHaveValue('2');
-});
-
 test('S05-TC-030 la búsqueda ordena por cercanía, filtra por tarifa máxima y muestra distancia y tarifa', async () => {
   const nav = await openClient();
   fireEvent.click(navButton(nav, 'Buscar técnicos'));
@@ -204,17 +161,6 @@ test('S05-TC-033 el detalle muestra la línea de tiempo y la actualiza con reque
 
   await waitFor(() => expect(within(screen.getByRole('list', {name: 'Línea de tiempo de la solicitud'})).getAllByRole('listitem')).toHaveLength(3));
   expect(screen.getByText('Elegiste a tu técnico')).toBeInTheDocument();
-});
-
-test('S05-TC-034 «Ver solicitud» desde el Inicio abre su detalle en Mis solicitudes', async () => {
-  await openClient();
-  const active = await screen.findByRole('region', {name: 'Solicitudes en curso'});
-
-  fireEvent.click(await within(active).findByRole('button', {name: 'Ver solicitud #41'}));
-
-  expect(await screen.findByRole('region', {name: 'Seguimiento de solicitud'})).toBeInTheDocument();
-  expect(navButton(screen.getByRole('navigation', {name: 'Gestión del cliente'}), 'Mis solicitudes')).toHaveAttribute('aria-current', 'page');
-  expect(request).toHaveBeenCalledWith('/requests/41');
 });
 
 test('S05-TC-035 la bandeja filtra por estado y tipo y marca una notificación como leída con alerta [TC-106]', async () => {

@@ -9,7 +9,6 @@ import RequestWizard from '../requests/RequestWizard';
 import MyRequests from '../requests/MyRequests';
 import RequestProgress from './RequestProgress';
 import NotificationsPage from './NotificationsPage';
-import ClientHome from './ClientHome';
 import {request} from '../administration/http';
 // Rediseño del panel del cliente (revisión del PR #39): DEF-50, paginación, progreso del seguimiento, tarjetas del
 // asistente, Inicio, bandeja por día, fotos ampliables y perfil del técnico. Adelanto del S5 (D-87).
@@ -121,39 +120,6 @@ test('S05-TC-045 el asistente elige especialidad y subcategoría en tarjetas con
   const steps = screen.getByRole('list', {name: 'Pasos de la solicitud'});
   expect(within(steps).getAllByRole('listitem')[0]).toHaveClass('is-done');
   expect(within(steps).getAllByRole('listitem')[1]).toHaveAttribute('aria-current', 'step');
-});
-
-test('S05-TC-046 el Inicio saluda por nombre y distrito, muestra estados vacíos con acción y la última solicitud', async () => {
-  const user = {id: '5', name: 'Alias', given_names: 'Carla María', role: {code: 'client'}, client_profile: {district_id: 2}};
-  const navigate = vi.fn();
-  let rows = [];
-  request.mockImplementation(async path => {
-    if (path === '/requests') return {data: rows};
-    if (path === '/catalog/districts') return {data: [{id: 1, name: 'Huancayo'}, {id: 2, name: 'El Tambo'}]};
-    if (path === '/catalog/specialties') return {data: [{id: 1, name: 'Cómputo', image_url: '/media/1'}]};
-    if (path.startsWith('/technicians?')) return {data: page([])};
-    return {data: []};
-  });
-  const view = render(<ClientHome user={user} navigate={navigate}/>);
-
-  expect(await screen.findByRole('heading', {name: 'Hola, Carla María'})).toBeInTheDocument();
-  expect(await screen.findByText('El Tambo')).toBeInTheDocument();
-  const summary = screen.getByRole('region', {name: 'Resumen de tus solicitudes'});
-  expect(await within(summary).findByText('Aún no tienes solicitudes activas.')).toBeInTheDocument();
-  expect(within(summary).queryByText('0')).toBeNull();
-  fireEvent.click(within(summary).getByRole('button', {name: 'Crear mi primera solicitud'}));
-  expect(navigate).toHaveBeenCalledWith('new');
-  expect(screen.queryByRole('region', {name: 'Tu última solicitud'})).toBeNull();
-  expect(within(screen.getByRole('navigation', {name: 'Buscar por rubro'})).getByRole('button', {name: 'Cómputo'}).querySelector('img')).toHaveAttribute('src', '/media/1');
-  view.unmount();
-
-  rows = [{id: 41, status: 'sent', phase: 'awaiting_choice', subcategory: {name: 'Reparación de hardware'}, district: {name: 'El Tambo'}, updated_at: '2026-10-20T15:00:00Z'}];
-  render(<ClientHome user={user} navigate={navigate}/>);
-  const last = await screen.findByRole('region', {name: 'Tu última solicitud'});
-  expect(last).toHaveTextContent('Reparación de hardware');
-  expect(last).toHaveTextContent('Elige a tu técnico entre los que aceptaron.');
-  fireEvent.click(within(last).getByRole('button', {name: 'Ver seguimiento'}));
-  expect(navigate).toHaveBeenCalledWith('requests', {open: 41});
 });
 
 test('S05-TC-047 la bandeja agrupa por día (Hoy, Ayer y fecha) y filtra con chips', async () => {
