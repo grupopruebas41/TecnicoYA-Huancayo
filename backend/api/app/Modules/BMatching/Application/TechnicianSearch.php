@@ -3,27 +3,38 @@
 namespace App\Modules\BMatching\Application;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Búsqueda de técnicos por filtros (RF-C06, HU-S03-04). No es el matching: no puntúa ni ordena por
  * idoneidad (RT-02); ordena por nombre visible e id. Proyección pública por lista blanca (SEC-S03-02).
+ * D-88 (BUSQ-01): con un origen, ordena por cercanía sin puntaje: primero el mismo distrito base, luego los km de la
+ * matriz (D-64) y al final los que no tienen distrito base o par en la matriz; cada tarjeta suma la distancia.
  */
 final class TechnicianSearch
 {
     public const DEFAULT_PER_PAGE = 12;
 
-    public function search(array $filters): array
+    public function search(array $filters, ?int $origin = null): array
     {
         $query = $this->eligible($filters);
         $total = (clone $query)->count();
         $perPage = (int) ($filters['per_page'] ?? self::DEFAULT_PER_PAGE);
         $page = (int) ($filters['page'] ?? 1);
-        $rows = $query->orderBy('t.display_name')->orderBy('t.id')->forPage($page, $perPage)
-            ->get(['t.id', 't.display_name', 't.provider_type', 't.experience_years']);
+        $columns = ['t.id', 't.display_name', 't.provider_type', 't.experience_years'];
+        if ($origin !== null) {
+            $query->leftJoin('district_distances as dd', fn (JoinClause $join) => $join
+                ->where(fn (JoinClause $pair) => $pair->whereColumn('dd.from_district_id', 't.base_district_id')->where('dd.to_district_id', $origin))
+                ->orWhere(fn (JoinClause $pair) => $pair->where('dd.from_district_id', $origin)->whereColumn('dd.to_district_id', 't.base_district_id')))
+                ->orderByRaw('CASE WHEN t.base_district_id = ? THEN 0 WHEN dd.km IS NOT NULL THEN 1 ELSE 2 END', [$origin])
+                ->orderBy('dd.km');
+            $columns = [...$columns, 't.base_district_id', 'dd.km'];
+        }
+        $rows = $query->orderBy('t.display_name')->orderBy('t.id')->forPage($page, $perPage)->get($columns);
 
         return [
-            'items' => $this->cards($rows->all()),
+            'items' => $this->cards($rows->all(), $origin),
             'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(1, (int) ceil($total / $perPage))],
         ];
     }
@@ -40,7 +51,9 @@ final class TechnicianSearch
                 ->join('subcategories as c', 'c.id', '=', 's.subcategory_id')->join('specialties as p', 'p.id', '=', 'c.specialty_id')
                 ->whereColumn('s.technician_id', 't.id')->where('s.active', 1)->where('c.active', 1)->where('p.active', 1)
                 ->when(isset($filters['subcategory_id']), fn (Builder $q) => $q->where('c.id', $filters['subcategory_id']))
-                ->when(isset($filters['specialty_id']), fn (Builder $q) => $q->where('p.id', $filters['specialty_id'])))
+                ->when(isset($filters['specialty_id']), fn (Builder $q) => $q->where('p.id', $filters['specialty_id']))
+                // D-88: la tarifa máxima se aplica al mismo servicio que cumple los demás filtros.
+                ->when(isset($filters['max_fee']), fn (Builder $q) => $q->where('s.reference_fee', '<=', $filters['max_fee'])))
             ->when(isset($filters['district_id']), fn (Builder $q) => $q->whereExists(fn (Builder $d) => $d->from('technician_districts as d')
                 ->whereColumn('d.technician_id', 't.id')->where('d.active', 1)->where('d.district_id', $filters['district_id'])))
             ->whereNotExists(fn (Builder $q) => $q->from('technician_pauses as z')->whereColumn('z.technician_id', 't.id')
@@ -50,7 +63,7 @@ final class TechnicianSearch
             ->when(isset($filters['min_rating']), fn (Builder $q) => $q->whereRaw('1 = 0'));
     }
 
-    private function cards(array $rows): array
+    private function cards(array $rows, ?int $origin): array
     {
         $ids = array_column($rows, 'id');
         $services = DB::table('technician_services as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')
@@ -71,6 +84,17 @@ final class TechnicianSearch
             ])->values()->all(),
             'districts' => $districts->get($row->id, collect())->map(fn (object $d) => ['id' => $d->id, 'name' => $d->name])->values()->all(),
             'rating' => ['average' => null, 'count' => 0],
-        ], $rows);
+        ] + ($origin === null ? [] : ['distance' => $this->distance($row, $origin)]), $rows);
+    }
+
+    /** Distancia por zona (D-64): nunca revela el distrito base, solo los km y si coincide con el origen. */
+    private function distance(object $row, int $origin): ?array
+    {
+        if ($row->km === null) {
+            return null;
+        }
+
+        return ['km' => (float) $row->km, 'same_district' => (int) $row->base_district_id === $origin,
+            'approximate' => true, 'label' => 'aproximada por zona'];
     }
 }

@@ -11,6 +11,8 @@ final class TechnicianSearchController
 {
     public function index(SearchTechniciansRequest $request, TechnicianSearch $search): JsonResponse
     {
-        return ApiResponse::data($search->search($request->validated()));
+        $filters = $request->validated();
+
+        return ApiResponse::data($search->search($filters, ($filters['sort'] ?? 'name') === 'proximity' ? $request->origin() : null));
     }
 }

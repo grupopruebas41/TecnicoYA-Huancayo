@@ -14,15 +14,23 @@ use Illuminate\Support\Facades\DB;
  */
 final class ServiceRequestView
 {
-    public function __construct(private readonly SearchState $state, private readonly CandidatesView $candidates) {}
+    public function __construct(
+        private readonly SearchState $state,
+        private readonly CandidatesView $candidates,
+        private readonly ClientTimeline $timeline,
+    ) {}
 
     public function listFor(User $user): array
     {
         return DB::table('service_requests as r')->join('client_profiles as c', 'c.id', '=', 'r.client_id')
-            ->where('c.user_id', $user->id)->orderByDesc('r.id')->get(['r.*'])
+            ->join('subcategories as s', 's.id', '=', 'r.subcategory_id')->join('districts as d', 'd.id', '=', 'r.district_id')
+            ->where('c.user_id', $user->id)->orderByDesc('r.id')->get(['r.*', 's.name as subcategory_name', 'd.name as district_name'])
             ->map(fn (object $row) => [
                 'id' => $row->id, 'status' => $row->status, 'phase' => $this->state->phase($row), 'mode' => $row->mode,
                 'source' => $row->source, 'created_at' => $row->created_at, 'submitted_at' => $row->submitted_at, 'version' => $row->version,
+                // Panel del cliente (D-87): datos de las tarjetas de «Mis solicitudes».
+                'subcategory' => ['id' => $row->subcategory_id, 'name' => $row->subcategory_name],
+                'district' => ['id' => $row->district_id, 'name' => $row->district_name], 'updated_at' => $row->updated_at,
             ])->all();
     }
 
@@ -36,7 +44,8 @@ final class ServiceRequestView
             ->first(['r.*', 'c.user_id as owner_user_id', 's.name as subcategory_name', 'd.name as district_name']);
         abort_unless($row, 404);
         if ((int) $row->owner_user_id === $user->id) {
-            return $this->detail($row, $row->address) + $this->candidates->searchSummary($row);
+            return $this->detail($row, $row->address) + $this->candidates->searchSummary($row)
+                + ['timeline' => $this->timeline->forOwner($row->id)];
         }
         $technicianId = DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
         abort_unless($technicianId && DB::table('offers')->where('request_id', $id)->where('technician_id', $technicianId)->exists(), 404);

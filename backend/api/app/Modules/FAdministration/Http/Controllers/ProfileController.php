@@ -15,12 +15,12 @@ final class ProfileController
 {
     public function show(Request $request): JsonResponse
     {
-        return ApiResponse::data(AccountData::from($request->user()->fresh()));
+        return ApiResponse::data(AccountData::from($request->user()->fresh(), private: true));
     }
 
     public function update(UpdateProfileRequest $request, UpdateProfile $update): JsonResponse
     {
-        return ApiResponse::data(AccountData::from($update->execute($request->user(), $request->validated())));
+        return ApiResponse::data(AccountData::from($update->execute($request->user(), $request->validated()), private: true));
     }
 
     public function password(ChangePasswordRequest $request, ChangePassword $change): JsonResponse

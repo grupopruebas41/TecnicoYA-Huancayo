@@ -2,6 +2,23 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-27 · Panel del cliente, PR 1 de 2 · API (D-87 a D-91)
+
+- **Rama:** `feature/mayhuasca/cliente/cercania`, desde `main` `c7dc292`. El detalle está en `docs/avances/mayhuasca/cliente/cercania/avance.md`.
+- **Commits:** `e9fd62c` (plan), `cb95a4b` (Pest en rojo), `3eef886` (API) y después documentación.
+- **API (contrato `plan-pruebas-v3/sprint-05/CONTRATO-API.md`):**
+  - `GET /technicians` con `sort=proximity`, `distance` y `max_fee`;
+  - `GET /requests` con subcategoría y distrito;
+  - `timeline` del titular en `GET /requests/{id}`;
+  - `POST /notifications/{id}/read` y `/read-all`, y `state`, `type` y `unread_count` en la bandeja;
+  - `district_id` y `reference_address` del cliente en `PATCH /me`.
+- **Sin migraciones ni dependencias.**
+- **Pruebas en `3eef886`:** Pest 376/376 y `composer audit` limpio. IDs nuevos: S05-TC-001 a 024. Ajustadas: S04-TC-142 y 143 (campos aditivos).
+- **Decisiones:** D-87 a D-91 registradas; ASES-01 (asesoría remota) pendiente. **DEF-49** registrado como abierto: la campana del panel siempre cuenta 0 con la API real.
+- **Siguiente:** PR 2 en `feature/delgado/cliente/panel-base`, el frontend, con el arreglo de DEF-49. Ya existe con el commit del plan (`77f5ec1`) y se rebasa sobre `main` cuando se integre este PR.
+- **Nota:** `REGISTRO-DEFECTOS.md` no lleva DEF-47 a 49 (el CSV sí).
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Cierre del Sprint 4 (S4.6) · en curso
 
 - **Rama:** `feature/pimentel/cierre/s04`, desde `main` `4d1ba16`. PR #36, en **borrador**. El detalle está en `docs/avances/pimentel/cierre/s04/avance.md`.

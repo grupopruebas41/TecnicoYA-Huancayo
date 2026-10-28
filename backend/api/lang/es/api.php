@@ -100,4 +100,11 @@ return [
     'offer_decision' => 'La respuesta debe ser aceptar o rechazar.',
     'offer_not_accepted' => 'Elige uno de los técnicos que aceptaron tu solicitud.',
     'base_district' => 'Selecciona un distrito activo.',
+    // Panel del cliente (D-88 a D-91).
+    'sort_invalid' => 'El orden debe ser por nombre o por cercanía.',
+    'proximity_origin' => 'Elige un distrito o registra tu distrito principal para ordenar por cercanía.',
+    'max_fee_range' => 'La tarifa máxima debe ser un monto entre 0 y 10 000 soles.',
+    'notification_state' => 'El estado debe ser leídas o no leídas.',
+    'notification_type' => 'El tipo de notificación no es válido.',
+    'client_fields_only' => 'Este dato solo se guarda en el perfil de un cliente.',
 ];

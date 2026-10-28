@@ -1,0 +1,31 @@
+# Pest completo · slot A (tecnicoya_testing)
+Fecha: 2026-10-27 · Commit: 3eef886 (rama feature/mayhuasca/cliente/cercania)
+Comando: C:\xampp\php\php.exe vendor/bin/pest --log-junit (desde backend/api)
+
+Pruebas: 376 · Aserciones: 4313 · Errores: 0 · Fallos: 0 · Omitidas: 0 · Tiempo: 375 s
+
+IDs S05-TC (24):
+  ✓ it S05-TC-020 el cliente cambia su distrito principal y su dirección de referencia y los ve en /me
+  ✓ it S05-TC-021 rechaza en español un distrito inactivo o inexistente y una dirección demasiado larga, sin cambios
+  ✓ it S05-TC-022 con una versión obsoleta devuelve 409 y no cambia el distrito
+  ✓ it S05-TC-023 un técnico no puede enviar datos de cliente en su perfil
+  ✓ it S05-TC-024 la dirección de referencia solo la ve su dueño en /me, no el técnico asignado
+  ✓ it S05-TC-009 el listado del cliente trae subcategoría, distrito y fecha de cambio, y solo sus solicitudes
+  ✓ it S05-TC-010 la línea de tiempo del titular va en orden y solo con los tipos y textos de la lista fija [TC-067]
+  ✓ it S05-TC-011 la línea de tiempo no expone el resumen, los metadatos, el actor ni la correlación
+  ✓ it S05-TC-012 el técnico notificado ve el detalle sin la línea de tiempo del cliente
+  ✓ it S05-TC-013 la línea de tiempo refleja el flujo real del S4 hasta la asignación [TC-067]
+  ✓ it S05-TC-014 marca como leída una notificación propia y repetir no cambia la fecha [TC-106]
+  ✓ it S05-TC-015 no deja marcar una notificación ajena ni una inexistente [TC-106]
+  ✓ it S05-TC-016 marcar todas cambia solo las propias sin leer y devuelve cuántas cambió
+  ✓ it S05-TC-017 la bandeja filtra por leídas, no leídas y tipo, y rechaza un estado desconocido
+  ✓ it S05-TC-018 el contador de no leídas cuenta todas las propias sin importar el filtro ni la página
+  ✓ it S05-TC-019 marcar como leída exige sesión
+  ✓ it S05-TC-001 ordena por cercanía: mismo distrito, luego km de la matriz y al final los que no tienen distancia
+  ✓ it S05-TC-002 cada tarjeta por cercanía trae la distancia aproximada y el orden por nombre no la incluye
+  ✓ it S05-TC-003 el filtro de distrito es el origen de la cercanía en lugar del distrito del perfil
+  ✓ it S05-TC-004 sin distrito en el perfil ni en el filtro, el orden por cercanía se rechaza en español
+  ✓ it S05-TC-005 rechaza en español un orden desconocido y una tarifa máxima inválida
+  ✓ it S05-TC-006 la tarifa máxima filtra por el servicio que cumple los demás filtros, con el límite incluido
+  ✓ it S05-TC-007 el orden por cercanía conserva la lista blanca pública y no expone el distrito base ni el contacto
+  ✓ it S05-TC-008 pagina por cercanía de forma estable, con desempate por nombre e id

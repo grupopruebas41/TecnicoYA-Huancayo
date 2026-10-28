@@ -1,0 +1,17 @@
+# Pest en rojo · slot A (tecnicoya_testing)
+Fecha: 2026-10-27 · Commit: cb95a4b (rama feature/mayhuasca/cliente/cercania), antes de la implementación
+Comando: C:\xampp\php\php.exe vendor/bin/pest tests/Feature/Sprint05 tests/Feature/Sprint04/ResponseShapeTest.php
+
+Resultado: 19 fallidas y 9 aprobadas (S05: 18 fallidas y 6 aprobadas; S04-TC-140 a 142 aprobadas y S04-TC-143 fallida).
+
+  ⨯ S05-TC-001 a 003, 006 a 008  (sort y max_fee no existían: VALIDATION_FAILED «Filtro no permitido»)
+  ✓ S05-TC-004 y 005             (aprobadas por otra causa: sort y max_fee se rechazaban como filtros desconocidos;
+                                  después de la implementación prueban el origen y los límites)
+  ⨯ S05-TC-009                   (el listado no traía subcategory ni district)
+  ⨯ S05-TC-010, 011 y 013        (el detalle no traía timeline)
+  ✓ S05-TC-012                   (aprobada como guarda: el técnico ya no recibía timeline)
+  ⨯ S05-TC-014, 016 a 019        (no existían /read ni /read-all, state, type ni unread_count)
+  ✓ S05-TC-015                   (aprobada por otra causa: la ruta no existía y respondía 404)
+  ⨯ S05-TC-020, 021 y 023        (PATCH /me no aceptaba district_id ni reference_address)
+  ✓ S05-TC-022 y 024             (aprobadas como guardas: la versión obsoleta ya daba 409 y la dirección ya era privada)
+  ⨯ S04-TC-143                   (la bandeja no traía unread_count)

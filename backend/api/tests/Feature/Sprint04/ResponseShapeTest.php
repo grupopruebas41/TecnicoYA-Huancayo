@@ -107,6 +107,9 @@ it('S04-TC-141 los candidatos y la elección tienen la forma completa del contra
 it('S04-TC-142 el detalle de la solicitud del titular tiene la forma completa del contrato §5.4 durante la búsqueda', function () {
     Sanctum::actingAs($this->client);
     $detail = $this->getJson("/api/v1/requests/{$this->request->id}")->assertOk()->json('data');
+    // D-89 (TIMELINE-01): el titular recibe además timeline, cuya forma prueban S05-TC-010 y 011; el resto no cambia.
+    expect($detail['timeline'])->toBeArray();
+    $detail = array_diff_key($detail, ['timeline' => 1]);
 
     expect(s04Shape($detail))->toBe(['id' => 'int', 'status' => 'string', 'version' => 'int', 'subcategory' => S04_REF, 'district' => S04_REF,
         'description' => 'string', 'address' => 'string', 'mode' => 'string', 'preferred_start_at' => 'null', 'preferred_end_at' => 'null',
@@ -132,7 +135,9 @@ it('S04-TC-143 la bandeja de notificaciones tiene la forma completa del contrato
     $item = ['id' => 'int', 'type' => 'string', 'title' => 'string', 'body' => 'string', 'subject' => ['type' => 'string', 'id' => 'int'],
         'event_id' => 'string', 'created_at' => 'string', 'read_at' => 'null'];
 
-    expect(s04Shape($page))->toBe(['items' => [$item], 'pagination' => ['page' => 'int', 'per_page' => 'int', 'total' => 'int', 'last_page' => 'int']])
+    // D-90 (NOTIF-02): unread_count se agregó para la campana del panel del cliente; el resto de la forma no cambia.
+    expect(s04Shape($page))->toBe(['items' => [$item], 'pagination' => ['page' => 'int', 'per_page' => 'int', 'total' => 'int', 'last_page' => 'int'],
+        'unread_count' => 'int'])
         ->and([$page['items'][0]['type'], $page['items'][0]['subject']])->toBe(['offer.created', ['type' => 'offer', 'id' => (int) $this->offer->id]])
         ->and($page['pagination'])->toBe(['page' => 1, 'per_page' => 1, 'total' => 1, 'last_page' => 1])
         ->and($page['items'][0]['event_id'])->toBe(DB::table('notifications')->where('id', $page['items'][0]['id'])->value('event_id'));
