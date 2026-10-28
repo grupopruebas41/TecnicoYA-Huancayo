@@ -1,14 +1,15 @@
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
-import { login, openRequest, observe, read, apiWrite } from "./helpers";
+import { login, openRequest, observe, read, apiWrite, openMyRequests } from "./helpers";
 import { switchAccount, loginClient, wizard, send } from "../sprint-03/helpers";
 describe("S4 selección", () => {
   it("S04-TC-087 cliente sigue la búsqueda hasta dos aceptaciones", () => {
     loginClient();
     cy.get('nav[aria-label="Gestión del cliente"]').contains("button", "Nueva solicitud").click();
-    wizard().find("select[name=specialty_id] option").contains("Refrigeración").then(option => wizard().find("select[name=specialty_id]").select(option.val()));
+    // Revisión del PR #39: tarjetas con radio en lugar de select.
+    wizard().contains("label", "Refrigeración").find("input[name=specialty_id]").check();
     wizard().contains("button", "Siguiente").click();
-    wizard().find("select[name=subcategory_id] option").contains("Cámaras").then(option => wizard().find("select[name=subcategory_id]").select(option.val()));
+    wizard().contains("label", "Cámaras").find("input[name=subcategory_id]").check();
     wizard().contains("button", "Siguiente").click();
     wizard().find("textarea[name=description]").type("La cámara de frío no mantiene la temperatura adecuada.");
     wizard().contains("button", "Siguiente").click();
@@ -22,6 +23,7 @@ describe("S4 selección", () => {
     cy.wait("@submitted").its("response.statusCode").should("eq", 202);
     cy.task("runJobs");
     cy.visit("/#cuenta");
+    openMyRequests();
     cy.get("@searchId").then(id => cy.contains("button", "Ver solicitud #" + id).click());
     cy.get('[aria-label="Seguimiento de solicitud"]').should("contain", "Buscando técnicos");
     for (const technician of ["frio", "busy"]) {
@@ -34,6 +36,7 @@ describe("S4 selección", () => {
     }
     cy.get("@clientEmail").then(email => switchAccount(email));
     cy.visit("/#cuenta");
+    openMyRequests();
     cy.get("@searchId").then(id => cy.contains("button", "Ver solicitud #" + id).click());
     cy.get('[aria-label="Seguimiento de solicitud"]').should("contain", "Elige a tu técnico");
     cy.get('[aria-label="Seguimiento de solicitud"] article').should("have.length", 2).each(card => {
@@ -48,6 +51,7 @@ describe("S4 selección", () => {
     ));
     switchAccount("e2e-client-direct@example.test");
     cy.visit("/#cuenta");
+    openMyRequests();
     cy.get("@round").then(({request_id}) => cy.contains("button", "Ver solicitud #" + request_id).click());
     observe("POST", "/requests/*/selection", "selection");
     cy.contains("button", "Elegir a").first().click();

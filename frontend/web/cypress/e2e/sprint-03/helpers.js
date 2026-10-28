@@ -21,19 +21,26 @@ export function loginClient(kind = "fresh") {
     cy.get("[data-cy=portal-client]").should("be.visible");
   });
 }
+// D-87: el cliente entra a su Inicio; las solicitudes están en la sección «Mis solicitudes» del menú.
+export function openMyRequests() {
+  cy.get('nav[aria-label="Gestión del cliente"]')
+    .contains("button", "Mis solicitudes")
+    .click();
+}
 export function toDescription() {
   cy.get('nav[aria-label="Gestión del cliente"]')
     .contains("button", "Nueva solicitud")
     .click();
+  // Revisión del PR #39: especialidad y subcategoría son tarjetas con un radio visible (antes, select).
   wizard()
-    .find("select[name=specialty_id] option")
-    .should("have.length.greaterThan", 1);
-  wizard().find("select[name=specialty_id]").select(1);
+    .find("input[name=specialty_id]")
+    .should("have.length.greaterThan", 0);
+  wizard().find("input[name=specialty_id]").first().check();
   wizard().contains("button", "Siguiente").click();
   wizard()
-    .find("select[name=subcategory_id] option")
-    .should("have.length.greaterThan", 1);
-  wizard().find("select[name=subcategory_id]").select(1);
+    .find("input[name=subcategory_id]")
+    .should("have.length.greaterThan", 0);
+  wizard().find("input[name=subcategory_id]").first().check();
   wizard().contains("button", "Siguiente").click();
 }
 export function toSummary() {

@@ -13,6 +13,7 @@ import StatisticsPage from '../admin/StatisticsPage';
 import UsersAdmin from '../admin/UsersAdmin';
 import RequestsAdmin from '../admin/RequestsAdmin';
 import {Notice} from './forms';
+import ClientPanel from '../client/ClientPanel';
 import './account.css';
 import {verificationLabel} from './labels';
 
@@ -94,6 +95,9 @@ export default function AccountApp() {
   if (!roles[role]) return <section className="session-page"><Notice error="Tu cuenta no tiene un rol habilitado."/><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></section>;
   const expire = failure => { clearSession(); setBlocked(failure.status === 403); setError(failure.status === 403 ? failure.message : 'Tu sesión venció. Inicia sesión nuevamente.'); };
   const can = code => user.permissions?.includes(code);
+  // Panel del cliente (D-87): su propio menú agrupado sobre PanelShell.
+  if (role === 'client') return <ClientPanel key={user.id} user={user} roleLabel={roles.client} onLogout={logout} onUserChange={setUser}
+    busy={busy} notice={error} onExpired={expire}/>;
   const profile = {id: 'profile', label: 'Mi perfil', icon: 'profile', render: () => <ProfilePage key={user.id} user={user} onUpdate={setUser} onExpired={expire}/>};
   // Bloque C (D-85): menú del administrador agrupado por secciones y filtrado por permisos (sin enlaces vacíos).
   const sections = role === 'admin' ? [

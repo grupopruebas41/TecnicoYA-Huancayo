@@ -3,6 +3,10 @@ import { request } from "../administration/http";
 import { Notice } from "../administration/forms";
 import { createSubmissionAttempt } from "./requestsApi";
 import { fieldErrors } from "./requestValidation";
+import { formatDate } from "../client/clientRules";
+// La API devuelve la franja tal como está en la base (UTC, «2026-10-29 20:00:00.000000») o en ISO; se muestra en Lima.
+const formatSlot = (value) =>
+  value ? formatDate(String(value).includes("T") ? value : String(value).replace(" ", "T") + "Z") : "";
 export function ReferenceFee({ fee }) {
   if (fee?.amount == null) return <p>Sin tarifa referencial</p>;
   return (
@@ -106,7 +110,7 @@ export default function RequestSummary({
       </p>
       {record.mode === "scheduled" && (
         <p>
-          {record.preferred_start_at} — {record.preferred_end_at}
+          {formatSlot(record.preferred_start_at)} — {formatSlot(record.preferred_end_at)}
         </p>
       )}
       {record.source === "profile" && (

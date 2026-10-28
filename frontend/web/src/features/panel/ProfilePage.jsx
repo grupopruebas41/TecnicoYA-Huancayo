@@ -4,6 +4,7 @@ import ProfileForm from '../administration/ProfileForm';
 import {PasswordField, PasswordMeter} from '../administration/passwordFields';
 import {validatePassword} from '../administration/registration';
 import {initials} from './PanelShell';
+import ClientDetails from '../client/ClientDetails';
 
 const AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const AVATAR_BYTES = 5 * 1024 * 1024;
@@ -98,10 +99,11 @@ function PasswordChange({onExpired}) {
   </form>;
 }
 
-/** Mi perfil (Fase 1): datos (ProfileForm), foto y contraseña. */
+/** Mi perfil (Fase 1): datos (ProfileForm), foto y contraseña; el cliente suma su distrito y su dirección (D-91). */
 export default function ProfilePage({user, onUpdate, onExpired}) {
   return <section className="panel-page profile-page">
     <ProfileForm user={user} onUpdate={onUpdate} onExpired={onExpired}/>
+    {user.role?.code === 'client' && <ClientDetails user={user} onUpdate={onUpdate} onExpired={onExpired}/>}
     <AvatarCard user={user} onUpdate={onUpdate} onExpired={onExpired}/>
     <PasswordChange onExpired={onExpired}/>
   </section>;

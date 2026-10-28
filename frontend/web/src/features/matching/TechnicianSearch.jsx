@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { request } from "../administration/http";
 import { Notice } from "../administration/forms";
 import { useResource, ResourceState } from "../administration/Sprint02Common";
-import { searchQuery, changeFilters } from "./searchQuery";
+import { searchQuery, changeFilters, withProximity } from "./searchQuery";
+import { MAX_FEES } from "../client/clientRules";
 import TechnicianCard from "./TechnicianCard";
 import TechnicianProfile from "./TechnicianProfile";
-export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
+import Pagination from "../client/Pagination";
+// initialTechnician: «Ver perfil» desde el Inicio abre directamente ese perfil (la búsqueda queda detrás de «Volver»).
+export default function TechnicianSearch({ onRequest, initialFilters = {}, defaultDistrictId = null, initialTechnician = null }) {
   const [filters, setFilters] = useState({ ...initialFilters, page: 1 }),
     [result, setResult] = useState(null),
+    [loading, setLoading] = useState(true),
     [error, setError] = useState(""),
-    [selected, setSelected] = useState(null),
+    [selected, setSelected] = useState(initialTechnician),
     [retry, setRetry] = useState(0),
     [subcategories, setSubcategories] = useState([]);
   const specialties = useResource("/catalog/specialties"),
@@ -31,34 +35,44 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
   }, [filters.specialty_id]);
   useEffect(() => {
     let active = true;
-    setResult(null);
+    // La página anterior se conserva mientras carga la siguiente: la paginación no desaparece al cambiar de página.
+    setLoading(true);
     setError("");
-    request("/technicians?" + searchQuery(filters))
+    request("/technicians?" + searchQuery(withProximity(filters, defaultDistrictId)))
       .then((r) => {
         if (active) setResult(r.data);
       })
       .catch((error) => {
-        if (active) setError(error.message);
+        if (active) {
+          setResult(null);
+          setError(error.message);
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
     return () => {
       active = false;
     };
-  }, [filters, retry]);
+  }, [filters, retry, defaultDistrictId]);
   const change = (name, value) =>
     setFilters((current) => changeFilters(current, name, value));
   if (selected)
     return (
       <TechnicianProfile
-        id={selected}
+        id={selected.id}
+        preview={selected}
         onRequest={onRequest}
         onBack={() => setSelected(null)}
       />
     );
   return (
-    <section aria-label="Buscar técnicos">
+    <section aria-label="Buscar técnicos" aria-busy={loading}>
       <h2>Buscar técnicos</h2>
-      <p>
-        Explora perfiles por especialidad y zona. El orden no es un ranking.
+      <p className="muted">
+        {filters.district_id || defaultDistrictId
+          ? "Ordenados por cercanía a tu distrito; no es una recomendación."
+          : "Explora perfiles por especialidad y zona. Registra tu distrito principal en Mi perfil para verlos por cercanía."}
       </p>
       <ResourceState resource={specialties} />
       <ResourceState resource={districts} />
@@ -84,6 +98,20 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
           </label>
         ))}
         <label>
+          Tarifa máxima
+          <select
+            value={filters.max_fee || ""}
+            onChange={(e) => change("max_fee", e.target.value)}
+          >
+            <option value="">Cualquiera</option>
+            {MAX_FEES.map((fee) => (
+              <option key={fee} value={fee}>
+                Hasta S/ {fee}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
           Calificación mínima
           <select
             value={filters.min_rating || ""}
@@ -104,36 +132,23 @@ export default function TechnicianSearch({ onRequest, initialFilters = {} }) {
           Reintentar búsqueda
         </button>
       )}
-      {!error && !result && <output>Buscando técnicos…</output>}
+      {!error && loading && <output>Buscando técnicos…</output>}
       {result?.items.length === 0 && (
         <p>No hay técnicos que coincidan con los filtros elegidos.</p>
       )}
-      <div className="s02-list">
+      <div className="s02-list client-technician-list">
         {result?.items.map((t) => (
-          <TechnicianCard key={t.id} technician={t} onOpen={setSelected} />
+          <TechnicianCard key={t.id} technician={t} onOpen={() => setSelected(t)} />
         ))}
       </div>
       {result && (
-        <nav aria-label="Páginas de técnicos">
-          <button
-            type="button"
-            disabled={result.pagination.page <= 1}
-            onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
-          >
-            Página anterior
-          </button>
-          <span>
-            Página {result.pagination.page} de{" "}
-            {Math.max(1, result.pagination.last_page)}
-          </span>
-          <button
-            type="button"
-            disabled={result.pagination.page >= result.pagination.last_page}
-            onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
-          >
-            Página siguiente
-          </button>
-        </nav>
+        <Pagination
+          label="Páginas de técnicos"
+          page={result.pagination.page}
+          lastPage={result.pagination.last_page}
+          disabled={loading}
+          onChange={(page) => setFilters({ ...filters, page })}
+        />
       )}
     </section>
   );

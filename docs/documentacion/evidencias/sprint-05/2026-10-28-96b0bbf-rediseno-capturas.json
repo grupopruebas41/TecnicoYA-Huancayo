@@ -1,0 +1,144 @@
+{
+  "1366-light-inicio": {
+    "overflowX": false
+  },
+  "1366-light-buscar": {
+    "overflowX": false
+  },
+  "1366-light-perfil-tecnico": {
+    "overflowX": false
+  },
+  "1366-light-nueva-solicitud": {
+    "overflowX": false
+  },
+  "1366-light-nueva-solicitud-paso-2": {
+    "overflowX": false
+  },
+  "1366-light-mis-solicitudes": {
+    "overflowX": false
+  },
+  "1366-light-seguimiento": {
+    "overflowX": false
+  },
+  "1366-light-detalle-linea-de-tiempo": {
+    "overflowX": false
+  },
+  "1366-light-linea-de-tiempo": [
+    "Enviamos tu solicitud a técnicos disponibles",
+    "Hay técnicos que aceptaron: elige uno"
+  ],
+  "1366-light-notificaciones": {
+    "overflowX": false
+  },
+  "1366-light-perfil": {
+    "overflowX": false
+  },
+  "1366-dark-inicio": {
+    "overflowX": false
+  },
+  "1366-dark-buscar": {
+    "overflowX": false
+  },
+  "1366-dark-perfil-tecnico": {
+    "overflowX": false
+  },
+  "1366-dark-nueva-solicitud": {
+    "overflowX": false
+  },
+  "1366-dark-nueva-solicitud-paso-2": {
+    "overflowX": false
+  },
+  "1366-dark-mis-solicitudes": {
+    "overflowX": false
+  },
+  "1366-dark-seguimiento": {
+    "overflowX": false
+  },
+  "1366-dark-detalle-linea-de-tiempo": {
+    "overflowX": false
+  },
+  "1366-dark-linea-de-tiempo": [
+    "Enviamos tu solicitud a técnicos disponibles",
+    "Hay técnicos que aceptaron: elige uno"
+  ],
+  "1366-dark-notificaciones": {
+    "overflowX": false
+  },
+  "1366-dark-perfil": {
+    "overflowX": false
+  },
+  "390-light-inicio": {
+    "overflowX": false
+  },
+  "390-light-menu-cajon": {
+    "overflowX": false
+  },
+  "390-light-buscar": {
+    "overflowX": false
+  },
+  "390-light-perfil-tecnico": {
+    "overflowX": false
+  },
+  "390-light-nueva-solicitud": {
+    "overflowX": false
+  },
+  "390-light-nueva-solicitud-paso-2": {
+    "overflowX": false
+  },
+  "390-light-mis-solicitudes": {
+    "overflowX": false
+  },
+  "390-light-seguimiento": {
+    "overflowX": false
+  },
+  "390-light-detalle-linea-de-tiempo": {
+    "overflowX": false
+  },
+  "390-light-linea-de-tiempo": [
+    "Enviamos tu solicitud a técnicos disponibles",
+    "Hay técnicos que aceptaron: elige uno"
+  ],
+  "390-light-notificaciones": {
+    "overflowX": false
+  },
+  "390-light-perfil": {
+    "overflowX": false
+  },
+  "390-dark-inicio": {
+    "overflowX": false
+  },
+  "390-dark-menu-cajon": {
+    "overflowX": false
+  },
+  "390-dark-buscar": {
+    "overflowX": false
+  },
+  "390-dark-perfil-tecnico": {
+    "overflowX": false
+  },
+  "390-dark-nueva-solicitud": {
+    "overflowX": false
+  },
+  "390-dark-nueva-solicitud-paso-2": {
+    "overflowX": false
+  },
+  "390-dark-mis-solicitudes": {
+    "overflowX": false
+  },
+  "390-dark-seguimiento": {
+    "overflowX": false
+  },
+  "390-dark-detalle-linea-de-tiempo": {
+    "overflowX": false
+  },
+  "390-dark-linea-de-tiempo": [
+    "Enviamos tu solicitud a técnicos disponibles",
+    "Hay técnicos que aceptaron: elige uno"
+  ],
+  "390-dark-notificaciones": {
+    "overflowX": false
+  },
+  "390-dark-perfil": {
+    "overflowX": false
+  }
+}

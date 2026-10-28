@@ -146,7 +146,8 @@ test("S04-TC-108 complemento: selección confirma estado servidor", async () => 
   fireEvent.click(await screen.findByText("Elegir a Técnico sintético"));
   fireEvent.click(screen.getByText("Confirmar"));
   await screen.findByText("Asignaste a Técnico sintético.");
-  await screen.findByText("Asignada");
+  // Revisión del PR #39: «Asignada» también es el nombre de un paso del progreso; se lee la frase de estado.
+  await screen.findByText("Asignada", { selector: "p" });
   expect(
     screen.queryByRole("button", { name: "Elegir a Técnico sintético" }),
   ).not.toBeInTheDocument();

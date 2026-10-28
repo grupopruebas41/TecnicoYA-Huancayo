@@ -1,0 +1,18 @@
+# Vitest completo · 2026-10-28 · commit b9dfa35 (rama feature/delgado/cliente/panel-base, PR #39)
+Comando: npx vitest run (desde frontend/web)
+
+Archivos: 42 aprobados · Pruebas: 340/340 · Sin errores no capturados
+Lint y build: aprobados · npm audit: found 0 vulnerabilities
+
+IDs del Inicio aprobado:
+  ✓ S05-TC-046 la bienvenida saluda por nombres, muestra el distrito, los técnicos de la zona y el avance del perfil
+  ✓ S05-TC-027 el Inicio no muestra contadores sueltos, «¿Qué necesitas hoy?», citas ni calificaciones
+  ✓ S05-TC-029 los atajos de «¿Qué se malogró?» abren Nueva solicitud con especialidad y subcategoría precargadas [D-93]
+  ✓ S05-TC-055 «¿Qué se malogró?» oculta los atajos cuya subcategoría no existe o está inactiva
+  ✓ S05-TC-034 «Tu pedido en curso» muestra el más reciente con su paso, qué pasa ahora y su acción
+  ✓ S05-TC-056 sin pedidos activos, «Tu pedido en curso» explica cómo pedir el primer técnico en 3 pasos
+  ✓ S05-TC-028 «Técnicos cerca de ti» muestra 3 por cercanía con distancia, tarifa y «Ver perfil»
+  ✓ S05-TC-057 «Precios de referencia» lista el desde S/ X por especialidad con su nota
+  ✓ S05-TC-058 «Consejo del mes» rota según el mes en Lima y «Tu seguridad» da los dos avisos
+  ✓ S05-TC-059 cada sección carga con su esqueleto y falla por su cuenta con «Reintentar»
+  ✓ S05-TC-060 sin distrito principal la bienvenida invita a registrarlo y no pide técnicos cercanos

@@ -2,6 +2,44 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-28 · Inicio del cliente aprobado (PR #39) y decisiones D-92 y D-93
+
+- **Rama:** `feature/delgado/cliente/panel-base` (PR #39). Commits `266bb9c` (rojo), `b9dfa35` (Inicio y `GET /client/home`) y `b7a95b4` (listas), más documentación.
+- **Decisiones:** D-92 (PEDIDO-01, Parte B) y D-93 (RECO-00) registradas.
+- **Pruebas:** Pest 381/381; Vitest 340/340; lint, build y audits limpios. Conteo S05: 29 Pest y 31 Vitest (60).
+- **Siguiente:** la Parte B (`feature/mayhuasca/cliente/pedido-multiple`), solo cuando Pimentel integre el #39.
+- **Pedidos a Codex:** ninguno.
+
+## 2026-10-28 · Rediseño del panel del cliente tras la revisión del PR #39 (DEF-50)
+
+- **Rama:** `feature/delgado/cliente/panel-base` (PR #39), con `origin/main` integrado (`d505b96`) después del #38.
+- **Commits:** `c2e7cd6` (rojo), `7fc7002` (rediseño) y `96b0bbf` (ajustes vistos en las capturas), más documentación. El detalle está en el avance del panel base.
+- **Pruebas en `96b0bbf`:**
+  - Vitest 334/334, lint, build y `npm audit` limpios;
+  - IDs nuevos S05-TC-041 a 049; conteo S05: 24 Pest y 25 Vitest;
+  - 43 capturas revisadas una por una (claro y oscuro, 1366 y 390 px), sin desborde.
+- **DEF-50:** corregido en `7fc7002`.
+- **Cypress:** los pasos del asistente pasan de `select` a radios; adaptadas sin ejecutar.
+- **Entorno:** tras un reinicio del equipo, Docker Desktop no corría. Se inició y se levantó solo `tecnicoya-mysql-test`.
+- **Parte B (pedido múltiple):** no se programó. Se informaron a Pimentel los choques con los CANVAS S3/S4 y las decisiones pendientes antes de empezar.
+- **Pedidos a Codex:** ninguno.
+
+## 2026-10-27 · Panel del cliente, PR 2 de 2 · SPA (D-87 a D-91, DEF-49)
+
+- **Rama:** `feature/delgado/cliente/panel-base`, apilada sobre `feature/mayhuasca/cliente/cercania` (PR #38, todavía abierto). El detalle está en `docs/avances/delgado/cliente/panel-base/avance.md`.
+- **Commits:** `750c463` (Vitest en rojo) y `4eed58b` (SPA), más documentación.
+- **Hecho:**
+  - `ClientPanel` sobre `PanelShell`, con Inicio, búsqueda por cercanía, Mis solicitudes con pestañas y línea de tiempo, Notificaciones y datos de cliente;
+  - DEF-49 corregido;
+  - `ClientPortal` retirado.
+- **Pruebas en `4eed58b`:**
+  - Vitest 325/325, lint, build y `npm audit` en verde;
+  - IDs S05-TC-025 a 040; conteo S05: 24 Pest y 16 Vitest;
+  - 31 capturas sin desborde.
+- **Cypress:** adaptadas sin ejecutar (`openMyRequests()` y el menú del cliente en `support/sprint01.js`). Las corre la regresión pendiente.
+- **Nota del entorno:** con 0,3 GB libres (SonarQube levantado), las capturas tardaron más de 10 minutos.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-27 · Panel del cliente, PR 1 de 2 · API (D-87 a D-91)
 
 - **Rama:** `feature/mayhuasca/cliente/cercania`, desde `main` `c7dc292`. El detalle está en `docs/avances/mayhuasca/cliente/cercania/avance.md`.

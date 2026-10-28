@@ -1,5 +1,38 @@
 import React from "react";
 import { Field } from "../administration/forms";
+// Revisión del PR #39: especialidad y subcategoría como tarjetas seleccionables (radios nativos: teclado y lectores de
+// pantalla sin dependencias). El foco de validación cae en el primer radio, que lleva aria-invalid.
+function ChoiceCards({ name, label, items, value, onChange, disabled, error }) {
+  return (
+    <fieldset className="choice-cards" disabled={disabled} aria-describedby={error ? `${name}-error` : undefined}>
+      <legend>{label}</legend>
+      <div className="choice-grid">
+        {items.map((item, index) => {
+          const checked = String(value) === String(item.id);
+          return (
+            <label key={item.id} className={"choice-card" + (checked ? " is-checked" : "")}>
+              <input
+                type="radio"
+                name={name}
+                value={item.id}
+                checked={checked}
+                aria-invalid={error && index === 0 ? true : undefined}
+                onChange={(e) => onChange(e.target.value)}
+              />
+              {item.image_url ? (
+                <img src={item.image_url} alt="" loading="lazy" />
+              ) : (
+                <span className="choice-icon" aria-hidden="true">{Array.from(item.name)[0]}</span>
+              )}
+              <span className="choice-name">{item.name}</span>
+            </label>
+          );
+        })}
+      </div>
+      {error && <span className="field-error" id={`${name}-error`}>{error}</span>}
+    </fieldset>
+  );
+}
 export default function WizardFields({
   state,
   update,
@@ -45,10 +78,19 @@ export default function WizardFields({
         Servicio registrado. Conserva la especialidad y subcategoría elegidas.
       </p>
     );
-  if (state.step === 1)
-    return select("specialty_id", "Especialidad", specialties, registered);
-  if (state.step === 2)
-    return select("subcategory_id", "Subcategoría", subcategories, registered);
+  const cards = (name, label, items) => (
+    <ChoiceCards
+      name={name}
+      label={label}
+      items={items}
+      value={state[name] || ""}
+      disabled={registered}
+      error={errors[name]}
+      onChange={(value) => update(name, value)}
+    />
+  );
+  if (state.step === 1) return cards("specialty_id", "Especialidad", specialties);
+  if (state.step === 2) return cards("subcategory_id", "Subcategoría", subcategories);
   if (state.step === 3)
     return (
       <>

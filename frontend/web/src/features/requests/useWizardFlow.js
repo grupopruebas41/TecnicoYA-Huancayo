@@ -56,11 +56,15 @@ function useWizardCatalog(specialtyId, target, retry, setError) {
   }, [specialtyId, retry]);
   return { specialties, subcategories, districts };
 }
-export default function useWizardFlow(initialRecord, target, onExit, onBusy, defaultDistrictId = null) {
+// preset: especialidad y subcategoría elegidas desde un atajo del Inicio (D-93); el asistente empieza en el paso 3.
+export default function useWizardFlow(initialRecord, target, onExit, onBusy, defaultDistrictId = null, preset = null) {
   const [state, dispatch] = useReducer(
       wizardReducer,
       initialRecord,
-      (record) => stateFromRecord(record, defaultDistrictId ? { district_id: String(defaultDistrictId) } : {}),
+      (record) => stateFromRecord(record, {
+        ...(defaultDistrictId ? { district_id: String(defaultDistrictId) } : {}),
+        ...(preset && !target ? { specialty_id: String(preset.specialty_id), subcategory_id: String(preset.subcategory_id), step: 3 } : {}),
+      }),
     ),
     [record, setRecord] = useState(initialRecord),
     [media, setMedia] = useState([]);

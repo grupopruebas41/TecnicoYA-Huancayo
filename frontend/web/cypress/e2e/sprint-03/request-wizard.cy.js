@@ -54,11 +54,14 @@ describe("S3 asistente", () => {
       creates++;
     });
     toDescription();
+    // Con tarjetas no se puede vaciar el radio: cambiar de especialidad deja la subcategoría sin elegir.
     wizard().contains("button", "Atrás").click();
-    wizard().find("select[name=subcategory_id]").select("");
+    wizard().contains("button", "Atrás").click();
+    wizard().find("input[name=specialty_id]").eq(1).check();
+    wizard().contains("button", "Siguiente").click();
     wizard().contains("button", "Siguiente").click();
     cy.focused().should("have.attr", "name", "subcategory_id");
-    wizard().find("select[name=subcategory_id]").select(1);
+    wizard().find("input[name=subcategory_id]").first().check();
     wizard().contains("button", "Siguiente").click();
     wizard().contains("button", "Siguiente").click();
     cy.focused().should("have.attr", "name", "description");

@@ -19,8 +19,10 @@ const dashboard = {requests_by_status: {registered: 0, sent: 2, pending_availabi
   closed: 0, unrated: 0, cancelled: 1, expired: 0}, requests_total: 5, technicians_pending_verification: 3,
   new_users: {last_7_days: {client: 2, technician: 1, admin: 0, total: 3}, last_30_days: {client: 4, technician: 2, admin: 1, total: 7}},
   ratings: {available: false, average: null, count: 0, available_from: 'Sprint 6'}, generated_at: '2026-10-26T15:00:00.000000Z'};
-const notifications = [{id: 1, title: 'Nuevo técnico por verificar', body: '', read_at: null},
-  {id: 2, title: 'Comunicado publicado', body: '', read_at: null}, {id: 3, title: 'Revisión anterior', body: '', read_at: '2026-10-25T10:00:00Z'}];
+// DEF-49: la bandeja tiene la forma real del contrato S4 §7.1 más unread_count (D-90); antes se simulaba un arreglo.
+const inbox = (items, unread) => ({items, pagination: {page: 1, per_page: 20, total: items.length, last_page: 1}, unread_count: unread});
+const notifications = inbox([{id: 1, title: 'Nuevo técnico por verificar', body: '', read_at: null},
+  {id: 2, title: 'Comunicado publicado', body: '', read_at: null}, {id: 3, title: 'Revisión anterior', body: '', read_at: '2026-10-25T10:00:00Z'}], 2);
 
 function routes(user, extra = {}) {
   request.mockImplementation(async (path, body, method) => {
@@ -101,7 +103,7 @@ test('S07-TC-060 la campana cuenta las notificaciones sin leer y las lista', asy
   expect(within(list).getAllByRole('listitem').map(i => i.textContent)).toEqual(['Nuevo técnico por verificar', 'Comunicado publicado', 'Revisión anterior']);
   cleanup();
 
-  routes(admin, {'/notifications': () => ({data: []})});
+  routes(admin, {'/notifications': () => ({data: inbox([], 0)})});
   render(<AccountApp/>);
   fireEvent.click(await screen.findByRole('button', {name: 'Notificaciones: 0 sin leer'}));
   expect(screen.getByText('No tienes notificaciones.')).toBeInTheDocument();

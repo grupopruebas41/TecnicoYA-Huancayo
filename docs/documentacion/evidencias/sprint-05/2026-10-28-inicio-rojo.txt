@@ -1,0 +1,20 @@
+# Rojo del Inicio del cliente aprobado (revisión del PR #39)
+Fecha: 2026-10-28 · Rama feature/delgado/cliente/panel-base, antes de la implementación; el hash es el del commit que agrega este archivo
+
+## Pest: C:\xampp\php\php.exe vendor/bin/pest tests/Feature/Sprint05/ClientHomeTest.php
+  ⨯ S05-TC-050 a 054 (5 fallidas: GET /client/home no existía, 404)
+
+## Vitest: npx vitest run src/features/client
+   × S05-TC-046 la bienvenida saluda por nombres, muestra el distrito, los técnicos de la zona y el avance del perfil
+   × S05-TC-027 el Inicio no muestra contadores sueltos, «¿Qué necesitas hoy?», citas ni calificaciones
+   × S05-TC-029 los atajos de «¿Qué se malogró?» abren Nueva solicitud con especialidad y subcategoría precargadas [D-93]
+   × S05-TC-055 «¿Qué se malogró?» oculta los atajos cuya subcategoría no existe o está inactiva
+   × S05-TC-034 «Tu pedido en curso» muestra el más reciente con su paso, qué pasa ahora y su acción
+   × S05-TC-056 sin pedidos activos, «Tu pedido en curso» explica cómo pedir el primer técnico en 3 pasos
+   × S05-TC-028 «Técnicos cerca de ti» muestra 3 por cercanía con distancia, tarifa y «Ver perfil»
+   × S05-TC-057 «Precios de referencia» lista el desde S/ X por especialidad con su nota
+   × S05-TC-058 «Consejo del mes» rota según el mes en Lima y «Tu seguridad» da los dos avisos
+   × S05-TC-059 cada sección carga con su esqueleto y falla por su cuenta con «Reintentar»
+   × S05-TC-060 sin distrito principal la bienvenida invita a registrarlo y no pide técnicos cercanos
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  11 failed | 20 passed (31)

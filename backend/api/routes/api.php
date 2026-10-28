@@ -58,6 +58,8 @@ Route::prefix('v1')->group(function () {
         // Solicitudes: el detalle valida la relación con la solicitud (titular; técnico notificado desde S4).
         Route::get('requests/{serviceRequest}', [ServiceRequestController::class, 'show'])->whereNumber('serviceRequest');
         Route::middleware('role:client')->group(function () {
+            // Inicio del cliente (revisión del PR #39): zona, precios de referencia y subcategorías para los atajos.
+            Route::get('client/home', [App\Modules\BMatching\Http\Controllers\ClientHomeController::class, 'show']);
             Route::get('requests', [ServiceRequestController::class, 'index']);
             Route::post('requests', [ServiceRequestController::class, 'store']);
             Route::patch('requests/{serviceRequest}', [ServiceRequestController::class, 'update'])->whereNumber('serviceRequest');

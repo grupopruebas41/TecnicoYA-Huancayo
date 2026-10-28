@@ -6,6 +6,7 @@ import {
   fireEvent,
   cleanup,
   waitFor,
+  within,
 } from "@testing-library/react";
 import { validateStep, validateEvidence } from "./requestValidation";
 import { initialWizard, wizardReducer } from "./wizardState";
@@ -61,23 +62,17 @@ test("S03-TC-069 validación del paso 1", () => {
 test("S03-TC-070 cambiar de rubro limpia subcategoría y catálogo", async () => {
   request.mockImplementation(async (p) => catalog(p));
   render(<RequestWizard />);
-  await screen.findByRole("option", { name: "Cómputo" });
-  fireEvent.change(screen.getByLabelText("Especialidad"), {
-    target: { value: "1" },
-  });
+  // Revisión del PR #39: especialidad y subcategoría son tarjetas (radios); se comprueba lo mismo que con select.
+  fireEvent.click(await screen.findByRole("radio", { name: "Cómputo" }));
   fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
-  await screen.findByRole("option", { name: "Hardware" });
-  fireEvent.change(screen.getByLabelText("Subcategoría"), {
-    target: { value: "4" },
-  });
+  fireEvent.click(await screen.findByRole("radio", { name: "Hardware" }));
   fireEvent.click(screen.getByRole("button", { name: "Atrás" }));
-  fireEvent.change(screen.getByLabelText("Especialidad"), {
-    target: { value: "2" },
-  });
+  const specialties = await screen.findByRole("group", { name: "Especialidad" });
+  fireEvent.click(within(specialties).getAllByRole("radio").find((radio) => radio.value === "2"));
   fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
-  await screen.findByRole("option", { name: "Iluminación" });
-  expect(screen.getByLabelText("Subcategoría")).toHaveValue("");
-  expect(screen.queryByRole("option", { name: "Hardware" })).toBeNull();
+  await screen.findByRole("radio", { name: "Iluminación" });
+  expect(screen.getAllByRole("radio").filter((radio) => radio.checked)).toHaveLength(0);
+  expect(screen.queryByRole("radio", { name: "Hardware" })).toBeNull();
 });
 test("S03-TC-071 límites de descripción y espacios", () => {
   for (const n of [19, 1001])

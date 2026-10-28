@@ -1,0 +1,22 @@
+# Vitest completo · 2026-10-27 · commit 4eed58b (rama feature/delgado/cliente/panel-base)
+Comando: npx vitest run (desde frontend/web)
+
+Archivos: 40 aprobados · Pruebas: 325/325 aprobadas · Sin errores no capturados
+
+IDs S05 (16):
+  ✓ S05-TC-025 la campana usa la forma real de la bandeja: unread_count e items [DEF-49]
+  ✓ S05-TC-026 el panel del cliente agrupa su menú y conserva los selectores de Cypress
+  ✓ S05-TC-027 el Inicio resume las solicitudes reales y no muestra citas ni calificaciones
+  ✓ S05-TC-028 «Técnicos cerca de ti» ordena por cercanía y su fallo no tumba el resto del Inicio
+  ✓ S05-TC-029 los accesos por rubro del Inicio abren la búsqueda filtrada por esa especialidad
+  ✓ S05-TC-030 la búsqueda ordena por cercanía, filtra por tarifa máxima y muestra distancia y tarifa
+  ✓ S05-TC-031 sin distrito principal la búsqueda ordena por nombre y lo explica
+  ✓ S05-TC-032 Mis solicitudes agrupa por estado en pestañas con contador y estado en texto
+  ✓ S05-TC-033 el detalle muestra la línea de tiempo y la actualiza con request.updated [TC-067]
+  ✓ S05-TC-034 «Ver solicitud» desde el Inicio abre su detalle en Mis solicitudes
+  ✓ S05-TC-035 la bandeja filtra por estado y tipo y marca una notificación como leída con alerta [TC-106]
+  ✓ S05-TC-036 marcar todas como leídas actualiza el contador y muestra el error si falla
+  ✓ S05-TC-037 Mi perfil guarda el distrito y la dirección del cliente con doble validación y alertas
+  ✓ S05-TC-038 la búsqueda que llega desde la portada abre Buscar técnicos con sus filtros
+  ✓ S05-TC-039 «Solicitar servicio» desde un perfil abre el asistente dirigido en Nueva solicitud
+  ✓ S05-TC-040 mientras el asistente guarda, el menú queda bloqueado y lo anuncia

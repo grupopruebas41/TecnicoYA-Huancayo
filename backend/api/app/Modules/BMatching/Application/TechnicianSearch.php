@@ -39,6 +39,28 @@ final class TechnicianSearch
         ];
     }
 
+    /** Inicio del cliente: técnicos elegibles que atienden el distrito (los mismos que la búsqueda filtrada por zona). */
+    public function countInDistrict(int $districtId): int
+    {
+        return $this->eligible(['district_id' => $districtId])->count();
+    }
+
+    /**
+     * Inicio del cliente: tarifa vigente más baja por especialidad entre técnicos elegibles, en una sola consulta.
+     * Las especialidades sin técnicos con tarifa no aparecen.
+     */
+    public function pricesBySpecialty(): array
+    {
+        return DB::table('technician_services as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')
+            ->join('specialties as p', 'p.id', '=', 'c.specialty_id')
+            ->where('s.active', 1)->where('c.active', 1)->where('p.active', 1)
+            ->whereIn('s.technician_id', $this->eligible([])->select('t.id'))
+            ->groupBy('p.id', 'p.name', 'p.display_order')->orderBy('p.display_order')->orderBy('p.id')
+            ->get(['p.id', 'p.name', DB::raw('MIN(s.reference_fee) as from_fee'), DB::raw('MIN(s.currency) as currency')])
+            ->map(fn (object $row) => ['specialty_id' => (int) $row->id, 'name' => $row->name,
+                'from_fee' => number_format((float) $row->from_fee, 2, '.', ''), 'currency' => $row->currency])->all();
+    }
+
     /** Técnico activo y verificado, con cuenta habilitada, sin pausa vigente (D-57) y un servicio que cumpla los filtros. */
     private function eligible(array $filters): Builder
     {

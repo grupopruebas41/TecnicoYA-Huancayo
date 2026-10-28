@@ -1,5 +1,5 @@
-import { api, observe, apiWrite } from "../sprint-03/helpers";
-export { api, observe, apiWrite };
+import { api, observe, apiWrite, openMyRequests } from "../sprint-03/helpers";
+export { api, observe, apiWrite, openMyRequests };
 export function login(account) {
   cy.visit("/#cuenta");
   cy.get("[data-cy=login-email]").type(account + "@example.test");
@@ -22,6 +22,7 @@ export function openRequest(phase) {
   read("/requests").then(({ body }) => {
     const row = body.data.find((r) => !phase || r.phase === phase);
     expect(row, "solicitud de la fase del catálogo").to.exist;
+    openMyRequests();
     cy.contains("button", "Ver solicitud #" + row.id).click();
     cy.wrap(row).as("currentRequest");
   });

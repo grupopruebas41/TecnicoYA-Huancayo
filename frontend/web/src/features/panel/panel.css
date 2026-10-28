@@ -27,6 +27,12 @@
 [data-theme="light"] .panel-shell {
   color-scheme: light;
 }
+/* DEF-50: la regla global option{background:#1d2629} (portada oscura) dejaba texto oscuro sobre fondo oscuro en el
+   tema claro. Las opciones de los select del panel usan los tokens del tema. */
+.panel-shell option {
+  background: var(--ty-surface);
+  color: var(--ty-text);
+}
 .panel-shell.is-collapsed {
   grid-template-columns: var(--panel-sidebar-collapsed) minmax(0, 1fr);
 }

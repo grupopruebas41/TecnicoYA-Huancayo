@@ -12,7 +12,7 @@ import RequestWizard from "./RequestWizard";
 import RequestSummary from "./RequestSummary";
 import EvidencePicker from "./EvidencePicker";
 import MyRequests from "./MyRequests";
-import ClientPortal from "./ClientPortal";
+import ClientPanel from "../client/ClientPanel";
 import TechnicianSearch from "../matching/TechnicianSearch";
 import { request } from "../administration/http";
 import { registrationPayload, stateFromRecord } from "./wizardState";
@@ -46,16 +46,11 @@ function catalogs(path) {
     return { data: [{ id: 4, name: "Hardware" }] };
   throw new Error("Ruta inesperada " + path);
 }
+// Revisión del PR #39: especialidad y subcategoría se eligen en tarjetas (radios) en lugar de select.
 async function stepFour() {
-  await screen.findByRole("option", { name: "Cómputo" });
-  fireEvent.change(screen.getByLabelText("Especialidad"), {
-    target: { value: "1" },
-  });
+  fireEvent.click(await screen.findByRole("radio", { name: "Cómputo" }));
   fireEvent.click(screen.getByText("Siguiente"));
-  await screen.findByRole("option", { name: "Hardware" });
-  fireEvent.change(screen.getByLabelText("Subcategoría"), {
-    target: { value: "4" },
-  });
+  fireEvent.click(await screen.findByRole("radio", { name: "Hardware" }));
   fireEvent.click(screen.getByText("Siguiente"));
   fireEvent.change(screen.getByLabelText("Descripción de la falla"), {
     target: { value: doc.description },
@@ -109,8 +104,10 @@ test("S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el 
 test("S03-TC-069 complemento: validación enfoca el campo y no registra", async () => {
   request.mockImplementation(async (p) => catalogs(p));
   render(<RequestWizard />);
+  // Con tarjetas, el foco de la validación va al primer radio del grupo «Especialidad».
+  await screen.findByRole("radio", { name: "Cómputo" });
   fireEvent.click(screen.getByText("Siguiente"));
-  expect(screen.getByLabelText("Especialidad")).toHaveFocus();
+  expect(screen.getByRole("radio", { name: "Cómputo" })).toHaveFocus();
   expect(screen.getByText("Selecciona una especialidad.")).toBeVisible();
   expect(request.mock.calls.some(([p]) => p === "/requests")).toBe(false);
 });
@@ -323,19 +320,23 @@ test("S03-TC-080 complemento: detalle enviado sin controles de edición", async 
   expect(screen.queryByText("Enviar solicitud")).toBeNull();
   expect(screen.queryByText(/Retirar foto/)).toBeNull();
 });
+// D-87: el portal del cliente ahora es el panel (ClientPanel); la navegación conserva la etiqueta y los textos.
 test("S03-TC-080 complemento: portal abre solicitud y retoma la registrada", async () => {
   request.mockImplementation(async (p) => {
     if (p === "/requests") return { data: [{ id: 31, status: "registered" }] };
     if (p === "/requests/31") return { data: doc };
+    if (p.startsWith("/notifications")) return { data: { items: [], pagination: { page: 1, last_page: 1 }, unread_count: 0 } };
+    if (p === "/announcements") return { data: [] };
     return catalogs(p);
   });
-  render(<ClientPortal />);
+  render(<ClientPanel user={{ id: "5", name: "Cliente sintético", version: 1, role: { code: "client" }, permissions: [] }} roleLabel="Cliente" onLogout={() => {}} onUserChange={() => {}} onExpired={() => {}} />);
+  fireEvent.click(within(screen.getByRole("navigation", { name: "Gestión del cliente" })).getByText("Mis solicitudes"));
   fireEvent.click(await screen.findByText("Ver solicitud #31"));
   fireEvent.click(await screen.findByText("Continuar solicitud #31"));
   expect(await screen.findByText("Paso 5: Resumen y envío")).toHaveFocus();
   const nav = screen.getByRole("navigation", { name: "Gestión del cliente" });
   fireEvent.click(within(nav).getByText("Nueva solicitud"));
-  expect(await screen.findByLabelText("Especialidad")).toHaveValue("");
+  expect(await screen.findByRole("radio", { name: "Cómputo" })).not.toBeChecked();
 });
 test("S03-TC-073 complemento: fechas de registro y reanudación", () => {
   const state = {
