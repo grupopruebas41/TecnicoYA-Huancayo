@@ -86,6 +86,9 @@ it('S05-TC-053 solo el cliente con sesión lo consulta y la respuesta no trae da
 });
 
 it('S05-TC-054 usa un número fijo de consultas sin importar cuántos técnicos haya', function () {
+    // DEF-52: con sesiones en base de datos, la limpieza de sesiones viejas corre al azar (lotería 2/100) y suma un
+    // DELETE a la petición medida; se apaga para contar solo las consultas del Inicio.
+    config(['session.lottery' => [0, 100]]);
     $queries = function () {
         DB::flushQueryLog();
         DB::enableQueryLog();
