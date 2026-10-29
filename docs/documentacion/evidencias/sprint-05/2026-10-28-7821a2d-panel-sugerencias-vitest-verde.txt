@@ -1,0 +1,4 @@
+# Vitest completo · panel de sugerencias (S05-TC-077, 086 y 087) · 2026-10-28 · commit 7821a2d más el ajuste móvil
+ ✓ src/features/client/problemSearch.test.jsx (11 tests) 4306ms
+ Test Files  43 passed (43)
+      Tests  351 passed (351)

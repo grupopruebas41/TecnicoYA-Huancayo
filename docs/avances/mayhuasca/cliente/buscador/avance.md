@@ -19,7 +19,12 @@
 - `587c06a`: las siembras E2E cargan el diccionario.
 - `fa0f93d`: DEF-51 en rojo (S05-TC-085).
 - `07649f6`: corrección de DEF-51 y acciones cortas en Palabras clave.
-- Después: documentación, evidencias y capturas.
+- `4fd96b1`: documentación, evidencias y capturas.
+- **Ajuste del panel de sugerencias** (pedido sobre el PR #40, solo frontend):
+  - el problema: la lista flotaba debajo de los chips y la tarjeta «Tu pedido en curso» la tapaba;
+  - `7466b2b`: Vitest en rojo (S05-TC-086 y 087; S05-TC-077 adaptada). En S05-TC-077 solo cambia el texto esperado de cada fila, que ahora tiene dos líneas (subcategoría y especialidad) en lugar de «Especialidad › Subcategoría»;
+  - `7821a2d`: el panel va justo debajo del campo y dentro del flujo de la página. Tiene encabezado, filas de 56 px con el ícono de la especialidad, «Más probable» y flecha, el pie «¿No es ninguno? Elegir categoría», filas de carga y el mensaje sin resultados. Se cierra con Escape, con un clic fuera o al vaciar el campo, y abre con una animación de 180 ms que respeta `prefers-reduced-motion`. Se aplica en el Inicio y en el paso 1 de Nueva solicitud;
+  - después, en móvil, «Más probable» pasa debajo del texto para que la subcategoría no se parta a mitad de palabra (visto en las capturas).
 
 ## Cambios
 
@@ -63,6 +68,12 @@
   - los `<label>` que envolvían un `<select>` pasaron a `htmlFor`, porque si no, el nombre accesible incluía el texto de las opciones (corrección del componente, no de la prueba).
 - **Pruebas anteriores adaptadas sin cambiar su ID:** S05-TC-029 y 055. Los atajos ahora son chips y el buscador elige la subcategoría.
 - **`composer audit`:** desde el 2026-10-28 hay un aviso de severidad media para `symfony/mime` 7.4.17 (CVE-2026-45070, se corrige en 7.4.22). Es ajeno a este cambio y también afecta a `main`; el parche queda pendiente de autorización.
+- **Panel de sugerencias:**
+  - rojo: 3 fallidas (`2026-10-28-4fd96b1-panel-sugerencias-vitest-rojo.txt`);
+  - verde: Vitest 351/351, lint y build limpios (`2026-10-28-7821a2d-panel-sugerencias-vitest-verde.txt`);
+  - 12 capturas con 3 sugerencias abiertas, en el Inicio y en el asistente, en claro y oscuro, a 1366 y 390 px (`2026-10-28-7821a2d-panel-sugerencias-*`);
+  - medido en cada captura: el panel queda debajo del campo, hay 12 px hasta los chips, la tarjeta siguiente empieza debajo del panel, ninguna fila está tapada ni recortada y no hay desborde horizontal;
+  - conteo S05: 45 Pest y 42 Vitest (87 IDs).
 - **Cypress:** no se ejecutó.
 
 ## Pendientes
