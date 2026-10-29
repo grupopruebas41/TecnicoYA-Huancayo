@@ -1,0 +1,17 @@
+# Pest en rojo · pedido múltiple (D-92), S05-TC-088 a 102 · 2026-10-28 · base b799ab0
+  ⨯ it S05-TC-088 un pedido de un rubro crea y envía una solicitud vinculada al pedido con la versión de reglas
+  ⨯ it S05-TC-089 un pedido de 3 rubros de dos especialidades crea 3 solicitudes con sus datos y la ubicación común
+  ⨯ it S05-TC-090 rechaza un pedido vacío, de 4 rubros o con un rubro repetido, en español y sin crear nada
+  ⨯ it S05-TC-091 rechaza el pedido entero si no cabe en el máximo de solicitudes activas (D-11) y acepta el que cabe
+  ⨯ it S05-TC-092 el envío es atómico: si falla una solicitud no queda ninguna, ni el pedido ni la clave
+  ⨯ it S05-TC-093 idempotencia: la misma clave devuelve el mismo pedido; otro cuerpo, 409; sin clave, 422
+  ⨯ it S05-TC-094 los síntomas deben ser activos y de la subcategoría del rubro
+  ⨯ it S05-TC-095 las franjas de Lima se guardan como inicio y fin en UTC y la franja pasada se rechaza
+  ⨯ it S05-TC-096 la urgencia es informativa: el técnico la ve en la oferta y el matching ofrece lo mismo
+  ⨯ it S05-TC-097 la solicitud dirigida no entra en el pedido: el pedido rechaza técnico objetivo y origen
+  ⨯ it S05-TC-098 por solicitud: descripción de 20 a 1000 caracteres y hasta 5 fotos propias y libres
+  ⨯ it S05-TC-099 el catálogo de síntomas está sembrado para cada subcategoría, es idempotente y se consulta por subcategoría
+  ⨯ it S05-TC-100 el cupo del cliente informa máximo, activas y disponibles; solo para clientes
+  ⨯ it S05-TC-101 Mis solicitudes y el detalle muestran el pedido, la urgencia, marca, modelo, síntomas y franja
+  ⨯ it S05-TC-102 el catálogo del asistente da el número de subcategorías por especialidad y la tarifa desde
+  Tests:    15 failed (0 assertions)
