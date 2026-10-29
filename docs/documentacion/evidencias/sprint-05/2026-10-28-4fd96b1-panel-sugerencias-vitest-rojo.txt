@@ -1,0 +1,17 @@
+# Vitest en rojo · panel de sugerencias (S05-TC-077 adaptada, 086 y 087) · 2026-10-28 · base 4fd96b1
+   × S05-TC-077 el buscador espera 300 ms, sugiere hasta 3 con «Más probable» y se maneja con el teclado 94ms
+   ✓ S05-TC-078 sin coincidencias ofrece elegir la categoría y con menos de 3 letras no consulta 710ms
+   ✓ S05-TC-079 un chip rellena el buscador y muestra sus sugerencias al instante 23ms
+   ✓ S05-TC-080 en el paso 1 del asistente, elegir una sugerencia lleva al paso 3 con especialidad y subcategoría 369ms
+   ✓ S05-TC-081 Palabras clave: alta con doble validación, edición con versión y desactivación con confirmación 126ms
+   ✓ S05-TC-082 Palabras clave: probar una frase, búsquedas sin resultado y aprobar o descartar sugerencias de la IA 56ms
+   ✓ S05-TC-083 una cuenta antigua completa nombres y apellidos en Mi perfil para que el saludo los use 19ms
+   ✓ S05-TC-084 el panel usa una sola familia de íconos de línea: no quedan emojis en sus componentes 7ms
+   ✓ S05-TC-085 al pasar el cursor, el botón primario del panel conserva su color en el tema claro [DEF-51] 1ms
+   × S05-TC-086 las sugerencias se abren en un panel propio justo debajo del campo, en el flujo y antes de los chips 339ms
+   × S05-TC-087 el panel muestra filas de carga, se recorre con el teclado y se cierra con clic fuera o al vaciar el campo 1010ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected [ …(3) ] to deeply equal [ …(3) ]
+TestingLibraryElementError: Unable to find an accessible element with the role "group" and name "Sugerencias para «mi congeladora no enfría»"
+TestingLibraryElementError: Unable to find role="group" and name "Sugerencias para «no enfría»"
+      Tests  3 failed | 8 passed (11)

@@ -35,8 +35,9 @@ test('S05-TC-077 el buscador espera 300 ms, sugiere hasta 3 con «Más probable�
   expect(request).toHaveBeenCalledTimes(1);
   expect(request).toHaveBeenCalledWith('/catalog/suggestions?q=mi+congeladora+no+enfr%C3%ADa');
   const options = await screen.findAllByRole('option');
-  expect(options.map(option => option.textContent)).toEqual(['Refrigeración comercial › Congeladores industrialesMás probable',
-    'Refrigeración comercial › Refrigeración doméstica', 'Refrigeración comercial › Refrigeración comercial (vitrinas)']);
+  // Fila en dos líneas (panel propio): subcategoría y luego especialidad; «Más probable» solo en la primera.
+  expect(options.map(option => option.textContent)).toEqual(['Congeladores industrialesRefrigeración comercialMás probable',
+    'Refrigeración domésticaRefrigeración comercial', 'Refrigeración comercial (vitrinas)Refrigeración comercial']);
   expect(box()).toHaveAttribute('aria-expanded', 'true');
   expect(box()).toHaveAttribute('aria-activedescendant', options[0].id);
 
@@ -230,4 +231,75 @@ test('S05-TC-085 al pasar el cursor, el botón primario del panel conserva su co
   expect(global).toContain('.primary:hover{background:#fff}');
   expect(rule).toContain('background: var(--ty-primary)');
   expect(rule).toContain('color: var(--ty-on-accent)');
+});
+
+const panelOf = query => screen.getByRole('group', {name: `Sugerencias para «${query}»`});
+
+test('S05-TC-086 las sugerencias se abren en un panel propio justo debajo del campo, en el flujo y antes de los chips', async () => {
+  request.mockResolvedValue(answer(three));
+  const onNoMatch = vi.fn();
+  render(<ProblemSearch onSelect={vi.fn()} onNoMatch={onNoMatch} chips={['Laptop no prende']}/>);
+
+  fireEvent.change(box(), {target: {value: 'mi congeladora no enfría'}});
+  await screen.findAllByRole('option');
+  const panel = panelOf('mi congeladora no enfría');
+  const chips = screen.getByRole('group', {name: 'Problemas frecuentes'});
+
+  // Orden en el documento: campo, panel y chips (el panel empuja hacia abajo los chips y las tarjetas).
+  expect(box().compareDocumentPosition(panel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(panel.compareDocumentPosition(chips) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const rows = within(panel).getAllByRole('option');
+  expect(rows).toHaveLength(3);
+  expect(within(rows[0]).getByText('Congeladores industriales').tagName).toBe('STRONG');
+  expect(within(rows[0]).getByText('Más probable')).toBeInTheDocument();
+  expect(within(rows[1]).queryByText('Más probable')).toBeNull();
+  rows.forEach(row => expect(row.querySelectorAll('svg')).toHaveLength(2)); // ícono de la especialidad y flecha
+
+  fireEvent.click(within(panel).getByRole('button', {name: '¿No es ninguno? Elegir categoría'}));
+  expect(onNoMatch).toHaveBeenCalledTimes(1);
+
+  // Estilos: el panel no flota ni lo recorta su tarjeta; la animación respeta prefers-reduced-motion.
+  const css = readFileSync(resolve('src/features/client/client.css'), 'utf8').replace(/\r\n/g, '\n');
+  const rule = css.match(/\n\.problem-search-panel \{[^}]*\}/)?.[0] || '';
+  expect(rule).not.toBe('');
+  expect(rule).not.toMatch(/position:\s*(absolute|fixed)/);
+  expect(rule).toMatch(/animation: problem-panel-open 180ms/);
+  expect(css).toMatch(/prefers-reduced-motion: reduce\) \{[^@]*\.problem-search-panel \{\s*animation: none/);
+  expect(css.match(/\.client-problem-section \{[^}]*\}/)?.[0]).toContain('overflow: visible');
+});
+
+test('S05-TC-087 el panel muestra filas de carga, se recorre con el teclado y se cierra con clic fuera o al vaciar el campo', async () => {
+  let resolveSearch;
+  request.mockImplementation(() => new Promise(done => { resolveSearch = done; }));
+  const onSelect = vi.fn();
+  render(<><ProblemSearch onSelect={onSelect}/><p>Fuera del buscador</p></>);
+
+  fireEvent.change(box(), {target: {value: 'no enfría'}});
+  const panel = await waitFor(() => panelOf('no enfría'));
+  const skeletons = panel.querySelectorAll('.problem-search-skeleton');
+  expect(skeletons.length).toBeGreaterThanOrEqual(2);
+  expect(skeletons.length).toBeLessThanOrEqual(3);
+  expect(screen.getByRole('status')).toHaveTextContent('Buscando…');
+
+  await act(async () => resolveSearch(answer(three)));
+  const options = within(panelOf('no enfría')).getAllByRole('option');
+  expect(panel.querySelector('.problem-search-skeleton')).toBeNull();
+  fireEvent.keyDown(box(), {key: 'ArrowDown'});
+  fireEvent.keyDown(box(), {key: 'ArrowDown'});
+  expect(options[2]).toHaveAttribute('aria-selected', 'true');
+  fireEvent.mouseDown(screen.getByText('Fuera del buscador'));
+  expect(screen.queryByRole('group', {name: /Sugerencias para/})).toBeNull();
+  expect(box()).toHaveAttribute('aria-expanded', 'false');
+
+  request.mockResolvedValue(answer(three));
+  fireEvent.change(box(), {target: {value: 'no enfría la vitrina'}});
+  await screen.findAllByRole('option');
+  fireEvent.change(box(), {target: {value: ''}});
+  expect(screen.queryByRole('group', {name: /Sugerencias para/})).toBeNull();
+
+  fireEvent.change(box(), {target: {value: 'no enfría la vitrina'}});
+  await screen.findAllByRole('option');
+  fireEvent.keyDown(box(), {key: 'ArrowDown'});
+  fireEvent.keyDown(box(), {key: 'Enter'});
+  expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({subcategory_id: 12}));
 });
