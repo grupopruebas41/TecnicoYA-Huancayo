@@ -266,14 +266,6 @@
 .client-technician:hover {
   transform: translateY(-2px);
 }
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
 
 /* Listas sin viñetas ni sangría del navegador (bandeja, línea de tiempo, servicios y chips). */
 .client-inbox,
@@ -942,5 +934,214 @@
   .client-technician:hover,
   .panel-shell .client-problem:hover {
     transform: none;
+  }
+}
+
+/* Buscador «¿Qué se malogró?» (D-94): combobox grande con sugerencias y chips de problemas frecuentes. */
+.problem-search {
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+.problem-search-label {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.problem-search-box {
+  position: relative;
+}
+.problem-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  color: var(--ty-muted);
+  transform: translateY(-50%);
+}
+.panel-shell .problem-search-box input {
+  min-height: 56px;
+  padding-left: 48px;
+  font-size: 1.05rem;
+  border-radius: 16px;
+}
+/* Panel de sugerencias: en el flujo (empuja los chips y las tarjetas siguientes; nada lo tapa ni lo corta). */
+.problem-search-panel {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--ty-border);
+  border-radius: 16px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-shadow);
+  animation: problem-panel-open 180ms ease-out;
+}
+/* overflow solo mientras crece la altura; al terminar, el panel no recorta nada. */
+@keyframes problem-panel-open {
+  from { max-height: 0; overflow: hidden; opacity: 0; }
+  to { max-height: 640px; overflow: hidden; opacity: 1; }
+}
+.problem-search-panel-head {
+  margin: 0;
+  color: var(--ty-muted);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.problem-search-list,
+.problem-search-loading {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.problem-search-skeleton {
+  display: block;
+  min-height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--ty-raised) 25%, var(--ty-border) 50%, var(--ty-raised) 75%);
+  background-size: 200% 100%;
+  animation: client-shimmer 1.2s linear infinite;
+}
+.problem-search-skeleton:nth-child(3) {
+  width: 70%;
+}
+.problem-search-list li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+/* Separador fino a mitad del espacio entre filas. */
+.problem-search-list li + li::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 12px;
+  left: 12px;
+  height: 1px;
+  background: var(--ty-border);
+}
+.problem-search-list li:hover,
+.problem-search-list li.is-active {
+  background: var(--ty-raised);
+}
+.problem-search-list li.is-active {
+  box-shadow: inset 0 0 0 2px var(--ty-accent);
+}
+.problem-search-specialty {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--ty-accent);
+  background: var(--ty-raised);
+}
+.problem-search-list li:hover .problem-search-specialty,
+.problem-search-list li.is-active .problem-search-specialty {
+  background: var(--ty-surface);
+}
+.problem-search-text {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+}
+.problem-search-text strong,
+.problem-search-text small {
+  overflow-wrap: break-word;
+}
+.problem-search-text small {
+  color: var(--ty-muted);
+  font-size: 0.85rem;
+}
+.problem-search-list .client-chip.is-likely {
+  flex: none;
+  white-space: nowrap;
+}
+.problem-search-go {
+  display: inline-flex;
+  flex: none;
+  color: var(--ty-muted);
+}
+.problem-search-foot {
+  padding-top: 12px;
+  border-top: 1px solid var(--ty-border);
+}
+.problem-search-foot .text-button {
+  margin: 0;
+  padding: 0;
+}
+.client-chip.is-likely {
+  color: var(--ty-on-accent);
+  background: var(--ty-accent);
+}
+.problem-search-empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--ty-warning-text);
+  background: var(--ty-warning-bg);
+}
+.problem-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.panel-shell .problem-chips .client-filter-chip {
+  min-height: 32px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+}
+.client-problem-section {
+  overflow: visible;
+}
+.request-wizard .problem-search {
+  margin-bottom: 18px;
+}
+.client-inbox-icon .panel-svg-icon,
+.client-empty .panel-svg-icon {
+  width: 20px;
+  height: 20px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .problem-search-panel {
+    animation: none;
+  }
+  .problem-search-skeleton {
+    animation: none;
+  }
+}
+/* En móvil, «Más probable» pasa debajo del texto para que la subcategoría use todo el ancho. */
+@media (max-width: 480px) {
+  .problem-search-list li {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    column-gap: 12px;
+    row-gap: 6px;
+    padding: 8px;
+  }
+  .problem-search-list li:first-child .problem-search-specialty {
+    grid-row: 1 / span 2;
+  }
+  .problem-search-list .client-chip.is-likely {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    font-size: 0.72rem;
+  }
+  .problem-search-go {
+    grid-column: 3;
+  }
+  .problem-search-list li:first-child .problem-search-go {
+    grid-row: 1 / span 2;
   }
 }

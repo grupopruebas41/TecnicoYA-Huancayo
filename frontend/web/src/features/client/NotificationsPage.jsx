@@ -2,11 +2,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {request} from '../administration/http';
 import {ConnectionStatus, useRealtimeResource} from '../realtime/Realtime';
 import Pagination from './Pagination';
+import Icon from '../panel/icons';
 import {NOTIFICATION_TYPES, dayLabel, formatTime} from './clientRules';
 
 const PER_PAGE = 20;
 const STATES = [['', 'Todas'], ['unread', 'No leídas'], ['read', 'Leídas']];
-const ICONS = {'request.awaiting_choice': '✓', 'request.pending': '⌛', 'request.direct_declined': '!', 'request.expired': '×'};
+const ICONS = {'request.awaiting_choice': 'check', 'request.pending': 'clock', 'request.direct_declined': 'alert', 'request.expired': 'close'};
 const typeLabel = type => NOTIFICATION_TYPES.find(([code]) => code === type)?.[1] || 'Aviso';
 
 /** Grupos consecutivos por día en hora de Lima: «Hoy», «Ayer» o la fecha. Los avisos llegan del más reciente al más antiguo. */
@@ -85,7 +86,7 @@ export default function NotificationsPage({userId, onChange = () => {}}) {
     {success && <output className="notice">{success}</output>}
     {loading && !data && <p className="muted">Cargando notificaciones…</p>}
     {data && !items.length && <div className="client-empty">
-      <span aria-hidden="true">🔔</span>
+      <span aria-hidden="true"><Icon name="bell"/></span>
       <p><strong>No hay notificaciones con estos filtros</strong></p>
       <p className="muted">Te avisaremos aquí cuando un técnico acepte o cambie el estado de tus solicitudes.</p>
     </div>}
@@ -93,7 +94,7 @@ export default function NotificationsPage({userId, onChange = () => {}}) {
       <h3>{group.label}</h3>
       <ul className="client-inbox">
         {group.items.map(item => <li key={item.id} className={item.read_at ? 'is-read' : 'is-unread'}>
-          <span className="client-inbox-icon" aria-hidden="true">{ICONS[item.type] || '•'}</span>
+          <span className="client-inbox-icon" aria-hidden="true"><Icon name={ICONS[item.type] || 'bell'}/></span>
           <div>
             <strong>{!item.read_at && <span className="client-unread-dot" aria-hidden="true"/>}{item.title}</strong>
             <p>{item.body}</p>

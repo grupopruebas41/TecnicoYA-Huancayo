@@ -543,3 +543,55 @@
 .panel-cards.admin-stats {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
+
+/* Catálogo › Palabras clave (D-94) */
+.admin-catalog-section,
+.admin-keywords,
+.admin-keywords-phrases {
+  display: grid;
+  gap: 16px;
+}
+.admin-keyword-form,
+.admin-keyword-test {
+  display: grid;
+  gap: 12px;
+}
+.admin-keyword-form h3 {
+  margin: 0;
+}
+.admin-keyword-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+.admin-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.admin-row-actions .text-button {
+  margin: 0;
+}
+.admin-keyword-results,
+.admin-keyword-suggestions {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.admin-keyword-suggestions li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+@media (max-width: 760px) {
+  .admin-keyword-fields {
+    grid-template-columns: 1fr;
+  }
+}
+.admin-keyword-try {
+  justify-self: start;
+}

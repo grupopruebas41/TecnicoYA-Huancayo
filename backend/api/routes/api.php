@@ -27,6 +27,9 @@ Route::prefix('v1')->group(function () {
     Route::get('catalog/subcategories', [CatalogController::class, 'subcategories']);
     Route::get('catalog/carousel', [CatalogController::class, 'carousel']);
     Route::get('catalog/districts', [CatalogController::class, 'districts']);
+    // D-94: buscador «¿Qué se malogró?» (diccionario más IA opcional), público como el catálogo y con límite por IP.
+    Route::get('catalog/suggestions', [App\Modules\BMatching\Http\Controllers\CatalogSuggestionController::class, 'index'])
+        ->middleware('throttle:catalog-suggestions');
     Route::middleware('throttle:spa-auth')->group(function () {
         Route::post('auth/register', [App\Modules\FAdministration\Http\Controllers\AuthController::class, 'register'])
             ->middleware('session.none'); // D-43
@@ -116,6 +119,18 @@ Route::prefix('v1')->group(function () {
                 Route::get('districts', [AdminCatalogController::class, 'districts']);
                 Route::post('districts', [AdminCatalogController::class, 'storeDistrict']);
                 Route::patch('districts/{district}', [AdminCatalogController::class, 'updateDistrict'])->whereNumber('district');
+                // D-94: Catálogo › Palabras clave del buscador.
+                Route::get('keywords', [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'index']);
+                Route::post('keywords', [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'store']);
+                Route::get('keywords/test', [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'test']);
+                Route::patch('keywords/{keyword}', [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'update'])
+                    ->whereNumber('keyword');
+                Route::get('keyword-misses', [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'misses']);
+                Route::get('keyword-suggestions', [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'suggestions']);
+                Route::post('keyword-suggestions/{suggestion}/approval',
+                    [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'approve'])->whereNumber('suggestion');
+                Route::delete('keyword-suggestions/{suggestion}',
+                    [App\Modules\FAdministration\Http\Controllers\AdminKeywordController::class, 'discard'])->whereNumber('suggestion');
             });
             Route::middleware('permission:announcements.manage')->group(function () {
                 Route::get('announcements', [AdminAnnouncementController::class, 'index']);

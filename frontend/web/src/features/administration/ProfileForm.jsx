@@ -3,6 +3,8 @@ import {request} from './http';
 import {Field, Notice} from './forms';
 
 // D-75: las cuentas con nombres y apellidos los editan por separado; las anteriores conservan «Nombre completo».
+// D-94: las anteriores pueden completar nombres y apellidos (opcionales); con los dos, reemplazan al nombre completo
+// y el saludo del Inicio usa los nombres.
 const lengthOf = value => Array.from((value || '').trim()).length;
 export default function ProfileForm({user, onUpdate, onExpired}) {
   const split = user.given_names != null;
@@ -31,7 +33,8 @@ export default function ProfileForm({user, onUpdate, onExpired}) {
     event.preventDefault();
     if (busy || uncertain) return;
     const invalid = {};
-    if (split) {
+    const completing = !split && (lengthOf(givenNames) > 0 || lengthOf(familyNames) > 0);
+    if (split || completing) {
       if (lengthOf(givenNames) < 2 || lengthOf(givenNames) > 50) invalid.given_names = ['Los nombres deben tener entre 2 y 50 caracteres.'];
       if (lengthOf(familyNames) < 2 || lengthOf(familyNames) > 50) invalid.family_names = ['Los apellidos deben tener entre 2 y 50 caracteres.'];
     } else if (lengthOf(name) < 2 || lengthOf(name) > 100) invalid.name = ['El nombre debe tener entre 2 y 100 caracteres.'];
@@ -40,7 +43,7 @@ export default function ProfileForm({user, onUpdate, onExpired}) {
     if (Object.keys(invalid).length) { setError('Revisa los campos indicados.'); event.currentTarget.elements.namedItem(Object.keys(invalid)[0])?.focus(); return; }
     setBusy(true);
     try {
-      const names = split ? {given_names: givenNames.trim(), family_names: familyNames.trim()} : {name: name.trim()};
+      const names = split || completing ? {given_names: givenNames.trim(), family_names: familyNames.trim()} : {name: name.trim()};
       const result = await request('/me', {...names, phone: phone || null, expected_version: user.version}, 'PATCH');
       onUpdate(result.data); setSuccess('Cambios guardados correctamente.'); setConflict(false);
     } catch (error) {
@@ -56,7 +59,17 @@ export default function ProfileForm({user, onUpdate, onExpired}) {
     <h2>Mi perfil</h2>{split ? <div className="auth-row">
       <Field name="given_names" label="Nombres" errors={errors} data-cy="profile-given-names" value={givenNames} onChange={e => setGivenNames(e.target.value)} autoComplete="given-name" maxLength={50}/>
       <Field name="family_names" label="Apellidos" errors={errors} data-cy="profile-family-names" value={familyNames} onChange={e => setFamilyNames(e.target.value)} autoComplete="family-name" maxLength={50}/>
-    </div> : <Field name="name" label="Nombre completo" errors={errors} data-cy="profile-name" value={name} onChange={e => setName(e.target.value)} autoComplete="name"/>}
+    </div> : <>
+      <Field name="name" label="Nombre completo" errors={errors} data-cy="profile-name" value={name} onChange={e => setName(e.target.value)} autoComplete="name"/>
+      <fieldset className="profile-split">
+        <legend>Completa tus nombres y apellidos (opcional)</legend>
+        <p className="muted">Así te saludamos por tu nombre. Si los llenas, reemplazan al nombre completo.</p>
+        <div className="auth-row">
+          <Field name="given_names" label="Nombres" errors={errors} data-cy="profile-given-names" value={givenNames} onChange={e => setGivenNames(e.target.value)} autoComplete="given-name" maxLength={50}/>
+          <Field name="family_names" label="Apellidos" errors={errors} data-cy="profile-family-names" value={familyNames} onChange={e => setFamilyNames(e.target.value)} autoComplete="family-name" maxLength={50}/>
+        </div>
+      </fieldset>
+    </>}
     <Field name="phone" label="Teléfono" errors={errors} data-cy="profile-phone" type="tel" value={phone} onChange={e => setPhone(e.target.value)} autoComplete="tel"/>
     <Notice error={error} success={success}/><button type="submit" className="button primary" disabled={busy || uncertain} data-cy="profile-submit">{busy ? 'Consultando…' : 'Guardar perfil'}</button>
     {(conflict || uncertain) && <button className="button outline" type="button" disabled={busy} onClick={reload}>Recargar perfil y descartar mis cambios</button>}

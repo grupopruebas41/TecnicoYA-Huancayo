@@ -414,6 +414,13 @@
   --ty-primary: var(--ty-accent);
   color: var(--ty-on-accent);
 }
+/* DEF-51: la portada pinta de blanco el primario al pasar el cursor (.primary:hover); en el panel se conserva el color
+   del tema (en oscuro, --ty-on-accent es el mismo fondo que ya usa el texto del primario). */
+.panel-content .primary:hover {
+  background: var(--ty-primary);
+  color: var(--ty-on-accent);
+  filter: brightness(1.08);
+}
 .panel-content .outline {
   border: 1px solid var(--ty-border);
   color: var(--ty-text);
@@ -716,4 +723,29 @@
   .panel-shell.is-collapsed .panel-nav-item[data-tooltip]:focus-visible::after {
     content: none;
   }
+}
+
+/* Texto solo para lectores de pantalla (todo el panel). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+/* D-94: cuentas antiguas que completan nombres y apellidos en Mi perfil. */
+.profile-split {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.profile-split legend {
+  padding: 0;
+  font-weight: 600;
+}
+.profile-split p {
+  margin: 0;
 }

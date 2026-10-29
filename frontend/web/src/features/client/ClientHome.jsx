@@ -3,6 +3,7 @@ import {request} from '../administration/http';
 import RoleAnnouncements from '../administration/RoleAnnouncements';
 import {NEXT_TEXT} from './RequestProgress';
 import {PROBLEMS, SAFETY, TIPS} from './homeContent';
+import ProblemSearch from './ProblemSearch';
 import {distanceLabel, feeLabel, initialsOf, isActive, requestGroup} from './clientRules';
 
 /** Lee un recurso para una sección: cada sección carga y falla por su cuenta, sin tumbar al resto del Inicio. */
@@ -62,21 +63,18 @@ function Welcome({user, home, navigate}) {
   </Section>;
 }
 
-/** D-93: atajos por problema; el buscador con IA se conectará aquí (prop search, hoy sin uso). */
+/**
+ * D-94 (RECO-01): buscador «¿Qué se malogró?» (diccionario más IA opcional en el servidor). Debajo, los atajos de
+ * homeContent.js como chips que rellenan la búsqueda; solo los que apuntan a una subcategoría activa.
+ */
 function Problems({home, onRetry, navigate}) {
   const subcategories = home.data?.subcategories || [];
-  const shortcuts = PROBLEMS.map(problem => ({...problem, target: subcategories.find(sub => sub.code === problem.subcategory)}))
-    .filter(problem => problem.target);
-  return <Section label="¿Qué se malogró?" index={1}>
-    <h3>¿Qué se malogró?</h3>
-    {home.loading && <Skeleton label="Cargando problemas frecuentes…" lines={2}/>}
+  const chips = PROBLEMS.filter(problem => subcategories.some(sub => sub.code === problem.subcategory)).map(problem => problem.label);
+  return <Section label="¿Qué se malogró?" index={1} className="client-problem-section">
+    <ProblemSearch chips={chips} onNoMatch={() => navigate('new')}
+      onSelect={({specialty_id: specialty, subcategory_id: subcategory}) => navigate('new', {preset: {specialty_id: specialty, subcategory_id: subcategory}})}/>
+    {home.loading && <Skeleton label="Cargando problemas frecuentes…" lines={1}/>}
     {home.error && <BlockError message="No pudimos cargar los problemas frecuentes." onRetry={onRetry}/>}
-    {shortcuts.length > 0 && <div className="client-problems">
-      {shortcuts.map(problem => <button key={problem.key} type="button" className="client-problem"
-        onClick={() => navigate('new', {preset: {specialty_id: problem.target.specialty_id, subcategory_id: problem.target.id}})}>
-        <span className="client-problem-icon" aria-hidden="true">{problem.icon}</span><span>{problem.label}</span>
-      </button>)}
-    </div>}
   </Section>;
 }
 

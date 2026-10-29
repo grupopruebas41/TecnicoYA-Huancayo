@@ -2,6 +2,22 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-28 · Buscador «¿Qué se malogró?» (D-94, RECO-01)
+
+- **Rama:** `feature/mayhuasca/cliente/buscador`, desde `main` `4b4060b`. Commits `1ae5eb3` (Pest en rojo), `6d1eafe` (backend), `991ccde` (Vitest en rojo), `3549146` (frontend), `587c06a` (siembra E2E), `fa0f93d` y `07649f6` (DEF-51, rojo y verde), más documentación. Detalle en `docs/avances/mayhuasca/cliente/buscador/avance.md`.
+- **Pruebas:** Pest 397/397 y Vitest 349/349; lint, build y `npm audit` limpios. IDs S05-TC-061 a 085 (S05: 45 Pest y 40 Vitest). Cypress no se ejecutó.
+- **Capturas:** 71 sin desborde (`evidencias/sprint-05/2026-10-28-07649f6-buscador-*`). DEF-51 corregido.
+- **Ajuste del panel de sugerencias (mismo PR #40):**
+  - `7466b2b` (rojo) y `7821a2d` (verde), más el ajuste móvil y la documentación;
+  - el panel va debajo del campo y dentro del flujo, con filas, carga, pie y cierre con un clic fuera;
+  - Vitest 351/351 e IDs S05-TC-086 y 087;
+  - 12 capturas medidas, sin solapes (`2026-10-28-7821a2d-panel-sugerencias-*`);
+  - el MySQL de pruebas se había detenido (código 137, falta de memoria) y se volvió a arrancar con `docker start`.
+- **IA:** queda desactivada hasta definir `AI_PROVIDER`, `AI_API_KEY` y `AI_MODEL`; sin ellos responde solo el diccionario.
+- **Bloqueo:** `composer audit` falla desde el 2026-10-28 por `symfony/mime` 7.4.17 (CVE-2026-45070, severidad media, se corrige en 7.4.22). Afecta también a `main`. Falta autorizar el parche.
+- **Siguiente:** la Parte B (D-92), cuando se integre este PR.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-28 · Inicio del cliente aprobado (PR #39) y decisiones D-92 y D-93
 
 - **Rama:** `feature/delgado/cliente/panel-base` (PR #39). Commits `266bb9c` (rojo), `b9dfa35` (Inicio y `GET /client/home`) y `b7a95b4` (listas), más documentación.

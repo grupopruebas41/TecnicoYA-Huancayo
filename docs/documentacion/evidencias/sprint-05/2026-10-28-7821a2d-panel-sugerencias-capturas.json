@@ -1,0 +1,190 @@
+{
+  "1366-light-inicio": {
+    "panelBelowField": true,
+    "gapToChips": 12,
+    "nextCardBelow": true,
+    "rows": [
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false,
+    "sugerencias": [
+      "Refrigeración domésticaRefrigeración comercialMás probable",
+      "Congeladores industrialesRefrigeración comercial",
+      "Refrigeración comercial (vitrinas)Refrigeración comercial"
+    ]
+  },
+  "1366-light-asistente": {
+    "panelBelowField": true,
+    "gapToChips": null,
+    "nextCardBelow": null,
+    "rows": [
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false
+  },
+  "1366-dark-inicio": {
+    "panelBelowField": true,
+    "gapToChips": 12,
+    "nextCardBelow": true,
+    "rows": [
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false,
+    "sugerencias": [
+      "Refrigeración domésticaRefrigeración comercialMás probable",
+      "Congeladores industrialesRefrigeración comercial",
+      "Refrigeración comercial (vitrinas)Refrigeración comercial"
+    ]
+  },
+  "1366-dark-asistente": {
+    "panelBelowField": true,
+    "gapToChips": null,
+    "nextCardBelow": null,
+    "rows": [
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      },
+      {
+        "height": 56,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false
+  },
+  "390-light-inicio": {
+    "panelBelowField": true,
+    "gapToChips": 12,
+    "nextCardBelow": true,
+    "rows": [
+      {
+        "height": 80,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false,
+    "sugerencias": [
+      "Refrigeración domésticaRefrigeración comercialMás probable",
+      "Congeladores industrialesRefrigeración comercial",
+      "Refrigeración comercial (vitrinas)Refrigeración comercial"
+    ]
+  },
+  "390-light-asistente": {
+    "panelBelowField": true,
+    "gapToChips": null,
+    "nextCardBelow": null,
+    "rows": [
+      {
+        "height": 99,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false
+  },
+  "390-dark-inicio": {
+    "panelBelowField": true,
+    "gapToChips": 12,
+    "nextCardBelow": true,
+    "rows": [
+      {
+        "height": 80,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false,
+    "sugerencias": [
+      "Refrigeración domésticaRefrigeración comercialMás probable",
+      "Congeladores industrialesRefrigeración comercial",
+      "Refrigeración comercial (vitrinas)Refrigeración comercial"
+    ]
+  },
+  "390-dark-asistente": {
+    "panelBelowField": true,
+    "gapToChips": null,
+    "nextCardBelow": null,
+    "rows": [
+      {
+        "height": 99,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      },
+      {
+        "height": 73,
+        "clipped": false
+      }
+    ],
+    "covered": false,
+    "overflowX": false
+  }
+}

@@ -107,4 +107,12 @@ return [
     'notification_state' => 'El estado debe ser leídas o no leídas.',
     'notification_type' => 'El tipo de notificación no es válido.',
     'client_fields_only' => 'Este dato solo se guarda en el perfil de un cliente.',
+    // Buscador «¿Qué se malogró?» (D-94).
+    'suggestion_query' => 'Describe el problema con 3 a 120 caracteres.',
+    'keyword_phrase' => 'La frase debe tener entre 2 y 120 caracteres.',
+    'keyword_empty' => 'La frase necesita al menos una palabra con significado.',
+    'keyword_duplicate' => 'Esa frase ya existe en la subcategoría.',
+    'keyword_weight' => 'El peso debe estar entre 1 y 10.',
+    'keyword_kind' => 'El tipo debe ser objeto, síntoma o general.',
+    'suggestion_resolved' => 'Esta sugerencia ya fue resuelta.',
 ];

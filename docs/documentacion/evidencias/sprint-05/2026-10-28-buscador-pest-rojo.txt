@@ -1,0 +1,21 @@
+# Pest en rojo · buscador «¿Qué se malogró?» (S05-TC-061 a 076, D-94)
+Fecha: 2026-10-28 · Rama feature/mayhuasca/cliente/buscador, antes de la implementación (solo la interfaz SuggestionProvider); el hash es el del commit que agrega este archivo
+Comando: C:\xampp\php\php.exe vendor/bin/pest tests/Feature/Sprint05/SuggestionsTest.php tests/Feature/Sprint05/KeywordAdminTest.php
+
+  ⨯ it S05-TC-061 normaliza minúsculas, tildes, signos, palabras vacías, plurales y sinónimos                  
+  ⨯ it S05-TC-062 cuenta primero la frase compuesta y no suma dos veces las mismas palabras                     
+  ⨯ it S05-TC-063 «no prende» sola es ambigua (vale la mitad) y con «laptop» apunta a hardware                  
+  ⨯ it S05-TC-064 desempata por el orden del catálogo y devuelve como máximo 3                                  
+  ⨯ it S05-TC-065 excluye frases inactivas y subcategorías o especialidades inactivas                           
+  ⨯ it S05-TC-066 una búsqueda sin coincidencias se cuenta en keyword_misses sin datos personales               
+  ⨯ it S05-TC-067 valida la longitud de la consulta en español y limita las consultas por IP                    
+  ⨯ it S05-TC-070 la IA solo se consulta cuando el diccionario tiene confianza baja o no encuentra nada         
+  ⨯ it S05-TC-071 descarta los ids de la IA que no están en el catálogo activo y guarda solo los válidos como s…
+  ⨯ it S05-TC-072 guarda en caché la respuesta de la IA por consulta normalizada                                
+  ⨯ it S05-TC-073 ante un error o un tiempo agotado de la IA responde con el diccionario                        
+  ⨯ it S05-TC-074 a la IA solo va el texto del problema y la lista cerrada; la clave nunca aparece en logs ni r…
+  ⨯ it S05-TC-075 LlmProvider queda desactivado sin proveedor, clave o modelo y, activo, llama a Anthropic con… 
+  ⨯ it S05-TC-068 solo catalog.manage administra las frases; alta, duplicado, versión y desactivación quedan au…
+  ⨯ it S05-TC-069 aprobar una frase sugerida por la IA la agrega al diccionario; descartar no; ambas una sola v…
+  ⨯ it S05-TC-076 el diccionario sembrado tiene de 10 a 20 frases válidas por subcategoría activa y repetir no… 
+  Tests:    16 failed (6 assertions)

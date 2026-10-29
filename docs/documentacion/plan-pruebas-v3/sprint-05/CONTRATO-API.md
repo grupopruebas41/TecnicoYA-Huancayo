@@ -123,3 +123,40 @@ Solo para clientes (`role:client`; un técnico recibe 403). Número fijo de cons
 | `subcategories` | Subcategorías activas de especialidades activas, para resolver los atajos por problema (D-93) |
 
 No incluye nombres, contacto ni identificadores de técnicos, ni la dirección del cliente.
+
+## 8. Buscador «¿Qué se malogró?» (versión 1.2 del 2026-10-28, D-94)
+
+### 8.1 `GET /catalog/suggestions?q=` **[nuevo]**
+
+Público como el resto del catálogo. `q`: de 3 a 120 caracteres (422 en español). Límite de 30 consultas por minuto e IP (`SUGGESTIONS_PER_MINUTE`; 429 al pasarlo).
+
+```json
+{"source": "keywords", "level": "alta",
+ "items": [{"subcategory_id": 14, "subcategory_name": "Congeladores industriales", "specialty_id": 2,
+            "specialty_name": "Refrigeración comercial", "score": 9}]}
+```
+
+| Campo | Detalle |
+|---|---|
+| `source` | `keywords` (diccionario) o `ai` (la IA resolvió una consulta de confianza baja) |
+| `level` | `alta` (puntaje de 8 o más), `media` (4 o más), `baja` o `null` sin coincidencias; con IA, `media` |
+| `items` | Hasta 3 subcategorías activas de especialidades activas, la más probable primero; con IA, `score` es `null` |
+
+Sin coincidencias, la consulta normalizada se cuenta en `keyword_misses`. La IA recibe solo el texto (hasta 120 caracteres) y la lista cerrada `[{id, name}]`. Cualquier id fuera de la lista se descarta y, ante un error o un tiempo agotado, se responde con el diccionario.
+
+### 8.2 Catálogo › Palabras clave **[nuevo]** (`catalog.manage`, auditado)
+
+| Método y ruta | Detalle |
+|---|---|
+| `GET /admin/keywords?subcategory_id=&q=&page=` | Frases (50 por página) con subcategoría, especialidad, peso, tipo, activa y versión |
+| `POST /admin/keywords` | `subcategory_id`, `phrase` (2 a 120), `weight` (1 a 10) y `kind` (`objeto`, `sintoma` o `general`). Frase repetida en la subcategoría: 422. Audita `catalog.keyword_created` |
+| `PATCH /admin/keywords/{id}` | `phrase`, `weight`, `kind` o `active` con `expected_version` (409 si cambió). Audita `catalog.keyword_updated`; las frases no se borran, se desactivan |
+| `GET /admin/keywords/test?q=` | Probar una frase: solo el diccionario, con `level`, `items` y las frases que coincidieron (`matched`) |
+| `GET /admin/keyword-misses` | Las 50 búsquedas sin resultado más frecuentes |
+| `GET /admin/keyword-suggestions` | Frases sugeridas por la IA pendientes |
+| `POST /admin/keyword-suggestions/{id}/approval` | Crea la frase (peso 5 y tipo general por defecto). Si la sugerencia ya se resolvió, 409. Audita `catalog.keyword_suggestion_approved` |
+| `DELETE /admin/keyword-suggestions/{id}` | Descarta la frase sugerida. Audita `catalog.keyword_suggestion_discarded` |
+
+### 8.3 Datos
+
+Migración `000029`: `subcategory_keywords`, `keyword_misses` y `keyword_suggestions`. `KeywordSeeder` (en `DatabaseSeeder` y en las siembras E2E) carga `database/seeders/data/keywords.php` sin pisar lo que cambió el administrador.

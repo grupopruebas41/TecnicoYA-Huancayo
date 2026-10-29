@@ -1,0 +1,17 @@
+# Vitest completo · 2026-10-28 · commit 3549146 (rama feature/mayhuasca/cliente/buscador)
+Comando: npx vitest run (desde frontend/web)
+
+Archivos: 43 aprobados · Pruebas: 348/348 · Sin errores no capturados
+Lint y build: aprobados · npm audit: found 0 vulnerabilities
+
+IDs del buscador:
+  ✓ S05-TC-029 elegir una sugerencia de «¿Qué se malogró?» abre Nueva solicitud con especialidad y subcategoría [D-94]
+  ✓ S05-TC-055 «¿Qué se malogró?» oculta los chips cuya subcategoría no existe o está inactiva
+  ✓ S05-TC-077 el buscador espera 300 ms, sugiere hasta 3 con «Más probable» y se maneja con el teclado
+  ✓ S05-TC-078 sin coincidencias ofrece elegir la categoría y con menos de 3 letras no consulta
+  ✓ S05-TC-079 un chip rellena el buscador y muestra sus sugerencias al instante
+  ✓ S05-TC-080 en el paso 1 del asistente, elegir una sugerencia lleva al paso 3 con especialidad y subcategoría
+  ✓ S05-TC-081 Palabras clave: alta con doble validación, edición con versión y desactivación con confirmación
+  ✓ S05-TC-082 Palabras clave: probar una frase, búsquedas sin resultado y aprobar o descartar sugerencias de la IA
+  ✓ S05-TC-083 una cuenta antigua completa nombres y apellidos en Mi perfil para que el saludo los use
+  ✓ S05-TC-084 el panel usa una sola familia de íconos de línea: no quedan emojis en sus componentes
