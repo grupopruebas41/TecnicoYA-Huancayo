@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\ARequests\Http\Controllers\ServiceOrderController;
 use App\Modules\ARequests\Http\Controllers\ServiceRequestController;
 use App\Modules\BMatching\Http\Controllers\OfferController;
 use App\Modules\BMatching\Http\Controllers\SelectionController;
@@ -25,6 +26,8 @@ Route::get('/health', fn () => ['status' => 'ok', 'service' => 'tecnicoya-larave
 Route::prefix('v1')->group(function () {
     Route::get('catalog/specialties', [CatalogController::class, 'specialties']);
     Route::get('catalog/subcategories', [CatalogController::class, 'subcategories']);
+    // D-92: problemas frecuentes de una subcategoría para el paso 3 del asistente.
+    Route::get('catalog/subcategories/{subcategory}/symptoms', [CatalogController::class, 'symptoms'])->whereNumber('subcategory');
     Route::get('catalog/carousel', [CatalogController::class, 'carousel']);
     Route::get('catalog/districts', [CatalogController::class, 'districts']);
     // D-94: buscador «¿Qué se malogró?» (diccionario más IA opcional), público como el catálogo y con límite por IP.
@@ -63,6 +66,9 @@ Route::prefix('v1')->group(function () {
         Route::middleware('role:client')->group(function () {
             // Inicio del cliente (revisión del PR #39): zona, precios de referencia y subcategorías para los atajos.
             Route::get('client/home', [App\Modules\BMatching\Http\Controllers\ClientHomeController::class, 'show']);
+            // D-92: pedido con varios rubros (hasta 3), enviado en una sola transacción, y cupo de solicitudes activas.
+            Route::get('orders/quota', [ServiceOrderController::class, 'quota']);
+            Route::post('orders', [ServiceOrderController::class, 'store']);
             Route::get('requests', [ServiceRequestController::class, 'index']);
             Route::post('requests', [ServiceRequestController::class, 'store']);
             Route::patch('requests/{serviceRequest}', [ServiceRequestController::class, 'update'])->whereNumber('serviceRequest');

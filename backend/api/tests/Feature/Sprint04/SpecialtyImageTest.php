@@ -31,7 +31,7 @@ it('S04-TC-133 expone la foto de la especialidad solo si es pública, revisada y
     $response = $this->getJson('/api/v1/catalog/specialties')->assertOk();
 
     $items = collect($response->json('data'))->keyBy('code');
-    expect(array_keys($items['computo']))->toEqualCanonicalizing(['id', 'code', 'name', 'description', 'image_url'])
+    expect(array_keys($items['computo']))->toEqualCanonicalizing(['id', 'code', 'name', 'description', 'image_url', 'subcategory_count'])
         ->and($items['computo']['image_url'])->toEndWith("/api/v1/media/$clean")
         ->and($items['refrigeracion']['image_url'])->toBeNull()
         ->and($items['electricidad']['image_url'])->toBeNull();

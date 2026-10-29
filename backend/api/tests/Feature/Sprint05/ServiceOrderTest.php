@@ -2,6 +2,7 @@
 
 // S05-TC-088 a 102 · D-92 (PEDIDO-01) · HU-S03-01 · RF-01: pedido con varios rubros (hasta 3). Crea una solicitud por
 // subcategoría, vinculadas por el pedido, y las envía juntas en una transacción con Idempotency-Key. Respeta D-11.
+use App\Modules\BMatching\Application\MatchingFlow;
 use App\Modules\BMatching\Jobs\PrepareMatching;
 use Carbon\CarbonImmutable;
 use Database\Factories\ClientProfileFactory;
@@ -159,8 +160,9 @@ it('S05-TC-092 el envío es atómico: si falla una solicitud no queda ninguna, n
     expect(fn () => postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('computo-redes')])))
         ->toThrow(RuntimeException::class, 'Fallo simulado del segundo envío');
 
+    // PrepareMatching se encola con afterCommit (S4): al revertirse la transacción no se envía. Queue::fake lo registra
+    // al instante y no sirve para comprobarlo; la atomicidad se verifica en las tablas.
     expect(orderTables())->toBe($before);
-    Queue::assertNothingPushed();
 });
 
 it('S05-TC-093 idempotencia: la misma clave devuelve el mismo pedido; otro cuerpo, 409; sin clave, 422', function () {
@@ -220,8 +222,8 @@ it('S05-TC-096 la urgencia es informativa: el técnico la ve en la oferta y el m
     $normal = Sprint04::sentRequest(['urgency' => 'normal']);
     $urgent = Sprint04::sentRequest(['urgency' => 'urgente']);
     foreach ([$normal, $urgent] as $request) {
-        Sprint04::prepare($request->id);
-        Sprint04::openRound($request->id);
+        // El flujo del S4 directo (prepara y abre la primera ronda): Queue::fake también intercepta dispatch_sync.
+        app(MatchingFlow::class)->prepare($request->id, 1);
     }
     $offers = DB::table('offers')->orderBy('request_id')->get();
 
@@ -229,7 +231,7 @@ it('S05-TC-096 la urgencia es informativa: el técnico la ve en la oferta y el m
         ->and($offers->pluck('technician_id')->unique()->all())->toBe([$technician->id])
         ->and($offers[0]->expires_at)->toBe($offers[1]->expires_at);
     Sanctum::actingAs($technician->user);
-    $inbox = $this->getJson('/api/v1/technician/offers')->assertOk()->json('data.items');
+    $inbox = $this->getJson('/api/v1/offers')->assertOk()->json('data.items');
     expect(collect($inbox)->pluck('request.urgency', 'request.id')->all())->toBe([$urgent->id => 'urgente', $normal->id => 'normal']);
     Sanctum::actingAs($this->client->user);
     Sprint01::assertSpanishValidation(postOrder($this, orderPayload([orderItem('computo-hardware', ['urgency' => 'ya'])])), ['items.0.urgency']);

@@ -52,8 +52,11 @@ final class OfferView
             ->whereIn('status', ['assigned', 'in_progress', 'completed'])->get(['request_id', 'technician_id']);
         $evidence = DB::table('request_attachments')->whereIn('request_id', $offers->pluck('request_id'))->orderBy('position')
             ->get(['request_id', 'media_id'])->groupBy('request_id');
+        $symptoms = DB::table('request_symptoms as r')->join('subcategory_symptoms as y', 'y.id', '=', 'r.symptom_id')
+            ->whereIn('r.request_id', $offers->pluck('request_id'))->orderBy('y.position')->orderBy('y.id')
+            ->get(['r.request_id', 'y.name'])->groupBy('request_id');
 
-        return $offers->map(function (object $offer) use ($rounds, $requests, $assigned, $evidence) {
+        return $offers->map(function (object $offer) use ($rounds, $requests, $assigned, $evidence, $symptoms) {
             $request = $requests[$offer->request_id];
             $round = $rounds[$offer->round_id];
             $isAssigned = $assigned->contains(fn ($p) => (int) $p->request_id === (int) $offer->request_id && (int) $p->technician_id === (int) $offer->technician_id);
@@ -69,6 +72,9 @@ final class OfferView
                     'district' => ['id' => $request->district_id, 'name' => $request->district_name], 'mode' => $request->mode,
                     'preferred_start_at' => self::iso($request->preferred_start_at), 'preferred_end_at' => self::iso($request->preferred_end_at),
                     'description' => $request->description,
+                    // D-92: la urgencia es informativa para el técnico; no cambia el matching.
+                    'urgency' => $request->urgency, 'brand' => $request->brand, 'model' => $request->model,
+                    'symptoms' => $symptoms->get($request->id, collect())->pluck('name')->all(),
                     'evidence' => $evidence->get($request->id, collect())->map(fn ($e) => ['media_id' => $e->media_id, 'url' => url("/api/v1/media/{$e->media_id}")])->values()->all(),
                     'address' => $isAssigned ? $request->address : null,
                 ],
