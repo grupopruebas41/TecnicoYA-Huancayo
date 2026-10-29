@@ -590,3 +590,64 @@
     transition: none;
   }
 }
+
+/* styles.css apila todo label (flex en columna) y el panel lo vuelve grilla (.panel-content label:not(.button)): el
+   asistente define su propia disposición. */
+.panel-content .order-wizard label.order-card {
+  display: grid;
+  gap: 6px;
+}
+.panel-content .order-wizard label.order-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  text-align: start;
+}
+.panel-content .order-wizard label.order-option {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.panel-content .order-wizard label.order-inline-check {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+}
+.panel-content .order-wizard label.order-drop {
+  display: grid;
+  gap: 4px;
+}
+.panel-content .order-wizard .order-option input,
+.panel-content .order-wizard .order-inline-check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--ty-accent);
+}
+/* El botón principal de la barra usa el acento del tema, como la barra del asistente anterior. */
+.panel-shell .order-bar .button.primary {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.panel-shell .order-done .button.primary,
+.panel-shell .order-done .button.primary:hover,
+.panel-shell .order-bar .button.primary:hover {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.order-subcategories,
+.order-location,
+.order-schedule {
+  display: grid;
+  gap: 16px;
+}
+.order-location .form-field,
+.order-schedule .form-field {
+  margin: 0;
+}

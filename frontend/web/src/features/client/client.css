@@ -1147,6 +1147,7 @@
 }
 /* D-92: solicitudes del mismo pedido agrupadas en Mis solicitudes. */
 .client-order-group {
+  grid-column: 1 / -1;
   display: grid;
   gap: 10px;
   padding: 14px;
