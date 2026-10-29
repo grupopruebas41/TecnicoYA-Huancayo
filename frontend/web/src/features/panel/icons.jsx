@@ -23,6 +23,11 @@ const PATHS = {
   image: <><rect x="4" y="5" width="16" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m5 17 4.5-4.5 3 3 2.5-2.5 4 4"/></>,
   star: <><path d="m12 4.5 2.3 4.7 5.2.8-3.8 3.6.9 5.1-4.6-2.4-4.6 2.4.9-5.1L4.5 10l5.2-.8z"/></>,
   menu: <><path d="M4.5 7h15"/><path d="M4.5 12h15"/><path d="M4.5 17h15"/></>,
+  // Especialidades del buscador (D-94) y flecha de sus filas.
+  monitor: <><rect x="3.5" y="4.5" width="17" height="11.5" rx="2"/><path d="M9 20h6"/><path d="M12 16v4"/></>,
+  snow: <><path d="M12 3.5v17"/><path d="m4.6 7.75 14.8 8.5"/><path d="m4.6 16.25 14.8-8.5"/><path d="m9.5 5 2.5 2.5L14.5 5"/><path d="m9.5 19 2.5-2.5 2.5 2.5"/></>,
+  bolt: <><path d="M13 3.5 5.5 13.5h6l-1 7 7.5-10h-6z"/></>,
+  chevron: <><path d="m9.5 6.5 5.5 5.5-5.5 5.5"/></>,
   collapse: <><path d="m14.5 7-5 5 5 5"/><path d="M19 5v14"/></>,
   expand: <><path d="m9.5 7 5 5-5 5"/><path d="M5 5v14"/></>,
   site: <><path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M17 14v4a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 5 18V8.5A1.5 1.5 0 0 1 6.5 7H10"/></>,
