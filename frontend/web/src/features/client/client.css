@@ -1054,7 +1054,7 @@
 }
 .problem-search-text strong,
 .problem-search-text small {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 .problem-search-text small {
   color: var(--ty-muted);
@@ -1120,11 +1120,28 @@
     animation: none;
   }
 }
+/* En móvil, «Más probable» pasa debajo del texto para que la subcategoría use todo el ancho. */
 @media (max-width: 480px) {
   .problem-search-list li {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    column-gap: 12px;
+    row-gap: 6px;
     padding: 8px;
   }
+  .problem-search-list li:first-child .problem-search-specialty {
+    grid-row: 1 / span 2;
+  }
   .problem-search-list .client-chip.is-likely {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
     font-size: 0.72rem;
+  }
+  .problem-search-go {
+    grid-column: 3;
+  }
+  .problem-search-list li:first-child .problem-search-go {
+    grid-row: 1 / span 2;
   }
 }
