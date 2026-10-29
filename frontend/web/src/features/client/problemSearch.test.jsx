@@ -4,7 +4,7 @@ import {join, resolve} from 'node:path';
 import {afterEach, expect, test, vi} from 'vitest';
 import {act, cleanup, fireEvent, render, screen, waitFor, within} from '@testing-library/react';
 import ProblemSearch from './ProblemSearch';
-import RequestWizard from '../requests/RequestWizard';
+import OrderWizard from '../requests/order/OrderWizard';
 import KeywordsAdmin from '../admin/KeywordsAdmin';
 import ProfileForm from '../administration/ProfileForm';
 import {request} from '../administration/http';
@@ -86,24 +86,37 @@ test('S05-TC-079 un chip rellena el buscador y muestra sus sugerencias al instan
   expect(box()).toHaveFocus();
 });
 
-test('S05-TC-080 en el paso 1 del asistente, elegir una sugerencia lleva al paso 3 con especialidad y subcategoría', async () => {
+// D-92: en el pedido con varios rubros, la sugerencia se agrega a la selección (no la reemplaza) y el asistente sigue en
+// el paso 1. Antes (D-94) llevaba directo al paso 3 con un solo rubro.
+test('S05-TC-080 en el paso 1 del asistente, elegir una sugerencia agrega ese rubro sin reemplazar y avisa «Agregado»', async () => {
+  let items = [suggestion(4, 1, 'Cómputo', 'Hardware')];
   request.mockImplementation(async path => {
-    if (path.startsWith('/catalog/suggestions')) return answer([suggestion(4, 1, 'Cómputo', 'Hardware')]);
+    if (path.startsWith('/catalog/suggestions')) return answer(items);
     if (path === '/catalog/specialties') return {data: [{id: 1, name: 'Cómputo'}, {id: 2, name: 'Electricidad'}]};
-    if (path.startsWith('/catalog/subcategories')) return {data: [{id: 4, name: 'Hardware'}]};
+    if (path.startsWith('/catalog/subcategories')) return {data: [{id: 4, name: 'Hardware'}, {id: 9, name: 'Tableros'}]};
     if (path === '/catalog/districts') return {data: [{id: 1, name: 'Huancayo'}]};
+    if (path === '/orders/quota') return {data: {max: 3, active: 2, available: 1, max_items: 3}};
     return {data: []};
   });
-  render(<RequestWizard/>);
-  const search = await screen.findByRole('combobox', {name: 'Describe el problema o elige la categoría'});
+  render(<OrderWizard/>);
+  const electricidad = await screen.findByRole('checkbox', {name: /^Electricidad/});
+  fireEvent.click(electricidad);
+  const search = screen.getByRole('combobox', {name: '¿Qué se malogró?'});
 
   fireEvent.change(search, {target: {value: 'la laptop no prende'}});
   fireEvent.click(await screen.findByRole('option', {name: /Hardware/}));
 
-  expect(await screen.findByRole('heading', {name: 'Paso 3: Descripción y fotos'})).toBeInTheDocument();
-  expect(screen.queryByRole('combobox')).toBeNull();
-  fireEvent.click(screen.getByRole('button', {name: 'Atrás'}));
-  expect(await screen.findByRole('radio', {name: 'Hardware'})).toBeChecked();
+  expect(await screen.findByText('Agregado: Cómputo › Hardware.')).toBeInTheDocument();
+  expect(screen.getByRole('heading', {name: 'Paso 1: Especialidades'})).toBeInTheDocument();
+  expect(screen.getByRole('checkbox', {name: /^Cómputo/})).toBeChecked();
+  expect(electricidad).toBeChecked();
+  expect(screen.getByText('1 rubro elegido · Cómputo')).toBeInTheDocument();
+
+  items = [suggestion(9, 2, 'Electricidad', 'Tableros')];
+  fireEvent.change(search, {target: {value: 'el tablero salta'}});
+  fireEvent.click(await screen.findByRole('option', {name: /Tableros/}));
+  expect(await screen.findByRole('alert')).toHaveTextContent('Tienes 2 solicitudes activas: puedes agregar 1 rubro.');
+  expect(screen.getByText('1 rubro elegido · Cómputo')).toBeInTheDocument();
 });
 
 const specialties = [{id: 1, name: 'Cómputo', subcategories: [{id: 4, name: 'Reparación de hardware'}]}];
