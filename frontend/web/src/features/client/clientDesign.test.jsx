@@ -95,7 +95,8 @@ test('S05-TC-044 «¿Qué pasa ahora?» explica el estado y ofrece la acción qu
   expect(within(next()).getByRole('button', {name: 'Continuar solicitud #39'})).toBeInTheDocument();
 });
 
-test('S05-TC-045 el asistente elige especialidad y subcategoría en tarjetas con imagen y enfoca el título de cada paso', async () => {
+// D-92: las tarjetas del asistente dirigido ya no llevan foto: un ícono de línea de la misma familia del panel.
+test('S05-TC-045 el asistente elige especialidad y subcategoría en tarjetas con ícono de línea y enfoca el título de cada paso', async () => {
   request.mockImplementation(async path => {
     if (path === '/catalog/specialties') return {data: [{id: 1, name: 'Cómputo', image_url: '/media/1'}, {id: 2, name: 'Electricidad', image_url: null}]};
     if (path.startsWith('/catalog/subcategories')) return {data: [{id: 4, name: 'Hardware', image_url: '/media/4'}]};
@@ -107,7 +108,8 @@ test('S05-TC-045 el asistente elige especialidad y subcategoría en tarjetas con
   await within(specialties).findByRole('radio', {name: 'Cómputo'});
 
   expect(screen.getByText('Elige el tipo de servicio que necesitas.')).toBeInTheDocument();
-  expect(specialties.querySelector('img[src="/media/1"]')).toHaveAttribute('alt', '');
+  expect(specialties.querySelector('img')).toBeNull();
+  expect(specialties.querySelectorAll('.choice-icon svg.panel-svg-icon')).toHaveLength(2);
   expect(screen.queryByRole('combobox', {name: 'Especialidad'})).toBeNull();
   fireEvent.click(within(specialties).getByRole('radio', {name: 'Cómputo'}));
   expect(within(specialties).getByRole('radio', {name: 'Cómputo'})).toBeChecked();

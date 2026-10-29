@@ -17,6 +17,8 @@ function s01CatalogExpectedRow(object $row): array
         'id' => (int) $row->id, 'specialty_id' => (int) $row->specialty_id, 'code' => $row->code,
         'name' => $row->name, 'description' => $row->description,
         'image_url' => $row->carousel_media_id ? url("/api/v1/media/{$row->carousel_media_id}") : null,
+        // D-92: tarifa «desde» de la subcategoría para el paso 2 del asistente.
+        'reference_fee' => $row->reference_fee === null ? null : number_format((float) $row->reference_fee, 2, '.', ''),
     ];
 }
 
@@ -43,7 +45,7 @@ it('S01-TC-010 sirve solo categorías activas y valida el filtro sin inventar re
         ->and($served)->toHaveCount($rows->count())
         ->and($served[0]['id'])->toBe((int) $last->id)
         ->and($served[0]['image_url'])->toEndWith("/api/v1/media/{$image->id}")
-        ->and(array_keys($served[1]))->toBe(['id', 'specialty_id', 'code', 'name', 'description', 'image_url'])
+        ->and(array_keys($served[1]))->toBe(['id', 'specialty_id', 'code', 'name', 'description', 'image_url', 'reference_fee'])
         ->and($served[1]['image_url'])->toBeNull();
 
     $hidden = DB::table('subcategories')->where('specialty_id', $specialty->id)->where('id', '!=', $last->id)->first();

@@ -2,7 +2,7 @@ import React from 'react';
 import {afterEach, expect, test, vi} from 'vitest';
 import {act, cleanup, fireEvent, render, screen, waitFor, within} from '@testing-library/react';
 import ClientHome from './ClientHome';
-import RequestWizard from '../requests/RequestWizard';
+import OrderWizard from '../requests/order/OrderWizard';
 import TechnicianSearch from '../matching/TechnicianSearch';
 import {PROBLEMS, TIPS} from './homeContent';
 import {request} from '../administration/http';
@@ -94,10 +94,12 @@ test('S05-TC-029 elegir una sugerencia de «¿Qué se malogró?» abre Nueva sol
     if (path === '/catalog/districts') return {data: [{id: 1, name: 'Huancayo'}]};
     return {data: []};
   });
-  render(<RequestWizard preset={{specialty_id: 1, subcategory_id: 4}} defaultDistrictId={1}/>);
-  expect(await screen.findByRole('heading', {name: 'Paso 3: Descripción y fotos'})).toBeInTheDocument();
+  // D-92: el asistente del pedido agrega ese rubro y empieza en su detalle; «Atrás» lo muestra marcado.
+  render(<OrderWizard preset={{specialty_id: 1, subcategory_id: 4}} defaultDistrictId={1}/>);
+  expect(await screen.findByRole('heading', {name: 'Paso 3: Detalle por rubro'})).toBeInTheDocument();
+  expect(screen.getByRole('tab', {name: /Reparación de hardware/})).toHaveAttribute('aria-selected', 'true');
   fireEvent.click(screen.getByRole('button', {name: 'Atrás'}));
-  expect(await screen.findByRole('radio', {name: 'Reparación de hardware'})).toBeChecked();
+  expect(await screen.findByRole('checkbox', {name: /^Reparación de hardware/})).toBeChecked();
 });
 
 // D-94: los atajos ahora son chips debajo del buscador (sin íconos).

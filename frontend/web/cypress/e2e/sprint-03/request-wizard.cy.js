@@ -28,6 +28,21 @@ function enter() {
     }),
   );
 }
+function space() {
+  const key = { key: " ", code: "Space", windowsVirtualKeyCode: 32 };
+  cy.then(() =>
+    Cypress.automation("remote:debugger:protocol", {
+      command: "Input.dispatchKeyEvent",
+      params: { ...key, type: "keyDown", text: " " },
+    }),
+  );
+  cy.then(() =>
+    Cypress.automation("remote:debugger:protocol", {
+      command: "Input.dispatchKeyEvent",
+      params: { ...key, type: "keyUp" },
+    }),
+  );
+}
 describe("S3 asistente", () => {
   beforeEach(() => loginClient());
   it("S03-TC-052 recorrido con corrección antes de enviar", () => {
@@ -48,20 +63,22 @@ describe("S3 asistente", () => {
     wizard().contains("Solicitud enviada correctamente.").should("be.visible");
     wizard().contains("falla corregida").should("be.visible");
   });
+  // D-92: el pedido valida cada paso sin crear nada hasta el envío (POST /orders).
   it("S03-TC-053 paso incompleto no avanza y enfoca error", () => {
     let creates = 0;
-    cy.intercept("POST", "**/api/v1/requests", () => {
+    cy.intercept("POST", "**/api/v1/orders", () => {
       creates++;
     });
-    toDescription();
-    // Con tarjetas no se puede vaciar el radio: cambiar de especialidad deja la subcategoría sin elegir.
-    wizard().contains("button", "Atrás").click();
-    wizard().contains("button", "Atrás").click();
-    wizard().find("input[name=specialty_id]").eq(1).check();
+    cy.get('nav[aria-label="Gestión del cliente"]').contains("button", "Nueva solicitud").click();
+    wizard().find("input[name=specialty_ids]").should("have.length.greaterThan", 0);
     wizard().contains("button", "Siguiente").click();
+    cy.focused().should("have.attr", "name", "specialty_ids");
+    wizard().find("input[name=specialty_ids]").first().check({ force: true });
     wizard().contains("button", "Siguiente").click();
-    cy.focused().should("have.attr", "name", "subcategory_id");
-    wizard().find("input[name=subcategory_id]").first().check();
+    wizard().find("input[name=subcategory_ids]").should("have.length.greaterThan", 0);
+    wizard().contains("button", "Siguiente").click();
+    cy.focused().should("have.attr", "name", "subcategory_ids");
+    wizard().find("input[name=subcategory_ids]").first().check({ force: true });
     wizard().contains("button", "Siguiente").click();
     wizard().contains("button", "Siguiente").click();
     cy.focused().should("have.attr", "name", "description");
@@ -106,62 +123,33 @@ describe("S3 asistente", () => {
       .focus()
       .should("be.focused");
     enter();
+    // D-92: el pedido se recorre con el teclado: Espacio marca las casillas y Enter avanza (envía el formulario).
     wizard().contains("h2", "Paso 1").should("be.visible").and("be.focused");
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().should("have.attr", "name", "specialty_id").select(1);
-    cy.press(Cypress.Keyboard.Keys.TAB);
+    wizard().find("input[name=specialty_ids]").first().focus();
+    space();
+    cy.focused().should("be.checked");
+    wizard().contains("button", "Siguiente").focus();
     enter();
     wizard().contains("h2", "Paso 2").should("be.visible").and("be.focused");
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().select(1);
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.TAB);
+    wizard().find("input[name=subcategory_ids]").first().focus();
+    space();
+    cy.focused().should("be.checked");
+    wizard().contains("button", "Siguiente").focus();
     enter();
     wizard().contains("h2", "Paso 3").should("be.visible").and("be.focused");
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().type("Descripción sintética suficientemente larga.");
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.TAB);
+    wizard().find("textarea[name=description]").focus().type("Descripción sintética suficientemente larga.");
+    wizard().find("input[name=brand]").focus();
     enter();
     wizard().contains("h2", "Paso 4").should("be.visible").and("be.focused");
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().select(1);
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().type("Dirección sintética");
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.TAB);
+    wizard().find("select[name=district_id]").focus().select(1);
+    wizard().find("input[name=address]").focus().type("Dirección sintética");
     enter();
     wizard().contains("h2", "Paso 5").should("be.focused");
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.press(Cypress.Keyboard.Keys.TAB);
-    cy.focused().should("have.attr", "type", "checkbox");
-    cy.then(() =>
-      Cypress.automation("remote:debugger:protocol", {
-        command: "Input.dispatchKeyEvent",
-        params: {
-          type: "keyDown",
-          key: " ",
-          code: "Space",
-          windowsVirtualKeyCode: 32,
-          text: " ",
-        },
-      }),
-    );
-    cy.then(() =>
-      Cypress.automation("remote:debugger:protocol", {
-        command: "Input.dispatchKeyEvent",
-        params: {
-          type: "keyUp",
-          key: " ",
-          code: "Space",
-          windowsVirtualKeyCode: 32,
-        },
-      }),
-    );
+    wizard().contains("label", "Confirmo que el resumen es correcto").find("input").focus();
+    space();
     cy.focused().should("be.checked");
-    cy.press(Cypress.Keyboard.Keys.TAB);
+    wizard().contains("button", "Enviar pedido").focus();
     enter();
-    wizard().contains("Solicitud enviada correctamente.").should("be.visible");
+    wizard().contains("h2", "Pedido enviado").should("be.visible").and("be.focused");
   });
 });

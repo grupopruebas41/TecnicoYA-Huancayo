@@ -1,8 +1,11 @@
 import React from "react";
 import { Field } from "../administration/forms";
+import Icon from "../panel/icons";
+import { specialtyIcon } from "../client/specialtyIcon";
+// D-92: sin fotos; cada tarjeta lleva un ícono de línea de la misma familia del panel.
 // Revisión del PR #39: especialidad y subcategoría como tarjetas seleccionables (radios nativos: teclado y lectores de
 // pantalla sin dependencias). El foco de validación cae en el primer radio, que lleva aria-invalid.
-function ChoiceCards({ name, label, items, value, onChange, disabled, error }) {
+function ChoiceCards({ name, label, items, value, onChange, disabled, error, icon }) {
   return (
     <fieldset className="choice-cards" disabled={disabled} aria-describedby={error ? `${name}-error` : undefined}>
       <legend>{label}</legend>
@@ -19,11 +22,7 @@ function ChoiceCards({ name, label, items, value, onChange, disabled, error }) {
                 aria-invalid={error && index === 0 ? true : undefined}
                 onChange={(e) => onChange(e.target.value)}
               />
-              {item.image_url ? (
-                <img src={item.image_url} alt="" loading="lazy" />
-              ) : (
-                <span className="choice-icon" aria-hidden="true">{Array.from(item.name)[0]}</span>
-              )}
+              <span className="choice-icon" aria-hidden="true"><Icon name={icon(item)} /></span>
               <span className="choice-name">{item.name}</span>
             </label>
           );
@@ -86,6 +85,7 @@ export default function WizardFields({
       value={state[name] || ""}
       disabled={registered}
       error={errors[name]}
+      icon={name === "specialty_id" ? (item) => specialtyIcon(item.name) : () => "requests"}
       onChange={(value) => update(name, value)}
     />
   );

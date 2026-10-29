@@ -1,0 +1,262 @@
+{
+  "1366-light-paso1": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso1-agregado": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso2-limite": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso2-electricidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso3-urgencia-fotos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso3-otro-rubro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-paso5-confirmar": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-light-pedido": [
+    "Refrigeración doméstica Solicitud #11Ver seguimiento de la solicitud #11",
+    "Reparación de hardware Solicitud #12Ver seguimiento de la solicitud #12",
+    "Tableros eléctricos Solicitud #13Ver seguimiento de la solicitud #13"
+  ],
+  "1366-light-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  },
+  "1366-light-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  },
+  "1366-dark-paso1": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso1-agregado": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso2-limite": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso2-electricidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso3-urgencia-fotos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso3-otro-rubro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-paso5-confirmar": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "1366-dark-pedido": [
+    "Refrigeración doméstica Solicitud #14Ver seguimiento de la solicitud #14",
+    "Reparación de hardware Solicitud #15Ver seguimiento de la solicitud #15",
+    "Tableros eléctricos Solicitud #16Ver seguimiento de la solicitud #16"
+  ],
+  "1366-dark-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  },
+  "1366-dark-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  },
+  "390-light-paso1": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso1-agregado": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso2-limite": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso2-electricidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso3-urgencia-fotos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso3-otro-rubro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-paso5-confirmar": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-light-pedido": [
+    "Refrigeración doméstica Solicitud #17Ver seguimiento de la solicitud #17",
+    "Reparación de hardware Solicitud #18Ver seguimiento de la solicitud #18",
+    "Tableros eléctricos Solicitud #19Ver seguimiento de la solicitud #19"
+  ],
+  "390-light-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  },
+  "390-light-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  },
+  "390-dark-paso1": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso1-agregado": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso2-limite": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso2-electricidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso3-urgencia-fotos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso3-otro-rubro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-paso5-confirmar": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true
+  },
+  "390-dark-pedido": [
+    "Refrigeración doméstica Solicitud #20Ver seguimiento de la solicitud #20",
+    "Reparación de hardware Solicitud #21Ver seguimiento de la solicitud #21",
+    "Tableros eléctricos Solicitud #22Ver seguimiento de la solicitud #22"
+  ],
+  "390-dark-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  },
+  "390-dark-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null
+  }
+}

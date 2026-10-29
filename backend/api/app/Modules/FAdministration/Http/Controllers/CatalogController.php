@@ -16,11 +16,14 @@ final class CatalogController
             ->leftJoin('media_files as m', fn ($join) => $join->on('m.id', '=', 'p.hero_media_id')
                 ->where('m.visibility', 'public')->where('m.scan_status', 'clean')->whereNull('m.retired_at'))
             ->where('p.active', 1)->orderBy('p.display_order')->orderBy('p.id')
-            ->get(['p.id', 'p.code', 'p.name', 'p.description', 'm.id as media_id']);
+            // D-92: el asistente muestra cuántas subcategorías activas tiene cada especialidad.
+            ->selectSub(fn ($q) => $q->from('subcategories as s')->whereColumn('s.specialty_id', 'p.id')->where('s.active', 1)->selectRaw('count(*)'), 'subcategory_count')
+            ->addSelect(['p.id', 'p.code', 'p.name', 'p.description', 'm.id as media_id'])->get();
 
         return ApiResponse::data($items->map(fn (object $item) => [
             'id' => $item->id, 'code' => $item->code, 'name' => $item->name, 'description' => $item->description,
             'image_url' => $item->media_id ? url("/api/v1/media/{$item->media_id}") : null,
+            'subcategory_count' => (int) $item->subcategory_count,
         ])->all());
     }
 
@@ -30,14 +33,27 @@ final class CatalogController
         $items = DB::table('subcategories as s')->join('specialties as p', 'p.id', '=', 's.specialty_id')
             ->where('p.active', 1)->where('s.active', 1)->where('s.specialty_id', $filter['specialty_id'])
             ->orderBy('s.display_order')->orderBy('s.id')
-            ->get(['s.id', 's.specialty_id', 's.code', 's.name', 's.description', 's.carousel_media_id']);
+            ->get(['s.id', 's.specialty_id', 's.code', 's.name', 's.description', 's.carousel_media_id', 's.reference_fee']);
 
         // La foto del carrusel solo se expone como URL del archivo revisado; nunca la clave de almacenamiento.
         return ApiResponse::data($items->map(fn (object $item) => [
             'id' => $item->id, 'specialty_id' => $item->specialty_id, 'code' => $item->code,
             'name' => $item->name, 'description' => $item->description,
             'image_url' => $item->carousel_media_id ? url("/api/v1/media/{$item->carousel_media_id}") : null,
+            // D-52 y D-92: tarifa referencial «desde» de la subcategoría, texto con 2 decimales; null si no tiene.
+            'reference_fee' => $item->reference_fee === null ? null : number_format((float) $item->reference_fee, 2, '.', ''),
         ])->all());
+    }
+
+    /** D-92: problemas frecuentes activos de una subcategoría activa, en su orden. */
+    public function symptoms(int $subcategory): JsonResponse
+    {
+        $active = DB::table('subcategories as s')->join('specialties as p', 'p.id', '=', 's.specialty_id')
+            ->where('s.id', $subcategory)->where('s.active', 1)->where('p.active', 1)->exists();
+        abort_unless($active, 404);
+
+        return ApiResponse::data(DB::table('subcategory_symptoms')->where('subcategory_id', $subcategory)->where('active', 1)
+            ->orderBy('position')->orderBy('id')->get(['id', 'name'])->map(fn (object $row) => ['id' => $row->id, 'name' => $row->name])->all());
     }
 
     /** Carrusel de la landing (HU-S02-01): solo lo activo con imagen pública, revisada y no retirada. */

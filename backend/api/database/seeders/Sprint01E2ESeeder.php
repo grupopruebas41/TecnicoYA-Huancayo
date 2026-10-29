@@ -17,7 +17,7 @@ final class Sprint01E2ESeeder extends Seeder
         }
         // D-80: el registro detallado de las Cypress del S1 necesita distritos activos.
         // D-94: también el diccionario del buscador «¿Qué se malogró?».
-        $this->call([AuthorizationSeeder::class, CatalogSeeder::class, DistrictSeeder::class, KeywordSeeder::class]);
+        $this->call([AuthorizationSeeder::class, CatalogSeeder::class, DistrictSeeder::class, KeywordSeeder::class, SymptomSeeder::class]);
         DB::transaction(function () use ($password) {
             foreach (['client', 'technician', 'admin'] as $code) {
                 $user = User::firstOrNew(['email' => "e2e-{$code}@example.test"]);

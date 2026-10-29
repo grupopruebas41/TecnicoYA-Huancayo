@@ -1,18 +1,10 @@
 import React, {useEffect, useId, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import Icon from '../panel/icons';
+import {specialtyIcon} from './specialtyIcon';
 
 const DEBOUNCE = 300;
 const MIN_LENGTH = 3;
-
-/** Ícono de línea de la especialidad de una sugerencia (por su nombre; el catálogo no guarda íconos). */
-function specialtyIcon(name = '') {
-  const plain = name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  if (plain.includes('refrig')) return 'snow';
-  if (plain.includes('electr')) return 'bolt';
-  if (plain.includes('comput')) return 'monitor';
-  return 'catalog';
-}
 
 /**
  * D-94 (RECO-01): buscador «¿Qué se malogró?» (combobox ARIA 1.2 con lista). Pide sugerencias a GET /catalog/suggestions
