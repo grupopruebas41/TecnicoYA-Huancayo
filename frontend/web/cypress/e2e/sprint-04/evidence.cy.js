@@ -1,6 +1,6 @@
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
-import { loginClient, toDescription, wizard } from "../sprint-03/helpers";
+import { loginClient, toDescription, wizard, sendOrder } from "../sprint-03/helpers";
 import { api, observe } from "./helpers";
 it("S04-TC-098 foto no adjunta solo se retira al confirmar", () => {
   loginClient();
@@ -24,6 +24,8 @@ it("S04-TC-098 foto no adjunta solo se retira al confirmar", () => {
   cy.contains("Quitaste la foto.").should("be.visible");
   wizard().find("img").should("not.exist");
 });
+// D-92: la creación es el envío del pedido (POST /orders). Tras la respuesta perdida, «Reintentar envío» usa la
+// misma clave y el servidor devuelve el mismo pedido.
 it("S04-TC-099 respuesta perdida no duplica creación", () => {
   loginClient();
   toDescription();
@@ -33,9 +35,10 @@ it("S04-TC-099 respuesta perdida no duplica creación", () => {
   wizard().contains("button", "Siguiente").click();
   wizard().find("select[name=district_id]").select(1);
   wizard().find("input[name=address]").type("Dirección sintética");
+  wizard().contains("button", "Siguiente").click();
   const keys = [],
     ids = [];
-  cy.intercept("POST", api() + "/api/v1/requests", (req) => {
+  cy.intercept("POST", api() + "/api/v1/orders", (req) => {
     keys.push(req.headers["idempotency-key"]);
     req.continue((res) => {
       ids.push(res.body.data.id);
@@ -47,10 +50,11 @@ it("S04-TC-099 respuesta perdida no duplica creación", () => {
         });
     });
   }).as("create");
-  wizard().contains("button", "Siguiente").click();
+  sendOrder();
   cy.wait("@create");
+  wizard().contains("button", "Reintentar envío").click();
   cy.wait("@create");
-  cy.contains("Solicitud registrada.").should("be.visible");
+  cy.contains("Pedido enviado").should("be.visible");
   cy.then(() => {
     expect(keys).to.have.length(2);
     expect(keys[0]).to.eq(keys[1]);

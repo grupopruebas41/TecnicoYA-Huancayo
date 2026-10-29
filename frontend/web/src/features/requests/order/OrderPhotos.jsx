@@ -55,7 +55,7 @@ export default function OrderPhotos({ photos, onChange, onBusy = () => {}, label
     try {
       await request("/media/" + remove.id, undefined, "DELETE");
       onChange(latest.current.filter((photo) => photo.id !== remove.id));
-      setSuccess("Foto quitada.");
+      setSuccess("Quitaste la foto.");
       setError("");
     } catch (failure) {
       setError(failure.message);
@@ -110,7 +110,7 @@ export default function OrderPhotos({ photos, onChange, onBusy = () => {}, label
               {photo.preview ? <img src={photo.preview} alt={`Foto ${index + 1} de ${label}`} /> : <Icon name="image" />}
               <button type="button" className="order-thumb-remove" disabled={busy} onClick={() => setRemove(photo)}>
                 <Icon name="trash" />
-                <span className="sr-only">Quitar foto {index + 1}</span>
+                <span className="sr-only">Retirar foto {index + 1}</span>
               </button>
             </li>
           ))}

@@ -211,11 +211,11 @@ test('S05-TC-108 fotos por rubro: arrastrar y soltar, vista previa, máximo 5 y 
   expect(request.mock.calls.filter(([path]) => path === '/media')).toHaveLength(5);
   expect(screen.getByText('Llegaste al máximo de 5 fotos.')).toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('button', {name: 'Quitar foto 1'}));
+  fireEvent.click(screen.getByRole('button', {name: 'Retirar foto 1'}));
   const dialog = screen.getByRole('dialog', {name: 'Quitar foto'});
   await act(async () => { fireEvent.click(within(dialog).getByRole('button', {name: 'Confirmar'})); });
   expect(request).toHaveBeenCalledWith('/media/501', undefined, 'DELETE');
-  expect(await screen.findByText('Foto quitada.')).toBeInTheDocument();
+  expect(await screen.findByText('Quitaste la foto.')).toBeInTheDocument();
   expect(screen.getAllByRole('img', {name: /Foto \d de Reparación de hardware/})).toHaveLength(4);
 });
 
