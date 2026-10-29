@@ -4,6 +4,7 @@ import PanelShell from '../panel/PanelShell';
 import ProfilePage from '../panel/ProfilePage';
 import {RealtimeProvider} from '../realtime/Realtime';
 import RequestWizard from '../requests/RequestWizard';
+import OrderWizard from '../requests/order/OrderWizard';
 import MyRequests from '../requests/MyRequests';
 import TechnicianSearch from '../matching/TechnicianSearch';
 import {consumeSearch} from '../../landing/config';
@@ -53,9 +54,13 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
   const district = user.client_profile?.district_id ?? null;
   const sections = [
     {id: 'home', group: 'General', label: 'Inicio', icon: 'home', render: ({navigate}) => <ClientHome user={user} navigate={navigate}/>},
-    {id: 'new', group: 'Servicios', label: 'Nueva solicitud', icon: 'plus', render: ({navigate, intent}) => <RequestWizard
-      initialRecord={intent?.record || null} target={intent?.technician || null} defaultDistrictId={district} preset={intent?.preset || null}
-      onBusy={setLocked} onExit={() => { setLocked(false); navigate('requests'); }}/>},
+    // D-92: el pedido con varios rubros es el asistente por defecto; la solicitud dirigida a un técnico (un solo rubro) y
+    // los borradores anteriores siguen en RequestWizard.
+    {id: 'new', group: 'Servicios', label: 'Nueva solicitud', icon: 'plus', render: ({navigate, intent}) => intent?.record || intent?.technician
+      ? <RequestWizard initialRecord={intent?.record || null} target={intent?.technician || null} defaultDistrictId={district}
+        onBusy={setLocked} onExit={() => { setLocked(false); navigate('requests'); }}/>
+      : <OrderWizard key={intent?.preset ? 'preset-' + intent.preset.subcategory_id : 'nuevo'} preset={intent?.preset || null}
+        defaultDistrictId={district} onBusy={setLocked} navigate={(section, data) => { setLocked(false); navigate(section, data); }}/>},
     {id: 'search', group: 'Servicios', label: 'Buscar técnicos', icon: 'search', render: ({navigate, intent}) => <TechnicianSearch
       initialFilters={intent?.filters || {}} defaultDistrictId={district} initialTechnician={intent?.technician || null}
       onRequest={technician => navigate('new', {technician})}/>},
