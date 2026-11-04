@@ -1,0 +1,6 @@
+# Parche symfony/mime 7.4.17 -> 7.4.22 (CVE-2026-45070) · 2026-10-28 · base b799ab0 (main con el PR #40)
+
+- composer update symfony/mime (sin -W): solo cambia symfony/mime en composer.lock.
+- composer audit: No security vulnerability advisories found.
+- Pest completo (slot A, tecnicoya_testing): 397 passed (4505 assertions), 363 s.
+- npm audit fix (sin --force): systeminformation 5.33.15 -> 5.33.18 (GHSA-3f7j-7jwc-fxfj, alta; dependencia de cypress). Solo cambia package-lock.json. npm audit: found 0 vulnerabilities. Vitest 351/351 y build aprobados.
