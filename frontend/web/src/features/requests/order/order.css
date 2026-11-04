@@ -619,6 +619,8 @@
   border-color: var(--ty-accent);
   background: var(--ty-accent);
 }
+.panel-shell .order-blocked .button.primary,
+.panel-shell .order-blocked .button.primary:hover,
 .panel-shell .order-done .button.primary,
 .panel-shell .order-done .button.primary:hover,
 .panel-shell .order-bar .button.primary:hover {
