@@ -1,7 +1,9 @@
 <?php
 
-// S05-TC-088 a 102 · D-92 (PEDIDO-01) · HU-S03-01 · RF-01: pedido con varios rubros (hasta 3). Crea una solicitud por
-// subcategoría, vinculadas por el pedido, y las envía juntas en una transacción con Idempotency-Key. Respeta D-11.
+// S05-TC-088 a 102 y 118 a 125 · D-92 y D-95 (PEDIDO-02) · HU-S03-01 · RF-01: pedido con cualquier cantidad de
+// subcategorías. Crea una solicitud por especialidad, vinculadas por el pedido, y las envía juntas en una transacción con
+// Idempotency-Key. El máximo de D-11 cuenta pedidos activos. S05-TC-088 a 101 se adaptaron a D-95: cada elemento de items es
+// ahora una especialidad con sus subcategorías, y dos subcategorías de una misma especialidad van en la misma solicitud.
 use App\Modules\BMatching\Application\MatchingFlow;
 use App\Modules\BMatching\Jobs\PrepareMatching;
 use Carbon\CarbonImmutable;
@@ -29,10 +31,14 @@ beforeEach(function () {
     Sanctum::actingAs($this->client->user);
 });
 
-function orderItem(string $code = 'computo-hardware', array $overrides = []): array
+/** @param  string|string[]  $codes  subcategorías de una misma especialidad; la primera es la principal */
+function orderItem(string|array $codes = 'computo-hardware', array $overrides = []): array
 {
+    $ids = array_map(fn (string $code) => Sprint04::subcategory($code), (array) $codes);
+
     return $overrides + [
-        'subcategory_id' => Sprint04::subcategory($code),
+        'specialty_id' => (int) DB::table('subcategories')->where('id', $ids[0])->value('specialty_id'),
+        'subcategory_ids' => $ids,
         'description' => 'El equipo no enciende desde ayer por la tarde.',
         'urgency' => 'normal',
     ];
@@ -91,12 +97,12 @@ it('S05-TC-088 un pedido de un rubro crea y envía una solicitud vinculada al pe
     Queue::assertPushed(PrepareMatching::class, 1);
 });
 
-it('S05-TC-089 un pedido de 3 rubros de dos especialidades crea 3 solicitudes con sus datos y la ubicación común', function () {
+it('S05-TC-089 un pedido de 3 especialidades crea 3 solicitudes con sus datos y la ubicación común', function () {
     $photos = MediaFileFactory::new()->count(2)->create(['owner_id' => $this->client->user_id, 'mime_type' => 'image/png']);
     $items = [
         orderItem('computo-hardware', ['brand' => 'Marca sintética', 'model' => 'X-100', 'urgency' => 'urgente',
             'symptom_ids' => symptomIds('computo-hardware'), 'media_ids' => [$photos[0]->id, $photos[1]->id]]),
-        orderItem('computo-redes', ['description' => 'El internet se corta cada pocos minutos en la tienda.']),
+        orderItem('frio-domestico', ['description' => 'La refrigeradora de la cocina dejó de enfriar anoche.']),
         orderItem('electricidad-tableros', ['description' => 'El tablero salta cuando prendemos la congeladora.']),
     ];
 
@@ -105,7 +111,7 @@ it('S05-TC-089 un pedido de 3 rubros de dos especialidades crea 3 solicitudes co
     $requests = DB::table('service_requests')->orderBy('id')->get();
     expect($requests)->toHaveCount(3)
         ->and($requests->pluck('order_id')->unique()->all())->toBe([$response->json('data.id')])
-        ->and($requests->pluck('subcategory_id')->map(fn ($id) => (int) $id)->all())->toBe(array_column($items, 'subcategory_id'))
+        ->and($requests->pluck('subcategory_id')->map(fn ($id) => (int) $id)->all())->toBe(array_merge(...array_column($items, 'subcategory_ids')))
         ->and($requests->pluck('address')->unique()->all())->toBe(['Jirón sintético 742, interior B'])
         ->and($requests->pluck('status')->unique()->all())->toBe(['sent'])
         ->and($requests[0]->urgency)->toBe('urgente')->and($requests[1]->urgency)->toBe('normal')
@@ -114,35 +120,38 @@ it('S05-TC-089 un pedido de 3 rubros de dos especialidades crea 3 solicitudes co
         ->and(DB::table('request_symptoms')->where('request_id', $requests[0]->id)->count())->toBe(2)
         ->and(DB::table('request_attachments')->where('request_id', $requests[0]->id)->orderBy('position')->pluck('media_id')->all())
         ->toBe([$photos[0]->id, $photos[1]->id])
-        ->and($response->json('data.requests.*.subcategory.id'))->toBe(array_column($items, 'subcategory_id'));
+        ->and($response->json('data.requests.*.subcategory.id'))->toBe(array_merge(...array_column($items, 'subcategory_ids')));
     Queue::assertPushed(PrepareMatching::class, 3);
 });
 
-it('S05-TC-090 rechaza un pedido vacío, de 4 rubros o con un rubro repetido, en español y sin crear nada', function () {
+it('S05-TC-090 rechaza un pedido vacío, con la especialidad repetida o con una subcategoría repetida, en español y sin crear nada', function () {
     $before = orderTables();
-    foreach ([[], [orderItem('computo-hardware'), orderItem('computo-redes'), orderItem('computo-software'), orderItem('computo-datos')],
-        [orderItem('computo-hardware'), orderItem('computo-hardware')]] as $items) {
-        $response = postOrder($this, orderPayload($items));
-        $response->assertUnprocessable();
-        Sprint01::assertSpanishText($response->json('message'));
-    }
-    expect(postOrder($this, orderPayload([orderItem(), orderItem()]))->json('errors'))->toHaveKey('items.1.subcategory_id')
-        ->and(orderTables())->toBe($before);
+    $empty = postOrder($this, orderPayload([]));
+    $sameSpecialty = postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('computo-redes')]));
+    $sameSubcategory = postOrder($this, orderPayload([orderItem(['computo-hardware', 'computo-hardware'])]));
+
+    Sprint01::assertSpanishValidation($empty, ['items']);
+    Sprint01::assertSpanishValidation($sameSpecialty, ['items.1.specialty_id']);
+    Sprint01::assertSpanishValidation($sameSubcategory, ['items.0.subcategory_ids.1']);
+    expect(orderTables())->toBe($before);
 });
 
-it('S05-TC-091 rechaza el pedido entero si no cabe en el máximo de solicitudes activas (D-11) y acepta el que cabe', function () {
+it('S05-TC-091 con 3 pedidos activos rechaza el pedido entero con el motivo; con 2 acepta uno de 3 especialidades', function () {
     activeRequest($this->client->id);
     activeRequest($this->client->id);
+    $thirdActive = Sprint04::sentRequest(['client_id' => $this->client->id]);
     $before = orderTables();
 
-    $rejected = postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('computo-redes')]));
+    $rejected = postOrder($this, orderPayload([orderItem('computo-hardware')]));
 
     $rejected->assertConflict()->assertJsonPath('error.code', 'ACTIVE_REQUEST_LIMIT');
     Sprint01::assertSpanishText($rejected->json('message'));
-    expect($rejected->json('message'))->toContain('2 solicitudes activas')->toContain('1')
+    expect($rejected->json('message'))->toContain('3 pedidos activos')
         ->and(orderTables())->toBe($before);
-    postOrder($this, orderPayload([orderItem('computo-redes')]))->assertCreated();
-    expect(DB::table('service_requests')->where('status', 'sent')->count())->toBe(3);
+
+    DB::table('service_requests')->where('id', $thirdActive->id)->update(['cancelled_at' => now()]);
+    postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('frio-domestico'), orderItem('electricidad-tableros')]))->assertCreated();
+    expect(DB::table('service_requests')->whereNotNull('order_id')->count())->toBe(3);
 });
 
 it('S05-TC-092 el envío es atómico: si falla una solicitud no queda ninguna, ni el pedido ni la clave', function () {
@@ -157,7 +166,7 @@ it('S05-TC-092 el envío es atómico: si falla una solicitud no queda ninguna, n
     });
 
     $this->withoutExceptionHandling();
-    expect(fn () => postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('computo-redes')])))
+    expect(fn () => postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('electricidad-tableros')])))
         ->toThrow(RuntimeException::class, 'Fallo simulado del segundo envío');
 
     // PrepareMatching se encola con afterCommit (S4): al revertirse la transacción no se envía. Queue::fake lo registra
@@ -167,7 +176,7 @@ it('S05-TC-092 el envío es atómico: si falla una solicitud no queda ninguna, n
 
 it('S05-TC-093 idempotencia: la misma clave devuelve el mismo pedido; otro cuerpo, 409; sin clave, 422', function () {
     $key = (string) Str::uuid();
-    $payload = orderPayload([orderItem('computo-hardware'), orderItem('computo-redes')]);
+    $payload = orderPayload([orderItem('computo-hardware'), orderItem('electricidad-tableros')]);
 
     $first = postOrder($this, $payload, $key)->assertCreated();
     $retry = postOrder($this, $payload, $key)->assertCreated();
@@ -259,7 +268,7 @@ it('S05-TC-098 por solicitud: descripción de 20 a 1000 caracteres y hasta 5 fot
     $six = postOrder($this, orderPayload([orderItem('computo-hardware', ['media_ids' => $photos->pluck('id')->all()])]));
     $alien = postOrder($this, orderPayload([orderItem('computo-hardware', ['media_ids' => [$foreign->id]])]));
     $shared = postOrder($this, orderPayload([orderItem('computo-hardware', ['media_ids' => [$photos[0]->id]]),
-        orderItem('computo-redes', ['media_ids' => [$photos[0]->id]])]));
+        orderItem('electricidad-tableros', ['media_ids' => [$photos[0]->id]])]));
 
     Sprint01::assertSpanishValidation($short, ['items.0.description']);
     Sprint01::assertSpanishValidation($long, ['items.0.description']);
@@ -297,7 +306,7 @@ it('S05-TC-100 el cupo del cliente informa máximo, activas y disponibles; solo 
         ->update(['status' => 'registered', 'submitted_at' => null]);
 
     $quota = $this->getJson('/api/v1/orders/quota')->assertOk()->json('data');
-    expect($quota)->toBe(['max' => 3, 'active' => 2, 'available' => 1, 'max_items' => 3]);
+    expect($quota)->toBe(['max' => 3, 'active' => 2, 'available' => 1]);
     Sanctum::actingAs(Sprint04::technician()->user);
     $this->getJson('/api/v1/orders/quota')->assertForbidden();
     $this->postJson('/api/v1/orders', orderPayload([orderItem()]), ['Idempotency-Key' => (string) Str::uuid()])->assertForbidden();
@@ -306,7 +315,7 @@ it('S05-TC-100 el cupo del cliente informa máximo, activas y disponibles; solo 
 it('S05-TC-101 Mis solicitudes y el detalle muestran el pedido, la urgencia, marca, modelo, síntomas y franja', function () {
     $order = postOrder($this, orderPayload([
         orderItem('computo-hardware', ['brand' => 'Marca sintética', 'model' => 'X-100', 'urgency' => 'urgente', 'symptom_ids' => symptomIds('computo-hardware', 1)]),
-        orderItem('computo-redes'),
+        orderItem('electricidad-tableros'),
     ], ['mode' => 'scheduled', 'scheduled_date' => '2026-10-21', 'time_slot' => 'manana']))->assertCreated()->json('data');
 
     $list = $this->getJson('/api/v1/requests')->assertOk()->json('data');
@@ -332,4 +341,145 @@ it('S05-TC-102 el catálogo del asistente da el número de subcategorías por es
     expect($specialties['computo']['subcategory_count'])->toBe($active)
         ->and($subcategories['computo-hardware']['reference_fee'])->toBe('50.00')
         ->and($subcategories['computo-redes']['reference_fee'])->toBeNull();
+});
+
+it('S05-TC-118 POST /orders responde con la forma del contrato [DEF-53]', function () {
+    $response = postOrder($this, orderPayload([orderItem(['computo-hardware', 'computo-redes']), orderItem('electricidad-tableros')]))->assertCreated();
+
+    $response->assertJsonStructure(['data' => ['id', 'status', 'requests' => [[
+        'id', 'status', 'version', 'specialty' => ['id', 'name'], 'subcategory' => ['id', 'name'], 'subcategories' => [['id', 'name']],
+    ]]]]);
+    expect($response->json('data.status'))->toBe('sent')
+        ->and(array_column($response->json('data.requests.0.subcategories'), 'id'))->toBe([Sprint04::subcategory('computo-hardware'), Sprint04::subcategory('computo-redes')])
+        ->and($response->json('data.requests.0.subcategory.id'))->toBe(Sprint04::subcategory('computo-hardware'));
+});
+
+it('S05-TC-119 GET /requests responde con la forma del contrato, con pedido y sin pedido [DEF-54]', function () {
+    $lone = Sprint04::sentRequest(['client_id' => $this->client->id]);
+    $order = postOrder($this, orderPayload([orderItem(['computo-hardware', 'computo-redes'])]))->assertCreated()->json('data');
+
+    $response = $this->getJson('/api/v1/requests')->assertOk();
+
+    $response->assertJsonStructure(['data' => [['id', 'status', 'phase', 'mode', 'source', 'created_at', 'submitted_at', 'version',
+        'subcategory' => ['id', 'name'], 'subcategories' => [['id', 'name']], 'district' => ['id', 'name'], 'updated_at', 'order_id', 'urgency']]]);
+    $rows = collect($response->json('data'))->keyBy('id');
+    expect($rows[$order['requests'][0]['id']]['order_id'])->toBe($order['id'])
+        ->and($rows[$order['requests'][0]['id']]['subcategories'])->toHaveCount(2)
+        ->and($rows[$lone->id]['order_id'])->toBeNull()
+        ->and(array_column($rows[$lone->id]['subcategories'], 'id'))->toBe([(int) $lone->subcategory_id]);
+    $detail = $this->getJson('/api/v1/requests/'.$order['requests'][0]['id'])->assertOk();
+    expect($detail->json('data.subcategories'))->toHaveCount(2);
+});
+
+it('S05-TC-120 las 3 especialidades con varias subcategorías crean 3 solicitudes con todas ellas y la tarifa sumada [D-95]', function () {
+    DB::table('subcategories')->whereIn('code', ['computo-hardware', 'computo-redes'])->update(['reference_fee' => '50.00']);
+    DB::table('subcategories')->whereIn('code', ['computo-software', 'electricidad-tableros'])->update(['reference_fee' => null]);
+
+    $response = postOrder($this, orderPayload([
+        orderItem(['computo-hardware', 'computo-redes', 'computo-software']),
+        orderItem('frio-domestico'),
+        orderItem('electricidad-tableros'),
+    ]))->assertCreated();
+
+    $requests = DB::table('service_requests')->orderBy('id')->get();
+    $linked = DB::table('request_subcategories')->where('request_id', $requests[0]->id)->orderBy('position')->pluck('subcategory_id')->map(fn ($id) => (int) $id)->all();
+    expect((int) DB::table('service_orders')->sole()->item_count)->toBe(3)
+        ->and($requests)->toHaveCount(3)
+        ->and($linked)->toBe([Sprint04::subcategory('computo-hardware'), Sprint04::subcategory('computo-redes'), Sprint04::subcategory('computo-software')])
+        ->and((int) $requests[0]->subcategory_id)->toBe(Sprint04::subcategory('computo-hardware'))
+        ->and((float) $requests[0]->reference_fee_snapshot)->toBe(100.0)
+        ->and($requests[2]->reference_fee_snapshot)->toBeNull()
+        ->and($response->json('data.requests.0.subcategories'))->toHaveCount(3);
+    Queue::assertPushed(PrepareMatching::class, 3);
+});
+
+it('S05-TC-121 cada subcategoría debe estar activa, ser de su especialidad y no repetirse entre especialidades [D-95]', function () {
+    $before = orderTables();
+    $computo = orderItem('computo-hardware')['specialty_id'];
+    $cold = orderItem('frio-domestico')['specialty_id'];
+    DB::table('subcategories')->where('code', 'computo-software')->update(['active' => false]);
+
+    $foreign = postOrder($this, orderPayload([orderItem('frio-domestico', ['specialty_id' => $computo])]));
+    $inactive = postOrder($this, orderPayload([orderItem(['computo-hardware', 'computo-software'])]));
+    $crossed = postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('computo-hardware', ['specialty_id' => $cold])]));
+    $none = postOrder($this, orderPayload([orderItem('computo-hardware', ['subcategory_ids' => []])]));
+
+    Sprint01::assertSpanishValidation($foreign, ['items.0.subcategory_ids.0']);
+    Sprint01::assertSpanishValidation($inactive, ['items.0.subcategory_ids.1']);
+    Sprint01::assertSpanishValidation($crossed, ['items.1.subcategory_ids.0']);
+    Sprint01::assertSpanishValidation($none, ['items.0.subcategory_ids']);
+    expect(orderTables())->toBe($before);
+});
+
+it('S05-TC-122 límite de pedidos con la versión 3: con 2 se acepta, con 3 se bloquea y con 4 forzados también [D-95]', function () {
+    $this->travelTo(CarbonImmutable::parse('2026-11-05 14:00:00', 'UTC'));
+    $full = [orderItem('computo-hardware'), orderItem('frio-domestico'), orderItem('electricidad-tableros')];
+    postOrder($this, orderPayload($full))->assertCreated();
+    postOrder($this, orderPayload($full))->assertCreated();
+    expect($this->getJson('/api/v1/orders/quota')->json('data'))->toBe(['max' => 3, 'active' => 2, 'available' => 1]);
+
+    postOrder($this, orderPayload($full))->assertCreated();
+    $blocked = postOrder($this, orderPayload([orderItem('computo-hardware')]));
+
+    $blocked->assertConflict()->assertJsonPath('error.code', 'ACTIVE_REQUEST_LIMIT');
+    expect(DB::table('service_requests')->whereNotNull('order_id')->count())->toBe(9)
+        ->and($this->getJson('/api/v1/orders/quota')->json('data'))->toBe(['max' => 3, 'active' => 3, 'available' => 0]);
+
+    activeRequest($this->client->id);
+    postOrder($this, orderPayload([orderItem('computo-hardware')]))->assertConflict();
+    expect($this->getJson('/api/v1/orders/quota')->json('data'))->toBe(['max' => 3, 'active' => 4, 'available' => 0]);
+});
+
+it('S05-TC-123 un pedido sigue activo mientras le quede una solicitud abierta y deja de contar cuando se cierran todas [D-95]', function () {
+    $this->travelTo(CarbonImmutable::parse('2026-11-05 14:00:00', 'UTC'));
+    $order = postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('frio-domestico')]))->assertCreated()->json('data');
+    [$first, $second] = array_column($order['requests'], 'id');
+    $active = fn () => $this->getJson('/api/v1/orders/quota')->json('data.active');
+
+    expect($active())->toBe(1);
+    DB::table('service_requests')->where('id', $first)->update(['closed_at' => now()]);
+    expect($active())->toBe(1);
+    DB::table('service_requests')->where('id', $second)->update(['cancelled_at' => now()]);
+    expect($active())->toBe(0);
+});
+
+it('S05-TC-124 una solicitud suelta cuenta como un pedido y el envío de un borrador respeta el límite de pedidos [D-95]', function () {
+    $this->travelTo(CarbonImmutable::parse('2026-11-05 14:00:00', 'UTC'));
+    postOrder($this, orderPayload([orderItem('computo-hardware'), orderItem('frio-domestico'), orderItem('electricidad-tableros')]))->assertCreated();
+    activeRequest($this->client->id);
+    $draft = fn () => Sprint04::sentRequest(['client_id' => $this->client->id, 'status' => 'registered', 'submitted_at' => null,
+        'rule_version_id' => null, 'search_generation' => 0, 'version' => 1]);
+    $submit = fn (object $row) => $this->postJson("/api/v1/requests/{$row->id}/submission",
+        ['expected_version' => (int) $row->version, 'summary_confirmed' => true], ['Idempotency-Key' => (string) Str::uuid()]);
+
+    $submit($draft())->assertAccepted();
+    expect($this->getJson('/api/v1/orders/quota')->json('data.active'))->toBe(3);
+
+    $rejected = $submit($draft());
+
+    $rejected->assertConflict()->assertJsonPath('error.code', 'ACTIVE_REQUEST_LIMIT');
+    expect($rejected->json('message'))->toContain('3 pedidos activos');
+});
+
+it('S05-TC-125 la versión 3 de reglas trae el límite por pedidos y conserva lo demás; la v1 y la v2 no cambian [D-95]', function () {
+    $values = fn (int $number) => DB::table('rule_values as v')->join('rule_parameters as p', 'p.id', '=', 'v.parameter_id')
+        ->join('rule_versions as r', 'r.id', '=', 'v.rule_version_id')->where('r.version_no', $number)->pluck('v.value_json', 'p.code')->sortKeys()->all();
+    $weights = fn (int $number) => (array) DB::table('matching_weights as w')->join('rule_versions as r', 'r.id', '=', 'w.rule_version_id')
+        ->where('r.version_no', $number)->first(['w.proximity_weight', 'w.price_weight', 'w.history_weight', 'w.experience_weight']);
+    $three = $values(3);
+    $two = $values(2);
+
+    expect(json_decode($three['max_active_orders_per_client']))->toBe(3)
+        ->and($three)->not->toHaveKey('max_active_requests_per_client')
+        ->and(array_diff_key($three, ['max_active_orders_per_client' => 1]))->toBe(array_diff_key($two, ['max_active_requests_per_client' => 1]))
+        ->and($two)->not->toHaveKey('max_active_orders_per_client')->toHaveKey('max_active_requests_per_client')
+        ->and($values(1))->toHaveCount(1)
+        ->and($weights(3))->toBe($weights(2));
+
+    // Con el reloj del S4 rige la v2; con uno posterior al 2026-11-04, la v3, y cada solicitud conserva la suya (D-24).
+    $old = postOrder($this, orderPayload([orderItem('computo-hardware')]))->assertCreated()->json('data.requests.0.id');
+    $this->travelTo(CarbonImmutable::parse('2026-11-05 14:00:00', 'UTC'));
+    $new = postOrder($this, orderPayload([orderItem('computo-hardware')]))->assertCreated()->json('data.requests.0.id');
+    $versionOf = fn (int $id) => (int) DB::table('rule_versions')->where('id', DB::table('service_requests')->where('id', $id)->value('rule_version_id'))->value('version_no');
+    expect($versionOf($old))->toBe(2)->and($versionOf($new))->toBe(3);
 });
