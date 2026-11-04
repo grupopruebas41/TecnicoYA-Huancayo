@@ -53,7 +53,7 @@ El parámetro `max_active_requests_per_client` está en una versión de reglas, 
 
 | Opción | Qué significa | Efecto |
 |---|---|---|
-| **A (recomendada)** | Parámetro nuevo `max_active_orders_per_client = 3` en una **versión 2** de reglas | Respeta D-24 y §8.5. Hay que actualizar las reglas formalizadas (§7 y P10) |
+| **A (recomendada)** | Parámetro nuevo `max_active_orders_per_client = 3` en una **versión nueva** de reglas (la 3, porque la 2 ya existe por D-63) | Respeta D-24 y §8.5. Hay que actualizar las reglas formalizadas (§7 y P10) |
 | B | Reinterpretar el parámetro actual sin versión nueva | Menos trabajo, pero rompe la inmutabilidad y deja el nombre y la unidad falsos |
 
 **Definiciones que propongo, con cualquiera de las dos:**

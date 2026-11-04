@@ -161,48 +161,53 @@ Sin coincidencias, la consulta normalizada se cuenta en `keyword_misses`. La IA 
 
 Migración `000029`: `subcategory_keywords`, `keyword_misses` y `keyword_suggestions`. `KeywordSeeder` (en `DatabaseSeeder` y en las siembras E2E) carga `database/seeders/data/keywords.php` sin pisar lo que cambió el administrador.
 
-## 9. Pedido con varios rubros (versión 1.3 del 2026-10-28, D-92)
+## 9. Pedido por especialidades (versión 1.4 del 2026-11-04, D-95 y D-96; reemplaza a la 1.3 de D-92)
 
-Un pedido agrupa de 1 a 3 rubros (subcategorías distintas). Se crea una solicitud por rubro, y cada una conserva su versión de reglas y su matching del S4 sin cambios. La solicitud dirigida a un técnico sigue siendo de un solo rubro (`POST /requests` con `source=profile`).
+Un pedido agrupa una solicitud por especialidad, cada una con todas las subcategorías que el cliente marcó de esa especialidad. La solicitud dirigida a un técnico sigue siendo de una sola subcategoría (`POST /requests` con `source=profile`).
 
-### 9.1 `GET /orders/quota` **[nuevo]** (cliente)
+### 9.1 `GET /orders/quota` **[cambia]** (cliente)
 
 ```json
-{"max": 3, "active": 1, "available": 2, "max_items": 3}
+{"max": 3, "active": 1, "available": 2}
 ```
 
-- `active` cuenta las solicitudes desde `sent` hasta el cierre o la cancelación; `registered` no cuenta (D-11 y D-58).
+- `active` cuenta **pedidos activos**: pedidos con al menos una solicitud desde `sent` hasta el cierre o la cancelación. Una solicitud sin pedido cuenta como uno; `registered` no cuenta (D-95).
+- Sale `max_items`: un pedido ya no tiene tope de rubros.
 - Si el usuario no es cliente, responde 403.
 
-### 9.2 `POST /orders` **[nuevo]** (cliente, `Idempotency-Key` obligatoria)
+### 9.2 `POST /orders` **[cambia]** (cliente, `Idempotency-Key` obligatoria)
 
 ```json
 {"district_id": 1, "address": "Jr. Sintético 742", "address_reference": "Frente al parque", "mode": "scheduled",
- "scheduled_date": "2026-10-21", "time_slot": "tarde", "summary_confirmed": true,
- "items": [{"subcategory_id": 14, "description": "No enfría desde ayer…", "urgency": "urgente",
+ "scheduled_date": "2026-11-21", "time_slot": "tarde", "summary_confirmed": true,
+ "items": [{"specialty_id": 2, "subcategory_ids": [14, 15], "description": "No enfría desde ayer…", "urgency": "urgente",
             "brand": "Marca", "model": "X-100", "symptom_ids": [101], "media_ids": [55]}]}
 ```
 
 | Campo | Regla |
 |---|---|
-| `items` | De 1 a 3, con subcategorías activas y distintas (422 `order_items` u `order_item_repeated`) |
-| `items.*.description` | De 20 a 1000 caracteres (D-12) |
+| `items` | Una o más especialidades (422 `order_items`) |
+| `items.*.specialty_id` | Activa y sin repetirse en el pedido (422 `order_specialty` u `order_specialty_repeated`) |
+| `items.*.subcategory_ids` | Al menos una; activas, de esa especialidad y sin repetirse en todo el pedido (422 en `items.N.subcategory_ids.M`). La primera es la principal |
+| `items.*.description` | De 20 a 1000 caracteres (D-12); una por solicitud |
 | `items.*.urgency` | `normal` o `urgente`. Es solo informativa: el técnico la ve en la oferta y no cambia el matching |
-| `items.*.brand`, `items.*.model` | Opcionales, de hasta 60 caracteres |
-| `items.*.symptom_ids` | Síntomas activos de la subcategoría de ese rubro (422 en `items.N.symptom_ids.M`) |
-| `items.*.media_ids` | Hasta 5 por solicitud. Cada foto debe ser propia, privada, revisada y libre, y no puede repetirse entre rubros |
+| `items.*.brand`, `items.*.model` | Opcionales, de hasta 60 caracteres; uno por solicitud |
+| `items.*.symptom_ids` | Síntomas activos de cualquiera de sus subcategorías (422 en `items.N.symptom_ids.M`) |
+| `items.*.media_ids` | Hasta 5 por solicitud. Cada foto debe ser propia, privada, revisada y libre, y no puede repetirse entre especialidades |
 | `address_reference` | Opcional, de hasta 120 caracteres; se muestra con la regla de la dirección (SEC-S04-05) |
 | `mode` | `asap`, o `scheduled` con `scheduled_date` (`Y-m-d`) y `time_slot` |
 | `time_slot` | `manana` (08–12), `tarde` (12–18) o `noche` (18–21), en hora de Lima. Una franja que ya empezó da 422 (D-55). Se guarda como `preferred_start_at` y `preferred_end_at` en UTC |
 | `source`, `target_technician_id` | Prohibidos (422 `order_targeted`) |
 
-- **Límite (D-11):** si los rubros no caben en el cupo libre, responde 409 `ACTIVE_REQUEST_LIMIT` con un mensaje que indica el cupo y no crea nada.
-- **Envío:** en una sola transacción, con su clave, crea el pedido y un borrador por rubro, y los envía con el flujo del S3: revalidación, versión de reglas y `PrepareMatching` después del commit. O se envían todas o ninguna.
+- **Límite (D-95):** con 3 pedidos activos o más, responde 409 `ACTIVE_REQUEST_LIMIT` y no crea nada. El envío de un borrador (`POST /requests/{id}/submission`) aplica el mismo límite.
+- **Envío:** en una sola transacción, con su clave, crea el pedido y un borrador por especialidad, y los envía con el flujo del S3: revalidación, versión de reglas y `PrepareMatching` después del commit. O se envían todas o ninguna.
 - **Idempotencia:** la misma clave con el mismo cuerpo devuelve el mismo 201; con otro cuerpo, 409.
 - **Respuesta 201:**
 
 ```json
-{"id": 9, "status": "sent", "requests": [{"id": 41, "status": "sent", "version": 2, "subcategory": {"id": 14, "name": "Congeladores industriales"}}]}
+{"id": 9, "status": "sent", "requests": [{"id": 41, "status": "sent", "version": 2, "specialty": {"id": 2, "name": "Refrigeración comercial"},
+  "subcategory": {"id": 14, "name": "Congeladores industriales"},
+  "subcategories": [{"id": 14, "name": "Congeladores industriales"}, {"id": 15, "name": "Vitrinas"}]}]}
 ```
 
 ### 9.3 Catálogo **[cambia]**
@@ -213,14 +218,28 @@ Un pedido agrupa de 1 a 3 rubros (subcategorías distintas). Se crea una solicit
 
 ### 9.4 Solicitudes y ofertas **[cambia]**
 
-- `GET /requests` agrega `order_id` y `urgency`.
-- `GET /requests/{id}` agrega `order_id`, `urgency`, `brand`, `model`, `time_slot`, `address_reference` y `symptoms` (`[{"id", "name"}]`).
-- La oferta del técnico (`GET /offers` y `GET /offers/{id}`) agrega en `request` los campos `urgency`, `brand`, `model` y `symptoms` (solo los nombres).
+- `GET /requests` agrega `order_id`, `urgency` y `subcategories` (`[{"id", "name"}]`).
+- `GET /requests/{id}` agrega `order_id`, `urgency`, `brand`, `model`, `time_slot`, `address_reference`, `symptoms` (`[{"id", "name"}]`) y `subcategories`.
+- En los dos, `subcategory` sigue siendo la principal. Una solicitud sin pedido trae en `subcategories` solo esa.
+- `reference_fee.amount` es la suma de las tarifas «desde» del catálogo; `null` si ninguna tiene tarifa. Siempre es referencial (RF-04).
+- La oferta del técnico (`GET /offers` y `GET /offers/{id}`) agrega en `request` los campos `urgency`, `brand`, `model`, `symptoms` (solo los nombres) y `subcategories`. `reference_fee.amount` es la suma de **sus** tarifas.
+- El aviso `offer.created` nombra todas las subcategorías.
 
-### 9.5 Datos
+### 9.5 Matching (D-96)
+
+- **Elegibilidad:** además de los filtros vigentes, el técnico debe tener activo el servicio de **todas** las subcategorías; si no, `service_not_offered`. Si nadie las atiende todas, la solicitud entra al pendiente de 24 h.
+- **Puntaje (fórmula de D-20):** tarifa T = suma de sus tarifas; experiencia E = la menor; estimación de tiempo = mediana de los servicios de cualquiera de las subcategorías.
+- **Registro:** `algorithm_version` = `matching_v2`. Con varias subcategorías, `input_snapshot` agrega `services` (`technician_service_id`, `subcategory_id`, `fee` y `experience_years` de cada una). Con una sola, la fotografía y el puntaje no cambian.
+
+### 9.6 Datos
 
 - **Migración `000030`:**
-  - `service_orders` (`client_id`, `item_count` de 1 a 3, `submitted_at`);
+  - `service_orders` (`client_id`, `item_count`, `submitted_at`);
   - en `service_requests`: `order_id`, `urgency`, `brand`, `model`, `address_reference` y `time_slot`;
   - `subcategory_symptoms` y `request_symptoms`.
+  - Corre en MySQL y en SQLite, y se recupera de un intento a medias (DEF-53).
+- **Migración `000031`:**
+  - `request_subcategories` (`request_id`, `subcategory_id`, `position`), solo en las solicitudes de un pedido;
+  - `service_orders.item_count` sin tope, con mínimo 1;
+  - versión 3 de reglas, vigente desde el 2026-11-04, con `max_active_orders_per_client` = 3 y sin `max_active_requests_per_client`; el resto y los pesos se copian de la versión 2.
 - **`SymptomSeeder`:** es idempotente, está en `DatabaseSeeder` y en las siembras E2E, y siembra de 4 a 6 problemas por subcategoría (`database/seeders/data/symptoms.php`). Su edición desde el panel queda para el S7.
