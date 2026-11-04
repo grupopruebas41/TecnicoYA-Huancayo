@@ -34,7 +34,7 @@ No se corrió la suite completa ni se ejecutó Cypress.
 
 ## Pendientes
 
-- Integrar #42 y luego este PR.
+- Integrar este PR en `main`; el #42 ya está integrado (`c574124`).
 - Registrar DEF-53 a DEF-58 en la Fase 1.
 
 ## Registro de uso de IA

@@ -13,8 +13,11 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - control S05-TC-088 y 101: 2/2;
   - no se corrió la suite completa porque no hay código de producto.
 - **Numeración:** el catálogo sigue en S05-TC-115 y los defectos en DEF-53 (DEF-52 está en el PR #41). Los defectos se registran en la Fase 1.
-- **PR:** #41 integrado; #42 actualizado con `main` (`95bbd43`).
-- **Bloqueos:** que Pimentel integre #42 y luego #43, para que D-95 y D-96 estén en `main`. Cypress no se puede ejecutar por memoria (1,08 GB libres en la última medición).
+- **PR:**
+  - #41 y #42 integrados en `main` (`c574124`);
+  - #42 sumó `symfony/http-foundation`, `http-kernel`, `routing` y `yaml` 7.4.23 (`e8e0eba`) y el override de `minimatch` 11.0.4 (`138c0e2`), aceptado por Pimentel. Hay que quitarlo cuando `eslint` admita una versión corregida;
+  - #43 apunta a `main`.
+- **Bloqueos:** que Pimentel integre el #43, para que D-95 y D-96 estén en `main`. Cypress no se puede ejecutar por memoria (1,08 GB libres en la última medición).
 - **Siguiente:** Fase 1 desde `main`; incluye DEF-58, las migraciones en SQLite con comprobación en CI y el README.
 - **Pedidos a Codex:** ninguno.
 

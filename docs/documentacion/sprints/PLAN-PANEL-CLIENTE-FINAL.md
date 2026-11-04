@@ -1,7 +1,7 @@
 # Plan del panel del cliente final (Fase 0)
 
-- **Fecha:** 2026-11-04. **Rama:** `feature/pimentel/cliente/fase0-plan-final`, sobre `37d93bc` (PR #42).
-- **Estado:** C-1 a C-5 resueltos por Pimentel el 2026-11-04 (ver la §2). La Fase 1 empieza desde `main` cuando se integre el PR #42.
+- **Fecha:** 2026-11-04. **Rama:** `feature/pimentel/cliente/fase0-plan-final`. El diagnóstico se hizo sobre `37d93bc`.
+- **Estado:** C-1 a C-5 resueltos por Pimentel el 2026-11-04 (ver la §2). El PR #42 está integrado en `main` (`c574124`). La Fase 1 empieza desde `main` cuando se integre este plan (PR #43).
 - **Evidencia del diagnóstico:** [2026-11-04-37d93bc-fase0-reproduccion-errores.md](../evidencias/sprint-05/2026-11-04-37d93bc-fase0-reproduccion-errores.md).
 
 ## 1. Diagnóstico de los dos errores
