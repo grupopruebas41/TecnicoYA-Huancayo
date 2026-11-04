@@ -5,9 +5,9 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 import ProblemSearch from "../../client/ProblemSearch";
 import Icon from "../../panel/icons";
 import {
-  STEPS, capacity, emptyItem, initialOrder, liveSummary, orderPayload, orderReducer, quotaMessage, validateOrderStep,
+  STEPS, initialOrder, liveSummary, orderBlocked, orderPayload, orderReducer, validateOrderStep,
 } from "./orderModel";
-import { DetailStep, LocationStep, OrderConfirmation, SpecialtyStep, SubcategoryStep, SummaryStep } from "./OrderSteps";
+import { DetailStep, LocationStep, OrderBlocked, OrderConfirmation, SpecialtyStep, SubcategoryStep, SummaryStep } from "./OrderSteps";
 import "./order.css";
 
 // Stepper: el paso actual y los completados (con check); la línea marca el avance con --progress.
@@ -38,9 +38,10 @@ function useOrderAttempt() {
 }
 
 /**
- * Pedido con varios rubros (D-92, PEDIDO-01): especialidades y subcategorías de selección múltiple (hasta 3 rubros y el
- * cupo de D-11), detalle por rubro, ubicación y horario comunes, resumen y envío atómico (POST /orders). La solicitud
- * dirigida a un técnico y los borradores anteriores siguen en RequestWizard (un solo rubro).
+ * Pedido por especialidades (D-92 y D-95): especialidades y subcategorías de selección múltiple sin tope, detalle por
+ * especialidad, ubicación y horario comunes, resumen y envío atómico (POST /orders): una solicitud por especialidad. Con 3
+ * pedidos activos bloquea con un enlace a Mis solicitudes. La solicitud dirigida a un técnico y los borradores anteriores
+ * siguen en RequestWizard (una sola subcategoría).
  */
 export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, defaultDistrictId = null, preset = null }) {
   const [state, dispatch] = useReducer(orderReducer, null, () =>
@@ -68,12 +69,12 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
     body = useRef(null),
     presetApplied = useRef(!preset);
   const send = useOrderAttempt();
-  const limit = capacity(catalog.quota);
+  const blocked = orderBlocked(catalog.quota);
 
   useEffect(() => onBusy(sending || uploading || uncertain), [sending, uploading, uncertain, onBusy]);
   useEffect(() => {
     let alive = true;
-    // El cupo orienta la selección; si no se puede leer, el servidor lo vuelve a aplicar al enviar (D-11).
+    // Si el cupo no se puede leer, el servidor lo vuelve a aplicar al enviar (D-95).
     Promise.all([request("/catalog/specialties"), request("/catalog/districts"), request("/orders/quota").catch(() => null)])
       .then(([specialties, districts, quota]) => {
         if (alive) setCatalog({ specialties: specialties.data, districts: districts.data, quota: quota?.data ?? null, loaded: true });
@@ -95,32 +96,32 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
         });
     });
   }, [state.specialtyIds, subcategories]);
-  // Problemas frecuentes de cada rubro elegido.
+  // Problemas frecuentes de cada subcategoría elegida.
   useEffect(() => {
-    state.items.filter((item) => !symptoms[item.subcategory_id]).forEach((item) => {
-      setSymptoms((current) => ({ ...current, [item.subcategory_id]: [] }));
-      request(`/catalog/subcategories/${item.subcategory_id}/symptoms`)
-        .then((r) => setSymptoms((current) => ({ ...current, [item.subcategory_id]: r.data })))
+    state.items.flatMap((item) => item.subcategories).filter((sub) => !symptoms[sub.id]).forEach((sub) => {
+      setSymptoms((current) => ({ ...current, [sub.id]: [] }));
+      request(`/catalog/subcategories/${sub.id}/symptoms`)
+        .then((r) => setSymptoms((current) => ({ ...current, [sub.id]: r.data })))
         .catch(() => {});
     });
   }, [state.items, symptoms]);
-  // Atajo o sugerencia del Inicio (D-93, D-94): agrega ese rubro y empieza en su detalle.
+  // Atajo o sugerencia del Inicio (D-93, D-94): marca esa subcategoría y empieza en el detalle de su especialidad.
   useEffect(() => {
     if (presetApplied.current || !catalog.loaded) return;
     const specialty = catalog.specialties.find((item) => item.id === +preset.specialty_id);
     const sub = subcategories[+preset.specialty_id]?.items.find((item) => item.id === +preset.subcategory_id);
     if (!specialty || !sub) return;
     presetApplied.current = true;
-    if (limit > 0) {
-      dispatch({ type: "addItem", item: emptyItem(sub, specialty) });
-      setActive(sub.id);
+    if (!blocked) {
+      dispatch({ type: "addSubcategory", specialty, subcategory: sub });
+      setActive(specialty.id);
       dispatch({ type: "step", step: 3 });
     }
-  }, [catalog, subcategories, preset, limit]);
+  }, [catalog, subcategories, preset, blocked]);
   // El título del paso (o de la confirmación) recibe el foco al cambiar.
   useEffect(() => {
     title.current?.focus();
-  }, [state.step, result]);
+  }, [state.step, result, blocked]);
 
   const go = useCallback((step, item = null) => {
     setDirection(step < state.step ? "back" : "forward");
@@ -130,19 +131,15 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
     dispatch({ type: "step", step });
   }, [state.step]);
 
-  const limitReason = limit < 3 ? quotaMessage(catalog.quota) : "Puedes pedir hasta 3 rubros a la vez";
+  const isMarked = (subcategoryId) => state.items.some((entry) => entry.subcategories.some((sub) => sub.id === subcategoryId));
   function addFromSearch({ item }) {
     setError("");
-    if (state.items.some((entry) => entry.subcategory_id === item.subcategory_id)) {
+    if (isMarked(item.subcategory_id)) {
       setSuccess(`Ya estaba en tu pedido: ${item.specialty_name} › ${item.subcategory_name}.`);
       return;
     }
-    if (state.items.length >= limit) {
-      setError(limit < 3 ? quotaMessage(catalog.quota) : "Puedes pedir hasta 3 rubros a la vez.");
-      return;
-    }
     const specialty = catalog.specialties.find((entry) => entry.id === item.specialty_id) || { id: item.specialty_id, name: item.specialty_name };
-    dispatch({ type: "addItem", item: emptyItem({ id: item.subcategory_id, name: item.subcategory_name }, specialty) });
+    dispatch({ type: "addSubcategory", specialty, subcategory: { id: item.subcategory_id, name: item.subcategory_name } });
     setSuccess(`Agregado: ${item.specialty_name} › ${item.subcategory_name}.`);
   }
   function toggleSpecialty(specialty) {
@@ -153,8 +150,8 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
     dispatch({ type: "toggleSpecialty", id: specialty.id });
   }
   function toggleSubcategory(sub, specialty) {
-    if (state.items.some((item) => item.subcategory_id === sub.id)) dispatch({ type: "removeItem", id: sub.id });
-    else if (state.items.length < limit) dispatch({ type: "addItem", item: emptyItem(sub, specialty) });
+    if (isMarked(sub.id)) dispatch({ type: "removeSubcategory", specialtyId: specialty.id, id: sub.id, symptomIds: (symptoms[sub.id] || []).map((symptom) => symptom.id) });
+    else dispatch({ type: "addSubcategory", specialty, subcategory: sub });
   }
 
   function focusFirstInvalid(found) {
@@ -172,19 +169,15 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
     setError("");
     setSuccess("");
     if (state.step === 3 && Object.keys(found).length) {
-      const first = state.items.find((item) => found[item.subcategory_id]);
-      setActive(first.subcategory_id);
+      const first = state.items.find((item) => found[item.specialty_id]);
+      setActive(first.specialty_id);
     }
     if (Object.keys(found).length) {
       focusFirstInvalid(found);
       return;
     }
-    if (state.step === 1 && limit === 0) {
-      setError(quotaMessage(catalog.quota));
-      return;
-    }
     if (state.step < 5) {
-      if (state.step === 2 && !state.items.some((item) => item.subcategory_id === active)) setActive(state.items[0]?.subcategory_id);
+      if (state.step === 2 && !state.items.some((item) => item.specialty_id === active)) setActive(state.items[0]?.specialty_id);
       go(state.step + 1);
       return;
     }
@@ -209,6 +202,13 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
     return (
       <section className="s02-panel request-wizard order-wizard" aria-label="Nueva solicitud">
         <OrderConfirmation result={result} titleRef={title} onOpen={(id) => navigate("requests", { open: id })} onList={() => navigate("requests")} />
+      </section>
+    );
+  }
+  if (blocked) {
+    return (
+      <section className="s02-panel request-wizard order-wizard" aria-label="Nueva solicitud">
+        <OrderBlocked max={catalog.quota.max} titleRef={title} onList={() => navigate("requests")} />
       </section>
     );
   }
@@ -240,14 +240,12 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
             <>
               <ProblemSearch label="¿Qué se malogró?" onSelect={addFromSearch}
                 onNoMatch={() => body.current?.querySelector("input[name=specialty_ids]")?.focus()} />
-              {catalog.quota && quotaMessage(catalog.quota) && <p className="order-quota">{quotaMessage(catalog.quota)}</p>}
               <SpecialtyStep specialties={catalog.specialties} selected={state.specialtyIds} onToggle={toggleSpecialty} error={errors.specialty_ids} />
             </>
           )}
           {state.step === 2 && (
-            <SubcategoryStep groups={groups} items={state.items} limit={limit} filter={filter} onFilter={setFilter}
-              onToggle={toggleSubcategory} error={errors.subcategory_ids} limitReason={limitReason}
-              quotaText={limit < 3 ? quotaMessage(catalog.quota) : ""} />
+            <SubcategoryStep groups={groups} items={state.items} filter={filter} onFilter={setFilter}
+              onToggle={toggleSubcategory} error={errors.subcategory_ids} />
           )}
           {state.step === 3 && (
             <DetailStep items={state.items} active={active} onActive={setActive} symptoms={symptoms} errors={errors}

@@ -86,8 +86,8 @@ test('S05-TC-079 un chip rellena el buscador y muestra sus sugerencias al instan
   expect(box()).toHaveFocus();
 });
 
-// D-92: en el pedido con varios rubros, la sugerencia se agrega a la selección (no la reemplaza) y el asistente sigue en
-// el paso 1. Antes (D-94) llevaba directo al paso 3 con un solo rubro.
+// D-92 y D-95: en el pedido por especialidades, la sugerencia se agrega a la selección (no la reemplaza) y el asistente sigue en
+// el paso 1. Antes (D-94) llevaba directo al paso 3 con un solo trabajo. Desde D-95 no hay tope: con pedidos activos también se agrega.
 test('S05-TC-080 en el paso 1 del asistente, elegir una sugerencia agrega ese rubro sin reemplazar y avisa «Agregado»', async () => {
   let items = [suggestion(4, 1, 'Cómputo', 'Hardware')];
   request.mockImplementation(async path => {
@@ -95,7 +95,7 @@ test('S05-TC-080 en el paso 1 del asistente, elegir una sugerencia agrega ese ru
     if (path === '/catalog/specialties') return {data: [{id: 1, name: 'Cómputo'}, {id: 2, name: 'Electricidad'}]};
     if (path.startsWith('/catalog/subcategories')) return {data: [{id: 4, name: 'Hardware'}, {id: 9, name: 'Tableros'}]};
     if (path === '/catalog/districts') return {data: [{id: 1, name: 'Huancayo'}]};
-    if (path === '/orders/quota') return {data: {max: 3, active: 2, available: 1, max_items: 3}};
+    if (path === '/orders/quota') return {data: {max: 3, active: 2, available: 1}};
     return {data: []};
   });
   render(<OrderWizard/>);
@@ -110,13 +110,14 @@ test('S05-TC-080 en el paso 1 del asistente, elegir una sugerencia agrega ese ru
   expect(screen.getByRole('heading', {name: 'Paso 1: Especialidades'})).toBeInTheDocument();
   expect(screen.getByRole('checkbox', {name: /^Cómputo/})).toBeChecked();
   expect(electricidad).toBeChecked();
-  expect(screen.getByText('1 rubro elegido · Cómputo')).toBeInTheDocument();
+  expect(screen.getByText('2 especialidades · 1 trabajo: Electricidad (0), Cómputo (1)')).toBeInTheDocument();
 
   items = [suggestion(9, 2, 'Electricidad', 'Tableros')];
   fireEvent.change(search, {target: {value: 'el tablero salta'}});
   fireEvent.click(await screen.findByRole('option', {name: /Tableros/}));
-  expect(await screen.findByRole('alert')).toHaveTextContent('Tienes 2 solicitudes activas: puedes agregar 1 rubro.');
-  expect(screen.getByText('1 rubro elegido · Cómputo')).toBeInTheDocument();
+  expect(await screen.findByText('Agregado: Electricidad › Tableros.')).toBeInTheDocument();
+  expect(screen.queryByRole('alert')).toBeNull();
+  expect(screen.getByText('2 especialidades · 2 trabajos: Electricidad (1), Cómputo (1)')).toBeInTheDocument();
 });
 
 const specialties = [{id: 1, name: 'Cómputo', subcategories: [{id: 4, name: 'Reparación de hardware'}]}];

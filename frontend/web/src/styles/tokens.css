@@ -17,6 +17,7 @@
   --ty-border: #4b6261;
   --ty-ink: #11272b;
   --ty-error: #ffc7bf;
+  --ty-error-bg: #3f2320;
   --ty-font: "Barlow", sans-serif;
   --ty-serif: "Instrument Serif", Georgia, serif;
   --ty-xs: 0.5rem;
@@ -85,4 +86,5 @@
   --ty-warning-bg: #fdf5e6;
   --ty-neutral-bg: #eef2f1;
   --ty-error: #b42318;
+  --ty-error-bg: #fdecea;
 }

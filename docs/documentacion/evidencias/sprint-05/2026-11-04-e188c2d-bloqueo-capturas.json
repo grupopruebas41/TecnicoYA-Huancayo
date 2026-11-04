@@ -1,0 +1,58 @@
+{
+  "1366-light-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-light-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-dark-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-dark-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-light-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-light-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-dark-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-dark-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  }
+}

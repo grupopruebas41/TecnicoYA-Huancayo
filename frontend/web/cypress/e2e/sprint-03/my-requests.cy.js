@@ -21,7 +21,7 @@ describe("S3 mis solicitudes", () => {
     loginClient("limit");
     toSummary();
     send();
-    wizard().find("[role=alert]").should("contain", "máximo de 3");
+    wizard().find("[role=alert]").should("contain", "3 pedidos activos"); // D-95: la solicitud suelta cuenta como un pedido
     wizard().contains("Solicitud enviada correctamente.").should("not.exist");
     cy.get('nav[aria-label="Gestión del cliente"]')
       .contains("button", "Mis solicitudes")

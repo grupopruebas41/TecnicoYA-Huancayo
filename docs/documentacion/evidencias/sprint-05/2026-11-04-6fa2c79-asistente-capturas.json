@@ -1,0 +1,410 @@
+{
+  "1366-light-paso1-sin-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "2 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial",
+    "quota": 0
+  },
+  "1366-light-paso1-tres": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial, Electricidad",
+    "quota": 0
+  },
+  "1366-light-paso2-cinco-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-light-deshabilitadas": 0,
+  "1366-light-paso2-filtro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-light-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-light-paso3-otra-especialidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-light-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-light-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-light-contraste-error": {
+    "color": "rgb(19, 34, 42)",
+    "background": "rgb(253, 236, 234)",
+    "ratio": 14.24
+  },
+  "1366-light-error-legible": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-light-pedido": [
+    "Cómputo Solicitud #11Reparación de hardware, Redes e infraestructuraVer seguimiento de la solicitud #11",
+    "Refrigeración comercial Solicitud #12Refrigeración doméstica, Refrigeración comercial (vitrinas)Ver seguimiento de la solicitud #12",
+    "Electricidad Solicitud #13Tableros eléctricosVer seguimiento de la solicitud #13"
+  ],
+  "1366-light-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-light-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-light-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-light-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-dark-paso1-sin-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "2 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial",
+    "quota": 0
+  },
+  "1366-dark-paso1-tres": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial, Electricidad",
+    "quota": 0
+  },
+  "1366-dark-paso2-cinco-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-dark-deshabilitadas": 0,
+  "1366-dark-paso2-filtro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-dark-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-dark-paso3-otra-especialidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-dark-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-dark-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-dark-contraste-error": {
+    "color": "rgb(242, 235, 223)",
+    "background": "rgb(63, 35, 32)",
+    "ratio": 12.04
+  },
+  "1366-dark-error-legible": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "1366-dark-pedido": [
+    "Cómputo Solicitud #14Reparación de hardware, Redes e infraestructuraVer seguimiento de la solicitud #14",
+    "Refrigeración comercial Solicitud #15Refrigeración doméstica, Refrigeración comercial (vitrinas)Ver seguimiento de la solicitud #15",
+    "Electricidad Solicitud #16Tableros eléctricosVer seguimiento de la solicitud #16"
+  ],
+  "1366-dark-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-dark-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-dark-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "1366-dark-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-light-paso1-sin-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "2 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial",
+    "quota": 0
+  },
+  "390-light-paso1-tres": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial, Electricidad",
+    "quota": 0
+  },
+  "390-light-paso2-cinco-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-light-deshabilitadas": 0,
+  "390-light-paso2-filtro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-light-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-light-paso3-otra-especialidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-light-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-light-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-light-contraste-error": {
+    "color": "rgb(19, 34, 42)",
+    "background": "rgb(253, 236, 234)",
+    "ratio": 14.24
+  },
+  "390-light-error-legible": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-light-pedido": [
+    "Cómputo Solicitud #17Reparación de hardware, Redes e infraestructuraVer seguimiento de la solicitud #17",
+    "Refrigeración comercial Solicitud #18Refrigeración doméstica, Refrigeración comercial (vitrinas)Ver seguimiento de la solicitud #18",
+    "Electricidad Solicitud #19Tableros eléctricosVer seguimiento de la solicitud #19"
+  ],
+  "390-light-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-light-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-light-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-light-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-dark-paso1-sin-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "2 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial",
+    "quota": 0
+  },
+  "390-dark-paso1-tres": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · Sin trabajos aún: Cómputo, Refrigeración comercial, Electricidad",
+    "quota": 0
+  },
+  "390-dark-paso2-cinco-trabajos": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-dark-deshabilitadas": 0,
+  "390-dark-paso2-filtro": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-dark-paso3": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-dark-paso3-otra-especialidad": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-dark-paso4": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-dark-paso5": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-dark-contraste-error": {
+    "color": "rgb(242, 235, 223)",
+    "background": "rgb(63, 35, 32)",
+    "ratio": 12.04
+  },
+  "390-dark-error-legible": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": true,
+    "pie": "3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)",
+    "quota": 0
+  },
+  "390-dark-pedido": [
+    "Cómputo Solicitud #20Reparación de hardware, Redes e infraestructuraVer seguimiento de la solicitud #20",
+    "Refrigeración comercial Solicitud #21Refrigeración doméstica, Refrigeración comercial (vitrinas)Ver seguimiento de la solicitud #21",
+    "Electricidad Solicitud #22Tableros eléctricosVer seguimiento de la solicitud #22"
+  ],
+  "390-dark-confirmacion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-dark-mis-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-dark-bloqueo": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  },
+  "390-dark-perfil-sin-descripcion": {
+    "overflowX": false,
+    "clipped": 0,
+    "barVisible": null,
+    "pie": null,
+    "quota": 0
+  }
+}

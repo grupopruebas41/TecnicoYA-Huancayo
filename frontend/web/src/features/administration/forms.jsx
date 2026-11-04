@@ -9,8 +9,14 @@ export function Field({name, label, errors = {}, children, ...props}) {
   </div>;
 }
 
+/** La referencia del servidor (meta.request_id) es para soporte: va aparte y en tamaño pequeño. */
+function ErrorText({text}) {
+  const [message, reference] = String(text).split(/ (?=Referencia: [\w-]+$)/);
+  return <>{message}{reference && <small className="error-reference">{reference}</small>}</>;
+}
+
 export function Notice({error, success}) {
-  return <>{error && <p className="error" role="alert">{error}</p>}{success && <output className="notice">{success}</output>}</>;
+  return <>{error && <p className="error" role="alert"><ErrorText text={error}/></p>}{success && <output className="notice">{success}</output>}</>;
 }
 
 export const EMAIL_MAX_LENGTH = 254;

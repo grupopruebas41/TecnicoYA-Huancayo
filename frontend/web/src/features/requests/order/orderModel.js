@@ -1,15 +1,15 @@
 import { serverNow } from "../../administration/http";
 
-// D-92 (PEDIDO-01): pedido con varios rubros. Estado del asistente, validación por paso (la misma que aplica el
-// servidor en POST /orders) y cuerpo del envío. Un rubro es una subcategoría; cada uno será una solicitud.
-export const MAX_ITEMS = 3;
+// D-92 y D-95 (PEDIDO-02): pedido por especialidades. Estado del asistente, validación por paso (la misma que aplica el
+// servidor en POST /orders) y cuerpo del envío. Cada elemento de items es una especialidad con sus subcategorías y será una
+// solicitud; no hay tope de subcategorías.
 export const DESCRIPTION_MIN = 20;
 export const DESCRIPTION_MAX = 1000;
 export const MAX_PHOTOS = 5;
 export const STEPS = [
   ["Especialidades", "Marca una o varias especialidades, o describe el problema arriba."],
-  ["Subcategorías", "Elige el trabajo específico de cada especialidad: cada uno será una solicitud."],
-  ["Detalle por rubro", "Cuéntanos qué pasa en cada rubro; las fotos ayudan al técnico."],
+  ["Subcategorías", "Marca todos los trabajos que necesitas de cada especialidad."],
+  ["Detalle por especialidad", "Cuéntanos qué pasa en cada especialidad; las fotos ayudan al técnico."],
   ["Ubicación y horario", "Indica dónde y cuándo quieres la atención; vale para todo el pedido."],
   ["Resumen y envío", "Revisa el pedido antes de enviarlo."],
 ];
@@ -21,12 +21,12 @@ export const SLOTS = [
 ];
 const LIMA_OFFSET_HOURS = -5;
 
-export const emptyItem = (subcategory, specialty) => ({
-  subcategory_id: subcategory.id,
+const subcategoryOf = (subcategory) => ({ id: subcategory.id, name: subcategory.name, reference_fee: subcategory.reference_fee ?? null });
+
+export const emptyItem = (specialty, subcategories = []) => ({
   specialty_id: specialty.id,
-  name: subcategory.name,
   specialty_name: specialty.name,
-  reference_fee: subcategory.reference_fee ?? null,
+  subcategories: subcategories.map(subcategoryOf),
   description: "",
   brand: "",
   model: "",
@@ -64,23 +64,39 @@ export function orderReducer(state, action) {
         ? { ...state, specialtyIds: state.specialtyIds.filter((id) => id !== action.id), items: state.items.filter((item) => item.specialty_id !== action.id) }
         : { ...state, specialtyIds: [...state.specialtyIds, action.id] };
     }
-    case "addItem": {
-      if (state.items.some((item) => item.subcategory_id === action.item.subcategory_id)) return state;
-      const specialtyIds = state.specialtyIds.includes(action.item.specialty_id) ? state.specialtyIds : [...state.specialtyIds, action.item.specialty_id];
-      const item = state.sameDescription && state.items[0] ? { ...action.item, description: state.items[0].description } : action.item;
+    case "addSubcategory": {
+      const { specialty, subcategory } = action;
+      const specialtyIds = state.specialtyIds.includes(specialty.id) ? state.specialtyIds : [...state.specialtyIds, specialty.id];
+      const own = state.items.find((item) => item.specialty_id === specialty.id);
+      if (own?.subcategories.some((entry) => entry.id === subcategory.id)) return state;
+      if (own) {
+        return { ...state, specialtyIds, items: state.items.map((item) => (item === own ? { ...item, subcategories: [...item.subcategories, subcategoryOf(subcategory)] } : item)) };
+      }
+      const created = emptyItem(specialty, [subcategory]);
+      const item = state.sameDescription && state.items[0] ? { ...created, description: state.items[0].description } : created;
       return { ...state, specialtyIds, items: [...state.items, item] };
     }
-    case "removeItem":
-      return { ...state, items: state.items.filter((item) => item.subcategory_id !== action.id) };
+    // Quita la subcategoría y sus síntomas; la especialidad sin subcategorías deja de ser una solicitud.
+    case "removeSubcategory": {
+      const without = action.symptomIds || [];
+      return {
+        ...state,
+        items: state.items
+          .map((item) => (item.specialty_id === action.specialtyId
+            ? { ...item, subcategories: item.subcategories.filter((entry) => entry.id !== action.id), symptom_ids: item.symptom_ids.filter((id) => !without.includes(id)) }
+            : item))
+          .filter((item) => item.subcategories.length),
+      };
+    }
     case "item": {
       const shared = state.sameDescription && action.name === "description";
       return {
         ...state,
-        items: state.items.map((item) => (shared || item.subcategory_id === action.id ? { ...item, [action.name]: action.value } : item)),
+        items: state.items.map((item) => (shared || item.specialty_id === action.id ? { ...item, [action.name]: action.value } : item)),
       };
     }
     case "sameDescription": {
-      const source = state.items.find((item) => item.subcategory_id === action.from) || state.items[0];
+      const source = state.items.find((item) => item.specialty_id === action.from) || state.items[0];
       return {
         ...state,
         sameDescription: action.value,
@@ -129,7 +145,7 @@ export function validateOrderStep(step, state, specialties = [], now = serverNow
   if (step === 3) {
     state.items.forEach((item) => {
       const found = itemErrors(item);
-      if (Object.keys(found).length) errors[item.subcategory_id] = found;
+      if (Object.keys(found).length) errors[item.specialty_id] = found;
     });
   }
   if (step === 4) {
@@ -155,7 +171,8 @@ export function orderPayload(state) {
     mode: state.mode,
     summary_confirmed: true,
     items: state.items.map((item) => ({
-      subcategory_id: item.subcategory_id,
+      specialty_id: item.specialty_id,
+      subcategory_ids: item.subcategories.map((subcategory) => subcategory.id),
       description: item.description.trim(),
       urgency: item.urgency,
       brand: item.brand.trim() || null,
@@ -168,27 +185,22 @@ export function orderPayload(state) {
   return data;
 }
 
-/** Barra inferior: «2 rubros elegidos · Cómputo, Electricidad». */
+const plural = (count, one, many) => `${count} ${count === 1 ? one : many}`;
+
+/** Barra inferior: «3 especialidades · 5 trabajos: Cómputo (2), Refrigeración comercial (2), Electricidad (1)». */
 export function liveSummary(state, specialties = []) {
-  const count = state.items.length;
-  const label = count === 1 ? "1 rubro elegido" : count ? `${count} rubros elegidos` : "Ningún rubro elegido";
-  const ids = count ? [...new Set(state.items.map((item) => item.specialty_id))] : state.specialtyIds;
-  const names = ids.map((id) => specialties.find((s) => s.id === id)?.name || state.items.find((i) => i.specialty_id === id)?.specialty_name).filter(Boolean);
-  return names.length ? `${label} · ${names.join(", ")}` : label;
+  if (!state.specialtyIds.length) return "Aún no eliges especialidades";
+  const counted = state.specialtyIds.map((id) => {
+    const item = state.items.find((entry) => entry.specialty_id === id);
+    return { name: specialties.find((s) => s.id === id)?.name || item?.specialty_name, count: item?.subcategories.length || 0 };
+  }).filter((entry) => entry.name);
+  const total = counted.reduce((sum, entry) => sum + entry.count, 0);
+  const label = plural(state.specialtyIds.length, "especialidad", "especialidades");
+  if (!total) return `${label} · Sin trabajos aún: ${counted.map((entry) => entry.name).join(", ")}`;
+  return `${label} · ${plural(total, "trabajo", "trabajos")}: ${counted.map((entry) => `${entry.name} (${entry.count})`).join(", ")}`;
 }
 
-/** Cupo: máximo de rubros del pedido según las solicitudes activas (D-11). */
-export function capacity(quota) {
-  if (!Number.isFinite(quota?.available)) return MAX_ITEMS;
-  return Math.max(0, Math.min(MAX_ITEMS, quota.available));
-}
-
-export function quotaMessage(quota) {
-  if (!Number.isFinite(quota?.active) || !quota.active) return "";
-  const active = quota.active === 1 ? "Tienes 1 solicitud activa" : `Tienes ${quota.active} solicitudes activas`;
-  if (!quota.available) return `${active}: podrás hacer otro pedido cuando alguna se cierre.`;
-  const room = Math.min(MAX_ITEMS, quota.available);
-  return `${active}: puedes agregar ${room === 1 ? "1 rubro" : `${room} rubros`}.`;
-}
+/** D-95: con el máximo de pedidos activos el asistente no deja empezar otro. Sin cupo legible decide el servidor. */
+export const orderBlocked = (quota) => quota?.available === 0;
 
 export const formatFee = (fee) => (fee == null ? "" : `Desde S/ ${Number(fee).toFixed(2)}`);

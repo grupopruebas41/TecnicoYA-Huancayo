@@ -45,7 +45,7 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
               </button>
             )}
           </section>
-          {profile.bio && <p className="client-profile-bio">{profile.bio}</p>}
+          {profile.bio ? <p className="client-profile-bio">{profile.bio}</p> : <p className="client-profile-bio muted">Este técnico aún no agregó una descripción.</p>}
           <section className="panel-card client-block">
             <h3>Servicios</h3>
             <ul className="client-services">

@@ -94,10 +94,10 @@ test('S05-TC-029 elegir una sugerencia de «¿Qué se malogró?» abre Nueva sol
     if (path === '/catalog/districts') return {data: [{id: 1, name: 'Huancayo'}]};
     return {data: []};
   });
-  // D-92: el asistente del pedido agrega ese rubro y empieza en su detalle; «Atrás» lo muestra marcado.
+  // D-95: el asistente marca esa subcategoría y empieza en el detalle de su especialidad; «Atrás» la muestra marcada.
   render(<OrderWizard preset={{specialty_id: 1, subcategory_id: 4}} defaultDistrictId={1}/>);
-  expect(await screen.findByRole('heading', {name: 'Paso 3: Detalle por rubro'})).toBeInTheDocument();
-  expect(screen.getByRole('tab', {name: /Reparación de hardware/})).toHaveAttribute('aria-selected', 'true');
+  expect(await screen.findByRole('heading', {name: 'Paso 3: Detalle por especialidad'})).toBeInTheDocument();
+  expect(screen.getByRole('tab', {name: /Cómputo/})).toHaveAttribute('aria-selected', 'true');
   fireEvent.click(screen.getByRole('button', {name: 'Atrás'}));
   expect(await screen.findByRole('checkbox', {name: /^Reparación de hardware/})).toBeChecked();
 });

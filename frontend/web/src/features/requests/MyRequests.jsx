@@ -75,7 +75,7 @@ export default function MyRequests({ onContinue = () => {}, openId = null }) {
             // D-92: las solicitudes del mismo pedido van juntas bajo su pedido.
             <section className="client-order-group" key={"pedido-" + entry.order} aria-label={`Pedido #${entry.order}`}>
               <h3 className="client-order-title">
-                Pedido #{entry.order} · {entry.rows.length} rubros
+                Pedido #{entry.order} · {entry.rows.length} solicitudes
               </h3>
               <div className="client-request-list">{entry.rows.map(card)}</div>
             </section>
@@ -111,7 +111,7 @@ export default function MyRequests({ onContinue = () => {}, openId = null }) {
     return (
           <article className="s02-card client-request-card" key={row.id}>
             {/* Revisión del PR #39: el rubro es el título; el número y el siguiente paso van en una línea. */}
-            <h3>{row.subcategory?.name || `Solicitud #${row.id}`}</h3>
+            <h3>{row.subcategories?.map((sub) => sub.name).join(", ") || row.subcategory?.name || `Solicitud #${row.id}`}</h3>
             {row.subcategory && <small className="muted">Solicitud #{row.id}</small>}
             {row.phase ? (
               <RequestPhase phase={row.phase} className={"client-status " + statusTone(row)} />
