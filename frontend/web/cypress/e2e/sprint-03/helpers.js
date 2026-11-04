@@ -27,35 +27,48 @@ export function openMyRequests() {
     .contains("button", "Mis solicitudes")
     .click();
 }
+// D-92: «Nueva solicitud» abre el pedido con varios rubros (casillas specialty_ids y subcategory_ids, visualmente
+// ocultas dentro de su tarjeta: se marcan con force). Llega al paso 3 con un solo rubro.
 export function toDescription() {
   cy.get('nav[aria-label="Gestión del cliente"]')
     .contains("button", "Nueva solicitud")
     .click();
-  // Revisión del PR #39: especialidad y subcategoría son tarjetas con un radio visible (antes, select).
   wizard()
-    .find("input[name=specialty_id]")
+    .find("input[name=specialty_ids]")
     .should("have.length.greaterThan", 0);
-  wizard().find("input[name=specialty_id]").first().check();
+  wizard().find("input[name=specialty_ids]").first().check({ force: true });
   wizard().contains("button", "Siguiente").click();
   wizard()
-    .find("input[name=subcategory_id]")
+    .find("input[name=subcategory_ids]")
     .should("have.length.greaterThan", 0);
-  wizard().find("input[name=subcategory_id]").first().check();
+  wizard().find("input[name=subcategory_ids]").first().check({ force: true });
   wizard().contains("button", "Siguiente").click();
+  wizard().contains("h2", "Paso 3").should("be.visible");
 }
+// D-92: el pedido ya no crea borradores. El borrador del S3 (registrar, corregir, adjuntar y enviar una solicitud)
+// sigue en el asistente anterior: se registra por la API con los mismos datos y se abre con «Continuar solicitud».
 export function toSummary() {
-  toDescription();
-  wizard()
-    .find("textarea[name=description]")
-    .type("La computadora no enciende desde ayer por la tarde.");
-  wizard().contains("button", "Siguiente").click();
-  wizard().find("select[name=district_id]").select(1);
-  wizard().find("input[name=address]").type("Calle sintética 456");
-  observe("POST", "/requests", "created");
-  wizard().contains("button", "Siguiente").click();
-  cy.wait("@created").then(({ response }) => {
-    expect(response.statusCode).to.eq(201);
-    cy.wrap(response.body.data).as("record");
+  cy.request(api() + "/api/v1/catalog/specialties").then(({ body }) =>
+    cy.request(api() + "/api/v1/catalog/subcategories?specialty_id=" + body.data[0].id),
+  ).then(({ body }) => cy.wrap(body.data[0].id).as("subcategoryId"));
+  cy.request(api() + "/api/v1/catalog/districts").then(({ body }) => cy.wrap(body.data[0].id).as("districtId"));
+  cy.get("@subcategoryId").then((subcategory) => cy.get("@districtId").then((district) =>
+    apiWrite("POST", "/requests", {
+      subcategory_id: subcategory,
+      description: "La computadora no enciende desde ayer por la tarde.",
+      district_id: district,
+      address: "Calle sintética 456",
+      mode: "asap",
+      source: "automatic",
+    }).then((response) => {
+      expect(response.status).to.eq(201);
+      cy.wrap(response.body.data).as("record");
+    }),
+  ));
+  openMyRequests();
+  cy.get("@record").then((record) => {
+    cy.contains("button", "Ver solicitud #" + record.id).click();
+    cy.contains("button", "Continuar solicitud #" + record.id).click();
   });
   wizard().contains("h2", "Paso 5").should("be.visible");
 }
@@ -65,6 +78,14 @@ export function send() {
     .find("input")
     .check();
   wizard().contains("button", "Enviar solicitud").click();
+}
+// D-92: envío del pedido (paso 5 del asistente nuevo).
+export function sendOrder() {
+  wizard()
+    .contains("label", "Confirmo que el resumen es correcto")
+    .find("input")
+    .check();
+  wizard().contains("button", "Enviar pedido").click();
 }
 export function image() {
   observe("POST", "/media", "media");

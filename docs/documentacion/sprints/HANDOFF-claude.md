@@ -2,6 +2,30 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-10-28 · Pedido con varios rubros y rediseño del asistente (D-92, Parte B)
+
+- **Rama:** `feature/mayhuasca/cliente/pedido-multiple`, desde `main` `b799ab0`.
+  - Commits: `99ca9ff` (Pest en rojo), `1026e27` (backend), `87e3af6` (Vitest en rojo), `f9e58c5` (frontend), `8fdcb4f` (capturas) y `afa87c5` (Cypress), más documentación.
+  - Detalle en `docs/avances/mayhuasca/cliente/pedido-multiple/avance.md`.
+- **Qué hay:**
+  - `POST /orders` (de 1 a 3 rubros, envío atómico con idempotencia y D-11 al pedido entero), `GET /orders/quota` y síntomas sembrados;
+  - asistente nuevo `OrderWizard`, sin fotos;
+  - Mis solicitudes agrupadas por pedido;
+  - la dirigida y los borradores siguen en `RequestWizard`.
+  - Contrato S5 §9.
+- **Pruebas:**
+  - Pest 412/412 y Vitest 363/363; lint y build aprobados;
+  - IDs S05-TC-088 a 114 (S5: 60 Pest y 54 Vitest);
+  - Cypress adaptadas sin ejecutar.
+- **Capturas:** 48 con envío real de 3 rubros en claro y oscuro, a 1366 y 390 px (`evidencias/sprint-05/2026-10-28-f9e58c5-pedido-*`).
+- **Parches de seguridad (PR #41, rama `feature/pimentel/seguridad/symfony-mime`):**
+  - `symfony/mime` 7.4.22 y `systeminformation` 5.33.18;
+  - DEF-52: S05-TC-054 apaga la lotería de sesiones;
+  - CI en verde.
+- **Bloqueo:** esta rama falla en las auditorías hasta que se integre el #41. Luego hay que actualizarla con `main` (merge, sin rebase).
+- **Siguiente:** las 14 Cypress del S5 para el pedido.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-10-28 · Buscador «¿Qué se malogró?» (D-94, RECO-01)
 
 - **Rama:** `feature/mayhuasca/cliente/buscador`, desde `main` `4b4060b`. Commits `1ae5eb3` (Pest en rojo), `6d1eafe` (backend), `991ccde` (Vitest en rojo), `3549146` (frontend), `587c06a` (siembra E2E), `fa0f93d` y `07649f6` (DEF-51, rojo y verde), más documentación. Detalle en `docs/avances/mayhuasca/cliente/buscador/avance.md`.

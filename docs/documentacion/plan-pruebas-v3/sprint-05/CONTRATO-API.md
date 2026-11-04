@@ -160,3 +160,67 @@ Sin coincidencias, la consulta normalizada se cuenta en `keyword_misses`. La IA 
 ### 8.3 Datos
 
 Migración `000029`: `subcategory_keywords`, `keyword_misses` y `keyword_suggestions`. `KeywordSeeder` (en `DatabaseSeeder` y en las siembras E2E) carga `database/seeders/data/keywords.php` sin pisar lo que cambió el administrador.
+
+## 9. Pedido con varios rubros (versión 1.3 del 2026-10-28, D-92)
+
+Un pedido agrupa de 1 a 3 rubros (subcategorías distintas). Se crea una solicitud por rubro, y cada una conserva su versión de reglas y su matching del S4 sin cambios. La solicitud dirigida a un técnico sigue siendo de un solo rubro (`POST /requests` con `source=profile`).
+
+### 9.1 `GET /orders/quota` **[nuevo]** (cliente)
+
+```json
+{"max": 3, "active": 1, "available": 2, "max_items": 3}
+```
+
+- `active` cuenta las solicitudes desde `sent` hasta el cierre o la cancelación; `registered` no cuenta (D-11 y D-58).
+- Si el usuario no es cliente, responde 403.
+
+### 9.2 `POST /orders` **[nuevo]** (cliente, `Idempotency-Key` obligatoria)
+
+```json
+{"district_id": 1, "address": "Jr. Sintético 742", "address_reference": "Frente al parque", "mode": "scheduled",
+ "scheduled_date": "2026-10-21", "time_slot": "tarde", "summary_confirmed": true,
+ "items": [{"subcategory_id": 14, "description": "No enfría desde ayer…", "urgency": "urgente",
+            "brand": "Marca", "model": "X-100", "symptom_ids": [101], "media_ids": [55]}]}
+```
+
+| Campo | Regla |
+|---|---|
+| `items` | De 1 a 3, con subcategorías activas y distintas (422 `order_items` u `order_item_repeated`) |
+| `items.*.description` | De 20 a 1000 caracteres (D-12) |
+| `items.*.urgency` | `normal` o `urgente`. Es solo informativa: el técnico la ve en la oferta y no cambia el matching |
+| `items.*.brand`, `items.*.model` | Opcionales, de hasta 60 caracteres |
+| `items.*.symptom_ids` | Síntomas activos de la subcategoría de ese rubro (422 en `items.N.symptom_ids.M`) |
+| `items.*.media_ids` | Hasta 5 por solicitud. Cada foto debe ser propia, privada, revisada y libre, y no puede repetirse entre rubros |
+| `address_reference` | Opcional, de hasta 120 caracteres; se muestra con la regla de la dirección (SEC-S04-05) |
+| `mode` | `asap`, o `scheduled` con `scheduled_date` (`Y-m-d`) y `time_slot` |
+| `time_slot` | `manana` (08–12), `tarde` (12–18) o `noche` (18–21), en hora de Lima. Una franja que ya empezó da 422 (D-55). Se guarda como `preferred_start_at` y `preferred_end_at` en UTC |
+| `source`, `target_technician_id` | Prohibidos (422 `order_targeted`) |
+
+- **Límite (D-11):** si los rubros no caben en el cupo libre, responde 409 `ACTIVE_REQUEST_LIMIT` con un mensaje que indica el cupo y no crea nada.
+- **Envío:** en una sola transacción, con su clave, crea el pedido y un borrador por rubro, y los envía con el flujo del S3: revalidación, versión de reglas y `PrepareMatching` después del commit. O se envían todas o ninguna.
+- **Idempotencia:** la misma clave con el mismo cuerpo devuelve el mismo 201; con otro cuerpo, 409.
+- **Respuesta 201:**
+
+```json
+{"id": 9, "status": "sent", "requests": [{"id": 41, "status": "sent", "version": 2, "subcategory": {"id": 14, "name": "Congeladores industriales"}}]}
+```
+
+### 9.3 Catálogo **[cambia]**
+
+- `GET /catalog/specialties` agrega `subcategory_count` (subcategorías activas).
+- `GET /catalog/subcategories` agrega `reference_fee`: tarifa «desde», texto con 2 decimales, o `null`.
+- `GET /catalog/subcategories/{id}/symptoms` **[nuevo]**, público: `[{"id", "name"}]` activos y en su orden. Si la subcategoría no existe o está inactiva, responde 404.
+
+### 9.4 Solicitudes y ofertas **[cambia]**
+
+- `GET /requests` agrega `order_id` y `urgency`.
+- `GET /requests/{id}` agrega `order_id`, `urgency`, `brand`, `model`, `time_slot`, `address_reference` y `symptoms` (`[{"id", "name"}]`).
+- La oferta del técnico (`GET /offers` y `GET /offers/{id}`) agrega en `request` los campos `urgency`, `brand`, `model` y `symptoms` (solo los nombres).
+
+### 9.5 Datos
+
+- **Migración `000030`:**
+  - `service_orders` (`client_id`, `item_count` de 1 a 3, `submitted_at`);
+  - en `service_requests`: `order_id`, `urgency`, `brand`, `model`, `address_reference` y `time_slot`;
+  - `subcategory_symptoms` y `request_symptoms`.
+- **`SymptomSeeder`:** es idempotente, está en `DatabaseSeeder` y en las siembras E2E, y siembra de 4 a 6 problemas por subcategoría (`database/seeders/data/symptoms.php`). Su edición desde el panel queda para el S7.

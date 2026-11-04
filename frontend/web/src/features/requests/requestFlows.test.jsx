@@ -336,7 +336,8 @@ test("S03-TC-080 complemento: portal abre solicitud y retoma la registrada", asy
   expect(await screen.findByText("Paso 5: Resumen y envío")).toHaveFocus();
   const nav = screen.getByRole("navigation", { name: "Gestión del cliente" });
   fireEvent.click(within(nav).getByText("Nueva solicitud"));
-  expect(await screen.findByRole("radio", { name: "Cómputo" })).not.toBeChecked();
+  // D-92: «Nueva solicitud» abre el pedido con varios rubros (casillas), vacío.
+  expect(await screen.findByRole("checkbox", { name: /^Cómputo/ })).not.toBeChecked();
 });
 test("S03-TC-073 complemento: fechas de registro y reanudación", () => {
   const state = {

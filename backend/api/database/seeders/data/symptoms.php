@@ -1,0 +1,36 @@
+<?php
+
+// D-92 (PEDIDO-01): problemas frecuentes por subcategoría (código de catalog.csv), en el orden en que se muestran como
+// chips en el paso 3 del asistente. Su edición desde el panel queda para el S7.
+return [
+    'computo-hardware' => ['No prende', 'Pantalla negra o rota', 'Se apaga sola', 'No carga la batería', 'Se calienta mucho', 'Teclado o puertos fallan'],
+    'computo-mantenimiento' => ['Hace mucho ruido', 'Está lenta', 'Tiene mucho polvo', 'Se calienta', 'Mantenimiento programado'],
+    'computo-software' => ['Instalar Windows', 'Instalar un programa', 'Un programa no abre', 'Formatear el equipo', 'Activar una licencia'],
+    'computo-redes' => ['Sin internet', 'Internet lento', 'Se corta la señal', 'Instalar un router o repetidor', 'Cableado de red nuevo'],
+    'computo-datos' => ['Borré archivos', 'El disco no aparece', 'La memoria USB no abre', 'Fotos o documentos perdidos', 'Respaldo de información'],
+    'computo-seguridad' => ['Tiene virus', 'Salen anuncios solos', 'Archivos bloqueados', 'Contraseña robada', 'Instalar antivirus'],
+    'computo-remoto' => ['Configurar el correo', 'Error en un programa', 'Ayuda con una impresora', 'Conectar a la red', 'Consulta general'],
+    'computo-impresoras' => ['No imprime', 'Atasca el papel', 'Imprime manchado', 'No reconoce la tinta', 'No escanea'],
+    'computo-pos' => ['La caja no prende', 'No imprime boletas', 'El lector no lee', 'Error en el sistema', 'Instalar un punto de venta'],
+    'computo-cctv' => ['Una cámara no se ve', 'No graba', 'No se ve en el celular', 'Instalar cámaras nuevas', 'Imagen borrosa'],
+    'computo-facturacion' => ['No envía a SUNAT', 'Error al emitir', 'Instalar el sistema', 'Configurar series', 'Capacitación'],
+    'frio-domestico' => ['No enfría', 'Hace ruido', 'Gotea agua', 'Escarcha en exceso', 'No prende', 'La puerta no cierra bien'],
+    'frio-vitrinas' => ['No enfría', 'Escarcha en el vidrio', 'Gotea agua', 'El motor no para', 'Luces apagadas'],
+    'frio-camaras' => ['No llega a la temperatura', 'Hielo en el evaporador', 'Falla del termostato', 'Puerta con fuga de frío', 'Instalación nueva'],
+    'frio-congeladores' => ['No congela', 'Hace ruido', 'Escarcha en exceso', 'No prende', 'Gotea agua'],
+    'frio-climatizacion' => ['No enfría', 'Bota aire caliente', 'Gotea agua', 'Hace ruido', 'Instalar un equipo'],
+    'frio-refrigerante' => ['Enfría poco', 'Fuga de gas', 'Recarga de gas', 'Hielo en las tuberías'],
+    'frio-compresores' => ['El compresor no arranca', 'Arranca y se apaga', 'Hace ruido fuerte', 'Se calienta mucho', 'Salta la llave'],
+    'frio-hielo' => ['No hace hielo', 'Hielo con mal sabor', 'Gotea agua', 'El dispensador no sale'],
+    'frio-mantenimiento' => ['Limpieza de condensador', 'Revisión general', 'Mantenimiento programado', 'Cambio de filtros'],
+    'electricidad-residencial' => ['Sin luz en una zona', 'Enchufe que chispea', 'Salta la llave', 'Instalar tomacorrientes', 'Cables quemados'],
+    'electricidad-comercial' => ['Sin luz en el local', 'Salta la llave', 'Ampliar instalación', 'Motor sin energía', 'Revisión por Defensa Civil'],
+    'electricidad-tableros' => ['El tablero salta', 'Llave caliente', 'Cambiar el tablero', 'Ordenar circuitos', 'Olor a quemado'],
+    'electricidad-iluminacion' => ['Focos que parpadean', 'Instalar luminarias', 'Luces que no prenden', 'Cambiar a LED', 'Instalar sensores'],
+    'electricidad-tierra' => ['Instalar pozo a tierra', 'Medición de resistencia', 'Corriente en los equipos', 'Mantenimiento del pozo'],
+    'electricidad-medidores' => ['Certificado eléctrico', 'Cambio de medidor', 'Consumo muy alto', 'Instalar medidor nuevo'],
+    'electricidad-solar' => ['Instalar paneles', 'El panel no carga', 'Falla del inversor', 'Batería que no dura', 'Mantenimiento'],
+    'electricidad-generadores' => ['No arranca', 'Se apaga solo', 'Mantenimiento', 'Instalar transferencia'],
+    'electricidad-alarmas' => ['La alarma suena sola', 'El cerco no electrifica', 'Instalar alarma', 'Instalar cerco eléctrico', 'Cambiar batería'],
+    'electricidad-domotica' => ['Automatizar luces', 'Enchufes inteligentes', 'Configurar el control', 'El sistema no responde'],
+];

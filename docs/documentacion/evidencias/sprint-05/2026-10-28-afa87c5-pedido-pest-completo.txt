@@ -1,0 +1,130 @@
+# Pest completo · pedido múltiple (D-92) · 2026-10-28 · commit afa87c5 (slot A, tecnicoya_testing)
+   PASS  Tests\Unit\Sprint04\RankerTest
+   PASS  Tests\Unit\Sprint04\ScorerTest
+   PASS  Tests\Feature\Sprint01\AdminAccessAuditTest
+   PASS  Tests\Feature\Sprint01\AuthorizationMatrixTest
+   PASS  Tests\Feature\Sprint01\ProfileBoundariesTest
+   PASS  Tests\Feature\Sprint01\ProvisionAdminTest
+   PASS  Tests\Feature\Sprint01\RegisterWithSessionTest
+   PASS  Tests\Feature\Sprint01\RegistrationBoundariesTest
+   PASS  Tests\Feature\Sprint01\SessionSecurityTest
+   PASS  Tests\Feature\Sprint01\TC002DuplicateEmailTest
+   PASS  Tests\Feature\Sprint01\TC003PendingTechnicianTest
+   PASS  Tests\Feature\Sprint01\TC004SelfActivationRejectedTest
+   PASS  Tests\Feature\Sprint01\TC006LogoutInvalidatesSessionTest
+   PASS  Tests\Feature\Sprint01\TC007AdminRouteDeniedTest
+   PASS  Tests\Feature\Sprint01\TC008PublicAdminSignupDeniedTest
+   PASS  Tests\Feature\Sprint01\TC009OwnProfileEditTest
+   PASS  Tests\Feature\Sprint01\TC010StaleWriteConflictTest
+   PASS  Tests\Feature\Sprint01\TC011RepeatableCatalogSeedTest
+   PASS  Tests\Feature\Sprint01\TC012CatalogApiTest
+   PASS  Tests\Feature\Sprint01\TC137PasswordNeverExposedTest
+   PASS  Tests\Feature\Sprint02\AnnouncementAdminTest
+   PASS  Tests\Feature\Sprint02\AvailabilityBoundariesTest
+   PASS  Tests\Feature\Sprint02\CarouselTest
+   PASS  Tests\Feature\Sprint02\DistrictsTest
+   PASS  Tests\Feature\Sprint02\MediaUploadTest
+   PASS  Tests\Feature\Sprint02\PortfolioAndProfileTest
+   PASS  Tests\Feature\Sprint02\RateBoundariesTest
+   PASS  Tests\Feature\Sprint02\SpecialtyCatalogTest
+   PASS  Tests\Feature\Sprint02\TC015CreateSubcategoryTest
+   PASS  Tests\Feature\Sprint02\TC016DeactivateSubcategoryTest
+   PASS  Tests\Feature\Sprint02\TC017AnnouncementAudienceTest
+   PASS  Tests\Feature\Sprint02\TC018DuplicateAnnouncementTest
+   PASS  Tests\Feature\Sprint02\TC019DocumentedApprovalTest
+   PASS  Tests\Feature\Sprint02\TC020ForeignDocumentDeniedTest
+   PASS  Tests\Feature\Sprint02\TC021PublishedPortfolioWorkTest
+   PASS  Tests\Feature\Sprint02\TC023ValidAvailabilityTest
+   PASS  Tests\Feature\Sprint02\TC024InvalidIntervalTest
+   PASS  Tests\Feature\Sprint02\TC025NewRateVersionTest
+   PASS  Tests\Feature\Sprint02\TC026NegativeRateTest
+   PASS  Tests\Feature\Sprint02\TC134ForeignAvailabilityOrRateTest
+   PASS  Tests\Feature\Sprint02\TechnicianVerificationTest
+   PASS  Tests\Feature\Sprint03\ActiveRequestLimitTest
+   PASS  Tests\Feature\Sprint03\E2ESeederGuardTest
+   PASS  Tests\Feature\Sprint03\RequestConcurrencyTest
+   PASS  Tests\Feature\Sprint03\RequestDescriptionLimitsTest
+   PASS  Tests\Feature\Sprint03\RequestEvidenceUploadTest
+   PASS  Tests\Feature\Sprint03\RequestEvidenceVisibilityTest
+   PASS  Tests\Feature\Sprint03\RequestIdempotencyTest
+   PASS  Tests\Feature\Sprint03\RequestListAndAccessTest
+   PASS  Tests\Feature\Sprint03\RequestScheduleAndAddressTest
+   PASS  Tests\Feature\Sprint03\RequestSubmissionRevalidationTest
+   PASS  Tests\Feature\Sprint03\TC029OwnPhotoLinkedTest
+   PASS  Tests\Feature\Sprint03\TC030ForeignFileReferenceTest
+   PASS  Tests\Feature\Sprint03\TC031ReferenceFeeVisibleTest
+   PASS  Tests\Feature\Sprint03\TC032OutOfCoverageTest
+   PASS  Tests\Feature\Sprint03\TC034PublicProfileWithoutPrivateDataTest
+   PASS  Tests\Feature\Sprint03\TC035DirectedOriginPreservedTest
+   PASS  Tests\Feature\Sprint03\TC036IncompatibleTargetTest
+   PASS  Tests\Feature\Sprint03\TC037IdempotentSubmissionTest
+   PASS  Tests\Feature\Sprint03\TC038ForeignRequestTest
+   PASS  Tests\Feature\Sprint03\TC119RequiredDataRejectedTest
+   PASS  Tests\Feature\Sprint03\TC120InactiveSubcategoryTest
+   PASS  Tests\Feature\Sprint03\TC121ScheduledWithoutDateTest
+   PASS  Tests\Feature\Sprint03\TC126SubmittedRequestImmutableTest
+   PASS  Tests\Feature\Sprint03\TC127PhotosHiddenFromUnnotifiedTechnicianTest
+   PASS  Tests\Feature\Sprint03\TC129RemovePhotoByApiTest
+   PASS  Tests\Feature\Sprint03\TechnicianSearchTest
+   PASS  Tests\Feature\Sprint04\CatalogLandingFieldsTest
+   PASS  Tests\Feature\Sprint04\DemoSeederTest
+   PASS  Tests\Feature\Sprint04\DestructiveCommandGuardTest
+   PASS  Tests\Feature\Sprint04\DirectRouteTest
+   PASS  Tests\Feature\Sprint04\DistanceTest
+   PASS  Tests\Feature\Sprint04\E2ESupportTest
+   PASS  Tests\Feature\Sprint04\EligibilityTest
+   PASS  Tests\Feature\Sprint04\MatchingPerformanceTest
+   PASS  Tests\Feature\Sprint04\MatchingRulesTest
+   PASS  Tests\Feature\Sprint04\MediaDeletionTest
+   PASS  Tests\Feature\Sprint04\NewTechnicianTest
+   PASS  Tests\Feature\Sprint04\NotificationDeliveryTest
+   PASS  Tests\Feature\Sprint04\OfferAccessTest
+   PASS  Tests\Feature\Sprint04\OfferConcurrencyTest
+   PASS  Tests\Feature\Sprint04\OfferResponseTest
+   PASS  Tests\Feature\Sprint04\OfferRoundTest
+   PASS  Tests\Feature\Sprint04\OutboxTest
+   PASS  Tests\Feature\Sprint04\PendingAvailabilityTest
+   PASS  Tests\Feature\Sprint04\RealtimeTest
+   PASS  Tests\Feature\Sprint04\ReassignmentTest
+   PASS  Tests\Feature\Sprint04\RequestCreationIdempotencyTest
+   PASS  Tests\Feature\Sprint04\ResponseShapeTest
+   PASS  Tests\Feature\Sprint04\SelectionConcurrencyTest
+   PASS  Tests\Feature\Sprint04\SelectionTest
+   PASS  Tests\Feature\Sprint04\SpecialtyImageTest
+   PASS  Tests\Feature\Sprint04\StaleJobTest
+   PASS  Tests\Feature\Sprint04\TechnicianBaseDistrictTest
+   PASS  Tests\Feature\Sprint05\ClientHomeTest
+   PASS  Tests\Feature\Sprint05\ClientProfileTest
+   PASS  Tests\Feature\Sprint05\ClientRequestTimelineTest
+   PASS  Tests\Feature\Sprint05\KeywordAdminTest
+   PASS  Tests\Feature\Sprint05\NotificationReadTest
+   PASS  Tests\Feature\Sprint05\ProximitySearchTest
+   PASS  Tests\Feature\Sprint05\ServiceOrderTest
+  ✓ it S05-TC-088 un pedido de un rubro crea y envía una solicitud vinculada al pedido con la versión de reglas  0.32s  
+  ✓ it S05-TC-089 un pedido de 3 rubros de dos especialidades crea 3 solicitudes con sus datos y la ubicación c… 0.36s  
+  ✓ it S05-TC-090 rechaza un pedido vacío, de 4 rubros o con un rubro repetido, en español y sin crear nada      0.34s  
+  ✓ it S05-TC-091 rechaza el pedido entero si no cabe en el máximo de solicitudes activas (D-11) y acepta el qu… 0.34s  
+  ✓ it S05-TC-092 el envío es atómico: si falla una solicitud no queda ninguna, ni el pedido ni la clave         0.31s  
+  ✓ it S05-TC-093 idempotencia: la misma clave devuelve el mismo pedido; otro cuerpo, 409; sin clave, 422        0.36s  
+  ✓ it S05-TC-094 los síntomas deben ser activos y de la subcategoría del rubro                                  0.35s  
+  ✓ it S05-TC-095 las franjas de Lima se guardan como inicio y fin en UTC y la franja pasada se rechaza          0.39s  
+  ✓ it S05-TC-096 la urgencia es informativa: el técnico la ve en la oferta y el matching ofrece lo mismo        0.41s  
+  ✓ it S05-TC-097 la solicitud dirigida no entra en el pedido: el pedido rechaza técnico objetivo y origen       0.31s  
+  ✓ it S05-TC-098 por solicitud: descripción de 20 a 1000 caracteres y hasta 5 fotos propias y libres            0.48s  
+  ✓ it S05-TC-099 el catálogo de síntomas está sembrado para cada subcategoría, es idempotente y se consulta po… 0.28s  
+  ✓ it S05-TC-100 el cupo del cliente informa máximo, activas y disponibles; solo para clientes                  0.41s  
+  ✓ it S05-TC-101 Mis solicitudes y el detalle muestran el pedido, la urgencia, marca, modelo, síntomas y franj… 0.36s  
+  ✓ it S05-TC-102 el catálogo del asistente da el número de subcategorías por especialidad y la tarifa desde     0.24s  
+   PASS  Tests\Feature\Sprint05\SuggestionsTest
+   PASS  Tests\Feature\Sprint07\AdminInsightsTest
+   PASS  Tests\Feature\Sprint07\AdminPanelBaseTest
+   PASS  Tests\Feature\Sprint07\AdminReconfirmationTest
+   PASS  Tests\Feature\Sprint07\AnnouncementCarouselTest
+   PASS  Tests\Feature\Sprint07\AnnouncementLifecycleTest
+   PASS  Tests\Feature\Sprint07\DeclaredSubcategoriesTest
+   PASS  Tests\Feature\Sprint07\ErrorReferenceTest
+   PASS  Tests\Feature\Sprint07\PasswordResetTest
+   PASS  Tests\Feature\Sprint07\RegistrationDetailsTest
+   PASS  Tests\Feature\Sprint07\UserAdministrationTest
+  Tests:    412 passed (4676 assertions)
+  Duration: 405.51s

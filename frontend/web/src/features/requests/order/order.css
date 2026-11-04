@@ -1,0 +1,653 @@
+/* Asistente del pedido con varios rubros (D-92). Sobrio, sin fotos: tarjetas con ícono de línea y tokens del tema. */
+.order-wizard {
+  overflow: visible;
+}
+.order-form {
+  display: grid;
+  gap: 0;
+}
+.order-step {
+  display: grid;
+  gap: 16px;
+  animation: order-in-forward 200ms ease-out;
+}
+.order-step.is-back {
+  animation-name: order-in-back;
+}
+@keyframes order-in-forward {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes order-in-back {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: none; }
+}
+.order-step > h2 {
+  margin: 8px 0 0;
+}
+.order-step > .request-hint {
+  margin: -12px 0 0;
+}
+.order-steps .is-done span .panel-svg-icon {
+  width: 18px;
+  height: 18px;
+}
+.order-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.order-fieldset > legend {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.order-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Paso 1: tarjetas de especialidad con casilla en la esquina. */
+.order-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.order-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 150px;
+  margin: 0;
+  padding: 18px;
+  cursor: pointer;
+  border: 1px solid var(--ty-border);
+  border-radius: 16px;
+  background: var(--ty-surface);
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.order-card input,
+.order-row input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.order-card:hover {
+  border-color: color-mix(in srgb, var(--ty-accent) 60%, var(--ty-border));
+}
+.order-card.is-checked {
+  border-color: var(--ty-accent);
+  background: color-mix(in srgb, var(--ty-accent) 10%, var(--ty-surface));
+}
+.order-card:focus-within,
+.order-row:focus-within,
+.order-option:focus-within {
+  outline: 3px solid var(--ty-accent);
+  outline-offset: 2px;
+}
+.order-card-check,
+.order-row-check {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--ty-control-border);
+  border-radius: 6px;
+  color: transparent;
+  background: var(--ty-surface);
+}
+.order-card-check {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+.order-card-check .panel-svg-icon,
+.order-row-check .panel-svg-icon {
+  width: 16px;
+  height: 16px;
+}
+.is-checked > .order-card-check,
+.is-checked > .order-row-check {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.order-card-icon,
+.order-group-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--ty-accent);
+  background: var(--ty-raised);
+}
+.order-card-icon .panel-svg-icon {
+  width: 24px;
+  height: 24px;
+}
+.order-card-name {
+  margin-top: 6px;
+  font-size: 1.05rem;
+}
+.order-card-text {
+  color: var(--ty-muted);
+  font-size: 0.9rem;
+}
+.order-card-count {
+  color: var(--ty-muted);
+  font-size: 0.8rem;
+}
+.order-quota,
+.order-limit {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  color: var(--ty-warning-text);
+  background: var(--ty-warning-bg);
+}
+
+/* Paso 2: subcategorías agrupadas, filtro y contador. */
+.order-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.order-filter {
+  flex: 1 1 260px;
+  margin: 0;
+}
+.order-counter {
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ty-raised);
+}
+.order-group {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.order-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1rem;
+}
+.order-group-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+.order-rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px;
+}
+.order-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  margin: 0;
+  padding: 10px 14px;
+  cursor: pointer;
+  border: 1px solid var(--ty-border);
+  border-radius: 12px;
+  background: var(--ty-surface);
+}
+.order-row.is-checked {
+  border-color: var(--ty-accent);
+  background: color-mix(in srgb, var(--ty-accent) 10%, var(--ty-surface));
+}
+.order-row.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.order-row-check {
+  flex: none;
+}
+.order-row-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.order-row-fee {
+  flex: none;
+  color: var(--ty-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Paso 3: pestañas por rubro. */
+.order-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid var(--ty-border);
+}
+.panel-shell .order-tabs [role="tab"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0 0 -1px;
+  padding: 8px 14px;
+  color: var(--ty-muted);
+  border: 1px solid transparent;
+  border-radius: 12px 12px 0 0;
+  background: transparent;
+}
+.panel-shell .order-tabs [role="tab"][aria-selected="true"] {
+  color: var(--ty-text);
+  font-weight: 600;
+  border-color: var(--ty-border);
+  border-bottom-color: var(--ty-surface);
+  background: var(--ty-surface);
+}
+.order-tabs .is-done .panel-svg-icon {
+  color: var(--ty-success);
+}
+.order-tabs .is-pending .panel-svg-icon {
+  color: var(--ty-muted);
+}
+.panel-shell .order-tabs .is-invalid {
+  color: var(--ty-error);
+}
+.order-panel {
+  display: grid;
+  gap: 14px;
+}
+.order-panel-title {
+  margin: 0;
+  color: var(--ty-muted);
+}
+.order-panel-title strong {
+  color: var(--ty-text);
+}
+.order-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.panel-shell .order-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  margin: 0;
+  padding: 6px 14px;
+  color: var(--ty-text);
+  font-size: 0.9rem;
+  border: 1px solid var(--ty-border);
+  border-radius: 999px;
+  background: var(--ty-surface);
+}
+.panel-shell .order-chip.is-on {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.order-chip .panel-svg-icon {
+  width: 16px;
+  height: 16px;
+}
+.order-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.order-inline-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.order-options,
+.order-urgency {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.order-urgency > legend {
+  width: 100%;
+}
+.order-urgency small {
+  flex-basis: 100%;
+}
+.order-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 16px;
+  cursor: pointer;
+  border: 1px solid var(--ty-border);
+  border-radius: 12px;
+  background: var(--ty-surface);
+}
+.order-option.is-checked {
+  border-color: var(--ty-accent);
+  background: color-mix(in srgb, var(--ty-accent) 10%, var(--ty-surface));
+}
+.order-option small {
+  color: var(--ty-muted);
+}
+
+/* Fotos: zona para arrastrar y soltar y miniaturas. */
+.order-drop {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px dashed var(--ty-control-border);
+  border-radius: 16px;
+  background: var(--ty-raised);
+}
+.order-drop.is-dragging {
+  border-color: var(--ty-accent);
+  background: color-mix(in srgb, var(--ty-accent) 14%, var(--ty-surface));
+}
+.order-drop.is-full {
+  cursor: default;
+  opacity: 0.7;
+}
+.order-drop input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+.order-drop:focus-within {
+  outline: 3px solid var(--ty-accent);
+  outline-offset: 2px;
+}
+.order-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.order-thumbs li {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  overflow: hidden;
+  border: 1px solid var(--ty-border);
+  border-radius: 12px;
+  background: var(--ty-raised);
+}
+.order-thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.panel-shell .order-thumb-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  min-width: 0;
+  height: 32px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  color: var(--ty-text);
+  border: 1px solid var(--ty-border);
+  border-radius: 50%;
+  background: var(--ty-surface);
+}
+.order-thumb-remove .panel-svg-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Paso 5: resumen. */
+.order-notice {
+  margin: 0;
+  padding: 12px 16px;
+  border-left: 4px solid var(--ty-accent);
+  border-radius: 12px;
+  background: var(--ty-raised);
+}
+.order-summary {
+  display: grid;
+  gap: 14px;
+}
+.order-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.order-summary-card {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--ty-border);
+  border-radius: 16px;
+  background: var(--ty-surface);
+  overflow-wrap: break-word;
+}
+.order-summary-card header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.order-summary-card h3 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 1rem;
+}
+.order-summary-card p {
+  margin: 0;
+}
+.order-summary-card .order-card-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+}
+.order-summary-symptoms {
+  color: var(--ty-accent);
+  font-size: 0.9rem;
+}
+.panel-shell .order-edit {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+}
+.order-edit .panel-svg-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Barra inferior fija: resumen vivo a la izquierda, Atrás y Siguiente a la derecha. */
+.panel-shell .order-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px -24px -24px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--ty-border);
+  border-radius: 0 0 20px 20px;
+  background: var(--ty-surface);
+}
+.order-live {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin: 0;
+  color: var(--ty-muted);
+  font-weight: 600;
+}
+.order-bar-actions {
+  display: flex;
+  gap: 10px;
+}
+.panel-shell .order-bar-actions .button {
+  margin: 0;
+}
+.order-uncertain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.order-uncertain p {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+/* Confirmación. */
+.order-done {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+}
+.order-done-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: var(--ty-on-accent);
+  background: var(--ty-accent);
+}
+.order-done h2 {
+  margin: 0;
+}
+.order-done-list {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.order-done-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--ty-border);
+  border-radius: 14px;
+  background: var(--ty-surface);
+}
+
+@media (max-width: 640px) {
+  .order-cards {
+    grid-template-columns: 1fr;
+  }
+  .order-card {
+    min-height: 0;
+  }
+  .order-rows {
+    grid-template-columns: 1fr;
+  }
+  .panel-shell .order-bar {
+    margin: 16px -16px -16px;
+    padding: 12px 16px;
+  }
+  .order-bar-actions {
+    flex: 1 1 100%;
+  }
+  .order-bar-actions .button {
+    flex: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .order-step,
+  .order-card {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* styles.css apila todo label (flex en columna) y el panel lo vuelve grilla (.panel-content label:not(.button)): el
+   asistente define su propia disposición. */
+.panel-content .order-wizard label.order-card {
+  display: grid;
+  gap: 6px;
+}
+.panel-content .order-wizard label.order-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  text-align: start;
+}
+.panel-content .order-wizard label.order-option {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.panel-content .order-wizard label.order-inline-check {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+}
+.panel-content .order-wizard label.order-drop {
+  display: grid;
+  gap: 4px;
+}
+.panel-content .order-wizard .order-option input,
+.panel-content .order-wizard .order-inline-check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--ty-accent);
+}
+/* El botón principal de la barra usa el acento del tema, como la barra del asistente anterior. */
+.panel-shell .order-bar .button.primary {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.panel-shell .order-done .button.primary,
+.panel-shell .order-done .button.primary:hover,
+.panel-shell .order-bar .button.primary:hover {
+  color: var(--ty-on-accent);
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+}
+.order-subcategories,
+.order-location,
+.order-schedule {
+  display: grid;
+  gap: 16px;
+}
+.order-location .form-field,
+.order-schedule .form-field {
+  margin: 0;
+}

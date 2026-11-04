@@ -234,3 +234,12 @@
     overflow-wrap: anywhere;
   }
 }
+/* D-92: ícono de línea en lugar de foto o inicial. */
+.request-wizard .choice-icon {
+  aspect-ratio: auto;
+  height: 96px;
+}
+.request-wizard .choice-icon .panel-svg-icon {
+  width: 36px;
+  height: 36px;
+}

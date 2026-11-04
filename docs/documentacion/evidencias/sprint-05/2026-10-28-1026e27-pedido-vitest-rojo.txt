@@ -1,0 +1,20 @@
+# Vitest en rojo · pedido múltiple (D-92): S05-TC-103 a 114 nuevas; S05-TC-029, 045, 080 y el complemento de S03-TC-080 adaptados · 2026-10-28 · base 1026e27 (implementación apartada; OrderWizard vacío)
+   × S05-TC-045 el asistente elige especialidad y subcategoría en tarjetas con ícono de línea y enfoca el título de cada paso 82ms
+   × S05-TC-029 elegir una sugerencia de «¿Qué se malogró?» abre Nueva solicitud con especialidad y subcategoría [D-94] 1472ms
+   × S03-TC-080 complemento: portal abre solicitud y retoma la registrada 1201ms
+   × S05-TC-080 en el paso 1 del asistente, elegir una sugerencia agrega ese rubro sin reemplazar y avisa «Agregado» 1021ms
+   × S05-TC-103 paso 1: especialidades como casillas accesibles de selección múltiple, sin fotos y con su número de subcategorías 1047ms
+   × S05-TC-104 hasta 3 rubros: al llegar al límite las demás se deshabilitan con el motivo, y el cupo de D-11 lo reduce 1015ms
+   × S05-TC-105 desmarcar una especialidad con subcategorías elegidas pide confirmación y las quita 1022ms
+   × S05-TC-106 paso 2: subcategorías agrupadas por especialidad, con tarifa desde, filtro y validación por especialidad 1021ms
+   × S05-TC-107 paso 3: un bloque por rubro en pestañas con indicador, síntomas, validación y misma descripción para todos 1023ms
+   × S05-TC-108 fotos por rubro: arrastrar y soltar, vista previa, máximo 5 y quitar con confirmación 1022ms
+   × S05-TC-109 paso 4: distrito del perfil, «Lo antes posible» o fecha y franja de Lima, sin franjas que ya empezaron 1017ms
+   × S05-TC-110 resumen: una tarjeta por rubro con «Editar» que lleva a su paso y el aviso de cuántas solicitudes se crearán 1012ms
+   × S05-TC-111 envío: POST /orders con el pedido y una clave idempotente que se reutiliza al reintentar; confirma con N seguimientos 1030ms
+   × S05-TC-112 un pedido que no cabe en las solicitudes activas se rechaza entero con su mensaje y actualiza el cupo 1013ms
+   × S05-TC-113 Mis solicitudes agrupa las solicitudes del mismo pedido 1029ms
+   × S05-TC-114 barra inferior con resumen vivo, stepper con pasos completados y transición que respeta movimiento reducido 1017ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  5 failed | 39 passed (44)
+      Tests  16 failed | 347 passed (363)

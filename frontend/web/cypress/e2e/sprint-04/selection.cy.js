@@ -1,26 +1,27 @@
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
 import { login, openRequest, observe, read, apiWrite, openMyRequests } from "./helpers";
-import { switchAccount, loginClient, wizard, send } from "../sprint-03/helpers";
+import { switchAccount, loginClient, wizard, send, sendOrder } from "../sprint-03/helpers";
 describe("S4 selección", () => {
   it("S04-TC-087 cliente sigue la búsqueda hasta dos aceptaciones", () => {
     loginClient();
     cy.get('nav[aria-label="Gestión del cliente"]').contains("button", "Nueva solicitud").click();
-    // Revisión del PR #39: tarjetas con radio en lugar de select.
-    wizard().contains("label", "Refrigeración").find("input[name=specialty_id]").check();
+    // D-92: el pedido con varios rubros usa casillas (specialty_ids y subcategory_ids) dentro de cada tarjeta.
+    wizard().contains("label", "Refrigeración").find("input[name=specialty_ids]").check({ force: true });
     wizard().contains("button", "Siguiente").click();
-    wizard().contains("label", "Cámaras").find("input[name=subcategory_id]").check();
+    wizard().contains("label", "Cámaras").find("input[name=subcategory_ids]").check({ force: true });
     wizard().contains("button", "Siguiente").click();
     wizard().find("textarea[name=description]").type("La cámara de frío no mantiene la temperatura adecuada.");
     wizard().contains("button", "Siguiente").click();
     wizard().find("select[name=district_id] option").contains("Huancayo").then(option => wizard().find("select[name=district_id]").select(option.val()));
     wizard().find("input[name=address]").type("Calle sintética de búsqueda 404");
-    observe("POST", "/requests", "newRequest");
     wizard().contains("button", "Siguiente").click();
-    cy.wait("@newRequest").its("response.body.data.id").as("searchId");
-    observe("POST", "/requests/*/submission", "submitted");
-    send();
-    cy.wait("@submitted").its("response.statusCode").should("eq", 202);
+    observe("POST", "/orders", "submitted");
+    sendOrder();
+    cy.wait("@submitted").then(({ response }) => {
+      expect(response.statusCode).to.eq(201);
+      cy.wrap(response.body.data.requests[0].id).as("searchId");
+    });
     cy.task("runJobs");
     cy.visit("/#cuenta");
     openMyRequests();

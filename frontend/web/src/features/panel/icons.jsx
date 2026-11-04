@@ -28,6 +28,10 @@ const PATHS = {
   snow: <><path d="M12 3.5v17"/><path d="m4.6 7.75 14.8 8.5"/><path d="m4.6 16.25 14.8-8.5"/><path d="m9.5 5 2.5 2.5L14.5 5"/><path d="m9.5 19 2.5-2.5 2.5 2.5"/></>,
   bolt: <><path d="M13 3.5 5.5 13.5h6l-1 7 7.5-10h-6z"/></>,
   chevron: <><path d="m9.5 6.5 5.5 5.5-5.5 5.5"/></>,
+  // Asistente del pedido (D-92): subir fotos, quitar y editar.
+  upload: <><path d="M12 15.5V5"/><path d="m7.5 9.5 4.5-4.5 4.5 4.5"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></>,
+  trash: <><path d="M5 7h14"/><path d="M9.5 7V5h5v2"/><path d="M7 7l1 12.5h8L17 7"/></>,
+  edit: <><path d="M5 19h4l9.5-9.5-4-4L5 15z"/><path d="m13 7 4 4"/></>,
   collapse: <><path d="m14.5 7-5 5 5 5"/><path d="M19 5v14"/></>,
   expand: <><path d="m9.5 7 5 5-5 5"/><path d="M5 5v14"/></>,
   site: <><path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M17 14v4a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 5 18V8.5A1.5 1.5 0 0 1 6.5 7H10"/></>,

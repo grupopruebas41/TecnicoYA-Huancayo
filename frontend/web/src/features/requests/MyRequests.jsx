@@ -70,28 +70,19 @@ export default function MyRequests({ onContinue = () => {}, openId = null }) {
       )}
       {rows?.length > 0 && !visible.length && <p className="muted">No tienes solicitudes en este estado.</p>}
       <div className="client-request-list">
-        {visible.map((row) => (
-          <article className="s02-card client-request-card" key={row.id}>
-            {/* Revisión del PR #39: el rubro es el título; el número y el siguiente paso van en una línea. */}
-            <h3>{row.subcategory?.name || `Solicitud #${row.id}`}</h3>
-            {row.subcategory && <small className="muted">Solicitud #{row.id}</small>}
-            {row.phase ? (
-              <RequestPhase phase={row.phase} className={"client-status " + statusTone(row)} />
-            ) : (
-              <p className={"client-status " + statusTone(row)}>{row.status === "registered" ? "Registrada" : "Enviada"}</p>
-            )}
-            {row.subcategory && (
-              <p className="muted">
-                {row.district?.name}
-                {row.updated_at && <> · Actualizada {formatDate(row.updated_at)}</>}
-              </p>
-            )}
-            <p className="client-next-line">{nextStep(row)}</p>
-            <button type="button" className="button outline" onClick={() => open(row)}>
-              Ver solicitud #{row.id}
-            </button>
-          </article>
-        ))}
+        {groupByOrder(visible).map((entry) =>
+          entry.order ? (
+            // D-92: las solicitudes del mismo pedido van juntas bajo su pedido.
+            <section className="client-order-group" key={"pedido-" + entry.order} aria-label={`Pedido #${entry.order}`}>
+              <h3 className="client-order-title">
+                Pedido #{entry.order} · {entry.rows.length} rubros
+              </h3>
+              <div className="client-request-list">{entry.rows.map(card)}</div>
+            </section>
+          ) : (
+            card(entry.rows[0])
+          ),
+        )}
       </div>
       {detail && (
         <div className="client-request-detail" ref={detailRef} tabIndex={-1}>
@@ -115,4 +106,42 @@ export default function MyRequests({ onContinue = () => {}, openId = null }) {
       )}
     </section>
   );
+
+  function card(row) {
+    return (
+          <article className="s02-card client-request-card" key={row.id}>
+            {/* Revisión del PR #39: el rubro es el título; el número y el siguiente paso van en una línea. */}
+            <h3>{row.subcategory?.name || `Solicitud #${row.id}`}</h3>
+            {row.subcategory && <small className="muted">Solicitud #{row.id}</small>}
+            {row.phase ? (
+              <RequestPhase phase={row.phase} className={"client-status " + statusTone(row)} />
+            ) : (
+              <p className={"client-status " + statusTone(row)}>{row.status === "registered" ? "Registrada" : "Enviada"}</p>
+            )}
+            {row.subcategory && (
+              <p className="muted">
+                {row.district?.name}
+                {row.updated_at && <> · Actualizada {formatDate(row.updated_at)}</>}
+              </p>
+            )}
+            <p className="client-next-line">{nextStep(row)}</p>
+            <button type="button" className="button outline" onClick={() => open(row)}>
+              Ver solicitud #{row.id}
+            </button>
+          </article>
+    );
+  }
+}
+
+/** D-92: agrupa las solicitudes del mismo pedido (dos o más) conservando el orden de la lista. */
+function groupByOrder(rows) {
+  const size = rows.reduce((count, row) => (row.order_id ? { ...count, [row.order_id]: (count[row.order_id] || 0) + 1 } : count), {});
+  const entries = [];
+  for (const row of rows) {
+    const order = size[row.order_id] > 1 ? row.order_id : null;
+    const group = order && entries.find((entry) => entry.order === order);
+    if (group) group.rows.push(row);
+    else entries.push({ order, rows: [row] });
+  }
+  return entries;
 }

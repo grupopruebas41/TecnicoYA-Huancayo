@@ -4,7 +4,6 @@ import { Notice } from "../administration/forms";
 import WizardFields from "./WizardFields";
 import EvidencePicker from "./EvidencePicker";
 import RequestSummary from "./RequestSummary";
-import ProblemSearch from "../client/ProblemSearch";
 const steps = [
   "Especialidad",
   "Subcategoría",
@@ -38,7 +37,6 @@ export default function RequestWizard({
   onExit = () => {},
   onBusy = () => {},
   defaultDistrictId = null,
-  preset = null,
 }) {
   const {
     state,
@@ -68,7 +66,7 @@ export default function RequestWizard({
     specialties,
     districts,
     setUploading,
-  } = useWizardFlow(initialRecord, target, onExit, onBusy, defaultDistrictId, preset);
+  } = useWizardFlow(initialRecord, target, onExit, onBusy, defaultDistrictId);
   return (
     <section className="s02-panel request-wizard" aria-label="Nueva solicitud">
       <StepIndicator step={state.step} />
@@ -99,18 +97,6 @@ export default function RequestWizard({
             {record ? "Consultar solicitud" : "Consultar Mis solicitudes"}
           </button>
         </>
-      )}
-      {/* D-94: en el paso 1, el buscador lleva directo al paso 3 con especialidad y subcategoría elegidas. */}
-      {state.step === 1 && !record && !target && (
-        <ProblemSearch
-          label="Describe el problema o elige la categoría"
-          onNoMatch={() => form.current?.querySelector("input[name=specialty_id]")?.focus()}
-          onSelect={({ specialty_id: specialty, subcategory_id: subcategory }) => {
-            update("specialty_id", String(specialty));
-            update("subcategory_id", String(subcategory));
-            go(3);
-          }}
-        />
       )}
       {state.step < 5 && (
         <form ref={form} key={state.step} className="request-step" noValidate onSubmit={next}>

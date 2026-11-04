@@ -1,0 +1,8 @@
+# Vitest completo en verde · asistente del pedido (D-92) · 2026-10-28 · sobre 87e3af6 con la implementación
+ ✓ src/features/client/problemSearch.test.jsx (11 tests) 4790ms
+ ✓ src/features/requests/order/orderWizard.test.jsx (12 tests) 7799ms
+ ✓ src/features/client/clientHome.test.jsx (11 tests) 2026ms
+ ✓ src/features/client/clientDesign.test.jsx (8 tests) 1117ms
+ ✓ src/features/requests/requestFlows.test.jsx (13 tests) 1933ms
+ Test Files  44 passed (44)
+      Tests  363 passed (363)

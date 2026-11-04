@@ -31,6 +31,8 @@ final class ServiceRequestView
                 // Panel del cliente (D-87): datos de las tarjetas de «Mis solicitudes».
                 'subcategory' => ['id' => $row->subcategory_id, 'name' => $row->subcategory_name],
                 'district' => ['id' => $row->district_id, 'name' => $row->district_name], 'updated_at' => $row->updated_at,
+                // D-92: Mis solicitudes agrupa las del mismo pedido.
+                'order_id' => $row->order_id, 'urgency' => $row->urgency,
             ])->all();
     }
 
@@ -67,7 +69,19 @@ final class ServiceRequestView
             'reference_fee' => $this->referenceFee($row),
             'attachments' => $this->attachments($row->id),
             'submitted_at' => $row->submitted_at,
+            // D-92: pedido, urgencia informativa, equipo, franja y síntomas. La referencia sigue la regla de la dirección.
+            'order_id' => $row->order_id, 'urgency' => $row->urgency, 'brand' => $row->brand, 'model' => $row->model,
+            'time_slot' => $row->time_slot, 'address_reference' => $address === null ? null : $row->address_reference,
+            'symptoms' => self::symptoms($row->id),
         ];
+    }
+
+    /** @return list<array{id:int, name:string}> síntomas elegidos, en el orden del catálogo */
+    public static function symptoms(int $requestId): array
+    {
+        return DB::table('request_symptoms as r')->join('subcategory_symptoms as y', 'y.id', '=', 'r.symptom_id')
+            ->where('r.request_id', $requestId)->orderBy('y.position')->orderBy('y.id')->get(['y.id', 'y.name'])
+            ->map(fn (object $row) => ['id' => (int) $row->id, 'name' => $row->name])->all();
     }
 
     /** Monto referencial con su procedencia; nunca un cobro (RF-04). */

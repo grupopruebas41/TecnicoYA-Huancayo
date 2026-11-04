@@ -1145,3 +1145,17 @@
     grid-row: 1 / span 2;
   }
 }
+/* D-92: solicitudes del mismo pedido agrupadas en Mis solicitudes. */
+.client-order-group {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px dashed var(--ty-border);
+  border-radius: 18px;
+}
+.client-order-title {
+  margin: 0;
+  color: var(--ty-muted);
+  font-size: 0.95rem;
+}
