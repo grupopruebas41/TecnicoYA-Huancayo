@@ -11,7 +11,7 @@
 | Fecha | 2026-11-04 |
 | Revisor | [PENDIENTE] |
 | Enlace a SonarQube | No aplica: solo documentación; SonarQube corre al cierre del sprint (regla 12b) |
-| Decisiones | D-97, D-98 y D-99 registradas; D-95 y D-96 pendientes ([DECISIONES.md](../../../../documentacion/sprints/DECISIONES.md)) |
+| Decisiones | D-95 a D-99 registradas ([DECISIONES.md](../../../../documentacion/sprints/DECISIONES.md)) |
 
 ## Cambios y archivos
 
@@ -34,10 +34,8 @@ No se corrió la suite completa ni se ejecutó Cypress.
 
 ## Pendientes
 
-- Respuesta de Pimentel a C-1 a C-5 del plan.
-- Integrar #41 y #42.
+- Integrar #42 y luego este PR.
 - Registrar DEF-53 a DEF-58 en la Fase 1.
-- Decidir qué hacer con el cambio de espacios en `RegisterAccount.php:18`, que no se incluyó.
 
 ## Registro de uso de IA
 

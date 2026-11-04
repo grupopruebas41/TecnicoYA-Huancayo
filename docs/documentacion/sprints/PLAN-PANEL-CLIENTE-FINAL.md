@@ -1,7 +1,7 @@
 # Plan del panel del cliente final (Fase 0)
 
 - **Fecha:** 2026-11-04. **Rama:** `feature/pimentel/cliente/fase0-plan-final`, sobre `37d93bc` (PR #42).
-- **Estado:** a la espera de que Pimentel resuelva los puntos de la §2. La Fase 1 no empieza hasta entonces.
+- **Estado:** C-1 a C-5 resueltos por Pimentel el 2026-11-04 (ver la §2). La Fase 1 empieza desde `main` cuando se integre el PR #42.
 - **Evidencia del diagnóstico:** [2026-11-04-37d93bc-fase0-reproduccion-errores.md](../evidencias/sprint-05/2026-11-04-37d93bc-fase0-reproduccion-errores.md).
 
 ## 1. Diagnóstico de los dos errores
@@ -26,7 +26,17 @@
 
 ## 2. Conflictos y decisiones pendientes
 
-D-97, D-98 y D-99 quedan registradas. **D-95 y D-96 quedan en «pendientes»**, porque chocan con decisiones vigentes y dejan valores sin definir (regla 3 y regla 10 de AGENTS.md).
+**Resueltos por Pimentel el 2026-11-04.** Las opciones elegidas son las recomendadas: C-1 A, C-2 A (acepta hasta 9 solicitudes activas), C-3 A, C-4 A y C-5 A. D-95, D-96 y D-97 las registran en `DECISIONES.md`; las tablas siguientes quedan como análisis.
+
+**Instrucciones adicionales para las fases:**
+
+- **Fase 1:**
+  - la migración 000030 debe funcionar en MySQL y en SQLite, y recuperarse si `service_orders` quedó creada a medias;
+  - una prueba o comprobación en CI ejecuta las migraciones sobre SQLite;
+  - el README deja de indicar MySQL para el desarrollo local;
+  - DEF-58 se registra y se corrige.
+- **Fase 5:** el dictado por voz solo se activa al tocar el micrófono, después de aceptar el aviso (D-97).
+- **Orden:** 1, 2, 3, 4, 5 y 6. Si el plazo no alcanza, se avisa a Pimentel antes de recortar; la Fase 6 debe verse al menos en una versión básica.
 
 ### C-1 · D-95 dice reemplazar solo «la parte de límites» de D-92, pero cambia más
 
