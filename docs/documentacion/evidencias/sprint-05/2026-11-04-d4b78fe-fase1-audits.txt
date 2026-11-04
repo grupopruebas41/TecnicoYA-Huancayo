@@ -1,0 +1,3 @@
+composer audit: No security vulnerability advisories found.
+npm audit: found 0 vulnerabilities
+Commit: d4b78fe. Fecha: 2026-11-04.
