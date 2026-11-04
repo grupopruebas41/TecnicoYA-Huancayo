@@ -99,7 +99,7 @@ final class DemoSeeder extends Seeder
     private function technician(User $user, array $data, string $status, string $verification): void
     {
         DB::table('technician_profiles')->updateOrInsert(['user_id' => $user->id], [
-            'display_name' => $data['name'], 'bio' => 'Perfil de demostración para desarrollo.', 'status' => $status,
+            'display_name' => $data['name'], 'bio' => null, 'status' => $status,
             'verification_status' => $verification, 'experience_years' => 6, 'available_now' => false,
             'verified_at' => $verification === 'approved' ? now()->subMonth() : null, 'base_district_id' => $this->district($data['base']),
             'updated_at' => now(),

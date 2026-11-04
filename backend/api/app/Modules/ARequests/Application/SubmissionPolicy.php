@@ -14,12 +14,13 @@ use Illuminate\Validation\Rule;
 
 /**
  * Condiciones del quinto paso (SEC-S03-03): lo que era válido al registrar puede haber cambiado. Revalida
- * subcategoría, distrito, técnico objetivo e inicio programado (D-55) y aplica el máximo de solicitudes
- * activas de la versión de reglas vigente (D-11, D-58). Se ejecuta con la solicitud ya bloqueada.
+ * subcategoría, distrito, técnico objetivo e inicio programado (D-55) y aplica el máximo de pedidos activos de
+ * la versión de reglas vigente (D-95): las demás solicitudes del mismo pedido no cuentan contra él. Se ejecuta con la
+ * solicitud ya bloqueada.
  */
 final class SubmissionPolicy
 {
-    public function __construct(private readonly RuleBook $rules) {}
+    public function __construct(private readonly RuleBook $rules, private readonly ActiveOrders $orders) {}
 
     /** @return int versión de reglas que conservará la solicitud (D-24) */
     public function check(object $request): int
@@ -34,10 +35,8 @@ final class SubmissionPolicy
         // Serializa los envíos del mismo cliente para que dos solicitudes no superen juntas el máximo.
         DB::table('client_profiles')->where('id', $request->client_id)->lockForUpdate()->first();
         $versionId = $this->rules->currentVersionId();
-        $max = $this->rules->integer($versionId, 'max_active_requests_per_client');
-        $active = DB::table('service_requests')->where('client_id', $request->client_id)->where('status', '<>', 'registered')
-            ->whereNull('closed_at')->whereNull('cancelled_at')->count();
-        if ($active >= $max) {
+        $max = $this->orders->max($versionId);
+        if ($this->orders->count((int) $request->client_id, $request->order_id === null ? null : (int) $request->order_id) >= $max) {
             throw new HttpResponseException(ApiResponse::error('ACTIVE_REQUEST_LIMIT', __('api.active_request_limit', ['max' => $max]), 409));
         }
 

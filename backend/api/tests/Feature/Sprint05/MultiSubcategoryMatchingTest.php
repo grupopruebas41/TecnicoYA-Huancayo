@@ -18,7 +18,6 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     Sprint04::boot($this);
-    Queue::fake();
 });
 
 /** Solicitud enviada de un pedido con esas subcategorías, la primera como principal. */

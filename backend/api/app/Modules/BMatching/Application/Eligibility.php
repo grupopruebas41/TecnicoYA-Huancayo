@@ -2,13 +2,16 @@
 
 namespace App\Modules\BMatching\Application;
 
+use App\Modules\ARequests\Application\RequestSubcategories;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Elegibilidad de RN-05 (contrato S4 §3.1): el técnico queda excluido con el código del primer filtro que falla.
- * Carga todo por lotes (siete consultas sin importar cuántos técnicos haya) para cumplir RNF-01.
+ * Carga todo por lotes (siete consultas sin importar cuántos técnicos haya, ocho en una solicitud de pedido) para cumplir
+ * RNF-01.
+ * - Varias subcategorías (D-96): debe atender todas. Su servicio combina la tarifa sumada y la menor experiencia.
  * - Pausa vigente: [starts_at, ends_at) en el instante del matching (D-21, D-57).
  * - Franja: la programada debe caber en una franja activa; en una inmediata, el instante actual (supuesto de D-71).
  * - Citas: en una programada, solape con la franja; en una inmediata, solape con [ahora, ahora + 2 h) (D-23).
@@ -30,8 +33,10 @@ final class Eligibility
             ->get(['t.id', 't.user_id', 't.status', 't.verification_status', 't.verified_at', 't.base_district_id',
                 't.display_name', 't.provider_type', 'u.is_active', 'u.anonymized_at'])->keyBy('id');
         $ids = $technicians->keys()->all();
+        $subcategoryIds = RequestSubcategories::ids($request);
         $services = DB::table('technician_services')->whereIn('technician_id', $ids)
-            ->where('subcategory_id', $request->subcategory_id)->where('active', 1)->get()->keyBy('technician_id');
+            ->whereIn('subcategory_id', $subcategoryIds)->where('active', 1)->get()->groupBy('technician_id')
+            ->map(fn (Collection $rows) => $this->combined($rows, $subcategoryIds))->filter();
         $covered = DB::table('technician_districts')->whereIn('technician_id', $ids)
             ->where('district_id', $request->district_id)->where('active', 1)->pluck('technician_id')->flip();
         $paused = DB::table('technician_pauses')->whereIn('technician_id', $ids)->whereNull('cancelled_at')
@@ -58,6 +63,23 @@ final class Eligibility
         }
 
         return $result;
+    }
+
+    /** El servicio del técnico si atiende todas las subcategorías; con una sola, la fila tal cual. */
+    private function combined(Collection $rows, array $subcategoryIds): ?object
+    {
+        if ($rows->count() !== count($subcategoryIds)) {
+            return null;
+        }
+        if (count($subcategoryIds) === 1) {
+            return $rows->first();
+        }
+        $principal = clone $rows->firstWhere('subcategory_id', $subcategoryIds[0]);
+        $principal->services = $rows->sortBy(fn (object $row) => array_search((int) $row->subcategory_id, $subcategoryIds, true))->values()->all();
+        $principal->reference_fee = number_format((float) $rows->sum('reference_fee'), 2, '.', '');
+        $principal->experience_years = (int) $rows->min('experience_years');
+
+        return $principal;
     }
 
     /** Código de exclusión de un técnico para la solicitud (null si sigue elegible). */

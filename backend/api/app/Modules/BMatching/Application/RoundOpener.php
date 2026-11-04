@@ -2,6 +2,7 @@
 
 namespace App\Modules\BMatching\Application;
 
+use App\Modules\ARequests\Application\RequestSubcategories;
 use App\Modules\BMatching\Jobs\ExpireOfferRound;
 use App\Modules\CNotifications\Application\Inbox;
 use App\Modules\CNotifications\Application\Outbox;
@@ -39,8 +40,10 @@ final class RoundOpener
             'round_no' => 1 + (int) DB::table('offer_rounds')->where('request_id', $request->id)->max('round_no'),
             'kind' => $direct ? 'direct' : 'automatic', 'status' => 'open', 'opened_at' => $now, 'expires_at' => $expiresAt,
         ]);
-        $labels = DB::table('subcategories as s')->crossJoin('districts as d')->where('s.id', $request->subcategory_id)
-            ->where('d.id', $request->district_id)->first(['s.name as subcategory', 'd.name as district']);
+        $labels = (object) [
+            'subcategory' => implode(', ', array_column(RequestSubcategories::named([$request])[$request->id], 'name')),
+            'district' => DB::table('districts')->where('id', $request->district_id)->value('name'),
+        ];
         foreach ($selected as $candidate) {
             $this->offer($request, $roundId, $candidate, $now, $expiresAt, $labels);
         }
