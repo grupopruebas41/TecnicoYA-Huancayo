@@ -93,3 +93,14 @@ it('S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, foto
             && $images->valid($a->mobile_media_id, 'mobile') && $a->ends_at > now()))->toBeTrue()
         ->and(DB::table('announcement_audiences')->pluck('position')->every(fn ($p) => $p > 0))->toBeTrue();
 });
+
+it('S05-TC-133 los técnicos de demostración no muestran el texto interno de desarrollo en su descripción [DEF-57]', function () {
+    s04Demo(Str::password(20));
+    $this->app['env'] = 'local';
+
+    $this->seed(DemoSeeder::class);
+
+    $bios = DB::table('technician_profiles')->pluck('bio');
+    expect($bios)->not->toBeEmpty()
+        ->and($bios->filter(fn ($bio) => $bio !== null && str_contains(mb_strtolower($bio), 'demostración')))->toBeEmpty();
+});

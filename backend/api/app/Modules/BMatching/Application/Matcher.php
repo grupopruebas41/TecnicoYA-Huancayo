@@ -2,17 +2,19 @@
 
 namespace App\Modules\BMatching\Application;
 
+use App\Modules\ARequests\Application\RequestSubcategories;
 use App\Modules\BMatching\Domain\Ranker;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Una ejecución del matching (algoritmo matching_v1, D-19 y D-20) para la generación vigente de la solicitud. Guarda
+ * Una ejecución del matching (algoritmo matching_v2, D-19, D-20 y D-96; con una sola subcategoría da lo mismo que
+ * matching_v1) para la generación vigente de la solicitud. Guarda
  * la fotografía de reglas y, por candidato, factores, puntaje, orden o motivo de exclusión e insumos sin dirección
  * (matching_runs y matching_candidates). Usa la versión de reglas de la solicitud aunque haya otra vigente (D-24).
  */
 final class Matcher
 {
-    public const ALGORITHM = 'matching_v1';
+    public const ALGORITHM = 'matching_v2';
 
     public function __construct(
         private readonly MatchingRules $rules,
@@ -54,7 +56,7 @@ final class Matcher
     {
         $evaluated = $this->eligibility->evaluate($request);
         $eligibleIds = array_keys(array_filter($evaluated, fn (array $e) => $e['code'] === null));
-        $history = new TechnicianHistory($eligibleIds, (int) $request->subcategory_id, (int) $parameters['history_real_after_completed_services']);
+        $history = new TechnicianHistory($eligibleIds, RequestSubcategories::ids($request), (int) $parameters['history_real_after_completed_services']);
         $distances = $this->distances($evaluated, $eligibleIds, (int) $request->district_id);
         $rates = DB::table('service_rate_versions')->whereIn('technician_service_id', array_map(fn ($id) => $evaluated[$id]['service']->id, $eligibleIds))
             ->orderBy('version_no')->pluck('id', 'technician_service_id');
@@ -73,7 +75,10 @@ final class Matcher
                 'experience_years' => (int) $service->experience_years,
                 'distance_km' => $distance?->km, 'distance_source' => $distance?->source,
                 'base_district_id' => $evaluated[$id]['technician']->base_district_id,
-            ] + $history->snapshot($id);
+            ] + $history->snapshot($id) + (isset($service->services) ? ['services' => array_map(fn (object $item) => [
+                'technician_service_id' => $item->id, 'subcategory_id' => (int) $item->subcategory_id, 'fee' => $item->reference_fee,
+                'experience_years' => (int) $item->experience_years,
+            ], $service->services)] : []);
         }
         $ranked = $this->ranker->rank($inputs, $weights, $parameters)['candidates'];
 

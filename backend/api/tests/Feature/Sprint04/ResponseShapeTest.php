@@ -43,7 +43,7 @@ function s04OfferShape(string $responded): array
 {
     return ['id' => 'int', 'status' => 'string', 'version' => 'int', 'round' => ['id' => 'int', 'round_no' => 'int', 'kind' => 'string'],
         'available_at' => 'string', 'expires_at' => 'string', 'responded_at' => $responded, 'reference_fee' => S04_FEE,
-        'request' => ['id' => 'int', 'subcategory' => S04_REF, 'district' => S04_REF, 'mode' => 'string', 'preferred_start_at' => 'null',
+        'request' => ['id' => 'int', 'subcategory' => S04_REF, 'subcategories' => [S04_REF], 'district' => S04_REF, 'mode' => 'string', 'preferred_start_at' => 'null',
             'preferred_end_at' => 'null', 'description' => 'string',
             // D-92: urgencia informativa, equipo y síntomas del pedido con varios rubros.
             'urgency' => 'string', 'brand' => 'null', 'model' => 'null', 'symptoms' => [],
@@ -114,7 +114,7 @@ it('S04-TC-142 el detalle de la solicitud del titular tiene la forma completa de
     expect($detail['timeline'])->toBeArray();
     $detail = array_diff_key($detail, ['timeline' => 1]);
 
-    expect(s04Shape($detail))->toBe(['id' => 'int', 'status' => 'string', 'version' => 'int', 'subcategory' => S04_REF, 'district' => S04_REF,
+    expect(s04Shape($detail))->toBe(['id' => 'int', 'status' => 'string', 'version' => 'int', 'subcategory' => S04_REF, 'subcategories' => [S04_REF], 'district' => S04_REF,
         'description' => 'string', 'address' => 'string', 'mode' => 'string', 'preferred_start_at' => 'null', 'preferred_end_at' => 'null',
         'source' => 'string', 'target_technician_id' => 'null',
         'reference_fee' => ['amount' => 'null', 'currency' => 'string', 'source' => 'null', 'is_reference' => 'bool', 'is_payment' => 'bool'],

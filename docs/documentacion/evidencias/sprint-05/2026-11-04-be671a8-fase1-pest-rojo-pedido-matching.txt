@@ -1,0 +1,36 @@
+  ⨯ it S05-TC-088 un pedido de un rubro crea y envía una solicitud vinculada al pedido con la versión de regla… 58.15s  
+  ⨯ it S05-TC-089 un pedido de 3 especialidades crea 3 solicitudes con sus datos y la ubicación común            0.52s  
+  ⨯ it S05-TC-090 rechaza un pedido vacío, con la especialidad repetida o con una subcategoría repetida, en esp… 0.52s  
+  ⨯ it S05-TC-091 con 3 pedidos activos rechaza el pedido entero con el motivo; con 2 acepta uno de 3 especiali… 0.70s  
+  ⨯ it S05-TC-092 el envío es atómico: si falla una solicitud no queda ninguna, ni el pedido ni la clave         0.64s  
+  ⨯ it S05-TC-093 idempotencia: la misma clave devuelve el mismo pedido; otro cuerpo, 409; sin clave, 422        0.67s  
+  ⨯ it S05-TC-094 los síntomas deben ser activos y de la subcategoría del rubro                                  0.50s  
+  ⨯ it S05-TC-095 las franjas de Lima se guardan como inicio y fin en UTC y la franja pasada se rechaza          0.45s  
+  ✓ it S05-TC-096 la urgencia es informativa: el técnico la ve en la oferta y el matching ofrece lo mismo        0.80s  
+  ✓ it S05-TC-097 la solicitud dirigida no entra en el pedido: el pedido rechaza técnico objetivo y origen       0.51s  
+  ⨯ it S05-TC-098 por solicitud: descripción de 20 a 1000 caracteres y hasta 5 fotos propias y libres            0.79s  
+  ✓ it S05-TC-099 el catálogo de síntomas está sembrado para cada subcategoría, es idempotente y se consulta po… 0.52s  
+  ⨯ it S05-TC-100 el cupo del cliente informa máximo, activas y disponibles; solo para clientes                  0.47s  
+  ⨯ it S05-TC-101 Mis solicitudes y el detalle muestran el pedido, la urgencia, marca, modelo, síntomas y franj… 0.42s  
+  ✓ it S05-TC-102 el catálogo del asistente da el número de subcategorías por especialidad y la tarifa desde     0.54s  
+  ⨯ it S05-TC-118 POST /orders responde con la forma del contrato [DEF-53]                                       0.41s  
+  ⨯ it S05-TC-119 GET /requests responde con la forma del contrato, con pedido y sin pedido [DEF-54]             0.36s  
+  ⨯ it S05-TC-120 las 3 especialidades con varias subcategorías crean 3 solicitudes con todas ellas y la tarifa… 0.41s  
+  ⨯ it S05-TC-121 cada subcategoría debe estar activa, ser de su especialidad y no repetirse entre especialidad… 0.49s  
+  ⨯ it S05-TC-122 límite de pedidos con la versión 3: con 2 se acepta, con 3 se bloquea y con 4 forzados tambié… 0.40s  
+  ⨯ it S05-TC-123 un pedido sigue activo mientras le quede una solicitud abierta y deja de contar cuando se cie… 0.40s  
+  ⨯ it S05-TC-124 una solicitud suelta cuenta como un pedido y el envío de un borrador respeta el límite de ped… 0.39s  
+  ⨯ it S05-TC-125 la versión 3 de reglas trae el límite por pedidos y conserva lo demás; la v1 y la v2 no cambi… 0.44s  
+  ⨯ it S05-TC-126 solo es elegible el técnico que atiende todas las subcategorías de la solicitud [D-96]         0.60s  
+  ⨯ it S05-TC-127 un servicio inactivo en una de las subcategorías deja al técnico fuera [D-96]                  0.45s  
+  ⨯ it S05-TC-128 si nadie atiende todas, la solicitud entra al pendiente de disponibilidad de 24 h [D-96]       0.52s  
+  ⨯ it S05-TC-129 el puntaje usa la suma de las tarifas y la menor experiencia del técnico [D-96]                0.83s  
+  ⨯ it S05-TC-130 con una sola subcategoría no cambia la fotografía ni el puntaje, y se registra matching_v2 [D… 0.53s  
+  ⨯ it S05-TC-131 la estimación de tiempo cuenta los servicios de cualquiera de las subcategorías [D-96]         0.74s  
+  ⨯ it S05-TC-132 el técnico ve todas las subcategorías en la oferta y en el aviso; los síntomas valen de cualq… 0.57s  
+  ✓ it S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, fotos de subcategorías y comunica… 2.55s  
+  ⨯ it S05-TC-133 los técnicos de demostración no muestran el texto interno de desarrollo en su descripción [DE… 1.89s  
+  ✓ it S04-TC-020 rechaza en MySQL los pesos que no suman 100 y no aplica pesos inválidos                        0.68s  
+  ⨯ it S04-TC-025 conserva la fotografía de la ejecución anterior al ejecutar otra generación                    1.01s  
+  ✓ it S04-TC-026 aplica la versión de reglas de la solicitud aunque otra esté vigente                           0.57s  
+  Tests:    28 failed, 7 passed (120 assertions)

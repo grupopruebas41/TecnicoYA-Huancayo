@@ -22,14 +22,18 @@ final class ServiceRequestView
 
     public function listFor(User $user): array
     {
-        return DB::table('service_requests as r')->join('client_profiles as c', 'c.id', '=', 'r.client_id')
+        $rows = DB::table('service_requests as r')->join('client_profiles as c', 'c.id', '=', 'r.client_id')
             ->join('subcategories as s', 's.id', '=', 'r.subcategory_id')->join('districts as d', 'd.id', '=', 'r.district_id')
-            ->where('c.user_id', $user->id)->orderByDesc('r.id')->get(['r.*', 's.name as subcategory_name', 'd.name as district_name'])
-            ->map(fn (object $row) => [
+            ->where('c.user_id', $user->id)->orderByDesc('r.id')->get(['r.*', 's.name as subcategory_name', 'd.name as district_name']);
+        $subcategories = RequestSubcategories::named($rows);
+
+        return $rows->map(fn (object $row) => [
                 'id' => $row->id, 'status' => $row->status, 'phase' => $this->state->phase($row), 'mode' => $row->mode,
                 'source' => $row->source, 'created_at' => $row->created_at, 'submitted_at' => $row->submitted_at, 'version' => $row->version,
                 // Panel del cliente (D-87): datos de las tarjetas de «Mis solicitudes».
+                // D-95: subcategory es la principal; subcategories, todas las de la solicitud.
                 'subcategory' => ['id' => $row->subcategory_id, 'name' => $row->subcategory_name],
+                'subcategories' => $subcategories[$row->id],
                 'district' => ['id' => $row->district_id, 'name' => $row->district_name], 'updated_at' => $row->updated_at,
                 // D-92: Mis solicitudes agrupa las del mismo pedido.
                 'order_id' => $row->order_id, 'urgency' => $row->urgency,
@@ -62,6 +66,7 @@ final class ServiceRequestView
         return [
             'id' => $row->id, 'status' => $row->status, 'version' => (int) $row->version,
             'subcategory' => ['id' => $row->subcategory_id, 'name' => $row->subcategory_name],
+            'subcategories' => RequestSubcategories::named([$row])[$row->id],
             'district' => ['id' => $row->district_id, 'name' => $row->district_name],
             'description' => $row->description, 'address' => $address, 'mode' => $row->mode,
             'preferred_start_at' => $row->preferred_start_at, 'preferred_end_at' => $row->preferred_end_at,

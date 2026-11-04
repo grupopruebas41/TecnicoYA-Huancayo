@@ -10,7 +10,7 @@ Reglas de trabajo (personas y agentes): **[AGENTS.md](AGENTS.md)** · Plan vigen
 | --- | --- | --- |
 | `frontend/web` | React 18 + Vite 8 | Pantallas v1 en `src/features/*`: cuenta, perfil, catálogo y las de los sprints siguientes |
 | `backend/api` | Laravel 12, API `/api/v1`, sesión Sanctum (cookie + CSRF) | Identidad y permisos, catálogo, perfiles, solicitudes; módulos en `app/Modules/A..F` |
-| Base de datos | MySQL 8.4 | Producto (`infrastructure/docker-compose.yml`) y pruebas (`backend/api/docker-compose.testing.yml`) |
+| Base de datos | MySQL 8.4; SQLite en desarrollo local | MySQL: producto (`infrastructure/docker-compose.yml`) y pruebas (`backend/api/docker-compose.testing.yml`). SQLite: `backend/api/database/local.sqlite`, solo para desarrollar en local |
 | Pruebas | Pest 3, Vitest 5, Cypress 16.1, SonarQube | Meta: 60 o más IDs aprobados por sprint (36 Pest, 14 Cypress, 10 Vitest) |
 
 ## Histórico retirado
@@ -30,14 +30,18 @@ Histórico que no se sigue:
 Requisitos:
 - PHP 8.2 (XAMPP, `C:\xampp\php\php.exe`) con Composer;
 - Node 24;
-- MySQL 8.4 con la base `tecnicoya` y el usuario `tecnicoya` de `backend/api/.env.example`.
+- SQLite, que ya viene con PHP. No hace falta instalar un motor de base de datos para desarrollar.
+
+**Base de datos local:** en `backend/api/.env`, usa `DB_CONNECTION=sqlite` y `DB_DATABASE` con la ruta absoluta de `backend/api/database/local.sqlite`. El archivo no se versiona; créalo vacío la primera vez. `.env.example` trae los valores de MySQL del producto.
+
+**Pruebas:** corren siempre en MySQL 8.4, en bases `*_testing`. Las migraciones deben funcionar en los dos motores, y S05-TC-115 lo comprueba en la CI.
 
 El MySQL/MariaDB de XAMPP no se usa.
 
 ```powershell
 # 1. Backend en http://127.0.0.1:3000
 cd backend/api
-copy .env.example .env           # completa DB_PASSWORD y las claves de Reverb; .env no se versiona
+copy .env.example .env           # ajusta la base a SQLite y completa las claves de Reverb; .env no se versiona
 composer install
 php artisan key:generate
 php artisan migrate              # aplica las migraciones pendientes; repítelo tras integrar un PR con migraciones

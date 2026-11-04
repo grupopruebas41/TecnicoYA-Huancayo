@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
  * - con menos de N servicios finalizados el técnico es nuevo; con N o más y sin reseñas, «no_reviews». En los dos
  *   casos H es neutro. Las calificaciones vigentes llegan en el Sprint 6 (D-18), así que aún no hay promedio;
  * - el tiempo estimado es la mediana, en minutos enteros, de completed_at − started_at de las participaciones
- *   finalizadas en la misma subcategoría, con un mínimo de N; si no, «Nuevo, sin estimación».
+ *   finalizadas en cualquiera de las subcategorías de la solicitud (D-96), con un mínimo de N; si no, «Nuevo, sin estimación».
  */
 final class TechnicianHistory
 {
@@ -19,14 +19,18 @@ final class TechnicianHistory
     /** @var array<int, int[]> */
     private array $durations = [];
 
-    public function __construct(array $technicianIds, int $subcategoryId, private readonly int $threshold)
+    /** @param  int[]  $subcategoryIds */
+    public function __construct(array $technicianIds, array $subcategoryIds, private readonly int $threshold)
     {
         $rows = DB::table('participations as p')->join('service_requests as r', 'r.id', '=', 'p.request_id')
+            ->leftJoin('request_subcategories as l', 'l.request_id', '=', 'r.id')
             ->whereIn('p.technician_id', $technicianIds)->where('p.status', 'completed')
-            ->get(['p.technician_id', 'r.subcategory_id', 'p.started_at', 'p.completed_at']);
-        $this->completed = $rows->countBy('technician_id')->all();
-        foreach ($rows as $row) {
-            if ((int) $row->subcategory_id === $subcategoryId && $row->started_at !== null && $row->completed_at !== null) {
+            ->selectRaw('p.id, p.technician_id, p.started_at, p.completed_at, COALESCE(l.subcategory_id, r.subcategory_id) as subcategory_id')->get();
+        $participations = $rows->groupBy('id')->map(fn ($group) => $group->first());
+        $this->completed = $participations->countBy('technician_id')->all();
+        $covered = $rows->filter(fn (object $row) => in_array((int) $row->subcategory_id, $subcategoryIds, true))->groupBy('id')->map(fn ($group) => $group->first());
+        foreach ($covered as $row) {
+            if ($row->started_at !== null && $row->completed_at !== null) {
                 $this->durations[$row->technician_id][] = (int) round((strtotime($row->completed_at) - strtotime($row->started_at)) / 60);
             }
         }

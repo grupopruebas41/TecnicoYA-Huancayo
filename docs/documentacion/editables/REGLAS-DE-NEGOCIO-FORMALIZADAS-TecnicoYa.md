@@ -24,7 +24,7 @@ Versión reutilizable: [Tabla-Reglas-Negocio.csv](reglas-negocio/Tabla-Reglas-Ne
 
 | ID | Regla | Parámetro editable | Valor por defecto | Validación | Requerimiento relacionado | Rol que puede modificarla |
 |---|---|---|---|---|---|---|
-| RN-05 | Solo participan candidatos con rubro/subcategoría activos, cuenta habilitada, técnico activo y verificado, servicio ofrecido, zona y horario compatibles, sin pausa ni conflicto de agenda. | No se desactivan estos filtros por parámetro. Disponibilidad, servicios y catálogo son datos administrables. | Todos los filtros obligatorios. | Se cumplen conjuntamente antes del ranking y se revalidan al aceptar/asignar. No sustituir un filtro por un peso bajo. | RF-05, RF-07, RF-10, RF-33 | Técnico: sus datos permitidos. Administrador autorizado: catálogo/verificación. Ninguno puede omitir los filtros. |
+| RN-05 | Solo participan candidatos con rubro/subcategoría activos, cuenta habilitada, técnico activo y verificado, servicio ofrecido (en una solicitud con varias subcategorías, todas ellas, D-96), zona y horario compatibles, sin pausa ni conflicto de agenda. | No se desactivan estos filtros por parámetro. Disponibilidad, servicios y catálogo son datos administrables. | Todos los filtros obligatorios. | Se cumplen conjuntamente antes del ranking y se revalidan al aceptar/asignar. No sustituir un filtro por un peso bajo. | RF-05, RF-07, RF-10, RF-33 | Técnico: sus datos permitidos. Administrador autorizado: catálogo/verificación. Ninguno puede omitir los filtros. |
 | RN-06.1 | Peso de cercanía en el matching. | Sí: `matching_weights.proximity_pct`. | 35.00 % | Decimal entre 0 y 100; suma conjunta exactamente 100.00. | RF-06, RF-08, RF-27; RF-C03 | Administrador con `rules.manage`. |
 | RN-06.2 | Peso de tarifa en el matching. | Sí: `matching_weights.price_pct`. | 20.00 % | Igual validación conjunta; tarifa de la subcategoría y moneda comparable. | RF-06, RF-08, RF-27; RF-C03 | Administrador con `rules.manage`. |
 | RN-06.3 | Peso de historial/calificación. | Sí: `matching_weights.rating_pct`. | 30.00 % | Igual validación conjunta; origen de reseñas definido y versionado. | RF-06, RF-08, RF-27; RF-C03 | Administrador con `rules.manage`. |
@@ -306,7 +306,8 @@ Los escenarios dependientes de precisiones nuevas se etiquetan `@propuesta_P12`,
 | `history_real_after_completed_services` | integer / servicios | 3 | No por defecto; caso sin reseñas sigue pendiente |
 | `proximity_reference_km` | — | No se usa | D-20: `Dref` es la mayor distancia entre los elegibles de cada ejecución; no hay valor fijo |
 | `experience_reference_years` | — | No se usa | D-20: `Aref` es la mayor experiencia entre los elegibles de cada ejecución; no hay valor fijo |
-| `max_active_requests_per_client` | integer / solicitudes | 3 | D-11; >0. Cuentan las solicitudes desde `sent` hasta el cierre o la cancelación |
+| `max_active_orders_per_client` | integer / pedidos | 3 | D-95, desde la versión 3; >0. Un pedido está activo si tiene al menos una solicitud desde `sent` hasta el cierre o la cancelación; una solicitud sin pedido cuenta como uno |
+| `max_active_requests_per_client` | integer / solicitudes | 3 | D-11; solo en las versiones 1 y 2 de las reglas (D-24). Reemplazado por `max_active_orders_per_client` |
 | `equal_price_factor` | decimal / factor | 0.50 | D-20 aprueba la normalización propuesta |
 | `normalization_policy_code` | string / identificador de política | `matching_v1` propuesto | No editable libremente; identifica una implementación probada, no código ejecutable en BD |
 
@@ -442,7 +443,7 @@ Decididas por el equipo (Delgado, Mayhuasca y Pimentel). El detalle y la fecha e
 
 | Pendiente | Decisión | Efecto en esta especificación |
 |---|---|---|
-| P10 (D-11) | Máximo **3** solicitudes activas por cliente; cuentan desde `sent` hasta el cierre o la cancelación. | Parámetro `max_active_requests_per_client` en §7. Al enviar la cuarta, se rechaza con mensaje en español y no cambia nada. |
+| P10 (D-11, D-95) | Máximo **3 pedidos activos** por cliente desde la versión 3 de reglas (D-95); antes, 3 solicitudes activas. | Parámetro `max_active_orders_per_client` en §7. Con 3 pedidos activos, otro pedido o el envío de un borrador se rechaza con mensaje en español y no cambia nada. |
 | P17, parte S3 (D-12) | Descripción de 20 a 1000 caracteres; fotos JPG, PNG o WebP de hasta 5 MB y como máximo 5 por solicitud. | Validación en cliente y servidor; no son parámetros editables. Siguen pendientes los límites de portafolio, documentos, comentario de calificación (RN-19.1) y respuestas. |
 | P22 (D-13) | `registered` (editable) → `sent` (no se modifica ni se elimina). El rechazo de verificación es una decisión con motivo en la revisión. | Sin estado `draft`. |
 | P20 (D-14) | Un rol por cuenta. | — |

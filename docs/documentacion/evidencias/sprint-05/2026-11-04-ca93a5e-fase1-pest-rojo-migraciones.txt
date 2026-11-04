@@ -1,0 +1,7 @@
+  ⨯ it S05-TC-115 todas las migraciones corren en SQLite y se revierten desde la 000030 [DEF-53]                56.70s  
+  ⨯ it S05-TC-116 la migración 000030 se recupera si un intento anterior dejó service_orders a medias [DEF-53]   0.21s  
+  ⨯ it S05-TC-117 el down() de la migración 000027 se revierte y se vuelve a aplicar en la base de pruebas [DEF… 0.42s  
+  SQLSTATE[HY000]: General error: 1 near "CONSTRAINT": syntax error (Connection: sqlite_migraciones, Database: :memory:, SQL: ALTER TABLE service_orders ADD CONSTRAINT service_orders_item_count_check 
+  SQLSTATE[HY000]: General error: 1 near "CONSTRAINT": syntax error (Connection: sqlite_migraciones, Database: :memory:, SQL: ALTER TABLE service_orders ADD CONSTRAINT service_orders_item_count_check 
+  SQLSTATE[HY000]: General error: 1553 Cannot drop index 'announcement_audiences_role_id_position_index': needed in a foreign key constraint (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: 
+  Tests:    3 failed (0 assertions)

@@ -73,7 +73,7 @@ it('S04-TC-025 conserva la fotografía de la ejecución anterior al ejecutar otr
     $rules = json_decode(DB::table('matching_runs')->find($first->id)->rules_snapshot, true);
     expect($second->id)->not->toBe($first->id)
         ->and((int) $second->search_generation)->toBe(2)
-        ->and($rules['algorithm_version'])->toBe('matching_v1')
+        ->and($rules['algorithm_version'])->toBe('matching_v2') // D-96: con una sola subcategoría el puntaje no cambia
         ->and($rules['weights'])->toEqual(['proximity' => 35, 'price' => 20, 'history' => 30, 'experience' => 15])
         ->and($rules['parameters']['offer_sla_minutes'])->toBe(10)
         ->and((float) DB::table('matching_candidates')->where('matching_run_id', $first->id)->where('technician_id', $a->id)->value('experience_factor'))->toBe(0.5)

@@ -5,6 +5,7 @@ namespace App\Modules\BMatching\Application;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use App\Modules\ARequests\Application\RequestSubcategories;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -48,6 +49,7 @@ final class OfferView
         $requests = DB::table('service_requests as r')->join('subcategories as s', 's.id', '=', 'r.subcategory_id')
             ->join('districts as d', 'd.id', '=', 'r.district_id')->whereIn('r.id', $offers->pluck('request_id'))
             ->get(['r.*', 's.name as subcategory_name', 'd.name as district_name'])->keyBy('id');
+        $subcategories = RequestSubcategories::named($requests->values());
         $assigned = DB::table('participations')->whereIn('request_id', $offers->pluck('request_id'))
             ->whereIn('status', ['assigned', 'in_progress', 'completed'])->get(['request_id', 'technician_id']);
         $evidence = DB::table('request_attachments')->whereIn('request_id', $offers->pluck('request_id'))->orderBy('position')
@@ -56,7 +58,7 @@ final class OfferView
             ->whereIn('r.request_id', $offers->pluck('request_id'))->orderBy('y.position')->orderBy('y.id')
             ->get(['r.request_id', 'y.name'])->groupBy('request_id');
 
-        return $offers->map(function (object $offer) use ($rounds, $requests, $assigned, $evidence, $symptoms) {
+        return $offers->map(function (object $offer) use ($rounds, $requests, $subcategories, $assigned, $evidence, $symptoms) {
             $request = $requests[$offer->request_id];
             $round = $rounds[$offer->round_id];
             $isAssigned = $assigned->contains(fn ($p) => (int) $p->request_id === (int) $offer->request_id && (int) $p->technician_id === (int) $offer->technician_id);
@@ -69,6 +71,7 @@ final class OfferView
                 'reference_fee' => ['amount' => $offer->reference_fee_snapshot, 'currency' => $offer->currency, 'is_reference' => true],
                 'request' => [
                     'id' => $request->id, 'subcategory' => ['id' => $request->subcategory_id, 'name' => $request->subcategory_name],
+                    'subcategories' => $subcategories[$request->id], // D-96
                     'district' => ['id' => $request->district_id, 'name' => $request->district_name], 'mode' => $request->mode,
                     'preferred_start_at' => self::iso($request->preferred_start_at), 'preferred_end_at' => self::iso($request->preferred_end_at),
                     'description' => $request->description,

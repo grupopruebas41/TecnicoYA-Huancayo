@@ -13,9 +13,10 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
 /**
- * Pedido con varios rubros (D-92): de 1 a 3 subcategorías distintas con descripción de 20 a 1000 caracteres, hasta 5
- * fotos propias y síntomas de su subcategoría; ubicación y horario comunes. La franja (mañana, tarde o noche en Lima)
- * no puede haber empezado (D-55). La solicitud dirigida no entra en el pedido: sigue siendo de un solo rubro.
+ * Pedido por especialidades (D-95): cada elemento es una especialidad distinta con sus subcategorías activas y sin repetir,
+ * una descripción de 20 a 1000 caracteres, hasta 5 fotos propias y síntomas de cualquiera de sus subcategorías; ubicación y
+ * horario comunes. La franja (mañana, tarde o noche en Lima) no puede haber empezado (D-55). La solicitud dirigida no entra
+ * en el pedido: sigue siendo de una sola subcategoría.
  */
 final class StoreServiceOrderRequest extends FormRequest
 {
@@ -29,9 +30,11 @@ final class StoreServiceOrderRequest extends FormRequest
             'scheduled_date' => ['exclude_unless:mode,scheduled', 'required', 'date_format:Y-m-d'],
             'time_slot' => ['exclude_unless:mode,scheduled', 'required', Rule::in(array_keys(ServiceOrders::SLOTS))],
             'summary_confirmed' => ['required', 'accepted'],
-            'items' => ['required', 'array', 'min:1', 'max:'.ServiceOrders::MAX_ITEMS],
-            'items.*' => ['array:subcategory_id,description,urgency,brand,model,symptom_ids,media_ids'],
-            'items.*.subcategory_id' => ['required', 'integer', 'distinct', new ActiveSubcategory('api.subcategory_unavailable')],
+            'items' => ['required', 'array', 'min:1'],
+            'items.*' => ['array:specialty_id,subcategory_ids,description,urgency,brand,model,symptom_ids,media_ids'],
+            'items.*.specialty_id' => ['required', 'integer', 'distinct', Rule::exists('specialties', 'id')->where('active', 1)],
+            'items.*.subcategory_ids' => ['required', 'array', 'min:1'],
+            'items.*.subcategory_ids.*' => ['integer', 'distinct', new ActiveSubcategory('api.subcategory_unavailable')],
             'items.*.description' => StoreServiceRequestRequest::DESCRIPTION,
             'items.*.urgency' => ['required', Rule::in(['normal', 'urgente'])],
             'items.*.brand' => ['nullable', 'string', 'max:60'],
@@ -45,7 +48,7 @@ final class StoreServiceOrderRequest extends FormRequest
         ];
     }
 
-    /** Síntomas de la subcategoría de cada rubro y franja que todavía no empezó (hora de Lima). */
+    /** Subcategorías de su especialidad, síntomas de esas subcategorías y franja que todavía no empezó (hora de Lima). */
     public function after(): array
     {
         return [function (Validator $validator) {
@@ -53,9 +56,14 @@ final class StoreServiceOrderRequest extends FormRequest
                 return;
             }
             foreach ($this->input('items', []) as $index => $item) {
+                foreach (array_values($item['subcategory_ids']) as $position => $subcategoryId) {
+                    if (! DB::table('subcategories')->where('id', $subcategoryId)->where('specialty_id', $item['specialty_id'])->exists()) {
+                        $validator->errors()->add("items.$index.subcategory_ids.$position", __('api.order_subcategory_specialty'));
+                    }
+                }
                 foreach (array_values($item['symptom_ids'] ?? []) as $position => $symptomId) {
                     $valid = DB::table('subcategory_symptoms')->where('id', $symptomId)
-                        ->where('subcategory_id', $item['subcategory_id'])->where('active', 1)->exists();
+                        ->whereIn('subcategory_id', $item['subcategory_ids'])->where('active', 1)->exists();
                     if (! $valid) {
                         $validator->errors()->add("items.$index.symptom_ids.$position", __('api.order_symptom'));
                     }
@@ -70,9 +78,12 @@ final class StoreServiceOrderRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'items.required' => __('api.order_items'), 'items.min' => __('api.order_items'), 'items.max' => __('api.order_items'),
-            'items.array' => __('api.order_items'),
-            'items.*.subcategory_id.distinct' => __('api.order_item_repeated'),
+            'items.required' => __('api.order_items'), 'items.min' => __('api.order_items'), 'items.array' => __('api.order_items'),
+            'items.*.specialty_id.required' => __('api.order_specialty'), 'items.*.specialty_id.exists' => __('api.order_specialty'),
+            'items.*.specialty_id.distinct' => __('api.order_specialty_repeated'),
+            'items.*.subcategory_ids.required' => __('api.order_subcategories'), 'items.*.subcategory_ids.min' => __('api.order_subcategories'),
+            'items.*.subcategory_ids.*.integer' => __('api.subcategory_unavailable'),
+            'items.*.subcategory_ids.*.distinct' => __('api.order_item_repeated'),
             'items.*.description.required' => __('api.description_length'),
             'items.*.description.min' => __('api.description_length'), 'items.*.description.max' => __('api.description_length'),
             'items.*.urgency.required' => __('api.order_urgency'), 'items.*.urgency.in' => __('api.order_urgency'),
