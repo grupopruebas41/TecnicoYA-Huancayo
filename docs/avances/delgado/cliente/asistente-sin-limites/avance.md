@@ -32,7 +32,7 @@
 |---|---|---|
 | Vitest completo | Local | Ver la evidencia `fase1-frontend` |
 | Lint, build y `npm audit` | Local | Aprobados, sin vulnerabilidades |
-| Capturas (1366 y 390, claro y oscuro) | 54 más 8 repetidas tras corregir el botón de bloqueo | Sin desborde ni recortes |
+| Capturas (1366 y 390, claro y oscuro) | 52 más 8 repetidas tras corregir el botón de bloqueo | Sin desborde ni recortes |
 | Cypress S05-TC-146 y 147 | **Escritas, sin ejecutar** | Menos de 1,5 GB libres |
 
 **Pruebas cambiadas, con motivo:**

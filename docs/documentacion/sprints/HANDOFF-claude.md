@@ -23,7 +23,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Pest 431/431 en `d4b78fe`; Vitest, lint, build y audits en la evidencia `fase1-frontend`;
   - IDs S05-TC-115 a 147;
   - Cypress S05-TC-146 y 147 **escritas, sin ejecutar** (menos de 1,5 GB libres); S03-TC-068 adaptada, sin ejecutar;
-  - 54 capturas más 8 tras corregir el botón de bloqueo, sin desborde.
+  - 52 capturas más 8 tras corregir el botón de bloqueo, sin desborde.
 - **Nota de D-96:** el conteo que decide si H es «nuevo» sigue contando todos los servicios, como en `matching_v1`; solo la estimación de tiempo se limita a las subcategorías de la solicitud. H sigue neutro hasta el S6.
 - **Regla para las migraciones siguientes:** los CHECK van con guarda de MySQL; S05-TC-115 falla si no.
 - **Siguiente:** Fase 2 (Mis solicitudes), cuando Pimentel revise la Fase 1.
