@@ -2,6 +2,33 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-04 · Panel del cliente final, Fase 1: errores y asistente (D-95 y D-96)
+
+- **Ramas:**
+  - `feature/mayhuasca/cliente/fix-pedido-mis-solicitudes`, desde `main` `ce58081`;
+  - `feature/delgado/cliente/asistente-sin-limites`, apilada sobre la anterior.
+  - Se integran en ese orden y seguidas: la primera cambia el cuerpo de `POST /orders`.
+- **Backend:**
+  - migración `000030` para MySQL y SQLite, recuperable de un intento a medias (DEF-53 y DEF-54);
+  - `down()` de la `000027` (DEF-58);
+  - `000031`: `request_subcategories` y versión 3 de reglas, porque la 2 ya existe por D-63;
+  - `ActiveOrders`, `RequestSubcategories` y `matching_v2`.
+- **Frontend:**
+  - asistente por especialidad, sin aviso ni contador (DEF-55);
+  - pie nuevo (DEF-56);
+  - bloqueo con 3 pedidos;
+  - error legible con la referencia aparte;
+  - perfil sin descripción (DEF-57).
+- **Pruebas:**
+  - Pest 431/431 en `d4b78fe`; Vitest, lint, build y audits en la evidencia `fase1-frontend`;
+  - IDs S05-TC-115 a 147;
+  - Cypress S05-TC-146 y 147 **escritas, sin ejecutar** (menos de 1,5 GB libres); S03-TC-068 adaptada, sin ejecutar;
+  - 54 capturas más 8 tras corregir el botón de bloqueo, sin desborde.
+- **Nota de D-96:** el conteo que decide si H es «nuevo» sigue contando todos los servicios, como en `matching_v1`; solo la estimación de tiempo se limita a las subcategorías de la solicitud. H sigue neutro hasta el S6.
+- **Regla para las migraciones siguientes:** los CHECK van con guarda de MySQL; S05-TC-115 falla si no.
+- **Siguiente:** Fase 2 (Mis solicitudes), cuando Pimentel revise la Fase 1.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-04 · Panel del cliente final, Fase 0: diagnóstico y plan
 
 - **Rama:** `feature/pimentel/cliente/fase0-plan-final`, sobre `37d93bc` (PR #42). Solo documentación. Detalle en `docs/avances/pimentel/cliente/fase0-plan-final/avance.md`.

@@ -1,0 +1,7 @@
+ Test Files  44 passed (44)
+      Tests  375 passed (375)
+lint: código 0
+build: código 0
+npm audit: found 0 vulnerabilities
+Commit: 34bc47e. Fecha: 2026-11-04.
+Cypress S05-TC-146 y 147: escritas, sin ejecutar (menos de 1,5 GB libres).

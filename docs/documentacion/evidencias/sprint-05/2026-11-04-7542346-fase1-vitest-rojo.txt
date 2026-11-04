@@ -1,0 +1,23 @@
+      Tests  22 failed | 2 passed (24)
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-104 se pueden marcar las 3 especialidades y todas las subcategor�
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-105 desmarcar una especialidad con subcategorías elegidas pide c
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-106 paso 2: subcategorías agrupadas por especialidad, con tarifa
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-107 paso 3: una pestaña por especialidad con indicador, síntoma
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-108 fotos por especialidad: arrastrar y soltar, vista previa, má
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-109 paso 4: distrito del perfil, «Lo antes posible» o fecha y f
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-110 resumen: una tarjeta por especialidad con sus subcategorías 
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-111 envío: POST /orders por especialidad con sus subcategorías 
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-112 si al enviar ya tiene 3 pedidos activos, el pedido se rechaza
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-113 Mis solicitudes agrupa las solicitudes del mismo pedido y mue
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-114 barra inferior con resumen vivo, stepper con pasos completado
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-134 el pie resume especialidades y trabajos con los nombres y con
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-135 con pedidos activos no hay aviso amarillo en ningún paso, ni
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-136 el filtro no pierde lo marcado: el pie sigue contando las sub
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-137 al desmarcar una subcategoría se quitan sus síntomas y se c
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-138 con 3 pedidos activos el asistente bloquea desde el inicio, c
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-140 la sugerencia del buscador agrega el trabajo a su especialida
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-141 un atajo del Inicio deja la subcategoría marcada y abre el d
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-142 la confirmación con una sola solicitud lo dice en singular y
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-143 el error se muestra en una alerta con la referencia aparte y 
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-144 el aviso de error del panel no es texto rojo sobre gris: usa 
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-145 un técnico sin descripción muestra un estado vacío, sin te
