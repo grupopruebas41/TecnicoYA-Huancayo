@@ -447,6 +447,9 @@ test('S05-TC-138 con 3 pedidos activos el asistente bloquea desde el inicio, con
   expect(screen.queryByRole('button', {name: 'Siguiente'})).toBeNull();
   fireEvent.click(screen.getByRole('button', {name: 'Ver Mis solicitudes'}));
   expect(navigate).toHaveBeenCalledWith('requests');
+  // Visto en las capturas: sin esta regla, el botón primario queda con texto claro sobre fondo gris en el tema claro.
+  const css = readFileSync(resolve('src/features/requests/order/order.css'), 'utf8').replace(/\r\n/g, '\n');
+  expect(css).toMatch(/\.panel-shell \.order-blocked \.button\.primary,/);
   cleanup();
 
   routes({quota: {max: 3, active: 2, available: 1}});
