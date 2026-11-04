@@ -1,0 +1,22 @@
+Parches de seguridad para dejar en verde la CI del PR #42
+Fecha: 2026-11-04. Commit de partida: 95bbd43. Corrida de CI que falló: 41923620367.
+
+Causa: avisos publicados el 2026-11-04 que también afectan a main; ningún cambio del PR #42 los provoca.
+
+composer audit, antes:
+  symfony/http-foundation 7.4.21, symfony/http-kernel 7.4.17, symfony/routing 7.4.17 y symfony/yaml 7.4.21 (7 avisos).
+Cambio:
+  composer update symfony/http-foundation symfony/http-kernel symfony/routing symfony/yaml (sin -W), todos a 7.4.23.
+composer audit, después (local, código de salida 0):
+  No security vulnerability advisories found.
+
+npm audit, antes:
+  GHSA-g3hv-75wg-m249 (severidad moderada), minimatch 10.2.6, solo de desarrollo, a través de eslint 10.13.0.
+  npm proponía bajar eslint a 9.39.5 (cambio mayor). @eslint/config-array 0.23.5 todavía pide minimatch ^10.2.4.
+Cambio:
+  "overrides": {"minimatch": "^11.0.4"} en frontend/web/package.json. Sin npm audit fix --force y sin cambiar eslint.
+npm audit, después (local):
+  found 0 vulnerabilities
+npm run lint (local, eslint con minimatch 11.0.4): código de salida 0.
+
+Pendiente: quitar el override cuando eslint y @eslint/config-array admitan una versión corregida de minimatch.
