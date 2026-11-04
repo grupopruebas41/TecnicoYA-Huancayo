@@ -140,16 +140,7 @@
   color: var(--ty-muted);
   font-size: 0.8rem;
 }
-.order-quota,
-.order-limit {
-  margin: 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  color: var(--ty-warning-text);
-  background: var(--ty-warning-bg);
-}
-
-/* Paso 2: subcategorías agrupadas, filtro y contador. */
+/* Paso 2: subcategorías agrupadas y filtro. */
 .order-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -160,12 +151,6 @@
 .order-filter {
   flex: 1 1 260px;
   margin: 0;
-}
-.order-counter {
-  margin: 0;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: var(--ty-raised);
 }
 .order-group {
   display: grid;
@@ -650,4 +635,30 @@
 .order-location .form-field,
 .order-schedule .form-field {
   margin: 0;
+}
+
+/* D-95: subcategorías en el resumen y bloqueo por pedidos activos. */
+.order-summary-subcategories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.order-summary-subcategories li {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--ty-raised);
+}
+.order-done-works {
+  display: block;
+  color: var(--ty-text);
+}
+.order-blocked {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  text-align: center;
 }

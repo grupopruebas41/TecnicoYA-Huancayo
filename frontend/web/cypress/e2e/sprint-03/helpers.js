@@ -27,8 +27,8 @@ export function openMyRequests() {
     .contains("button", "Mis solicitudes")
     .click();
 }
-// D-92: «Nueva solicitud» abre el pedido con varios rubros (casillas specialty_ids y subcategory_ids, visualmente
-// ocultas dentro de su tarjeta: se marcan con force). Llega al paso 3 con un solo rubro.
+// D-95: «Nueva solicitud» abre el pedido por especialidades (casillas specialty_ids y subcategory_ids, visualmente
+// ocultas dentro de su tarjeta: se marcan con force). Llega al paso 3 con una sola subcategoría.
 export function toDescription() {
   cy.get('nav[aria-label="Gestión del cliente"]')
     .contains("button", "Nueva solicitud")

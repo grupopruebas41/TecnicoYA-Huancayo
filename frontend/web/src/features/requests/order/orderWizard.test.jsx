@@ -478,7 +478,7 @@ test('S05-TC-140 la sugerencia del buscador agrega el trabajo a su especialidad 
   fireEvent.click(await checkbox('Reparación de hardware'));
   fireEvent.click(screen.getByRole('button', {name: 'Atrás'}));
   await heading('Paso 1: Especialidades');
-  fireEvent.change(screen.getByRole('searchbox'), {target: {value: 'internet caído'}});
+  fireEvent.change(screen.getByRole('combobox'), {target: {value: 'internet caído'}});
   fireEvent.click(await screen.findByRole('option', {name: /Redes e infraestructura/}));
 
   expect(await screen.findByText('Agregado: Cómputo › Redes e infraestructura.')).toBeInTheDocument();
@@ -538,7 +538,7 @@ test('S05-TC-144 el aviso de error del panel no es texto rojo sobre gris: usa te
   expect(rule).toContain('background: var(--ty-error-bg)');
   expect(rule).not.toContain('var(--ty-raised)');
   expect(css).toMatch(/\.panel-shell \.error-reference \{[^}]*font-size/);
-  const tokens = css.match(/--ty-error-bg:/g) || [];
+  const tokens = readFileSync(resolve('src/styles/tokens.css'), 'utf8').match(/--ty-error-bg:/g) || [];
   expect(tokens.length).toBeGreaterThanOrEqual(2); // tema claro y oscuro
 });
 

@@ -43,9 +43,9 @@ export function SpecialtyStep({ specialties, selected, onToggle, error }) {
   );
 }
 
-/** Paso 2: subcategorías agrupadas por especialidad, con filtro, contador y límite de rubros (D-11, D-92). */
-export function SubcategoryStep({ groups, items, limit, filter, onFilter, onToggle, error, limitReason, quotaText }) {
-  const full = items.length >= limit;
+/** Paso 2: subcategorías agrupadas por especialidad, con filtro y sin tope (D-95). */
+export function SubcategoryStep({ groups, items, filter, onFilter, onToggle, error }) {
+  const marked = new Set(items.flatMap((item) => item.subcategories.map((sub) => sub.id)));
   const term = filter.trim().toLocaleLowerCase("es");
   return (
     <div className="order-subcategories">
@@ -54,12 +54,7 @@ export function SubcategoryStep({ groups, items, limit, filter, onFilter, onTogg
           <label htmlFor="order-filter">Filtrar subcategorías</label>
           <input id="order-filter" type="search" value={filter} placeholder="Ej.: impresora" onChange={(e) => onFilter(e.target.value)} />
         </div>
-        <p className="order-counter" aria-live="polite">
-          <strong>{items.length} de {limit}</strong> {limit === 1 ? "rubro" : "rubros"}
-        </p>
       </div>
-      {quotaText && <p className="order-quota">{quotaText}</p>}
-      {full && <p className="order-limit" id="order-limit-reason">{limitReason}</p>}
       <fieldset className="order-fieldset" aria-describedby={error ? "subcategory_ids-error" : undefined}>
         <legend className="sr-only">Subcategorías</legend>
         {groups.map(({ specialty, subcategories, loading }) => {
@@ -74,17 +69,14 @@ export function SubcategoryStep({ groups, items, limit, filter, onFilter, onTogg
               {!loading && !visible.length && <p className="muted">Ninguna subcategoría coincide con el filtro.</p>}
               <div className="order-rows">
                 {visible.map((sub, index) => {
-                  const checked = items.some((item) => item.subcategory_id === sub.id);
-                  const disabled = !checked && full;
+                  const checked = marked.has(sub.id);
                   return (
-                    <label key={sub.id} className={"order-row" + (checked ? " is-checked" : "") + (disabled ? " is-disabled" : "")}>
+                    <label key={sub.id} className={"order-row" + (checked ? " is-checked" : "")}>
                       <input
                         type="checkbox"
                         name="subcategory_ids"
                         value={sub.id}
                         checked={checked}
-                        disabled={disabled}
-                        aria-describedby={disabled ? "order-limit-reason" : undefined}
                         aria-invalid={error && index === 0 ? true : undefined}
                         onChange={() => onToggle(sub, specialty)}
                       />
@@ -104,50 +96,50 @@ export function SubcategoryStep({ groups, items, limit, filter, onFilter, onTogg
   );
 }
 
-/** Paso 3: un bloque por rubro en pestañas con indicador de completo o pendiente. */
+/** Paso 3: una pestaña por especialidad, con indicador de completo o pendiente y los síntomas de todas sus subcategorías. */
 export function DetailStep({ items, active, onActive, symptoms, onItem, sameDescription, onSameDescription, errors, onBusy }) {
-  const item = items.find((entry) => entry.subcategory_id === active) || items[0];
+  const item = items.find((entry) => entry.specialty_id === active) || items[0];
   if (!item) return null;
-  const own = errors[item.subcategory_id] || {};
-  const prefix = `item-${item.subcategory_id}`;
-  const list = symptoms[item.subcategory_id];
+  const own = errors[item.specialty_id] || {};
+  const prefix = `item-${item.specialty_id}`;
+  const list = item.subcategories.flatMap((sub) => symptoms[sub.id] || []);
   const tabKeys = (event, index) => {
     const move = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
     if (!move) return;
     event.preventDefault();
     const next = items[(index + move + items.length) % items.length];
-    onActive(next.subcategory_id);
-    document.getElementById(`order-tab-${next.subcategory_id}`)?.focus();
+    onActive(next.specialty_id);
+    document.getElementById(`order-tab-${next.specialty_id}`)?.focus();
   };
   return (
     <div className="order-detail">
-      <div className="order-tabs" role="tablist" aria-label="Rubros del pedido">
+      <div className="order-tabs" role="tablist" aria-label="Especialidades del pedido">
         {items.map((entry, index) => {
           const done = !Object.keys(itemErrors(entry)).length;
-          const selected = entry.subcategory_id === item.subcategory_id;
+          const selected = entry.specialty_id === item.specialty_id;
           return (
             <button
-              key={entry.subcategory_id}
-              id={`order-tab-${entry.subcategory_id}`}
+              key={entry.specialty_id}
+              id={`order-tab-${entry.specialty_id}`}
               type="button"
               role="tab"
               aria-selected={selected}
               aria-controls="order-tabpanel"
               tabIndex={selected ? 0 : -1}
-              className={(done ? "is-done" : "is-pending") + (errors[entry.subcategory_id] ? " is-invalid" : "")}
-              onClick={() => onActive(entry.subcategory_id)}
+              className={(done ? "is-done" : "is-pending") + (errors[entry.specialty_id] ? " is-invalid" : "")}
+              onClick={() => onActive(entry.specialty_id)}
               onKeyDown={(event) => tabKeys(event, index)}
             >
               <Icon name={done ? "check" : "clock"} />
-              <span>{entry.name}</span>
+              <span>{entry.specialty_name}</span>
               <span className="sr-only">{done ? " (completo)" : " (pendiente)"}</span>
             </button>
           );
         })}
       </div>
-      <div id="order-tabpanel" role="tabpanel" aria-labelledby={`order-tab-${item.subcategory_id}`} className="order-panel">
+      <div id="order-tabpanel" role="tabpanel" aria-labelledby={`order-tab-${item.specialty_id}`} className="order-panel">
         <p className="order-panel-title">
-          {item.specialty_name} › <strong>{item.name}</strong>
+          {item.specialty_name} › <strong>{item.subcategories.map((sub) => sub.name).join(", ")}</strong>
         </p>
         {list?.length > 0 && (
           <div className="order-symptoms" role="group" aria-label="Problemas frecuentes">
@@ -162,7 +154,7 @@ export function DetailStep({ items, active, onActive, symptoms, onItem, sameDesc
                     className={"order-chip" + (on ? " is-on" : "")}
                     aria-pressed={on}
                     onClick={() =>
-                      onItem(item.subcategory_id, "symptom_ids", on ? item.symptom_ids.filter((id) => id !== symptom.id) : [...item.symptom_ids, symptom.id])
+                      onItem(item.specialty_id, "symptom_ids", on ? item.symptom_ids.filter((id) => id !== symptom.id) : [...item.symptom_ids, symptom.id])
                     }
                   >
                     {on && <Icon name="check" />}
@@ -182,28 +174,28 @@ export function DetailStep({ items, active, onActive, symptoms, onItem, sameDesc
             value={item.description}
             aria-invalid={!!own.description}
             aria-describedby={own.description ? `${prefix}-description-error` : `${prefix}-description-count`}
-            onChange={(e) => onItem(item.subcategory_id, "description", e.target.value)}
+            onChange={(e) => onItem(item.specialty_id, "description", e.target.value)}
           />
           <FieldError id={`${prefix}-description-error`} message={own.description} />
           <small className="muted" id={`${prefix}-description-count`}>{chars(item.description)}/{DESCRIPTION_MAX} caracteres</small>
         </div>
         {items.length > 1 && (
           <label className="order-inline-check">
-            <input type="checkbox" checked={sameDescription} onChange={(e) => onSameDescription(e.target.checked, item.subcategory_id)} />
-            Usar la misma descripción para todos
+            <input type="checkbox" checked={sameDescription} onChange={(e) => onSameDescription(e.target.checked, item.specialty_id)} />
+            Usar la misma descripción para todas
           </label>
         )}
         <div className="order-pair">
           <div className="form-field">
             <label htmlFor={`${prefix}-brand`}>Marca (opcional)</label>
             <input id={`${prefix}-brand`} name="brand" maxLength={60} value={item.brand} aria-invalid={!!own.brand}
-              onChange={(e) => onItem(item.subcategory_id, "brand", e.target.value)} />
+              onChange={(e) => onItem(item.specialty_id, "brand", e.target.value)} />
             <FieldError id={`${prefix}-brand-error`} message={own.brand} />
           </div>
           <div className="form-field">
             <label htmlFor={`${prefix}-model`}>Modelo (opcional)</label>
             <input id={`${prefix}-model`} name="model" maxLength={60} value={item.model} aria-invalid={!!own.model}
-              onChange={(e) => onItem(item.subcategory_id, "model", e.target.value)} />
+              onChange={(e) => onItem(item.specialty_id, "model", e.target.value)} />
             <FieldError id={`${prefix}-model-error`} message={own.model} />
           </div>
         </div>
@@ -212,14 +204,14 @@ export function DetailStep({ items, active, onActive, symptoms, onItem, sameDesc
           {[["normal", "Normal"], ["urgente", "Urgente"]].map(([value, text]) => (
             <label key={value} className={"order-option" + (item.urgency === value ? " is-checked" : "")}>
               <input type="radio" name={`${prefix}-urgency`} value={value} checked={item.urgency === value}
-                onChange={() => onItem(item.subcategory_id, "urgency", value)} />
+                onChange={() => onItem(item.specialty_id, "urgency", value)} />
               {text}
             </label>
           ))}
           <small className="muted" id={`${prefix}-urgency-help`}>Es informativa: el técnico la verá en la oferta; no cambia el orden de búsqueda.</small>
         </fieldset>
-        <OrderPhotos key={item.subcategory_id} label={item.name} photos={item.photos} onBusy={onBusy}
-          onChange={(photos) => onItem(item.subcategory_id, "photos", photos)} />
+        <OrderPhotos key={item.specialty_id} label={item.specialty_name} photos={item.photos} onBusy={onBusy}
+          onChange={(photos) => onItem(item.specialty_id, "photos", photos)} />
       </div>
     </div>
   );
@@ -302,7 +294,7 @@ export const slotText = (state) => {
   return `${date}${slot ? ` · ${slot.label} (${slot.hours})` : ""}`;
 };
 
-/** Paso 5: tarjeta por rubro con «Editar», bloque común y aviso de cuántas solicitudes se crearán. */
+/** Paso 5: tarjeta por especialidad con sus subcategorías y «Editar», bloque común y aviso de cuántas solicitudes se crearán. */
 export function SummaryStep({ state, districts, symptoms, onEdit, onConfirm, error }) {
   const district = districts.find((item) => String(item.id) === String(state.district_id));
   const count = state.items.length;
@@ -310,21 +302,24 @@ export function SummaryStep({ state, districts, symptoms, onEdit, onConfirm, err
     <div className="order-summary">
       <p className="order-notice" role="note">
         {count === 1
-          ? "Se creará 1 solicitud y buscará su técnico."
-          : `Se crearán ${count} solicitudes, una por rubro, y cada una buscará su técnico.`}
+          ? "Se creará 1 solicitud."
+          : `Se crearán ${count} solicitudes, una por especialidad.`}
       </p>
       <div className="order-summary-grid">
         {state.items.map((item) => {
-          const names = (symptoms[item.subcategory_id] || []).filter((s) => item.symptom_ids.includes(s.id)).map((s) => s.name);
+          const names = item.subcategories.flatMap((sub) => symptoms[sub.id] || []).filter((s) => item.symptom_ids.includes(s.id)).map((s) => s.name);
           return (
-            <article key={item.subcategory_id} className="order-summary-card" aria-label={`Rubro ${item.name}`}>
+            <article key={item.specialty_id} className="order-summary-card" aria-label={`Especialidad ${item.specialty_name}`}>
               <header>
                 <span className="order-card-icon" aria-hidden="true"><Icon name={specialtyIcon(item.specialty_name)} /></span>
-                <h3>{item.specialty_name} › {item.name}</h3>
-                <button type="button" className="text-button order-edit" onClick={() => onEdit(3, item.subcategory_id)}>
-                  <Icon name="edit" /> Editar<span className="sr-only"> {item.name}</span>
+                <h3>{item.specialty_name}</h3>
+                <button type="button" className="text-button order-edit" onClick={() => onEdit(3, item.specialty_id)}>
+                  <Icon name="edit" /> Editar<span className="sr-only"> {item.specialty_name}</span>
                 </button>
               </header>
+              <ul className="order-summary-subcategories">
+                {item.subcategories.map((sub) => <li key={sub.id}>{sub.name}</li>)}
+              </ul>
               {names.length > 0 && <p className="order-summary-symptoms">{names.join(" · ")}</p>}
               <p>{shorten(item.description.trim())}</p>
               <p className="muted">
@@ -358,6 +353,18 @@ export function SummaryStep({ state, districts, symptoms, onEdit, onConfirm, err
   );
 }
 
+/** D-95: con el máximo de pedidos activos no se puede empezar otro. */
+export function OrderBlocked({ max, onList, titleRef }) {
+  return (
+    <div className="order-blocked">
+      <span className="order-done-icon" aria-hidden="true"><Icon name="clock" /></span>
+      <h2 ref={titleRef} tabIndex={-1}>Ya tienes {max} pedidos activos</h2>
+      <p>Podrás hacer otro cuando alguno se cierre.</p>
+      <button type="button" className="button primary" onClick={onList}>Ver Mis solicitudes</button>
+    </div>
+  );
+}
+
 /** Confirmación: los N seguimientos y acceso a Mis solicitudes. */
 export function OrderConfirmation({ result, onOpen, onList, titleRef }) {
   const count = result.requests.length;
@@ -366,14 +373,15 @@ export function OrderConfirmation({ result, onOpen, onList, titleRef }) {
       <span className="order-done-icon" aria-hidden="true"><Icon name="check" /></span>
       <h2 ref={titleRef} tabIndex={-1}>Pedido enviado</h2>
       <p>
-        {count === 1 ? "Creamos 1 solicitud. Ya está buscando su técnico." : `Creamos ${count} solicitudes, una por rubro. Cada una busca su técnico por separado.`}
+        {count === 1 ? "Creamos 1 solicitud. Ya está buscando su técnico." : `Creamos ${count} solicitudes, una por especialidad. Cada una busca su técnico por separado.`}
       </p>
       <ul className="order-done-list">
         {result.requests.map((item) => (
           <li key={item.id}>
             <span>
-              <strong>{item.subcategory.name}</strong>
+              <strong>{item.specialty.name}</strong>
               <small className="muted"> Solicitud #{item.id}</small>
+              <small className="order-done-works">{item.subcategories.map((sub) => sub.name).join(", ")}</small>
             </span>
             <button type="button" className="button outline" onClick={() => onOpen(item.id)}>
               Ver seguimiento<span className="sr-only"> de la solicitud #{item.id}</span>

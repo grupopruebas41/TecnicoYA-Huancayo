@@ -350,8 +350,16 @@
   color: var(--ty-text);
 }
 .panel-shell .error {
-  color: var(--ty-error);
-  background: var(--ty-raised);
+  color: var(--ty-text);
+  background: var(--ty-error-bg);
+  border-left: 4px solid var(--ty-error);
+}
+.panel-shell .error-reference {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--ty-text);
+  overflow-wrap: anywhere;
 }
 .panel-shell .field-error {
   color: var(--ty-error);
