@@ -42,7 +42,12 @@ return new class extends Migration
             DB::statement('ALTER TABLE media_files DROP CHECK chk_media_purpose');
             DB::statement("ALTER TABLE media_files ADD CONSTRAINT chk_media_purpose CHECK (purpose IN ('portfolio','catalog','document','evidence','avatar'))");
         }
-        Schema::table('announcement_audiences', function (Blueprint $table) {
+        // DEF-58: en MySQL, la llave foránea de role_id usa el índice compuesto; necesita uno propio antes de quitarlo.
+        $needsIndex = ! Schema::hasIndex('announcement_audiences', ['role_id']);
+        Schema::table('announcement_audiences', function (Blueprint $table) use ($needsIndex) {
+            if ($needsIndex) {
+                $table->index('role_id');
+            }
             $table->dropIndex(['role_id', 'position']);
             $table->dropColumn('position');
         });
