@@ -29,13 +29,53 @@ export function countByGroup(rows) {
 
 // Siguiente paso en una línea (tarjetas de Mis solicitudes y «Tu última solicitud» del Inicio).
 const NEXT_STEPS = {
-  drafts: 'Siguiente paso: completa y envía tu solicitud.',
+  drafts: 'Completa y envía tu solicitud.',
   searching: 'Siguiente paso: espera a que los técnicos respondan; te avisaremos.',
   choice: 'Elige a tu técnico entre los que aceptaron.',
   assigned: 'Tu técnico está asignado; te avisaremos cualquier cambio.',
   closed: 'Sin acciones pendientes.',
 };
 export const nextStep = row => NEXT_STEPS[requestGroup(row)];
+
+// Mis solicitudes (Fase 2): pestañas del tablero, en el orden en que se muestran.
+export const BOARD_TABS = [
+  ['active', 'Activas'],
+  ['scheduled', 'Programadas'],
+  ['completed', 'Completadas'],
+  ['cancelled', 'Canceladas'],
+];
+
+const PHASE_ICONS = {
+  registered: 'edit', sent: 'search', matching: 'search', awaiting_responses: 'clock', awaiting_choice: 'alert', direct_declined: 'alert',
+  pending_availability: 'clock', assigned: 'check', in_progress: 'bolt', completed: 'check', closed: 'check', unrated: 'check',
+  cancelled: 'close', expired: 'close',
+};
+export const phaseIcon = phase => PHASE_ICONS[phase] || 'clock';
+
+/** «hace 20 min», «hace 3 h» o «hace 2 d», desde el reloj del servidor. */
+export function elapsedLabel(from, now) {
+  const minutes = Math.max(0, Math.floor((now - Date.parse(from)) / 60000));
+  if (minutes < 1) return 'hace menos de 1 min';
+  if (minutes < 60) return `hace ${minutes} min`;
+  const hours = Math.floor(minutes / 60);
+  return hours < 24 ? `hace ${hours} h` : `hace ${Math.floor(hours / 24)} d`;
+}
+
+const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'dic'];
+/** «Pedido del 4 nov · 3 servicios», con el día de Lima. */
+export function orderLabel(order) {
+  const [, month, day] = new Date(order.submitted_at).toLocaleDateString('en-CA', {timeZone: 'America/Lima'}).split('-');
+  return `Pedido del ${Number(day)} ${MONTHS[Number(month) - 1]} · ${order.total} servicios`;
+}
+
+const SLOT_LABELS = {manana: 'Mañana (08–12)', tarde: 'Tarde (12–18)', noche: 'Noche (18–21)'};
+const limaTime = value => new Date(value).toLocaleTimeString('es-PE', {timeZone: 'America/Lima', hour: '2-digit', minute: '2-digit', hour12: false});
+/** Fecha y franja de una programada en hora de Lima, o «Lo antes posible». */
+export function whenLabel(row) {
+  if (row.mode !== 'scheduled' || !row.preferred_start_at) return 'Lo antes posible';
+  const date = new Date(row.preferred_start_at).toLocaleDateString('es-PE', {timeZone: 'America/Lima', weekday: 'long', day: 'numeric', month: 'long'});
+  return `${date} · ${SLOT_LABELS[row.time_slot] || `${limaTime(row.preferred_start_at)} a ${limaTime(row.preferred_end_at)}`}`;
+}
 
 // Clase de color del estado; el texto siempre acompaña al color (nunca solo color).
 export const statusTone = row => ({drafts: 'is-draft', searching: 'is-search', choice: 'is-choice', assigned: 'is-assigned', closed: 'is-closed'})[requestGroup(row)];

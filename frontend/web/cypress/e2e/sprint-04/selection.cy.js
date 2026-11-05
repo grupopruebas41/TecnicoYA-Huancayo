@@ -1,3 +1,4 @@
+import { openCard } from "../sprint-03/helpers";
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
 import { login, openRequest, observe, read, apiWrite, openMyRequests } from "./helpers";
@@ -25,7 +26,7 @@ describe("S4 selección", () => {
     cy.task("runJobs");
     cy.visit("/#cuenta");
     openMyRequests();
-    cy.get("@searchId").then(id => cy.contains("button", "Ver solicitud #" + id).click());
+    cy.get("@searchId").then(id => openCard(id));
     cy.get('[aria-label="Seguimiento de solicitud"]').should("contain", "Buscando técnicos");
     for (const technician of ["frio", "busy"]) {
       switchAccount("e2e-technician-" + technician + "@example.test");
@@ -38,7 +39,7 @@ describe("S4 selección", () => {
     cy.get("@clientEmail").then(email => switchAccount(email));
     cy.visit("/#cuenta");
     openMyRequests();
-    cy.get("@searchId").then(id => cy.contains("button", "Ver solicitud #" + id).click());
+    cy.get("@searchId").then(id => openCard(id));
     cy.get('[aria-label="Seguimiento de solicitud"]').should("contain", "Elige a tu técnico");
     cy.get('[aria-label="Seguimiento de solicitud"] article').should("have.length", 2).each(card => {
       cy.wrap(card).should("contain", "referencial").and("contain", "aproximada por zona").and("contain", "Nuevo");
@@ -53,7 +54,7 @@ describe("S4 selección", () => {
     switchAccount("e2e-client-direct@example.test");
     cy.visit("/#cuenta");
     openMyRequests();
-    cy.get("@round").then(({request_id}) => cy.contains("button", "Ver solicitud #" + request_id).click());
+    cy.get("@round").then(({request_id}) => openCard(request_id));
     observe("POST", "/requests/*/selection", "selection");
     cy.contains("button", "Elegir a").first().click();
     cy.get("dialog")

@@ -1,3 +1,4 @@
+import { openCard } from "../sprint-03/helpers";
 import { api, observe, apiWrite, openMyRequests } from "../sprint-03/helpers";
 export { api, observe, apiWrite, openMyRequests };
 export function login(account) {
@@ -23,7 +24,7 @@ export function openRequest(phase) {
     const row = body.data.find((r) => !phase || r.phase === phase);
     expect(row, "solicitud de la fase del catálogo").to.exist;
     openMyRequests();
-    cy.contains("button", "Ver solicitud #" + row.id).click();
+    openCard(row.id);
     cy.wrap(row).as("currentRequest");
   });
 }

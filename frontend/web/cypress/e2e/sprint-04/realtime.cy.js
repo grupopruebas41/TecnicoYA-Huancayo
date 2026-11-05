@@ -1,3 +1,4 @@
+import { openCard } from "../sprint-03/helpers";
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
 import { login, observe, offline, openMyRequests } from "./helpers";
@@ -18,7 +19,7 @@ it("S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una 
     cy.task("runJobs");
     login("e2e-client-direct");
     openMyRequests();
-    cy.contains("button", "Ver solicitud #" + id).click();
+    openCard(id);
     cy.get('[aria-label="Seguimiento de solicitud"]')
       .contains("Conexión en tiempo real activa.")
       .should("be.visible");

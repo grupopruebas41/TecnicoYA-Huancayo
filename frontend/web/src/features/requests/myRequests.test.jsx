@@ -61,7 +61,7 @@ test('S05-TC-163 agrupa por pedido con su fecha en Lima y número de servicios; 
   const group = await screen.findByRole('region', {name: 'Pedido del 4 nov · 3 servicios'});
   expect(within(group).getByRole('heading', {name: 'Pedido del 4 nov · 3 servicios'})).toBeInTheDocument();
   expect(within(group).getAllByRole('article')).toHaveLength(2);
-  expect(screen.getAllByRole('region')).toHaveLength(1);
+  expect(screen.getAllByRole('region', {name: /^Pedido/})).toHaveLength(1);
   expect(screen.getAllByRole('article')).toHaveLength(4);
 });
 

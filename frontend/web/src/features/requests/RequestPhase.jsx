@@ -10,7 +10,12 @@ export const phases = {
   direct_declined: "Tu técnico no respondió",
   pending_availability: "Pendiente de disponibilidad",
   assigned: "Asignada",
-  expired: "Expirada",
+  in_progress: "En atención",
+  completed: "Completada",
+  closed: "Completada",
+  unrated: "Completada",
+  cancelled: "Cancelada",
+  expired: "Vencida",
 };
 export default function RequestPhase({ phase, className }) {
   return <p role="status" className={className}>{phases[phase] || "Estado pendiente de consulta"}</p>;

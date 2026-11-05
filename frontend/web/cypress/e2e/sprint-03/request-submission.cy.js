@@ -104,7 +104,7 @@ describe("S3 envío", () => {
       cy.get("@clientEmail").then((email) => switchAccount(email));
       cy.reload();
       openMyRequests();
-      cy.contains("button", "Ver solicitud #" + record.id).click();
+      cy.contains("button", "Ver detalle de la solicitud #" + record.id).click();
       cy.contains("button", "Continuar solicitud #" + record.id).click();
       send();
       wizard()

@@ -3,6 +3,15 @@ export const api = () => Cypress.expose("apiUrl");
 export const wizard = () => cy.get('[aria-label="Nueva solicitud"]');
 export const observe = (method, path, alias) =>
   cy.intercept(method, api() + "/api/v1" + path).as(alias);
+// Fase 2: abre el detalle desde su tarjeta; si no está en Activas, la busca en Programadas.
+export function openCard(id) {
+  const label = "Ver detalle de la solicitud #" + id;
+  cy.get('[aria-label="Mis solicitudes"] [role=tabpanel]').should("have.attr", "aria-busy", "false");
+  cy.get('[aria-label="Mis solicitudes"]').then(($page) => {
+    if (!$page.text().includes(label)) cy.contains("[role=tab]", "Programadas").click();
+  });
+  cy.contains("button", label).click();
+}
 export function loginClient(kind = "fresh") {
   const email =
     kind === "fresh"
@@ -67,7 +76,7 @@ export function toSummary() {
   ));
   openMyRequests();
   cy.get("@record").then((record) => {
-    cy.contains("button", "Ver solicitud #" + record.id).click();
+    openCard(record.id);
     cy.contains("button", "Continuar solicitud #" + record.id).click();
   });
   wizard().contains("h2", "Paso 5").should("be.visible");
