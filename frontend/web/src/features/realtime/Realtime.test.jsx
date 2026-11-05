@@ -146,3 +146,30 @@ test("S04-TC-145 solo dice «activa» con el canal suscrito y recupera cuando vu
   );
   expect(await screen.findByText(ACTIVE)).toBeInTheDocument();
 });
+test("S04-TC-146 una caída que pasa por «connecting» también recupera lo perdido al volver; el primer «connecting» no [DEF-60]", async () => {
+  const { echo, handlers } = fakeEcho();
+  echo.connector.pusher.connection.state = "connecting";
+  makeEcho.mockReturnValue(echo);
+  const refresh = vi.fn().mockResolvedValue(undefined);
+  render(
+    <RealtimeProvider>
+      <View refresh={refresh} />
+    </RealtimeProvider>,
+  );
+  await screen.findByText(LOST);
+
+  // Primera conexión de la pantalla: acaba de leer, no hay nada que recuperar.
+  await act(async () => handlers.state_change({ current: "connecting" }));
+  await act(async () => handlers.state_change({ current: "connected" }));
+  await act(async () => handlers.subscribed());
+  expect(screen.getByText(ACTIVE)).toBeInTheDocument();
+  expect(refresh).not.toHaveBeenCalled();
+
+  // Se vence la espera de respuesta: pusher-js pasa directo a connecting, sin unavailable.
+  await act(async () => handlers.state_change({ current: "connecting" }));
+  expect(screen.getByText(LOST)).toBeInTheDocument();
+  await act(async () => handlers.state_change({ current: "connected" }));
+  await act(async () => handlers.subscribed());
+  expect(screen.getByText(ACTIVE)).toBeInTheDocument();
+  expect(refresh).toHaveBeenCalledTimes(1);
+});
