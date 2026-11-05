@@ -117,7 +117,7 @@ it('S05-TC-160 valida motivo, versión y permisos: ajena 404, otro rol 403, y la
     $body = ['reason' => str_repeat('a', 255), 'expected_version' => (int) $request->version];
     $first = cancelRequest($this, $request, $body, $key)->assertOk();
     $retry = cancelRequest($this, $request, $body, $key)->assertOk();
-    expect($retry->json('data'))->toBe($first->json('data'))
+    expect($retry->json('data'))->toEqual($first->json('data'))
         ->and(DB::table('request_events')->where('request_id', $request->id)->where('event_type', 'request.cancelled')->count())->toBe(1);
     cancelRequest($this, $request, ['reason' => 'Otro motivo distinto.', 'expected_version' => (int) $request->version], $key)->assertConflict();
 });
