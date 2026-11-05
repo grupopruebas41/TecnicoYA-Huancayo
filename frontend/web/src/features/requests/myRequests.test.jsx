@@ -328,3 +328,35 @@ test('S05-TC-177 «Ver detalle» abre el seguimiento; desde el Inicio se abre di
   rerender(<MyRequests key="inicio" openId={41} onContinue={onContinue}/>);
   expect(await screen.findByText('Seguimiento de la solicitud 41')).toBeInTheDocument();
 });
+
+test('S05-TC-180 si la búsqueda avanzó mientras estaba abierta la lista, cancelar relee la versión y reintenta una sola vez', async () => {
+  const bodies = [];
+  routes.cancel = async body => {
+    bodies.push(body);
+    if (bodies.length === 1) throw fail('La información cambió. Actualiza y vuelve a intentarlo.', 409, 'STALE_VERSION');
+    return {data: {id: 41, status: 'cancelled', phase: 'cancelled', version: 6}};
+  };
+  routes();
+  const base = request.getMockImplementation();
+  request.mockImplementation(async (path, ...rest) => (path === '/requests/41' ? {data: {id: 41, status: 'sent', version: 5}} : base(path, ...rest)));
+  render(<MyRequests/>);
+  fireEvent.click(await screen.findByRole('button', {name: 'Cancelar la solicitud #41'}));
+  const dialog = screen.getByRole('dialog');
+  fireEvent.change(within(dialog).getByRole('textbox'), {target: {value: 'Ya no lo necesito.'}});
+
+  await act(async () => { fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'})); });
+
+  expect(bodies.map(body => body.expected_version)).toEqual([2, 5]);
+  expect(await screen.findByText('Cancelaste la solicitud #41.')).toBeInTheDocument();
+
+  // Si vuelve a cambiar, no insiste: avisa y recarga.
+  bodies.length = 0;
+  routes.cancel = async body => { bodies.push(body); throw fail('La información cambió. Actualiza y vuelve a intentarlo.', 409, 'STALE_VERSION'); };
+  fireEvent.click(await screen.findByRole('button', {name: 'Cancelar la solicitud #41'}));
+  const second = screen.getByRole('dialog');
+  fireEvent.change(within(second).getByRole('textbox'), {target: {value: 'Ya no lo necesito.'}});
+  await act(async () => { fireEvent.click(within(second).getByRole('button', {name: 'Cancelar solicitud'})); });
+  expect(bodies).toHaveLength(2);
+  expect(screen.queryByRole('dialog')).toBeNull();
+  expect(await screen.findByRole('alert')).toHaveTextContent('La información cambió.');
+});
