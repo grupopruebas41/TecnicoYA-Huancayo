@@ -243,3 +243,64 @@ Un pedido agrupa una solicitud por especialidad, cada una con todas las subcateg
   - `service_orders.item_count` sin tope, con mínimo 1;
   - versión 3 de reglas, vigente desde el 2026-11-04, con `max_active_orders_per_client` = 3 y sin `max_active_requests_per_client`; el resto y los pesos se copian de la versión 2.
 - **`SymptomSeeder`:** es idempotente, está en `DatabaseSeeder` y en las siembras E2E, y siembra de 4 a 6 problemas por subcategoría (`database/seeders/data/symptoms.php`). Su edición desde el panel queda para el S7.
+
+## 10. Mis solicitudes (versión 1.5 del 2026-11-04, Fase 2 del panel final)
+
+`GET /requests` no cambia: lo siguen usando el Inicio y los contadores del panel.
+
+### 10.1 `GET /client/requests` **[nuevo]** (cliente)
+
+| Parámetro | Regla |
+|---|---|
+| `tab` | `active` (por defecto), `scheduled`, `completed` o `cancelled` |
+| `q` | Opcional, hasta 100 caracteres. Busca, sin distinguir mayúsculas ni tildes, en subcategorías, especialidad, distrito, descripción, marca, modelo y `#número` |
+| `page` | Desde 1 |
+| `per_page` | De 1 a 30; por defecto, 10. Cuenta **grupos**, así un pedido nunca se parte entre páginas |
+
+```json
+{"items": [{"order": {"id": 9, "submitted_at": "2026-11-04T15:00:00.000000Z", "total": 3},
+  "requests": [{"id": 41, "status": "sent", "phase": "awaiting_responses", "mode": "asap", "source": "automatic", "version": 2,
+    "order_id": 9, "urgency": "normal", "specialty": {"id": 1, "name": "Cómputo"},
+    "subcategories": [{"id": 14, "name": "Reparación de hardware"}], "district": {"id": 1, "name": "Huancayo"},
+    "created_at": "…", "submitted_at": "…", "updated_at": "…", "preferred_start_at": null, "preferred_end_at": null, "time_slot": null,
+    "technician": null, "recent_events": [{"type": "request.submitted", "label": "Solicitud enviada", "occurred_at": "…"}],
+    "can_cancel": true}]}],
+ "counts": {"active": 2, "scheduled": 1, "completed": 0, "cancelled": 1},
+ "pagination": {"page": 1, "per_page": 10, "total": 1, "last_page": 1}}
+```
+
+- **Pestañas (D-100):**
+  - `active`: `registered` (también si es programada), y `sent`, `pending_availability`, `assigned` e `in_progress` si son inmediatas;
+  - `scheduled`: esos mismos estados, salvo `registered`, si son programadas;
+  - `completed`: `completed`, `closed` y `unrated`;
+  - `cancelled`: `cancelled` y `expired`.
+- **`counts`:** por solicitud, y siguen la búsqueda.
+- **`order`:** `null` en una solicitud sin pedido; `total` es el número de solicitudes del pedido, aunque la pestaña muestre menos.
+- **`requests`:** dentro de un pedido, en el orden del pedido.
+- **`technician`:** `{id, display_name}` del técnico asignado, o `null`. Nunca datos de contacto.
+- **`recent_events`:** los 3 últimos de la lista fija de D-89.
+- **Permisos:** otro rol, 403; sin sesión, 401. Cada cliente ve solo lo suyo.
+
+### 10.2 `POST /requests/{id}/cancellation` **[nuevo]** (titular, `Idempotency-Key` obligatoria; HU-S05-06, D-28)
+
+```json
+{"reason": "Ya lo resolví por otro medio.", "expected_version": 2}
+```
+
+| Caso | Respuesta |
+|---|---|
+| Cancelada | 200 `{"id", "status": "cancelled", "phase": "cancelled", "version"}` |
+| `reason` fuera de 5 a 255 caracteres (D-100), o sin clave | 422 en español |
+| Versión desactualizada | 409 `STALE_VERSION` |
+| `in_progress`, `completed`, `closed`, `unrated`, `cancelled` o `expired` | 409 `CANCELLATION_NOT_ALLOWED` (TC-070) |
+| Solicitud ajena | 404 |
+| Otro rol | 403 |
+
+**Efectos, en una transacción (TC-069):**
+
+- las ofertas abiertas quedan `withdrawn` y las rondas abiertas, `closed`;
+- la participación asignada y su cita quedan `cancelled`, y la franja del técnico se libera;
+- sube `search_generation`, así los trabajos pendientes no tienen efecto;
+- el pedido deja de contar para el límite de D-95 cuando no le queda ninguna solicitud abierta;
+- los técnicos afectados reciben el aviso `request.cancelled`, sin el motivo;
+- el historial se conserva y la línea de tiempo del titular suma `request.cancelled` («Cancelaste la solicitud»).

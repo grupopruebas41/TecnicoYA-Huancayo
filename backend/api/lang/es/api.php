@@ -116,6 +116,10 @@ return [
     'keyword_kind' => 'El tipo debe ser objeto, síntoma o general.',
     'suggestion_resolved' => 'Esta sugerencia ya fue resuelta.',
     // Pedido con varios rubros (D-92).
+    'board_tab' => 'La pestaña no existe.',
+    'board_search' => 'La búsqueda admite hasta 100 caracteres.',
+    'cancellation_reason' => 'Cuéntanos el motivo: debe tener de 5 a 255 caracteres.',
+    'cancellation_not_allowed' => 'Esta solicitud ya no se puede cancelar: la atención ya empezó o la solicitud terminó.',
     'order_items' => 'Elige al menos una especialidad: el pedido no puede ir vacío.',
     'order_item_repeated' => 'Ese trabajo ya está en el pedido. Elige otro.',
     'order_specialty' => 'La especialidad no existe o ya no está disponible.',

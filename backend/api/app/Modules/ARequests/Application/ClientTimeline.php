@@ -24,6 +24,7 @@ final class ClientTimeline
         'selection.unavailable' => 'El técnico elegido ya no estaba disponible',
         'request.assigned' => 'Elegiste a tu técnico',
         'request.expired' => 'La solicitud venció sin técnico asignado',
+        'request.cancelled' => 'Cancelaste la solicitud',
     ];
 
     public function forOwner(int $requestId): array
