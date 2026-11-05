@@ -1,0 +1,64 @@
+Regresión Cypress. Fecha: 2026-11-04. Rama en dbb46f2; S4 también sobre main 8bc2446.
+
+== S5 (rama)
+  │ ✔  mis-solicitudes.cy.js                    01:03        2        2        -      
+  │ ✔  pedido.cy.js                             00:57        2        2        -      
+
+== S3 (rama)
+  │ ✔  my-requests.cy.js                        00:46        2        2        -      
+  │ ✔  request-evidence.cy.js                   01:49        3        3        -      
+  │ ✔  request-submission.cy.js                 02:29        4        4        -      
+  │ ✔  request-wizard.cy.js                     01:52        5        5        -      
+  │ ✔  technician-search.cy.js                  00:38        3        3        -      
+
+== S4 en la rama: dbb46f2
+  │ ✖  accessibility.cy.js                      00:28        1        -        1      
+  │ ✔  direct.cy.js                             00:17        1        1        -      
+  │ ✔  evidence.cy.js                           00:32        2        2        -      
+  │ ✖  offers.cy.js                             01:39        5        3        2      
+  │ ✔  pending.cy.js                            00:25        2        2        -      
+  │ ✖  realtime.cy.js                           01:35        3        -        3      
+  │ ✖  selection.cy.js                          01:59        4        2        2      
+T: S4 selección S04-TC-088 elegir confirma asignación real
+   Timed out retrying after 20000ms: Expected to find element: `nav[aria-label="Gestión del cliente"]`, but never found it.
+--
+T: S4 selección S04-TC-100 dirección visible solo después de la elecci
+   Timed out retrying after 20000ms: expected '<article.s02-card>' to contain 'Calle sintética E2E de tiempo real'
+T: S04-TC-093 oferta por Reverb sin recargar
+   Timed out retrying after 20000ms: `cy.wait()` timed out waiting `20000ms` for the 1st request to the route: `eventResource`. No request ever
+T: S04-TC-094 el mismo evento publicado dos veces sin conexión se muestr
+   Timed out retrying after 20000ms: `cy.wait()` timed out waiting `20000ms` for the 1st request to the route: `read`. No request ever occurred
+T: S04-TC-095 reconexión recupera por API
+   Timed out retrying after 20000ms: Expected to find content: 'Vencida' within the selector: 'p' but never did.
+T: S04-TC-096 teclado y foco en confirmación
+   Timed out retrying after 20000ms: Expected to find element: `dialog`, but never found it.
+T: S4 ofertas reales S04-TC-085 vencimiento del servidor prevalece
+   Timed out retrying after 20000ms: Expected to find content: 'La oferta venció. Ya no puedes responderla.' within the selector: &a
+T: S4 ofertas reales S04-TC-086 reloj anclado al servidor llega a 00:01 y
+   Timed out retrying after 20000ms: expected '<span>' to have text '01:00', but the text was '09:53'
+== S4 en main 8bc2446
+  │ ✖  accessibility.cy.js                      00:29        1        -        1      
+  │ ✔  direct.cy.js                             00:15        1        1        -      
+  │ ✔  evidence.cy.js                           00:31        2        2        -      
+  │ ✖  offers.cy.js                             01:37        5        3        2      
+  │ ✔  pending.cy.js                            00:24        2        2        -      
+  │ ✖  realtime.cy.js                           01:33        3        -        3      
+  │ ✖  selection.cy.js                          01:54        4        2        2      
+T: S04-TC-093 oferta por Reverb sin recargar
+   Timed out retrying after 20000ms: `cy.wait()` timed out waiting `20000ms` for the 1st request to the route: `eventResource`. No request ever
+T: S04-TC-094 el mismo evento publicado dos veces sin conexión se muestr
+   Timed out retrying after 20000ms: `cy.wait()` timed out waiting `20000ms` for the 1st request to the route: `read`. No request ever occurred
+T: S04-TC-095 reconexión recupera por API
+   Timed out retrying after 20000ms: Expected to find content: 'Vencida' within the selector: 'p' but never did.
+T: S04-TC-096 teclado y foco en confirmación
+   Timed out retrying after 20000ms: Expected to find element: `dialog`, but never found it.
+T: S4 ofertas reales S04-TC-085 vencimiento del servidor prevalece
+   Timed out retrying after 20000ms: Expected to find content: 'La oferta venció. Ya no puedes responderla.' within the selector: &a
+T: S4 ofertas reales S04-TC-086 reloj anclado al servidor llega a 00:01 y
+   Timed out retrying after 20000ms: `cy.wait()` timed out waiting `20000ms` for the 1st request to the route: `clockOffers`. No request ever o
+T: S4 selección S04-TC-088 elegir confirma asignación real
+   Timed out retrying after 20000ms: Expected to find element: `nav[aria-label="Gestión del cliente"]`, but never found it.
+--
+T: S4 selección S04-TC-100 dirección visible solo después de la elecci
+   Timed out retrying after 20000ms: expected '<article.s02-card>' to contain 'Calle sintética E2E de tiempo real'
+

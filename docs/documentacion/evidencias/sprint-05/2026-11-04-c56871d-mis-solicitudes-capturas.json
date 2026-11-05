@@ -1,0 +1,494 @@
+{
+  "1366-light-sin-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-light-skeleton": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "1366-light-contraste-reintentar": 5.92,
+  "1366-light-error-reintentar": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "1366-light-activas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-light-grupo-tarjeta": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-light-contraste-estado": 5.46,
+  "1366-light-programadas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-light-cancelar-dialogo": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-light-cancelada-aviso": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "1366-light-canceladas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "1366-light-busqueda-vacia": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-light-detalle": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "1366-dark-sin-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-dark-skeleton": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "1366-dark-contraste-reintentar": 9.73,
+  "1366-dark-error-reintentar": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "1366-dark-activas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-dark-grupo-tarjeta": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-dark-contraste-estado": 8.13,
+  "1366-dark-programadas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-dark-cancelar-dialogo": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-dark-cancelada-aviso": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "1366-dark-canceladas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "1366-dark-busqueda-vacia": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "1366-dark-detalle": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "390-light-sin-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-light-skeleton": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "390-light-contraste-reintentar": 5.92,
+  "390-light-error-reintentar": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "390-light-activas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-light-grupo-tarjeta": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-light-contraste-estado": 5.46,
+  "390-light-programadas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-light-cancelar-dialogo": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-light-cancelada-aviso": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "390-light-canceladas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "390-light-busqueda-vacia": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-light-detalle": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "390-dark-sin-solicitudes": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-dark-skeleton": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "390-dark-contraste-reintentar": 9.73,
+  "390-dark-error-reintentar": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas",
+      "Programadas",
+      "Completadas",
+      "Canceladas"
+    ]
+  },
+  "390-dark-activas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-dark-grupo-tarjeta": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-dark-contraste-estado": 8.13,
+  "390-dark-programadas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-dark-cancelar-dialogo": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (3)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-dark-cancelada-aviso": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "390-dark-canceladas": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  },
+  "390-dark-busqueda-vacia": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (0)",
+      "Programadas (0)",
+      "Completadas (0)",
+      "Canceladas (0)"
+    ]
+  },
+  "390-dark-detalle": {
+    "overflowX": false,
+    "clipped": 0,
+    "botonesBajos": 0,
+    "tabs": [
+      "Activas (2)",
+      "Programadas (1)",
+      "Completadas (0)",
+      "Canceladas (1)"
+    ]
+  }
+}

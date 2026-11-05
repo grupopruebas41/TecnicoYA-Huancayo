@@ -65,7 +65,7 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
       initialFilters={intent?.filters || {}} defaultDistrictId={district} initialTechnician={intent?.technician || null}
       onRequest={technician => navigate('new', {technician})}/>},
     {id: 'requests', group: 'Servicios', label: 'Mis solicitudes', icon: 'requests', render: ({navigate, intent}) => <MyRequests
-      openId={intent?.open || null} onContinue={record => navigate('new', {record})}/>},
+      openId={intent?.open || null} navigate={navigate} onContinue={record => navigate('new', {record})}/>},
     {id: 'notifications', group: 'Cuenta', label: 'Notificaciones', icon: 'bell', render: () => <NotificationsPage userId={user.id} onChange={refresh}/>},
     {id: 'profile', group: 'Cuenta', label: 'Mi perfil', icon: 'profile', render: () => <ProfilePage user={user} onUpdate={onUserChange} onExpired={onExpired}/>},
   ];

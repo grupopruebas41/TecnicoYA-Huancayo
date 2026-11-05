@@ -311,10 +311,10 @@ test("S03-TC-079 complemento: búsqueda, privacidad y solicitud dirigida", async
 });
 test("S03-TC-080 complemento: detalle enviado sin controles de edición", async () => {
   request
-    .mockResolvedValueOnce({ data: [{ id: 31, status: "sent" }] })
+    .mockResolvedValueOnce({ data: { items: [{ order: null, requests: [{ id: 31, status: "sent", phase: "awaiting_responses", version: 1, mode: "asap", specialty: { id: 1, name: "Cómputo" }, subcategories: [{ id: 1, name: "Hardware" }], district: { id: 1, name: "Huancayo" }, recent_events: [], can_cancel: true }] }], counts: { active: 1, scheduled: 0, completed: 0, cancelled: 0 }, pagination: { page: 1, per_page: 10, total: 1, last_page: 1 } } })
     .mockResolvedValueOnce({ data: { ...doc, status: "sent" } });
   render(<MyRequests />);
-  fireEvent.click(await screen.findByText("Ver solicitud #31"));
+  fireEvent.click(await screen.findByRole("button", { name: "Ver detalle de la solicitud #31" }));
   await screen.findByText(doc.description);
   expect(screen.queryByText(/Continuar solicitud/)).toBeNull();
   expect(screen.queryByText("Enviar solicitud")).toBeNull();
@@ -324,6 +324,7 @@ test("S03-TC-080 complemento: detalle enviado sin controles de edición", async 
 test("S03-TC-080 complemento: portal abre solicitud y retoma la registrada", async () => {
   request.mockImplementation(async (p) => {
     if (p === "/requests") return { data: [{ id: 31, status: "registered" }] };
+    if (p.startsWith("/client/requests")) return { data: { items: [{ order: null, requests: [{ id: 31, status: "registered", phase: "registered", version: 1, mode: "asap", specialty: { id: 1, name: "Cómputo" }, subcategories: [{ id: 1, name: "Hardware" }], district: { id: 1, name: "Huancayo" }, recent_events: [], can_cancel: true }] }], counts: { active: 1, scheduled: 0, completed: 0, cancelled: 0 }, pagination: { page: 1, per_page: 10, total: 1, last_page: 1 } } };
     if (p === "/requests/31") return { data: doc };
     if (p.startsWith("/notifications")) return { data: { items: [], pagination: { page: 1, last_page: 1 }, unread_count: 0 } };
     if (p === "/announcements") return { data: [] };
@@ -331,7 +332,7 @@ test("S03-TC-080 complemento: portal abre solicitud y retoma la registrada", asy
   });
   render(<ClientPanel user={{ id: "5", name: "Cliente sintético", version: 1, role: { code: "client" }, permissions: [] }} roleLabel="Cliente" onLogout={() => {}} onUserChange={() => {}} onExpired={() => {}} />);
   fireEvent.click(within(screen.getByRole("navigation", { name: "Gestión del cliente" })).getByText("Mis solicitudes"));
-  fireEvent.click(await screen.findByText("Ver solicitud #31"));
+  fireEvent.click(await screen.findByRole("button", { name: "Ver detalle de la solicitud #31" }));
   fireEvent.click(await screen.findByText("Continuar solicitud #31"));
   expect(await screen.findByText("Paso 5: Resumen y envío")).toHaveFocus();
   const nav = screen.getByRole("navigation", { name: "Gestión del cliente" });

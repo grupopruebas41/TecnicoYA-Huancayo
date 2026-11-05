@@ -1,0 +1,31 @@
+      Tests  30 failed | 64 passed (94)
+ FAIL  src/features/client/clientDesign.test.jsx > S05-TC-048 las fotos de la solicitud se amplían al clic y se cierran con Escap
+ FAIL  src/features/client/clientPanel.test.jsx > S05-TC-032 Mis solicitudes abre con sus pestañas y contador, y el estado en tex
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-162 cuatro pestañas con contador, Activas por defecto; cambiar de pesta
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-163 agrupa por pedido con su fecha en Lima y número de servicios; una s
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-164 la tarjeta muestra especialidad, subcategorías y el estado con íco
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: assigned
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: cancelled
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: closed
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: completed
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: expired
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: in_progress
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: pending_availability
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: registered
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-165 cada estado tiene su texto: unrated
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-166 mientras busca muestra «Buscando técnico» con el tiempo transcurr
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-167 muestra fecha y franja de Lima, «Lo antes posible» y el distrito
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-168 la línea de tiempo resumida va en una lista accesible; sin eventos 
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-169 cancelar abre un diálogo accesible que valida el motivo, se cierra 
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-170 cancelar envía el motivo con la versión y una clave que se reutili
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-171 si el servidor ya no permite cancelar, avisa con su mensaje, cierra 
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-172 sin can_cancel no hay botón; en las completadas, «Calificar» se v
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-173 la búsqueda consulta tras dejar de escribir y vuelve a la página 1
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-174 pagina con el mismo control del panel y solo si hay más de una pág
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-175 sin solicitudes muestra un estado vacío con «Nueva solicitud»; un
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-176 carga con skeleton y aria-busy; un error ofrece Reintentar con el bo
+ FAIL  src/features/requests/myRequests.test.jsx > S05-TC-177 «Ver detalle» abre el seguimiento; desde el Inicio se abre directo
+ FAIL  src/features/requests/order/orderWizard.test.jsx > S05-TC-113 Mis solicitudes agrupa las solicitudes del mismo pedido y mue
+ FAIL  src/features/requests/requestFlows.test.jsx > S03-TC-080 complemento: detalle enviado sin controles de edición
+ FAIL  src/features/requests/requestFlows.test.jsx > S03-TC-080 complemento: portal abre solicitud y retoma la registrada
+ FAIL  src/features/requests/sprint03.test.jsx > S03-TC-080 estados de Mis solicitudes

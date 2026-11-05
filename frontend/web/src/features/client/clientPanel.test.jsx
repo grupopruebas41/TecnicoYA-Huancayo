@@ -27,6 +27,10 @@ const row = (id, status, phase, extra = {}) => ({id, status, phase, mode: 'asap'
   created_at: '2026-10-20T14:00:00Z', updated_at: '2026-10-20T15:00:00Z', ...extra});
 const rows = [row(41, 'sent', 'awaiting_choice'), row(40, 'sent', 'matching'), row(39, 'registered', 'registered'),
   row(38, 'expired', 'expired'), row(37, 'assigned', 'assigned')];
+const boardCard = (id, status, phase) => ({...row(id, status, phase), specialty: {id: 1, name: 'Cómputo'}, subcategories: [{id: 3, name: 'Reparación de hardware'}],
+  order_id: null, submitted_at: '2026-10-20T14:00:00Z', technician: null, recent_events: [], can_cancel: true});
+const boardData = {items: [{order: null, requests: [boardCard(41, 'sent', 'awaiting_choice')]}, {order: null, requests: [boardCard(40, 'sent', 'matching')]}],
+  counts: {active: 2, scheduled: 0, completed: 0, cancelled: 1}, pagination: {page: 1, per_page: 10, total: 2, last_page: 1}};
 const technician = (id, name, distance, fee = '60.00') => ({id, display_name: name, provider_type: 'independent', experience_years: 4,
   services: [{subcategory_id: 3, subcategory_name: 'Reparación de hardware', reference_fee: fee, currency: 'PEN'}],
   districts: [{id: 1, name: 'Huancayo'}], rating: {average: null, count: 0}, distance});
@@ -50,6 +54,7 @@ function routes(extra = {}) {
     for (const [prefix, handler] of Object.entries(extra)) if (path === prefix || path.startsWith(prefix + '?')) return handler(path, body, method);
     if (path === '/me' && !body) return {data: client};
     if (path === '/requests') return {data: rows};
+    if (path.startsWith('/client/requests')) return {data: boardData};
     if (/^\/requests\/\d+$/.test(path)) return {data: detail(Number(path.split('/')[2]))};
     if (/^\/requests\/\d+\/candidates$/.test(path)) return {data: {phase: 'awaiting_choice', request_version: 3, accepted: [], alternatives: []}};
     if (path.startsWith('/technicians?')) return {data: page(nearby)};
@@ -126,26 +131,21 @@ test('S05-TC-031 sin distrito principal la búsqueda ordena por nombre y lo expl
   await waitFor(() => expect(request).toHaveBeenCalledWith('/technicians?district_id=2&sort=proximity&page=1'));
 });
 
-test('S05-TC-032 Mis solicitudes agrupa por estado en pestañas con contador y estado en texto', async () => {
+test('S05-TC-032 Mis solicitudes abre con sus pestañas y contador, y el estado en texto', async () => {
   const nav = await openClient();
   fireEvent.click(navButton(nav, 'Mis solicitudes'));
   const list = await screen.findByRole('region', {name: 'Mis solicitudes'});
   const tabs = within(list).getByRole('tablist', {name: 'Estados de tus solicitudes'});
 
-  await within(list).findByText('Ver solicitud #41');
-  expect(within(tabs).getAllByRole('tab').map(tab => tab.textContent))
-    .toEqual(['Todas (5)', 'Borradores (1)', 'En búsqueda (1)', 'Por elegir (1)', 'Asignadas (1)', 'Cerradas (1)']);
-  expect(within(tabs).getByRole('tab', {name: 'Todas (5)'})).toHaveAttribute('aria-selected', 'true');
-  expect(within(list).getAllByRole('article')).toHaveLength(5);
-  expect(within(list).getByText('Registrada')).toBeInTheDocument();
-
-  fireEvent.click(within(tabs).getByRole('tab', {name: 'Por elegir (1)'}));
+  await within(list).findByRole('button', {name: 'Ver detalle de la solicitud #41'});
+  expect(within(tabs).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['Activas (2)', 'Programadas (0)', 'Completadas (0)', 'Canceladas (1)']);
+  expect(within(tabs).getByRole('tab', {name: 'Activas (2)'})).toHaveAttribute('aria-selected', 'true');
   const cards = within(list).getAllByRole('article');
-  expect(cards).toHaveLength(1);
-  expect(within(cards[0]).getByText('Elige a tu técnico')).toHaveClass('client-status', 'is-choice');
-  // Rediseño del PR #39: el rubro es el título de la tarjeta y el distrito va en su línea.
-  expect(within(cards[0]).getByRole('heading', {name: 'Reparación de hardware'})).toBeInTheDocument();
-  expect(within(cards[0]).getByText(/Huancayo · Actualizada/)).toBeInTheDocument();
+  expect(cards).toHaveLength(2);
+  expect(within(cards[0]).getByText('Elige a tu técnico').closest('.client-status')).toHaveClass('is-choice');
+  expect(within(cards[0]).getByRole('heading', {name: 'Cómputo'})).toBeInTheDocument();
+  expect(within(cards[0]).getByText('Reparación de hardware')).toBeInTheDocument();
+  expect(within(cards[0]).getByText(/Lo antes posible · Huancayo/)).toBeInTheDocument();
 });
 
 test('S05-TC-033 el detalle muestra la línea de tiempo y la actualiza con request.updated [TC-067]', async () => {
