@@ -79,7 +79,7 @@ test('S05-TC-164 la tarjeta muestra especialidad, subcategorías y el estado con
 });
 
 test.each([
-  ['cancelled', 'Cancelada'], ['expired', 'Vencida'], ['completed', 'Completada'], ['closed', 'Completada'], ['unrated', 'Completada'],
+  ['cancelled', 'Cancelada'], ['expired', 'Expirada'], ['completed', 'Completada'], ['closed', 'Completada'], ['unrated', 'Completada'],
   ['in_progress', 'En atención'], ['assigned', 'Asignada'], ['registered', 'Registrada'], ['pending_availability', 'Pendiente de disponibilidad'],
 ])('S05-TC-165 cada estado tiene su texto: %s', async (phase, label) => {
   routes(() => board(lone(card(41, {status: phase, phase}))));

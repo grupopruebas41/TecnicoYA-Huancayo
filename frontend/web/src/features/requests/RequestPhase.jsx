@@ -15,7 +15,7 @@ export const phases = {
   closed: "Completada",
   unrated: "Completada",
   cancelled: "Cancelada",
-  expired: "Vencida",
+  expired: "Expirada",
 };
 export default function RequestPhase({ phase, className }) {
   return <p role="status" className={className}>{phases[phase] || "Estado pendiente de consulta"}</p>;
