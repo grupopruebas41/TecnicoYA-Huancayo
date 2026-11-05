@@ -42,6 +42,7 @@ export function subscribeRealtime(
   // DEF-60: un socket conectado no basta. Hasta que el canal se suscribe (autorización incluida), los eventos se pierden.
   let socket = connection.state === "connected";
   let subscribed = channel.subscription?.subscribed === true;
+  let wasConnected = socket;
   let lost = false;
   let active = true;
   const report = () => {
@@ -49,13 +50,13 @@ export function subscribeRealtime(
   };
   const state = ({ current }) => {
     socket = current === "connected";
-    if (!socket) subscribed = false;
-    if (
-      current === "disconnected" ||
-      current === "unavailable" ||
-      current === "failed"
-    )
-      lost = true;
+    if (socket) {
+      wasConnected = true;
+    } else {
+      subscribed = false;
+      // Cualquier salida de connected es una caída: tras vencer la espera de respuesta, pusher-js pasa directo a connecting.
+      if (wasConnected) lost = true;
+    }
     report();
   };
   connection.bind("state_change", state);
