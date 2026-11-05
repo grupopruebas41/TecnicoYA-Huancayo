@@ -118,6 +118,7 @@
 |---|---|---|---|---|
 | P17-S6 | Límites de comentarios de calificación y respuestas a reseñas (portafolio y documentos quedaron en D-46) | pendiente | — | — |
 | ASES-01 | Asesoría remota en el panel del cliente | pendiente, fuera de la Fase C1: cambia el modo de la solicitud, la cobertura y la distancia del matching del S4 y necesita su propio análisis (`PLAN-PANEL-CLIENTE.md` §4) | — | — |
+| D-100 | CANCEL-01 · Mis solicitudes: motivo de cancelación y qué estado va en cada pestaña | **Propuesta de Claude Code, aplicada de forma provisional en la Fase 2; falta que Pimentel la confirme.** **Motivo:** obligatorio, de 5 a 255 caracteres (el CANVAS S5 pide «con motivo» sin fijar el largo); opción B: una lista cerrada de motivos. **Quién puede cancelar:** el titular, en `registered`, `sent`, `pending_availability` y `assigned`; desde `in_progress`, no (D-28). **Pestañas:** una programada enviada va en Programadas; un borrador va en Activas aunque sea programado; `expired` va en Canceladas; `unrated` va en Completadas. Contrato S5 §10 | — | — |
 
 **Para registrar una decisión:**
 1. Pasar la fila a «Decisiones tomadas».
