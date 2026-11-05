@@ -80,7 +80,7 @@ it('S05-TC-149 cada estado cae en su pestaña y el contador es por solicitud [D-
         ->and(boardIds(boardGet($this)->json('data')))->toEqualCanonicalizing(boardIds($tab('active')));
 });
 
-it('S05-TC-150 agrupa por pedido con su fecha y total, solo con las solicitudes de la pestaña; la suelta va sin pedido', function () {
+it('S05-TC-150 agrupa por pedido con su fecha y total, en el orden del pedido y solo con las solicitudes de la pestaña; la suelta va sin pedido', function () {
     $orderId = boardOrder($this->client->id, 3);
     $first = boardRow($this->client->id, ['order_id' => $orderId]);
     $second = boardRow($this->client->id, ['order_id' => $orderId]);
@@ -95,7 +95,7 @@ it('S05-TC-150 agrupa por pedido con su fecha y total, solo con las solicitudes 
         ->and($data['items'][1]['order']['id'])->toBe($orderId)
         ->and($data['items'][1]['order']['total'])->toBe(3)
         ->and($data['items'][1]['order']['submitted_at'])->toBe(now()->toISOString())
-        ->and(array_column($data['items'][1]['requests'], 'id'))->toBe([$second->id, $first->id])
+        ->and(array_column($data['items'][1]['requests'], 'id'))->toBe([$first->id, $second->id]) // en el orden del pedido
         ->and(boardIds(boardGet($this, 'tab=completed')->json('data')))->toBe([$done->id]);
 });
 

@@ -1,0 +1,15 @@
+  ⨯ it S05-TC-148 GET /client/requests responde con la forma del contrato                                      111.22s  
+  ⨯ it S05-TC-149 cada estado cae en su pestaña y el contador es por solicitud [D-100]                           0.52s  
+  ⨯ it S05-TC-150 agrupa por pedido con su fecha y total, solo con las solicitudes de la pestaña; la suelta va…  0.43s  
+  ⨯ it S05-TC-151 busca por trabajo, especialidad, distrito, descripción y número, sin distinguir tildes; los c… 0.62s  
+  ⨯ it S05-TC-152 pagina por grupos sin partir un pedido y valida los parámetros                                 0.61s  
+  ⨯ it S05-TC-153 la tarjeta trae el técnico asignado sin contacto y los últimos 3 eventos autorizados           0.83s  
+  ⨯ it S05-TC-154 cada cliente ve solo lo suyo; otros roles reciben 403 y sin sesión 401                         0.53s  
+  ⨯ it S05-TC-155 can_cancel solo antes de iniciar la atención [D-28]                                            0.59s  
+  ⨯ it S05-TC-156 cancelar una asignada libera la cita, avisa al técnico y conserva el historial [TC-069]        3.57s  
+  ⨯ it S05-TC-157 cancelar durante la búsqueda retira las ofertas, cierra la ronda y los trabajos pendientes no… 0.58s  
+  ⨯ it S05-TC-158 con la atención iniciada o ya terminada responde 409 y no cambia nada [TC-070]                 0.41s  
+  ⨯ it S05-TC-159 un borrador también se puede cancelar y sale de las activas                                    0.44s  
+  ⨯ it S05-TC-160 valida motivo, versión y permisos: ajena 404, otro rol 403, y la misma clave no cancela dos v… 0.35s  
+  ⨯ it S05-TC-161 cancelar libera el cupo de pedidos y la franja del técnico; el titular lo ve en su línea de t… 0.90s  
+  Tests:    14 failed (16 assertions)
