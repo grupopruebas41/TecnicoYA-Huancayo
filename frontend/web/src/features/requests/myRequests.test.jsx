@@ -76,6 +76,11 @@ test('S05-TC-164 la tarjeta muestra especialidad, subcategorías y el estado con
   const status = within(item).getByText('Elige a tu técnico').closest('.client-status');
   expect(status).toHaveClass('is-choice');
   expect(status.querySelector('svg')).not.toBeNull();
+  // Vistos en las capturas: el ícono va al lado del texto y las cuatro pestañas caben en el celular.
+  const css = readFileSync(resolve('src/features/client/client.css'), 'utf8').replace(/\r\n/g, '\n');
+  expect(css).toMatch(/\.client-card-head \.client-status \{[^}]*display: inline-flex/);
+  expect(css).toMatch(/\.client-card-head \.client-status \.panel-svg-icon \{[^}]*flex: none/);
+  expect(css).toMatch(/@media \(max-width: 760px\) \{\s*\.panel-shell \.client-requests-page \.client-tabs \{[^}]*grid-template-columns: 1fr 1fr/);
 });
 
 test.each([
