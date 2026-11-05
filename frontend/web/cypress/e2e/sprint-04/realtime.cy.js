@@ -2,6 +2,8 @@ import { openCard } from "../sprint-03/helpers";
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
 import { login, observe, offline, openMyRequests } from "./helpers";
+// DEF-59: sin red, pusher-js detecta la caída cuando vence su espera de respuesta (pongTimeout, 30 s por defecto).
+const PONG_TIMEOUT_MS = 45000;
 it("S04-TC-093 oferta por Reverb sin recargar", () => {
   login("e2e-technician-electro");
   cy.get('[aria-label="Solicitudes entrantes"]')
@@ -28,7 +30,7 @@ it("S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una 
       req.continue((res) => reads.push(res.body.data.version)),
     ).as("read");
     offline(true);
-    cy.contains("Sin conexión en tiempo real. Actualiza para ver cambios.").should("be.visible");
+    cy.contains("Sin conexión en tiempo real. Actualiza para ver cambios.", { timeout: PONG_TIMEOUT_MS }).should("be.visible");
     cy.task("serverClock", "+10m");
     cy.task("runJobs"); // la oferta directa vence: request.updated real, perdido sin conexión
     cy.task("replayEvent", id).then((first) => {
@@ -48,9 +50,7 @@ it("S04-TC-095 reconexión recupera por API", () => {
     .contains("Conexión en tiempo real activa.")
     .should("be.visible");
   offline(true);
-  cy.contains(
-    "Sin conexión en tiempo real. Actualiza para ver cambios.",
-  ).should("be.visible");
+  cy.contains("Sin conexión en tiempo real. Actualiza para ver cambios.", { timeout: PONG_TIMEOUT_MS }).should("be.visible");
   cy.task("serverClock", "+10m");
   cy.task("runJobs");
   observe("GET", "/offers?status=pending,accepted", "reconnect");
