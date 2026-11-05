@@ -1176,10 +1176,29 @@
   justify-content: space-between;
   gap: 8px;
 }
-.client-status .panel-svg-icon {
+.client-card-head .client-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.client-card-head .client-status .panel-svg-icon {
+  flex: none;
   width: 14px;
   height: 14px;
-  vertical-align: -2px;
+}
+.client-requests-page h2 {
+  margin-bottom: 8px;
+}
+@media (max-width: 760px) {
+  .panel-shell .client-requests-page .client-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: visible;
+  }
+  .panel-shell .client-requests-page .client-tabs [role="tab"] {
+    min-height: 44px;
+    white-space: normal;
+  }
 }
 .client-status.is-draft,
 .client-status.is-closed {

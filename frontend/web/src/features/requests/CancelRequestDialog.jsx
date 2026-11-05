@@ -74,7 +74,7 @@ export default function CancelRequestDialog({ row, onClose, onCancelled, onConfl
       <dialog open ref={root} aria-modal="true" aria-label={title} onKeyDown={keys}>
         <h2>{title}</h2>
         <p>
-          {row.specialty.name}. Se avisará al técnico y la solicitud quedará en Canceladas. Esta acción no se puede deshacer.
+          {row.specialty.name}. Avisaremos a los técnicos que la recibieron y quedará en Canceladas. Esta acción no se puede deshacer.
         </p>
         <form noValidate onSubmit={submit}>
           <div className="form-field">
