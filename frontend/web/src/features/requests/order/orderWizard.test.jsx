@@ -335,18 +335,19 @@ test('S05-TC-112 si al enviar ya tiene 3 pedidos activos, el pedido se rechaza c
 });
 
 test('S05-TC-113 Mis solicitudes agrupa las solicitudes del mismo pedido y muestra todos sus trabajos', async () => {
-  const row = (id, order, ...names) => ({id, order_id: order, status: 'sent', phase: 'awaiting_responses', subcategory: {id, name: names[0]},
-    subcategories: names.map((name, index) => ({id: id * 10 + index, name})), district: {id: 1, name: 'Huancayo'}, updated_at: '2026-10-20T14:00:00Z'});
-  request.mockImplementation(async path => (path === '/requests'
-    ? {data: [row(42, 9, 'Tableros eléctricos'), row(41, 9, 'Reparación de hardware', 'Redes e infraestructura'), row(40, null, 'Iluminación'), row(39, 7, 'Redes')]}
+  const item = (id, order, ...names) => ({id, order_id: order, status: 'sent', phase: 'awaiting_responses', version: 2, mode: 'asap', specialty: {id: 1, name: 'Cómputo'},
+    subcategories: names.map((name, index) => ({id: id * 10 + index, name})), district: {id: 1, name: 'Huancayo'}, recent_events: [], can_cancel: true});
+  request.mockImplementation(async path => (path.startsWith('/client/requests')
+    ? {data: {items: [
+      {order: {id: 9, submitted_at: '2026-11-04T15:00:00.000Z', total: 2}, requests: [item(42, 9, 'Tableros eléctricos'), item(41, 9, 'Reparación de hardware', 'Redes e infraestructura')]},
+      {order: null, requests: [item(40, null, 'Iluminación')]},
+    ], counts: {active: 3, scheduled: 0, completed: 0, cancelled: 0}, pagination: {page: 1, per_page: 10, total: 2, last_page: 1}}}
     : {data: []}));
   render(<MyRequests/>);
 
-  const order = await screen.findByRole('region', {name: 'Pedido #9'});
-  expect(within(order).getByRole('heading', {name: 'Pedido #9 · 2 solicitudes'})).toBeInTheDocument();
-  expect(within(order).getAllByRole('button', {name: /Ver solicitud/}).map(button => button.textContent)).toEqual(['Ver solicitud #42', 'Ver solicitud #41']);
-  expect(within(order).getByRole('heading', {name: 'Reparación de hardware, Redes e infraestructura'})).toBeInTheDocument();
-  expect(screen.queryByRole('region', {name: 'Pedido #7'})).toBeNull(); // un pedido de una sola solicitud no se agrupa
+  const order = await screen.findByRole('region', {name: 'Pedido del 4 nov · 2 servicios'});
+  expect(within(order).getAllByRole('button', {name: /Ver detalle/}).map(button => button.textContent)).toEqual(['Ver detalle de la solicitud #42', 'Ver detalle de la solicitud #41']);
+  expect(within(order).getByText('Reparación de hardware, Redes e infraestructura')).toBeInTheDocument();
   expect(within(order).queryByText('Iluminación')).toBeNull();
 });
 

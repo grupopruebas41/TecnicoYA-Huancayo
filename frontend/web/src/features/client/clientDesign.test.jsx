@@ -146,12 +146,12 @@ test('S05-TC-047 la bandeja agrupa por día (Hoy, Ayer y fecha) y filtra con chi
 
 test('S05-TC-048 las fotos de la solicitud se amplían al clic y se cierran con Escape devolviendo el foco', async () => {
   request.mockImplementation(async path => {
-    if (path === '/requests') return {data: [{id: 39, status: 'registered', phase: 'registered'}]};
+    if (path.startsWith('/client/requests')) return {data: {items: [{order: null, requests: [{id: 39, status: 'registered', phase: 'registered', version: 1, specialty: {id: 1, name: 'Cómputo'}, subcategories: [{id: 1, name: 'Hardware'}], district: {id: 1, name: 'Huancayo'}, mode: 'asap', recent_events: [], can_cancel: true}]}], counts: {active: 1, scheduled: 0, completed: 0, cancelled: 0}, pagination: {page: 1, per_page: 10, total: 1, last_page: 1}}};
     return {data: {id: 39, status: 'registered', phase: 'registered', description: 'Falla sintética suficiente.', subcategory: {name: 'Hardware'},
       district: {name: 'Huancayo'}, reference_fee: {amount: null}, attachments: [{media_id: 7, url: '/media/7', caption: null}], timeline: []}};
   });
   render(<MyRequests/>);
-  fireEvent.click(await screen.findByText('Ver solicitud #39'));
+  fireEvent.click(await screen.findByRole('button', {name: 'Ver detalle de la solicitud #39'}));
   const thumbnail = await screen.findByRole('button', {name: 'Ampliar foto 1'});
 
   fireEvent.click(thumbnail);
