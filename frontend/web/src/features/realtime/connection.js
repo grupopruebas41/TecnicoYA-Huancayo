@@ -38,26 +38,44 @@ export function subscribeRealtime(
     return () => {};
   }
   const connection = echo.connector.pusher.connection;
+  const channel = echo.private(name);
+  // DEF-60: un socket conectado no basta. Hasta que el canal se suscribe (autorización incluida), los eventos se pierden.
+  let socket = connection.state === "connected";
+  let subscribed = channel.subscription?.subscribed === true;
   let lost = false;
+  let active = true;
+  const report = () => {
+    if (active) onStatus(socket && subscribed);
+  };
   const state = ({ current }) => {
-    onStatus(current === "connected");
+    socket = current === "connected";
+    if (!socket) subscribed = false;
     if (
       current === "disconnected" ||
       current === "unavailable" ||
       current === "failed"
     )
       lost = true;
-    if (current === "connected" && lost) {
+    report();
+  };
+  connection.bind("state_change", state);
+  report();
+  for (const event of events) channel.listen("." + event, onEvent);
+  channel.subscribed?.(() => {
+    subscribed = true;
+    report();
+    // Lo perdido se recupera con el canal ya suscrito: así no queda un hueco entre la lectura y el primer evento.
+    if (lost && active) {
       lost = false;
       onRecover();
     }
-  };
-  connection.bind("state_change", state);
-  onStatus(connection.state === "connected");
-  const channel = echo.private(name);
-  for (const event of events) channel.listen("." + event, onEvent);
-  channel.error?.(() => onStatus(false));
+  });
+  channel.error?.(() => {
+    subscribed = false;
+    report();
+  });
   return () => {
+    active = false;
     connection.unbind("state_change", state);
     for (const event of events) channel.stopListening("." + event, onEvent);
     echo.leave(name);
