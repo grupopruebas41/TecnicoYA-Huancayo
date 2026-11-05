@@ -57,7 +57,8 @@ final class ClientRequestBoard
                 'order' => $group[0]->order_id === null ? null : [
                     'id' => (int) $group[0]->order_id, 'submitted_at' => self::iso($group[0]->order_submitted_at), 'total' => (int) $group[0]->order_total,
                 ],
-                'requests' => $group->map(fn (object $row) => $cards[$row->id])->all(),
+                // Dentro del pedido, en el orden en que se marcaron las especialidades.
+                'requests' => $group->sortBy('id')->map(fn (object $row) => $cards[$row->id])->values()->all(),
             ])->all(),
             'counts' => array_merge(array_fill_keys(self::TABS, 0), $found->countBy(fn (object $row) => self::tabOf($row))->all()),
             'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $entries->count(), 'last_page' => max(1, (int) ceil($entries->count() / $perPage))],
