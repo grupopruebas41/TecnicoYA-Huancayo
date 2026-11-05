@@ -67,6 +67,9 @@ Route::prefix('v1')->group(function () {
             // Inicio del cliente (revisión del PR #39): zona, precios de referencia y subcategorías para los atajos.
             Route::get('client/home', [App\Modules\BMatching\Http\Controllers\ClientHomeController::class, 'show']);
             // D-92: pedido con varios rubros (hasta 3), enviado en una sola transacción, y cupo de solicitudes activas.
+            // Mis solicitudes (contrato S5 §10): tablero y cancelación del titular.
+            Route::get('client/requests', [App\Modules\ARequests\Http\Controllers\ClientRequestBoardController::class, 'index']);
+            Route::post('requests/{serviceRequest}/cancellation', [App\Modules\ARequests\Http\Controllers\ClientRequestBoardController::class, 'cancel'])->whereNumber('serviceRequest');
             Route::get('orders/quota', [ServiceOrderController::class, 'quota']);
             Route::post('orders', [ServiceOrderController::class, 'store']);
             Route::get('requests', [ServiceRequestController::class, 'index']);

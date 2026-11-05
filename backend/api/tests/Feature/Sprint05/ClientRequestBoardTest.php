@@ -13,7 +13,6 @@ uses(RefreshDatabase::class);
 
 beforeEach(function () {
     Sprint04::boot($this);
-    Queue::fake();
     $this->client = ClientProfileFactory::new()->create();
     Sanctum::actingAs($this->client->user);
 });
@@ -167,6 +166,8 @@ it('S05-TC-154 cada cliente ve solo lo suyo; otros roles reciben 403 y sin sesi√
         ->and(boardGet($this)->json('data.counts.active'))->toBe(1);
     Sanctum::actingAs(Sprint04::technician()->user);
     boardGet($this)->assertForbidden();
+    $this->app['auth']->forgetGuards();
+    boardGet($this)->assertUnauthorized();
 });
 
 it('S05-TC-155 can_cancel solo antes de iniciar la atenci√≥n [D-28]', function () {
