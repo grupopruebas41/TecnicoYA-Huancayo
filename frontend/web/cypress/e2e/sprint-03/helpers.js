@@ -3,14 +3,17 @@ export const api = () => Cypress.expose("apiUrl");
 export const wizard = () => cy.get('[aria-label="Nueva solicitud"]');
 export const observe = (method, path, alias) =>
   cy.intercept(method, api() + "/api/v1" + path).as(alias);
-// Fase 2: abre el detalle desde su tarjeta; si no está en Activas, la busca en Programadas.
-export function openCard(id) {
+// Fase 2: abre el detalle desde su tarjeta, que puede estar en cualquiera de las cuatro pestañas.
+const BOARD_TABS = ["Activas", "Programadas", "Completadas", "Canceladas"];
+export function openCard(id, index = 0) {
   const label = "Ver detalle de la solicitud #" + id;
+  cy.contains("[role=tab]", BOARD_TABS[index]).click();
   cy.get('[aria-label="Mis solicitudes"] [role=tabpanel]').should("have.attr", "aria-busy", "false");
   cy.get('[aria-label="Mis solicitudes"]').then(($page) => {
-    if (!$page.text().includes(label)) cy.contains("[role=tab]", "Programadas").click();
+    if ($page.text().includes(label)) cy.contains("button", label).click();
+    else if (index + 1 < BOARD_TABS.length) openCard(id, index + 1);
+    else throw new Error("No aparece la solicitud #" + id + " en ninguna pestaña");
   });
-  cy.contains("button", label).click();
 }
 export function loginClient(kind = "fresh") {
   const email =

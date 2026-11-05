@@ -40,6 +40,13 @@ export default function CancelRequestDialog({ row, onClose, onCancelled, onConfl
     }
   }
 
+  function send(reason_, version) {
+    const body = { reason: reason_, expected_version: version };
+    const serialized = JSON.stringify(body);
+    if (attempt.current?.serialized !== serialized) attempt.current = { serialized, key: crypto.randomUUID() };
+    return request(`/requests/${row.id}/cancellation`, body, "POST", { headers: { "Idempotency-Key": attempt.current.key } });
+  }
+
   async function submit(event) {
     event.preventDefault();
     const text = reason.trim();
@@ -52,11 +59,13 @@ export default function CancelRequestDialog({ row, onClose, onCancelled, onConfl
     setInvalid(false);
     setFailure("");
     setBusy(true);
-    const body = { reason: text, expected_version: row.version };
-    const serialized = JSON.stringify(body);
-    if (attempt.current?.serialized !== serialized) attempt.current = { serialized, key: crypto.randomUUID() };
     try {
-      await request(`/requests/${row.id}/cancellation`, body, "POST", { headers: { "Idempotency-Key": attempt.current.key } });
+      await send(text, row.version).catch(async (error) => {
+        if (error.code !== "STALE_VERSION") throw error;
+        // La búsqueda avanza sola y sube la versión: cancelar sigue siendo lo que la persona pidió. Una sola vez.
+        const fresh = await request("/requests/" + row.id);
+        await send(text, fresh.data.version);
+      });
       onCancelled(row.id);
     } catch (error) {
       if (error.status === 409 && error.code !== undefined) onConflict(error.message);

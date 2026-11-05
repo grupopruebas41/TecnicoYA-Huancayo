@@ -1,17 +1,17 @@
-import { loginClient, toSummary, wizard, send } from "./helpers";
+import { loginClient, openMyRequests, toSummary, wizard, send } from "./helpers";
 describe("S3 mis solicitudes", () => {
   it("S03-TC-067 registrada continúa y enviada no se edita", () => {
     loginClient("mixed");
+    openMyRequests();
     cy.get('[aria-label="Mis solicitudes"] article')
       .contains("p", "Registrada")
-      .parent()
-      .find("button")
+      .closest("article")
+      .contains("button", "Ver detalle")
       .click();
     cy.contains("button", "Continuar solicitud #").should("be.visible");
     cy.get('[aria-label="Mis solicitudes"] article')
-      .contains("p", "Enviada")
-      .parent()
-      .find("button")
+      .contains("article", /Enviada|Esperando|Buscando|Pendiente/)
+      .contains("button", "Ver detalle")
       .click();
     cy.contains("button", "Continuar solicitud #").should("not.exist");
     cy.contains("button", "Enviar solicitud").should("not.exist");
@@ -28,8 +28,7 @@ describe("S3 mis solicitudes", () => {
       .click();
     cy.get("@record").then((record) =>
       cy
-        .contains("h3", "Solicitud #" + record.id)
-        .parent()
+        .contains("article", "Solicitud #" + record.id)
         .should("contain", "Registrada"),
     );
   });
