@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { request } from "../../administration/http";
 import Icon from "../../panel/icons";
 import { specialtyIcon } from "../../client/specialtyIcon";
 import OrderPhotos from "./OrderPhotos";
@@ -221,8 +222,34 @@ export function DetailStep({ items, active, onActive, symptoms, onItem, sameDesc
 export function LocationStep({ state, districts, onField, errors }) {
   const today = limaNow().date;
   const error = (name) => (errors[name] ? { "aria-invalid": true, "aria-describedby": `${name}-error` } : {});
+  // Fase 4: «Mis direcciones» se ofrecen como atajo; si no cargan, el paso sigue igual.
+  const [saved, setSaved] = useState([]);
+  useEffect(() => {
+    let active = true;
+    Promise.resolve().then(() => request("/client/addresses"))
+      .then((result) => { if (active && Array.isArray(result?.data?.items)) setSaved(result.data.items); })
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
+  function use(address) {
+    onField("district_id", String(address.district_id));
+    onField("address", address.address);
+    onField("address_reference", (address.reference || "").slice(0, 120));
+  }
   return (
     <div className="order-location">
+      {saved.length > 0 && (
+        <div className="order-saved-addresses" role="group" aria-label="Mis direcciones">
+          <p className="muted">Usar una dirección guardada:</p>
+          {saved.map((address) => (
+            <button key={address.id} type="button" className="button outline order-saved-address"
+              aria-pressed={state.address === address.address && String(state.district_id) === String(address.district_id)}
+              onClick={() => use(address)}>
+              <strong>{address.label}</strong> <span>{address.address} · {address.district_name}</span>
+            </button>
+          ))}
+        </div>
+      )}
       <div className="order-pair">
         <div className="form-field">
           <label htmlFor="order-district">Distrito</label>

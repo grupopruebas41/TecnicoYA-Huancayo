@@ -27,7 +27,7 @@ export function useResource(path) {
   useEffect(() => {
     let active = true;
     setData(null);
-    request(path)
+    Promise.resolve().then(() => request(path))
       .then((r) => {
         if (active) {
           setData(r.data);

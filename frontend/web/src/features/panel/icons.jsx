@@ -36,6 +36,16 @@ const PATHS = {
   expand: <><path d="m9.5 7 5 5-5 5"/><path d="M5 5v14"/></>,
   site: <><path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M17 14v4a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 5 18V8.5A1.5 1.5 0 0 1 6.5 7H10"/></>,
   logout: <><path d="M12 4v7"/><path d="M7.5 7a7 7 0 1 0 9 0"/></>,
+  // Fase 4: menú del cliente.
+  lock: <><rect x="5.5" y="10.5" width="13" height="9" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></>,
+  calendar: <><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16"/><path d="M8.5 3.5v4"/><path d="M15.5 3.5v4"/></>,
+  map: <><path d="M9 5 4 7v12l5-2 6 2 5-2V5l-5 2z"/><path d="M9 5v12"/><path d="M15 7v12"/></>,
+  help: <><circle cx="12" cy="12" r="8"/><path d="M9.8 9.6a2.3 2.3 0 0 1 4.4.9c0 1.6-2.2 2-2.2 3.5"/><path d="M12 16.8v.1"/></>,
+  sensor: <><circle cx="12" cy="16" r="1.6"/><path d="M8.5 12.5a5 5 0 0 1 7 0"/><path d="M5.5 9.5a9.2 9.2 0 0 1 13 0"/></>,
+  gift: <><rect x="4.5" y="9" width="15" height="10.5" rx="1.5"/><path d="M3.5 9h17"/><path d="M12 9v10.5"/><path d="M12 9C10 5 7 6 8.5 8.2"/><path d="M12 9c2-4 5-3 3.5-.8"/></>,
+  book: <><path d="M5 5.5A2 2 0 0 1 7 4h12v14H7a2 2 0 0 0-2 2z"/><path d="M5 20V5.5"/><path d="M9 8h6"/></>,
+  flag: <><path d="M6 20V4.5"/><path d="M6 5h11l-2 4 2 4H6"/></>,
+  news: <><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M7.5 9h9"/><path d="M7.5 12.5h9"/><path d="M7.5 16h5"/></>,
   // Fase 3 (D-101): favoritos.
   heart: <><path d="M12 19.5s-7-4.3-7-9.6A3.9 3.9 0 0 1 12 7.6a3.9 3.9 0 0 1 7 2.3c0 5.3-7 9.6-7 9.6z"/></>,
 };

@@ -3,6 +3,9 @@ import NotificationBell from './NotificationBell';
 import useTheme from './useTheme';
 import useDismiss from './useDismiss';
 import Icon from './icons';
+import AccountPanel from './AccountPanel';
+import {QuickAccessibility, useAccessibility, useReader} from './quickAccessibility';
+import {request} from '../administration/http';
 import './panel.css';
 
 const store = {
@@ -10,7 +13,8 @@ const store = {
   set(area, key, value) { try { window[area].setItem(key, value); } catch { /* sin almacenamiento */ } },
 };
 const ICONS = new Set(['home', 'chart', 'users', 'verify', 'requests', 'catalog', 'announcements', 'profile', 'plus', 'search', 'bell',
-  'check', 'clock', 'alert', 'close', 'image', 'star', 'menu']);
+  'check', 'clock', 'alert', 'close', 'image', 'star', 'menu', 'heart', 'lock', 'calendar', 'map', 'help', 'sensor', 'gift', 'book',
+  'flag', 'news', 'monitor', 'snow', 'bolt']);
 
 /** Agrupa las secciones por su título de grupo, en el orden en que llegan; las que no tienen grupo van sueltas. */
 function groupsOf(sections) {
@@ -56,16 +60,25 @@ function AvatarMenu({user, theme, onTheme, onProfile, onLogout, busy}) {
  * render recibe {navigate, intent} para los accesos rápidos.
  * Panel del cliente (D-87): initialSection e initialIntent abren una sección al entrar (la búsqueda de la portada),
  * locked bloquea el menú mientras una sección guarda y bellKey vuelve a cargar la campana.
+ * Fase 4 del panel final (modern, solo el cliente): ☰ junto al logo que contrae el menú y lo recuerda en la cuenta,
+ * campana con «Marcar todas como leídas», «Aa» de accesibilidad rápida, panel flotante del avatar con 5 pestañas y
+ * menú sin la sección CUENTA. Una sección puede ser nav:false (fuera del menú), soon (Próximamente, aria-disabled) o
+ * premium (candado: abre la sección «premium»).
  */
 export default function PanelShell({user, role, roleLabel, navLabel, sections, onLogout, onUserChange, busy, notice, badges, onNavigate,
-  initialSection, initialIntent = null, locked = false, bellKey}) {
+  initialSection, initialIntent = null, locked = false, bellKey, modern = false, onExpired}) {
   const sectionKey = `tecnicoya.panel.${user.id}.section`;
   const [active, setActive] = useState(() => {
     const saved = store.get('sessionStorage', sectionKey);
     if (sections.some(section => section.id === initialSection)) return initialSection;
     return sections.some(section => section.id === saved) ? saved : sections[0]?.id;
   });
-  const [collapsed, setCollapsed] = useState(() => store.get('localStorage', 'tecnicoya.panel.collapsed') === '1');
+  const [collapsed, setCollapsed] = useState(() => (modern && typeof user.sidebar_collapsed === 'boolean')
+    ? user.sidebar_collapsed : store.get('localStorage', 'tecnicoya.panel.collapsed') === '1');
+  const [account, setAccount] = useState(false);
+  const avatarButton = useRef(null);
+  const a11y = useAccessibility();
+  const reader = useReader();
   const [drawer, setDrawer] = useState(false);
   const drawerButton = useRef(null);
   const nav = useRef(null);
@@ -83,28 +96,51 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   function navButton(section) {
     const badge = badges?.[section.id];
     const badgeId = `panel-badge-${section.id}`;
-    return <React.Fragment key={section.id}><button type="button" className="panel-nav-item"
+    // Fase 4: lo que no está listo se ve desactivado con «Próximamente»; lo premium lleva candado y abre la presentación.
+    if (section.soon) {
+      return <button key={section.id} type="button" className="panel-nav-item is-soon" aria-disabled="true"
+        data-tooltip={collapsed ? `${section.label} (próximamente)` : undefined} onClick={event => event.preventDefault()}>
+        <span className="panel-nav-icon" aria-hidden="true"><Icon name={section.icon}/></span>
+        <span className="panel-label">{section.label}</span>
+        <span className="panel-soon panel-label">Próximamente</span>
+      </button>;
+    }
+    const target = section.premium ? 'premium' : section.id;
+    return <React.Fragment key={section.id}><button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')}
       aria-current={section.id === current?.id ? 'page' : undefined} data-tooltip={collapsed ? section.label : undefined}
-      aria-describedby={badge?.count ? badgeId : undefined} disabled={locked} onClick={() => go(section.id)}>
+      aria-describedby={badge?.count ? badgeId : undefined} disabled={locked}
+      onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
       <span className="panel-label">{section.label}</span>
+      {section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}
       {badge?.count > 0 && <span className="panel-nav-badge" aria-hidden="true">{badge.count > 99 ? '99+' : badge.count}</span>}
     </button>
     {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
     {badge?.count > 0 && <span id={badgeId} hidden>{badge.label}</span>}</React.Fragment>;
   }
   function toggleCollapsed() {
-    setCollapsed(!collapsed); store.set('localStorage', 'tecnicoya.panel.collapsed', collapsed ? '0' : '1');
+    const next = !collapsed;
+    setCollapsed(next); store.set('localStorage', 'tecnicoya.panel.collapsed', next ? '1' : '0');
+    // Fase 4: el cliente lo recuerda en su cuenta; si falla, queda en este equipo.
+    if (modern) {
+      Promise.resolve().then(() => request('/me', {sidebar_collapsed: next, expected_version: user.version}, 'PATCH'))
+        .then(result => { if (result?.data) onUserChange?.(result.data); }).catch(() => {});
+    }
   }
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
   const profile = sections.find(section => section.id === 'profile');
   return <div className={'panel-shell' + (collapsed ? ' is-collapsed' : '')} data-cy={`portal-${role}`}>
     <aside className={'panel-sidebar' + (drawer ? ' is-open' : '')} onKeyDown={event => { if (event.key === 'Escape' && drawer) closeDrawer(); }}>
       {/* Encabezado principal de la página: la marca y el rol (la sección activa es el h2 de su contenido). */}
-      <h1 className="panel-brand"><span className="panel-monogram" aria-hidden="true">t</span>
-        <span className="panel-label">TécnicoYa<small>{roleLabel}</small></span></h1>
+      <div className={'panel-brand-row' + (modern ? ' is-modern' : '')}>
+        {modern && <button type="button" className="panel-icon-button panel-brand-toggle" aria-expanded={!collapsed}
+          aria-label={collapsed ? 'Expandir menú' : 'Contraer menú'} data-tooltip={collapsed ? 'Expandir menú' : undefined}
+          onClick={toggleCollapsed}><Icon name="menu"/></button>}
+        <h1 className="panel-brand"><span className="panel-monogram" aria-hidden="true">t</span>
+          <span className="panel-label">TécnicoYa<small>{roleLabel}</small></span></h1>
+      </div>
       <nav ref={nav} aria-label={navLabel}>
-        {groupsOf(sections).map(group => group.title
+        {groupsOf(sections.filter(section => section.nav !== false)).map(group => group.title
           ? <div key={group.title} className="panel-nav-group" role="group" aria-labelledby={`panel-group-${group.key}`}>
             <p id={`panel-group-${group.key}`} className="panel-nav-heading"><span className="panel-label">{group.title}</span></p>
             {group.items.map(section => navButton(section))}
@@ -112,16 +148,16 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           : group.items.map(section => navButton(section)))}
       </nav>
       <div className="panel-sidebar-foot">
-        <button type="button" className="panel-nav-item panel-collapse" aria-expanded={!collapsed} onClick={toggleCollapsed}
+        {!modern && <button type="button" className="panel-nav-item panel-collapse" aria-expanded={!collapsed} onClick={toggleCollapsed}
           data-tooltip={collapsed ? 'Expandir menú' : undefined}>
           <span className="panel-nav-icon" aria-hidden="true"><Icon name={collapsed ? 'expand' : 'collapse'}/></span>
           <span className="panel-label">{collapsed ? 'Expandir menú' : 'Contraer menú'}</span>
-        </button>
+        </button>}
         <a className="panel-nav-item" href="/" data-tooltip={collapsed ? 'Ir al sitio' : undefined}>
           <span className="panel-nav-icon" aria-hidden="true"><Icon name="site"/></span><span className="panel-label">Ir al sitio</span></a>
-        <button type="button" className="panel-nav-item" data-cy="logout" disabled={busy || locked} onClick={onLogout} data-tooltip={collapsed ? 'Cerrar sesión' : undefined}>
+        {!modern && <button type="button" className="panel-nav-item" data-cy="logout" disabled={busy || locked} onClick={onLogout} data-tooltip={collapsed ? 'Cerrar sesión' : undefined}>
           <span className="panel-nav-icon" aria-hidden="true"><Icon name="logout"/></span><span className="panel-label">Cerrar sesión</span>
-        </button>
+        </button>}
       </div>
     </aside>
     {drawer && <div className="panel-backdrop" aria-hidden="true" onClick={closeDrawer}/>}
@@ -131,9 +167,15 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           aria-expanded={drawer} onClick={() => setDrawer(!drawer)}><Icon name="menu"/></button>
         <span className="panel-title">{current?.label}</span>
         <div className="panel-actions">
-          <NotificationBell key={bellKey} userId={user.id}
+          <NotificationBell key={bellKey} userId={user.id} canMarkAll={modern}
             onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
-          <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>
+          {modern && <QuickAccessibility prefs={a11y[0]} onChange={a11y[1]} reader={reader}/>}
+          {modern
+            ? <button ref={avatarButton} type="button" className="panel-avatar-button" aria-label={`Cuenta de ${user.name}`}
+              aria-haspopup="dialog" aria-expanded={account} onClick={() => setAccount(true)}>
+              {user.avatar_url ? <img src={user.avatar_url} alt=""/> : <span aria-hidden="true">{initials(user)}</span>}
+            </button>
+            : <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>}
         </div>
       </header>
       {(notice || themeNotice || locked) && <div className="panel-notices">
@@ -144,5 +186,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       {/* AccountApp ya está dentro del <main> de App: el contenido va en un div. */}
       <div className="panel-content" key={`${current?.id}-${visit}`}>{current?.render({navigate: go, intent})}</div>
     </div>
+    {modern && account && <AccountPanel user={user} onUpdate={onUserChange} onExpired={onExpired} onClose={() => setAccount(false)}
+      onLogout={onLogout} busy={busy} theme={theme} onTheme={toggle} a11y={a11y} reader={reader} returnFocus={avatarButton.current}/>}
   </div>;
 }

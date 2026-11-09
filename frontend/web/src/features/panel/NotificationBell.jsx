@@ -9,7 +9,7 @@ import Icon from './icons';
  * DEF-49: la bandeja responde {items, pagination, unread_count} (contrato S4 §7.1 y D-90), no un arreglo; el contador
  * viene de unread_count, que incluye los avisos fuera de la primera página. Se recarga con notification.created.
  */
-export default function NotificationBell({userId, onOpenAll}) {
+export default function NotificationBell({userId, onOpenAll, canMarkAll = false}) {
   const [items, setItems] = useState([]);
   const [unread, setUnread] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -28,6 +28,15 @@ export default function NotificationBell({userId, onOpenAll}) {
   useEffect(() => { active.current = true; load(); return () => { active.current = false; }; }, [load]);
   useRealtimeResource(userId ? `users.${userId}` : null, ['notification.created'], load);
   const root = useDismiss(open, () => setOpen(false));
+  const [marking, setMarking] = useState(false);
+  const [markError, setMarkError] = useState('');
+  // Fase 4 del panel final: «Marcar todas como leídas» desde la campana (D-90, solo las del dueño).
+  async function markAll() {
+    setMarking(true); setMarkError('');
+    try { await request('/notifications/read-all', {}); await load(); }
+    catch (error) { setMarkError(error.message || 'No pudimos marcar tus notificaciones.'); }
+    finally { setMarking(false); }
+  }
   function close() { setOpen(false); button.current?.focus(); }
   return <div className="panel-bell" ref={root} onKeyDown={event => { if (event.key === 'Escape' && open) close(); }}>
     <button ref={button} type="button" className="panel-icon-button" aria-label={`Notificaciones: ${unread} sin leer`}
@@ -39,7 +48,11 @@ export default function NotificationBell({userId, onOpenAll}) {
       {failed ? <p className="error" role="alert">No pudimos cargar tus notificaciones.</p>
         : items.length ? <ul>{items.slice(0, 8).map(item => <li key={item.id} className={item.read_at ? '' : 'is-unread'}>{item.title}</li>)}</ul>
           : <p className="muted">No tienes notificaciones.</p>}
-      {onOpenAll && <button type="button" className="text-button" onClick={() => { setOpen(false); onOpenAll(); }}>Ver todas</button>}
+      {markError && <p className="error" role="alert">{markError}</p>}
+      <div className="panel-bell-actions">
+        {canMarkAll && unread > 0 && <button type="button" className="text-button" disabled={marking} onClick={markAll}>Marcar todas como leídas</button>}
+        {onOpenAll && <button type="button" className="text-button" onClick={() => { setOpen(false); onOpenAll(); }}>Ver todas</button>}
+      </div>
     </section>}
   </div>;
 }

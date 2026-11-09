@@ -14,12 +14,18 @@ vi.mock('./http', () => ({request: vi.fn()}));
 vi.mock('../client/ClientHome', () => ({default: () => null}));
 vi.mock('../realtime/Realtime', () => ({RealtimeProvider: ({children}) => children, useRealtimeResource: () => false, ConnectionStatus: () => null}));
 afterEach(() => {cleanup(); vi.resetAllMocks(); window.history.replaceState(null, '', '/');});
+// Fase 4 del panel final: en el portal del cliente «Cerrar sesión» está al pie del panel del avatar.
+const logoutButton = async () => {
+  await waitFor(() => expect(screen.queryByRole('button', {name: 'Cerrar sesión'}) || screen.queryByRole('button', {name: /^Cuenta de /})).not.toBeNull());
+  if (!screen.queryByRole('button', {name: 'Cerrar sesión'})) fireEvent.click(screen.getByRole('button', {name: /^Cuenta de /}));
+  return screen.getByRole('button', {name: 'Cerrar sesión'});
+};
 // Comprobaciones unitarias complementarias: no sustituyen ni acreditan los casos Cypress.
 test.each([['S01-TC-016', 'client', 'cliente'], ['S01-TC-017', 'technician', 'tecnico'], ['S01-TC-018', 'admin', 'administrador']])('%s [TC-005] complemento unitario: portal %s desde identidad del servidor', async (id, role, route) => {
   window.history.replaceState(null, '', '/#cuenta/administrador');
   request.mockResolvedValueOnce({data: {id: '1', name: 'Cuenta sintética', role: {code: role}, version: 1, permissions: ['catalog.manage'], technician_profile: {verification_status: 'pending'}}});
   render(<AccountApp/>);
-  await screen.findByRole('button', {name: 'Cerrar sesión'});
+  await logoutButton();
   await waitFor(() => expect(window.location.hash).toBe(`#cuenta/${route}`));
   expect(document.querySelector(`[data-cy=portal-${role}]`)).toBeInTheDocument();
   if (role === 'technician') expect(screen.getByText(/Estado de verificación:/)).toHaveTextContent('Pendiente de verificación');
@@ -44,9 +50,9 @@ test('S01-TC-076 complemento unitario: login consulta /me y logout incierto reco
   fireEvent.change(screen.getByLabelText('Correo'), {target: {value: 'cliente@example.test'}});
   fireEvent.change(screen.getByLabelText('Contraseña'), {target: {value: 'Sintetica123!'}});
   fireEvent.click(screen.getByRole('button', {name: 'Ingresar'}));
-  await screen.findByRole('button', {name: 'Cerrar sesión'});
+  const logout = await logoutButton();
   request.mockRejectedValueOnce({status: 0, message: 'No pudimos confirmar el resultado.'}).mockRejectedValueOnce({status: 401});
-  fireEvent.click(screen.getByRole('button', {name: 'Cerrar sesión'}));
+  fireEvent.click(logout);
   await screen.findByRole('button', {name: 'Ingresar'});
   expect(screen.getByRole('alert')).toHaveTextContent('No pudimos confirmar el resultado');
 });

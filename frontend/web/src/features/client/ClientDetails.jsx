@@ -47,7 +47,7 @@ export default function ClientDetails({user, onUpdate, onExpired}) {
     {districts.data && <label>Distrito principal
       <select name="district_id" value={values.district_id} onChange={set('district_id')} disabled={busy} {...field('district_id')}>
         <option value="">Elige un distrito</option>
-        {districts.data.map(district => <option key={district.id} value={district.id}>{district.name}</option>)}
+        {(Array.isArray(districts.data) ? districts.data : []).map(district => <option key={district.id} value={district.id}>{district.name}</option>)}
       </select>
     </label>}
     {errors.district_id && <p id="client-district_id-error" className="field-error">{errors.district_id}</p>}

@@ -72,6 +72,12 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.resetAllMocks(); vi.unstubAllGlobals(); window.history.replaceState(null, '', '/'); });
 const openClient = async (extra) => { routes(extra); render(<AccountApp/>); return screen.findByRole('navigation', {name: 'Gestión del cliente'}); };
 const navButton = (nav, label) => within(nav).getAllByRole('button').find(b => b.querySelector('.panel-label')?.textContent === label);
+// Fase 4: Notificaciones se abre con «Ver todas» de la campana y Mi perfil desde el panel del avatar (sin la sección CUENTA).
+const openNotifications = async () => {
+  fireEvent.click(await screen.findByRole('button', {name: /^Notificaciones: \d+ sin leer$/}));
+  fireEvent.click(screen.getByRole('button', {name: 'Ver todas'}));
+};
+const openAccount = () => fireEvent.click(screen.getByRole('button', {name: /^Cuenta de /}));
 
 test('S05-TC-025 la campana usa la forma real de la bandeja: unread_count e items [DEF-49]', async () => {
   routes();
@@ -87,16 +93,20 @@ test('S05-TC-025 la campana usa la forma real de la bandeja: unread_count e item
 test('S05-TC-026 el panel del cliente agrupa su menú y conserva los selectores de Cypress', async () => {
   const nav = await openClient();
 
-  expect(within(nav).getAllByRole('group').map(group => group.querySelector('.panel-nav-heading').textContent)).toEqual(['General', 'Servicios', 'Cuenta']);
-  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent))
-    .toEqual(['Inicio', 'Nueva solicitud', 'Buscar técnicos', 'Mis solicitudes', 'Notificaciones', 'Mi perfil']);
+  // Fase 4: menú sin CUENTA, con Servicios, Mi hogar / Mi negocio (premium), Descubre y Ayuda.
+  expect(within(nav).getAllByRole('group').map(group => group.querySelector('.panel-nav-heading').textContent))
+    .toEqual(['Servicios', 'Mi hogar / Mi negocio · Premium', 'Descubre', 'Ayuda']);
+  expect(navButton(nav, 'Notificaciones')).toBeUndefined();
+  expect(navButton(nav, 'Mi perfil')).toBeUndefined();
   expect(navButton(nav, 'Inicio')).toHaveAttribute('aria-current', 'page');
   expect(document.querySelector('[data-cy=portal-client]')).toBeInTheDocument();
+  openAccount();
   expect(screen.getByRole('button', {name: 'Cerrar sesión'})).toHaveAttribute('data-cy', 'logout');
-  // Contadores: una solicitud por elegir técnico y dos notificaciones sin leer.
-  await waitFor(() => expect(navButton(nav, 'Mis solicitudes').querySelector('.panel-nav-badge')).toHaveTextContent('1'));
-  expect(navButton(nav, 'Notificaciones').querySelector('.panel-nav-badge')).toHaveTextContent('2');
-  expect(screen.getByText('1 solicitud por elegir técnico')).toBeInTheDocument();
+  fireEvent.keyDown(screen.getByRole('dialog'), {key: 'Escape'});
+  // Contadores: Mis solicitudes cuenta las activas (Fase 4) y la campana, las dos sin leer.
+  await waitFor(() => expect(navButton(nav, 'Mis solicitudes').querySelector('.panel-nav-badge')).toHaveTextContent('3'));
+  expect(screen.getByRole('button', {name: 'Notificaciones: 2 sin leer'})).toBeInTheDocument();
+  expect(screen.getByText('3 solicitudes activas')).toBeInTheDocument();
 });
 
 test('S05-TC-030 la búsqueda ordena por cercanía, filtra por tarifa máxima y muestra distancia y tarifa', async () => {
@@ -167,8 +177,8 @@ test('S05-TC-033 el detalle muestra la línea de tiempo y la actualiza con reque
 
 test('S05-TC-035 la bandeja filtra por estado y tipo y marca una notificación como leída con alerta [TC-106]', async () => {
   const marked = vi.fn(() => ({data: {...notifications[0], read_at: '2026-10-20T16:00:00Z'}}));
-  const nav = await openClient({'/notifications/9/read': marked});
-  fireEvent.click(navButton(nav, 'Notificaciones'));
+  await openClient({'/notifications/9/read': marked});
+  await openNotifications();
   const page = await screen.findByRole('region', {name: 'Notificaciones'});
 
   await within(page).findByText('Elige a tu técnico');
@@ -190,7 +200,7 @@ test('S05-TC-035 la bandeja filtra por estado y tipo y marca una notificación c
 test('S05-TC-036 marcar todas como leídas actualiza el contador y muestra el error si falla', async () => {
   let fail = false;
   const nav = await openClient({'/notifications/read-all': () => (fail ? Promise.reject({status: 0, message: 'No hay conexión con el servidor.'}) : {data: {updated: 2}})});
-  fireEvent.click(navButton(nav, 'Notificaciones'));
+  await openNotifications();
   const page = await screen.findByRole('region', {name: 'Notificaciones'});
   await within(page).findByText('Elige a tu técnico');
 
@@ -199,13 +209,13 @@ test('S05-TC-036 marcar todas como leídas actualiza el contador y muestra el er
   fireEvent.click(within(page).getByRole('button', {name: 'Marcar todas como leídas'}));
 
   expect(await within(page).findByText('Marcamos 2 notificaciones como leídas.')).toBeInTheDocument();
-  await waitFor(() => expect(navButton(nav, 'Notificaciones').querySelector('.panel-nav-badge')).toBeNull());
+  await waitFor(() => expect(screen.getByRole('button', {name: 'Notificaciones: 0 sin leer'})).toBeInTheDocument());
   expect(within(page).getByRole('button', {name: 'Marcar todas como leídas'})).toBeDisabled();
 
   fail = true;
   routes({'/notifications/read-all': () => Promise.reject({status: 0, message: 'No hay conexión con el servidor.'})});
   fireEvent.click(navButton(nav, 'Inicio'));
-  fireEvent.click(navButton(nav, 'Notificaciones'));
+  await openNotifications();
   const again = await screen.findByRole('region', {name: 'Notificaciones'});
   fireEvent.click(await within(again).findByRole('button', {name: 'Marcar todas como leídas'}));
   expect(await within(again).findByRole('alert')).toHaveTextContent('No hay conexión con el servidor.');
@@ -214,8 +224,8 @@ test('S05-TC-036 marcar todas como leídas actualiza el contador y muestra el er
 test('S05-TC-037 Mi perfil guarda el distrito y la dirección del cliente con doble validación y alertas', async () => {
   const saved = vi.fn((path, body) => ({data: {...client, version: 3, client_profile: {...client.client_profile, district_id: Number(body.district_id),
     reference_address: body.reference_address}}}));
-  const nav = await openClient({'/me': (path, body, method) => (method === 'PATCH' ? saved(path, body) : {data: client})});
-  fireEvent.click(navButton(nav, 'Mi perfil'));
+  await openClient({'/me': (path, body, method) => (method === 'PATCH' ? saved(path, body) : {data: client})});
+  openAccount();
   const form = await screen.findByRole('form', {name: 'Datos de cliente'});
   const address = within(form).getByLabelText('Dirección de referencia (privada)');
   expect(address).toHaveValue('Jr. Sintético 100');
