@@ -18,6 +18,14 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Pendiente:**
   - confirmar D-101;
   - ejecutar las Cypress S05-TC-211 a 214, la del S3 adaptada y las del S5 anteriores (S05-TC-146, 147, 178 y 179) cuando haya 1,5 GB libres.
+- **Modo rápido (pedido de Pimentel el 2026-11-09, hasta terminar la Fase 6):**
+  - un PR por fase, con backend y frontend juntos: el #51 reemplaza al #50;
+  - capturas solo a 1366 y 390 en tema claro.
+- **Pendiente para el cierre:**
+  - ejecutar Cypress (solo se escriben las specs);
+  - mutación y SonarQube;
+  - separar los commits de prueba en rojo;
+  - actualizar catálogo, contrato, avances y evidencias detalladas de las Fases 4 a 6.
 - **Siguiente:** la Fase 4 (barra superior y menú) desde S05-TC-217, cuando Pimentel revise la Fase 3.
 - **Pedidos a Codex:** ninguno.
 
