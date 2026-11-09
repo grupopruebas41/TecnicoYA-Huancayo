@@ -103,7 +103,8 @@ final class DemoSeeder extends Seeder
         ]);
     }
 
-    private function technician(User $user, array $data, string $status, string $verification): void
+    /** Perfil, servicios con «qué incluye», distritos y franjas del técnico; también lo usa Sprint05E2ESeeder (D-101). */
+    public function technician(User $user, array $data, string $status, string $verification): void
     {
         DB::table('technician_profiles')->updateOrInsert(['user_id' => $user->id], [
             'display_name' => $data['name'], 'bio' => $data['bio'] ?? null, 'work_style' => $data['work_style'] ?? null,
@@ -143,7 +144,7 @@ final class DemoSeeder extends Seeder
     }
 
     /** Trabajos publicados (por título, sin duplicar); fotos «antes» y «después» solo si el equipo las dejó en demo-media. */
-    private function portfolio(int $technician, int $ownerId, string $alias, array $items): void
+    public function portfolio(int $technician, int $ownerId, string $alias, array $items): void
     {
         foreach (array_values($items) as $index => [$title, $code, $description, $daysAgo]) {
             if (DB::table('portfolio_items')->where('technician_id', $technician)->where('title', $title)->exists()) {
@@ -177,7 +178,7 @@ final class DemoSeeder extends Seeder
     }
 
     /** D-101: reseñas de ejemplo, solo en local; no son calificaciones y el panel las rotula como demostración. */
-    private function reviews(int $technician, array $reviews): void
+    public function reviews(int $technician, array $reviews): void
     {
         if ($reviews === [] || DB::table('technician_review_samples')->where('technician_id', $technician)->exists()) {
             return;
