@@ -2,6 +2,16 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-10 · Panel del cliente final, Fase 4 (modo rápido): barra superior, panel del avatar y menú nuevo
+
+- **Rama:** `feature/delgado/cliente/shell-menu`, desde `main`; un solo PR con backend y frontend.
+- **Backend:** migración `000034` (`client_addresses`, `communication_prefs` y `sidebar_collapsed`); `/client/addresses`, `/client/me/communication` y `sidebar_collapsed` en `/me`. D-101 quedó aprobada.
+- **Frontend:** ☰ junto al logo, campana con «Marcar todas como leídas», «Aa», panel del avatar con 5 pestañas, menú sin CUENTA (Servicios, Mi hogar / Mi negocio con candado, Descubre y Ayuda) y direcciones guardadas en el paso 4.
+- **Pruebas:** S05-TC-217 a 221 (Pest) y 222 a 231 (Vitest) en verde; Cypress S05-TC-232 a 234 escritas sin ejecutar. Capturas `2026-11-10-7a92bee-shell-*` (1366 y 390, claro).
+- **Pruebas adaptadas:** S05-TC-026, 035, 036 y 037, S01-TC-016, 076 y 084, y las Cypress del S1 (`logout()` y `openProfile()` abren el panel del avatar).
+- **Pendiente para el cierre:** catálogo, contrato §12, avance y evidencias detalladas de la Fase 4; ejecutar Cypress. La pestaña Accesibilidad trae lo básico; el resto de ajustes y guardarlos en la cuenta van en la Fase 5.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-09 · Panel del cliente final, Fase 3: Buscar técnicos y perfil del técnico modernos (D-101 propuesta)
 
 - **Ramas:**
