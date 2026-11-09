@@ -1,6 +1,7 @@
 <?php
 
-// S05-TC-156 a 161 · HU-S05-06 · RF-19 · D-28 · D-100: el titular cancela con motivo antes de iniciar la atención.
+// S05-TC-156 a 161 · HU-S05-06 · RF-19 · D-28 · D-100: el titular cancela antes de iniciar la atención eligiendo un motivo de
+// una lista cerrada; con «Otro motivo» el texto es obligatorio y con los demás, opcional. S05-TC-156 y 160 se adaptaron a la lista.
 use Database\Factories\ClientProfileFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,7 @@ function cancelRequest($test, object $request, array $overrides = [], ?string $k
 {
     $version = (int) DB::table('service_requests')->where('id', $request->id)->value('version');
 
-    return $test->postJson("/api/v1/requests/{$request->id}/cancellation", $overrides + ['reason' => 'Ya resolví el problema por otro medio.', 'expected_version' => $version],
+    return $test->postJson("/api/v1/requests/{$request->id}/cancellation", $overrides + ['reason_code' => 'other', 'reason' => 'Ya resolví el problema por otro medio.', 'expected_version' => $version],
         ['Idempotency-Key' => $key ?? (string) Str::uuid()]);
 }
 
@@ -46,6 +47,7 @@ it('S05-TC-156 cancelar una asignada libera la cita, avisa al técnico y conserv
     expect($response->json('data'))->toMatchArray(['id' => $request->id, 'status' => 'cancelled', 'version' => (int) $row->version])
         ->and($row->status)->toBe('cancelled')
         ->and($row->cancelled_at)->not->toBeNull()
+        ->and($row->cancellation_reason_code)->toBe('other')
         ->and($row->cancellation_reason)->toBe('Ya resolví el problema por otro medio.')
         ->and(DB::table('participations')->where('request_id', $request->id)->value('status'))->toBe('cancelled')
         ->and(DB::table('appointments')->where('request_id', $request->id)->value('status'))->toBe('cancelled')
@@ -99,11 +101,16 @@ it('S05-TC-159 un borrador también se puede cancelar y sale de las activas', fu
 
 it('S05-TC-160 valida motivo, versión y permisos: ajena 404, otro rol 403, y la misma clave no cancela dos veces', function () {
     $request = Sprint04::sentRequest(['client_id' => $this->client->id]);
+    // Con «Otro motivo» el texto es obligatorio, de 5 a 255 caracteres.
     Sprint01::assertSpanishValidation(cancelRequest($this, $request, ['reason' => 'Nada']), ['reason']);
     Sprint01::assertSpanishValidation(cancelRequest($this, $request, ['reason' => '   Nada   ']), ['reason']);
     Sprint01::assertSpanishValidation(cancelRequest($this, $request, ['reason' => str_repeat('a', 256)]), ['reason']);
     Sprint01::assertSpanishValidation(cancelRequest($this, $request, ['reason' => null]), ['reason']);
-    $this->postJson("/api/v1/requests/{$request->id}/cancellation", ['reason' => 'Ya no lo necesito.', 'expected_version' => (int) $request->version])->assertUnprocessable();
+    // El motivo es obligatorio y de la lista cerrada; con los demás, el comentario admite hasta 255.
+    Sprint01::assertSpanishValidation(cancelRequest($this, $request, ['reason_code' => null, 'reason' => null]), ['reason_code']);
+    Sprint01::assertSpanishValidation(cancelRequest($this, $request, ['reason_code' => 'aburrido']), ['reason_code']);
+    Sprint01::assertSpanishValidation(cancelRequest($this, $request, ['reason_code' => 'price', 'reason' => str_repeat('a', 256)]), ['reason']);
+    $this->postJson("/api/v1/requests/{$request->id}/cancellation", ['reason_code' => 'other', 'reason' => 'Ya no lo necesito.', 'expected_version' => (int) $request->version])->assertUnprocessable();
     cancelRequest($this, $request, ['expected_version' => (int) $request->version + 5])->assertConflict()->assertJsonPath('error.code', 'STALE_VERSION');
 
     $foreign = Sprint04::sentRequest();
@@ -120,6 +127,17 @@ it('S05-TC-160 valida motivo, versión y permisos: ajena 404, otro rol 403, y la
     expect($retry->json('data'))->toEqual($first->json('data'))
         ->and(DB::table('request_events')->where('request_id', $request->id)->where('event_type', 'request.cancelled')->count())->toBe(1);
     cancelRequest($this, $request, ['reason' => 'Otro motivo distinto.', 'expected_version' => (int) $request->version], $key)->assertConflict();
+
+    // Un motivo de la lista sin comentario es válido y se guarda sin texto.
+    $solved = Sprint04::sentRequest(['client_id' => $this->client->id]);
+    cancelRequest($this, $solved, ['reason_code' => 'solved', 'reason' => null])->assertOk();
+    $row = DB::table('service_requests')->find($solved->id);
+    expect($row->cancellation_reason_code)->toBe('solved')->and($row->cancellation_reason)->toBeNull();
+    foreach (['other_technician', 'reschedule', 'price', 'mistake'] as $code) {
+        $another = Sprint04::sentRequest(['client_id' => $this->client->id]);
+        cancelRequest($this, $another, ['reason_code' => $code, 'reason' => ''])->assertOk();
+        expect(DB::table('service_requests')->find($another->id)->cancellation_reason_code)->toBe($code);
+    }
 });
 
 it('S05-TC-161 cancelar libera el cupo de pedidos y la franja del técnico; el titular lo ve en su línea de tiempo y el técnico no ve el motivo', function () {
