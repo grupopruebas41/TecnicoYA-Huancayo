@@ -2,6 +2,16 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-10 · Panel del cliente final, Fase 5 (modo rápido): accesibilidad en la cuenta, bienvenida y tutorial
+
+- **Rama:** `feature/delgado/cliente/accesibilidad`, desde `main` `8152f9e`; un solo PR.
+- **Backend:** migración `000035` (`accessibility_prefs`, `onboarding_completed_at` y `tour_completed_at`) y `GET/PUT /client/me/preferences` con lista blanca; `/me` trae las preferencias para aplicarlas antes del primer render.
+- **Frontend:** 8 ajustes (tamaño, alto contraste, fuente legible, reducir animaciones, foco grueso, leer en voz alta, dictado y modo simple), bienvenida con tarjetas de preferencia (D-97), tutorial de 4 pasos repetible desde «Cómo funciona», dictado con el aviso de Google y «Saltar al contenido». Fuente Atkinson Hyperlegible con `@fontsource` (OFL, sin CDN).
+- **Pruebas:** S05-TC-240 a 243 (Pest), 244 a 249 y 253 (Vitest); Cypress S05-TC-250 a 252 escritas. Los ayudantes de Cypress omiten la bienvenida (`dismissOnboarding`). Capturas `2026-11-10-5d8257c-accesibilidad-*`.
+- **Pendiente para el cierre:** vitest-axe y cypress-axe en las pantallas principales (no se agregaron en modo rápido), ejecutar Cypress, catálogo, contrato §13, avance y evidencias.
+- **Siguiente:** Fase 6 (Premium IoT) desde S05-TC-254.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-10 · Panel del cliente final, Fase 4 (modo rápido): barra superior, panel del avatar y menú nuevo
 
 - **Rama:** `feature/delgado/cliente/shell-menu`, desde `main`; un solo PR con backend y frontend.

@@ -1,0 +1,148 @@
+{
+  "1366-bienvenida": {
+    "overflowX": true,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light"
+    }
+  },
+  "1366-bienvenida-elegidas": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light"
+    }
+  },
+  "1366-tutorial-1": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "1366-tutorial-3": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "1366-inicio-con-ajustes": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": null,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "1366-cuenta-accesibilidad": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": null,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "1366-dictado-aviso": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": null,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "390-bienvenida": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light"
+    }
+  },
+  "390-bienvenida-elegidas": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light"
+    }
+  },
+  "390-tutorial-1": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "390-tutorial-3": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": true,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "390-inicio-con-ajustes": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": null,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "390-cuenta-accesibilidad": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": null,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  },
+  "390-dictado-aviso": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "dialogoCabe": null,
+    "html": {
+      "textSize": "100",
+      "theme": "light",
+      "font": "readable",
+      "simple": "on"
+    }
+  }
+}
