@@ -385,3 +385,16 @@ test('S05-TC-215 defectos vistos en las capturas: chips en una fila, nombre bajo
   await screen.findByRole('region', {name: 'Portafolio'});
   expect(container.querySelector('.tech-illustration')).toHaveAttribute('preserveAspectRatio', 'xMidYMid slice');
 });
+
+test('S05-TC-216 segunda ronda de capturas: los chips le ganan a la grilla de etiquetas del panel y el botón fijo antiguo no saca al corazón de la barra', () => {
+  const css = readFileSync(resolve('src/features/matching/search.css'), 'utf8');
+  const panel = readFileSync(resolve('src/features/panel/panel.css'), 'utf8');
+  const client = readFileSync(resolve('src/features/client/client.css'), 'utf8');
+  // panel.css pone .panel-content label:not(.button) en grilla y los select con 46 px de alto mínimo.
+  expect(panel).toMatch(/\.panel-content label:not\(\.button\) \{[^}]*display: grid/);
+  expect(css).toMatch(/\.panel-content \.search-filters label\.search-chip \{[^}]*display: inline-flex[^}]*flex-direction: row/);
+  expect(css).toMatch(/\.panel-content \.search-filters \.search-chip select \{[^}]*min-height: 36px/);
+  // client.css fija el botón «Solicitar servicio» por su cuenta en el celular; dentro de la barra vuelve a su lugar.
+  expect(client).toMatch(/\.panel-shell \.client-profile-cta \{[^}]*position: fixed/);
+  expect(css).toMatch(/\.panel-shell \.profile-cta-bar \.client-profile-cta \{[^}]*position: static[^}]*box-shadow: none/);
+});
