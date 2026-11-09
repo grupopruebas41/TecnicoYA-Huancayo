@@ -89,7 +89,7 @@ test('S05-TC-224 la campana marca todas como leídas y «Ver todas» abre Notifi
   const popover = screen.getByRole('region', {name: 'Notificaciones recientes'});
   fireEvent.click(within(popover).getByRole('button', {name: 'Marcar todas como leídas'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/notifications/read-all', {}));
-  fireEvent.click(within(popover).getByRole('button', {name: 'Ver todas'}));
+  fireEvent.click(within(popover).getByRole('button', {name: 'Ver todas las notificaciones'}));
   expect(await screen.findByRole('region', {name: 'Notificaciones'})).toBeInTheDocument();
 });
 

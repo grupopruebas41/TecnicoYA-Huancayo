@@ -66,7 +66,7 @@ function AvatarMenu({user, theme, onTheme, onProfile, onLogout, busy}) {
  * premium (candado: abre la sección «premium»).
  */
 export default function PanelShell({user, role, roleLabel, navLabel, sections, onLogout, onUserChange, busy, notice, badges, onNavigate,
-  initialSection, initialIntent = null, locked = false, bellKey, modern = false, onExpired}) {
+  initialSection, initialIntent = null, locked = false, bellKey, modern = false, onExpired, notificationTarget}) {
   const sectionKey = `tecnicoya.panel.${user.id}.section`;
   const [active, setActive] = useState(() => {
     const saved = store.get('sessionStorage', sectionKey);
@@ -168,7 +168,8 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           aria-expanded={drawer} onClick={() => setDrawer(!drawer)}><Icon name="menu"/></button>
         <span className="panel-title">{current?.label}</span>
         <div className="panel-actions">
-          <NotificationBell key={bellKey} userId={user.id} canMarkAll={modern}
+          <NotificationBell key={bellKey} userId={user.id}
+            onOpen={item => { const target = notificationTarget?.(item); if (target) go(target[0], target[1] || null); }}
             onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
           {modern && <QuickAccessibility prefs={a11y[0]} onChange={a11y[1]} reader={reader}/>}
           {modern

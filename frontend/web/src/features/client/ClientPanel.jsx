@@ -15,6 +15,13 @@ import {FaqPage, FavoritesPage, HowItWorksPage, NewsPage, PremiumPage, PrivacyPa
 import '../requests/requests.css';
 import './client.css';
 
+// Rediseño de la campana (Fase 4): un aviso sobre una solicitud la abre en Mis solicitudes; un comunicado, en Novedades.
+const notificationTarget = item => {
+  const requestId = item.context?.request_id || (item.subject?.type === 'service_request' ? item.subject.id : null);
+  if (requestId) return ['requests', {open: requestId}];
+  return item.type?.startsWith('announcement') ? ['news'] : null;
+};
+
 const plural = (count, one, many) => `${count} ${count === 1 ? one : many}`;
 
 /** Contadores del menú: solicitudes por elegir técnico y notificaciones sin leer. Si fallan, el menú sigue sin ellos. */
@@ -83,13 +90,14 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
     {id: 'privacy', group: 'Ayuda', label: 'Privacidad y términos', icon: 'verify', render: () => <PrivacyPage/>},
     // Fuera del menú (Fase 4): Notificaciones se abre desde la campana y Mi perfil desde el panel del avatar.
     {id: 'premium', nav: false, label: 'Plan Premium', icon: 'star', render: ({intent}) => <PremiumPage intent={intent}/>},
-    {id: 'notifications', nav: false, label: 'Notificaciones', icon: 'bell', render: () => <NotificationsPage userId={user.id} onChange={refresh}/>},
+    {id: 'notifications', nav: false, label: 'Notificaciones', icon: 'bell', render: ({navigate}) => <NotificationsPage userId={user.id} onChange={refresh}
+      onOpen={item => { const target = notificationTarget(item); if (target) navigate(...target); }}/>},
     {id: 'profile', nav: false, label: 'Mi perfil', icon: 'profile', render: () => <ProfilePage user={user} onUpdate={onUserChange} onExpired={onExpired}/>},
   ];
   return <RealtimeProvider>
     <PanelShell user={user} role="client" roleLabel={roleLabel} navLabel="Gestión del cliente" sections={sections}
       onLogout={onLogout} onUserChange={onUserChange} busy={busy} notice={notice} badges={badges} onNavigate={refresh}
       initialSection={searchIntent ? 'search' : undefined} initialIntent={searchIntent ? {filters: searchIntent} : null}
-      locked={locked} bellKey={tick} modern onExpired={onExpired}/>
+      locked={locked} bellKey={tick} modern onExpired={onExpired} notificationTarget={notificationTarget}/>
   </RealtimeProvider>;
 }

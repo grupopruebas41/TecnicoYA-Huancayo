@@ -75,7 +75,7 @@ const navButton = (nav, label) => within(nav).getAllByRole('button').find(b => b
 // Fase 4: Notificaciones se abre con «Ver todas» de la campana y Mi perfil desde el panel del avatar (sin la sección CUENTA).
 const openNotifications = async () => {
   fireEvent.click(await screen.findByRole('button', {name: /^Notificaciones: \d+ sin leer$/}));
-  fireEvent.click(screen.getByRole('button', {name: 'Ver todas'}));
+  fireEvent.click(screen.getByRole('button', {name: 'Ver todas las notificaciones'}));
 };
 const openAccount = () => fireEvent.click(screen.getByRole('button', {name: /^Cuenta de /}));
 
@@ -86,8 +86,12 @@ test('S05-TC-025 la campana usa la forma real de la bandeja: unread_count e item
   const bell = await screen.findByRole('button', {name: 'Notificaciones: 2 sin leer'});
   fireEvent.click(bell);
   const list = screen.getByRole('region', {name: 'Notificaciones recientes'});
-  expect(within(list).getAllByRole('listitem').map(item => item.textContent)).toEqual(['Elige a tu técnico', 'Seguimos buscando', 'Búsqueda anterior']);
-  expect(within(list).getAllByRole('listitem')[2]).not.toHaveClass('is-unread');
+  // Rediseño de la campana (Fase 4): cada fila trae título, contexto y tiempo; la leída no lleva la marca «Nueva».
+  const rows = within(list).getAllByRole('listitem');
+  // Los dos avisos «request.pending» son de la misma solicitud: se muestra solo el más reciente con «1 aviso anterior».
+  expect(rows.map(item => item.querySelector('.notif-title').textContent)).toEqual(['Elige a tu técnico', 'Seguimos buscando']);
+  expect(rows[1]).toHaveTextContent('1 aviso anterior');
+  expect(within(list).getAllByText('Nueva')).toHaveLength(2);
 });
 
 test('S05-TC-026 el panel del cliente agrupa su menú y conserva los selectores de Cypress', async () => {
@@ -182,19 +186,16 @@ test('S05-TC-035 la bandeja filtra por estado y tipo y marca una notificación c
   const page = await screen.findByRole('region', {name: 'Notificaciones'});
 
   await within(page).findByText('Elige a tu técnico');
-  // Rediseño del PR #39: los filtros son chips (botones con aria-pressed) en lugar de select.
-  fireEvent.click(within(within(page).getByRole('group', {name: 'Filtrar por estado'})).getByRole('button', {name: 'No leídas'}));
+  // Rediseño de la campana (Fase 4): el estado es una pestaña; el tipo sigue en chips.
+  fireEvent.click(within(page).getByRole('tab', {name: 'No leídas'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/notifications?state=unread&per_page=20'));
   fireEvent.click(within(within(page).getByRole('group', {name: 'Filtrar por tipo'})).getByRole('button', {name: 'Búsqueda pendiente'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/notifications?state=unread&type=request.pending&per_page=20'));
 
-  const item = (await within(page).findByText('Elige a tu técnico')).closest('li');
-  fireEvent.click(within(item).getByRole('button', {name: 'Marcar como leída'}));
-
-  expect(await within(page).findByText('Marcamos la notificación como leída.')).toBeInTheDocument();
-  expect(marked).toHaveBeenCalledWith('/notifications/9/read', {}, 'POST');
-  expect(within(item).queryByRole('button', {name: 'Marcar como leída'})).not.toBeInTheDocument();
-  expect(within(item).getByText('Leída')).toBeInTheDocument();
+  // Abrir el aviso lo marca como leído y lleva a su solicitud en Mis solicitudes.
+  fireEvent.click((await within(page).findByText('Elige a tu técnico')).closest('button'));
+  await waitFor(() => expect(marked).toHaveBeenCalledWith('/notifications/9/read', {}, 'POST'));
+  expect(await screen.findByRole('region', {name: 'Mis solicitudes'})).toBeInTheDocument();
 });
 
 test('S05-TC-036 marcar todas como leídas actualiza el contador y muestra el error si falla', async () => {

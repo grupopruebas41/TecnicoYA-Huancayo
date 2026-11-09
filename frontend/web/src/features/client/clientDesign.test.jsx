@@ -127,20 +127,20 @@ test('S05-TC-045 el asistente elige especialidad y subcategoría en tarjetas con
 test('S05-TC-047 la bandeja agrupa por día (Hoy, Ayer y fecha) y filtra con chips', async () => {
   vi.useFakeTimers({toFake: ['Date']});
   vi.setSystemTime(new Date('2026-10-20T23:00:00Z')); // 18:00 en Lima
-  const item = (id, created, read = null) => ({id, type: 'request.pending', title: 'Aviso ' + id, body: 'Texto.', subject: {type: 'service_request', id: 1},
+  // Rediseño de la campana (Fase 4): cada aviso es de una solicitud distinta (los repetidos de una misma se agrupan).
+  const item = (id, created, read = null) => ({id, type: 'request.pending', title: 'Aviso ' + id, body: 'Texto.', subject: {type: 'service_request', id},
     event_id: 'e' + id, created_at: created, read_at: read});
   request.mockImplementation(async () => ({data: {...page([item(3, '2026-10-20T15:00:00Z'), item(2, '2026-10-19T20:00:00Z', '2026-10-19T21:00:00Z'),
     item(1, '2026-10-15T15:00:00Z')]), unread_count: 2}}));
   render(<NotificationsPage userId="5"/>);
 
   await screen.findByText('Aviso 3');
-  expect(screen.getAllByRole('heading', {level: 3}).map(heading => heading.textContent)).toEqual(['Hoy', 'Ayer', '15 de octubre de 2026']);
-  expect(screen.getByText('Aviso 3').closest('li')).toHaveClass('is-unread');
-  expect(screen.getByText('Aviso 2').closest('li').querySelector('.client-unread-dot')).toBeNull();
+  expect(screen.getAllByRole('heading', {level: 3}).map(heading => heading.textContent)).toEqual(['Hoy', 'Ayer', 'Anteriores']);
+  expect(screen.getByText('Aviso 3').closest('button')).toHaveClass('is-unread');
+  expect(screen.getByText('Aviso 2').closest('button').querySelector('.notif-dot')).toBeNull();
 
-  const filters = screen.getByRole('group', {name: 'Filtrar por estado'});
-  fireEvent.click(within(filters).getByRole('button', {name: 'No leídas'}));
-  expect(within(filters).getByRole('button', {name: 'No leídas'})).toHaveAttribute('aria-pressed', 'true');
+  fireEvent.click(screen.getByRole('tab', {name: 'No leídas'}));
+  expect(screen.getByRole('tab', {name: 'No leídas'})).toHaveAttribute('aria-selected', 'true');
   await waitFor(() => expect(request).toHaveBeenCalledWith('/notifications?state=unread&per_page=20'));
 });
 
