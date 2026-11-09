@@ -66,11 +66,17 @@ test("S04-TC-103 deduplica por evento y versión", () => {
 test("S04-TC-104 reconexión pide recurso una vez", () => {
   const handlers = {};
   const refresh = vi.fn();
+  // DEF-60: la recuperación llega cuando el canal vuelve a suscribirse, no al reconectar el socket.
   const connection = {
+    state: "connected",
     bind: (key, fn) => (handlers[key] = fn),
     unbind: vi.fn(),
   };
-  const channel = { listen: vi.fn().mockReturnThis(), stopListening: vi.fn() };
+  const channel = {
+    listen: vi.fn().mockReturnThis(),
+    stopListening: vi.fn(),
+    subscribed: (fn) => (handlers.subscribed = fn),
+  };
   const echo = {
     connector: { pusher: { connection } },
     private: () => channel,
@@ -87,6 +93,9 @@ test("S04-TC-104 reconexión pide recurso una vez", () => {
   handlers.state_change({ current: "disconnected" });
   handlers.state_change({ current: "connected" });
   handlers.state_change({ current: "connected" });
+  expect(refresh).not.toHaveBeenCalled();
+  handlers.subscribed();
+  handlers.subscribed();
   expect(refresh).toHaveBeenCalledOnce();
   stop();
   expect(connection.unbind).toHaveBeenCalled();
