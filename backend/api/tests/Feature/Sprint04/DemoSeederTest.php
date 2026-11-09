@@ -104,3 +104,38 @@ it('S05-TC-133 los técnicos de demostración no muestran el texto interno de de
     expect($bios)->not->toBeEmpty()
         ->and($bios->filter(fn ($bio) => $bio !== null && str_contains(mb_strtolower($bio), 'demostración')))->toBeEmpty();
 });
+
+it('S05-TC-195 DemoSeeder deja a Rosa Quispe y Diego Huamán con perfil completo, portafolio y 5 reseñas de ejemplo, sin duplicar', function () {
+    s04Demo(Str::password(20));
+    $this->app['env'] = 'local';
+
+    $this->seed(DemoSeeder::class);
+    $this->seed(DemoSeeder::class);
+
+    foreach (['demo-tecnico-refrigeracion' => ['Rosa Quispe', 'refrigeracion'], 'demo-tecnico-computo' => ['Diego Huamán', 'computo']] as $alias => [$name, $specialty]) {
+        $user = User::query()->where('email', "$alias@example.test")->firstOrFail();
+        $profile = DB::table('technician_profiles')->where('user_id', $user->id)->first();
+        $services = DB::table('technician_services as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')
+            ->join('specialties as p', 'p.id', '=', 'c.specialty_id')->where('s.technician_id', $profile->id)->where('s.active', 1)->get(['p.code', 's.includes']);
+        $districts = DB::table('technician_districts')->where('technician_id', $profile->id)->where('active', 1)->count();
+        $portfolio = DB::table('portfolio_items')->where('technician_id', $profile->id)->where('status', 'published')->count();
+        $reviews = DB::table('technician_review_samples')->where('technician_id', $profile->id)->get();
+
+        expect($profile->display_name)->toBe($name)
+            ->and($user->name)->toBe($name)
+            ->and(mb_strlen((string) $profile->bio))->toBeGreaterThan(120)
+            ->and($profile->work_style)->not->toBeEmpty()
+            ->and($profile->warranty_text)->not->toBeEmpty()
+            ->and($services->count())->toBeGreaterThanOrEqual(3)->toBeLessThanOrEqual(4)
+            ->and($services->pluck('code')->unique()->all())->toBe([$specialty])
+            ->and($services->every(fn ($s) => mb_strlen((string) $s->includes) > 10))->toBeTrue()
+            ->and($districts)->toBeGreaterThanOrEqual(2)->toBeLessThanOrEqual(3)
+            ->and($portfolio)->toBeGreaterThanOrEqual(4)->toBeLessThanOrEqual(6)
+            ->and($reviews)->toHaveCount(5)
+            ->and($reviews->every(fn ($r) => $r->rating >= 1 && $r->rating <= 5 && $r->comment !== '' && ! str_contains($r->author_label, '@')))->toBeTrue()
+            ->and(DB::table('availability_slots')->where('technician_id', $profile->id)->where('active', 1)->count())->toBeGreaterThan(0);
+    }
+    // Solo usa las imágenes que el equipo deje en database/seeders/demo-media/; sin ellas, el panel muestra ilustraciones propias.
+    $files = is_dir(database_path('seeders/demo-media')) ? preg_grep('/\.(webp|png|jpe?g)$/i', scandir(database_path('seeders/demo-media'))) : [];
+    expect(DB::table('portfolio_images')->count())->toBe(count($files));
+});
