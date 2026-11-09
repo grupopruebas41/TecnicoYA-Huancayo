@@ -1,4 +1,5 @@
 import { fillRegistration } from "../../support/registration";
+import { dismissOnboarding } from "../../support/sprint01";
 export const api = () => Cypress.expose("apiUrl");
 export const wizard = () => cy.get('[aria-label="Nueva solicitud"]');
 export const observe = (method, path, alias) =>
@@ -15,7 +16,8 @@ export function openCard(id, index = 0) {
     else throw new Error("No aparece la solicitud #" + id + " en ninguna pestaña");
   });
 }
-export function loginClient(kind = "fresh") {
+// Fase 5: keepOnboarding deja la bienvenida y el tutorial para las specs que los prueban.
+export function loginClient(kind = "fresh", { keepOnboarding = false } = {}) {
   const email =
     kind === "fresh"
       ? "s03-" + crypto.randomUUID() + "@example.test"
@@ -32,6 +34,7 @@ export function loginClient(kind = "fresh") {
     cy.get("[data-cy=login-submit]").click();
     cy.get("[data-cy=portal-client]").should("be.visible");
   });
+  if (!keepOnboarding) dismissOnboarding();
 }
 // D-87: el cliente entra a su Inicio; las solicitudes están en la sección «Mis solicitudes» del menú.
 export function openMyRequests() {
@@ -133,4 +136,6 @@ export function switchAccount(email) {
   // DEF-59: visitar otro hash no recarga la página; sin esto la SPA sigue con la cuenta anterior.
   cy.visit("/#cuenta");
   cy.reload();
+  cy.get("[data-cy^=portal-]").should("be.visible");
+  dismissOnboarding();
 }

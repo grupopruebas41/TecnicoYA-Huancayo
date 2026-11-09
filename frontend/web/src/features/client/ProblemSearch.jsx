@@ -2,6 +2,61 @@ import React, {useEffect, useId, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import Icon from '../panel/icons';
 import {specialtyIcon} from './specialtyIcon';
+import {useAccessibilityContext} from '../panel/quickAccessibility';
+
+const NOTICE_KEY = 'tecnicoya.dictado.aviso';
+export const DICTATION_NOTICE = 'Chrome envía el audio a un servicio de Google para convertirlo en texto.';
+const recognitionClass = () => (typeof window === 'undefined' ? null : window.SpeechRecognition || window.webkitSpeechRecognition || null);
+
+/**
+ * Fase 5 (D-97): dictado por voz. Solo aparece con el ajuste «Dictar por voz» y si el navegador lo soporta; se activa
+ * al tocar el micrófono y, la primera vez de la sesión, después de aceptar el aviso. Si no acepta, no se activa.
+ */
+function Dictation({onText}) {
+  const {prefs} = useAccessibilityContext();
+  const [asking, setAsking] = useState(false);
+  const [listening, setListening] = useState(false);
+  const recognition = useRef(null);
+  useEffect(() => () => recognition.current?.abort?.(), []);
+  const Recognition = recognitionClass();
+  if (!prefs.dictation || !Recognition) return null;
+  function start() {
+    const engine = new Recognition();
+    engine.lang = 'es-PE';
+    engine.interimResults = false;
+    engine.onresult = event => onText(Array.from(event.results).map(result => result[0].transcript).join(' ').trim());
+    engine.onend = () => setListening(false);
+    engine.onerror = () => setListening(false);
+    recognition.current = engine;
+    engine.start();
+    setListening(true);
+  }
+  function tap() {
+    if (listening) { recognition.current?.stop(); return; }
+    let accepted = false;
+    try { accepted = sessionStorage.getItem(NOTICE_KEY) === '1'; } catch { /* sin almacenamiento */ }
+    if (accepted) start(); else setAsking(true);
+  }
+  function accept() {
+    try { sessionStorage.setItem(NOTICE_KEY, '1'); } catch { /* sin almacenamiento */ }
+    setAsking(false); start();
+  }
+  return <>
+    <button type="button" className="panel-icon-button problem-search-mic" aria-pressed={listening}
+      aria-label={listening ? 'Detener el dictado' : 'Dictar con la voz'} onClick={tap}>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+        <rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/><path d="M12 18v2.5"/></svg>
+    </button>
+    {listening && <span className="problem-search-listening" role="status">Escuchando…</span>}
+    {asking && <div className="problem-search-notice" role="alertdialog" aria-labelledby="dictado-aviso">
+      <p id="dictado-aviso">{DICTATION_NOTICE}</p>
+      <div>
+        <button type="button" className="button primary" onClick={accept}>Aceptar y dictar</button>
+        <button type="button" className="button outline" onClick={() => setAsking(false)}>Cancelar</button>
+      </div>
+    </div>}
+  </>;
+}
 
 const DEBOUNCE = 300;
 const MIN_LENGTH = 3;
@@ -99,6 +154,7 @@ export default function ProblemSearch({onSelect, onNoMatch, chips = [], label = 
         placeholder="Ej.: mi congeladora no enfría" value={text} aria-autocomplete="list" aria-expanded={expanded}
         aria-controls={expanded ? listId : undefined} aria-activedescendant={expanded && active >= 0 ? `${listId}-${active}` : undefined}
         aria-describedby={`${id}-ayuda`} onChange={event => change(event.target.value)} onKeyDown={keys}/>
+      <Dictation onText={value => { if (value) fill(value); }}/>
     </div>
     <p id={`${id}-ayuda`} className="sr-only">Escribe al menos 3 letras; usa las flechas para elegir una sugerencia.</p>
     {open && state.status !== 'idle' && <div className="problem-search-panel" role="group" aria-labelledby={`${id}-titulo`}>

@@ -9,6 +9,22 @@ export function login(role = 'client') {
   });
   cy.get('[data-cy=login-submit]').click();
   cy.get(`[data-cy=portal-${role}]`).should('be.visible');
+  if (role === 'client') dismissOnboarding();
+}
+/**
+ * Fase 5 (D-97): la bienvenida y el tutorial salen la primera vez que entra un cliente. Las specs que no los prueban los
+ * omiten como lo haría la persona (Omitir y Omitir tutorial), así quedan marcados en la cuenta.
+ */
+export function dismissOnboarding() {
+  cy.get('body').then((body) => {
+    if (body.find('.welcome-dialog').length) {
+      cy.contains('.welcome-dialog button', 'Omitir').click();
+      cy.contains('.tour-bubble button', 'Omitir tutorial').click();
+    } else if (body.find('.tour-bubble').length) {
+      cy.contains('.tour-bubble button', 'Omitir tutorial').click();
+    }
+  });
+  cy.get('.welcome-dialog, .tour-bubble').should('not.exist');
 }
 // Fase 1 del panel (D-73): los datos de la cuenta viven en la sección «Mi perfil» del menú lateral.
 export function openProfile() {

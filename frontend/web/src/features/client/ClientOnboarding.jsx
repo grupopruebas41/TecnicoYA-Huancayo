@@ -1,0 +1,135 @@
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {request} from '../administration/http';
+import Icon from '../panel/icons';
+import {useAccessibilityContext} from '../panel/quickAccessibility';
+
+/**
+ * Fase 5 del panel final (D-97): bienvenida «¿Cómo prefieres usar TécnicoYa?» y mini tutorial de 4 pasos, solo la primera
+ * vez. Las tarjetas están redactadas como preferencias y nunca se guarda cuál se eligió: solo los ajustes que aplica.
+ * Omitir o guardar marca onboarding_completed; terminar u omitir el tutorial marca tour_completed. No vuelven a salir.
+ */
+export const WELCOME_CARDS = [
+  ['grande', 'Letra grande y alto contraste', 'Texto al 130 % y colores más marcados.', {text_size: 130, high_contrast: true}, 'search'],
+  ['lectura', 'Lectura más fácil', 'Fuente legible y botón para escuchar la pantalla.', {readable_font: true, read_aloud: true}, 'book'],
+  ['teclado', 'Uso teclado o voz', 'Foco grueso y micrófono para dictar.', {strong_focus: true, dictation: true}, 'menu'],
+  ['simple', 'Pantalla más simple', 'Botones grandes y menos adornos.', {simple_mode: true}, 'catalog'],
+  ['movimiento', 'Menos movimiento', 'Sin carruseles ni transiciones.', {reduce_motion: true}, 'clock'],
+];
+
+export const TOUR_STEPS = [
+  {title: 'Servicios', text: 'Servicios: pide, busca y sigue tus solicitudes.', targets: ['.panel-sidebar nav [role=group]', '.panel-drawer-toggle']},
+  {title: 'Nueva solicitud', text: 'Nueva solicitud: cuéntanos qué se malogró y te conectamos con técnicos verificados.',
+    targets: ['.panel-sidebar nav .panel-nav-item[data-section="new"]', '.panel-drawer-toggle']},
+  {title: 'Campana y cuenta', text: 'Notificaciones, tu cuenta y accesibilidad.', targets: ['.panel-actions']},
+  {title: 'Accesibilidad rápida', text: 'Con «Aa» cambias el tamaño de texto, el contraste o escuchas la pantalla.', targets: ['.panel-a11y-button']},
+];
+
+const save = body => Promise.resolve().then(() => request('/client/me/preferences', body, 'PUT')).catch(() => null);
+
+/** Atrapa Tab dentro del diálogo y cierra con Esc. */
+function trap(root, onEscape) {
+  return event => {
+    if (event.key === 'Escape') { event.preventDefault(); onEscape(); return; }
+    if (event.key !== 'Tab') return;
+    const focusable = [...root.current.querySelectorAll('button:not(:disabled)')];
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  };
+}
+
+export function WelcomeDialog({onDone}) {
+  const {update} = useAccessibilityContext();
+  const [chosen, setChosen] = useState([]);
+  const root = useRef(null);
+  useEffect(() => { root.current?.querySelector('.welcome-card')?.focus(); }, []);
+  const toggle = id => setChosen(current => (current.includes(id) ? current.filter(item => item !== id) : [...current, id]));
+  async function finish(apply) {
+    const settings = apply ? Object.assign({}, ...WELCOME_CARDS.filter(([id]) => chosen.includes(id)).map(card => card[3])) : {};
+    if (Object.keys(settings).length) update(settings, {save: false});
+    await save({...(Object.keys(settings).length ? {accessibility: settings} : {}), onboarding_completed: true});
+    onDone();
+  }
+  return <div className="onboarding-overlay">
+    <dialog open ref={root} className="welcome-dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-help"
+      onKeyDown={trap(root, () => finish(false))}>
+      <h2 id="welcome-title">¿Cómo prefieres usar TécnicoYa?</h2>
+      <p id="welcome-help" className="muted">Elige lo que te acomode; puedes marcar varias. Lo cambias cuando quieras en tu cuenta, pestaña Accesibilidad.</p>
+      <div className="welcome-cards" role="group" aria-label="Preferencias de uso">
+        {WELCOME_CARDS.map(([id, title, text, , icon]) => <button key={id} type="button" className="welcome-card" aria-pressed={chosen.includes(id)}
+          onClick={() => toggle(id)}>
+          <span className="welcome-icon" aria-hidden="true"><Icon name={icon}/></span>
+          <span><strong>{title}</strong><small>{text}</small></span>
+          <span className="welcome-check" aria-hidden="true">{chosen.includes(id) ? <Icon name="check"/> : null}</span>
+        </button>)}
+        <button type="button" className="welcome-card is-none" aria-pressed={chosen.length === 0} onClick={() => setChosen([])}>
+          <span className="welcome-icon" aria-hidden="true"><Icon name="check"/></span>
+          <span><strong>Ninguna, continuar</strong><small>Usar TécnicoYa como viene.</small></span>
+        </button>
+      </div>
+      <div className="welcome-actions">
+        <button type="button" className="button outline" onClick={() => finish(false)}>Omitir</button>
+        <button type="button" className="button primary" onClick={() => finish(true)}>Guardar y continuar</button>
+      </div>
+    </dialog>
+  </div>;
+}
+
+function visibleTarget(selectors) {
+  for (const selector of selectors) {
+    const element = document.querySelector(selector);
+    const box = element?.getBoundingClientRect();
+    if (box && box.width > 0 && box.height > 0) return box;
+  }
+  return null;
+}
+
+/** Tutorial: resalta la zona con un recuadro y una burbuja; teclado, Esc para omitir y foco gestionado. */
+export function Tour({onDone, persist = true}) {
+  const [step, setStep] = useState(0);
+  const [box, setBox] = useState(null);
+  const root = useRef(null);
+  const next = useRef(null);
+  const current = TOUR_STEPS[step];
+  useLayoutEffect(() => {
+    const measure = () => setBox(visibleTarget(current.targets));
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [current]);
+  useEffect(() => { next.current?.focus(); }, [step]);
+  async function end() {
+    if (persist) await save({tour_completed: true});
+    onDone();
+  }
+  const bubble = box ? {top: Math.min(box.bottom + 12, window.innerHeight - 220), left: Math.max(12, Math.min(box.left, window.innerWidth - 332))} : {};
+  return <div className="tour-layer">
+    {box && <div className="tour-highlight" aria-hidden="true"
+      style={{top: box.top - 6, left: box.left - 6, width: box.width + 12, height: box.height + 12}}/>}
+    <dialog open ref={root} className={'tour-bubble' + (box ? '' : ' is-centered')} style={bubble} aria-modal="true"
+      aria-labelledby="tour-title" aria-describedby="tour-text" onKeyDown={trap(root, end)}>
+      <p className="tour-step" aria-live="polite">Paso {step + 1} de {TOUR_STEPS.length}</p>
+      <h2 id="tour-title">{current.title}</h2>
+      <p id="tour-text">{current.text}</p>
+      <div className="tour-actions">
+        <button type="button" className="text-button" onClick={end}>Omitir tutorial</button>
+        <span>
+          <button type="button" className="button outline" disabled={step === 0} onClick={() => setStep(step - 1)}>Atrás</button>
+          <button ref={next} type="button" className="button primary"
+            onClick={() => (step === TOUR_STEPS.length - 1 ? end() : setStep(step + 1))}>
+            {step === TOUR_STEPS.length - 1 ? 'Terminar' : 'Siguiente'}</button>
+        </span>
+      </div>
+    </dialog>
+  </div>;
+}
+
+/** Muestra la bienvenida y luego el tutorial, solo si la cuenta no los marcó; replay repite el tutorial sin marcarlo. */
+export default function ClientOnboarding({user, replay = false, onReplayEnd = () => {}}) {
+  const prefs = user.client_profile?.preferences;
+  const [stage, setStage] = useState(() => (!prefs ? null : !prefs.onboarding_completed_at ? 'welcome' : !prefs.tour_completed_at ? 'tour' : null));
+  if (replay) return <Tour persist={false} onDone={onReplayEnd}/>;
+  if (stage === 'welcome') return <WelcomeDialog onDone={() => setStage(prefs?.tour_completed_at ? null : 'tour')}/>;
+  if (stage === 'tour') return <Tour onDone={() => setStage(null)}/>;
+  return null;
+}

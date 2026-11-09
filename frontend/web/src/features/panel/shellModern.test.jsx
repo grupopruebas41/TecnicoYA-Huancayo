@@ -106,7 +106,9 @@ test('S05-TC-225 «Aa» cambia el tamaño de texto, el alto contraste y lee la p
   expect(within(panel).getByRole('button', {name: '130 %'})).toHaveAttribute('aria-pressed', 'true');
   fireEvent.click(within(panel).getByRole('switch', {name: 'Alto contraste'}));
   expect(document.documentElement.dataset.contrast).toBe('high');
-  expect(JSON.parse(localStorage.getItem('tecnicoya.accesibilidad'))).toEqual({textSize: 130, contrast: true});
+  // Fase 5 (D-97): la copia local usa las claves de la cuenta y cada cambio se guarda con PUT /client/me/preferences.
+  expect(JSON.parse(localStorage.getItem('tecnicoya.accesibilidad'))).toMatchObject({text_size: 130, high_contrast: true});
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/client/me/preferences', {accessibility: {high_contrast: true}}, 'PUT'));
 
   fireEvent.click(within(panel).getByRole('button', {name: 'Leer la pantalla en voz alta'}));
   expect(speak).toHaveBeenCalledTimes(1);

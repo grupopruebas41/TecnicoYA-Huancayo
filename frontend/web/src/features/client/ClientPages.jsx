@@ -113,7 +113,7 @@ export function NewsPage() {
   </Page>;
 }
 
-export function HowItWorksPage({navigate}) {
+export function HowItWorksPage({navigate, onTour}) {
   return <Page title="Cómo funciona" intro="Pide un técnico en cuatro pasos.">
     <ol className="how-steps">
       {HOW_IT_WORKS.map((step, index) => <li key={step.title}>
@@ -121,7 +121,10 @@ export function HowItWorksPage({navigate}) {
         <div><p className="kicker">Paso {index + 1}</p><h3>{step.title}</h3><p>{step.text}</p></div>
       </li>)}
     </ol>
-    <button type="button" className="button primary" onClick={() => navigate('new')}>Hacer mi primera solicitud</button>
+    <div className="how-actions">
+      <button type="button" className="button primary" onClick={() => navigate('new')}>Hacer mi primera solicitud</button>
+      {onTour && <button type="button" className="button outline" onClick={onTour}>Ver el tutorial otra vez</button>}
+    </div>
   </Page>;
 }
 

@@ -1,36 +1,72 @@
-import React, {useEffect, useRef, useState} from 'react';
+import '@fontsource/atkinson-hyperlegible/400.css';
+import '@fontsource/atkinson-hyperlegible/700.css';
+import React, {createContext, useContext, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {request} from '../administration/http';
 import useDismiss from './useDismiss';
 
 /**
- * Fase 4 del panel final: accesibilidad rápida («Aa»). Tamaño de texto, alto contraste y leer en voz alta.
- * Se aplica con atributos en <html> y se recuerda en este equipo (localStorage con try/catch). La Fase 5 los guarda en la
- * cuenta (D-97). Nunca se pregunta ni se guarda qué discapacidad tiene la persona: solo preferencias de uso.
+ * Accesibilidad del cliente (Fase 4 «Aa»; Fase 5, D-97): ajustes guardados en la cuenta (GET/PUT /client/me/preferences)
+ * y aplicados con atributos en <html> antes de pintar (useLayoutEffect), sin parpadeo. localStorage es solo el respaldo
+ * del equipo, con try/catch. Nunca se pregunta ni se guarda qué discapacidad tiene la persona: solo preferencias de uso.
  */
 export const TEXT_SIZES = [100, 115, 130, 150];
+export const DEFAULT_PREFS = {
+  text_size: 100, high_contrast: false, readable_font: false, reduce_motion: false,
+  strong_focus: false, read_aloud: false, dictation: false, simple_mode: false,
+};
+export const TOGGLES = [
+  ['high_contrast', 'Alto contraste', 'Colores con más contraste en todo el panel.'],
+  ['readable_font', 'Fuente legible y más espacio', 'Letra Atkinson Hyperlegible, interlineado 1,6 y más espacio entre letras.'],
+  ['reduce_motion', 'Reducir animaciones', 'Pausa los carruseles, los videos y las transiciones.'],
+  ['strong_focus', 'Foco grueso y enlaces subrayados', 'Un contorno de 3 px marca dónde estás al usar el teclado.'],
+  ['read_aloud', 'Leer en voz alta', 'Agrega un botón para escuchar la pantalla.'],
+  ['dictation', 'Dictar por voz', 'Muestra un micrófono en «¿Qué se malogró?».'],
+  ['simple_mode', 'Modo simple', 'Botones más grandes y menos elementos decorativos.'],
+];
 const KEY = 'tecnicoya.accesibilidad';
 const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
 const write = value => { try { localStorage.setItem(KEY, JSON.stringify(value)); } catch { /* sin almacenamiento */ } };
-const sanitize = value => ({
-  textSize: TEXT_SIZES.includes(Number(value.textSize)) ? Number(value.textSize) : 100,
-  contrast: value.contrast === true,
-});
+// Acepta también el formato de la Fase 4 ({textSize, contrast}).
+export function sanitize(value = {}) {
+  const legacy = {text_size: value.textSize, high_contrast: value.contrast};
+  const merged = {...DEFAULT_PREFS, ...Object.fromEntries(Object.entries(legacy).filter(([, v]) => v !== undefined)), ...value};
+  const result = {text_size: TEXT_SIZES.includes(Number(merged.text_size)) ? Number(merged.text_size) : 100};
+  Object.keys(DEFAULT_PREFS).filter(key => key !== 'text_size').forEach(key => { result[key] = merged[key] === true; });
+  return result;
+}
 
 export function applyAccessibility(prefs) {
   const root = document.documentElement;
-  root.dataset.textSize = String(prefs.textSize);
-  if (prefs.contrast) root.dataset.contrast = 'high'; else delete root.dataset.contrast;
+  root.dataset.textSize = String(prefs.text_size);
+  const flags = {contrast: prefs.high_contrast && 'high', font: prefs.readable_font && 'readable', motion: prefs.reduce_motion && 'reduce',
+    focus: prefs.strong_focus && 'strong', simple: prefs.simple_mode && 'on'};
+  Object.entries(flags).forEach(([name, value]) => { if (value) root.dataset[name] = value; else delete root.dataset[name]; });
+}
+const clear = () => ['textSize', 'contrast', 'font', 'motion', 'focus', 'simple'].forEach(name => delete document.documentElement.dataset[name]);
+
+/** Movimiento reducido por ajuste de la cuenta o del sistema (carruseles, tutorial). */
+export const prefersReducedMotion = () => document.documentElement.dataset.motion === 'reduce'
+  || Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches);
+
+/** Estado compartido por «Aa», la pestaña Accesibilidad, la bienvenida y el dictado. save=false no escribe en la cuenta. */
+export function useAccessibility(user = null) {
+  const server = user?.client_profile?.preferences?.accessibility;
+  const [prefs, setPrefs] = useState(() => sanitize(server || read()));
+  const [error, setError] = useState('');
+  useLayoutEffect(() => { applyAccessibility(prefs); write(prefs); }, [prefs]);
+  useLayoutEffect(() => clear, []);
+  function update(patch, {save = true} = {}) {
+    setPrefs(current => sanitize({...current, ...patch}));
+    if (!save || !user?.client_profile) return Promise.resolve();
+    setError('');
+    return Promise.resolve().then(() => request('/client/me/preferences', {accessibility: patch}, 'PUT'))
+      .catch(failure => setError(failure?.message || 'Aplicamos el ajuste en este equipo, pero no pudimos guardarlo en tu cuenta.'));
+  }
+  return [prefs, update, error];
 }
 
-/** Estado compartido por el botón «Aa» y la pestaña Accesibilidad del panel del avatar. */
-export function useAccessibility() {
-  const [prefs, setPrefs] = useState(() => sanitize(read()));
-  useEffect(() => {
-    applyAccessibility(prefs);
-    write(prefs);
-  }, [prefs]);
-  useEffect(() => () => { delete document.documentElement.dataset.textSize; delete document.documentElement.dataset.contrast; }, []);
-  return [prefs, patch => setPrefs(current => sanitize({...current, ...patch}))];
-}
+export const AccessibilityContext = createContext({prefs: DEFAULT_PREFS, update: () => Promise.resolve()});
+export const useAccessibilityContext = () => useContext(AccessibilityContext);
 
 export const canSpeak = () => typeof window !== 'undefined' && 'speechSynthesis' in window && typeof window.SpeechSynthesisUtterance === 'function';
 
@@ -54,22 +90,24 @@ export function useReader() {
   return [speaking, toggle];
 }
 
-/** Controles reutilizables: tamaño de texto, alto contraste y, si el navegador puede, leer en voz alta. */
-export function AccessibilityControls({prefs, onChange, reader}) {
+/** Tamaño de texto, alto contraste y leer en voz alta; con full, todos los ajustes con su descripción. */
+export function AccessibilityControls({prefs, onChange, reader, full = false}) {
   const [speaking, toggleReading] = reader;
+  const toggles = full ? TOGGLES : TOGGLES.filter(([key]) => key === 'high_contrast');
   return <div className="a11y-controls">
     <fieldset className="a11y-sizes">
       <legend>Tamaño de texto</legend>
       <div role="group" aria-label="Tamaño de texto">
-        {TEXT_SIZES.map(size => <button key={size} type="button" aria-pressed={prefs.textSize === size}
-          onClick={() => onChange({textSize: size})}>{size} %</button>)}
+        {TEXT_SIZES.map(size => <button key={size} type="button" aria-pressed={prefs.text_size === size}
+          onClick={() => onChange({text_size: size})}>{size} %</button>)}
       </div>
     </fieldset>
-    <label className="a11y-switch">
-      <input type="checkbox" role="switch" checked={prefs.contrast} onChange={event => onChange({contrast: event.target.checked})}/>
-      <span>Alto contraste</span>
-    </label>
-    {canSpeak() && <button type="button" className="button outline a11y-read" aria-pressed={speaking} onClick={() => toggleReading()}>
+    {toggles.map(([key, label, help]) => <label key={key} className="a11y-switch">
+      <input type="checkbox" role="switch" checked={prefs[key]} aria-describedby={full ? `ayuda-${key}` : undefined}
+        onChange={event => onChange({[key]: event.target.checked})}/>
+      <span>{label}{full && <small id={`ayuda-${key}`} className="muted">{help}</small>}</span>
+    </label>)}
+    {canSpeak() && !full && <button type="button" className="button outline a11y-read" aria-pressed={speaking} onClick={() => toggleReading()}>
       {speaking ? 'Detener la lectura' : 'Leer la pantalla en voz alta'}
     </button>}
   </div>;

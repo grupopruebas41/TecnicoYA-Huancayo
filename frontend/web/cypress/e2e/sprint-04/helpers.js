@@ -1,4 +1,5 @@
 import { openCard } from "../sprint-03/helpers";
+import { dismissOnboarding } from "../../support/sprint01";
 import { api, observe, apiWrite, openMyRequests } from "../sprint-03/helpers";
 export { api, observe, apiWrite, openMyRequests };
 export function login(account) {
@@ -9,6 +10,7 @@ export function login(account) {
   );
   cy.get("[data-cy=login-submit]").click();
   cy.get("[data-cy^=portal-]").should("be.visible"); // Fase 4: el cliente ya no tiene «Cerrar sesión» a la vista.
+  dismissOnboarding(); // Fase 5: la bienvenida sale la primera vez que entra un cliente.
 }
 export function read(path) {
   return cy.request({

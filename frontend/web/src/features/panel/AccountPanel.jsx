@@ -204,13 +204,13 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
         {tab === 'cuenta' && <ProfilePage user={user} onUpdate={onUpdate} onExpired={onExpired}/>}
         {tab === 'direcciones' && <AddressesTab/>}
         {tab === 'accesibilidad' && <>
-          <AccessibilityControls prefs={a11y[0]} onChange={a11y[1]} reader={reader}/>
+          <AccessibilityControls prefs={a11y[0]} onChange={a11y[1]} reader={reader} full/>
           <div className="a11y-preview" aria-label="Vista previa">
             <p className="kicker">Vista previa</p>
             <p><strong>Tu técnico llega hoy entre las 3 y las 5 p. m.</strong></p>
             <p>Así se verán los textos del panel con los ajustes que elijas.</p>
           </div>
-          <p className="muted">Fuente legible, reducir animaciones y modo simple: próximamente.</p>
+          <p className="muted">Se guardan en tu cuenta y se aplican en cualquier equipo donde inicies sesión.</p>
         </>}
         {tab === 'comunicacion' && <CommunicationTab/>}
         {tab === 'apariencia' && <fieldset className="account-theme">
