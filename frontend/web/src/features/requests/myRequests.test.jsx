@@ -178,6 +178,11 @@ test('S05-TC-169 cancelar abre un diálogo accesible con la lista cerrada de mot
   expect(request.mock.calls.filter(([path]) => path.endsWith('/cancellation'))).toHaveLength(0);
   const css = readFileSync(resolve('src/features/client/client.css'), 'utf8').replace(/\r\n/g, '\n');
   expect(css).toMatch(/\.client-reason-option \{[^}]*min-height: 48px/);
+  // Vistos en las capturas: con seis opciones el diálogo superaba la pantalla y el botón quedaba fuera; el círculo iba encima del texto.
+  expect(dialog).toHaveClass('client-cancel-dialog');
+  expect(css).toMatch(/dialog\.client-cancel-dialog \{[^}]*max-height: calc\(100dvh - 32px\)[^}]*overflow-y: auto/);
+  expect(css).toMatch(/\.panel-shell \.client-reason-group \.client-reason-option \{[^}]*display: flex[^}]*flex-direction: row/);
+  expect(css).toMatch(/\.panel-shell \.client-reason-option input\[type="radio"\] \{[^}]*flex: 0 0 20px/);
 
   fireEvent.keyDown(dialog, {key: 'Escape'});
   expect(screen.queryByRole('dialog')).toBeNull();
