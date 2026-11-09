@@ -2,6 +2,16 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-08 · D-100 aprobada: motivo de cancelación de una lista cerrada
+
+- **Rama:** `feature/mayhuasca/cliente/cancelacion-motivos`, apilada sobre el PR #47 (PR #49). Detalle en `docs/avances/mayhuasca/cliente/cancelacion-motivos/avance.md`.
+- **Cambios:** migración `000032` (`cancellation_reason_code`), validación de la lista y diálogo con seis opciones grandes.
+- **Pruebas:** Pest 445/445; Vitest 400/400; Cypress S05-TC-179 adaptada, sin ejecutar.
+- **Defecto visto en las capturas y corregido:** el diálogo superaba la pantalla y el botón quedaba fuera.
+- **DEF-59** va en su propia rama (PR #48) con su entrada de relevo.
+- **Pendiente:** Cypress S5 (S05-TC-146, 147, 178 y 179) cuando haya 1,5 GB libres.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-04 · Panel del cliente final, Fase 2: Mis solicitudes completo
 
 - **Ramas:**
