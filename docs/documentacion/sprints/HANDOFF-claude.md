@@ -9,6 +9,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Frontend:** ☰ junto al logo, campana con «Marcar todas como leídas», «Aa», panel del avatar con 5 pestañas, menú sin CUENTA (Servicios, Mi hogar / Mi negocio con candado, Descubre y Ayuda) y direcciones guardadas en el paso 4.
 - **Pruebas:** S05-TC-217 a 221 (Pest) y 222 a 231 (Vitest) en verde; Cypress S05-TC-232 a 234 escritas sin ejecutar. Capturas `2026-11-10-7a92bee-shell-*` (1366 y 390, claro).
 - **Pruebas adaptadas:** S05-TC-026, 035, 036 y 037, S01-TC-016, 076 y 084, y las Cypress del S1 (`logout()` y `openProfile()` abren el panel del avatar).
+- **Rediseño de la campana (pedido de Pimentel el 2026-11-10, misma rama):** `/notifications` suma `category` y `context` (pedido, solicitud, especialidad y subcategorías). Panel y página con «N nuevas», pestañas Todas y No leídas, grupos Hoy, Ayer y Anteriores, repetidos agrupados, tiempo relativo, estado vacío y pantalla completa en el celular. S05-TC-235 (Pest) y 236 a 239 (Vitest). Capturas `2026-11-10-9fb09c6-campana-*`. La Fase 5 empieza en S05-TC-240.
 - **Pendiente para el cierre:** catálogo, contrato §12, avance y evidencias detalladas de la Fase 4; ejecutar Cypress. La pestaña Accesibilidad trae lo básico; el resto de ajustes y guardarlos en la cuenta van en la Fase 5.
 - **Pedidos a Codex:** ninguno.
 
