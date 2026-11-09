@@ -385,3 +385,22 @@
   .profile-cta-bar .client-profile-cta { flex: 1 1 auto; }
   .search-filters .search-chip > span { font-size: 0.8rem; }
 }
+
+/* S05-TC-216, segunda ronda de capturas: .panel-content label:not(.button) (0,2,1) pone la etiqueta en grilla y los
+   select con 46 px; y .panel-shell .client-profile-cta fija el botón solo en el celular, fuera de la barra. */
+.panel-content .search-filters label.search-chip {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+.panel-content .search-filters .search-chip select {
+  min-height: 36px;
+  padding: 4px 26px 4px 4px;
+  border: 0;
+  background-color: transparent;
+}
+.panel-shell .profile-cta-bar .client-profile-cta {
+  position: static;
+  box-shadow: none;
+}
