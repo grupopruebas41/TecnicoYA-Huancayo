@@ -363,3 +363,25 @@ test('S05-TC-210 diseño: chips de 44 px, barra de filtros fija, «Solicitar ser
   expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)/);
   expect(css).not.toMatch(/#[0-9a-f]{3,6}\b/i);
 });
+
+test('S05-TC-215 defectos vistos en las capturas: chips en una fila, nombre bajo la portada, portada a lo ancho y corazón visible en el celular', async () => {
+  const css = readFileSync(resolve('src/features/matching/search.css'), 'utf8');
+  // styles.css pone las etiquetas en columna con margen y los select a todo el ancho: el chip lo deshace.
+  expect(css).toMatch(/\.search-filters \.search-chip \{[^}]*flex-direction: row[^}]*margin: 0/);
+  expect(css).toMatch(/\.search-filters \.search-chip select \{[^}]*width: auto/);
+  expect(css).toMatch(/\.search-filters \.search-toggle \{[^}]*padding: 0 16px/);
+  // El nombre y las insignias empiezan debajo de la portada; solo el avatar se monta sobre ella.
+  expect(css).toMatch(/\.tech-card-title \{[^}]*padding-top: 34px/);
+  expect(css).toMatch(/:is\(\.tech-badges, \.client-chips-inline\) \.client-chip \{[^}]*display: inline-flex[^}]*white-space: nowrap/);
+  // .client-profile-head es una grilla de tres columnas: el perfil moderno la anula para que la portada vaya a lo ancho.
+  expect(css).toMatch(/\.client-profile-head\.tech-profile-head \{[^}]*display: block/);
+  expect(css).toMatch(/\.tech-profile-identity \.client-profile-title \{[^}]*padding-top: 44px/);
+  expect(css).toMatch(/\.profile-cta-bar \{[^}]*flex-wrap: nowrap/);
+  expect(css).toMatch(/\.profile-cta-bar \.tech-favorite \{[^}]*flex: 0 0 48px/);
+  expect(css).toMatch(/\.client-block h4 \{[^}]*margin: 12px 0 4px/);
+
+  mockProfile();
+  const {container} = render(<TechnicianProfile id={7} onBack={() => {}}/>);
+  await screen.findByRole('region', {name: 'Portafolio'});
+  expect(container.querySelector('.tech-illustration')).toHaveAttribute('preserveAspectRatio', 'xMidYMid slice');
+});
