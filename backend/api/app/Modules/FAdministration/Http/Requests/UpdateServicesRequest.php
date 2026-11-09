@@ -19,6 +19,8 @@ final class UpdateServicesRequest extends FormRequest
             'services' => ['present', 'array', 'max:30'],
             'services.*.subcategory_id' => ['required', 'integer', 'distinct', new ActiveSubcategory],
             'services.*.reference_fee' => ['required', 'numeric', 'decimal:0,2', 'min:'.self::MIN_FEE, 'max:'.self::MAX_FEE],
+            // D-101 (propuesta): «qué incluye» el servicio; no versiona la tarifa.
+            'services.*.includes' => ['sometimes', 'nullable', 'string', 'max:300'],
             'expected_version' => ['required', 'integer', 'min:1'],
         ];
     }
@@ -29,6 +31,7 @@ final class UpdateServicesRequest extends FormRequest
             'services.*.reference_fee.min' => __('api.rate_range'),
             'services.*.reference_fee.max' => __('api.rate_range'),
             'services.*.reference_fee.decimal' => __('api.rate_decimals'),
+            'services.*.includes.max' => __('api.includes_max'),
         ];
     }
 }

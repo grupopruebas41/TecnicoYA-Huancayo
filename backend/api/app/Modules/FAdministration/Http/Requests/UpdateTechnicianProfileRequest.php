@@ -15,6 +15,9 @@ final class UpdateTechnicianProfileRequest extends FormRequest
     {
         return [
             'bio' => ['sometimes', 'nullable', 'string', 'max:2000'],
+            // D-101 (propuesta): forma de trabajo y garantía declarada del perfil público.
+            'work_style' => ['sometimes', 'nullable', 'string', 'max:500'],
+            'warranty_text' => ['sometimes', 'nullable', 'string', 'max:300'],
             'experience_years' => ['sometimes', 'required', 'integer', 'min:0', 'max:60'],
             // D-64: distrito base desde el que se mide la distancia del matching; solo un distrito activo.
             'base_district_id' => ['sometimes', 'nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)],
@@ -26,6 +29,7 @@ final class UpdateTechnicianProfileRequest extends FormRequest
 
     public function messages(): array
     {
-        return ['base_district_id.integer' => __('api.base_district'), 'base_district_id.exists' => __('api.base_district')];
+        return ['base_district_id.integer' => __('api.base_district'), 'base_district_id.exists' => __('api.base_district'),
+            'work_style.max' => __('api.work_style_max'), 'warranty_text.max' => __('api.warranty_max')];
     }
 }

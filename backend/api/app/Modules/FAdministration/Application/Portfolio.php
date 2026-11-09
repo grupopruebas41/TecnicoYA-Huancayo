@@ -27,7 +27,7 @@ final class Portfolio
                 'performed_on' => $data['performed_on'] ?? null,
                 'status' => $data['status'],
             ]);
-            $this->replaceImages($itemId, $data['media_ids']);
+            $this->replaceImages($itemId, $data['media_ids'], $data['image_stages'] ?? []);
 
             return DB::table('portfolio_items')->find($itemId);
         });
@@ -42,7 +42,7 @@ final class Portfolio
                 'version' => $item->version + 1, 'updated_at' => now(),
             ]);
             if (isset($data['media_ids'])) {
-                $this->replaceImages($itemId, $data['media_ids']);
+                $this->replaceImages($itemId, $data['media_ids'], $data['image_stages'] ?? []);
             }
 
             return DB::table('portfolio_items')->find($itemId);
@@ -93,11 +93,13 @@ final class Portfolio
         return $item;
     }
 
-    private function replaceImages(int $itemId, array $mediaIds): void
+    private function replaceImages(int $itemId, array $mediaIds, array $stages = []): void
     {
         DB::table('portfolio_images')->where('portfolio_id', $itemId)->delete();
+        $stages = array_values($stages);
         foreach (array_values($mediaIds) as $position => $mediaId) {
-            DB::table('portfolio_images')->insert(['portfolio_id' => $itemId, 'media_id' => $mediaId, 'position' => $position]);
+            DB::table('portfolio_images')->insert(['portfolio_id' => $itemId, 'media_id' => $mediaId, 'position' => $position,
+                'stage' => $stages[$position] ?? null]);
         }
     }
 
@@ -106,7 +108,7 @@ final class Portfolio
         return DB::table('portfolio_images as i')->join('media_files as m', 'm.id', '=', 'i.media_id')
             ->where('i.portfolio_id', $itemId)->whereNull('m.retired_at')
             ->when($publicOnly, fn ($q) => $q->where('m.visibility', 'public')->where('m.scan_status', 'clean'))
-            ->orderBy('i.position')->get(['i.media_id', 'i.position', 'i.caption'])
+            ->orderBy('i.position')->get(['i.media_id', 'i.position', 'i.caption', 'i.stage'])
             ->map(fn (object $image) => (array) $image + ['url' => url("/api/v1/media/{$image->media_id}")])->all();
     }
 }

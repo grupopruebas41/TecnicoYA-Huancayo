@@ -104,6 +104,7 @@ it('S05-TC-193 las reseñas de ejemplo traen promedio, barras de 5 a 1 y la marc
 it('S05-TC-194 el técnico edita forma de trabajo, garantía y qué incluye con límites en español y sin nueva versión de tarifa', function () {
     Sanctum::actingAs($this->technician->user);
     $own = $this->getJson('/api/v1/technicians/me/profile')->assertOk()->json('data');
+    $rates = DB::table('service_rate_versions')->count();
     $service = ['subcategory_id' => Sprint04::subcategory('frio-vitrinas'), 'reference_fee' => '120.00'];
 
     $long = $this->patchJson('/api/v1/technicians/me/profile', ['work_style' => str_repeat('a', 501), 'warranty_text' => str_repeat('b', 301),
@@ -126,7 +127,7 @@ it('S05-TC-194 el técnico edita forma de trabajo, garantía y qué incluye con 
         ->and($mine['warranty_text'])->toBeNull()
         ->and($mine['services'][0]['includes'])->toBe('Incluye repuestos menores.')
         ->and($mine['services'][0]['rate_version'])->toBe(1)
-        ->and(DB::table('service_rate_versions')->count())->toBe(0)
+        ->and(DB::table('service_rate_versions')->count())->toBe($rates)
         ->and($saved->json('data.version'))->toBe($version + 1);
 });
 

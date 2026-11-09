@@ -12,10 +12,11 @@ use Illuminate\Validation\Rule;
  * lugar de ignorarse, para que la SPA no crea que filtra por algo que el servidor no aplica.
  * D-88 (BUSQ-01): sort=proximity ordena por cercanía al distrito del filtro o, si no viene, al distrito principal
  * del cliente; max_fee limita la tarifa de referencia.
+ * D-101 (propuesta): sort=price|experience y available_today (booleano).
  */
 final class SearchTechniciansRequest extends FormRequest
 {
-    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'max_fee', 'sort', 'page', 'per_page'];
+    public const FILTERS = ['specialty_id', 'subcategory_id', 'district_id', 'min_rating', 'max_fee', 'available_today', 'sort', 'page', 'per_page'];
 
     public function rules(): array
     {
@@ -30,7 +31,8 @@ final class SearchTechniciansRequest extends FormRequest
             'district_id' => ['nullable', 'integer', Rule::exists('districts', 'id')->where('active', 1)],
             'min_rating' => ['nullable', 'numeric', 'between:1,5'],
             'max_fee' => ['nullable', 'numeric', 'between:0,10000'],
-            'sort' => ['nullable', Rule::in(['name', 'proximity'])],
+            'sort' => ['nullable', Rule::in(['name', 'proximity', 'price', 'experience'])],
+            'available_today' => ['nullable', 'boolean'],
             'page' => ['nullable', 'integer', 'min:1'],
             'per_page' => ['nullable', 'integer', 'between:1,50'],
         ];
@@ -46,6 +48,7 @@ final class SearchTechniciansRequest extends FormRequest
             'max_fee.numeric' => __('api.max_fee_range'),
             'max_fee.between' => __('api.max_fee_range'),
             'sort.in' => __('api.sort_invalid'),
+            'available_today.boolean' => __('api.available_today'),
             'per_page.between' => __('api.per_page_range'),
             'page.min' => __('api.page_invalid'),
         ];
