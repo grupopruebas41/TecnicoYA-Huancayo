@@ -39,6 +39,9 @@ describe("Mis solicitudes completo", () => {
     cy.contains("button", /^Cancelar la solicitud #/).click();
     cy.get('dialog[aria-modal="true"]').within(() => {
       cy.contains("button", "Cancelar solicitud").click();
+      cy.contains("Elige un motivo.").should("be.visible");
+      cy.contains("label", "Otro motivo").click();
+      cy.contains("button", "Cancelar solicitud").click();
       cy.contains("debe tener de 5 a 255 caracteres").should("be.visible");
       cy.get("textarea[name=reason]").type("Ya lo resolví por otro medio.");
       cy.contains("button", "Cancelar solicitud").click();

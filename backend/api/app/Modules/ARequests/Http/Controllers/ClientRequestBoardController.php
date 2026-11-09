@@ -30,11 +30,13 @@ final class ClientRequestBoardController
     public function cancel(Request $request, int $serviceRequest, RequestCancellation $cancellation, Idempotency $idempotency): JsonResponse
     {
         $data = $request->validate([
-            'reason' => ['required', 'string', 'min:5', 'max:255'],
+            'reason_code' => ['required', Rule::in(RequestCancellation::REASON_CODES)],
+            'reason' => ['nullable', 'string', 'max:255', 'required_if:reason_code,other', $request->input('reason_code') === 'other' ? 'min:5' : 'min:0'],
             'expected_version' => ['required', 'integer', 'min:1'],
         ], [
-            'reason.required' => __('api.cancellation_reason'), 'reason.string' => __('api.cancellation_reason'),
-            'reason.min' => __('api.cancellation_reason'), 'reason.max' => __('api.cancellation_reason'),
+            'reason_code.required' => __('api.cancellation_code'), 'reason_code.in' => __('api.cancellation_code'),
+            'reason.required_if' => __('api.cancellation_reason'), 'reason.string' => __('api.cancellation_reason'),
+            'reason.min' => __('api.cancellation_reason'), 'reason.max' => __('api.cancellation_comment'),
         ]);
 
         $key = (string) $request->header('Idempotency-Key');

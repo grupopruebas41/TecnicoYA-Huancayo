@@ -284,13 +284,16 @@ Un pedido agrupa una solicitud por especialidad, cada una con todas las subcateg
 ### 10.2 `POST /requests/{id}/cancellation` **[nuevo]** (titular, `Idempotency-Key` obligatoria; HU-S05-06, D-28)
 
 ```json
-{"reason": "Ya lo resolví por otro medio.", "expected_version": 2}
+{"reason_code": "other", "reason": "Ya lo resolví por otro medio.", "expected_version": 2}
 ```
+
+- `reason_code` (D-100, aprobada el 2026-11-08): `solved`, `other_technician`, `reschedule`, `price`, `mistake` u `other`. Se guarda en `service_requests.cancellation_reason_code` (migración `000032`).
+- `reason`: con `other`, obligatorio de 5 a 255 caracteres; con los demás, opcional y hasta 255. Se guarda en `cancellation_reason`; vacío queda `null`.
 
 | Caso | Respuesta |
 |---|---|
 | Cancelada | 200 `{"id", "status": "cancelled", "phase": "cancelled", "version"}` |
-| `reason` fuera de 5 a 255 caracteres (D-100), o sin clave | 422 en español |
+| Sin `reason_code` o fuera de la lista; `reason` fuera de su regla; sin clave | 422 en español |
 | Versión desactualizada | 409 `STALE_VERSION` |
 | `in_progress`, `completed`, `closed`, `unrated`, `cancelled` o `expired` | 409 `CANCELLATION_NOT_ALLOWED` (TC-070) |
 | Solicitud ajena | 404 |

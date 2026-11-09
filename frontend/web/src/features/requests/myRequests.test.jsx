@@ -5,7 +5,8 @@ import {afterEach, expect, test, vi} from 'vitest';
 import {act, cleanup, fireEvent, render, screen, waitFor, within} from '@testing-library/react';
 import MyRequests from './MyRequests';
 import {request} from '../administration/http';
-// S05-TC-162 a 177 · Fase 2 del panel final: Mis solicitudes completo sobre GET /client/requests (contrato S5 §10).
+// S05-TC-162 a 177 y 180 · Fase 2 del panel final: Mis solicitudes completo sobre GET /client/requests (contrato S5 §10).
+// S05-TC-169, 170, 171, 177 y 180 se adaptaron a D-100 aprobada: el motivo se elige de una lista cerrada.
 vi.mock('../administration/http', () => ({request: vi.fn(), serverNow: () => Date.parse('2026-11-04T20:00:00Z')}));
 vi.mock('../offers/RequestTracking', () => ({default: ({requestId}) => <p>Seguimiento de la solicitud {requestId}</p>}));
 afterEach(() => { cleanup(); vi.resetAllMocks(); });
@@ -145,7 +146,7 @@ test('S05-TC-168 la línea de tiempo resumida va en una lista accesible; sin eve
   expect(screen.queryByRole('list', {name: 'Últimos avances de la solicitud #42'})).toBeNull();
 });
 
-test('S05-TC-169 cancelar abre un diálogo accesible que valida el motivo, se cierra con Escape y devuelve el foco', async () => {
+test('S05-TC-169 cancelar abre un diálogo accesible con la lista cerrada de motivos en opciones grandes; «Otro motivo» exige texto [D-100]', async () => {
   routes();
   render(<MyRequests/>);
   const open = await screen.findByRole('button', {name: 'Cancelar la solicitud #41'});
@@ -153,19 +154,35 @@ test('S05-TC-169 cancelar abre un diálogo accesible que valida el motivo, se ci
   fireEvent.click(open);
 
   const dialog = screen.getByRole('dialog', {name: 'Cancelar la solicitud #41'});
-  const reason = within(dialog).getByRole('textbox', {name: 'Motivo de la cancelación'});
   expect(dialog).toHaveAttribute('aria-modal', 'true');
-  await waitFor(() => expect(reason).toHaveFocus());
+  const group = within(dialog).getByRole('radiogroup', {name: '¿Por qué cancelas?'});
+  const options = within(group).getAllByRole('radio');
+  expect(options.map(option => option.closest('label').textContent)).toEqual(['Ya se solucionó el problema', 'Encontré otro técnico',
+    'Necesito cambiar la fecha u horario', 'El precio no me conviene', 'Me equivoqué al hacer el pedido', 'Otro motivo']);
+  options.forEach(option => expect(option.closest('label')).toHaveClass('client-reason-option'));
+  await waitFor(() => expect(options[0]).toHaveFocus());
 
+  fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'}));
+  expect(await within(dialog).findByText('Elige un motivo.')).toHaveAttribute('id', 'cancel-code-error');
+  expect(group).toHaveAttribute('aria-describedby', 'cancel-code-error');
+  expect(within(dialog).getByRole('textbox', {name: 'Comentario (opcional)'})).toBeInTheDocument();
+
+  fireEvent.click(within(group).getByRole('radio', {name: 'Otro motivo'}));
+  const reason = within(dialog).getByRole('textbox', {name: 'Cuéntanos el motivo'});
+  expect(reason).toBeRequired();
+  fireEvent.change(reason, {target: {value: 'Nada'}});
   fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'}));
   expect(await within(dialog).findByText('Cuéntanos el motivo: debe tener de 5 a 255 caracteres.')).toHaveAttribute('id', 'cancel-reason-error');
   expect(reason).toHaveAttribute('aria-invalid', 'true');
   expect(reason).toHaveAttribute('aria-describedby', 'cancel-reason-error');
-  fireEvent.change(reason, {target: {value: 'Nada'}});
-  fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'}));
-  fireEvent.change(reason, {target: {value: 'a'.repeat(256)}});
-  fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'}));
   expect(request.mock.calls.filter(([path]) => path.endsWith('/cancellation'))).toHaveLength(0);
+  const css = readFileSync(resolve('src/features/client/client.css'), 'utf8').replace(/\r\n/g, '\n');
+  expect(css).toMatch(/\.client-reason-option \{[^}]*min-height: 48px/);
+  // Vistos en las capturas: con seis opciones el diálogo superaba la pantalla y el botón quedaba fuera; el círculo iba encima del texto.
+  expect(dialog).toHaveClass('client-cancel-dialog');
+  expect(css).toMatch(/dialog\.client-cancel-dialog \{[^}]*max-height: calc\(100dvh - 32px\)[^}]*overflow-y: auto/);
+  expect(css).toMatch(/\.panel-shell \.client-reason-group \.client-reason-option \{[^}]*display: flex[^}]*flex-direction: row/);
+  expect(css).toMatch(/\.panel-shell \.client-reason-option input\[type="radio"\] \{[^}]*flex: 0 0 20px/);
 
   fireEvent.keyDown(dialog, {key: 'Escape'});
   expect(screen.queryByRole('dialog')).toBeNull();
@@ -183,6 +200,7 @@ test('S05-TC-170 cancelar envía el motivo con la versión y una clave que se re
   render(<MyRequests/>);
   fireEvent.click(await screen.findByRole('button', {name: 'Cancelar la solicitud #41'}));
   const dialog = screen.getByRole('dialog');
+  fireEvent.click(within(dialog).getByRole('radio', {name: 'Ya se solucionó el problema'}));
   fireEvent.change(within(dialog).getByRole('textbox'), {target: {value: '  Ya lo resolví por otro medio.  '}});
   const before = boardCalls().length;
 
@@ -193,7 +211,7 @@ test('S05-TC-170 cancelar envía el motivo con la versión y una clave que se re
   const posts = request.mock.calls.filter(([path]) => path.endsWith('/cancellation'));
   expect(posts).toHaveLength(2);
   expect(posts[0][0]).toBe('/requests/41/cancellation');
-  expect(posts[0][1]).toEqual({reason: 'Ya lo resolví por otro medio.', expected_version: 2});
+  expect(posts[0][1]).toEqual({reason_code: 'solved', reason: 'Ya lo resolví por otro medio.', expected_version: 2});
   expect(posts[0][2]).toBe('POST');
   expect(posts[0][3].headers['Idempotency-Key']).toBe(posts[1][3].headers['Idempotency-Key']);
   expect(screen.queryByRole('dialog')).toBeNull();
@@ -208,7 +226,7 @@ test('S05-TC-171 si el servidor ya no permite cancelar, avisa con su mensaje, ci
   render(<MyRequests/>);
   fireEvent.click(await screen.findByRole('button', {name: 'Cancelar la solicitud #41'}));
   const dialog = screen.getByRole('dialog');
-  fireEvent.change(within(dialog).getByRole('textbox'), {target: {value: 'Ya no lo necesito.'}});
+  fireEvent.click(within(dialog).getByRole('radio', {name: 'Me equivoqué al hacer el pedido'}));
   const before = boardCalls().length;
 
   await act(async () => { fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'})); });
@@ -320,7 +338,7 @@ test('S05-TC-177 «Ver detalle» abre el seguimiento; desde el Inicio se abre di
 
   fireEvent.click(screen.getByRole('button', {name: 'Cancelar la solicitud #41'}));
   const dialog = screen.getByRole('dialog');
-  fireEvent.change(within(dialog).getByRole('textbox'), {target: {value: 'Ya no lo necesito.'}});
+  fireEvent.click(within(dialog).getByRole('radio', {name: 'Me equivoqué al hacer el pedido'}));
   routes.cancel = async () => ({data: {id: 41, status: 'cancelled', phase: 'cancelled', version: 3}});
   await act(async () => { fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'})); });
   await waitFor(() => expect(screen.queryByText('Seguimiento de la solicitud 41')).toBeNull());
@@ -342,7 +360,7 @@ test('S05-TC-180 si la búsqueda avanzó mientras estaba abierta la lista, cance
   render(<MyRequests/>);
   fireEvent.click(await screen.findByRole('button', {name: 'Cancelar la solicitud #41'}));
   const dialog = screen.getByRole('dialog');
-  fireEvent.change(within(dialog).getByRole('textbox'), {target: {value: 'Ya no lo necesito.'}});
+  fireEvent.click(within(dialog).getByRole('radio', {name: 'Me equivoqué al hacer el pedido'}));
 
   await act(async () => { fireEvent.click(within(dialog).getByRole('button', {name: 'Cancelar solicitud'})); });
 
@@ -354,7 +372,7 @@ test('S05-TC-180 si la búsqueda avanzó mientras estaba abierta la lista, cance
   routes.cancel = async body => { bodies.push(body); throw fail('La información cambió. Actualiza y vuelve a intentarlo.', 409, 'STALE_VERSION'); };
   fireEvent.click(await screen.findByRole('button', {name: 'Cancelar la solicitud #41'}));
   const second = screen.getByRole('dialog');
-  fireEvent.change(within(second).getByRole('textbox'), {target: {value: 'Ya no lo necesito.'}});
+  fireEvent.click(within(second).getByRole('radio', {name: 'Me equivoqué al hacer el pedido'}));
   await act(async () => { fireEvent.click(within(second).getByRole('button', {name: 'Cancelar solicitud'})); });
   expect(bodies).toHaveLength(2);
   expect(screen.queryByRole('dialog')).toBeNull();
