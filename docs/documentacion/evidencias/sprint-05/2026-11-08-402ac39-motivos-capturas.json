@@ -1,0 +1,182 @@
+{
+  "1366-light-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-light-sin-motivo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-light-otro-motivo-vacio": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-light-final-del-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-light-cancelada": {
+    "overflowX": false,
+    "opciones": 0,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": null,
+    "seDesplaza": null
+  },
+  "1366-dark-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-dark-sin-motivo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-dark-otro-motivo-vacio": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-dark-final-del-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": false
+  },
+  "1366-dark-cancelada": {
+    "overflowX": false,
+    "opciones": 0,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": null,
+    "seDesplaza": null
+  },
+  "390-light-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-light-sin-motivo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-light-otro-motivo-vacio": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-light-final-del-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-light-cancelada": {
+    "overflowX": false,
+    "opciones": 0,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": null,
+    "seDesplaza": null
+  },
+  "390-dark-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-dark-sin-motivo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-dark-otro-motivo-vacio": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-dark-final-del-dialogo": {
+    "overflowX": false,
+    "opciones": 6,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": true,
+    "seDesplaza": true
+  },
+  "390-dark-cancelada": {
+    "overflowX": false,
+    "opciones": 0,
+    "opcionesBajas": 0,
+    "recortadas": 0,
+    "circuloAlLado": true,
+    "dialogoCabe": null,
+    "seDesplaza": null
+  }
+}

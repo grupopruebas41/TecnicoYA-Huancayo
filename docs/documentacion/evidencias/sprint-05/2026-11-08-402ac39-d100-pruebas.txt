@@ -1,0 +1,7 @@
+D-100 · motivo de cancelación de una lista cerrada. Fecha: 2026-11-08. Commit: 402ac39.
+  Tests:    445 passed (5094 assertions)
+  Duration: 730.70s
+ Test Files  45 passed (45)
+      Tests  400 passed (400)
+lint: código 0 · build: código 0 · npm audit: 0 vulnerabilidades · composer audit: sin avisos
+Cypress S05-TC-179: adaptada, sin ejecutar (menos de 1,5 GB libres).
