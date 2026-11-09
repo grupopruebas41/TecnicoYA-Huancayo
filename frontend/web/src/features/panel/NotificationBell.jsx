@@ -69,12 +69,14 @@ export default function NotificationBell({userId, onOpenAll, onOpen}) {
       <header className="notif-head">
         <h2>Notificaciones</h2>
         {unread > 0 && <span className="notif-count">{unread === 1 ? '1 nueva' : `${unread} nuevas`}</span>}
-        <button type="button" className="text-button notif-mark-all" disabled={busy || unread === 0} onClick={markAll}>Marcar todas como leídas</button>
         <button type="button" className="panel-icon-button notif-close" aria-label="Cerrar notificaciones" onClick={close}><Icon name="close"/></button>
       </header>
-      <div className="notif-tabs" role="tablist" aria-label="Filtrar notificaciones" onKeyDown={arrows}>
-        {TABS.map(([id, label]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab" aria-selected={tab === id}
-          tabIndex={tab === id ? 0 : -1} onClick={() => setTab(id)}>{label}</button>)}
+      <div className="notif-toolbar">
+        <div className="notif-tabs" role="tablist" aria-label="Filtrar notificaciones" onKeyDown={arrows}>
+          {TABS.map(([id, label]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab" aria-selected={tab === id}
+            tabIndex={tab === id ? 0 : -1} onClick={() => setTab(id)}>{label}</button>)}
+        </div>
+        <button type="button" className="text-button notif-mark-all" disabled={busy || unread === 0} onClick={markAll}>Marcar todas como leídas</button>
       </div>
       <div className="notif-body" role="tabpanel">
         {error && <p className="error" role="alert">{error}</p>}
