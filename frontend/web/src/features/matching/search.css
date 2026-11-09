@@ -332,3 +332,56 @@
   .search-specialty:hover { transform: none; }
   .search-skeleton span { animation: none; }
 }
+
+/* S05-TC-215, visto en las capturas: styles.css pone las etiquetas en columna con margen, los select a todo el ancho
+   y los SVG a 21 px; .client-profile-head es una grilla de tres columnas. Estas reglas lo deshacen aquí. */
+.search-filters .search-chip {
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  font-size: 0.95rem;
+}
+.search-filters .search-chip select {
+  width: auto;
+  min-width: 0;
+  padding: 4px 26px 4px 4px;
+  border: 0;
+  background-color: transparent;
+}
+.search-filters .search-toggle {
+  padding: 0 16px;
+  font-weight: 600;
+}
+.search-filters .search-toggle .panel-svg-icon { width: 18px; height: 18px; }
+.tech-card .client-technician-head { align-items: flex-start; }
+.tech-card-title { padding-top: 34px; }
+.tech-card .tech-favorite { margin-top: 34px; }
+:is(.tech-badges, .client-chips-inline) .client-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+:is(.tech-badges, .client-chips-inline) .client-chip .panel-svg-icon { width: 14px; height: 14px; }
+.client-profile-head.tech-profile-head {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+.tech-profile-identity { align-items: flex-start; }
+.tech-profile-identity .client-profile-title { padding-top: 44px; }
+.profile-cta-bar {
+  flex-wrap: nowrap;
+  align-items: center;
+  background: var(--ty-surface);
+  border: 1px solid var(--ty-border);
+  box-shadow: var(--ty-card-shadow);
+}
+.profile-cta-bar .client-profile-cta { flex: 0 1 auto; min-width: 0; }
+.profile-cta-bar .tech-favorite { flex: 0 0 48px; width: 48px; height: 48px; }
+.client-block h4 { margin: 12px 0 4px; }
+.client-block h4 + p { margin-top: 0; }
+@media (max-width: 720px) {
+  .profile-cta-bar .client-profile-cta { flex: 1 1 auto; }
+  .search-filters .search-chip > span { font-size: 0.8rem; }
+}

@@ -6,7 +6,7 @@ import { STAGES, specialtySlug } from "./technicianView";
 /** Ilustración propia (degradado e ícono) para un trabajo sin fotos; nunca una foto de terceros (D-101). */
 export function WorkIllustration({ title, specialty }) {
   return (
-    <svg className="tech-illustration" data-specialty={specialtySlug(specialty)} viewBox="0 0 160 100" role="img"
+    <svg className="tech-illustration" data-specialty={specialtySlug(specialty)} viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" role="img"
       aria-label={`Ilustración del trabajo «${title}»`}>
       <rect x="0" y="0" width="160" height="100" rx="12" className="tech-illustration-bg" />
       <circle cx="132" cy="22" r="30" className="tech-illustration-glow" />
