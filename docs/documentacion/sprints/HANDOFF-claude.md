@@ -2,6 +2,24 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-04 · Panel del cliente final, Fase 2: Mis solicitudes completo
+
+- **Ramas:**
+  - `feature/mayhuasca/cliente/mis-solicitudes-api`, desde `main` `8bc2446`;
+  - `feature/delgado/cliente/mis-solicitudes`, apilada sobre la anterior.
+  - El backend solo agrega endpoints: integrarlo primero no rompe `main`.
+- **Backend:** `GET /client/requests` (`ClientRequestBoard`) y `POST /requests/{id}/cancellation` (`RequestCancellation`). Sin migraciones. Contrato §10.
+- **Frontend:** `MyRequests` nuevo y `CancelRequestDialog`.
+- **Pruebas:**
+  - Pest 445/445 en `0bc8bee`; Vitest, lint, build y audits en la evidencia `fase2-frontend`;
+  - IDs S05-TC-148 a 180;
+  - **Cypress ejecutada por primera vez desde el cierre del S4:** S5 4/4 (incluye S05-TC-146 y 147 de la Fase 1), S3 17/17 y S4 con 8 fallos.
+- **DEF-59 abierto:** S04-TC-085, 086, 088, 093, 094, 095, 096 y 100 fallan también en `main` `8bc2446`, así que no los causa esta fase. No se analizó su origen.
+- **D-100 propuesta y aplicada de forma provisional:** falta que Pimentel la confirme.
+- **Nota:** Pest completo tarda de 7 a 10 minutos. No usar `timeout` por debajo de eso: cortó una corrida en la prueba 307.
+- **Siguiente:** Fase 3, desde S05-TC-181, cuando Pimentel revise la Fase 2.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-04 · Panel del cliente final, Fase 1: errores y asistente (D-95 y D-96)
 
 - **Ramas:**

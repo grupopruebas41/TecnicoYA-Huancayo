@@ -46,7 +46,7 @@ describe("Pedido por especialidades (D-95)", () => {
     });
     wizard().contains("h2", "Pedido enviado").should("be.visible");
     wizard().contains("button", "Ir a Mis solicitudes").click();
-    cy.get('[aria-label^="Pedido #"]').should("contain", "3 solicitudes");
+    cy.get('[aria-label^="Pedido del"]').should("contain", "3 servicios");
   });
 
   it("S05-TC-147 con 3 pedidos activos el asistente bloquea y lleva a Mis solicitudes", () => {

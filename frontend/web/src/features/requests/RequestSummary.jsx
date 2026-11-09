@@ -99,7 +99,7 @@ export default function RequestSummary({
       <h3>Resumen · Solicitud #{record.id}</h3>
       <p>{record.status === "sent" ? "Enviada" : "Registrada"}</p>
       <p>
-        {record.subcategory?.name} · {record.district?.name}
+        {record.subcategories?.map((subcategory) => subcategory.name).join(", ") || record.subcategory?.name} · {record.district?.name}
       </p>
       <p>{record.description}</p>
       <p>{record.address}</p>

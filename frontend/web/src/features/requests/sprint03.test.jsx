@@ -202,22 +202,26 @@ test("S03-TC-079 filtros elegidos y reinicio de página", () => {
   ).toEqual({ specialty_id: "2", subcategory_id: "", page: 1 });
 });
 test("S03-TC-080 estados de Mis solicitudes", async () => {
+  const empty = { active: 0, scheduled: 0, completed: 0, cancelled: 0 };
+  const pagination = { page: 1, per_page: 10, total: 0, last_page: 1 };
   request.mockReturnValueOnce(new Promise(() => {}));
   const view = render(<MyRequests />);
-  expect(screen.getByText("Cargando solicitudes…")).toBeVisible();
-  request.mockResolvedValueOnce({ data: [] });
+  expect(screen.getByText("Cargando solicitudes…")).toBeInTheDocument();
+  request.mockResolvedValueOnce({ data: { items: [], counts: empty, pagination } });
   view.rerender(<MyRequests key="empty" />);
-  expect(await screen.findByText("Aún no tienes solicitudes.")).toBeVisible();
+  expect(await screen.findByText("Aún no tienes solicitudes")).toBeVisible();
   request.mockRejectedValueOnce({
     message: "No se pudieron consultar las solicitudes.",
   });
   view.rerender(<MyRequests key="error" />);
   expect(await screen.findByRole("alert")).toHaveTextContent("No se pudieron");
+  const item = (id, status, phase) => ({ id, status, phase, version: 1, mode: "asap", specialty: { id: 1, name: "Cómputo" },
+    subcategories: [{ id: 1, name: "Hardware" }], district: { id: 1, name: "Huancayo" }, recent_events: [], can_cancel: true });
   request.mockResolvedValueOnce({
-    data: [
-      { id: 1, status: "registered" },
-      { id: 2, status: "sent" },
-    ],
+    data: {
+      items: [{ order: null, requests: [item(1, "registered", "registered")] }, { order: null, requests: [item(2, "sent", "sent")] }],
+      counts: { ...empty, active: 2 }, pagination,
+    },
   });
   view.rerender(<MyRequests key="data" />);
   expect(await screen.findByText("Registrada")).toBeVisible();
