@@ -1,0 +1,21 @@
+Fase 3 del panel final (D-101 propuesta) · Buscar técnicos y perfil del técnico modernos
+Fecha: 2026-11-09
+Ramas: feature/mayhuasca/cliente/perfil-publico-v2 (backend) y feature/delgado/cliente/buscar-perfil (frontend, apilada)
+
+== Pest completo, slot A (tecnicoya_testing), sobre 2b08829 ==
+  Tests:    462 passed (5294 assertions)
+  Duration: 1452.41s
+composer audit: No security vulnerability advisories found.
+
+== Pest DemoSeederTest sobre e76749d (tras el refactor 69dd355) ==
+Tests: 3 passed (73 assertions)
+
+== Vitest completo sobre e76749d ==
+ Test Files  46 passed (46)
+      Tests  418 passed (418)
+lint=0 (eslint --max-warnings 0)
+build=0
+npm audit: found 0 vulnerabilities
+
+== Capturas ==
+2026-11-09-e76749d-buscar-perfil-*.png (48), con su script .mjs y 44 mediciones en el .json: sin desborde horizontal, sin objetivos táctiles de menos de 44 px ni textos recortados; contraste mínimo de la marca de ejemplo 5,46 y de las etiquetas de chip 5,57.

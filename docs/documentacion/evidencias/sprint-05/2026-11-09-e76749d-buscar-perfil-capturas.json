@@ -1,0 +1,514 @@
+{
+  "1366-light-buscar": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 7,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": 5.57
+  },
+  "1366-light-favorito": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": 5.57
+  },
+  "1366-light-filtros": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": 5.57
+  },
+  "1366-light-vacio": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": 5.57
+  },
+  "1366-light-perfil-rosa": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 376
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "1366-light-perfil-disponibilidad": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "1366-light-perfil-calificaciones": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "1366-light-visor": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "1366-light-perfil-completo": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "1366-light-perfil-diego": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 376
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "1366-light-tecnico-perfil": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": null
+  },
+  "1366-dark-buscar": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 7,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": 8.74
+  },
+  "1366-dark-favorito": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": 8.74
+  },
+  "1366-dark-filtros": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": 8.74
+  },
+  "1366-dark-vacio": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": 8.74
+  },
+  "1366-dark-perfil-rosa": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 376
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "1366-dark-perfil-disponibilidad": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "1366-dark-perfil-calificaciones": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "1366-dark-visor": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "1366-dark-perfil-completo": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 762
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "1366-dark-perfil-diego": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "sticky",
+      "abajo": 376
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "1366-dark-tecnico-perfil": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": null
+  },
+  "390-light-buscar": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 7,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": 5.57
+  },
+  "390-light-favorito": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": 5.57
+  },
+  "390-light-filtros": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": 5.57
+  },
+  "390-light-vacio": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": 5.57
+  },
+  "390-light-perfil-rosa": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "390-light-perfil-disponibilidad": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "390-light-perfil-calificaciones": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "390-light-visor": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "390-light-perfil-completo": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "390-light-perfil-diego": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 5.46,
+    "contrasteChip": null
+  },
+  "390-light-tecnico-perfil": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": null
+  },
+  "390-dark-buscar": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 7,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": 8.74
+  },
+  "390-dark-favorito": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": 8.74
+  },
+  "390-dark-filtros": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 4,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": 8.74
+  },
+  "390-dark-vacio": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": "sticky",
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": 8.74
+  },
+  "390-dark-perfil-rosa": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "390-dark-perfil-disponibilidad": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "390-dark-perfil-calificaciones": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "390-dark-visor": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "390-dark-perfil-completo": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "390-dark-perfil-diego": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": {
+      "posicion": "fixed",
+      "abajo": 0
+    },
+    "contrasteEjemplo": 8.13,
+    "contrasteChip": null
+  },
+  "390-dark-tecnico-perfil": {
+    "overflowX": false,
+    "objetivosBajos": 0,
+    "recortados": 0,
+    "tarjetas": 0,
+    "barraFiltros": null,
+    "barraSolicitar": null,
+    "contrasteEjemplo": null,
+    "contrasteChip": null
+  }
+}

@@ -307,3 +307,72 @@ Un pedido agrupa una solicitud por especialidad, cada una con todas las subcateg
 - el pedido deja de contar para el límite de D-95 cuando no le queda ninguna solicitud abierta;
 - los técnicos afectados reciben el aviso `request.cancelled`, sin el motivo;
 - el historial se conserva y la línea de tiempo del titular suma `request.cancelled` («Cancelaste la solicitud»).
+
+## 11. Buscar técnicos y perfil público modernos (versión 1.6 del 2026-11-09, Fase 3 del panel final, D-101 propuesta)
+
+Migración `000033`. Corre en MySQL y en SQLite; los CHECK son solo de MySQL.
+
+### 11.1 `GET /technicians` **[cambia]**
+
+**Parámetros nuevos:**
+
+- `sort`: `name` (por defecto), `proximity`, `price` o `experience`. Con `price` cuenta la tarifa más baja de los servicios que cumplen el filtro, de menor a mayor; con `experience`, los años, de mayor a menor. El empate es por nombre e id. Con `proximity`, `price` o `experience`, la tarjeta trae `distance` si hay origen; con `name`, no.
+- `available_today`: `1` o `0`. Con `1` deja solo a quien tiene hoy, en Lima, una franja semanal vigente que no terminó o una puntual que termina después de ahora.
+
+**Campos nuevos de la tarjeta:**
+
+```json
+{"specialties": [{"id": 2, "name": "Refrigeración comercial"}], "verified": true, "favorite": false,
+ "rating": {"average": null, "count": 0}, "sample_rating": {"average": 4.6, "count": 5}}
+```
+
+- `favorite`: solo el del cliente de la sesión; con otro rol es `false`.
+- `sample_rating`: resumen de las reseñas de ejemplo, o `null` si no hay. `rating` sigue siendo el de las calificaciones reales (S6).
+- `min_rating` no lee las reseñas de ejemplo (D-18).
+
+| Caso | Respuesta |
+|---|---|
+| `sort` fuera de la lista | 422 «El orden debe ser por cercanía, precio, experiencia o nombre.» |
+| `available_today` no booleano | 422 «“Disponible hoy” debe ser sí o no.» |
+
+### 11.2 `GET /technicians/{id}` **[cambia]**
+
+Campos nuevos: `verified`, `work_style`, `warranty_text`, `specialties[]`, `districts[]`, `services[].includes`, `favorite`, `sample_rating` y `reviews[]`, además de:
+
+```json
+"availability": {"available_today": true, "week": [{"weekday": 1, "day": "Lunes", "bands": ["morning", "afternoon"]}]}
+```
+
+```json
+"sample_rating": {"average": 4.4, "count": 5, "distribution": {"5": 3, "4": 1, "3": 1, "2": 0, "1": 0}},
+"reviews": [{"id": 1, "rating": 5, "comment": "…", "author_label": "Bodega en El Tambo", "reviewed_on": "2026-10-15", "sample": true}]
+```
+
+- **Franjas:** `morning` de 08 a 12, `afternoon` de 12 a 18 y `night` de 18 a 21. Una banda cuenta si alguna franja semanal activa y vigente se superpone con ella.
+- **Portafolio:** `portfolio[].images[].stage` vale `before`, `after` o `null`.
+- **Nunca expone** teléfono, correo, WhatsApp, dirección, distrito base, `user_id` ni documentos (TC-034).
+
+### 11.3 Técnicos favoritos **[nuevo]** (cliente)
+
+| Endpoint | Respuesta |
+|---|---|
+| `GET /client/favorites` | 200 `{"items": [tarjeta]}`, del último guardado al primero. Incluye a los técnicos en pausa para poder quitarlos |
+| `PUT /client/favorites/{technician}` | 200 `{"technician_id", "favorite": true}`; idempotente. Técnico no habilitado: 404 «Técnico no disponible.» |
+| `DELETE /client/favorites/{technician}` | 204; idempotente |
+| Sin sesión, otro rol | 401, 403 |
+
+### 11.4 Edición del técnico **[cambia]**
+
+- `PATCH /technicians/me/profile` acepta `work_style` (hasta 500) y `warranty_text` (hasta 300).
+- `PUT /technicians/me/services` acepta `services[].includes` (hasta 300). No crea una versión de tarifa.
+- `POST` y `PATCH /technicians/me/portfolio` aceptan `image_stages[]`, en el orden de `media_ids` y del mismo largo, con `before`, `after` o `null`.
+
+### 11.5 Datos
+
+| Tabla | Cambio |
+|---|---|
+| `technician_profiles` | `work_style` (500) y `warranty_text` (300) |
+| `technician_services` | `includes` (300) |
+| `portfolio_images` | `stage` (`before` o `after`) |
+| `client_favorite_technicians` | **Nueva:** `client_user_id`, `technician_id` y `created_at`; clave primaria compuesta |
+| `technician_review_samples` | **Nueva:** reseñas de ejemplo (`rating` de 1 a 5, `comment` de 500, `author_label` de 60 y `reviewed_on`). Solo el `DemoSeeder` las siembra |
