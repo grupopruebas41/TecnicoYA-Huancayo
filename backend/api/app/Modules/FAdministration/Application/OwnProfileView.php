@@ -20,6 +20,7 @@ final class OwnProfileView
 
         return [
             'id' => $profile->id, 'display_name' => $profile->display_name, 'bio' => $profile->bio,
+            'work_style' => $profile->work_style, 'warranty_text' => $profile->warranty_text,
             'experience_years' => $profile->experience_years, 'base_district_id' => $profile->base_district_id, 'status' => $profile->status,
             'verification_status' => $profile->verification_status, 'version' => (int) $profile->version,
             'last_review' => $review ? [
@@ -27,10 +28,10 @@ final class OwnProfileView
             ] : null,
             'services' => DB::table('technician_services as t')->join('subcategories as s', 's.id', '=', 't.subcategory_id')
                 ->where('t.technician_id', $technicianId)->orderBy('s.display_order')
-                ->get(['t.subcategory_id', 's.name as subcategory_name', 't.reference_fee', 't.currency', 't.current_rate_version', 't.active'])
+                ->get(['t.subcategory_id', 's.name as subcategory_name', 't.reference_fee', 't.currency', 't.includes', 't.current_rate_version', 't.active'])
                 ->map(fn ($row) => [
                     'subcategory_id' => $row->subcategory_id, 'subcategory_name' => $row->subcategory_name, 'reference_fee' => $row->reference_fee,
-                    'currency' => $row->currency, 'rate_version' => (int) $row->current_rate_version, 'active' => (bool) $row->active,
+                    'currency' => $row->currency, 'includes' => $row->includes, 'rate_version' => (int) $row->current_rate_version, 'active' => (bool) $row->active,
                 ])->all(),
             'declared_subcategories' => $this->declared($technicianId),
             'availability' => $this->availability($technicianId),

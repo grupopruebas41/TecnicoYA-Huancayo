@@ -25,12 +25,16 @@ final class StorePortfolioItemRequest extends FormRequest
             'status' => [...$required, Rule::in(['draft', 'published'])],
             'media_ids' => [...$required, 'array', 'min:1', 'max:5'],
             'media_ids.*' => ['integer', 'distinct', new PortfolioImage((int) $this->user()->id)],
+            // D-101 (propuesta): etapa de cada imagen, en el mismo orden que media_ids.
+            'image_stages' => ['sometimes', 'nullable', 'array', 'size:'.count((array) $this->input('media_ids', []))],
+            'image_stages.*' => ['nullable', Rule::in(['before', 'after'])],
             'expected_version' => $this->isMethod('patch') ? ['required', 'integer', 'min:1'] : ['prohibited'],
         ];
     }
 
     public function messages(): array
     {
-        return ['performed_on.before_or_equal' => __('api.performed_on_future')];
+        return ['performed_on.before_or_equal' => __('api.performed_on_future'), 'image_stages.size' => __('api.image_stages_count'),
+            'image_stages.array' => __('api.image_stages_count'), 'image_stages.*.in' => __('api.image_stage')];
     }
 }

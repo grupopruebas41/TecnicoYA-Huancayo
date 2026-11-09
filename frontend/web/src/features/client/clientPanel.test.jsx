@@ -115,7 +115,9 @@ test('S05-TC-030 la búsqueda ordena por cercanía, filtra por tarifa máxima y 
   expect(within(cards[0]).getByText('En tu distrito')).toBeInTheDocument();
   expect(within(cards[2]).getByText('Distancia no disponible')).toBeInTheDocument();
   expect(within(cards[2]).getByText('Desde S/ 45.50')).toBeInTheDocument();
-  expect(within(cards[0]).getAllByRole('button')).toHaveLength(1);
+  // D-101 (Fase 3): la tarjeta suma el corazón de favoritos junto a «Ver perfil».
+  expect(within(cards[0]).getAllByRole('button').map(button => button.getAttribute('aria-label') || button.textContent))
+    .toEqual([expect.stringMatching(/^Guardar a .+ en favoritos$/), expect.stringMatching(/^Ver perfil de /)]);
 });
 
 test('S05-TC-031 sin distrito principal la búsqueda ordena por nombre y lo explica', async () => {

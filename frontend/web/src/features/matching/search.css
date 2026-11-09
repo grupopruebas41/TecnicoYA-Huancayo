@@ -1,0 +1,406 @@
+/* Fase 3 del panel final (D-101): Buscar técnicos y perfil público modernos. Solo tokens del tema y colores hsl()
+   para las portadas por especialidad: funcionan en tema claro y oscuro. */
+
+.search-page,
+.tech-profile {
+  --tech-computo: hsl(212 72% 46%);
+  --tech-computo-2: hsl(190 70% 42%);
+  --tech-refrigeracion: hsl(196 78% 40%);
+  --tech-refrigeracion-2: hsl(168 60% 38%);
+  --tech-electricidad: hsl(38 92% 46%);
+  --tech-electricidad-2: hsl(14 80% 50%);
+  --tech-general: hsl(250 40% 50%);
+  --tech-general-2: hsl(280 36% 46%);
+  --tech-on-cover: hsl(0 0% 100%);
+}
+
+[data-specialty="computo"] { --cover-a: var(--tech-computo); --cover-b: var(--tech-computo-2); }
+[data-specialty="refrigeracion"] { --cover-a: var(--tech-refrigeracion); --cover-b: var(--tech-refrigeracion-2); }
+[data-specialty="electricidad"] { --cover-a: var(--tech-electricidad); --cover-b: var(--tech-electricidad-2); }
+[data-specialty="general"] { --cover-a: var(--tech-general); --cover-b: var(--tech-general-2); }
+
+/* Encabezado */
+.search-hero {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--ty-accent) 14%, var(--ty-surface)), var(--ty-surface));
+  border: 1px solid var(--ty-border);
+}
+.search-hero h2 { margin: 0; }
+.search-specialties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.search-specialty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 96px;
+  padding: 16px;
+  border: 0;
+  border-radius: 16px;
+  color: var(--tech-on-cover);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-align: left;
+  background: linear-gradient(135deg, var(--cover-a), var(--cover-b));
+  cursor: pointer;
+  transition: transform var(--ty-fast, 150ms) ease, box-shadow var(--ty-fast, 150ms) ease;
+}
+.search-specialty:hover { transform: translateY(-2px); box-shadow: var(--ty-card-shadow); }
+.search-specialty[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--ty-surface), 0 0 0 6px var(--cover-a); }
+.search-specialty-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--tech-on-cover) 22%, transparent);
+}
+.search-specialty-icon .panel-svg-icon { width: 28px; height: 28px; }
+
+/* Barra de filtros fija */
+.search-filters {
+  position: sticky;
+  top: var(--panel-topbar, 64px);
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 8px;
+  padding: 10px 0;
+  background: var(--ty-bg);
+}
+.search-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 6px 4px 14px;
+  border: 1px solid var(--ty-control-border, var(--ty-border));
+  border-radius: 999px;
+  background: var(--ty-surface);
+  color: var(--ty-text);
+  font: inherit;
+}
+.search-chip > span { font-size: 0.85rem; color: var(--ty-muted); white-space: nowrap; }
+.search-chip select {
+  min-height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ty-text);
+  font: inherit;
+}
+.search-toggle { padding-right: 14px; cursor: pointer; }
+.search-toggle[aria-pressed="true"] {
+  border-color: var(--ty-accent);
+  background: var(--ty-accent);
+  color: var(--ty-on-accent);
+}
+.search-notice { margin: 0 0 12px; }
+
+/* Tarjetas */
+.tech-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.tech-cover,
+.profile-cover {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  height: 72px;
+  padding: 12px;
+  color: var(--tech-on-cover);
+  background: linear-gradient(120deg, var(--cover-a), var(--cover-b));
+}
+.tech-cover .panel-svg-icon { width: 32px; height: 32px; opacity: 0.85; }
+.tech-card-body { display: grid; gap: 10px; padding: 0 16px 16px; }
+.tech-card .client-technician-head { align-items: flex-end; margin-top: -28px; }
+.tech-avatar { border: 3px solid var(--ty-surface); }
+.tech-card-title { flex: 1; min-width: 0; }
+.tech-card-title h3 { margin: 0; overflow-wrap: anywhere; }
+.tech-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 4px 0 0; }
+.tech-facts { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 0; }
+.tech-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+.tech-rating .panel-svg-icon { width: 16px; height: 16px; fill: var(--ty-warning); stroke: var(--ty-warning); }
+.tech-rating.is-new {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--ty-neutral-bg);
+  font-weight: 600;
+}
+.tech-sample-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ty-warning-bg);
+  color: var(--ty-warning-text);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.tech-favorite {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--ty-border);
+  border-radius: 999px;
+  background: var(--ty-surface);
+  color: var(--ty-muted);
+  cursor: pointer;
+}
+.tech-favorite.is-on { color: var(--ty-error); border-color: var(--ty-error); }
+.tech-favorite.is-on .panel-svg-icon { fill: currentColor; }
+
+/* Carga y vacío */
+.search-skeleton {
+  display: grid;
+  gap: 10px;
+  min-height: 220px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--ty-border);
+  background: var(--ty-surface);
+}
+.search-skeleton span {
+  display: block;
+  height: 14px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--ty-neutral-bg), var(--ty-raised), var(--ty-neutral-bg));
+  background-size: 200% 100%;
+  animation: search-shimmer 1.4s ease-in-out infinite;
+}
+.search-skeleton span:first-child { height: 72px; }
+.search-skeleton span:last-child { width: 60%; }
+@keyframes search-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.search-empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 20px;
+  border: 1px dashed var(--ty-border);
+  border-radius: 16px;
+  background: var(--ty-surface);
+}
+.search-empty ul { margin: 0; padding-left: 20px; }
+.search-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.search-empty-icon .panel-svg-icon { width: 32px; height: 32px; color: var(--ty-accent); }
+
+/* Perfil */
+.tech-profile-head { display: block; padding: 0; overflow: hidden; }
+.profile-cover { height: 120px; border-radius: 16px 16px 0 0; }
+.profile-cover .panel-svg-icon { width: 44px; height: 44px; opacity: 0.85; }
+.tech-profile-identity { display: flex; align-items: flex-end; gap: 16px; padding: 0 16px 16px; margin-top: -36px; }
+.tech-profile-identity .client-profile-title { flex: 1; min-width: 0; }
+.client-chip.is-today { background: var(--ty-success-bg); color: var(--ty-success-text); }
+.profile-cta-bar {
+  position: sticky;
+  top: calc(var(--panel-topbar, 64px) + 8px);
+  z-index: 4;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 8px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ty-surface) 92%, transparent);
+}
+.profile-cta-bar .client-profile-cta { min-height: 44px; }
+.tech-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; padding: 0; list-style: none; }
+.tech-services li {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid var(--ty-border);
+  border-radius: 14px;
+  background: var(--ty-raised);
+}
+.tech-services h4 { margin: 0; }
+.tech-week-wrap { overflow-x: auto; }
+.tech-week { width: 100%; border-collapse: collapse; }
+.tech-week caption { text-align: left; font-weight: 600; margin-bottom: 8px; }
+.tech-week th,
+.tech-week td { padding: 8px; border-bottom: 1px solid var(--ty-border); text-align: left; font-size: 0.9rem; }
+.tech-week td { color: var(--ty-muted); }
+.tech-week td.is-on { color: var(--ty-success-text); font-weight: 600; }
+.tech-dot { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; background: var(--ty-neutral-bg); }
+.tech-week td.is-on .tech-dot { background: var(--ty-success); }
+.tech-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.tech-work h4 { margin: 8px 0 2px; }
+.tech-work-thumb {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  width: 100%;
+  min-height: 120px;
+  padding: 0;
+  border: 1px solid var(--ty-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--ty-raised);
+  cursor: zoom-in;
+}
+.tech-work-image { position: relative; display: block; }
+.tech-work-image img { width: 100%; height: 120px; object-fit: cover; display: block; }
+.tech-stage {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ty-text) 75%, transparent);
+  color: var(--ty-surface);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.tech-illustration { width: 100%; height: 120px; display: block; }
+.tech-illustration-bg { fill: var(--cover-a, var(--ty-accent)); }
+.tech-illustration-glow { fill: var(--cover-b, var(--ty-primary)); opacity: 0.7; }
+.tech-illustration-icon { color: var(--tech-on-cover); }
+.portfolio-viewer > dialog { width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; }
+.portfolio-viewer-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.portfolio-viewer-head .button { min-width: 44px; min-height: 44px; }
+.portfolio-viewer-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.portfolio-viewer-images figure { margin: 0; }
+.portfolio-viewer-images img { width: 100%; border-radius: 12px; display: block; }
+.portfolio-viewer-images figcaption { font-weight: 700; margin-top: 4px; }
+.portfolio-viewer-nav { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; }
+.tech-rating-summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.tech-rating-value { font-size: 2.4rem; line-height: 1; }
+.tech-bars { display: grid; gap: 6px; margin: 12px 0; max-width: 420px; }
+.tech-bar { display: grid; grid-template-columns: 36px 1fr 24px; align-items: center; gap: 8px; font-size: 0.9rem; }
+.tech-bar-track { height: 10px; border-radius: 999px; background: var(--ty-neutral-bg); overflow: hidden; }
+.tech-bar-track span { display: block; height: 100%; background: var(--ty-warning); }
+.tech-reviews { display: grid; gap: 12px; padding: 0; list-style: none; }
+.tech-reviews li { padding: 12px 14px; border: 1px solid var(--ty-border); border-radius: 14px; background: var(--ty-raised); }
+.tech-reviews p { margin: 4px 0; }
+.tech-review-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.tech-stars { display: inline-flex; gap: 1px; color: var(--ty-neutral-bg); }
+.tech-stars .panel-svg-icon { width: 16px; height: 16px; }
+.tech-stars .is-on { color: var(--ty-warning); }
+.tech-stars .is-on .panel-svg-icon { fill: currentColor; }
+.tech-bar-label { display: inline-flex; align-items: center; gap: 2px; }
+.tech-bar-label .panel-svg-icon { width: 14px; height: 14px; fill: var(--ty-warning); stroke: var(--ty-warning); }
+.tech-trust { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--ty-success-text); }
+
+/* Foco visible en todo lo interactivo de estas pantallas. */
+.search-page :is(button, select, input, a):focus-visible,
+.tech-profile :is(button, select, input, a):focus-visible {
+  outline: 3px solid var(--ty-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .search-hero { padding: 16px; }
+  .search-specialties { grid-template-columns: 1fr; }
+  .search-specialty { min-height: 72px; }
+  .search-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+  .search-chip { flex: 0 0 auto; }
+  .profile-cta-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 20;
+    margin: 0;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    border-radius: 16px 16px 0 0;
+    background: var(--ty-surface);
+    box-shadow: var(--ty-shadow);
+  }
+  .profile-cta-bar .client-profile-cta { flex: 1; }
+  .tech-profile { padding-bottom: 88px; }
+  .tech-profile-identity { flex-direction: column; align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-specialty { transition: none; }
+  .search-specialty:hover { transform: none; }
+  .search-skeleton span { animation: none; }
+}
+
+/* S05-TC-215, visto en las capturas: styles.css pone las etiquetas en columna con margen, los select a todo el ancho
+   y los SVG a 21 px; .client-profile-head es una grilla de tres columnas. Estas reglas lo deshacen aquí. */
+.search-filters .search-chip {
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  font-size: 0.95rem;
+}
+.search-filters .search-chip select {
+  width: auto;
+  min-width: 0;
+  padding: 4px 26px 4px 4px;
+  border: 0;
+  background-color: transparent;
+}
+.search-filters .search-toggle {
+  padding: 0 16px;
+  font-weight: 600;
+}
+.search-filters .search-toggle .panel-svg-icon { width: 18px; height: 18px; }
+.tech-card .client-technician-head { align-items: flex-start; }
+.tech-card-title { padding-top: 34px; }
+.tech-card .tech-favorite { margin-top: 34px; }
+:is(.tech-badges, .client-chips-inline) .client-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+:is(.tech-badges, .client-chips-inline) .client-chip .panel-svg-icon { width: 14px; height: 14px; }
+.client-profile-head.tech-profile-head {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+.tech-profile-identity { align-items: flex-start; }
+.tech-profile-identity .client-profile-title { padding-top: 44px; }
+.profile-cta-bar {
+  flex-wrap: nowrap;
+  align-items: center;
+  background: var(--ty-surface);
+  border: 1px solid var(--ty-border);
+  box-shadow: var(--ty-card-shadow);
+}
+.profile-cta-bar .client-profile-cta { flex: 0 1 auto; min-width: 0; }
+.profile-cta-bar .tech-favorite { flex: 0 0 48px; width: 48px; height: 48px; }
+.client-block h4 { margin: 12px 0 4px; }
+.client-block h4 + p { margin-top: 0; }
+@media (max-width: 720px) {
+  .profile-cta-bar .client-profile-cta { flex: 1 1 auto; }
+  .search-filters .search-chip > span { font-size: 0.8rem; }
+}
+
+/* S05-TC-216, segunda ronda de capturas: .panel-content label:not(.button) (0,2,1) pone la etiqueta en grilla y los
+   select con 46 px; y .panel-shell .client-profile-cta fija el botón solo en el celular, fuera de la barra. */
+.panel-content .search-filters label.search-chip {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+.panel-content .search-filters .search-chip select {
+  min-height: 36px;
+  padding: 4px 26px 4px 4px;
+  border: 0;
+  background-color: transparent;
+}
+.panel-shell .profile-cta-bar .client-profile-cta {
+  position: static;
+  box-shadow: none;
+}

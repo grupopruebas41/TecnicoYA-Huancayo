@@ -2,6 +2,33 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-09 · Panel del cliente final, Fase 3: Buscar técnicos y perfil del técnico modernos (D-101 propuesta)
+
+- **Ramas:**
+  - `feature/mayhuasca/cliente/perfil-publico-v2`, desde `main` `1554edc`: API, migración `000033` y DemoSeeder;
+  - `feature/delgado/cliente/buscar-perfil`, apilada sobre la anterior: SPA, datos E2E del S5 y documentos.
+- **Detalle:**
+  - `docs/avances/mayhuasca/cliente/perfil-publico-v2/avance.md`;
+  - `docs/avances/delgado/cliente/buscar-perfil/avance.md`;
+  - contrato S5 §11.
+- **Pruebas:**
+  - S05-TC-181 a 216: 16 Pest, 16 Vitest y 4 Cypress;
+  - Pest 462/462 y Vitest 418/418; lint, build y auditorías aprobados;
+  - 48 capturas sin defectos, tras dos rondas de corrección (S05-TC-215 y 216).
+- **Pendiente:**
+  - confirmar D-101;
+  - ejecutar las Cypress S05-TC-211 a 214, la del S3 adaptada y las del S5 anteriores (S05-TC-146, 147, 178 y 179) cuando haya 1,5 GB libres.
+- **Modo rápido (pedido de Pimentel el 2026-11-09, hasta terminar la Fase 6):**
+  - un PR por fase, con backend y frontend juntos: el #51 reemplaza al #50;
+  - capturas solo a 1366 y 390 en tema claro.
+- **Pendiente para el cierre:**
+  - ejecutar Cypress (solo se escriben las specs);
+  - mutación y SonarQube;
+  - separar los commits de prueba en rojo;
+  - actualizar catálogo, contrato, avances y evidencias detalladas de las Fases 4 a 6.
+- **Siguiente:** la Fase 4 (barra superior y menú) desde S05-TC-217, cuando Pimentel revise la Fase 3.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-08 · D-100 aprobada: motivo de cancelación de una lista cerrada
 
 - **Rama:** `feature/mayhuasca/cliente/cancelacion-motivos` (PR #49), hacia `main` desde que se integró el #47. Detalle en `docs/avances/mayhuasca/cliente/cancelacion-motivos/avance.md`.

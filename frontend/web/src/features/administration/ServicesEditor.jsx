@@ -7,6 +7,8 @@ import {
   ResourceState,
 } from "./Sprint02Common";
 import { validateRate } from "./sprint02Validation";
+// D-101 (Fase 3): «qué incluye» cada servicio, visible en el perfil público; no cambia la versión de la tarifa.
+export const INCLUDES_MAX = 300;
 export default function ServicesEditor({ profile, reload }) {
   const catalog = useSubcategories();
   const [services, set] = useState(
@@ -21,6 +23,7 @@ export default function ServicesEditor({ profile, reload }) {
     services.forEach((s, i) => {
       const error = validateRate(s.reference_fee);
       if (error) e["services." + i + ".reference_fee"] = [error];
+      if ((s.includes || "").length > INCLUDES_MAX) e["services." + i + ".includes"] = ["«Qué incluye» admite hasta 300 caracteres."];
     });
     return e;
   }
@@ -38,6 +41,7 @@ export default function ServicesEditor({ profile, reload }) {
               services: services.map((s) => ({
                 subcategory_id: s.subcategory_id,
                 reference_fee: s.reference_fee,
+                includes: (s.includes || "").trim() || null,
               })),
               expected_version: profile.version,
             },
@@ -114,6 +118,16 @@ export default function ServicesEditor({ profile, reload }) {
                 }
               />
             </label>
+            <label htmlFor={"includes-" + s.subcategory_id}>Qué incluye {s.subcategory_name}</label>
+            <textarea
+              id={"includes-" + s.subcategory_id}
+              rows={2}
+              value={s.includes || ""}
+              onChange={(e) =>
+                set(services.map((v, n) => (i === n ? { ...v, includes: e.target.value } : v)))
+              }
+            />
+            <small className="muted">Lo que el cliente recibe con este servicio. Hasta 300 caracteres.</small>
             <p>Versión de tarifa: {s.rate_version || "Nueva"}</p>
             <button
               type="button"

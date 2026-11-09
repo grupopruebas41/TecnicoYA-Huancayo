@@ -20,7 +20,10 @@ final class UpdateServices
             $profile = $this->profiles->lockFor($user, (int) $data['expected_version']);
             $kept = [];
             foreach ($data['services'] as $service) {
-                $kept[] = $this->upsertService($profile->id, $user, (int) $service['subcategory_id'], $this->money($service['reference_fee']));
+                $kept[] = $id = $this->upsertService($profile->id, $user, (int) $service['subcategory_id'], $this->money($service['reference_fee']));
+                if (array_key_exists('includes', $service)) {
+                    DB::table('technician_services')->where('id', $id)->update(['includes' => $service['includes']]);
+                }
             }
             DB::table('technician_services')->where('technician_id', $profile->id)->whereNotIn('id', $kept)
                 ->update(['active' => 0, 'updated_at' => now()]);

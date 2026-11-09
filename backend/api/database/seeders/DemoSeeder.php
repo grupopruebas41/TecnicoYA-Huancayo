@@ -17,6 +17,9 @@ use Illuminate\Support\Str;
  * - Foto de cada subcategoría sin foto, tomada de frontend/web/public/media/services/subcategorias; las que el
  *   administrador ya eligió no se tocan.
  * - Tres comunicados publicados con imagen principal y móvil (D-83), recortadas de esas fotos.
+ * - Fase 3 (D-101): Rosa Quispe (refrigeración) y Diego Huamán (cómputo) con perfil completo, servicios con «qué incluye»,
+ *   disponibilidad, distritos, portafolio y 5 reseñas de ejemplo (DemoTechnicianProfiles). Las fotos del portafolio solo
+ *   se usan si existen en database/seeders/demo-media/.
  * Es idempotente: repetirlo no duplica cuentas, archivos, servicios ni comunicados.
  */
 final class DemoSeeder extends Seeder
@@ -62,9 +65,13 @@ final class DemoSeeder extends Seeder
             $admin = $this->account('demo-admin', 'admin', 'Administración', 'Demo', '900000101', $password);
             $this->client($this->account('demo-cliente', 'client', 'Cliente', 'Demo Hogar', '900000102', $password), 'household', 'HUANCAYO');
             $this->client($this->account('demo-mype', 'client', 'Cliente', 'Demo MYPE', '900000103', $password), 'mype', 'EL-TAMBO', 'Bodega Demo S. A. C.');
-            foreach (self::TECHNICIANS as $code => $data) {
-                $user = $this->account("demo-tecnico-$code", 'technician', $data['name'], 'Demo', '900000110', $password);
+            foreach (self::TECHNICIANS as $code => $base) {
+                $data = (DemoTechnicianProfiles::PROFILES[$code] ?? []) + $base;
+                $user = $this->account("demo-tecnico-$code", 'technician', $data['given'] ?? $data['name'], $data['family'] ?? 'Demo', '900000110', $password);
                 $this->technician($user, $data, 'active', 'approved');
+                $technician = (int) DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
+                $this->portfolio($technician, $user->id, "demo-tecnico-$code", $data['portfolio'] ?? []);
+                $this->reviews($technician, $data['reviews'] ?? []);
             }
             $pending = $this->account('demo-tecnico-pendiente', 'technician', 'Técnico Demo', 'Por verificar', '900000120', $password);
             $this->technician($pending, ['name' => 'Técnico Demo por verificar', 'base' => 'HUANCAYO', 'districts' => ['HUANCAYO'],
@@ -96,22 +103,29 @@ final class DemoSeeder extends Seeder
         ]);
     }
 
-    private function technician(User $user, array $data, string $status, string $verification): void
+    /** Perfil, servicios con «qué incluye», distritos y franjas del técnico; también lo usa Sprint05E2ESeeder (D-101). */
+    public function technician(User $user, array $data, string $status, string $verification): void
     {
         DB::table('technician_profiles')->updateOrInsert(['user_id' => $user->id], [
-            'display_name' => $data['name'], 'bio' => null, 'status' => $status,
-            'verification_status' => $verification, 'experience_years' => 6, 'available_now' => false,
+            'display_name' => $data['name'], 'bio' => $data['bio'] ?? null, 'work_style' => $data['work_style'] ?? null,
+            'warranty_text' => $data['warranty'] ?? null, 'status' => $status,
+            'verification_status' => $verification, 'experience_years' => $data['years'] ?? 6, 'available_now' => false,
             'verified_at' => $verification === 'approved' ? now()->subMonth() : null, 'base_district_id' => $this->district($data['base']),
             'updated_at' => now(),
         ]);
         $technician = (int) DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
-        foreach ($data['services'] as $code => $fee) {
+        foreach ($data['services'] as $code => $service) {
+            [$fee, $includes] = is_array($service) ? $service : [$service, null];
             $subcategory = (int) DB::table('subcategories')->where('code', $code)->value('id');
-            if (DB::table('technician_services')->where('technician_id', $technician)->where('subcategory_id', $subcategory)->exists()) {
+            $existing = DB::table('technician_services')->where('technician_id', $technician)->where('subcategory_id', $subcategory);
+            if ($existing->exists()) {
+                $existing->update(['includes' => $includes]);
+
                 continue;
             }
             $service = DB::table('technician_services')->insertGetId([
-                'technician_id' => $technician, 'subcategory_id' => $subcategory, 'reference_fee' => $fee, 'experience_years' => 6,
+                'technician_id' => $technician, 'subcategory_id' => $subcategory, 'reference_fee' => $fee,
+                'experience_years' => $data['years'] ?? 6, 'includes' => $includes,
             ]);
             DB::table('service_rate_versions')->insert([
                 'technician_service_id' => $service, 'version_no' => 1, 'reference_fee' => $fee, 'currency' => 'PEN',
@@ -122,10 +136,56 @@ final class DemoSeeder extends Seeder
             DB::table('technician_districts')->updateOrInsert(['technician_id' => $technician, 'district_id' => $this->district($district)], ['active' => 1]);
         }
         if (! DB::table('availability_slots')->where('technician_id', $technician)->exists()) {
-            foreach (range(1, 6) as $weekday) {
+            foreach ($data['slots'] ?? array_map(fn ($day) => [$day, '08:00', '18:00'], range(1, 6)) as [$weekday, $start, $end]) {
                 DB::table('availability_slots')->insert(['technician_id' => $technician, 'kind' => 'weekly', 'weekday' => $weekday,
-                    'local_start' => '08:00:00', 'local_end' => '18:00:00', 'valid_from' => now()->toDateString(), 'timezone' => 'America/Lima']);
+                    'local_start' => "$start:00", 'local_end' => "$end:00", 'valid_from' => now()->toDateString(), 'timezone' => 'America/Lima']);
             }
+        }
+    }
+
+    /** Trabajos publicados (por título, sin duplicar); fotos «antes» y «después» solo si el equipo las dejó en demo-media. */
+    public function portfolio(int $technician, int $ownerId, string $alias, array $items): void
+    {
+        foreach (array_values($items) as $index => [$title, $code, $description, $daysAgo]) {
+            if (DB::table('portfolio_items')->where('technician_id', $technician)->where('title', $title)->exists()) {
+                continue;
+            }
+            $item = DB::table('portfolio_items')->insertGetId([
+                'technician_id' => $technician, 'subcategory_id' => DB::table('subcategories')->where('code', $code)->value('id'),
+                'title' => $title, 'description' => $description, 'performed_on' => now()->subDays($daysAgo)->toDateString(), 'status' => 'published',
+            ]);
+            $position = 0;
+            foreach (['antes' => 'before', 'despues' => 'after'] as $suffix => $stage) {
+                $file = $this->demoMedia("$alias-".($index + 1)."-$suffix");
+                if ($file !== null) {
+                    DB::table('portfolio_images')->insert(['portfolio_id' => $item, 'media_id' => $this->media($ownerId, $file, basename($file), 'portfolio'),
+                        'position' => $position++, 'stage' => $stage, 'caption' => ($stage === 'before' ? 'Antes: ' : 'Después: ').$title]);
+                }
+            }
+        }
+    }
+
+    private function demoMedia(string $name): ?string
+    {
+        foreach (['webp', 'png', 'jpg'] as $extension) {
+            $path = database_path("seeders/demo-media/$name.$extension");
+            if (is_file($path)) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
+
+    /** D-101: reseñas de ejemplo, solo en local; no son calificaciones y el panel las rotula como demostración. */
+    public function reviews(int $technician, array $reviews): void
+    {
+        if ($reviews === [] || DB::table('technician_review_samples')->where('technician_id', $technician)->exists()) {
+            return;
+        }
+        foreach ($reviews as [$rating, $author, $comment, $daysAgo]) {
+            DB::table('technician_review_samples')->insert(['technician_id' => $technician, 'rating' => $rating, 'author_label' => $author,
+                'comment' => $comment, 'reviewed_on' => now()->subDays($daysAgo)->toDateString()]);
         }
     }
 
@@ -173,7 +233,8 @@ final class DemoSeeder extends Seeder
         $content = (string) file_get_contents($path);
         Storage::disk('public')->put($key, $content);
         DB::table('media_files')->updateOrInsert(['disk' => 'public', 'storage_key' => $key], [
-            'owner_id' => $ownerId, 'original_name' => $name, 'mime_type' => str_ends_with($name, '.webp') ? 'image/webp' : 'image/png',
+            'owner_id' => $ownerId, 'original_name' => $name,
+            'mime_type' => match (strtolower(pathinfo($name, PATHINFO_EXTENSION))) { 'webp' => 'image/webp', 'jpg' => 'image/jpeg', default => 'image/png' },
             'byte_size' => strlen($content), 'sha256' => hash('sha256', $content), 'visibility' => 'public',
             'scan_status' => 'clean', 'purpose' => $purpose,
         ]);

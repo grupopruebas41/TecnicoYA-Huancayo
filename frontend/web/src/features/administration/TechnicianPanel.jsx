@@ -12,13 +12,18 @@ import { technicianState, validatePerformedOn } from "./sprint02Validation";
 import RetireButton from "./RetireButton";
 import AvailabilityEditor from "./AvailabilityEditor";
 import ServicesEditor from "./ServicesEditor";
+export const WORK_STYLE_MAX = 500;
+export const WARRANTY_MAX = 300;
 function Bio({ profile, reload }) {
   const districts = useResource("/catalog/districts");
   const [baseDistrict, setBaseDistrict] = useState(
     profile.base_district_id || "",
   );
   const [bio, setBio] = useState(profile.bio || ""),
-    [years, setYears] = useState(profile.experience_years ?? 0);
+    [years, setYears] = useState(profile.experience_years ?? 0),
+    // D-101 (Fase 3): forma de trabajo y garantía del perfil público.
+    [workStyle, setWorkStyle] = useState(profile.work_style || ""),
+    [warranty, setWarranty] = useState(profile.warranty_text || "");
   return (
     <MutationForm
       reload={reload}
@@ -29,6 +34,10 @@ function Bio({ profile, reload }) {
         )
           return { base_district_id: ["Selecciona un distrito activo."] };
         if (bio.length > 2000) return { bio: ["Máximo 2000 caracteres."] };
+        const limits = {};
+        if (workStyle.length > WORK_STYLE_MAX) limits.work_style = ["La forma de trabajo admite hasta 500 caracteres."];
+        if (warranty.length > WARRANTY_MAX) limits.warranty_text = ["La garantía admite hasta 300 caracteres."];
+        if (Object.keys(limits).length) return limits;
         if (!Number.isInteger(+years) || +years < 0 || +years > 60)
           return { experience_years: ["Indica entre 0 y 60 años enteros."] };
         return {};
@@ -38,6 +47,8 @@ function Bio({ profile, reload }) {
           "/technicians/me/profile",
           {
             bio,
+            work_style: workStyle.trim() || null,
+            warranty_text: warranty.trim() || null,
             experience_years: +years,
             expected_version: profile.version,
             ...(baseDistrict ? { base_district_id: +baseDistrict } : {}),
@@ -66,6 +77,14 @@ function Bio({ profile, reload }) {
           <Field label="Biografía" name="bio" errors={e}>
             <textarea value={bio} onChange={(x) => setBio(x.target.value)} />
           </Field>
+          <Field label="Forma de trabajo" name="work_style" errors={e}>
+            <textarea value={workStyle} rows={3} onChange={(x) => setWorkStyle(x.target.value)} />
+          </Field>
+          <small className="muted">Cómo atiendes: diagnóstico, cotización y limpieza. Hasta 500 caracteres.</small>
+          <Field label="Garantía" name="warranty_text" errors={e}>
+            <textarea value={warranty} rows={2} onChange={(x) => setWarranty(x.target.value)} />
+          </Field>
+          <small className="muted">Solo si la ofreces. Hasta 300 caracteres.</small>
           <Field
             label="Años de experiencia"
             name="experience_years"

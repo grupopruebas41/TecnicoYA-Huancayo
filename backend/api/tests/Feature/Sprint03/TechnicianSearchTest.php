@@ -85,7 +85,9 @@ it('S03-TC-045 cada tarjeta trae solo la proyección pública, sin contacto ni d
     $response = $this->getJson('/api/v1/technicians')->assertOk();
     $item = $response->json('data.items.0');
 
-    expect(array_keys($item))->toEqualCanonicalizing(['id', 'display_name', 'provider_type', 'experience_years', 'services', 'districts', 'rating'])
+    expect(array_keys($item))->toEqualCanonicalizing(['id', 'display_name', 'provider_type', 'experience_years', 'services', 'districts', 'rating',
+        // D-101 (Fase 3): verificado, especialidades, favorito del cliente y reseñas de ejemplo; sigue sin contacto ni documentos.
+        'specialties', 'verified', 'favorite', 'sample_rating'])
         ->and(array_keys($item['services'][0]))->toEqualCanonicalizing(['subcategory_id', 'subcategory_name', 'reference_fee', 'currency'])
         ->and($item['districts'])->toBe([['id' => $this->huancayo, 'name' => DB::table('districts')->where('id', $this->huancayo)->value('name')]]);
     expect($response->getContent())->not->toContain('987654321')->not->toContain($email)->not->toContain('user_id')

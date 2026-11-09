@@ -8,7 +8,8 @@ describe("S3 búsqueda", () => {
   });
   it("S03-TC-064 filtros y vacío", () => {
     cy.get('[aria-label="Buscar técnicos"]').within(() => {
-      cy.contains("label", "Rubro").find("select").select(1);
+      // D-101: el rubro se elige con las tarjetas de especialidad del encabezado.
+      cy.get('[role=group][aria-label="Especialidades"] button').first().click();
       cy.contains("label", "Zona").find("select").select(1);
       cy.get("[data-cy=technician-card]").should("have.length.greaterThan", 0);
       cy.contains("label", "Calificación mínima").find("select").select("5");
@@ -17,10 +18,10 @@ describe("S3 búsqueda", () => {
     });
   });
   it("S03-TC-065 perfil sin contacto", () => {
-    cy.get("[data-cy=technician-card]").first().find("button").click();
+    cy.get("[data-cy=technician-card]").first().contains("button", "Ver perfil de").click(); // D-101: la tarjeta suma el corazón de favoritos.
     cy.get('[aria-label="Perfil público"]').within(() => {
       cy.contains("h3", "Servicios").should("be.visible");
-      cy.contains("h3", "Portafolio público").should("be.visible");
+      cy.contains("h3", "Portafolio").should("be.visible"); // D-101: seis secciones.
       cy.contains("Sin reseñas publicadas todavía.").should("be.visible");
       cy.get('a[href^="tel:"],a[href*="wa.me"],a[href^="mailto:"]').should(
         "not.exist",
@@ -29,7 +30,7 @@ describe("S3 búsqueda", () => {
     });
   });
   it("S03-TC-066 solicitud dirigida al técnico elegido", () => {
-    cy.get("[data-cy=technician-card]").first().find("button").click();
+    cy.get("[data-cy=technician-card]").first().contains("button", "Ver perfil de").click(); // D-101: la tarjeta suma el corazón de favoritos.
     cy.get('[aria-label="Perfil público"] h2').invoke("text").as("chosenName");
     cy.contains("button", "Solicitar servicio").click();
     // Revisión del PR #39: tarjetas con radio en lugar de select.

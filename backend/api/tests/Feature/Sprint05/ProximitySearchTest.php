@@ -102,7 +102,8 @@ it('S05-TC-007 el orden por cercanía conserva la lista blanca pública y no exp
     $response = $this->getJson('/api/v1/technicians?sort=proximity')->assertOk();
 
     expect(array_keys($response->json('data.items.0')))
-        ->toEqualCanonicalizing(['id', 'display_name', 'provider_type', 'experience_years', 'services', 'districts', 'rating', 'distance']);
+        ->toEqualCanonicalizing(['id', 'display_name', 'provider_type', 'experience_years', 'services', 'districts', 'rating', 'distance',
+            'specialties', 'verified', 'favorite', 'sample_rating']); // D-101 (Fase 3).
     expect($response->getContent())->not->toContain('987654321')->not->toContain($email)->not->toContain('base_district')
         ->not->toContain('user_id')->not->toContain('score')->not->toContain('address');
 });

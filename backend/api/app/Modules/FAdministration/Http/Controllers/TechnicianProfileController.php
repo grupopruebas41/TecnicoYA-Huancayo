@@ -20,6 +20,7 @@ use App\Shared\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 /** Perfil del técnico: lo propio (technicians/me, contrato S2 §5 y §6) y lo público de un técnico habilitado. */
 final class TechnicianProfileController
@@ -81,9 +82,12 @@ final class TechnicianProfileController
         return response()->noContent();
     }
 
-    public function show(int $technician, PublicTechnicianProfile $profile): JsonResponse
+    public function show(Request $request, int $technician, PublicTechnicianProfile $profile): JsonResponse
     {
-        return ApiResponse::data($profile->show($technician));
+        // D-101: la marca de favorito es solo la del cliente de la sesión.
+        $client = DB::table('roles')->where('id', $request->user()->role_id)->value('code') === 'client' ? (int) $request->user()->id : null;
+
+        return ApiResponse::data($profile->show($technician, $client));
     }
 
     public function portfolio(int $technician, Portfolio $portfolio): JsonResponse
