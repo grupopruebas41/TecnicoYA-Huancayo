@@ -18,6 +18,9 @@ final class RequestCancellation
     /** Estados en los que el cliente puede cancelar; desde in_progress no se cancela (D-28: se registra una incidencia). */
     public const CANCELLABLE = ['registered', 'sent', 'pending_availability', 'assigned'];
 
+    /** D-100: motivos de la lista cerrada; con «other» el comentario es obligatorio. */
+    public const REASON_CODES = ['solved', 'other_technician', 'reschedule', 'price', 'mistake', 'other'];
+
     public function __construct(
         private readonly MatchingFlow $flow,
         private readonly RequestProgress $progress,
@@ -49,7 +52,8 @@ final class RequestCancellation
             $technicians[] = (int) $offer->technician_id;
         }
         $updated = $this->progress->advance($request, [
-            'status' => 'cancelled', 'cancelled_at' => now(), 'cancellation_reason' => $data['reason'],
+            'status' => 'cancelled', 'cancelled_at' => now(), 'cancellation_reason_code' => $data['reason_code'],
+            'cancellation_reason' => ($data['reason'] ?? null) === null || trim($data['reason']) === '' ? null : $data['reason'],
             'search_generation' => (int) $request->search_generation + 1,
         ], 'request.cancelled', 'El cliente canceló la solicitud.', [], $user->id);
 

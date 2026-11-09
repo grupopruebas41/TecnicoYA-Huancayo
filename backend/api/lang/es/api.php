@@ -118,7 +118,9 @@ return [
     // Pedido con varios rubros (D-92).
     'board_tab' => 'La pestaña no existe.',
     'board_search' => 'La búsqueda admite hasta 100 caracteres.',
+    'cancellation_code' => 'Elige un motivo de la lista.',
     'cancellation_reason' => 'Cuéntanos el motivo: debe tener de 5 a 255 caracteres.',
+    'cancellation_comment' => 'El comentario admite hasta 255 caracteres.',
     'cancellation_not_allowed' => 'Esta solicitud ya no se puede cancelar: la atención ya empezó o la solicitud terminó.',
     'order_items' => 'Elige al menos una especialidad: el pedido no puede ir vacío.',
     'order_item_repeated' => 'Ese trabajo ya está en el pedido. Elige otro.',
