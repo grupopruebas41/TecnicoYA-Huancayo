@@ -1,4 +1,4 @@
-import {api} from '../../support/sprint01';
+import {api, logout} from '../../support/sprint01';
 import {fillRegistration} from '../../support/registration';
 
 it('S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificación al ingresar', () => {
@@ -21,6 +21,6 @@ it('S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificació
   cy.get('[data-cy=login-submit]').click();
   cy.get('[data-cy=portal-technician]').should('contain', 'Pendiente de verificación');
   cy.location('hash').should('eq', '#cuenta/tecnico');
-  cy.get('[data-cy=logout]').click();
+  logout();
   cy.get('[data-cy=login-submit]').should('be.visible');
 });

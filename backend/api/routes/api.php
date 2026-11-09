@@ -69,6 +69,13 @@ Route::prefix('v1')->group(function () {
             // D-92: pedido con varios rubros (hasta 3), enviado en una sola transacción, y cupo de solicitudes activas.
             // Mis solicitudes (contrato S5 §10): tablero y cancelación del titular.
             Route::get('client/requests', [App\Modules\ARequests\Http\Controllers\ClientRequestBoardController::class, 'index']);
+            // Fase 4 del panel final: direcciones del cliente y preferencias de comunicación.
+            Route::get('client/addresses', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'index']);
+            Route::post('client/addresses', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'store']);
+            Route::patch('client/addresses/{address}', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'update'])->whereNumber('address');
+            Route::delete('client/addresses/{address}', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'destroy'])->whereNumber('address');
+            Route::get('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'show']);
+            Route::put('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'update']);
             // D-101 (Fase 3): técnicos favoritos del cliente titular; guardar y quitar son idempotentes.
             Route::get('client/favorites', [App\Modules\BMatching\Http\Controllers\FavoriteTechnicianController::class, 'index']);
             Route::put('client/favorites/{technician}', [App\Modules\BMatching\Http\Controllers\FavoriteTechnicianController::class, 'store'])->whereNumber('technician');

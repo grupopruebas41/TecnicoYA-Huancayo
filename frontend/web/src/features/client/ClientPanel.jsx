@@ -10,9 +10,17 @@ import TechnicianSearch from '../matching/TechnicianSearch';
 import {consumeSearch} from '../../landing/config';
 import ClientHome from './ClientHome';
 import NotificationsPage from './NotificationsPage';
-import {requestGroup} from './clientRules';
+import {isActive} from './clientRules';
+import {FaqPage, FavoritesPage, HowItWorksPage, NewsPage, PremiumPage, PrivacyPage, SpecialtiesPage} from './ClientPages';
 import '../requests/requests.css';
 import './client.css';
+
+// Rediseño de la campana (Fase 4): un aviso sobre una solicitud la abre en Mis solicitudes; un comunicado, en Novedades.
+const notificationTarget = item => {
+  const requestId = item.context?.request_id || (item.subject?.type === 'service_request' ? item.subject.id : null);
+  if (requestId) return ['requests', {open: requestId}];
+  return item.type?.startsWith('announcement') ? ['news'] : null;
+};
 
 const plural = (count, one, many) => `${count} ${count === 1 ? one : many}`;
 
@@ -26,8 +34,9 @@ function useClientBadges(tick) {
       if (!active) return;
       const next = {};
       if (requests.status === 'fulfilled' && Array.isArray(requests.value?.data)) {
-        const count = requests.value.data.filter(row => requestGroup(row) === 'choice').length;
-        next.requests = {count, label: plural(count, 'solicitud por elegir técnico', 'solicitudes por elegir técnico')};
+        // Fase 4: el contador de Mis solicitudes muestra las activas.
+        const count = requests.value.data.filter(isActive).length;
+        next.requests = {count, label: plural(count, 'solicitud activa', 'solicitudes activas')};
       }
       if (notifications.status === 'fulfilled') {
         const count = notifications.value?.data?.unread_count ?? 0;
@@ -53,7 +62,7 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
   const badges = useClientBadges(tick);
   const district = user.client_profile?.district_id ?? null;
   const sections = [
-    {id: 'home', group: 'General', label: 'Inicio', icon: 'home', render: ({navigate}) => <ClientHome user={user} navigate={navigate}/>},
+    {id: 'home', label: 'Inicio', icon: 'home', render: ({navigate}) => <ClientHome user={user} navigate={navigate}/>},
     // D-92: el pedido con varios rubros es el asistente por defecto; la solicitud dirigida a un técnico (un solo rubro) y
     // los borradores anteriores siguen en RequestWizard.
     {id: 'new', group: 'Servicios', label: 'Nueva solicitud', icon: 'plus', render: ({navigate, intent}) => intent?.record || intent?.technician
@@ -66,13 +75,29 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
       onRequest={technician => navigate('new', {technician})}/>},
     {id: 'requests', group: 'Servicios', label: 'Mis solicitudes', icon: 'requests', render: ({navigate, intent}) => <MyRequests
       openId={intent?.open || null} navigate={navigate} onContinue={record => navigate('new', {record})}/>},
-    {id: 'notifications', group: 'Cuenta', label: 'Notificaciones', icon: 'bell', render: () => <NotificationsPage userId={user.id} onChange={refresh}/>},
-    {id: 'profile', group: 'Cuenta', label: 'Mi perfil', icon: 'profile', render: () => <ProfilePage user={user} onUpdate={onUserChange} onExpired={onExpired}/>},
+    {id: 'favorites', group: 'Servicios', label: 'Técnicos favoritos', icon: 'heart', render: ({navigate}) => <FavoritesPage navigate={navigate}/>},
+    {id: 'appointments', group: 'Servicios', label: 'Mis citas', icon: 'calendar', soon: true},
+    // Fase 4 (D-98): lo premium se ve con candado y abre la presentación del plan, sin pagos. Las pantallas llegan en la Fase 6.
+    ...[['equipment', 'Mis equipos', 'monitor'], ['sensors', 'Sensores IoT', 'sensor'], ['alerts', 'Alertas', 'alert'],
+      ['promotions', 'Promociones', 'gift'], ['warranties', 'Garantías', 'verify']]
+      .map(([id, label, icon]) => ({id, group: 'Mi hogar / Mi negocio · Premium', label, icon, premium: true})),
+    {id: 'specialties', group: 'Descubre', label: 'Especialidades', icon: 'catalog', render: ({navigate}) => <SpecialtiesPage navigate={navigate}/>},
+    {id: 'news', group: 'Descubre', label: 'Novedades', icon: 'news', render: () => <NewsPage/>},
+    {id: 'map', group: 'Descubre', label: 'Técnicos cerca de ti', icon: 'map', soon: true},
+    {id: 'how', group: 'Ayuda', label: 'Cómo funciona', icon: 'book', render: ({navigate}) => <HowItWorksPage navigate={navigate}/>},
+    {id: 'faq', group: 'Ayuda', label: 'Preguntas frecuentes', icon: 'help', render: () => <FaqPage/>},
+    {id: 'report', group: 'Ayuda', label: 'Reportar un problema', icon: 'flag', soon: true},
+    {id: 'privacy', group: 'Ayuda', label: 'Privacidad y términos', icon: 'verify', render: () => <PrivacyPage/>},
+    // Fuera del menú (Fase 4): Notificaciones se abre desde la campana y Mi perfil desde el panel del avatar.
+    {id: 'premium', nav: false, label: 'Plan Premium', icon: 'star', render: ({intent}) => <PremiumPage intent={intent}/>},
+    {id: 'notifications', nav: false, label: 'Notificaciones', icon: 'bell', render: ({navigate}) => <NotificationsPage userId={user.id} onChange={refresh}
+      onOpen={item => { const target = notificationTarget(item); if (target) navigate(...target); }}/>},
+    {id: 'profile', nav: false, label: 'Mi perfil', icon: 'profile', render: () => <ProfilePage user={user} onUpdate={onUserChange} onExpired={onExpired}/>},
   ];
   return <RealtimeProvider>
     <PanelShell user={user} role="client" roleLabel={roleLabel} navLabel="Gestión del cliente" sections={sections}
       onLogout={onLogout} onUserChange={onUserChange} busy={busy} notice={notice} badges={badges} onNavigate={refresh}
       initialSection={searchIntent ? 'search' : undefined} initialIntent={searchIntent ? {filters: searchIntent} : null}
-      locked={locked} bellKey={tick}/>
+      locked={locked} bellKey={tick} modern onExpired={onExpired} notificationTarget={notificationTarget}/>
   </RealtimeProvider>;
 }

@@ -15,7 +15,7 @@ final class UpdateProfile
             abort_unless($user->is_active, 403, __('api.forbidden'));
             abort_unless($user->version === (int) $data['expected_version'], 409, __('api.stale_version'));
 
-            foreach (['name', 'phone', 'given_names', 'family_names', 'theme_preference', 'avatar_media_id'] as $field) {
+            foreach (['name', 'phone', 'given_names', 'family_names', 'theme_preference', 'sidebar_collapsed', 'avatar_media_id'] as $field) {
                 if (array_key_exists($field, $data)) {
                     $user->setAttribute($field, $data[$field]);
                 }

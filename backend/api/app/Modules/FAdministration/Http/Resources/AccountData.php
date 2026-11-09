@@ -17,6 +17,7 @@ final class AccountData
             'given_names' => $user->given_names, 'family_names' => $user->family_names,
             // Fase 1 del panel: tema (D-76) y foto de perfil revisada (D-77); sin foto, el panel usa las iniciales.
             'theme_preference' => $user->theme_preference,
+            'sidebar_collapsed' => $user->sidebar_collapsed === null ? null : (bool) $user->sidebar_collapsed,
             'avatar_url' => $user->avatar_media_id && DB::table('media_files')->where('id', $user->avatar_media_id)
                 ->where('scan_status', 'clean')->whereNull('retired_at')->exists() ? url("/api/v1/media/{$user->avatar_media_id}") : null,
             'role' => ['code' => $role], 'version' => (int) $user->version,

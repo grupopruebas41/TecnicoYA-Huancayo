@@ -139,7 +139,9 @@ it('S04-TC-142 el detalle de la solicitud del titular tiene la forma completa de
 it('S04-TC-143 la bandeja de notificaciones tiene la forma completa del contrato §7.1 y pagina', function () {
     Sanctum::actingAs($this->near->user);
     $page = $this->getJson('/api/v1/notifications?per_page=1')->assertOk()->json('data');
-    $item = ['id' => 'int', 'type' => 'string', 'title' => 'string', 'body' => 'string', 'subject' => ['type' => 'string', 'id' => 'int'],
+    // Rediseño de la campana (Fase 4 del panel final): cada aviso suma category y context (null si no es de una solicitud).
+    $item = ['id' => 'int', 'type' => 'string', 'title' => 'string', 'body' => 'string', 'category' => 'string', 'context' => 'null',
+        'subject' => ['type' => 'string', 'id' => 'int'],
         'event_id' => 'string', 'created_at' => 'string', 'read_at' => 'null'];
 
     // D-90 (NOTIF-02): unread_count se agregó para la campana del panel del cliente; el resto de la forma no cambia.

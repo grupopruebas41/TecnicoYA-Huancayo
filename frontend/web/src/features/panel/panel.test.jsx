@@ -100,13 +100,14 @@ test('S07-TC-060 la campana cuenta las notificaciones sin leer y las lista', asy
 
   fireEvent.click(bell);
   const list = screen.getByRole('region', {name: 'Notificaciones recientes'});
-  expect(within(list).getAllByRole('listitem').map(i => i.textContent)).toEqual(['Nuevo técnico por verificar', 'Comunicado publicado', 'Revisión anterior']);
+  // Rediseño de la campana (Fase 4): el título va en negrita junto al contexto y el tiempo relativo.
+  expect(within(list).getAllByRole('listitem').map(i => i.querySelector('.notif-title').textContent)).toEqual(['Nuevo técnico por verificar', 'Comunicado publicado', 'Revisión anterior']);
   cleanup();
 
   routes(admin, {'/notifications': () => ({data: inbox([], 0)})});
   render(<AccountApp/>);
   fireEvent.click(await screen.findByRole('button', {name: 'Notificaciones: 0 sin leer'}));
-  expect(screen.getByText('No tienes notificaciones.')).toBeInTheDocument();
+  expect(screen.getByText('Estás al día, no tienes notificaciones nuevas')).toBeInTheDocument();
 });
 
 test('S07-TC-061 el avatar muestra iniciales o la foto y abre el menú Mi perfil / Tema / Cerrar sesión', async () => {

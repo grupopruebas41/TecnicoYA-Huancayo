@@ -18,6 +18,8 @@ class UpdateProfileRequest extends AccountRequest
             'phone' => ['sometimes', 'nullable', 'string', 'max:20', 'regex:/^\+?[0-9 ()-]+$/'],
             // D-76: preferencia de tema del panel.
             'theme_preference' => ['sometimes', 'nullable', Rule::in(['light', 'dark', 'system'])],
+            // Fase 4 del panel final: el menú contraído se recuerda en la cuenta.
+            'sidebar_collapsed' => ['sometimes', 'boolean'],
             // D-77: foto de perfil propia, con finalidad avatar, revisada y no retirada; null la quita.
             'avatar_media_id' => ['sometimes', 'nullable', 'integer', function (string $attribute, mixed $value, Closure $fail) {
                 $owned = DB::table('media_files')->where('id', $value)->where('owner_id', $this->user()->id)

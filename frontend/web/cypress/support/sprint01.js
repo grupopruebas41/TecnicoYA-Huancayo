@@ -12,7 +12,18 @@ export function login(role = 'client') {
 }
 // Fase 1 del panel (D-73): los datos de la cuenta viven en la sección «Mi perfil» del menú lateral.
 export function openProfile() {
-  // D-87: el panel del cliente nombra su menú «Gestión del cliente» (el mismo que usan las E2E del S3 y del S4).
-  cy.get('nav[aria-label="Administración"], nav[aria-label="Mi cuenta"], nav[aria-label="Gestión del cliente"]').contains('button', 'Mi perfil').click();
+  // Fase 4 del panel final: el cliente abre Mi perfil desde el panel del avatar (pestaña Mi cuenta); los demás, desde el menú.
+  cy.get('[data-cy^=portal-]').then((portal) => {
+    if (portal.is('[data-cy=portal-client]')) cy.get('button[aria-label^="Cuenta de "]').click();
+    else cy.get('nav[aria-label="Administración"], nav[aria-label="Mi cuenta"]').contains('button', 'Mi perfil').click();
+  });
   cy.get('[data-cy=profile-submit]').should('be.visible');
+}
+
+/** Fase 4: en el portal del cliente «Cerrar sesión» está al pie del panel del avatar. */
+export function logout() {
+  cy.get('body').then((body) => {
+    if (!body.find('[data-cy=logout]:visible').length) cy.get('button[aria-label^="Cuenta de "]').click();
+  });
+  cy.get('[data-cy=logout]').click();
 }

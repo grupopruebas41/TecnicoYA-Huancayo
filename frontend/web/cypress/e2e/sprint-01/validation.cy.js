@@ -1,5 +1,5 @@
 import {fillRegistration} from '../../support/registration';
-import {openProfile} from '../../support/sprint01';
+import {logout, openProfile} from '../../support/sprint01';
 const api = Cypress.expose('apiUrl');
 const site = Cypress.config('baseUrl');
 let password;
@@ -77,6 +77,6 @@ describe('Alertas y validación del incremento Sprint 1', () => {
       expect(win.sessionStorage.getItem('tecnicoya.api-session')).to.eq(null);
       expect(win.document.cookie.includes(`${Cypress.expose('sessionCookie')}=`)).to.eq(false);
     });
-    cy.get('[data-cy=logout]').click();
+    logout();
   });
 });

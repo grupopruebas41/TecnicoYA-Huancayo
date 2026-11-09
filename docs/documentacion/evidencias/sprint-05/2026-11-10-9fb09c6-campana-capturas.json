@@ -1,0 +1,50 @@
+{
+  "1366-campana": {
+    "overflowX": false,
+    "filas": 5,
+    "recortados": 0,
+    "panelCabe": true
+  },
+  "1366-campana-no-leidas": {
+    "overflowX": false,
+    "filas": 3,
+    "recortados": 0,
+    "panelCabe": true
+  },
+  "1366-pagina": {
+    "overflowX": false,
+    "filas": 5,
+    "recortados": 0,
+    "panelCabe": null
+  },
+  "1366-pagina-no-leidas": {
+    "overflowX": false,
+    "filas": 3,
+    "recortados": 0,
+    "panelCabe": null
+  },
+  "390-campana": {
+    "overflowX": false,
+    "filas": 5,
+    "recortados": 0,
+    "panelCabe": true
+  },
+  "390-campana-no-leidas": {
+    "overflowX": false,
+    "filas": 5,
+    "recortados": 0,
+    "panelCabe": true
+  },
+  "390-pagina": {
+    "overflowX": false,
+    "filas": 5,
+    "recortados": 0,
+    "panelCabe": null
+  },
+  "390-pagina-vacia": {
+    "overflowX": false,
+    "filas": 0,
+    "recortados": 0,
+    "panelCabe": null
+  }
+}

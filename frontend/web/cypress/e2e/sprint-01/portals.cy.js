@@ -1,6 +1,6 @@
 // Requiere el contrato de selectores y usuarios E2E descrito en la guía.
 import {fillRegistration} from '../../support/registration';
-import {openProfile} from '../../support/sprint01';
+import {logout, openProfile} from '../../support/sprint01';
 const api = Cypress.expose('apiUrl');
 const site = Cypress.config('baseUrl');
 let fixturePassword;
@@ -23,7 +23,7 @@ describe('Sprint 1: UI real con sesión', () => {
     login('client');
     openProfile();
     cy.get('[data-cy=profile-name]').invoke('val').then(clientName => {
-      cy.get('[data-cy=logout]').click();
+      logout();
       cy.get('[data-cy=login-submit]').should('be.visible');
       login('technician');
       cy.get('[data-cy=portal-client]').should('not.exist');
@@ -33,7 +33,7 @@ describe('Sprint 1: UI real con sesión', () => {
         cy.get('[data-cy=profile-name]').should('have.value', body.data.name);
         cy.get('[data-cy=profile-phone]').should('have.value', body.data.phone || '');
       });
-      cy.get('[data-cy=logout]').click();
+      logout();
       cy.get('[data-cy=login-submit]').should('be.visible');
     });
   });
@@ -54,7 +54,7 @@ describe('Sprint 1: UI real con sesión', () => {
         .its('body.data.role.code').should('eq', role);
       cy.reload();
       cy.get(`[data-cy=portal-${role}]`).should('be.visible');
-      cy.get('[data-cy=logout]').click();
+      logout();
       cy.get('[data-cy=login-submit]').should('be.visible');
     });
   }
@@ -63,7 +63,7 @@ describe('Sprint 1: UI real con sesión', () => {
     login('client');
     cy.getCookie(Cypress.expose('sessionCookie'), { log: false }).then((cookie) => {
       expect(cookie).not.to.be.null;
-      cy.get('[data-cy=logout]').click();
+      logout();
       cy.get('[data-cy=login-submit]').should('be.visible');
       cy.clearCookies({ log: false });
       cy.request({

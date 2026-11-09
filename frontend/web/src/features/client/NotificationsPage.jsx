@@ -2,38 +2,19 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {request} from '../administration/http';
 import {ConnectionStatus, useRealtimeResource} from '../realtime/Realtime';
 import Pagination from './Pagination';
-import Icon from '../panel/icons';
-import {NOTIFICATION_TYPES, dayLabel, formatTime} from './clientRules';
+import {NOTIFICATION_TYPES} from './clientRules';
+import {EmptyNotifications, NotificationList, markOpened} from '../panel/notificationView';
 
 const PER_PAGE = 20;
-const STATES = [['', 'Todas'], ['unread', 'No leídas'], ['read', 'Leídas']];
-const ICONS = {'request.awaiting_choice': 'check', 'request.pending': 'clock', 'request.direct_declined': 'alert', 'request.expired': 'close'};
-const typeLabel = type => NOTIFICATION_TYPES.find(([code]) => code === type)?.[1] || 'Aviso';
-
-/** Grupos consecutivos por día en hora de Lima: «Hoy», «Ayer» o la fecha. Los avisos llegan del más reciente al más antiguo. */
-function byDay(items) {
-  const groups = [];
-  items.forEach(item => {
-    const label = dayLabel(item.created_at);
-    if (groups.at(-1)?.label === label) groups.at(-1).items.push(item);
-    else groups.push({label, items: [item]});
-  });
-  return groups;
-}
-
-function Chips({label, options, value, onChange}) {
-  return <div className="client-chip-group" role="group" aria-label={label}>
-    {options.map(([code, text]) => <button key={code || 'all'} type="button" className="client-filter-chip" aria-pressed={value === code}
-      onClick={() => onChange(code)}>{text}</button>)}
-  </div>;
-}
+const TABS = [['', 'Todas'], ['unread', 'No leídas']];
 
 /**
- * Bandeja completa del cliente (D-90, adelanto de HU-S08-03): filtros por estado y tipo, marcar una o todas como
- * leídas (solo las propias; el servidor responde 404 a una ajena) y recarga con notification.created.
- * Revisión del PR #39: agrupada por día, ícono por tipo, punto en las no leídas y filtros como chips.
+ * Bandeja completa del cliente (D-90, adelanto de HU-S08-03). Rediseño de la campana (Fase 4): el mismo diseño del panel
+ * desplegable (encabezado con «N nuevas» y «Marcar todas como leídas», pestañas Todas y No leídas, grupos Hoy, Ayer y
+ * Anteriores, contexto del pedido y tiempo relativo). Abrir un aviso lo marca como leído y lleva a su solicitud.
+ * Solo se marcan los propios: el servidor responde 404 a uno ajeno. Se recarga con notification.created.
  */
-export default function NotificationsPage({userId, onChange = () => {}}) {
+export default function NotificationsPage({userId, onChange = () => {}, onOpen = () => {}}) {
   const [filters, setFilters] = useState({state: '', type: '', page: 1});
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -53,13 +34,11 @@ export default function NotificationsPage({userId, onChange = () => {}}) {
   useEffect(() => { setLoading(true); load(); }, [load]);
   const connected = useRealtimeResource(`users.${userId}`, ['notification.created'], () => { load(); onChange(); });
   const change = (name, value) => { setSuccess(''); setFilters(current => ({...current, [name]: value, page: 1})); };
-  async function markOne(item) {
+  async function open(item) {
     setBusy(true); setError(''); setSuccess('');
     try {
-      const result = await request(`/notifications/${item.id}/read`, {}, 'POST');
-      setData(current => ({...current, unread_count: Math.max(0, current.unread_count - 1),
-        items: current.items.map(entry => (entry.id === item.id ? result.data : entry))}));
-      setSuccess('Marcamos la notificación como leída.'); onChange();
+      await markOpened(item); onChange(); onOpen(item);
+      await load();
     } catch (failure) { setError(failure.message); } finally { setBusy(false); }
   }
   async function markAll() {
@@ -71,39 +50,29 @@ export default function NotificationsPage({userId, onChange = () => {}}) {
     } catch (failure) { setError(failure.message); } finally { setBusy(false); }
   }
   const items = data?.items || [];
-  return <section className="panel-page client-notifications" aria-label="Notificaciones" aria-busy={loading}>
-    <div className="client-block-head">
+  const unread = data?.unread_count || 0;
+  return <section className="panel-page client-notifications notif-page" aria-label="Notificaciones" aria-busy={loading}>
+    <header className="notif-head">
       <h2>Notificaciones</h2>
-      <button type="button" className="button primary" disabled={busy || !data?.unread_count} onClick={markAll}>Marcar todas como leídas</button>
-    </div>
+      {unread > 0 && <span className="notif-count">{unread === 1 ? '1 nueva' : `${unread} nuevas`}</span>}
+      <button type="button" className="button primary" disabled={busy || !unread} onClick={markAll}>Marcar todas como leídas</button>
+    </header>
     <ConnectionStatus connected={connected}/>
-    <div className="client-filters">
-      <Chips label="Filtrar por estado" options={STATES} value={filters.state} onChange={value => change('state', value)}/>
-      <Chips label="Filtrar por tipo" options={[['', 'Todos los tipos'], ...NOTIFICATION_TYPES]} value={filters.type}
-        onChange={value => change('type', value)}/>
+    <div className="notif-tabs" role="tablist" aria-label="Filtrar notificaciones">
+      {TABS.map(([code, label]) => <button key={code || 'all'} type="button" role="tab" aria-selected={filters.state === code}
+        onClick={() => change('state', code)}>{label}</button>)}
+    </div>
+    <div className="client-chip-group" role="group" aria-label="Filtrar por tipo">
+      {[['', 'Todos los tipos'], ...NOTIFICATION_TYPES].map(([code, text]) => <button key={code || 'all'} type="button"
+        className="client-filter-chip" aria-pressed={filters.type === code} onClick={() => change('type', code)}>{text}</button>)}
     </div>
     {error && <p className="error" role="alert">{error}</p>}
     {success && <output className="notice">{success}</output>}
     {loading && !data && <p className="muted">Cargando notificaciones…</p>}
-    {data && !items.length && <div className="client-empty">
-      <span aria-hidden="true"><Icon name="bell"/></span>
-      <p><strong>No hay notificaciones con estos filtros</strong></p>
-      <p className="muted">Te avisaremos aquí cuando un técnico acepte o cambie el estado de tus solicitudes.</p>
-    </div>}
-    {byDay(items).map(group => <section key={group.label} className="client-day" aria-label={group.label}>
-      <h3>{group.label}</h3>
-      <ul className="client-inbox">
-        {group.items.map(item => <li key={item.id} className={item.read_at ? 'is-read' : 'is-unread'}>
-          <span className="client-inbox-icon" aria-hidden="true"><Icon name={ICONS[item.type] || 'bell'}/></span>
-          <div>
-            <strong>{!item.read_at && <span className="client-unread-dot" aria-hidden="true"/>}{item.title}</strong>
-            <p>{item.body}</p>
-            <small className="muted">{typeLabel(item.type)} · {formatTime(item.created_at)} · <span>{item.read_at ? 'Leída' : 'Sin leer'}</span></small>
-          </div>
-          {!item.read_at && <button type="button" className="text-button" disabled={busy} onClick={() => markOne(item)}>Marcar como leída</button>}
-        </li>)}
-      </ul>
-    </section>)}
+    {data && !items.length && <EmptyNotifications filtered={Boolean(filters.state || filters.type)}/>}
+    <div className="notif-body">
+      <NotificationList items={items} onOpen={open}/>
+    </div>
     {(data?.pagination?.last_page || 1) > 1 && <Pagination label="Páginas de notificaciones" page={filters.page}
       lastPage={data.pagination.last_page} disabled={loading} onChange={page => setFilters({...filters, page})}/>}
   </section>;

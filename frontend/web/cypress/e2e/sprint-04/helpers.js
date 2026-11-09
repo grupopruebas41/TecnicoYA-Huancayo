@@ -8,7 +8,7 @@ export function login(account) {
     cy.get("[data-cy=login-password]").type(E2E_PASSWORD, { log: false }),
   );
   cy.get("[data-cy=login-submit]").click();
-  cy.get("[data-cy=logout]").should("be.visible");
+  cy.get("[data-cy^=portal-]").should("be.visible"); // Fase 4: el cliente ya no tiene «Cerrar sesión» a la vista.
 }
 export function read(path) {
   return cy.request({

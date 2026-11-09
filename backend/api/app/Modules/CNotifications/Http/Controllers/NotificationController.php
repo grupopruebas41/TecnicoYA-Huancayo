@@ -2,6 +2,7 @@
 
 namespace App\Modules\CNotifications\Http\Controllers;
 
+use App\Modules\CNotifications\Application\NotificationContext;
 use App\Shared\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -33,7 +34,9 @@ final class NotificationController
         $perPage = (int) ($filters['per_page'] ?? 20);
         $page = (int) ($filters['page'] ?? 1);
         $total = (clone $query)->count();
-        $items = $query->orderByDesc('created_at')->orderByDesc('id')->forPage($page, $perPage)->get()->map(fn (object $n) => $this->item($n))->all();
+        $rows = $query->orderByDesc('created_at')->orderByDesc('id')->forPage($page, $perPage)->get();
+        $contexts = NotificationContext::forRequests($rows->where('subject_type', 'service_request')->pluck('subject_id')->all());
+        $items = $rows->map(fn (object $n) => $this->item($n, $contexts))->all();
 
         return ApiResponse::data(['items' => $items,
             'pagination' => ['page' => $page, 'per_page' => $perPage, 'total' => $total, 'last_page' => max(1, (int) ceil($total / $perPage))],
@@ -47,7 +50,9 @@ final class NotificationController
         abort_unless((clone $own)->exists(), 404);
         (clone $own)->whereNull('read_at')->update(['read_at' => now(), 'updated_at' => now()]);
 
-        return ApiResponse::data($this->item($own->first()));
+        $row = $own->first();
+
+        return ApiResponse::data($this->item($row, NotificationContext::forRequests($row->subject_type === 'service_request' ? [$row->subject_id] : [])));
     }
 
     public function readAll(Request $request): JsonResponse
@@ -58,10 +63,13 @@ final class NotificationController
         return ApiResponse::data(['updated' => $updated]);
     }
 
-    private function item(object $n): array
+    /** Rediseño de la campana (Fase 4): suma la categoría visual y el contexto de la solicitud (o null). */
+    private function item(object $n, array $contexts = []): array
     {
         return [
             'id' => $n->id, 'type' => $n->type, 'title' => $n->title, 'body' => $n->body,
+            'category' => NotificationContext::category($n->type),
+            'context' => $n->subject_type === 'service_request' ? ($contexts[(int) $n->subject_id] ?? null) : null,
             'subject' => ['type' => $n->subject_type, 'id' => (int) $n->subject_id], 'event_id' => $n->event_id,
             'created_at' => Carbon::parse($n->created_at)->toISOString(),
             'read_at' => $n->read_at === null ? null : Carbon::parse($n->read_at)->toISOString(),
