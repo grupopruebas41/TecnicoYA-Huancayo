@@ -2,6 +2,17 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-08 · DEF-59: las 8 Cypress del S4
+
+- **Rama:** `feature/pimentel/cliente/def-59-cypress-s4`, apilada sobre el PR #47. Detalle en `docs/avances/pimentel/cliente/def-59-cypress-s4/avance.md`.
+- **Causas:**
+  - en las pruebas: `cy.visit` a otro hash no recarga; Enter sin `text`; espera menor que el plazo de pusher-js;
+  - en el producto: **DEF-60** (conexión «activa» sin canal suscrito y sin recuperación tras pasar por `connecting`) y **DEF-61** (oferta vencida respondía «La información cambió»).
+- **Pruebas:** S04-TC-144 a 146; Cypress S4 19/19 y S3 17/17; Pest 446/446; Vitest 402/402.
+- **Pendiente:** repetir la Cypress del S5, que quedó cortada por una interrupción de la sesión.
+- **Siguiente:** D-100 con lista cerrada de motivos, y luego la Fase 3 desde S05-TC-181.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-04 · Panel del cliente final, Fase 2: Mis solicitudes completo
 
 - **Ramas:**
