@@ -99,7 +99,7 @@ export default function CancelRequestDialog({ row, onClose, onCancelled, onConfl
 
   return (
     <div className="s02-modal">
-      <dialog open ref={root} aria-modal="true" aria-label={title} onKeyDown={keys}>
+      <dialog open ref={root} className="client-cancel-dialog" aria-modal="true" aria-label={title} onKeyDown={keys}>
         <h2>{title}</h2>
         <p>
           {row.specialty.name}. Avisaremos a los técnicos que la recibieron y quedará en Canceladas. Esta acción no se puede deshacer.
