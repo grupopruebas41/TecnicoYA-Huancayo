@@ -765,15 +765,9 @@
 .panel-shell.is-collapsed .panel-brand-row.is-modern { flex-direction: column; }
 .panel-shell.is-collapsed .panel-brand-row.is-modern .panel-brand { display: none; }
 .panel-nav-item.is-soon { opacity: 0.62; cursor: not-allowed; }
-.panel-soon {
-  margin-left: auto;
-  padding: 1px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--ty-sidebar-border);
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-.panel-lock { margin-left: auto; display: inline-flex; color: var(--ty-sidebar-mark); }
+.panel-soon { display: block; font-size: 0.72rem; font-weight: 600; color: var(--ty-sidebar-muted, var(--ty-sidebar-text)); }
+.panel-nav-item.is-soon .panel-label { white-space: normal; line-height: 1.2; }
+.panel-lock { display: inline-flex; margin-left: 8px; vertical-align: -2px; color: var(--ty-sidebar-mark); }
 .panel-lock .panel-svg-icon { width: 16px; height: 16px; }
 .panel-shell.is-collapsed .panel-lock { display: none; }
 .panel-a11y { position: relative; }

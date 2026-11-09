@@ -200,7 +200,7 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
           id={`account-tab-${id}`} aria-selected={tab === id} aria-controls={`account-panel-${id}`} tabIndex={tab === id ? 0 : -1}
           onClick={() => setTab(id)}>{label}</button>)}
       </div>
-      <div className="account-body" role="tabpanel" id={`account-panel-${tab}`} aria-labelledby={`account-tab-${tab}`}>
+      <div className="account-body panel-content" role="tabpanel" id={`account-panel-${tab}`} aria-labelledby={`account-tab-${tab}`}>
         {tab === 'cuenta' && <ProfilePage user={user} onUpdate={onUpdate} onExpired={onExpired}/>}
         {tab === 'direcciones' && <AddressesTab/>}
         {tab === 'accesibilidad' && <>
@@ -220,9 +220,9 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
           </label>)}
         </fieldset>}
       </div>
-      <footer className="account-foot">
+      <footer className="account-foot panel-content">
         <button type="button" className="button outline" data-cy="logout" disabled={busy} onClick={onLogout}>
-          <Icon name="logout"/> Cerrar sesión</button>
+          <Icon name="logout"/><span>Cerrar sesión</span></button>
       </footer>
     </dialog>
   </div>;

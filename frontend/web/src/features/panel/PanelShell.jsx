@@ -101,8 +101,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       return <button key={section.id} type="button" className="panel-nav-item is-soon" aria-disabled="true"
         data-tooltip={collapsed ? `${section.label} (próximamente)` : undefined} onClick={event => event.preventDefault()}>
         <span className="panel-nav-icon" aria-hidden="true"><Icon name={section.icon}/></span>
-        <span className="panel-label">{section.label}</span>
-        <span className="panel-soon panel-label">Próximamente</span>
+        <span className="panel-label">{section.label}<small className="panel-soon">Próximamente</small></span>
       </button>;
     }
     const target = section.premium ? 'premium' : section.id;
@@ -111,8 +110,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       aria-describedby={badge?.count ? badgeId : undefined} disabled={locked}
       onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
-      <span className="panel-label">{section.label}</span>
-      {section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}
+      <span className="panel-label">{section.label}{section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}</span>
       {badge?.count > 0 && <span className="panel-nav-badge" aria-hidden="true">{badge.count > 99 ? '99+' : badge.count}</span>}
     </button>
     {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
