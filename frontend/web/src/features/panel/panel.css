@@ -900,6 +900,7 @@ html[data-contrast="high"] {
 html[data-contrast="high"] a { text-decoration: underline; }
 
 @media (max-width: 760px) {
+  .panel-shell.is-collapsed .panel-lock { display: inline-flex; }
   .account-panel { width: 100vw; }
   .panel-brand-toggle { display: none; }
 }

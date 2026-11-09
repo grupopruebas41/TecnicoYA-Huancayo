@@ -222,7 +222,7 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
       </div>
       <footer className="account-foot panel-content">
         <button type="button" className="button outline" data-cy="logout" disabled={busy} onClick={onLogout}>
-          <Icon name="logout"/><span>Cerrar sesión</span></button>
+          Cerrar sesión</button>
       </footer>
     </dialog>
   </div>;

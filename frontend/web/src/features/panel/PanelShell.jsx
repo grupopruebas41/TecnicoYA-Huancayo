@@ -121,7 +121,10 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     setCollapsed(next); store.set('localStorage', 'tecnicoya.panel.collapsed', next ? '1' : '0');
     // Fase 4: el cliente lo recuerda en su cuenta; si falla, queda en este equipo.
     if (modern) {
-      Promise.resolve().then(() => request('/me', {sidebar_collapsed: next, expected_version: user.version}, 'PATCH'))
+      const save = version => Promise.resolve().then(() => request('/me', {sidebar_collapsed: next, expected_version: version}, 'PATCH'));
+      // Si otra pestaña cambió la cuenta (409), se relee la versión y se reintenta una sola vez.
+      save(user.version)
+        .catch(error => error?.status === 409 ? request('/me').then(me => save(me.data.version)) : Promise.reject(error))
         .then(result => { if (result?.data) onUserChange?.(result.data); }).catch(() => {});
     }
   }
