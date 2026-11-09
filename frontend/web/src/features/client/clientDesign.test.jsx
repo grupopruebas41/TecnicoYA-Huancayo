@@ -174,7 +174,9 @@ test('S05-TC-049 el perfil del técnico muestra cabecera verificada, servicios r
   expect(within(header).getByText('Verificado')).toBeInTheDocument();
   expect(within(header).getByText('6 años de experiencia')).toBeInTheDocument();
   expect(within(header).getByText('Huancayo')).toBeInTheDocument();
-  expect(within(header).getByRole('button', {name: 'Solicitar servicio'})).toHaveClass('primary');
+  // D-101 (Fase 3): «Solicitar servicio» pasa de la cabecera a la barra fija (abajo en el celular).
+  expect(screen.getByRole('button', {name: 'Solicitar servicio'})).toHaveClass('primary');
+  expect(screen.getByRole('button', {name: 'Solicitar servicio'}).closest('.profile-cta-bar')).not.toBeNull();
   expect(screen.getByText('Referencial S/ 80.00')).toBeInTheDocument();
   expect(screen.getByText(/orientativa/)).toBeInTheDocument();
   expect(screen.getByText('Este técnico aún no publicó trabajos.')).toBeInTheDocument();

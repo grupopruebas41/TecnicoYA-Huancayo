@@ -178,7 +178,8 @@ test("S03-TC-078 técnico sin calificaciones", () => {
       }}
     />,
   );
-  expect(screen.getByText("Sin calificaciones aún")).toBeVisible();
+  // D-101 (Fase 3): sin calificaciones la tarjeta dice «Nuevo», como pide la revisión del equipo.
+  expect(screen.getByText("Nuevo")).toBeVisible();
   expect(screen.queryByText(/0 estrellas/)).toBeNull();
 });
 test("S03-TC-079 filtros elegidos y reinicio de página", () => {

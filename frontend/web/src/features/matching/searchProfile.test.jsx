@@ -201,7 +201,7 @@ test('S05-TC-203 el perfil trae portada, verificado, experiencia, zonas, calific
   expect(container.querySelector('.profile-cover')).toHaveAttribute('data-specialty', 'refrigeracion');
   expect(within(head).getByText('Verificado')).toBeInTheDocument();
   expect(within(head).getByText('9 años de experiencia')).toBeInTheDocument();
-  expect(within(head).getByText('Atiende en El Tambo, Huancayo')).toBeInTheDocument();
+  expect(within(head).getByText('El Tambo, Huancayo').closest('p')).toHaveTextContent('Atiende en El Tambo, Huancayo');
   expect(within(head).getByLabelText('4,6 de 5 en 5 reseñas de ejemplo')).toBeInTheDocument();
   expect(within(head).getByText('Disponible hoy')).toBeInTheDocument();
   const cta = screen.getByRole('button', {name: 'Solicitar servicio'});

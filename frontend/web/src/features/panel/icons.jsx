@@ -36,9 +36,13 @@ const PATHS = {
   expand: <><path d="m9.5 7 5 5-5 5"/><path d="M5 5v14"/></>,
   site: <><path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M17 14v4a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 5 18V8.5A1.5 1.5 0 0 1 6.5 7H10"/></>,
   logout: <><path d="M12 4v7"/><path d="M7.5 7a7 7 0 1 0 9 0"/></>,
+  // Fase 3 (D-101): favoritos.
+  heart: <><path d="M12 19.5s-7-4.3-7-9.6A3.9 3.9 0 0 1 12 7.6a3.9 3.9 0 0 1 7 2.3c0 5.3-7 9.6-7 9.6z"/></>,
 };
 
-export default function Icon({name}) {
+// raw: solo los trazos, para dibujarlos dentro de otro SVG (ilustraciones del portafolio, D-101).
+export default function Icon({name, raw = false}) {
+  if (raw) return <g fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{PATHS[name]}</g>;
   return <svg className="panel-svg-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
     strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{PATHS[name]}</svg>;
 }
