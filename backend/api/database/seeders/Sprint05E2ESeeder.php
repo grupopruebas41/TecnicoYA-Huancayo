@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
  * e2e-client-limit tiene 3 activas, que cuentan como 3 pedidos, D-95) deja, para la Fase 3 (D-101):
  * - e2e-technician-perfil: «Técnica E2E de perfil completo», Refrigeración comercial (vitrinas), con forma de trabajo,
  *   garantía, «qué incluye», disponibilidad todo el día, dos trabajos publicados sin fotos y 5 reseñas de ejemplo.
+ * - e2e-demo-rosa y e2e-demo-diego: Rosa Quispe y Diego Huamán, con la misma ficha del DemoSeeder
+ *   (DemoTechnicianProfiles), para las capturas y para probar el perfil con datos completos.
  * Cada siembra devuelve «qué incluye» a su texto original (S05-TC-214 lo cambia). Datos sintéticos.
  */
 final class Sprint05E2ESeeder extends Seeder
@@ -21,7 +23,29 @@ final class Sprint05E2ESeeder extends Seeder
     {
         E2EDatabaseGuard::ensureIsolated();
         $this->call(Sprint04E2ESeeder::class);
-        DB::transaction(fn () => $this->profileTechnician());
+        DB::transaction(function () {
+            $this->profileTechnician();
+            $this->demoTechnicians();
+        });
+    }
+
+    /** D-101: los dos técnicos de demostración, con cuentas E2E (la contraseña es TECNICOYA_E2E_PASSWORD). */
+    private function demoTechnicians(): void
+    {
+        $builder = app(DemoSeeder::class);
+        foreach (['refrigeracion' => 'rosa', 'computo' => 'diego'] as $code => $alias) {
+            $data = DemoTechnicianProfiles::PROFILES[$code];
+            $user = User::firstOrNew(['email' => "e2e-demo-$alias@example.test"]);
+            $user->forceFill([
+                'name' => $data['name'], 'given_names' => $data['given'], 'family_names' => $data['family'], 'phone' => '900000098',
+                'is_active' => true, 'role_id' => DB::table('roles')->where('code', 'technician')->value('id'),
+                'password' => env('TECNICOYA_E2E_PASSWORD'), 'email_verified_at' => $user->email_verified_at ?? now(),
+            ])->save();
+            $builder->technician($user, $data, 'active', 'approved');
+            $technician = (int) DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
+            $builder->portfolio($technician, $user->id, "demo-tecnico-$code", $data['portfolio']);
+            $builder->reviews($technician, $data['reviews']);
+        }
     }
 
     private function profileTechnician(): void
