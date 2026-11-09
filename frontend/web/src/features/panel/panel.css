@@ -1163,3 +1163,25 @@ html[data-simple="on"] .panel-shell .client-technician-list { gap: 20px; }
 @media (prefers-reduced-motion: reduce) {
   .tour-highlight { transition: none; }
 }
+
+/* S05-TC-253, visto en las capturas de la Fase 5: el micrófono va dentro del campo y la lupa no se mueve; los diálogos
+   de la bienvenida y del tutorial están fuera de .panel-content y necesitan sus propios botones; casillas alineadas. */
+.panel-shell .problem-search-icon { top: 28px; }
+.panel-shell .problem-search-box .problem-search-mic { position: absolute; top: 6px; right: 6px; margin: 0; }
+.panel-shell .problem-search-box:has(.problem-search-mic) input { padding-right: 60px; }
+.panel-shell .problem-search-listening { display: block; margin-top: 6px; }
+:is(.onboarding-overlay, .tour-layer) .button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--ty-border);
+  border-radius: 999px;
+  background: var(--ty-surface);
+  color: var(--ty-text);
+  font-weight: 600;
+}
+:is(.onboarding-overlay, .tour-layer) .button.primary { background: var(--ty-accent); border-color: var(--ty-accent); color: var(--ty-on-accent); }
+:is(.onboarding-overlay, .tour-layer) .button:disabled { opacity: 0.5; }
+:is(.onboarding-overlay, .tour-layer) .text-button { margin: 0; color: var(--ty-text); text-decoration: underline; }
+.panel-content label.a11y-switch,
+.a11y-switch { align-items: flex-start; }
+.a11y-switch input { margin-top: 3px; flex: 0 0 20px; }

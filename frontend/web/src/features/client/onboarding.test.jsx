@@ -156,3 +156,12 @@ test('S05-TC-249 «Saltar al contenido» lleva el foco al contenido y los ajuste
   expect(readFileSync(resolve('src/features/panel/quickAccessibility.jsx'), 'utf8')).toContain("import '@fontsource/atkinson-hyperlegible/400.css';");
   expect(WELCOME_CARDS).toHaveLength(5);
 });
+
+test('S05-TC-253 vistos en las capturas: micrófono dentro del campo, lupa fija y botones propios en la bienvenida y el tutorial', () => {
+  const css = readFileSync(resolve('src/features/panel/panel.css'), 'utf8');
+  expect(css).toMatch(/\.panel-shell \.problem-search-box \.problem-search-mic \{[^}]*position: absolute[^}]*right: 6px/);
+  expect(css).toMatch(/\.panel-shell \.problem-search-box:has\(\.problem-search-mic\) input \{ padding-right: 60px; \}/);
+  expect(css).toMatch(/\.panel-shell \.problem-search-icon \{ top: 28px; \}/);
+  expect(css).toMatch(/:is\(\.onboarding-overlay, \.tour-layer\) \.button\.primary \{[^}]*background: var\(--ty-accent\)/);
+  expect(css).toMatch(/\.a11y-switch \{ align-items: flex-start; \}/);
+});
