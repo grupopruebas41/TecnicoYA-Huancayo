@@ -30,10 +30,11 @@ final class OfferResponses
         $round = DB::table('offer_rounds')->where('id', $offer->round_id)->lockForUpdate()->first();
         $offer = DB::table('offers')->where('id', $offerId)->lockForUpdate()->first();
 
+        // DEF-61: el vencimiento va antes que la versión: si el barrido la venció primero, lo útil es decir que venció.
         $error = match (true) {
+            $offer->status === 'expired' || ($offer->status === 'pending' && now()->gte($offer->expires_at)) => ['OFFER_EXPIRED', __('api.offer_expired')],
             (int) $offer->version !== (int) $data['expected_version'] => ['STALE_VERSION', __('api.stale_version')],
             $offer->status !== 'pending' => ['OFFER_NOT_PENDING', __('api.offer_not_pending')],
-            now()->gte($offer->expires_at) => ['OFFER_EXPIRED', __('api.offer_expired')],
             $data['decision'] === 'accept' && $this->eligibility->codeFor($request, $technicianId) !== null
                 => ['TECHNICIAN_UNAVAILABLE', __('api.technician_unavailable_self')],
             default => null,

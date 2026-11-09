@@ -130,4 +130,7 @@ export function switchAccount(email) {
   cy.env(["E2E_PASSWORD"], { log: false }).then(({ E2E_PASSWORD }) =>
     apiWrite("POST", "/auth/login", { email, password: E2E_PASSWORD }),
   );
+  // DEF-59: visitar otro hash no recarga la página; sin esto la SPA sigue con la cuenta anterior.
+  cy.visit("/#cuenta");
+  cy.reload();
 }

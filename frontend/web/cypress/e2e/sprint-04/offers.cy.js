@@ -50,7 +50,8 @@ describe("S4 ofertas reales", () => {
     let elapsed = 0;
     cy.clock(Date.now(), ["Date", "setInterval", "clearInterval"]);
     observe("GET", "/offers?status=pending,accepted", "clockOffers");
-    cy.visit("/#cuenta", {onBeforeLoad(win) {
+    // DEF-59: con otra URL hay recarga real: el hash solo no la provoca y no se volvía a pedir la bandeja.
+    cy.visit("/?reloj=1#cuenta", {onBeforeLoad(win) {
       cy.stub(win.performance, "now").callsFake(() => elapsed);
     }});
     cy.wait("@clockOffers").then(({response}) => cy.get("@freshRound").then(({offer_id}) => {

@@ -16,6 +16,7 @@ it("S04-TC-096 teclado y foco en confirmación", () => {
         key: "Enter",
         code: "Enter",
         windowsVirtualKeyCode: 13,
+        text: "\r", // DEF-59: sin text, Chrome no activa el botón con Enter
       },
     }),
   );

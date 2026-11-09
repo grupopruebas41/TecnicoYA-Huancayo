@@ -2,6 +2,27 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-08 · D-100 aprobada: motivo de cancelación de una lista cerrada
+
+- **Rama:** `feature/mayhuasca/cliente/cancelacion-motivos` (PR #49), hacia `main` desde que se integró el #47. Detalle en `docs/avances/mayhuasca/cliente/cancelacion-motivos/avance.md`.
+- **Cambios:** migración `000032` (`cancellation_reason_code`), validación de la lista y diálogo con seis opciones grandes.
+- **Pruebas:** Pest 445/445; Vitest 400/400; Cypress S05-TC-179 adaptada, sin ejecutar. Pimentel lo probó en local el 2026-11-09.
+- **Defecto visto en las capturas y corregido:** el diálogo superaba la pantalla y el botón quedaba fuera.
+- **Pendiente:** Cypress S5 (S05-TC-146, 147, 178 y 179) cuando haya 1,5 GB libres.
+- **Pedidos a Codex:** ninguno.
+
+## 2026-11-08 · DEF-59: las 8 Cypress del S4
+
+- **Rama:** `feature/pimentel/cliente/def-59-cypress-s4` (PR #48), hacia `main` desde que se integró el #47. Detalle en `docs/avances/pimentel/cliente/def-59-cypress-s4/avance.md`.
+- **Causas:**
+  - en las pruebas: `cy.visit` a otro hash no recarga; Enter sin `text`; espera menor que el plazo de pusher-js;
+  - en el producto: **DEF-60** (conexión «activa» sin canal suscrito y sin recuperación tras pasar por `connecting`) y **DEF-61** (oferta vencida respondía «La información cambió»).
+- **Pruebas:** S04-TC-144 a 146; Cypress S4 19/19 y S3 17/17; Pest 446/446; Vitest 402/402.
+- **Pendiente:** repetir la Cypress del S5, que quedó cortada por una interrupción de la sesión.
+- **Relevo común:** esta entrada y la de D-100 van iguales en las ramas del #48 y del #49, para que se integren en cualquier orden sin conflicto.
+- **Siguiente:** la Fase 3 desde S05-TC-181.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-04 · Panel del cliente final, Fase 2: Mis solicitudes completo
 
 - **Ramas:**
