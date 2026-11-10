@@ -7,3 +7,6 @@ use Illuminate\Support\Facades\Schedule;
 
 // S4 (contrato §3): barrido de plazos, pendientes, entregas y outbox cada minuto, sin solaparse.
 Schedule::command('tecnicoya:sweep')->everyMinute()->withoutOverlapping();
+
+// Fase 6 (D-99): lecturas simuladas de los sensores de demostración cada 10 minutos.
+Schedule::command('tecnicoya:iot-simulate')->everyTenMinutes()->withoutOverlapping();

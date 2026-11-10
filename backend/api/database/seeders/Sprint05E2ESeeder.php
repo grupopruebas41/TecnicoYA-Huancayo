@@ -26,7 +26,25 @@ final class Sprint05E2ESeeder extends Seeder
         DB::transaction(function () {
             $this->profileTechnician();
             $this->demoTechnicians();
+            $this->premiumClient();
         });
+    }
+
+    /**
+     * Fase 6 (D-98, D-99): e2e-client-premium, una bodega sintética con plan Premium, equipos y sensores simulados (los
+     * mismos datos que demo-mype en el DemoSeeder). La bienvenida y el tutorial ya están vistos.
+     */
+    private function premiumClient(): void
+    {
+        $district = (int) DB::table('districts')->where('code', 'EL-TAMBO')->value('id');
+        $user = User::firstOrNew(['email' => 'e2e-client-premium@example.test']);
+        $user->forceFill(['name' => 'Bodega E2E Premium', 'given_names' => 'Bodega', 'family_names' => 'E2E Premium', 'phone' => '900000099',
+            'is_active' => true, 'role_id' => DB::table('roles')->where('code', 'client')->value('id'), 'theme_preference' => 'light',
+            'password' => env('TECNICOYA_E2E_PASSWORD'), 'email_verified_at' => $user->email_verified_at ?? now()])->save();
+        DB::table('client_profiles')->updateOrInsert(['user_id' => $user->id], ['client_type' => 'mype', 'business_name' => 'Bodega E2E S. A. C.',
+            'district_id' => $district, 'default_address' => 'Av. Sintética 742, El Tambo', 'onboarding_completed_at' => now(),
+            'tour_completed_at' => now(), 'updated_at' => now()]);
+        app(DemoPremium::class)->run($user->id, (int) DB::table('client_profiles')->where('user_id', $user->id)->value('id'), $district);
     }
 
     /** D-101: los dos técnicos de demostración, con cuentas E2E (la contraseña es TECNICOYA_E2E_PASSWORD). */

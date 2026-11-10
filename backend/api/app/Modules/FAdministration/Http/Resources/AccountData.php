@@ -34,7 +34,9 @@ final class AccountData
                 'client_type' => $client->client_type, 'district_id' => $client->district_id === null ? null : (int) $client->district_id,
             ] + ($private ? ['reference_address' => $client->default_address] : [])
                 // Fase 5 (D-97): los ajustes llegan con /me para aplicarlos antes del primer render, sin parpadeo.
-                + ['preferences' => ClientPreferences::forUser((int) $user->id)] : null;
+                + ['preferences' => ClientPreferences::forUser((int) $user->id)]
+                // Fase 6 (D-98): plan del cliente para el menú y la etiqueta de «Tu cuenta».
+                + ['plan' => DB::table('client_profiles')->where('user_id', $user->id)->value('plan') ?? 'free'] : null;
         }
         if ($role === 'technician') {
             $profile = DB::table('technician_profiles')->where('user_id', $user->id)

@@ -14,13 +14,15 @@ export const CATEGORIES = {
   cancel: {icon: 'close', label: 'Cancelación'},
   announcement: {icon: 'announcements', label: 'Comunicado'},
   system: {icon: 'bell', label: 'Sistema'},
+  iot: {icon: 'sensor', label: 'Sensor'},
 };
 const TYPE_CATEGORY = {
   'request.pending': 'search', 'request.submitted': 'search', 'request.searching': 'search',
   'request.awaiting_choice': 'offer', 'request.assigned': 'offer', 'offer.created': 'offer',
   'request.cancelled': 'cancel', 'request.expired': 'cancel', 'request.direct_declined': 'cancel',
 };
-export const categoryOf = item => item.category || TYPE_CATEGORY[item.type] || (item.type?.startsWith('announcement') ? 'announcement' : 'system');
+export const categoryOf = item => item.category || TYPE_CATEGORY[item.type]
+  || (item.type?.startsWith('iot.') ? 'iot' : item.type?.startsWith('announcement') ? 'announcement' : 'system');
 
 const LIMA = 'America/Lima';
 const limaDate = value => new Date(value).toLocaleDateString('en-CA', {timeZone: LIMA});

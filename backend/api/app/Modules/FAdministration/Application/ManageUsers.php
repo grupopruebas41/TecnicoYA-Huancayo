@@ -70,7 +70,7 @@ final class ManageUsers
         return [
             'user' => $this->present($row),
             'client' => $client ? ['client_type' => $client->client_type, 'business_name' => $client->business_name,
-                'reference_address' => $client->default_address] : null,
+                'reference_address' => $client->default_address, 'plan' => $client->plan ?? 'free', 'plan_since' => $client->plan_since] : null,
             'technician' => $technician ? ['id' => (int) $technician->id, 'status' => $technician->status,
                 'verification_status' => $technician->verification_status, 'experience_years' => (int) $technician->experience_years] : null,
             'requests' => $requests->map(fn (object $r) => ['id' => (int) $r->id, 'status' => $r->status, 'subcategory' => $r->subcategory,
@@ -130,6 +130,28 @@ final class ManageUsers
         });
 
         return $this->find($id);
+    }
+
+    /** Fase 6 (D-98): el administrador activa o quita el plan Premium de un cliente, con motivo y auditoría; sin pagos. */
+    public function changePlan(User $actor, int $id, array $data): array
+    {
+        DB::transaction(function () use ($actor, $id, $data) {
+            $user = $this->lockTarget($actor, $id, (int) $data['expected_version']);
+            $client = DB::table('client_profiles')->where('user_id', $id)->lockForUpdate()->first();
+            if (! $client) {
+                throw $this->conflict('PLAN_CLIENT_ONLY', 'api.plan_client_only');
+            }
+            if ($client->plan === $data['plan']) {
+                throw $this->conflict('PLAN_UNCHANGED', 'api.plan_unchanged');
+            }
+            DB::table('client_profiles')->where('id', $client->id)->update(['plan' => $data['plan'],
+                'plan_since' => $data['plan'] === 'premium' ? now() : null, 'updated_at' => now()]);
+            DB::table('users')->where('id', $id)->update(['version' => $user->version + 1, 'updated_at' => now()]);
+            $this->audit->record($actor, 'client.plan.changed', 'users.manage', 'user', $id, $data['reason'],
+                ['plan' => $client->plan], ['plan' => $data['plan']]);
+        });
+
+        return $this->detail($id);
     }
 
     public function block(User $actor, int $id, array $data): array

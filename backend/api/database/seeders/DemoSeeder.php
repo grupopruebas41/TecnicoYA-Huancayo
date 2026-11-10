@@ -63,8 +63,13 @@ final class DemoSeeder extends Seeder
 
         DB::transaction(function () use ($password) {
             $admin = $this->account('demo-admin', 'admin', 'Administración', 'Demo', '900000101', $password);
-            $this->client($this->account('demo-cliente', 'client', 'Cliente', 'Demo Hogar', '900000102', $password), 'household', 'HUANCAYO');
-            $this->client($this->account('demo-mype', 'client', 'Cliente', 'Demo MYPE', '900000103', $password), 'mype', 'EL-TAMBO', 'Bodega Demo S. A. C.');
+            $cliente = $this->account('demo-cliente', 'client', 'Cliente', 'Demo Hogar', '900000102', $password);
+            $this->client($cliente, 'household', 'HUANCAYO');
+            $mype = $this->account('demo-mype', 'client', 'Cliente', 'Demo MYPE', '900000103', $password);
+            $this->client($mype, 'mype', 'EL-TAMBO', 'Bodega Demo S. A. C.');
+            // Fase 6 (D-98): demo-cliente queda free y demo-mype premium, con equipos y sensores simulados.
+            DB::table('client_profiles')->where('user_id', $cliente->id)->update(['plan' => 'free', 'plan_since' => null]);
+            app(DemoPremium::class)->run($mype->id, (int) DB::table('client_profiles')->where('user_id', $mype->id)->value('id'), $this->district('EL-TAMBO'));
             foreach (self::TECHNICIANS as $code => $base) {
                 $data = (DemoTechnicianProfiles::PROFILES[$code] ?? []) + $base;
                 $user = $this->account("demo-tecnico-$code", 'technician', $data['given'] ?? $data['name'], $data['family'] ?? 'Demo', '900000110', $password);

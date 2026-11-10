@@ -1,0 +1,110 @@
+{
+  "1366-sensores": {
+    "overflowX": false,
+    "tarjetas": 3,
+    "recortados": 0,
+    "franja": true
+  },
+  "1366-sensor-detalle": {
+    "overflowX": false,
+    "tarjetas": 3,
+    "recortados": 0,
+    "franja": true
+  },
+  "1366-alertas": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "recortados": 0,
+    "franja": true
+  },
+  "1366-alerta-enviada": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "recortados": 0,
+    "franja": true
+  },
+  "1366-equipos": {
+    "overflowX": false,
+    "tarjetas": 3,
+    "recortados": 0,
+    "franja": false
+  },
+  "1366-equipo-nuevo": {
+    "overflowX": false,
+    "tarjetas": 4,
+    "recortados": 0,
+    "franja": false
+  },
+  "1366-promociones": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "recortados": 0,
+    "franja": false
+  },
+  "1366-garantias": {
+    "overflowX": false,
+    "tarjetas": 1,
+    "recortados": 0,
+    "franja": false
+  },
+  "1366-campana": {
+    "overflowX": false,
+    "tarjetas": 1,
+    "recortados": 0,
+    "franja": false
+  },
+  "390-sensores": {
+    "overflowX": false,
+    "tarjetas": 3,
+    "recortados": 0,
+    "franja": true
+  },
+  "390-sensor-detalle": {
+    "overflowX": false,
+    "tarjetas": 3,
+    "recortados": 0,
+    "franja": true
+  },
+  "390-alertas": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "recortados": 0,
+    "franja": true
+  },
+  "390-alerta-enviada": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "recortados": 0,
+    "franja": true
+  },
+  "390-equipos": {
+    "overflowX": false,
+    "tarjetas": 3,
+    "recortados": 0,
+    "franja": false
+  },
+  "390-equipo-nuevo": {
+    "overflowX": false,
+    "tarjetas": 4,
+    "recortados": 0,
+    "franja": false
+  },
+  "390-promociones": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "recortados": 0,
+    "franja": false
+  },
+  "390-garantias": {
+    "overflowX": false,
+    "tarjetas": 1,
+    "recortados": 0,
+    "franja": false
+  },
+  "390-campana": {
+    "overflowX": false,
+    "tarjetas": 1,
+    "recortados": 0,
+    "franja": false
+  }
+}

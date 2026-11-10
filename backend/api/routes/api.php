@@ -79,6 +79,19 @@ Route::prefix('v1')->group(function () {
             Route::put('client/me/preferences', [App\Modules\ARequests\Http\Controllers\ClientPreferencesController::class, 'update']);
             Route::get('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'show']);
             Route::put('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'update']);
+            // Fase 6 (D-98, D-99): «Mi hogar / Mi negocio», solo para clientes Premium (403 a free y a otros roles).
+            Route::prefix('client')->middleware('premium')->group(function () {
+                Route::get('equipment', [App\Modules\Premium\PremiumController::class, 'equipment']);
+                Route::post('equipment', [App\Modules\Premium\PremiumController::class, 'storeEquipment']);
+                Route::get('equipment/{equipment}', [App\Modules\Premium\PremiumController::class, 'showEquipment'])->whereNumber('equipment');
+                Route::patch('equipment/{equipment}', [App\Modules\Premium\PremiumController::class, 'updateEquipment'])->whereNumber('equipment');
+                Route::delete('equipment/{equipment}', [App\Modules\Premium\PremiumController::class, 'destroyEquipment'])->whereNumber('equipment');
+                Route::get('iot/devices', [App\Modules\Premium\PremiumController::class, 'devices']);
+                Route::get('iot/alerts', [App\Modules\Premium\PremiumController::class, 'alerts']);
+                Route::post('iot/alerts/{alert}/request', [App\Modules\Premium\PremiumController::class, 'requestFromAlert'])->whereNumber('alert');
+                Route::get('promotions', [App\Modules\Premium\PremiumController::class, 'promotions']);
+                Route::get('warranties', [App\Modules\Premium\PremiumController::class, 'warranties']);
+            });
             // D-101 (Fase 3): técnicos favoritos del cliente titular; guardar y quitar son idempotentes.
             Route::get('client/favorites', [App\Modules\BMatching\Http\Controllers\FavoriteTechnicianController::class, 'index']);
             Route::put('client/favorites/{technician}', [App\Modules\BMatching\Http\Controllers\FavoriteTechnicianController::class, 'store'])->whereNumber('technician');
@@ -177,6 +190,8 @@ Route::prefix('v1')->group(function () {
                 Route::patch('{user}', [AdminUserController::class, 'update'])->whereNumber('user');
                 Route::delete('{user}', [AdminUserController::class, 'destroy'])->whereNumber('user');
                 Route::post('{user}/block', [AdminUserController::class, 'block'])->whereNumber('user');
+                // Fase 6 (D-98): plan del cliente, con motivo y auditoría.
+                Route::patch('{user}/plan', [AdminUserController::class, 'plan'])->whereNumber('user');
                 Route::post('{user}/unblock', [AdminUserController::class, 'unblock'])->whereNumber('user');
                 Route::post('{user}/access-reset', [AdminUserController::class, 'resetAccess'])->whereNumber('user');
                 Route::delete('{user}/sessions', [AdminUserController::class, 'closeSessions'])->whereNumber('user');
