@@ -2,6 +2,23 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-10 · Panel del técnico, Fase T0 (plan, sin código de producto)
+
+- **Rama:** `feature/pimentel/tecnico/t0-plan`, desde `main` `9c3675d` (PR #54 integrado); un solo PR de documentación.
+- **Entregado:** `PLAN-PANEL-TECNICO.md` (inventario, pantallas, endpoints, migraciones, IDs por fase, riesgos y reutilización del cliente).
+- **Decisiones:** D-103 aprobada; D-104 aprobada (alcance del panel del técnico, IDs S05 desde S05-TC-275); D-105, D-106 y D-107 propuestas (preferencias en `users`, estados de documentos, documentos obligatorios e insignias).
+- **Pruebas:** ninguna (fase de plan). Siguiente ID: S05-TC-275; siguiente defecto: DEF-62.
+- **Pendiente para el cierre común (cliente y técnico):**
+  - SonarQube S4, S5 y el código del técnico;
+  - workflow «e2e-cierre» y todas las Cypress;
+  - vitest-axe y cypress-axe;
+  - mutación en Linux;
+  - promociones con audiencia «clientes Premium» y Reverb en sensores;
+  - bienvenida y tutorial del administrador;
+  - catálogo, contrato, avances, INFORME-SPRINT-04/05 y resumen para el informe Word.
+- **Siguiente:** Fase T1, cuando Pimentel revise el plan.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-10 · Panel del cliente final, Fase 6 (modo rápido): plan Premium «Mi hogar / Mi negocio» con sensores IoT simulados
 
 - **Rama:** `feature/pimentel/cliente/premium-iot`, desde `main` `b57521f`; un solo PR.
