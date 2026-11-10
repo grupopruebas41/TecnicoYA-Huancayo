@@ -6,6 +6,9 @@
 .premium-head p { margin: 4px 0 0; }
 .premium-head-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: var(--accent, var(--ty-accent)); color: white; }
 .premium-head-icon .panel-svg-icon { width: 26px; height: 26px; }
+/* Visto en las capturas: .panel-svg-icon trae margin: 0 auto y separaba el ícono del texto en las filas flexibles. */
+.premium-page .panel-svg-icon { margin: 0; flex: none; }
+.premium-demo .panel-svg-icon { width: 20px; height: 20px; }
 .premium-demo {
   display: flex;
   align-items: center;

@@ -44,7 +44,12 @@ final class DemoPremium
                 'maintenance_every_days' => 180, 'last_maintenance_at' => $now->subDays($maintenanceDaysAgo)]);
             for ($hours = 24; $hours >= 0; $hours--) {
                 $at = $now->subHours($hours);
-                $this->monitor->record($device, IotSimulate::value((object) ['id' => $device, 'target' => $target, 'tolerance' => $tolerance, 'notes' => $notes], $at), $at);
+                $value = IotSimulate::value((object) ['id' => $device, 'target' => $target, 'tolerance' => $tolerance, 'notes' => null], $at);
+                // La congeladora demo sale de rango en la última hora, para que la demostración muestre una falla y su alerta.
+                if ($notes !== null && $hours <= 1) {
+                    $value = round($target + $tolerance * ($hours === 1 ? 1.6 : 3.4), 2);
+                }
+                $this->monitor->record($device, $value, $at);
             }
         }
         $this->monitor->maintenance($now);
