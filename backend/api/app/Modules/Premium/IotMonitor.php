@@ -61,15 +61,16 @@ final class IotMonitor
 
                 return;
             }
+            $label = self::METRICS[$device->metric]['label'];
+            $message = "$label de {$device->equipment} en ".self::number($value)." {$device->unit} (rango ".self::threshold($device).')';
             if ($open) {
+                // Si empeora (de atención a falla), la alerta muestra el valor más reciente.
                 if ($open->severity === 'attention' && $status === 'failure') {
-                    DB::table('iot_alerts')->where('id', $open->id)->update(['severity' => 'failure', 'value' => $value]);
+                    DB::table('iot_alerts')->where('id', $open->id)->update(['severity' => 'failure', 'value' => $value, 'message' => $message]);
                 }
 
                 return;
             }
-            $label = self::METRICS[$device->metric]['label'];
-            $message = "$label de {$device->equipment} en ".self::number($value)." {$device->unit} (rango ".self::threshold($device).')';
             $this->open($device, 'threshold', $status, $message, $value, $at);
         });
     }

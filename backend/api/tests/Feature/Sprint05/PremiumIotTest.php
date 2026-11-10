@@ -110,7 +110,8 @@ it('S05-TC-261 alerta por umbral con valores límite: justo en el borde no alert
     expect(DB::table('iot_alerts')->count())->toBe(1)->and($alert->severity)->toBe('attention')
         ->and($alert->message)->toBe('Temperatura de Congeladora en -14,9 °C (rango -18 °C ± 3)');
     $monitor->record($device, -8.0, $at->addMinutes(25)); // más del doble de la tolerancia: falla
-    expect(DB::table('iot_alerts')->value('severity'))->toBe('failure');
+    expect(DB::table('iot_alerts')->first(['severity', 'message']))->toEqual((object) ['severity' => 'failure',
+        'message' => 'Temperatura de Congeladora en -8 °C (rango -18 °C ± 3)']);
     $bell = $this->getJson('/api/v1/notifications')->json('data.items.0');
     expect([$bell['type'], $bell['category'], $bell['title']])->toBe(['iot.alert', 'iot', 'Atención en un equipo']);
     $monitor->record($device, -18.0, $at->addMinutes(30));

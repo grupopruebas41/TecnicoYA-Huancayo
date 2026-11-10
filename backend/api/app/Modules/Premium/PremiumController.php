@@ -99,7 +99,9 @@ final class PremiumController
     {
         $rows = DB::table('iot_alerts as a')->join('iot_devices as d', 'd.id', '=', 'a.device_id')
             ->join('client_equipment as e', 'e.id', '=', 'd.equipment_id')->where('a.user_id', $request->user()->id)
-            ->orderByRaw('a.resolved_at IS NULL DESC')->orderByDesc('a.started_at')->limit(50)
+            // Primero las activas; dentro de ellas, fallas, luego atención y al final los recordatorios.
+            ->orderByRaw('CASE WHEN a.resolved_at IS NULL THEN 0 ELSE 1 END')
+            ->orderByRaw("CASE a.severity WHEN 'failure' THEN 0 WHEN 'attention' THEN 1 ELSE 2 END")->orderByDesc('a.started_at')->limit(50)
             ->get(['a.*', 'e.name as equipment', 'e.id as equipment_id']);
 
         return ApiResponse::data(['simulated' => true, 'items' => $rows->map(fn (object $a) => [
