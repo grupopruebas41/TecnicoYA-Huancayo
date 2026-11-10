@@ -224,7 +224,7 @@ test('S07-TC-136 el detalle muestra datos, historial y auditoría, con acciones 
   render(<UsersAdmin currentUserId={7}/>);
   fireEvent.click(await screen.findByRole('button', {name: 'Rosa Huamán'}));
   const actions = await screen.findByRole('group', {name: 'Acciones de la cuenta'});
-  expect(within(actions).getAllByRole('button').map(button => button.textContent)).toEqual(['Editar', 'Desbloquear', 'Restablecer acceso', 'Cerrar sesiones', 'Eliminar']);
+  expect(within(actions).getAllByRole('button').map(button => button.textContent)).toEqual(['Editar', 'Activar Premium', 'Desbloquear', 'Restablecer acceso', 'Cerrar sesiones', 'Eliminar']); // Fase 6: plan del cliente (D-98).
   expect(screen.getByRole('region', {name: 'Historial de solicitudes'})).toHaveTextContent('Reparación de hardware · Huancayo');
   expect(screen.getByRole('region', {name: 'Auditoría de la cuenta'})).toHaveTextContent('Alta de usuario');
   expect(screen.getByRole('region', {name: 'Auditoría de la cuenta'})).toHaveTextContent('Alta por soporte.');

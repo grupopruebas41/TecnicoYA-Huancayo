@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'account.active' => EnsureAccountIsActive::class,
             'permission' => RequirePermission::class,
+            'premium' => \App\Http\Middleware\RequirePremiumClient::class,
             'role' => RequireRole::class,
             'session.none' => RejectActiveSession::class,
             'technician.not_suspended' => RejectSuspendedTechnician::class,

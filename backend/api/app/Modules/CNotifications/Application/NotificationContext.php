@@ -25,6 +25,10 @@ final class NotificationContext
             }
         }
 
+        if (str_starts_with($type, 'iot.')) {
+            return 'iot';
+        }
+
         return str_starts_with($type, 'announcement') ? 'announcement' : 'system';
     }
 

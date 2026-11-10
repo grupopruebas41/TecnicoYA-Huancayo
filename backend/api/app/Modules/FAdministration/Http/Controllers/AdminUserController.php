@@ -46,6 +46,14 @@ final class AdminUserController
         return ApiResponse::data($this->users->update($request->user(), $user, $request->validated()));
     }
 
+    public function plan(Request $request, int $user): JsonResponse
+    {
+        $data = $this->motive($request) + $request->validate(['plan' => ['required', \Illuminate\Validation\Rule::in(['free', 'premium'])]],
+            ['plan.required' => __('api.plan_invalid'), 'plan.in' => __('api.plan_invalid')]);
+
+        return ApiResponse::data($this->users->changePlan($request->user(), $user, $data));
+    }
+
     public function block(Request $request, int $user): JsonResponse
     {
         return ApiResponse::data($this->users->block($request->user(), $user, $this->motive($request)));

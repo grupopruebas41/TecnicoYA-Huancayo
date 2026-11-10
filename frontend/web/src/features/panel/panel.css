@@ -989,6 +989,7 @@ html[data-contrast="high"] a { text-decoration: underline; }
 [data-category="cancel"] .notif-icon { --tone: hsl(4 70% 48%); }
 [data-category="announcement"] .notif-icon { --tone: hsl(268 45% 50%); }
 [data-category="system"] .notif-icon { --tone: hsl(200 10% 45%); }
+[data-category="iot"] .notif-icon { --tone: hsl(186 70% 32%); }
 .notif-text { display: grid; gap: 2px; min-width: 0; }
 .notif-title { font-weight: 700; overflow-wrap: anywhere; }
 .notif-detail { font-size: 0.88rem; color: var(--ty-text); overflow-wrap: anywhere; }

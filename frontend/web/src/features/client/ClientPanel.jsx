@@ -12,6 +12,7 @@ import ClientHome from './ClientHome';
 import NotificationsPage from './NotificationsPage';
 import {isActive} from './clientRules';
 import ClientOnboarding from './ClientOnboarding';
+import {AlertsPage, EquipmentPage, PromotionsPage, SensorsPage, WarrantiesPage} from '../premium/PremiumPages';
 import {FaqPage, FavoritesPage, HowItWorksPage, NewsPage, PremiumPage, PrivacyPage, SpecialtiesPage} from './ClientPages';
 import '../requests/requests.css';
 import './client.css';
@@ -20,6 +21,8 @@ import './client.css';
 const notificationTarget = item => {
   const requestId = item.context?.request_id || (item.subject?.type === 'service_request' ? item.subject.id : null);
   if (requestId) return ['requests', {open: requestId}];
+  // Fase 6: una alerta de sensor abre Alertas (solo existe para clientes Premium).
+  if (item.type?.startsWith('iot.')) return ['alerts'];
   return item.type?.startsWith('announcement') ? ['news'] : null;
 };
 
@@ -63,6 +66,7 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
   const refresh = useCallback(() => setTick(value => value + 1), []);
   const badges = useClientBadges(tick);
   const district = user.client_profile?.district_id ?? null;
+  const premium = user.client_profile?.plan === 'premium';
   const sections = [
     {id: 'home', label: 'Inicio', icon: 'home', render: ({navigate}) => <ClientHome user={user} navigate={navigate}/>},
     // D-92: el pedido con varios rubros es el asistente por defecto; la solicitud dirigida a un técnico (un solo rubro) y
@@ -79,10 +83,13 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
       openId={intent?.open || null} navigate={navigate} onContinue={record => navigate('new', {record})}/>},
     {id: 'favorites', group: 'Servicios', label: 'Técnicos favoritos', icon: 'heart', render: ({navigate}) => <FavoritesPage navigate={navigate}/>},
     {id: 'appointments', group: 'Servicios', label: 'Mis citas', icon: 'calendar', soon: true},
-    // Fase 4 (D-98): lo premium se ve con candado y abre la presentación del plan, sin pagos. Las pantallas llegan en la Fase 6.
-    ...[['equipment', 'Mis equipos', 'monitor'], ['sensors', 'Sensores IoT', 'sensor'], ['alerts', 'Alertas', 'alert'],
-      ['promotions', 'Promociones', 'gift'], ['warranties', 'Garantías', 'verify']]
-      .map(([id, label, icon]) => ({id, group: 'Mi hogar / Mi negocio · Premium', label, icon, premium: true})),
+    // D-98: para clientes free lo premium se ve con candado y abre la presentación del plan, sin pagos; para Premium, las
+    // pantallas de la Fase 6. El servidor también responde 403 a free (la interfaz no es la única protección).
+    ...[['equipment', 'Mis equipos', 'monitor', EquipmentPage], ['sensors', 'Sensores IoT', 'sensor', SensorsPage],
+      ['alerts', 'Alertas', 'alert', AlertsPage], ['promotions', 'Promociones', 'gift', PromotionsPage], ['warranties', 'Garantías', 'verify', WarrantiesPage]]
+      .map(([id, label, icon, Page]) => (premium
+        ? {id, group: 'Mi hogar / Mi negocio · Premium', label, icon, render: ({navigate}) => <Page navigate={navigate}/>}
+        : {id, group: 'Mi hogar / Mi negocio · Premium', label, icon, premium: true})),
     {id: 'specialties', group: 'Descubre', label: 'Especialidades', icon: 'catalog', render: ({navigate}) => <SpecialtiesPage navigate={navigate}/>},
     {id: 'news', group: 'Descubre', label: 'Novedades', icon: 'news', render: () => <NewsPage/>},
     {id: 'map', group: 'Descubre', label: 'Técnicos cerca de ti', icon: 'map', soon: true},

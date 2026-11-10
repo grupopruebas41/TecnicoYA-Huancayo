@@ -17,13 +17,19 @@ const ACTIONS = {
     description: 'Se cierran sus sesiones abiertas en todos los dispositivos. Puede volver a entrar con su contraseña.', done: 'Sesiones cerradas.'},
   activation: {label: 'Reenviar activación', title: 'Reenviar enlace de activación', confirm: 'Reenviar', path: 'activation-link', method: 'POST',
     description: 'Le enviamos un enlace nuevo que vence en 72 horas; el anterior deja de servir.', done: 'Enlace de activación reenviado.', noVersion: true},
+  // Fase 6 (D-98): el plan del cliente cambia con motivo y queda en la auditoría; sin pagos.
+  premium: {label: 'Activar Premium', title: 'Activar el plan Premium', confirm: 'Activar Premium', path: 'plan', method: 'PATCH', extra: {plan: 'premium'},
+    description: 'El cliente verá Mi hogar / Mi negocio: equipos, sensores simulados, alertas, promociones y garantías. No hay cobro.', done: 'Plan Premium activado.'},
+  free: {label: 'Volver a Free', title: 'Volver al plan Free', confirm: 'Volver a Free', path: 'plan', method: 'PATCH', extra: {plan: 'free'},
+    description: 'El cliente deja de ver Mi hogar / Mi negocio. Sus equipos se conservan.', done: 'El cliente volvió al plan Free.'},
   delete: {label: 'Eliminar', title: 'Eliminar cuenta', confirm: 'Eliminar cuenta', danger: true, method: 'DELETE', word: 'ELIMINAR',
     description: 'Se borran sus datos personales (nombre, correo, teléfono, direcciones) y no podrá entrar. Sus solicitudes se conservan sin datos personales. No se puede deshacer.', done: 'Cuenta eliminada: sus datos personales se anonimizaron.'},
 };
 
-function actionsFor(user) {
+function actionsFor(user, client) {
   if (user.status === 'anonymized') return [];
   const actions = ['edit'];
+  if (client) actions.push(client.plan === 'premium' ? 'free' : 'premium');
   if (user.status === 'blocked') actions.push('unblock'); else actions.push('block');
   if (user.status === 'pending_activation') actions.push('activation');
   return [...actions, 'reset', 'sessions', 'delete'];
@@ -49,7 +55,7 @@ export default function UserDetail({id, currentUserId, onBack, onChanged}) {
     const spec = ACTIONS[action];
     setBusy(true); setError('');
     try {
-      const body = {reason, ...(spec.noVersion ? {} : {expected_version: data.user.version}), ...(spec.word ? {confirmation: spec.word} : {})};
+      const body = {reason, ...(spec.noVersion ? {} : {expected_version: data.user.version}), ...(spec.word ? {confirmation: spec.word} : {}), ...(spec.extra || {})};
       await request(`/admin/users/${id}${spec.path ? `/${spec.path}` : ''}`, body, spec.method);
       setAction(null); setNotice(spec.done);
       await load(); onChanged?.();
@@ -72,7 +78,7 @@ export default function UserDetail({id, currentUserId, onBack, onChanged}) {
             <p className="muted">{ROLE_LABELS[data.user.role]} · <span className={`admin-status is-${data.user.status}`}>{USER_STATUS_LABELS[data.user.status]}</span></p>
           </div>
           <div className="admin-actions" role="group" aria-label="Acciones de la cuenta">
-            {actionsFor(data.user).map(name => <button key={name} type="button" className={'button ' + (name === 'delete' || name === 'block' ? 'outline is-danger' : 'outline')}
+            {actionsFor(data.user, data.client).map(name => <button key={name} type="button" className={'button ' + (name === 'delete' || name === 'block' ? 'outline is-danger' : 'outline')}
               disabled={own && name !== 'edit'} aria-describedby={own && name !== 'edit' ? 'admin-own-reason' : undefined}
               onClick={() => { setNotice(''); setError(''); if (name === 'edit') setEditing(true); else setAction(name); }}>
               {name === 'edit' ? 'Editar' : ACTIONS[name].label}</button>)}
@@ -88,6 +94,7 @@ export default function UserDetail({id, currentUserId, onBack, onChanged}) {
               <div><dt>Teléfono</dt><dd>{data.user.phone || '—'}</dd></div>
               <div><dt>Distrito</dt><dd>{data.user.district?.name || '—'}</dd></div>
               <div><dt>Alta</dt><dd>{formatDateTime(data.user.created_at)}</dd></div>
+              {data.client && <div><dt>Plan</dt><dd>{data.client.plan === 'premium' ? 'Premium' : 'Free'}</dd></div>}
               {data.client && <div><dt>Tipo de cliente</dt><dd>{data.client.client_type === 'mype' ? `MYPE${data.client.business_name ? ` · ${data.client.business_name}` : ''}` : 'Hogar'}</dd></div>}
               {data.technician && <div><dt>Técnico</dt><dd>{data.technician.experience_years} años de experiencia · verificación {data.technician.verification_status}</dd></div>}
             </dl>
