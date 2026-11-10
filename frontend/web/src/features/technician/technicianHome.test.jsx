@@ -166,6 +166,8 @@ test('S05-TC-303 la oferta en vivo muestra lo necesario sin la dirección y resp
   render(<OfferSpotlight offer={offer(2, 3)} serverTime={SERVER} onChange={onChange}/>);
   fireEvent.click(screen.getByRole('button', {name: /Rechazar/}));
   expect(request).not.toHaveBeenCalledWith('/offers/2/response', expect.anything(), 'POST', expect.anything());
+  // DEF-64: el motivo va dentro del diálogo y recibe el foco (detrás del fondo modal no se podía escribir).
+  expect(within(screen.getByRole('dialog')).getByLabelText('Motivo del rechazo (opcional)')).toHaveFocus();
   fireEvent.change(screen.getByLabelText('Motivo del rechazo (opcional)'), {target: {value: 'Estoy fuera de la zona hoy'}});
   fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', {name: /Rechazar|Confirmar|Sí/}));
   await screen.findByText('Rechazaste la oferta.');

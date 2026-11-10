@@ -173,7 +173,7 @@ final class TechnicianHome
 
         return [
             ['code' => 'verified', 'label' => 'Verificado', 'earned' => $profile->verification_status === 'approved',
-                'hint' => 'Se obtiene cuando aprobamos tus documentos.'],
+                'hint' => $profile->verification_status === 'approved' ? 'Tus documentos están aprobados.' : 'Se obtiene cuando aprobamos tus documentos.'],
             ['code' => 'complete_profile', 'label' => 'Perfil completo', 'earned' => $percent === 100,
                 'hint' => "Tu perfil está al {$percent} %."],
             ['code' => 'fast_response', 'label' => 'Respuesta rápida',

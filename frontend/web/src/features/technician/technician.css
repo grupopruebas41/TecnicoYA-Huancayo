@@ -152,3 +152,11 @@
 :root[data-motion="reduce"] :is(.tech-home > *, .tech-section, .tech-kpi, .offer-ring-bar, .panel-nav-pulse, .tech-meter span) {
   animation: none !important; transition: none !important;
 }
+
+/* Ajustes vistos en las capturas de la Fase T2. */
+.s02-modal .offer-reason { display: grid; gap: 6px; margin: 0 0 14px; text-align: left; }
+.s02-modal .offer-reason textarea { width: 100%; min-height: 84px; box-sizing: border-box; }
+.offer-spotlight .kicker { color: hsl(186 60% 26%); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; }
+[data-theme="dark"] .offer-spotlight .kicker { color: var(--ty-accent); }
+.tech-visit .muted { display: inline-flex; align-items: center; gap: 4px; }
+.tech-visit .panel-svg-icon { display: inline-block; }

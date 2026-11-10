@@ -5,18 +5,20 @@ export default function ConfirmDialog({
   title = "Confirmar retiro",
   busy = false,
   description = "El contenido dejará de estar visible. ¿Deseas continuar?",
+  children = null,
 }) {
   const root = useRef(null);
   useEffect(() => {
     const previous = document.activeElement;
-    root.current.querySelector("button").focus();
+    // DEF-64: si el diálogo trae un campo (el motivo del rechazo), el foco empieza en él.
+    root.current.querySelector("textarea, input, button").focus();
     return () => previous?.focus();
   }, []);
   function keys(e) {
     if (e.key === "Escape" && !busy) onCancel();
     if (e.key === "Tab") {
       const buttons = [
-        ...root.current.querySelectorAll("button:not(:disabled)"),
+        ...root.current.querySelectorAll("textarea:not(:disabled), input:not(:disabled), button:not(:disabled)"),
       ];
       const first = buttons[0],
         last = buttons.at(-1);
@@ -40,6 +42,7 @@ export default function ConfirmDialog({
       >
         <h2>{title}</h2>
         <p>{description}</p>
+        {children}
         <button type="button" disabled={busy} onClick={onCancel}>
           Cancelar
         </button>

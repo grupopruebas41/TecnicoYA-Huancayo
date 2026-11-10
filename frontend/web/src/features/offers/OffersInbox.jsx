@@ -139,9 +139,16 @@ function OfferCard({ offer, serverTime, onChange }) {
           </button>
         </>
       )}
+      {/* DEF-64: el motivo va dentro del diálogo; detrás del fondo modal no se podía escribir. */}
       {reject && (
-        <>
-          <label>
+        <ConfirmDialog
+          title="Rechazar oferta"
+          description="El cliente podrá buscar otro técnico. ¿Deseas rechazar esta oferta?"
+          busy={busy}
+          onCancel={() => setReject(false)}
+          onConfirm={() => respond("reject")}
+        >
+          <label className="offer-reason">
             Motivo del rechazo (opcional)
             <textarea
               value={reason}
@@ -149,14 +156,7 @@ function OfferCard({ offer, serverTime, onChange }) {
               disabled={busy}
             />
           </label>
-          <ConfirmDialog
-            title="Rechazar oferta"
-            description="El cliente podrá buscar otro técnico. ¿Deseas rechazar esta oferta?"
-            busy={busy}
-            onCancel={() => setReject(false)}
-            onConfirm={() => respond("reject")}
-          />
-        </>
+        </ConfirmDialog>
       )}
     </article>
   );

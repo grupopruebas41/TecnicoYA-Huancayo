@@ -86,12 +86,12 @@ export default function OfferSpotlight({offer, serverTime, onChange, onOpenOffer
         onClick={() => setReject(true)}><Icon name="close"/> Rechazar</button>
     </div>}
     {onOpenOffers && <button type="button" className="text-button" onClick={onOpenOffers}>Ver todas mis ofertas</button>}
-    {reject && <>
+    {/* DEF-64: el motivo va dentro del diálogo; detrás del fondo modal no se podía escribir. */}
+    {reject && <ConfirmDialog title="Rechazar oferta" description="El cliente podrá buscar otro técnico. ¿Deseas rechazar esta oferta?"
+      busy={busy} onCancel={() => setReject(false)} onConfirm={() => respond('reject')}>
       <label className="offer-reason">Motivo del rechazo (opcional)
         <textarea value={reason} onChange={event => setReason(event.target.value)} disabled={busy} maxLength={500}/>
       </label>
-      <ConfirmDialog title="Rechazar oferta" description="El cliente podrá buscar otro técnico. ¿Deseas rechazar esta oferta?"
-        busy={busy} onCancel={() => setReject(false)} onConfirm={() => respond('reject')}/>
-    </>}
+    </ConfirmDialog>}
   </article>;
 }
