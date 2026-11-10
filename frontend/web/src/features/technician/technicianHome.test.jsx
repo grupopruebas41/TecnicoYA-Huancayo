@@ -181,7 +181,8 @@ test('S05-TC-304 el Inicio saluda, destaca la oferta que vence primero, lista la
   expect(screen.getByRole('button', {name: /Verificación: En revisión/})).toBeInTheDocument();
   // La que vence primero (3 min) es la destacada; las otras van por vencimiento.
   expect(await screen.findByRole('article', {name: 'Oferta 2'})).toHaveTextContent('Oferta en vivo');
-  const queue = screen.getByRole('heading', {name: 'Otras 2 ofertas pendientes, por vencimiento'}).closest('.tech-queue');
+  // Corrección del #57: el título lleva el contador («2 ofertas en espera»).
+  const queue = screen.getByRole('region', {name: '2 ofertas en espera · por vencimiento'});
   expect(within(queue).getAllByRole('button').map(button => button.textContent)).toEqual(['Ver la oferta 1', 'Ver la oferta 3']);
   fireEvent.click(within(queue).getByRole('button', {name: 'Ver la oferta 3'}));
   expect(screen.getByRole('article', {name: 'Oferta 3'})).toBeInTheDocument();
@@ -244,4 +245,22 @@ test('S05-TC-306 la Ayuda del técnico explica el flujo de la oferta y responde 
   fireEvent.click(within(nav()).getByRole('button', {name: 'Preguntas frecuentes'}));
   expect(await screen.findByText('¿Quién ve mis documentos de verificación?')).toBeInTheDocument();
   expect(screen.getByText(/Nunca se muestran a los clientes ni a otros técnicos/)).toBeInTheDocument();
+});
+
+test('S05-TC-310 cada oferta en espera es una tarjeta con ícono, tiempo restante con color, hora de vencimiento y «Ver» primario', async () => {
+  offers = [offer(1, 7), offer(2, 9), offer(3, 1, {request: {...offer(3, 1).request, specialty: {id: 3, name: 'Electricidad'}}})];
+  routes();
+  app();
+  const queue = await screen.findByRole('region', {name: '2 ofertas en espera · por vencimiento'});
+  const cards = within(queue).getAllByRole('listitem');
+  // La de 1 minuto es la destacada; en espera quedan la de 7 (verde) y la de 9 (verde), por vencimiento.
+  expect(cards.map(card => card.dataset.tone)).toEqual(['ok', 'ok']);
+  expect(cards[0]).toHaveTextContent(/Vence a las \d{2}:\d{2}/);
+  expect(cards[0]).toHaveTextContent(/Quedan 0[67]:\d{2}/);
+  expect(cards[0].querySelector('.tech-wait-icon svg')).not.toBeNull();
+  expect(within(cards[0]).getByRole('button', {name: 'Ver la oferta 1'})).toHaveClass('button', 'primary');
+  expect(screen.getByRole('article', {name: 'Oferta 3'})).toBeInTheDocument();
+  fireEvent.click(within(cards[1]).getByRole('button', {name: 'Ver la oferta 2'}));
+  // La que pasa a esperar (1 minuto) se ve en rojo.
+  await waitFor(() => expect(within(queue).getAllByRole('listitem').find(card => card.textContent.includes('Electricidad'))).toHaveAttribute('data-tone', 'danger'));
 });

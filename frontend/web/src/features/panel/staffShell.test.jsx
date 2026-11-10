@@ -158,3 +158,50 @@ test('S05-TC-287 la campana del técnico abre la página completa de Notificacio
   expect(staffTarget('admin', {type: 'announcement.published'})).toEqual(['announcements']);
   expect(staffTarget('admin', {type: 'user.blocked'})).toBeNull();
 });
+
+test('S05-TC-311 la campana, «Aa» y el avatar quedan activos (aria-expanded) mientras su panel está abierto', async () => {
+  routes(technician);
+  await open(technician, '/#cuenta/tecnico');
+  const bell = await screen.findByRole('button', {name: /Notificaciones: 1 sin leer/});
+  const quick = screen.getByRole('button', {name: 'Accesibilidad rápida'});
+  const avatar = screen.getByRole('button', {name: `Cuenta de ${technician.name}`});
+  [bell, quick, avatar].forEach(button => expect(button).toHaveAttribute('aria-expanded', 'false'));
+  fireEvent.click(bell);
+  expect(bell).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.keyDown(bell, {key: 'Escape'});
+  expect(bell).toHaveAttribute('aria-expanded', 'false');
+  fireEvent.click(quick);
+  expect(quick).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.click(quick);
+  expect(quick).toHaveAttribute('aria-expanded', 'false');
+  fireEvent.click(avatar);
+  expect(avatar).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.keyDown(screen.getByRole('dialog'), {key: 'Escape'});
+  expect(avatar).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('S05-TC-312 «Aa» tiene un botón real para leer en voz alta, alto contraste como interruptor y el enlace abre la cuenta en Accesibilidad', async () => {
+  const speak = vi.fn();
+  const cancel = vi.fn();
+  vi.stubGlobal('speechSynthesis', {speak, cancel});
+  vi.stubGlobal('SpeechSynthesisUtterance', function Utterance(text) { this.text = text; });
+  routes(technician, {'PUT /me/preferences': () => ({data: technician.preferences})});
+  await open(technician, '/#cuenta/tecnico');
+  fireEvent.click(screen.getByRole('button', {name: 'Accesibilidad rápida'}));
+  const panel = screen.getByRole('region', {name: 'Accesibilidad rápida'});
+  expect(within(panel).getByRole('switch', {name: /Alto contraste/})).toBeInTheDocument();
+  const read = within(panel).getByRole('button', {name: 'Leer la pantalla en voz alta'});
+  expect(read).toHaveAttribute('aria-pressed', 'false');
+  expect(read.querySelector('svg')).not.toBeNull();
+  fireEvent.click(read);
+  const stop = within(panel).getByRole('button', {name: 'Detener lectura'});
+  expect(stop).toHaveAttribute('aria-pressed', 'true');
+  expect(stop).toHaveClass('is-active');
+  fireEvent.click(stop);
+  expect(cancel).toHaveBeenCalled();
+
+  fireEvent.click(within(panel).getByRole('button', {name: 'Más ajustes en tu cuenta'}));
+  const dialog = screen.getByRole('dialog');
+  expect(within(dialog).getByRole('tab', {name: 'Accesibilidad'})).toHaveAttribute('aria-selected', 'true');
+  expect(within(dialog).getByRole('tab', {name: 'Accesibilidad'})).toHaveFocus();
+});

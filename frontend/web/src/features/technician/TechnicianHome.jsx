@@ -5,7 +5,9 @@ import {prefersReducedMotion} from '../panel/quickAccessibility';
 import RoleAnnouncements from '../administration/RoleAnnouncements';
 import {OfferError} from '../offers/offerErrors';
 import {useOffers} from '../offers/OffersInbox';
-import OfferSpotlight from './OfferSpotlight';
+import {clock, useCountdown} from '../offers/OfferCountdown';
+import {specialtyIcon} from '../client/specialtyIcon';
+import OfferSpotlight, {ringTone} from './OfferSpotlight';
 import './technician.css';
 
 const TZ = 'America/Lima';
@@ -135,6 +137,44 @@ function EmptyOffers() {
   </div>;
 }
 
+/** Mini anillo del tiempo restante, con el mismo color del anillo grande (verde, ámbar o rojo). */
+function MiniRing({seconds, total}) {
+  const radius = 15;
+  const length = 2 * Math.PI * radius;
+  const known = Number.isFinite(seconds);
+  return <svg viewBox="0 0 36 36" className="tech-mini-ring" aria-hidden="true">
+    <circle cx="18" cy="18" r={radius} className="offer-ring-track"/>
+    <circle cx="18" cy="18" r={radius} className="offer-ring-bar" strokeDasharray={length}
+      strokeDashoffset={known ? length * (1 - Math.min(1, seconds / total)) : 0}/>
+  </svg>;
+}
+
+/** Oferta en espera: ícono de la especialidad, distrito, tiempo restante con color y «Ver» para destacarla. */
+function QueuedOffer({offer, serverTime, onView}) {
+  const seconds = useCountdown(offer.expires_at, serverTime);
+  const total = Math.max(1, (Date.parse(offer.expires_at) - Date.parse(offer.available_at)) / 1000) || 600;
+  const known = Number.isFinite(seconds);
+  const tone = known ? ringTone(seconds) : 'ok';
+  const specialty = offer.request.specialty?.name || 'Solicitud';
+  const works = (offer.request.subcategories || []).map(item => item.name).join(', ');
+  return <li className="tech-wait" data-tone={tone}>
+    <span className="tech-wait-icon" aria-hidden="true"><Icon name={specialtyIcon(specialty)}/></span>
+    <div className="tech-wait-info">
+      <strong>{specialty}</strong>
+      {works && <span>{works}</span>}
+      <span className="muted"><Icon name="map"/> {offer.request.district?.name}</span>
+    </div>
+    <div className="tech-wait-time">
+      <span className="offer-ring" data-tone={tone}><MiniRing seconds={seconds} total={total}/></span>
+      <span>
+        <span className="tech-wait-left">{known ? `Quedan ${clock(seconds)}` : 'Calculando…'}</span>
+        <span className="tech-wait-due">Vence a las <strong>{time(offer.expires_at)}</strong></span>
+      </span>
+    </div>
+    <button type="button" className="button primary tech-wait-view" onClick={onView}>Ver<span className="sr-only"> la oferta {offer.id}</span></button>
+  </li>;
+}
+
 function LiveOffers({navigate, onChange}) {
   const {rows, serverTime, error, loading, refresh} = useOffers(null, {status: 'pending', onEvent: onChange});
   const [focus, setFocus] = useState(null);
@@ -150,14 +190,12 @@ function LiveOffers({navigate, onChange}) {
     {!loading && !current && !error && <div className="panel-card"><EmptyOffers/></div>}
     {current && <OfferSpotlight key={current.id} offer={current} serverTime={serverTime}
       onChange={async id => { const ok = await refresh(id); onChange?.(); return ok; }} onOpenOffers={() => navigate('offers')}/>}
-    {others.length > 0 && <div className="panel-card tech-queue">
-      <h4>{others.length === 1 ? 'Otra oferta pendiente' : `Otras ${others.length} ofertas pendientes`}, por vencimiento</h4>
-      <ul>{others.map(offer => <li key={offer.id}>
-        <span><strong>{offer.request.specialty?.name}</strong> · {offer.request.district?.name}</span>
-        <span className="muted">Vence a las {time(offer.expires_at)}</span>
-        <button type="button" className="button outline" onClick={() => setFocus(offer.id)}>Ver<span className="sr-only"> la oferta {offer.id}</span></button>
-      </li>)}</ul>
-    </div>}
+    {/* Corrección del #57: cada oferta en espera es una tarjeta visible, con su tiempo y su color. */}
+    {others.length > 0 && <section className="tech-queue" aria-labelledby="tech-queue">
+      <h4 id="tech-queue"><span className="tech-queue-count" aria-hidden="true">{others.length}</span>
+        {others.length === 1 ? '1 oferta en espera' : `${others.length} ofertas en espera`}<span className="muted"> · por vencimiento</span></h4>
+      <ul>{others.map(offer => <QueuedOffer key={offer.id} offer={offer} serverTime={serverTime} onView={() => setFocus(offer.id)}/>)}</ul>
+    </section>}
   </section>;
 }
 

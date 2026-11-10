@@ -160,3 +160,42 @@
 [data-theme="dark"] .offer-spotlight .kicker { color: var(--ty-accent); }
 .tech-visit .muted { display: inline-flex; align-items: center; gap: 4px; }
 .tech-visit .panel-svg-icon { display: inline-block; }
+
+/* Corrección del #57: ofertas en espera como tarjetas con color, ícono, mini anillo y hora de vencimiento. */
+.tech-queue { display: grid; gap: 10px; }
+.tech-queue h4 { display: flex; align-items: center; gap: 8px; margin: 4px 0 0; font-size: 1.05rem; }
+.tech-queue-count { display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 999px;
+  background: var(--ty-accent); color: var(--ty-on-accent); font-size: .85rem; }
+.tech-queue ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.tech-wait {
+  --wait: hsl(152 55% 36%);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 16px; border: 1px solid color-mix(in srgb, var(--wait) 45%, var(--ty-border));
+  border-left: 5px solid var(--wait); background: color-mix(in srgb, var(--wait) 8%, var(--ty-surface));
+  animation: tech-rise 220ms ease-out both;
+}
+.tech-wait[data-tone="warn"] { --wait: hsl(38 90% 42%); }
+.tech-wait[data-tone="danger"] { --wait: hsl(4 72% 50%); }
+.tech-wait-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%;
+  background: color-mix(in srgb, var(--wait) 18%, transparent); color: var(--wait); }
+.tech-wait-icon .panel-svg-icon { width: 22px; height: 22px; margin: 0; }
+.tech-wait-info { display: grid; gap: 2px; min-width: 0; }
+.tech-wait-info > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tech-wait-info .muted { display: inline-flex; align-items: center; gap: 4px; }
+.tech-wait-info .panel-svg-icon { width: 14px; height: 14px; margin: 0; }
+.tech-wait-time { display: flex; align-items: center; gap: 8px; }
+.tech-wait-time > span:last-child { display: grid; }
+.tech-wait-time .offer-ring { width: 36px; height: 36px; }
+.tech-mini-ring { width: 36px; height: 36px; transform: rotate(-90deg); }
+.tech-mini-ring circle { fill: none; stroke-width: 5; }
+.tech-wait-left { font-size: .82rem; color: var(--ty-muted); font-variant-numeric: tabular-nums; }
+.tech-wait-due { font-size: .95rem; }
+.tech-wait-due strong { font-size: 1.1rem; color: var(--wait); font-variant-numeric: tabular-nums; }
+.tech-wait-view { min-height: 40px; padding: 0 18px; }
+@media (max-width: 640px) {
+  .tech-wait { grid-template-columns: auto minmax(0, 1fr); }
+  .tech-wait-time { grid-column: 1 / -1; }
+  .tech-wait-view { grid-column: 1 / -1; width: 100%; min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .tech-wait { animation: none; } }
+:root[data-motion="reduce"] .tech-wait { animation: none; }

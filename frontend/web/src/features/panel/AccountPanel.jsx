@@ -260,10 +260,11 @@ function ThemeCards({theme, onTheme}) {
  * pestañas con ícono y acento (cuadrícula de 2 columnas en el celular); contenido en tarjetas. Atrapa el foco, Esc cierra
  * y devuelve el foco al avatar, las flechas cambian de pestaña. Las animaciones se apagan con «Reducir animaciones».
  */
-export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogout, busy, theme, onTheme, a11y, reader, returnFocus, roleLabel}) {
+export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogout, busy, theme, onTheme, a11y, reader, returnFocus, roleLabel,
+  initialTab = 'cuenta'}) {
   const role = user.role?.code || 'client';
   const TABS = tabsFor(role);
-  const [tab, setTab] = useState('cuenta');
+  const [tab, setTab] = useState(() => (TABS.some(([id]) => id === initialTab) ? initialTab : 'cuenta'));
   const root = useRef(null);
   const tabs = useRef({});
   const index = TABS.findIndex(([id]) => id === tab);
@@ -271,9 +272,9 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
   const plan = user.client_profile?.plan === 'premium' ? 'Premium' : 'Free';
   const description = role !== 'client' && tab === 'cuenta' ? 'Tu foto, nombres y teléfono.' : null;
   useEffect(() => {
-    tabs.current.cuenta?.focus();
+    (tabs.current[initialTab] || tabs.current.cuenta)?.focus();
     return () => returnFocus?.focus?.();
-  }, [returnFocus]);
+  }, [returnFocus, initialTab]);
   function keys(event) {
     if (event.key === 'Escape') { event.preventDefault(); onClose(); return; }
     if (event.key !== 'Tab') return;

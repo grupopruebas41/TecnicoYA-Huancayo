@@ -77,6 +77,9 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   const [collapsed, setCollapsed] = useState(() => (modern && typeof user.sidebar_collapsed === 'boolean')
     ? user.sidebar_collapsed : store.get('localStorage', 'tecnicoya.panel.collapsed') === '1');
   const [account, setAccount] = useState(false);
+  // «Más ajustes en tu cuenta» del panel «Aa» abre la cuenta directamente en Accesibilidad.
+  const [accountTab, setAccountTab] = useState('cuenta');
+  const openAccount = (tab = 'cuenta') => { setAccountTab(tab); setAccount(true); };
   // Fase T1: un solo indicador de conexión en la barra superior, con el estado de la suscripción de la campana.
   const [live, setLive] = useState(null);
   const avatarButton = useRef(null);
@@ -142,7 +145,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
   const profile = sections.find(section => section.id === 'profile');
   return <AccessibilityContext.Provider value={{prefs: a11y[0], update: a11y[1]}}>
-  <ShellContext.Provider value={{setTourMode, setTourDrawer, openAccount: modern ? () => setAccount(true) : undefined}}>
+  <ShellContext.Provider value={{setTourMode, setTourDrawer, openAccount: modern ? () => openAccount() : undefined}}>
   <div className={'panel-shell' + (collapsed && !tourMode ? ' is-collapsed' : '') + (tourMode ? ' is-touring' : '')} data-cy={`portal-${role}`}>
     {/* Fase 5 (WCAG 2.4.1): salta al contenido sin cambiar el hash, que usa el enrutado de la cuenta. */}
     {modern && <a className="skip-link" href="#contenido" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Saltar al contenido</a>}
@@ -196,10 +199,10 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           {modern && a11y[0].read_aloud && canSpeak() && <button type="button" className="panel-icon-button panel-read-button"
             aria-pressed={reader[0]} aria-label={reader[0] ? 'Detener la lectura' : 'Leer la pantalla en voz alta'} onClick={() => reader[1]()}>
             <Icon name="announcements"/></button>}
-          {modern && <QuickAccessibility prefs={a11y[0]} onChange={a11y[1]} reader={reader}/>}
+          {modern && <QuickAccessibility prefs={a11y[0]} onChange={a11y[1]} reader={reader} onMore={() => openAccount('accesibilidad')}/>}
           {modern
             ? <button ref={avatarButton} type="button" className="panel-avatar-button" aria-label={`Cuenta de ${user.name}`}
-              aria-haspopup="dialog" aria-expanded={account} onClick={() => setAccount(true)}>
+              aria-haspopup="dialog" aria-expanded={account} onClick={() => openAccount()}>
               {user.avatar_url ? <img src={user.avatar_url} alt=""/> : <span aria-hidden="true">{initials(user)}</span>}
             </button>
             : <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>}
@@ -217,7 +220,8 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       </ShellConnectionContext.Provider>
     </div>
     {modern && account && <AccountPanel user={user} onUpdate={onUserChange} onExpired={onExpired} onClose={() => setAccount(false)}
-      onLogout={onLogout} busy={busy} theme={theme} onTheme={toggle} a11y={a11y} reader={reader} returnFocus={avatarButton.current} roleLabel={roleLabel}/>}
+      onLogout={onLogout} busy={busy} theme={theme} onTheme={toggle} a11y={a11y} reader={reader} returnFocus={avatarButton.current} roleLabel={roleLabel}
+      initialTab={accountTab}/>}
     {children}
   </div>
   </ShellContext.Provider>
