@@ -1,5 +1,4 @@
 // Fase T1: el RealtimeProvider lo pone AccountApp alrededor del panel (una sola conexión para la campana y la página).
-import Notifications from "../realtime/Notifications";
 import OffersInbox from "../offers/OffersInbox";
 import React, { useState } from "react";
 import CatalogAdmin from "./CatalogAdmin";
@@ -21,7 +20,7 @@ export default function Sprint02Portal({ user }) {
   return (
     <>
       <RoleAnnouncements key={user.id} />
-      <Notifications key={"notifications-" + user.id} userId={user.id} />
+      {/* Fase T1: la lista de avisos dentro del Inicio repetía la campana; ahora va en la campana y en Notificaciones. */}
       {role === "technician" && (
         <>
           <OffersInbox technicianId={user.technician_profile?.id} />

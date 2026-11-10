@@ -1464,3 +1464,5 @@ html[data-motion="reduce"] .panel-shell.is-touring .panel-sidebar { scroll-behav
 :root[data-motion="reduce"] .panel-connection.is-live .panel-connection-dot { animation: none; }
 @media (max-width: 640px) { .panel-connection-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .panel-connection { padding: 6px; } }
 .security-sessions .account-confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+/* DEF-63 (capturas de la Fase T1, 390 px): el ícono de «Cerrar sesión» heredaba margin auto y quedaba lejos del texto. */
+.account-foot .account-logout .panel-svg-icon { margin: 0; }
