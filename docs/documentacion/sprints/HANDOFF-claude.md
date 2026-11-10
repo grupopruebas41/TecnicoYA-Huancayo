@@ -2,6 +2,18 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-10 · Panel del cliente final, Fase 6 (modo rápido): plan Premium «Mi hogar / Mi negocio» con sensores IoT simulados
+
+- **Rama:** `feature/pimentel/cliente/premium-iot`, desde `main` `b57521f`; un solo PR.
+- **Backend:** migración `000036` (plan, `client_equipment`, `iot_devices`, `iot_readings`, `iot_alerts` y `service_requests.equipment_id`); middleware `premium` (403 a free y otros roles); `PATCH /admin/users/{id}/plan` con motivo y auditoría; `tecnicoya:iot-simulate` cada 10 min (solo demo o `IOT_SIMULATION=true`); alertas por umbral y mantenimiento con aviso `iot.alert`; solicitud desde la alerta con la misma validación, idempotencia y matching.
+- **Frontend:** Mis equipos, Sensores IoT (franja de demostración, estado con ícono y texto, valor, umbral, gráfico de 24 h con resumen, actualización cada 30 s), Alertas, Promociones y Garantías de ejemplo; acción de plan en el detalle del usuario.
+- **Datos:** DemoSeeder deja a demo-mype Premium y a demo-cliente free; `Sprint05E2ESeeder` crea `e2e-client-premium`.
+- **Decisiones:** D-102 aprobada (correo propio en `/me`); D-103 propuesta (valores de la Fase 6).
+- **Pruebas:** S05-TC-258 a 265 (Pest), 266 a 271 (Vitest); Cypress 272 a 274 escritas. S07-TC-136 adaptada. Capturas `2026-11-10-8e90359-premium-*`.
+- **Pendiente para el cierre:** audiencia «clientes premium» en los comunicados del administrador, Reverb en el panel de sensores (hoy se actualiza cada 30 s), Cypress, catálogo, contrato §14, avance y evidencias.
+- **Siguiente:** Fase 7 (cierre del panel del cliente).
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-10 · Panel del cliente final, Fase 5 (modo rápido): accesibilidad en la cuenta, bienvenida y tutorial
 
 - **Rama:** `feature/delgado/cliente/accesibilidad`, desde `main` `8152f9e`; un solo PR.
