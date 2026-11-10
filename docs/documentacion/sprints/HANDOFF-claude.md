@@ -9,7 +9,8 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Frontend:** 8 ajustes (tamaño, alto contraste, fuente legible, reducir animaciones, foco grueso, leer en voz alta, dictado y modo simple), bienvenida con tarjetas de preferencia (D-97), tutorial de 4 pasos repetible desde «Cómo funciona», dictado con el aviso de Google y «Saltar al contenido». Fuente Atkinson Hyperlegible con `@fontsource` (OFL, sin CDN).
 - **Pruebas:** S05-TC-240 a 243 (Pest), 244 a 249 y 253 (Vitest); Cypress S05-TC-250 a 252 escritas. Los ayudantes de Cypress omiten la bienvenida (`dismissOnboarding`). Capturas `2026-11-10-5d8257c-accesibilidad-*`.
 - **Pendiente para el cierre:** vitest-axe y cypress-axe en las pantallas principales (no se agregaron en modo rápido), ejecutar Cypress, catálogo, contrato §13, avance y evidencias.
-- **Siguiente:** Fase 6 (Premium IoT) desde S05-TC-254.
+- **Ajustes de diseño del 2026-11-10 (misma rama, pedido de Pimentel):** el tutorial expande el menú contraído o abre el cajón, desplaza la zona con `scrollIntoView` centrado, mide en cada cuadro y coloca la burbuja siempre dentro de la pantalla. «Tu cuenta» pasa a diálogo centrado (hasta 880 px, fondo desenfocado) con avatar, correo y plan, pestañas con ícono y acento, tarjetas de tema y controles con los colores de TécnicoYa. `/me` suma el correo solo para su dueño. S05-TC-254 (Pest) y 255 a 257 (Vitest). Capturas `2026-11-10-e4222dc-cuenta-tutorial-*`.
+- **Siguiente:** Fase 6 (Premium IoT) desde S05-TC-258.
 - **Pedidos a Codex:** ninguno.
 
 ## 2026-11-10 · Panel del cliente final, Fase 4 (modo rápido): barra superior, panel del avatar y menú nuevo
