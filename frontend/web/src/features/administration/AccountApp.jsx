@@ -103,7 +103,7 @@ export default function AccountApp() {
   // Fase T1 del panel del técnico: Mi perfil y Notificaciones salen del menú (avatar y campana), como en el cliente.
   const profile = {id: 'profile', nav: false, label: 'Mi perfil', icon: 'profile', render: () => <ProfilePage key={user.id} user={user} onUpdate={setUser} onExpired={expire} password={false}/>};
   const notifications = {id: 'notifications', nav: false, label: 'Notificaciones', icon: 'bell',
-    render: ({navigate}) => <NotificationsPage userId={user.id} onChange={() => {}}
+    render: ({navigate}) => <NotificationsPage userId={user.id} role={role} onChange={() => {}}
       onOpen={item => { const target = staffTarget(role, item); if (target) navigate(...target); }}/>};
   // Bloque C (D-85): menú del administrador agrupado por secciones y filtrado por permisos (sin enlaces vacíos).
   const sections = role === 'admin' ? [

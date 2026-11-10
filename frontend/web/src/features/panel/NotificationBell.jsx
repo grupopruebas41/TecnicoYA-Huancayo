@@ -14,7 +14,7 @@ const TABS = [['all', 'Todas'], ['unread', 'No leídas']];
  * contexto y tiempo relativo, estado vacío ilustrado y «Ver todas las notificaciones». Al abrir un aviso lo marca como
  * leído y lleva a su destino (onOpen). Esc cierra y devuelve el foco a la campana; el número de no leídas se anuncia.
  */
-export default function NotificationBell({userId, onOpenAll, onOpen, onConnection}) {
+export default function NotificationBell({userId, onOpenAll, onOpen, onConnection, role}) {
   const [items, setItems] = useState([]);
   const [unread, setUnread] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -83,7 +83,7 @@ export default function NotificationBell({userId, onOpenAll, onOpen, onConnectio
       <div className="notif-body" role="tabpanel">
         {error && <p className="error" role="alert">{error}</p>}
         {failed ? <p className="error" role="alert">No pudimos cargar tus notificaciones.</p>
-          : items.length ? <NotificationList items={items} onOpen={openItem}/> : <EmptyNotifications filtered={tab === 'unread'}/>}
+          : items.length ? <NotificationList items={items} onOpen={openItem}/> : <EmptyNotifications filtered={tab === 'unread'} role={role}/>}
       </div>
       {onOpenAll && <footer className="notif-foot">
         <button type="button" className="button outline notif-all" onClick={() => { setOpen(false); onOpenAll(); }}>Ver todas las notificaciones</button>

@@ -67,7 +67,13 @@ export async function markOpened(item) {
   return ids.length;
 }
 
-export function EmptyNotifications({filtered = false}) {
+// Fase T1: el texto de ayuda cambia según el rol (antes siempre hablaba de las solicitudes del cliente).
+const EMPTY_HINT = {
+  client: 'Te avisaremos aquí cuando un técnico acepte o cambie el estado de tus solicitudes.',
+  technician: 'Te avisaremos aquí cuando llegue una oferta, te asignen un trabajo o cambie tu verificación.',
+  admin: 'Te avisaremos aquí cuando haya algo que revisar en la plataforma.',
+};
+export function EmptyNotifications({filtered = false, role = 'client'}) {
   return <div className="notif-empty">
     <svg viewBox="0 0 120 90" aria-hidden="true" className="notif-empty-art">
       <circle cx="60" cy="45" r="38" className="notif-empty-glow"/>
@@ -76,7 +82,7 @@ export function EmptyNotifications({filtered = false}) {
       <path d="m50 44 7 7 13-14" className="notif-empty-check"/>
     </svg>
     <p><strong>{filtered ? 'No tienes notificaciones sin leer' : 'Estás al día, no tienes notificaciones nuevas'}</strong></p>
-    <p className="muted">Te avisaremos aquí cuando un técnico acepte o cambie el estado de tus solicitudes.</p>
+    <p className="muted">{EMPTY_HINT[role] || EMPTY_HINT.client}</p>
   </div>;
 }
 

@@ -187,7 +187,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
             <span className="panel-connection-text" aria-hidden="true">{live ? 'En vivo' : 'Sin conexión'}</span>
             <span className="sr-only">{live ? 'Conexión en tiempo real activa.' : 'Sin conexión en tiempo real. Actualiza para ver cambios.'}</span>
           </p>}
-          <NotificationBell key={bellKey} userId={user.id} onConnection={modern ? setLive : undefined}
+          <NotificationBell key={bellKey} userId={user.id} role={role} onConnection={modern ? setLive : undefined}
             onOpen={item => { const target = notificationTarget?.(item); if (target) go(target[0], target[1] || null); }}
             onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
           {modern && a11y[0].read_aloud && canSpeak() && <button type="button" className="panel-icon-button panel-read-button"

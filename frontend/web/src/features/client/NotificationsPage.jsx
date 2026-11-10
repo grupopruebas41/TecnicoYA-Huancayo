@@ -14,7 +14,7 @@ const TABS = [['', 'Todas'], ['unread', 'No leídas']];
  * Anteriores, contexto del pedido y tiempo relativo). Abrir un aviso lo marca como leído y lleva a su solicitud.
  * Solo se marcan los propios: el servidor responde 404 a uno ajeno. Se recarga con notification.created.
  */
-export default function NotificationsPage({userId, onChange = () => {}, onOpen = () => {}}) {
+export default function NotificationsPage({userId, role = 'client', onChange = () => {}, onOpen = () => {}}) {
   const [filters, setFilters] = useState({state: '', type: '', page: 1});
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -69,7 +69,7 @@ export default function NotificationsPage({userId, onChange = () => {}, onOpen =
     {error && <p className="error" role="alert">{error}</p>}
     {success && <output className="notice">{success}</output>}
     {loading && !data && <p className="muted">Cargando notificaciones…</p>}
-    {data && !items.length && <EmptyNotifications filtered={Boolean(filters.state || filters.type)}/>}
+    {data && !items.length && <EmptyNotifications filtered={Boolean(filters.state || filters.type)} role={role}/>}
     <div className="notif-body">
       <NotificationList items={items} onOpen={open}/>
     </div>

@@ -144,6 +144,12 @@ test('S05-TC-287 la campana del técnico abre la página completa de Notificacio
   expect(await screen.findByRole('heading', {name: 'Notificaciones'})).toBeInTheDocument();
   await act(async () => {});
   // Hasta la T2 lo del técnico vive en su Inicio; el administrador abre Comunicados desde un comunicado.
+  cleanup();
+  // El estado vacío habla de lo que recibe cada rol, no de las solicitudes del cliente.
+  routes(admin, {'GET /notifications': () => ({data: {items: [], unread_count: 0}})});
+  await open(admin, '/#cuenta/administrador');
+  fireEvent.click(await screen.findByRole('button', {name: 'Notificaciones: 0 sin leer'}));
+  expect(screen.getByText('Te avisaremos aquí cuando haya algo que revisar en la plataforma.')).toBeInTheDocument();
   expect(staffTarget('technician', {type: 'offer.created'})).toEqual(['home']);
   expect(staffTarget('technician', {type: 'technician.verification.approved'})).toEqual(['home']);
   expect(staffTarget('admin', {type: 'announcement.published'})).toEqual(['announcements']);
