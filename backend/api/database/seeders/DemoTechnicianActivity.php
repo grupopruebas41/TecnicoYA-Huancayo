@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
  * Inicio con datos. Crea ofertas aceptadas, una rechazada y dos vencidas; trabajos completados (5, insignia «Primeros 5
  * trabajos»), uno en curso y uno asignado hoy («Mi día»), uno asignado mañana y uno cancelado. Las respuestas rápidas
  * (mediana < 2 min) dan la insignia «Respuesta rápida». Todo es sintético y rotulado «(demostración)»; no se repite si
- * el técnico ya tiene ofertas. La oferta en vivo se crea aparte con `tecnicoya:demo-offer` (D-108).
+ * el técnico ya tiene su historia de demostración. La oferta en vivo se crea aparte con `tecnicoya:demo-offer` (D-108).
  */
 final class DemoTechnicianActivity
 {
@@ -33,7 +33,7 @@ final class DemoTechnicianActivity
 
     public function run(int $technicianId, array $clientIds): void
     {
-        if (DB::table('offers')->where('technician_id', $technicianId)->exists()) {
+        if (DB::table('service_requests')->where('target_technician_id', $technicianId)->where('description', 'like', 'Trabajo de demostración #%')->exists()) {
             return;
         }
         $service = DB::table('technician_services')->where('technician_id', $technicianId)->where('active', 1)->orderBy('id')->first();
