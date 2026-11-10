@@ -100,13 +100,16 @@ it('S01-TC-061 permite la ruta administrativa al administrador activo con catalo
 });
 
 it('S01-TC-062 devuelve en GET /me del cliente solo lo propio de su rol y ningún secreto [TC-005]', function () {
-    Sanctum::actingAs(UserFactory::new()->client()->create());
+    $client = UserFactory::new()->client()->create();
+    Sanctum::actingAs($client);
 
     $response = $this->getJson('/api/v1/me')->assertOk();
 
+    // Rediseño de «Tu cuenta» (2026-11-10): /me trae el correo de la propia cuenta para el encabezado; nunca uno ajeno,
+    // la contraseña ni el token.
     $response->assertJsonPath('data.role.code', 'client')->assertJsonPath('data.permissions', [])
         ->assertJsonMissingPath('data.technician_profile')->assertJsonMissingPath('data.password')
-        ->assertJsonMissingPath('data.remember_token')->assertJsonMissingPath('data.email');
+        ->assertJsonMissingPath('data.remember_token')->assertJsonPath('data.email', $client->email);
 });
 
 it('S01-TC-063 devuelve en GET /me del administrador los permisos del rol y sus concesiones individuales [TC-005]', function () {

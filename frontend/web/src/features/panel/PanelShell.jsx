@@ -4,8 +4,9 @@ import useTheme from './useTheme';
 import useDismiss from './useDismiss';
 import Icon from './icons';
 import AccountPanel from './AccountPanel';
-import {QuickAccessibility, useAccessibility, useReader} from './quickAccessibility';
+import {AccessibilityContext, QuickAccessibility, canSpeak, useAccessibility, useReader} from './quickAccessibility';
 import {request} from '../administration/http';
+import {ShellContext} from './shellContext';
 import './panel.css';
 
 const store = {
@@ -66,7 +67,7 @@ function AvatarMenu({user, theme, onTheme, onProfile, onLogout, busy}) {
  * premium (candado: abre la sección «premium»).
  */
 export default function PanelShell({user, role, roleLabel, navLabel, sections, onLogout, onUserChange, busy, notice, badges, onNavigate,
-  initialSection, initialIntent = null, locked = false, bellKey, modern = false, onExpired, notificationTarget}) {
+  initialSection, initialIntent = null, locked = false, bellKey, modern = false, onExpired, notificationTarget, children}) {
   const sectionKey = `tecnicoya.panel.${user.id}.section`;
   const [active, setActive] = useState(() => {
     const saved = store.get('sessionStorage', sectionKey);
@@ -77,9 +78,14 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     ? user.sidebar_collapsed : store.get('localStorage', 'tecnicoya.panel.collapsed') === '1');
   const [account, setAccount] = useState(false);
   const avatarButton = useRef(null);
-  const a11y = useAccessibility();
+  // Fase 5 (D-97): el cliente guarda sus ajustes en la cuenta; los demás roles solo en este equipo.
+  const a11y = useAccessibility(modern ? user : null);
   const reader = useReader();
+  const content = useRef(null);
   const [drawer, setDrawer] = useState(false);
+  // Tutorial (Fase 5): expande el menú y abre el cajón sin guardar ni mover el foco; al terminar vuelven a su estado.
+  const [tourMode, setTourMode] = useState(false);
+  const [tourDrawer, setTourDrawer] = useState(false);
   const drawerButton = useRef(null);
   const nav = useRef(null);
   const {theme, toggle, notice: themeNotice} = useTheme(user, onUserChange);
@@ -105,7 +111,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       </button>;
     }
     const target = section.premium ? 'premium' : section.id;
-    return <React.Fragment key={section.id}><button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')}
+    return <React.Fragment key={section.id}><button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')} data-section={section.id}
       aria-current={section.id === current?.id ? 'page' : undefined} data-tooltip={collapsed ? section.label : undefined}
       aria-describedby={badge?.count ? badgeId : undefined} disabled={locked}
       onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
@@ -130,8 +136,12 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   }
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
   const profile = sections.find(section => section.id === 'profile');
-  return <div className={'panel-shell' + (collapsed ? ' is-collapsed' : '')} data-cy={`portal-${role}`}>
-    <aside className={'panel-sidebar' + (drawer ? ' is-open' : '')} onKeyDown={event => { if (event.key === 'Escape' && drawer) closeDrawer(); }}>
+  return <AccessibilityContext.Provider value={{prefs: a11y[0], update: a11y[1]}}>
+  <ShellContext.Provider value={{setTourMode, setTourDrawer}}>
+  <div className={'panel-shell' + (collapsed && !tourMode ? ' is-collapsed' : '') + (tourMode ? ' is-touring' : '')} data-cy={`portal-${role}`}>
+    {/* Fase 5 (WCAG 2.4.1): salta al contenido sin cambiar el hash, que usa el enrutado de la cuenta. */}
+    {modern && <a className="skip-link" href="#contenido" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Saltar al contenido</a>}
+    <aside className={'panel-sidebar' + (drawer || tourDrawer ? ' is-open' : '')} onKeyDown={event => { if (event.key === 'Escape' && drawer) closeDrawer(); }}>
       {/* Encabezado principal de la página: la marca y el rol (la sección activa es el h2 de su contenido). */}
       <div className={'panel-brand-row' + (modern ? ' is-modern' : '')}>
         {modern && <button type="button" className="panel-icon-button panel-brand-toggle" aria-expanded={!collapsed}
@@ -171,6 +181,9 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           <NotificationBell key={bellKey} userId={user.id}
             onOpen={item => { const target = notificationTarget?.(item); if (target) go(target[0], target[1] || null); }}
             onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
+          {modern && a11y[0].read_aloud && canSpeak() && <button type="button" className="panel-icon-button panel-read-button"
+            aria-pressed={reader[0]} aria-label={reader[0] ? 'Detener la lectura' : 'Leer la pantalla en voz alta'} onClick={() => reader[1]()}>
+            <Icon name="announcements"/></button>}
           {modern && <QuickAccessibility prefs={a11y[0]} onChange={a11y[1]} reader={reader}/>}
           {modern
             ? <button ref={avatarButton} type="button" className="panel-avatar-button" aria-label={`Cuenta de ${user.name}`}
@@ -180,15 +193,19 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
             : <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>}
         </div>
       </header>
-      {(notice || themeNotice || locked) && <div className="panel-notices">
+      {(notice || themeNotice || locked || a11y[2]) && <div className="panel-notices">
+        {a11y[2] && <output className="notice">{a11y[2]}</output>}
         {notice && <p className="error" role="alert">{notice}</p>}
         {locked && <output className="notice">Espera a que termine de guardarse tu solicitud.</output>}
         {themeNotice && <output className="notice">{themeNotice}</output>}
       </div>}
       {/* AccountApp ya está dentro del <main> de App: el contenido va en un div. */}
-      <div className="panel-content" key={`${current?.id}-${visit}`}>{current?.render({navigate: go, intent})}</div>
+      <div className="panel-content" id="contenido" tabIndex={-1} ref={content} key={`${current?.id}-${visit}`}>{current?.render({navigate: go, intent})}</div>
     </div>
     {modern && account && <AccountPanel user={user} onUpdate={onUserChange} onExpired={onExpired} onClose={() => setAccount(false)}
       onLogout={onLogout} busy={busy} theme={theme} onTheme={toggle} a11y={a11y} reader={reader} returnFocus={avatarButton.current}/>}
-  </div>;
+    {children}
+  </div>
+  </ShellContext.Provider>
+  </AccessibilityContext.Provider>;
 }

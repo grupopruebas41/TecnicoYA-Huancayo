@@ -74,6 +74,9 @@ Route::prefix('v1')->group(function () {
             Route::post('client/addresses', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'store']);
             Route::patch('client/addresses/{address}', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'update'])->whereNumber('address');
             Route::delete('client/addresses/{address}', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'destroy'])->whereNumber('address');
+            // Fase 5 del panel final (D-97): ajustes de accesibilidad y marcas de la bienvenida y del tutorial.
+            Route::get('client/me/preferences', [App\Modules\ARequests\Http\Controllers\ClientPreferencesController::class, 'show']);
+            Route::put('client/me/preferences', [App\Modules\ARequests\Http\Controllers\ClientPreferencesController::class, 'update']);
             Route::get('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'show']);
             Route::put('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'update']);
             // D-101 (Fase 3): técnicos favoritos del cliente titular; guardar y quitar son idempotentes.

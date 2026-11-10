@@ -9,7 +9,9 @@ const DURATION = {genially: 12000, default: 6000};
 const SWIPE = 40;
 const GENIALLY_SANDBOX = 'allow-scripts allow-same-origin allow-popups';
 
-const reducedMotion = () => typeof window !== 'undefined' && Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches);
+// Fase 5 (D-97): también respeta «Reducir animaciones» de la cuenta (data-motion en <html>).
+const reducedMotion = () => typeof window !== 'undefined' && (document.documentElement.dataset.motion === 'reduce'
+  || Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches));
 
 const PATHS = {
   pause: 'M7 5h3v14H7zM14 5h3v14h-3z',

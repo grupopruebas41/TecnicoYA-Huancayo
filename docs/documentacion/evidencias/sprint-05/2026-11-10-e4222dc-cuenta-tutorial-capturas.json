@@ -1,0 +1,162 @@
+{
+  "1366-tutorial-1": {
+    "overflowX": true,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "1366-tutorial-2": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "1366-tutorial-3": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "1366-tutorial-4": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "1366-tutorial-terminado": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "1366-cuenta-cuenta": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "1366-cuenta-direcciones": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "1366-cuenta-accesibilidad": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "1366-cuenta-comunicacion": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "1366-cuenta-apariencia": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "390-tutorial-1": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "390-tutorial-2": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "390-tutorial-3": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "390-tutorial-4": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "zonaDentro": true,
+    "menuContraido": false,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "390-tutorial-terminado": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": null
+  },
+  "390-cuenta-cuenta": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "390-cuenta-direcciones": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "390-cuenta-accesibilidad": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "390-cuenta-comunicacion": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  },
+  "390-cuenta-apariencia": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "zonaDentro": null,
+    "menuContraido": true,
+    "pestanasCortadas": 0,
+    "dialogoDentro": true
+  }
+}

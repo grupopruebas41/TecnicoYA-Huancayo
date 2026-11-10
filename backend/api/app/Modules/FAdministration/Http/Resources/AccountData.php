@@ -3,6 +3,7 @@
 namespace App\Modules\FAdministration\Http\Resources;
 
 use App\Models\User;
+use App\Modules\ARequests\Application\ClientPreferences;
 use App\Shared\Auth\EffectivePermissions;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +22,8 @@ final class AccountData
             'avatar_url' => $user->avatar_media_id && DB::table('media_files')->where('id', $user->avatar_media_id)
                 ->where('scan_status', 'clean')->whereNull('retired_at')->exists() ? url("/api/v1/media/{$user->avatar_media_id}") : null,
             'role' => ['code' => $role], 'version' => (int) $user->version,
+            // Rediseño del panel «Tu cuenta»: el correo solo va en GET y PATCH /me, para su dueño.
+            ...($private ? ['email' => $user->email] : []),
             'permissions' => app(EffectivePermissions::class)->codes($user),
         ];
         if ($role === 'client') {
@@ -29,7 +32,9 @@ final class AccountData
             $client = DB::table('client_profiles')->where('user_id', $user->id)->first(['client_type', 'district_id', 'default_address']);
             $data['client_profile'] = $client ? [
                 'client_type' => $client->client_type, 'district_id' => $client->district_id === null ? null : (int) $client->district_id,
-            ] + ($private ? ['reference_address' => $client->default_address] : []) : null;
+            ] + ($private ? ['reference_address' => $client->default_address] : [])
+                // Fase 5 (D-97): los ajustes llegan con /me para aplicarlos antes del primer render, sin parpadeo.
+                + ['preferences' => ClientPreferences::forUser((int) $user->id)] : null;
         }
         if ($role === 'technician') {
             $profile = DB::table('technician_profiles')->where('user_id', $user->id)

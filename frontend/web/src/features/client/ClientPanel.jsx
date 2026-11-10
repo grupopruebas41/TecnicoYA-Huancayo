@@ -11,6 +11,7 @@ import {consumeSearch} from '../../landing/config';
 import ClientHome from './ClientHome';
 import NotificationsPage from './NotificationsPage';
 import {isActive} from './clientRules';
+import ClientOnboarding from './ClientOnboarding';
 import {FaqPage, FavoritesPage, HowItWorksPage, NewsPage, PremiumPage, PrivacyPage, SpecialtiesPage} from './ClientPages';
 import '../requests/requests.css';
 import './client.css';
@@ -58,6 +59,7 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
   const [searchIntent] = useState(consumeSearch);
   const [locked, setLocked] = useState(false);
   const [tick, setTick] = useState(0);
+  const [tour, setTour] = useState(false);
   const refresh = useCallback(() => setTick(value => value + 1), []);
   const badges = useClientBadges(tick);
   const district = user.client_profile?.district_id ?? null;
@@ -84,7 +86,7 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
     {id: 'specialties', group: 'Descubre', label: 'Especialidades', icon: 'catalog', render: ({navigate}) => <SpecialtiesPage navigate={navigate}/>},
     {id: 'news', group: 'Descubre', label: 'Novedades', icon: 'news', render: () => <NewsPage/>},
     {id: 'map', group: 'Descubre', label: 'Técnicos cerca de ti', icon: 'map', soon: true},
-    {id: 'how', group: 'Ayuda', label: 'Cómo funciona', icon: 'book', render: ({navigate}) => <HowItWorksPage navigate={navigate}/>},
+    {id: 'how', group: 'Ayuda', label: 'Cómo funciona', icon: 'book', render: ({navigate}) => <HowItWorksPage navigate={navigate} onTour={() => setTour(true)}/>},
     {id: 'faq', group: 'Ayuda', label: 'Preguntas frecuentes', icon: 'help', render: () => <FaqPage/>},
     {id: 'report', group: 'Ayuda', label: 'Reportar un problema', icon: 'flag', soon: true},
     {id: 'privacy', group: 'Ayuda', label: 'Privacidad y términos', icon: 'verify', render: () => <PrivacyPage/>},
@@ -98,6 +100,9 @@ export default function ClientPanel({user, roleLabel, onLogout, onUserChange, bu
     <PanelShell user={user} role="client" roleLabel={roleLabel} navLabel="Gestión del cliente" sections={sections}
       onLogout={onLogout} onUserChange={onUserChange} busy={busy} notice={notice} badges={badges} onNavigate={refresh}
       initialSection={searchIntent ? 'search' : undefined} initialIntent={searchIntent ? {filters: searchIntent} : null}
-      locked={locked} bellKey={tick} modern onExpired={onExpired} notificationTarget={notificationTarget}/>
+      locked={locked} bellKey={tick} modern onExpired={onExpired} notificationTarget={notificationTarget}>
+      {/* Fase 5 (D-97): bienvenida y tutorial solo la primera vez; «Cómo funciona» repite el tutorial. */}
+      <ClientOnboarding user={user} replay={tour} onReplayEnd={() => setTour(false)}/>
+    </PanelShell>
   </RealtimeProvider>;
 }
