@@ -71,11 +71,11 @@ test('S07-TC-129 el menú agrupa las secciones con título, muestra contadores a
   const groups = within(nav).getAllByRole('group').map(group => [group.querySelector('.panel-nav-heading').textContent,
     within(group).getAllByRole('button').map(button => button.querySelector('.panel-label').textContent)]);
   expect(groups).toEqual([['General', ['Inicio', 'Estadísticas']], ['Gestión', ['Usuarios', 'Verificación', 'Solicitudes']],
-    ['Contenido', ['Catálogo', 'Comunicados']], ['Cuenta', ['Mi perfil']]]);
+    ['Contenido', ['Catálogo', 'Comunicados']]]); // Fase T1 (D-104): Mi perfil pasa al panel de la cuenta.
   const verification = await within(nav).findByRole('button', {name: 'Verificación'});
   await waitFor(() => expect(verification).toHaveAccessibleDescription('3 técnicos por verificar'));
   expect(within(nav).getByRole('button', {name: 'Comunicados'})).toHaveAccessibleDescription('1 comunicado vigente');
-  expect(nav.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(8);
+  expect(nav.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(7); // un ícono por sección (sin Mi perfil desde la T1)
 
   fireEvent.click(screen.getByRole('button', {name: 'Contraer menú'}));
   expect(within(nav).getByRole('button', {name: 'Usuarios'})).toHaveAttribute('data-tooltip', 'Usuarios');
@@ -84,7 +84,7 @@ test('S07-TC-129 el menú agrupa las secciones con título, muestra contadores a
 
   // Sin permisos de Usuarios ni del Inicio: no hay grupos vacíos ni enlaces sin destino.
   const limited = await openAdmin({...admin, permissions: ['catalog.manage']});
-  expect(within(limited).getAllByRole('group').map(group => group.querySelector('.panel-nav-heading').textContent)).toEqual(['Contenido', 'Cuenta']);
+  expect(within(limited).getAllByRole('group').map(group => group.querySelector('.panel-nav-heading').textContent)).toEqual(['Contenido']);
   expect(within(limited).queryByRole('button', {name: 'Usuarios'})).not.toBeInTheDocument();
 });
 

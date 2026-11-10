@@ -4,11 +4,11 @@ afterEach(() => cy.task("serverClock", "reset"));
 import { login, observe, offline, openMyRequests } from "./helpers";
 // DEF-59: sin red, pusher-js detecta la caída cuando vence su espera de respuesta (pongTimeout, 30 s por defecto).
 const PONG_TIMEOUT_MS = 45000;
+// Fase T1 del panel del técnico: el estado de la conexión es un solo indicador en la barra superior (data-cy=connection).
 it("S04-TC-093 oferta por Reverb sin recargar", () => {
   login("e2e-technician-electro");
-  cy.get('[aria-label="Solicitudes entrantes"]')
-    .contains("[role=status]", "Conexión en tiempo real activa.")
-    .should("be.visible");
+  cy.get('[aria-label="Solicitudes entrantes"]').should("be.visible");
+  cy.get("[data-cy=connection]").should("have.attr", "data-state", "live");
   observe("GET", "/offers/*", "eventResource");
   cy.task("openRoundFor", "e2e-technician-electro@example.test");
   cy.wait("@eventResource").its("response.statusCode").should("eq", 200);
@@ -22,15 +22,14 @@ it("S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una 
     login("e2e-client-direct");
     openMyRequests();
     openCard(id);
-    cy.get('[aria-label="Seguimiento de solicitud"]')
-      .contains("Conexión en tiempo real activa.")
-      .should("be.visible");
+    cy.get('[aria-label="Seguimiento de solicitud"]').should("be.visible");
+    cy.get("[data-cy=connection]").should("have.attr", "data-state", "live");
     const reads = [];
     cy.intercept("GET", "**/api/v1/requests/" + id, (req) =>
       req.continue((res) => reads.push(res.body.data.version)),
     ).as("read");
     offline(true);
-    cy.contains("Sin conexión en tiempo real. Actualiza para ver cambios.", { timeout: PONG_TIMEOUT_MS }).should("be.visible");
+    cy.get("[data-cy=connection]", { timeout: PONG_TIMEOUT_MS }).should("have.attr", "data-state", "offline");
     cy.task("serverClock", "+10m");
     cy.task("runJobs"); // la oferta directa vence: request.updated real, perdido sin conexión
     cy.task("replayEvent", id).then((first) => {
@@ -46,11 +45,10 @@ it("S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una 
 it("S04-TC-095 reconexión recupera por API", () => {
   cy.task("openRoundFor", "e2e-technician-frio@example.test");
   login("e2e-technician-frio");
-  cy.get('[aria-label="Solicitudes entrantes"]')
-    .contains("Conexión en tiempo real activa.")
-    .should("be.visible");
+  cy.get('[aria-label="Solicitudes entrantes"]').should("be.visible");
+  cy.get("[data-cy=connection]").should("have.attr", "data-state", "live");
   offline(true);
-  cy.contains("Sin conexión en tiempo real. Actualiza para ver cambios.", { timeout: PONG_TIMEOUT_MS }).should("be.visible");
+  cy.get("[data-cy=connection]", { timeout: PONG_TIMEOUT_MS }).should("have.attr", "data-state", "offline");
   cy.task("serverClock", "+10m");
   cy.task("runJobs");
   observe("GET", "/offers?status=pending,accepted", "reconnect");

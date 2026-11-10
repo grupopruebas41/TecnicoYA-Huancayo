@@ -168,4 +168,12 @@ return [
     'order_text' => 'La marca y el modelo admiten hasta 60 caracteres.',
     'order_address_reference' => 'La referencia admite hasta 120 caracteres.',
     'summary_confirmation' => 'Confirma que el resumen es correcto.',
+    // Fase T1 del panel del técnico.
+    'sessions_revoked' => '{0} No había otras sesiones abiertas.|{1} Cerramos 1 sesión en otro equipo.|[2,*] Cerramos :count sesiones en otros equipos.',
+    'verification_approved_title' => 'Tu verificación fue aprobada',
+    'verification_approved_body' => 'Ya puedes recibir ofertas de trabajo. Revisa tu disponibilidad y tus zonas.',
+    'verification_rejected_title' => 'Tu verificación tiene observaciones',
+    'verification_rejected_body' => 'Revisa la nota del revisor en Verificación y sube lo que falta.',
+    'offer_expired_title' => 'Una oferta venció',
+    'offer_expired_body' => 'La oferta de la solicitud #:request venció sin respuesta.',
 ];

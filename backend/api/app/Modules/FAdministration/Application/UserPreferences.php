@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Modules\ARequests\Application;
+namespace App\Modules\FAdministration\Application;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Fase 5 del panel final (D-97): ajustes de accesibilidad del cliente, con valores por omisión, y las marcas de la
- * bienvenida y del tutorial. Lista blanca de claves; solo preferencias de uso.
+ * Ajustes de accesibilidad con sus valores por omisión y las marcas de la bienvenida y del tutorial (D-97), comunes a
+ * los tres roles desde la Fase T1 del panel del técnico (D-105). Lista blanca de claves; solo preferencias de uso.
  */
-final class ClientPreferences
+final class UserPreferences
 {
     public const TEXT_SIZES = [100, 115, 130, 150];
 
@@ -20,8 +20,7 @@ final class ClientPreferences
 
     public static function forUser(int $userId): array
     {
-        $row = DB::table('client_profiles')->where('user_id', $userId)
-            ->first(['accessibility_prefs', 'onboarding_completed_at', 'tour_completed_at']);
+        $row = DB::table('users')->where('id', $userId)->first(['accessibility_prefs', 'onboarding_completed_at', 'tour_completed_at']);
         $saved = is_string($row?->accessibility_prefs) ? (json_decode($row->accessibility_prefs, true) ?: []) : [];
         $iso = fn ($value) => $value === null ? null : Carbon::parse($value)->toISOString();
 

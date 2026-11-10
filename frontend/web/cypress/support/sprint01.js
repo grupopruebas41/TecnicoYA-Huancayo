@@ -28,11 +28,8 @@ export function dismissOnboarding() {
 }
 // Fase 1 del panel (D-73): los datos de la cuenta viven en la sección «Mi perfil» del menú lateral.
 export function openProfile() {
-  // Fase 4 del panel final: el cliente abre Mi perfil desde el panel del avatar (pestaña Mi cuenta); los demás, desde el menú.
-  cy.get('[data-cy^=portal-]').then((portal) => {
-    if (portal.is('[data-cy=portal-client]')) cy.get('button[aria-label^="Cuenta de "]').click();
-    else cy.get('nav[aria-label="Administración"], nav[aria-label="Mi cuenta"]').contains('button', 'Mi perfil').click();
-  });
+  // Fase 4 del panel final y Fase T1 del técnico: los tres roles abren Mi perfil desde el panel del avatar (pestaña Mi cuenta).
+  cy.get('button[aria-label^="Cuenta de "]').click();
   cy.get('[data-cy=profile-submit]').should('be.visible');
 }
 

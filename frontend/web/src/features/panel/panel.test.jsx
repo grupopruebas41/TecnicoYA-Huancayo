@@ -46,12 +46,15 @@ const openAdmin = async (user = admin) => { routes(user); render(<AccountApp/>);
 test('S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa', async () => {
   const nav = await openAdmin();
 
-  // Bloque C (D-85): el menú se agrupa en General, Gestión, Contenido y Cuenta (detalle en S07-TC-129).
+  // Bloque C (D-85): el menú se agrupa en General, Gestión y Contenido (detalle en S07-TC-129). Fase T1 del panel del
+  // técnico (D-104): Mi perfil y «Cerrar sesión» pasan al panel de la cuenta, como en el cliente; el menú ya no los lista.
   expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent))
-    .toEqual(['Inicio', 'Estadísticas', 'Usuarios', 'Verificación', 'Solicitudes', 'Catálogo', 'Comunicados', 'Mi perfil']);
+    .toEqual(['Inicio', 'Estadísticas', 'Usuarios', 'Verificación', 'Solicitudes', 'Catálogo', 'Comunicados']);
   expect(within(nav).getByRole('button', {name: 'Inicio'})).toHaveAttribute('aria-current', 'page');
   expect(document.querySelector('[data-cy=portal-admin]')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', {name: 'Cuenta de Ana Quispe'}));
   expect(screen.getByRole('button', {name: 'Cerrar sesión'})).toHaveAttribute('data-cy', 'logout');
+  fireEvent.click(screen.getByRole('button', {name: 'Cerrar panel de la cuenta'}));
 
   fireEvent.click(within(nav).getByRole('button', {name: 'Catálogo'}));
   expect(await screen.findByRole('heading', {name: 'Administrar catálogo'})).toBeInTheDocument();
@@ -61,7 +64,7 @@ test('S07-TC-057 el panel del administrador muestra su menú según permisos y m
 
   await openAdmin({...admin, permissions: ['catalog.manage']});
   expect(within(screen.getByRole('navigation', {name: 'Administración'})).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent))
-    .toEqual(['Catálogo', 'Mi perfil']);
+    .toEqual(['Catálogo']);
 });
 
 test('S07-TC-058 la barra lateral se contrae, conserva nombres accesibles y recuerda el estado', async () => {
@@ -110,39 +113,40 @@ test('S07-TC-060 la campana cuenta las notificaciones sin leer y las lista', asy
   expect(screen.getByText('Estás al día, no tienes notificaciones nuevas')).toBeInTheDocument();
 });
 
-test('S07-TC-061 el avatar muestra iniciales o la foto y abre el menú Mi perfil / Tema / Cerrar sesión', async () => {
+// Fase T1 del panel del técnico (D-104): el avatar del administrador abre el mismo panel de la cuenta del cliente, con
+// sus pestañas (sin Mis direcciones ni Comunicación); antes abría un menú Mi perfil / Tema / Cerrar sesión.
+test('S07-TC-061 el avatar muestra iniciales o la foto y abre el panel de la cuenta con las pestañas del administrador', async () => {
   await openAdmin();
-  const avatar = screen.getByRole('button', {name: 'Menú de Ana Quispe'});
+  const avatar = screen.getByRole('button', {name: 'Cuenta de Ana Quispe'});
   expect(avatar).toHaveTextContent('AQ');
-  expect(avatar).toHaveAttribute('aria-haspopup', 'menu');
+  expect(avatar).toHaveAttribute('aria-haspopup', 'dialog');
 
   fireEvent.click(avatar);
-  const menu = screen.getByRole('menu');
-  expect(within(menu).getAllByRole('menuitem').map(i => i.textContent)).toEqual(['Mi perfil', 'Tema claro', 'Cerrar sesión']);
-  fireEvent.keyDown(menu, {key: 'Escape'});
-  expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  const dialog = screen.getByRole('dialog');
+  expect(within(dialog).getAllByRole('tab').map(tab => tab.textContent)).toEqual(['Mi cuenta', 'Seguridad', 'Accesibilidad', 'Apariencia']);
+  expect(within(dialog).getByText('Administrador')).toBeInTheDocument();
+  expect(within(dialog).queryByText(/Plan (Free|Premium)/)).not.toBeInTheDocument();
+  fireEvent.keyDown(dialog, {key: 'Escape'});
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   expect(avatar).toHaveFocus();
-
-  fireEvent.click(avatar);
-  fireEvent.click(screen.getByRole('menuitem', {name: 'Mi perfil'}));
-  expect(await screen.findByRole('heading', {name: 'Mi perfil'})).toBeInTheDocument();
   cleanup();
 
   await openAdmin({...admin, avatar_url: 'http://api.test/api/v1/media/9'});
-  expect(screen.getByRole('button', {name: 'Menú de Ana Quispe'}).querySelector('img')).toHaveAttribute('src', 'http://api.test/api/v1/media/9');
+  expect(screen.getByRole('button', {name: 'Cuenta de Ana Quispe'}).querySelector('img')).toHaveAttribute('src', 'http://api.test/api/v1/media/9');
 });
 
 test('S07-TC-062 el tema claro u oscuro se aplica con data-theme y se guarda en /me', async () => {
   await openAdmin();
   expect(document.documentElement.dataset.theme).toBe('dark');
 
-  fireEvent.click(screen.getByRole('button', {name: 'Menú de Ana Quispe'}));
-  fireEvent.click(screen.getByRole('menuitem', {name: 'Tema claro'}));
+  // Fase T1 (D-104): el tema se elige en la pestaña Apariencia del panel de la cuenta.
+  fireEvent.click(screen.getByRole('button', {name: 'Cuenta de Ana Quispe'}));
+  fireEvent.click(screen.getByRole('tab', {name: 'Apariencia'}));
+  fireEvent.click(screen.getByRole('radio', {name: /Claro/}));
 
   expect(document.documentElement.dataset.theme).toBe('light');
   await waitFor(() => expect(request).toHaveBeenCalledWith('/me', {theme_preference: 'light', expected_version: 3}, 'PATCH'));
-  fireEvent.click(screen.getByRole('button', {name: 'Menú de Ana Quispe'}));
-  expect(screen.getByRole('menuitem', {name: 'Tema oscuro'})).toBeInTheDocument();
+  expect(screen.getByRole('radio', {name: /Claro/})).toHaveAttribute('aria-checked', 'true');
   cleanup();
   expect(document.documentElement.dataset.theme).toBeUndefined();
 
@@ -154,11 +158,13 @@ test('S07-TC-063 sin /me ni almacenamiento el tema funciona igual y avisa que no
   routes(admin, {'/me': (body, method) => { if (method === 'PATCH') throw {status: 0, message: 'Sin conexión'}; return {data: admin}; }});
   vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('bloqueado'); });
   render(<AccountApp/>);
-  fireEvent.click(await screen.findByRole('button', {name: 'Menú de Ana Quispe'}));
-  fireEvent.click(screen.getByRole('menuitem', {name: 'Tema claro'}));
+  // Fase T1 (D-104): el tema se elige en la pestaña Apariencia del panel de la cuenta.
+  fireEvent.click(await screen.findByRole('button', {name: 'Cuenta de Ana Quispe'}));
+  fireEvent.click(screen.getByRole('tab', {name: 'Apariencia'}));
+  fireEvent.click(screen.getByRole('radio', {name: /Claro/}));
 
   expect(document.documentElement.dataset.theme).toBe('light');
-  expect(await screen.findByRole('status')).toHaveTextContent('Usamos el tema claro en este equipo, pero no pudimos guardarlo en tu cuenta.');
+  expect(await screen.findByText('Usamos el tema claro en este equipo, pero no pudimos guardarlo en tu cuenta.')).toBeInTheDocument();
 });
 
 test('S07-TC-064 el Inicio muestra los indicadores reales del dashboard', async () => {
@@ -286,7 +292,8 @@ test('S07-TC-070 cliente y técnico usan la misma base con su contenido actual',
   render(<AccountApp/>);
 
   const nav = await screen.findByRole('navigation', {name: 'Mi cuenta'});
-  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent)).toEqual(['Inicio', 'Mi perfil']);
+  // Fase T1 (D-104): Mi perfil pasa al panel de la cuenta; el menú nuevo del técnico llega en la T2.
+  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent)).toEqual(['Inicio']);
   expect(screen.getByText('Contenido actual de technician')).toBeInTheDocument();
   expect(screen.getByText(/Estado de verificación:/)).toHaveTextContent('Pendiente de verificación');
   expect(document.querySelector('[data-cy=portal-technician]')).toBeInTheDocument();
@@ -307,10 +314,11 @@ test('S07-TC-071 la campana y el menú del avatar se cierran con Escape desde su
   fireEvent.pointerDown(screen.getByRole('heading', {name: 'Inicio'}));
   expect(screen.queryByRole('region', {name: 'Notificaciones recientes'})).not.toBeInTheDocument();
 
-  const avatar = screen.getByRole('button', {name: 'Menú de Ana Quispe'});
+  // Fase T1 (D-104): el avatar abre el panel de la cuenta; un clic dentro no lo cierra y un clic en el fondo sí.
+  const avatar = screen.getByRole('button', {name: 'Cuenta de Ana Quispe'});
   fireEvent.click(avatar);
-  fireEvent.pointerDown(within(screen.getByRole('menu')).getByRole('menuitem', {name: 'Mi perfil'}));
-  expect(screen.getByRole('menu')).toBeInTheDocument();
-  fireEvent.pointerDown(document.body);
-  expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  fireEvent.mouseDown(within(screen.getByRole('dialog')).getByRole('tab', {name: 'Seguridad'}));
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  fireEvent.mouseDown(document.querySelector('.account-overlay'));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });

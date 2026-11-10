@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\ARequests\Http\Controllers;
+namespace App\Modules\FAdministration\Http\Controllers;
 
-use App\Modules\ARequests\Application\ClientPreferences;
+use App\Modules\FAdministration\Application\UserPreferences;
 use App\Shared\Http\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,21 +10,21 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 /**
- * Fase 5 del panel final (D-97): GET y PUT /client/me/preferences. El PUT acepta ajustes parciales de la lista blanca
- * y las marcas onboarding_completed y tour_completed, que se fijan una sola vez (no vuelven a mostrarse).
- * Cualquier otra clave, como datos de salud o la tarjeta elegida, se rechaza y no se guarda.
+ * GET y PUT /me/preferences para los tres roles (D-105); /client/me/preferences (D-97) usa el mismo controlador. El PUT
+ * acepta ajustes parciales de la lista blanca y las marcas onboarding_completed y tour_completed, que se fijan una sola
+ * vez. Cualquier otra clave, como datos de salud o la tarjeta elegida, se rechaza y no se guarda.
  */
-final class ClientPreferencesController
+final class PreferencesController
 {
     public function show(Request $request): JsonResponse
     {
-        return ApiResponse::data(ClientPreferences::forUser((int) $request->user()->id));
+        return ApiResponse::data(UserPreferences::forUser((int) $request->user()->id));
     }
 
     public function update(Request $request): JsonResponse
     {
-        $flags = array_keys(ClientPreferences::DEFAULTS);
-        $rules = ['accessibility' => ['sometimes', 'array'], 'accessibility.text_size' => ['sometimes', 'integer', Rule::in(ClientPreferences::TEXT_SIZES)],
+        $flags = array_keys(UserPreferences::DEFAULTS);
+        $rules = ['accessibility' => ['sometimes', 'array'], 'accessibility.text_size' => ['sometimes', 'integer', Rule::in(UserPreferences::TEXT_SIZES)],
             'onboarding_completed' => ['sometimes', 'accepted'], 'tour_completed' => ['sometimes', 'accepted']];
         foreach (array_diff($flags, ['text_size']) as $flag) {
             $rules["accessibility.$flag"] = ['sometimes', 'boolean'];
@@ -43,12 +43,10 @@ final class ClientPreferencesController
         }
         $userId = (int) $request->user()->id;
         DB::transaction(function () use ($userId, $data) {
-            $row = DB::table('client_profiles')->where('user_id', $userId)->lockForUpdate()->first();
-            abort_unless($row, 404);
-            $changes = ['updated_at' => now()];
+            $row = DB::table('users')->where('id', $userId)->lockForUpdate()->first(['id', 'onboarding_completed_at', 'tour_completed_at']);
+            $changes = [];
             if (isset($data['accessibility'])) {
-                $current = ClientPreferences::forUser($userId)['accessibility'];
-                $next = array_merge($current, $data['accessibility']);
+                $next = array_merge(UserPreferences::forUser($userId)['accessibility'], $data['accessibility']);
                 $next['text_size'] = (int) $next['text_size'];
                 foreach (array_diff(array_keys($next), ['text_size']) as $flag) {
                     $next[$flag] = filter_var($next[$flag], FILTER_VALIDATE_BOOLEAN);
@@ -61,9 +59,11 @@ final class ClientPreferencesController
             if (! empty($data['tour_completed']) && $row->tour_completed_at === null) {
                 $changes['tour_completed_at'] = now();
             }
-            DB::table('client_profiles')->where('id', $row->id)->update($changes);
+            if ($changes !== []) {
+                DB::table('users')->where('id', $userId)->update($changes);
+            }
         });
 
-        return ApiResponse::data(ClientPreferences::forUser($userId));
+        return ApiResponse::data(UserPreferences::forUser($userId));
     }
 }

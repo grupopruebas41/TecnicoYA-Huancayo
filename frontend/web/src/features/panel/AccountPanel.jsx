@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import {Notice} from '../administration/forms';
 import {useResource} from '../administration/Sprint02Common';
-import ProfilePage from './ProfilePage';
+import ProfilePage, {PasswordChange} from './ProfilePage';
 import {AccessibilityControls} from './quickAccessibility';
 import Icon from './icons';
 
@@ -10,6 +10,62 @@ export const ACCOUNT_TABS = [
   ['cuenta', 'Mi cuenta'], ['direcciones', 'Mis direcciones'], ['accesibilidad', 'Accesibilidad'],
   ['comunicacion', 'Comunicación'], ['apariencia', 'Apariencia'],
 ];
+// Fase T1 del panel del técnico: el mismo panel con las pestañas de cada rol.
+export const TECHNICIAN_TABS = [
+  ['cuenta', 'Mi cuenta'], ['seguridad', 'Seguridad'], ['accesibilidad', 'Accesibilidad'], ['avisos', 'Avisos'], ['apariencia', 'Apariencia'],
+];
+export const ADMIN_TABS = [['cuenta', 'Mi cuenta'], ['seguridad', 'Seguridad'], ['accesibilidad', 'Accesibilidad'], ['apariencia', 'Apariencia']];
+export const tabsFor = role => ({technician: TECHNICIAN_TABS, admin: ADMIN_TABS}[role] || ACCOUNT_TABS);
+const PREVIEW = {
+  client: 'Tu técnico llega hoy entre las 3 y las 5 p. m.',
+  technician: 'Tienes una oferta nueva: vence en 9 minutos.',
+  admin: 'Hay 3 técnicos por verificar.',
+};
+
+/** Seguridad (Fase T1): cambiar la contraseña y cerrar las sesiones abiertas en otros equipos, con confirmación. */
+function SecurityTab({onExpired}) {
+  const [notice, setNotice] = useState({});
+  const [busy, setBusy] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  // DEF-62: al cerrarse la confirmación, el foco vuelve al botón (si no, quedaba en el body y Esc no cerraba el panel).
+  const trigger = useRef(null);
+  const asked = useRef(false);
+  useEffect(() => { if (confirm) asked.current = true; else if (asked.current) trigger.current?.focus(); }, [confirm]);
+  async function revoke() {
+    setBusy(true); setNotice({});
+    try {
+      const result = await request('/me/sessions/revoke-others', {}, 'POST');
+      setNotice({success: result.data.message}); setConfirm(false);
+    } catch (failure) {
+      if (failure.status === 401) onExpired?.(failure);
+      else setNotice({error: failure.message || 'No pudimos cerrar tus otras sesiones. Inténtalo de nuevo.'});
+    } finally { setBusy(false); }
+  }
+  return <>
+    <PasswordChange onExpired={onExpired}/>
+    <section className="account-card security-sessions" aria-labelledby="security-sessions-title">
+      <h3 id="security-sessions-title">Sesiones en otros equipos</h3>
+      <p className="muted">Si iniciaste sesión en otro celular o computadora, ciérrala desde aquí. Esta sesión sigue abierta.</p>
+      {confirm
+        ? <div className="account-confirm" role="group" aria-label="Confirmar cierre de las otras sesiones">
+          <span>¿Cerrar todas tus otras sesiones?</span>
+          <button type="button" className="button primary" disabled={busy} onClick={revoke}>Sí, cerrarlas</button>
+          <button type="button" className="button outline" disabled={busy} onClick={() => setConfirm(false)}>Cancelar</button>
+        </div>
+        : <button ref={trigger} type="button" className="button outline" onClick={() => setConfirm(true)}>Cerrar las otras sesiones</button>}
+      <Notice error={notice.error} success={notice.success}/>
+    </section>
+  </>;
+}
+
+/** Avisos del técnico: sus opciones llegan en la Fase T5; mientras tanto la pestaña lo dice, sin controles vacíos. */
+function OfferAlertsSoon() {
+  return <section className="account-card">
+    <p><span className="client-chip">Próximamente</span></p>
+    <p>Podrás elegir cómo te avisamos de una oferta nueva: sonido, vibración, destello en pantalla y lectura en voz alta.</p>
+    <p className="muted">El plazo para responder una oferta sigue siendo de 10 minutos.</p>
+  </section>;
+}
 const KINDS = [['home', 'Casa'], ['business', 'Negocio'], ['other', 'Otra']];
 const EMPTY = {kind: 'home', label: '', district_id: '', address: '', reference: '', is_default: false};
 
@@ -160,6 +216,8 @@ function CommunicationTab() {
 // Rediseño de «Tu cuenta»: cada pestaña con su ícono, su color de acento y una descripción breve.
 export const TAB_META = {
   cuenta: {icon: 'profile', accent: 'blue', description: 'Tu foto, nombres, teléfono y contraseña.'},
+  seguridad: {icon: 'lock', accent: 'orange', description: 'Tu contraseña y las sesiones abiertas en otros equipos.'},
+  avisos: {icon: 'bell', accent: 'green', description: 'Cómo te avisamos cuando llega una oferta nueva.'},
   direcciones: {icon: 'home', accent: 'green', description: 'Casa, negocio u otras direcciones para pedir más rápido.'},
   accesibilidad: {icon: 'a11y', accent: 'violet', description: 'Tamaño de texto, contraste, lectura y movimiento. Se guardan en tu cuenta.'},
   comunicacion: {icon: 'chat', accent: 'orange', description: 'Cómo prefieres que te contacte el técnico.'},
@@ -171,11 +229,11 @@ const initialsOf = user => {
   return parts.filter(Boolean).slice(0, 2).map(part => Array.from(part.trim())[0] || '').join('').toUpperCase() || '·';
 };
 
-function TabIntro({id, label}) {
+function TabIntro({id, label, description}) {
   const meta = TAB_META[id];
   return <div className="account-intro" data-accent={meta.accent}>
     <span className="account-intro-icon" aria-hidden="true"><Icon name={meta.icon}/></span>
-    <div><h3>{label}</h3><p className="muted">{meta.description}</p></div>
+    <div><h3>{label}</h3><p className="muted">{description || meta.description}</p></div>
   </div>;
 }
 
@@ -202,13 +260,16 @@ function ThemeCards({theme, onTheme}) {
  * pestañas con ícono y acento (cuadrícula de 2 columnas en el celular); contenido en tarjetas. Atrapa el foco, Esc cierra
  * y devuelve el foco al avatar, las flechas cambian de pestaña. Las animaciones se apagan con «Reducir animaciones».
  */
-export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogout, busy, theme, onTheme, a11y, reader, returnFocus}) {
+export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogout, busy, theme, onTheme, a11y, reader, returnFocus, roleLabel}) {
+  const role = user.role?.code || 'client';
+  const TABS = tabsFor(role);
   const [tab, setTab] = useState('cuenta');
   const root = useRef(null);
   const tabs = useRef({});
-  const index = ACCOUNT_TABS.findIndex(([id]) => id === tab);
-  const label = ACCOUNT_TABS[index][1];
+  const index = TABS.findIndex(([id]) => id === tab);
+  const label = TABS[index][1];
   const plan = user.client_profile?.plan === 'premium' ? 'Premium' : 'Free';
+  const description = role !== 'client' && tab === 'cuenta' ? 'Tu foto, nombres y teléfono.' : null;
   useEffect(() => {
     tabs.current.cuenta?.focus();
     return () => returnFocus?.focus?.();
@@ -226,7 +287,7 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
     const step = {ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1}[event.key];
     if (!step) return;
     event.preventDefault();
-    const next = ACCOUNT_TABS[(index + step + ACCOUNT_TABS.length) % ACCOUNT_TABS.length][0];
+    const next = TABS[(index + step + TABS.length) % TABS.length][0];
     setTab(next); tabs.current[next]?.focus();
   }
   return <div className="account-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}>
@@ -240,14 +301,16 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
           <p className="account-name">{user.name}</p>
           {user.email && <p className="muted account-email">{user.email}</p>}
         </div>
-        <span className={'account-plan' + (plan === 'Premium' ? ' is-premium' : '')}>Plan {plan}</span>
+        {role === 'client'
+          ? <span className={'account-plan' + (plan === 'Premium' ? ' is-premium' : '')}>Plan {plan}</span>
+          : roleLabel && <span className="account-plan">{roleLabel}</span>}
         <button type="button" className="panel-icon-button account-close" aria-label="Cerrar panel de la cuenta" onClick={onClose}><Icon name="close"/></button>
       </header>
       <div className="account-layout">
         <div className="account-tabs" role="tablist" aria-label="Secciones de la cuenta" aria-orientation="vertical" onKeyDown={arrows}
           style={{'--tab-index': index}}>
           <span className="account-tab-indicator" aria-hidden="true"/>
-          {ACCOUNT_TABS.map(([id, text]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab"
+          {TABS.map(([id, text]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab"
             id={`account-tab-${id}`} aria-selected={tab === id} aria-controls={`account-panel-${id}`} tabIndex={tab === id ? 0 : -1}
             data-accent={TAB_META[id].accent} onClick={() => setTab(id)}>
             <span className="account-tab-icon" aria-hidden="true"><Icon name={TAB_META[id].icon}/></span>{text}
@@ -255,14 +318,16 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
         </div>
         <div className="account-body panel-content" role="tabpanel" id={`account-panel-${tab}`} aria-labelledby={`account-tab-${tab}`}>
           <div className="account-pane" key={tab}>
-            <TabIntro id={tab} label={label}/>
-            {tab === 'cuenta' && <ProfilePage user={user} onUpdate={onUpdate} onExpired={onExpired}/>}
+            <TabIntro id={tab} label={label} description={description}/>
+            {tab === 'cuenta' && <ProfilePage user={user} onUpdate={onUpdate} onExpired={onExpired} password={role === 'client'}/>}
+            {tab === 'seguridad' && <SecurityTab onExpired={onExpired}/>}
+            {tab === 'avisos' && <OfferAlertsSoon/>}
             {tab === 'direcciones' && <AddressesTab/>}
             {tab === 'accesibilidad' && <>
               <section className="account-card"><AccessibilityControls prefs={a11y[0]} onChange={a11y[1]} reader={reader} full/></section>
               <div className="a11y-preview account-card" aria-label="Vista previa">
                 <p className="kicker">Vista previa</p>
-                <p><strong>Tu técnico llega hoy entre las 3 y las 5 p. m.</strong></p>
+                <p><strong>{PREVIEW[role] || PREVIEW.client}</strong></p>
                 <p>Así se verán los textos del panel con los ajustes que elijas.</p>
               </div>
             </>}

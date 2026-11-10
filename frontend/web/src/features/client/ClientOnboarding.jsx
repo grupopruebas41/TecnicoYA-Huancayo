@@ -25,7 +25,7 @@ export const TOUR_STEPS = [
   {title: 'Accesibilidad rápida', text: 'Con «Aa» cambias el tamaño de texto, el contraste o escuchas la pantalla.', targets: ['.panel-a11y-button']},
 ];
 
-const save = body => Promise.resolve().then(() => request('/client/me/preferences', body, 'PUT')).catch(() => null);
+const save = body => Promise.resolve().then(() => request('/me/preferences', body, 'PUT')).catch(() => null);
 
 /** Atrapa Tab dentro del diálogo y cierra con Esc. */
 function trap(root, onEscape) {
@@ -172,7 +172,8 @@ export function Tour({onDone, persist = true}) {
 
 /** Muestra la bienvenida y luego el tutorial, solo si la cuenta no los marcó; replay repite el tutorial sin marcarlo. */
 export default function ClientOnboarding({user, replay = false, onReplayEnd = () => {}}) {
-  const prefs = user.client_profile?.preferences;
+  // D-105: preferencias comunes en /me; client_profile.preferences queda por compatibilidad.
+  const prefs = user.preferences || user.client_profile?.preferences;
   const [stage, setStage] = useState(() => (!prefs ? null : !prefs.onboarding_completed_at ? 'welcome' : !prefs.tour_completed_at ? 'tour' : null));
   if (replay) return <Tour persist={false} onDone={onReplayEnd}/>;
   if (stage === 'welcome') return <WelcomeDialog onDone={() => setStage(prefs?.tour_completed_at ? null : 'tour')}/>;

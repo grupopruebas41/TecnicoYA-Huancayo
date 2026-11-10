@@ -2,6 +2,41 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-10 · Panel del técnico, Fase T1 (modo rápido): base común del técnico y del administrador
+
+- **Rama:** `feature/pimentel/tecnico/t1-base`, desde `main` `e5d9d8d` (PR #55 integrado); un solo PR con backend y frontend.
+- **Backend:**
+  - migración `000037` (`users.accessibility_prefs`, `onboarding_completed_at`, `tour_completed_at` y `offer_alert_prefs`; copia los datos de `client_profiles`);
+  - `GET/PUT /me/preferences` para los tres roles; `/client/me/preferences` usa el mismo controlador (D-105);
+  - `/me` trae `preferences` para todos (y `client_profile.preferences` por compatibilidad);
+  - `POST /me/sessions/revoke-others` (conserva la sesión actual, sube `auth_version` y audita `auth.sessions_revoked`);
+  - avisos `technician.verification.approved` y `rejected` al decidir la revisión, y `offer.expired` al técnico cuando vence su oferta; categorías `verification` y `cancel` en la campana.
+- **Frontend:**
+  - el técnico y el administrador usan `PanelShell` con `modern`: ☰ junto al logo, campana, «Aa», avatar y abajo solo «Ir al sitio»;
+  - panel de la cuenta con pestañas por rol: técnico (Mi cuenta, Seguridad, Accesibilidad, Avisos como Próximamente y Apariencia) y administrador (sin Avisos);
+  - Seguridad: cambiar la contraseña y «Cerrar las otras sesiones» con confirmación;
+  - un solo indicador de conexión en la barra superior (`data-cy=connection`); `ConnectionStatus` no se muestra dentro del panel;
+  - página completa de Notificaciones para el técnico y el administrador; estado vacío de la campana según el rol;
+  - el Inicio del técnico ya no repite la lista de avisos (la tiene la campana).
+- **Decisiones:** D-105, D-106 y D-107 aprobadas; D-108 (comando local `tecnicoya:demo-offer`) registrada; se implementa en la T2.
+- **Defectos:** DEF-62 (foco perdido tras confirmar «Cerrar las otras sesiones») y DEF-63 (ícono de «Cerrar sesión» separado del texto a 390 px), los dos corregidos.
+- **Pruebas:**
+  - Pest: S05-TC-275 a 281, más 376 Pest afectadas en verde (S1, S2 de verificación, S4, S5 y S7);
+  - Vitest: S05-TC-282 a 287;
+  - Cypress escritas sin ejecutar: S05-TC-288 a 290 (`sprint-05/staff-shell.cy.js`).
+- **Pruebas adaptadas, con explicación en el código:**
+  - S07-TC-057, 061, 062, 063, 070, 071 y 129: Mi perfil, el tema y «Cerrar sesión» pasan al panel de la cuenta;
+  - S05-TC-225 y 244 a 256: el guardado pasa a `/me/preferences`;
+  - Cypress S04-TC-093 a 095: miran el indicador de la barra superior;
+  - `openProfile` abre siempre el avatar.
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-10-b5d57a1-tecnico-t1-*` (técnico y administrador, 1366 y 390, tema claro). Sin Reverb en ese entorno, el indicador sale «Sin conexión».
+- **Pendiente para el cierre común:**
+  - ejecutar las Cypress nuevas y las adaptadas;
+  - catálogo, contrato y avance de la T1;
+  - las columnas viejas de `client_profiles` (accesibilidad, bienvenida y tutorial) quedan sin uso y se pueden borrar en el cierre.
+- **Siguiente:** Fase T2 (menú del técnico e Inicio) desde S05-TC-291, con `tecnicoya:demo-offer`.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-10 · Panel del técnico, Fase T0 (plan, sin código de producto)
 
 - **Rama:** `feature/pimentel/tecnico/t0-plan`, desde `main` `9c3675d` (PR #54 integrado); un solo PR de documentación.

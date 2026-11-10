@@ -50,16 +50,17 @@ export const prefersReducedMotion = () => document.documentElement.dataset.motio
 
 /** Estado compartido por «Aa», la pestaña Accesibilidad, la bienvenida y el dictado. save=false no escribe en la cuenta. */
 export function useAccessibility(user = null) {
-  const server = user?.client_profile?.preferences?.accessibility;
+  // D-105: los tres roles guardan sus ajustes en la cuenta (/me/preferences); client_profile queda por compatibilidad.
+  const server = user?.preferences?.accessibility || user?.client_profile?.preferences?.accessibility;
   const [prefs, setPrefs] = useState(() => sanitize(server || read()));
   const [error, setError] = useState('');
   useLayoutEffect(() => { applyAccessibility(prefs); write(prefs); }, [prefs]);
   useLayoutEffect(() => clear, []);
   function update(patch, {save = true} = {}) {
     setPrefs(current => sanitize({...current, ...patch}));
-    if (!save || !user?.client_profile) return Promise.resolve();
+    if (!save || !user) return Promise.resolve();
     setError('');
-    return Promise.resolve().then(() => request('/client/me/preferences', {accessibility: patch}, 'PUT'))
+    return Promise.resolve().then(() => request('/me/preferences', {accessibility: patch}, 'PUT'))
       .catch(failure => setError(failure?.message || 'Aplicamos el ajuste en este equipo, pero no pudimos guardarlo en tu cuenta.'));
   }
   return [prefs, update, error];

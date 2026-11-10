@@ -61,7 +61,7 @@ function AvatarCard({user, onUpdate, onExpired}) {
 }
 
 /** Cambio de contraseña pidiendo la actual: conserva esta sesión y cierra las demás. */
-function PasswordChange({onExpired}) {
+export function PasswordChange({onExpired}) {
   const [values, setValues] = useState({current_password: '', password: '', password_confirmation: ''});
   const [errors, setErrors] = useState({});
   const [error, setError] = useState('');
@@ -100,11 +100,12 @@ function PasswordChange({onExpired}) {
 }
 
 /** Mi perfil (Fase 1): datos (ProfileForm), foto y contraseña; el cliente suma su distrito y su dirección (D-91). */
-export default function ProfilePage({user, onUpdate, onExpired}) {
+// Fase T1: el técnico y el administrador cambian la contraseña en la pestaña Seguridad (password={false}).
+export default function ProfilePage({user, onUpdate, onExpired, password = true}) {
   return <section className="panel-page profile-page">
     <ProfileForm user={user} onUpdate={onUpdate} onExpired={onExpired}/>
     {user.role?.code === 'client' && <ClientDetails user={user} onUpdate={onUpdate} onExpired={onExpired}/>}
     <AvatarCard user={user} onUpdate={onUpdate} onExpired={onExpired}/>
-    <PasswordChange onExpired={onExpired}/>
+    {password && <PasswordChange onExpired={onExpired}/>}
   </section>;
 }

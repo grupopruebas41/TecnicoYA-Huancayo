@@ -3,6 +3,7 @@
 namespace App\Modules\FAdministration\Http\Controllers;
 
 use App\Modules\FAdministration\Application\ChangePassword;
+use App\Modules\FAdministration\Application\RevokeOtherSessions;
 use App\Modules\FAdministration\Application\UpdateProfile;
 use App\Modules\FAdministration\Http\Requests\ChangePasswordRequest;
 use App\Modules\FAdministration\Http\Requests\UpdateProfileRequest;
@@ -31,5 +32,14 @@ final class ProfileController
         $request->user()->refresh();
 
         return ApiResponse::data(['message' => __('api.password_changed')]);
+    }
+
+    /** Fase T1 del panel del técnico: cierra las otras sesiones y conserva esta (los tres roles). */
+    public function revokeOthers(Request $request, RevokeOtherSessions $revoke): JsonResponse
+    {
+        $closed = $revoke->execute($request->user(), $request->hasSession() ? $request->session()->getId() : null);
+        $request->user()->refresh();
+
+        return ApiResponse::data(['closed' => $closed, 'message' => trans_choice('api.sessions_revoked', $closed, ['count' => $closed])]);
     }
 }

@@ -9,7 +9,7 @@ import ProblemSearch, {DICTATION_NOTICE} from './ProblemSearch';
 import {AccessibilityContext, DEFAULT_PREFS, prefersReducedMotion} from '../panel/quickAccessibility';
 import {request} from '../administration/http';
 // S05-TC-244 a 249 · Fase 5 del panel final (modo rápido, D-97): ajustes en la cuenta, bienvenida, tutorial, dictado con
-// aviso y «Saltar al contenido».
+// aviso y «Saltar al contenido». Fase T1 del técnico (D-105): el guardado pasó de /client/me/preferences a /me/preferences.
 vi.mock('../administration/http', () => ({request: vi.fn(), serverNow: () => Date.now()}));
 vi.mock('../realtime/Realtime', () => ({useRealtimeResource: () => {}}));
 
@@ -26,7 +26,7 @@ const html = () => document.documentElement.dataset;
 beforeEach(() => {
   vi.stubGlobal('matchMedia', () => ({matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn()}));
   try { localStorage.clear(); sessionStorage.clear(); } catch { /* sin almacenamiento */ }
-  request.mockImplementation(async (path, body, method) => (path === '/client/me/preferences' && method === 'PUT'
+  request.mockImplementation(async (path, body, method) => (path === '/me/preferences' && method === 'PUT'
     ? {data: prefs({onboarding_completed_at: '2026-11-10T15:00:00Z'})} : {data: {items: [], unread_count: 0}}));
 });
 afterEach(() => { cleanup(); vi.resetAllMocks(); vi.unstubAllGlobals(); });
@@ -48,8 +48,8 @@ test('S05-TC-244 la pestaña Accesibilidad trae todos los ajustes, los aplica al
     expect(html()[attribute]).toBe(value);
   }
   expect(prefersReducedMotion()).toBe(true);
-  await waitFor(() => expect(request).toHaveBeenCalledWith('/client/me/preferences', {accessibility: {simple_mode: true}}, 'PUT'));
-  expect(request).toHaveBeenCalledWith('/client/me/preferences', {accessibility: {readable_font: true}}, 'PUT');
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/me/preferences', {accessibility: {simple_mode: true}}, 'PUT'));
+  expect(request).toHaveBeenCalledWith('/me/preferences', {accessibility: {readable_font: true}}, 'PUT');
 });
 
 test('S05-TC-245 la bienvenida usa tarjetas de preferencia y guarda solo los ajustes que resultan, sin la tarjeta elegida', async () => {
@@ -64,7 +64,7 @@ test('S05-TC-245 la bienvenida usa tarjetas de preferencia y guarda solo los aju
   fireEvent.click(cards[4]);
   expect(cards[0]).toHaveAttribute('aria-pressed', 'true');
   fireEvent.click(within(dialog).getByRole('button', {name: 'Guardar y continuar'}));
-  await waitFor(() => expect(request).toHaveBeenCalledWith('/client/me/preferences',
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/me/preferences',
     {accessibility: {text_size: 130, high_contrast: true, reduce_motion: true}, onboarding_completed: true}, 'PUT'));
   expect(html()).toMatchObject({textSize: '130', contrast: 'high', motion: 'reduce'});
   expect(JSON.stringify(request.mock.calls)).not.toMatch(/grande|movimiento|tarjeta/);
@@ -75,10 +75,10 @@ test('S05-TC-245 la bienvenida usa tarjetas de preferencia y guarda solo los aju
 test('S05-TC-246 «Omitir» marca la bienvenida sin ajustes, Esc omite el tutorial y ninguno vuelve a salir', async () => {
   const {unmount} = shell(user(), <ClientOnboarding user={user()}/>);
   fireEvent.click(screen.getByRole('button', {name: 'Omitir'}));
-  await waitFor(() => expect(request).toHaveBeenCalledWith('/client/me/preferences', {onboarding_completed: true}, 'PUT'));
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/me/preferences', {onboarding_completed: true}, 'PUT'));
   const tour = await screen.findByRole('dialog', {name: 'Servicios'});
   fireEvent.keyDown(tour, {key: 'Escape'});
-  await waitFor(() => expect(request).toHaveBeenCalledWith('/client/me/preferences', {tour_completed: true}, 'PUT'));
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/me/preferences', {tour_completed: true}, 'PUT'));
   await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   unmount();
 
@@ -105,7 +105,7 @@ test('S05-TC-247 el tutorial tiene 4 pasos con Atrás, Siguiente y «2 de 4», y
     fireEvent.click(screen.getByRole('button', {name: step === 4 ? 'Terminar' : 'Siguiente'}));
   }
   expect(titles).toEqual(['Servicios', 'Nueva solicitud', 'Campana y cuenta', 'Accesibilidad rápida']);
-  await waitFor(() => expect(request).toHaveBeenCalledWith('/client/me/preferences', {tour_completed: true}, 'PUT'));
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/me/preferences', {tour_completed: true}, 'PUT'));
   unmount();
 
   request.mockClear();
@@ -113,7 +113,7 @@ test('S05-TC-247 el tutorial tiene 4 pasos con Atrás, Siguiente y «2 de 4», y
   shell(user(prefs({onboarding_completed_at: 'x', tour_completed_at: 'y'})), <ClientOnboarding user={user()} replay onReplayEnd={onEnd}/>);
   fireEvent.click(screen.getByRole('button', {name: 'Omitir tutorial'}));
   await waitFor(() => expect(onEnd).toHaveBeenCalled());
-  expect(request).not.toHaveBeenCalledWith('/client/me/preferences', expect.anything(), 'PUT');
+  expect(request).not.toHaveBeenCalledWith('/me/preferences', expect.anything(), 'PUT');
 });
 
 test('S05-TC-248 el micrófono solo aparece con el ajuste y soporte, y no dicta sin aceptar el aviso de Google', () => {
