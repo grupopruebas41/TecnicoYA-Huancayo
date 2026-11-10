@@ -6,6 +6,7 @@ import Icon from './icons';
 import AccountPanel from './AccountPanel';
 import {AccessibilityContext, QuickAccessibility, canSpeak, useAccessibility, useReader} from './quickAccessibility';
 import {request} from '../administration/http';
+import {ShellContext} from './shellContext';
 import './panel.css';
 
 const store = {
@@ -82,6 +83,9 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   const reader = useReader();
   const content = useRef(null);
   const [drawer, setDrawer] = useState(false);
+  // Tutorial (Fase 5): expande el menú y abre el cajón sin guardar ni mover el foco; al terminar vuelven a su estado.
+  const [tourMode, setTourMode] = useState(false);
+  const [tourDrawer, setTourDrawer] = useState(false);
   const drawerButton = useRef(null);
   const nav = useRef(null);
   const {theme, toggle, notice: themeNotice} = useTheme(user, onUserChange);
@@ -133,10 +137,11 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
   const profile = sections.find(section => section.id === 'profile');
   return <AccessibilityContext.Provider value={{prefs: a11y[0], update: a11y[1]}}>
-  <div className={'panel-shell' + (collapsed ? ' is-collapsed' : '')} data-cy={`portal-${role}`}>
+  <ShellContext.Provider value={{setTourMode, setTourDrawer}}>
+  <div className={'panel-shell' + (collapsed && !tourMode ? ' is-collapsed' : '') + (tourMode ? ' is-touring' : '')} data-cy={`portal-${role}`}>
     {/* Fase 5 (WCAG 2.4.1): salta al contenido sin cambiar el hash, que usa el enrutado de la cuenta. */}
     {modern && <a className="skip-link" href="#contenido" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Saltar al contenido</a>}
-    <aside className={'panel-sidebar' + (drawer ? ' is-open' : '')} onKeyDown={event => { if (event.key === 'Escape' && drawer) closeDrawer(); }}>
+    <aside className={'panel-sidebar' + (drawer || tourDrawer ? ' is-open' : '')} onKeyDown={event => { if (event.key === 'Escape' && drawer) closeDrawer(); }}>
       {/* Encabezado principal de la página: la marca y el rol (la sección activa es el h2 de su contenido). */}
       <div className={'panel-brand-row' + (modern ? ' is-modern' : '')}>
         {modern && <button type="button" className="panel-icon-button panel-brand-toggle" aria-expanded={!collapsed}
@@ -201,5 +206,6 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       onLogout={onLogout} busy={busy} theme={theme} onTheme={toggle} a11y={a11y} reader={reader} returnFocus={avatarButton.current}/>}
     {children}
   </div>
+  </ShellContext.Provider>
   </AccessibilityContext.Provider>;
 }

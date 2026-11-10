@@ -1,7 +1,8 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import Icon from '../panel/icons';
-import {useAccessibilityContext} from '../panel/quickAccessibility';
+import {prefersReducedMotion, useAccessibilityContext} from '../panel/quickAccessibility';
+import {useShell} from '../panel/shellContext';
 
 /**
  * Fase 5 del panel final (D-97): bienvenida «¿Cómo prefieres usar TécnicoYa?» y mini tutorial de 4 pasos, solo la primera
@@ -17,9 +18,9 @@ export const WELCOME_CARDS = [
 ];
 
 export const TOUR_STEPS = [
-  {title: 'Servicios', text: 'Servicios: pide, busca y sigue tus solicitudes.', targets: ['.panel-sidebar nav [role=group]', '.panel-drawer-toggle']},
+  {title: 'Servicios', text: 'Servicios: pide, busca y sigue tus solicitudes.', targets: ['.panel-sidebar nav [role=group]'], menu: true},
   {title: 'Nueva solicitud', text: 'Nueva solicitud: cuéntanos qué se malogró y te conectamos con técnicos verificados.',
-    targets: ['.panel-sidebar nav .panel-nav-item[data-section="new"]', '.panel-drawer-toggle']},
+    targets: ['.panel-sidebar nav .panel-nav-item[data-section="new"]'], menu: true},
   {title: 'Campana y cuenta', text: 'Notificaciones, tu cuenta y accesibilidad.', targets: ['.panel-actions']},
   {title: 'Accesibilidad rápida', text: 'Con «Aa» cambias el tamaño de texto, el contraste o escuchas la pantalla.', targets: ['.panel-a11y-button']},
 ];
@@ -79,35 +80,80 @@ function visibleTarget(selectors) {
   for (const selector of selectors) {
     const element = document.querySelector(selector);
     const box = element?.getBoundingClientRect();
-    if (box && box.width > 0 && box.height > 0) return box;
+    if (box && box.width > 0 && box.height > 0) return element;
   }
   return null;
 }
 
-/** Tutorial: resalta la zona con un recuadro y una burbuja; teclado, Esc para omitir y foco gestionado. */
+const MARGIN = 12;
+/**
+ * Coloca la burbuja junto a la zona sin salir de la pantalla: abajo si cabe, si no arriba, si no a la derecha o a la
+ * izquierda; en el último caso, centrada en la parte visible.
+ */
+export function placeBubble(box, size, viewport = {width: window.innerWidth, height: window.innerHeight}) {
+  const {width: w, height: h} = size;
+  const clampLeft = left => Math.max(MARGIN, Math.min(left, viewport.width - w - MARGIN));
+  const clampTop = top => Math.max(MARGIN, Math.min(top, viewport.height - h - MARGIN));
+  if (!box) return {top: clampTop((viewport.height - h) / 2), left: clampLeft((viewport.width - w) / 2), side: 'center'};
+  if (box.bottom + MARGIN + h <= viewport.height - MARGIN) return {top: box.bottom + MARGIN, left: clampLeft(box.left), side: 'below'};
+  if (box.top - MARGIN - h >= MARGIN) return {top: box.top - MARGIN - h, left: clampLeft(box.left), side: 'above'};
+  if (box.right + MARGIN + w <= viewport.width - MARGIN) return {top: clampTop(box.top), left: box.right + MARGIN, side: 'right'};
+  if (box.left - MARGIN - w >= MARGIN) return {top: clampTop(box.top), left: box.left - MARGIN - w, side: 'left'};
+  return {top: clampTop((viewport.height - h) / 2), left: clampLeft((viewport.width - w) / 2), side: 'center'};
+}
+
+/**
+ * Tutorial (Fase 5; ajustes del 2026-11-10): en cada paso expande el menú contraído y abre el cajón del celular si la zona
+ * está en el menú, desplaza la zona a la vista con scrollIntoView({block: 'center'}) (menú y página) y recalcula el
+ * recuadro y la burbuja con resize y scroll. El fondo queda bloqueado; con «Reducir animaciones» todo es instantáneo.
+ */
 export function Tour({onDone, persist = true}) {
+  const shell = useShell();
   const [step, setStep] = useState(0);
   const [box, setBox] = useState(null);
+  const [place, setPlace] = useState(null);
   const root = useRef(null);
   const next = useRef(null);
   const current = TOUR_STEPS[step];
-  useLayoutEffect(() => {
-    const measure = () => setBox(visibleTarget(current.targets));
-    measure();
+  useEffect(() => {
+    shell.setTourMode(true);
+    document.body.classList.add('is-touring');
+    return () => { shell.setTourMode(false); shell.setTourDrawer(false); document.body.classList.remove('is-touring'); };
+  }, []);
+  useEffect(() => {
+    const reduce = prefersReducedMotion();
+    shell.setTourDrawer(Boolean(current.menu && window.innerWidth < 760));
+    const measure = () => {
+      const rect = visibleTarget(current.targets)?.getBoundingClientRect();
+      setBox(rect ? {top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height} : null);
+    };
+    // Un cuadro después de expandir el menú o abrir el cajón, para que la zona ya tenga su tamaño.
+    const frame = requestAnimationFrame(() => {
+      visibleTarget(current.targets)?.scrollIntoView?.({block: 'center', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth'});
+      measure();
+    });
+    const settle = setTimeout(measure, reduce ? 0 : 450);
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    window.addEventListener('scroll', measure, true);
+    return () => {
+      cancelAnimationFrame(frame); clearTimeout(settle);
+      window.removeEventListener('resize', measure); window.removeEventListener('scroll', measure, true);
+    };
   }, [current]);
+  useLayoutEffect(() => {
+    const size = {width: root.current?.offsetWidth || 320, height: root.current?.offsetHeight || 180};
+    setPlace(placeBubble(box, size));
+  }, [box, step]);
   useEffect(() => { next.current?.focus(); }, [step]);
   async function end() {
     if (persist) await save({tour_completed: true});
     onDone();
   }
-  const bubble = box ? {top: Math.min(box.bottom + 12, window.innerHeight - 220), left: Math.max(12, Math.min(box.left, window.innerWidth - 332))} : {};
   return <div className="tour-layer">
     {box && <div className="tour-highlight" aria-hidden="true"
       style={{top: box.top - 6, left: box.left - 6, width: box.width + 12, height: box.height + 12}}/>}
-    <dialog open ref={root} className={'tour-bubble' + (box ? '' : ' is-centered')} style={bubble} aria-modal="true"
-      aria-labelledby="tour-title" aria-describedby="tour-text" onKeyDown={trap(root, end)}>
+    <dialog open ref={root} className={'tour-bubble is-' + (place?.side || 'center')} style={place ? {top: place.top, left: place.left} : undefined}
+      aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-text" onKeyDown={trap(root, end)}>
       <p className="tour-step" aria-live="polite">Paso {step + 1} de {TOUR_STEPS.length}</p>
       <h2 id="tour-title">{current.title}</h2>
       <p id="tour-text">{current.text}</p>

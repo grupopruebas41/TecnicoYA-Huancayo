@@ -22,6 +22,8 @@ final class AccountData
             'avatar_url' => $user->avatar_media_id && DB::table('media_files')->where('id', $user->avatar_media_id)
                 ->where('scan_status', 'clean')->whereNull('retired_at')->exists() ? url("/api/v1/media/{$user->avatar_media_id}") : null,
             'role' => ['code' => $role], 'version' => (int) $user->version,
+            // Rediseño del panel «Tu cuenta»: el correo solo va en GET y PATCH /me, para su dueño.
+            ...($private ? ['email' => $user->email] : []),
             'permissions' => app(EffectivePermissions::class)->codes($user),
         ];
         if ($role === 'client') {

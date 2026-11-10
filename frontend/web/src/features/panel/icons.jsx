@@ -36,6 +36,10 @@ const PATHS = {
   expand: <><path d="m9.5 7 5 5-5 5"/><path d="M5 5v14"/></>,
   site: <><path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M17 14v4a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 5 18V8.5A1.5 1.5 0 0 1 6.5 7H10"/></>,
   logout: <><path d="M12 4v7"/><path d="M7.5 7a7 7 0 1 0 9 0"/></>,
+  // Rediseño de «Tu cuenta»: íconos de las pestañas.
+  a11y: <><circle cx="12" cy="5.5" r="1.8"/><path d="M5 9h14"/><path d="M12 9v5"/><path d="m9 20 3-6 3 6"/></>,
+  chat: <><path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v6a2.5 2.5 0 0 1-2.5 2.5H11l-4 4v-4h0.5A2.5 2.5 0 0 1 5 12.5z"/><path d="M9 9h6"/><path d="M9 12h3.5"/></>,
+  theme: <><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></>,
   // Fase 4: menú del cliente.
   lock: <><rect x="5.5" y="10.5" width="13" height="9" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></>,
   calendar: <><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16"/><path d="M8.5 3.5v4"/><path d="M15.5 3.5v4"/></>,

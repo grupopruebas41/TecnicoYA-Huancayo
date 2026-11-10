@@ -63,3 +63,9 @@ it('S05-TC-243 solo el cliente tiene preferencias: otros roles 403 y sin sesión
     Sprint01::forgetSession();
     $this->getJson('/api/v1/client/me/preferences')->assertUnauthorized();
 });
+
+it('S05-TC-254 /me trae el correo solo a su dueño para el encabezado de «Tu cuenta»', function () {
+    expect($this->getJson('/api/v1/me')->assertOk()->json('data.email'))->toBe($this->user->email);
+    $other = ClientProfileFactory::new()->create()->user;
+    expect($this->getJson('/api/v1/me')->getContent())->not->toContain($other->email);
+});

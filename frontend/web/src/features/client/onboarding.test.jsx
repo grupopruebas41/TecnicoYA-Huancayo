@@ -4,7 +4,7 @@ import {resolve} from 'node:path';
 import {afterEach, beforeEach, expect, test, vi} from 'vitest';
 import {cleanup, fireEvent, render, screen, waitFor, within} from '@testing-library/react';
 import PanelShell from '../panel/PanelShell';
-import ClientOnboarding, {WELCOME_CARDS} from './ClientOnboarding';
+import ClientOnboarding, {WELCOME_CARDS, placeBubble} from './ClientOnboarding';
 import ProblemSearch, {DICTATION_NOTICE} from './ProblemSearch';
 import {AccessibilityContext, DEFAULT_PREFS, prefersReducedMotion} from '../panel/quickAccessibility';
 import {request} from '../administration/http';
@@ -164,4 +164,72 @@ test('S05-TC-253 vistos en las capturas: micrófono dentro del campo, lupa fija 
   expect(css).toMatch(/\.panel-shell \.problem-search-icon \{ top: 28px; \}/);
   expect(css).toMatch(/:is\(\.onboarding-overlay, \.tour-layer\) \.button\.primary \{[^}]*background: var\(--ty-accent\)/);
   expect(css).toMatch(/\.a11y-switch \{ align-items: flex-start; \}/);
+});
+
+test('S05-TC-255 el tutorial expande el menú contraído, coloca la burbuja dentro de la pantalla y restaura el menú al terminar', async () => {
+  Element.prototype.scrollIntoView = vi.fn();
+  const collapsed = {...user(prefs({onboarding_completed_at: '2026-11-10T15:00:00Z'})), sidebar_collapsed: true};
+  const {container} = shell(collapsed, <ClientOnboarding user={collapsed}/>);
+  await waitFor(() => expect(container.querySelector('.panel-shell')).toHaveClass('is-touring'));
+  expect(container.querySelector('.panel-shell')).not.toHaveClass('is-collapsed');
+  expect(document.body).toHaveClass('is-touring');
+  // jsdom no mide cajas: sin zona visible la burbuja va centrada, nunca fuera de la pantalla.
+  await waitFor(() => expect(screen.getByRole('dialog')).toHaveClass('is-center'));
+  fireEvent.click(screen.getByRole('button', {name: 'Omitir tutorial'}));
+  await waitFor(() => expect(container.querySelector('.panel-shell')).toHaveClass('is-collapsed'));
+  expect(document.body).not.toHaveClass('is-touring');
+
+  const viewport = {width: 390, height: 844};
+  const size = {width: 320, height: 180};
+  expect(placeBubble({top: 100, bottom: 150, left: 300, right: 380}, size, viewport)).toEqual({top: 162, left: 58, side: 'below'});
+  expect(placeBubble({top: 700, bottom: 760, left: 10, right: 100}, size, viewport)).toEqual({top: 508, left: 12, side: 'above'});
+  expect(placeBubble({top: 100, bottom: 700, left: 10, right: 40}, size, {width: 1366, height: 800})).toMatchObject({left: 52, side: 'right'});
+  const center = placeBubble({top: 0, bottom: 844, left: 0, right: 390}, size, viewport);
+  expect(center.side).toBe('center');
+  expect(center.left).toBeGreaterThanOrEqual(12);
+  expect(center.left + size.width).toBeLessThanOrEqual(390 - 12);
+});
+
+test('S05-TC-256 el tutorial desplaza la zona con scrollIntoView centrado, e instantáneo con «Reducir animaciones»', async () => {
+  const calls = [];
+  const original = Element.prototype.getBoundingClientRect;
+  Element.prototype.getBoundingClientRect = function rect() {
+    return this.matches?.('.panel-sidebar nav [role=group]') ? {top: 900, bottom: 1000, left: 10, right: 230, width: 220, height: 100} : original.call(this);
+  };
+  Element.prototype.scrollIntoView = function into(options) { calls.push(options); };
+  const half = user(prefs({onboarding_completed_at: '2026-11-10T15:00:00Z', accessibility: {...DEFAULT_PREFS, reduce_motion: true}}));
+  shell(half, <ClientOnboarding user={half}/>);
+  await waitFor(() => expect(calls[0]).toEqual({block: 'center', inline: 'nearest', behavior: 'auto'}));
+  expect(document.querySelector('.tour-highlight')).not.toBeNull();
+  Element.prototype.getBoundingClientRect = original;
+});
+
+test('S05-TC-257 «Tu cuenta» es un diálogo centrado con avatar, correo y plan, pestañas con ícono y acento, y tarjetas de tema', () => {
+  const account = {...user(), email: 'cliente-demo@example.test', given_names: 'Cliente', family_names: 'Demo'};
+  shell(account);
+  fireEvent.click(screen.getByRole('button', {name: 'Cuenta de Cliente Demo'}));
+  const dialog = screen.getByRole('dialog', {name: 'Tu cuenta'});
+  expect(dialog.querySelector('.account-head .account-avatar')).toHaveTextContent('CD');
+  expect(within(dialog).getByText('cliente-demo@example.test')).toBeInTheDocument();
+  expect(within(dialog).getByText('Plan Free')).toBeInTheDocument();
+  const tablist = within(dialog).getByRole('tablist');
+  expect(tablist).toHaveAttribute('aria-orientation', 'vertical');
+  expect(within(tablist).getAllByRole('tab').map(tab => tab.getAttribute('data-accent'))).toEqual(['blue', 'green', 'violet', 'orange', 'teal']);
+  within(tablist).getAllByRole('tab').forEach(tab => expect(tab.querySelector('.account-tab-icon svg')).not.toBeNull());
+  fireEvent.keyDown(within(tablist).getByRole('tab', {name: 'Mi cuenta'}), {key: 'ArrowDown'});
+  expect(tablist.style.getPropertyValue('--tab-index')).toBe('1');
+  expect(within(dialog).getByRole('heading', {name: 'Mis direcciones'})).toBeInTheDocument();
+
+  fireEvent.click(within(tablist).getByRole('tab', {name: 'Apariencia'}));
+  const themes = within(dialog).getByRole('radiogroup', {name: 'Tema'});
+  expect(within(themes).getAllByRole('radio').map(card => card.getAttribute('aria-checked'))).toEqual(['true', 'false']);
+  expect(themes.querySelectorAll('.theme-mini')).toHaveLength(2);
+  expect(within(dialog).getByRole('button', {name: 'Cerrar sesión'})).toHaveClass('account-logout');
+
+  const css = readFileSync(resolve('src/features/panel/panel.css'), 'utf8');
+  expect(css).toMatch(/\.account-panel \{[^}]*width: min\(880px, 100%\)/);
+  expect(css).toMatch(/\.account-overlay \{[^}]*backdrop-filter: blur\(6px\)/);
+  expect(css).toContain('.account-panel :is(input[type="checkbox"], input[type="radio"]) { accent-color: var(--ty-accent); }');
+  expect(css).toContain('.account-tabs { grid-template-columns: repeat(2, minmax(0, 1fr));');
+  expect(css).toContain('.account-overlay, .account-panel, .account-pane { animation: none; }');
 });

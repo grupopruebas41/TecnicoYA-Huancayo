@@ -190,7 +190,8 @@ test('S05-TC-228 Comunicación guarda las preferencias con su alerta y Aparienci
   expect(screen.getByRole('tabpanel')).toHaveTextContent('No pedimos datos de salud.');
 
   fireEvent.click(screen.getByRole('tab', {name: 'Apariencia'}));
-  fireEvent.click(screen.getByLabelText('Oscuro'));
+  // Rediseño de «Tu cuenta»: el tema se elige con dos tarjetas (radiogroup) en lugar de botones de opción del navegador.
+  fireEvent.click(screen.getByRole('radio', {name: /Oscuro/}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/me', {theme_preference: 'dark', expected_version: 4}, 'PATCH'));
   expect(document.documentElement.dataset.theme).toBe('dark');
 });

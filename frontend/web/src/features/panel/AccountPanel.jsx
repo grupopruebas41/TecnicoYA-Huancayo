@@ -157,14 +157,58 @@ function CommunicationTab() {
   </form>;
 }
 
+// Rediseño de «Tu cuenta»: cada pestaña con su ícono, su color de acento y una descripción breve.
+export const TAB_META = {
+  cuenta: {icon: 'profile', accent: 'blue', description: 'Tu foto, nombres, teléfono y contraseña.'},
+  direcciones: {icon: 'home', accent: 'green', description: 'Casa, negocio u otras direcciones para pedir más rápido.'},
+  accesibilidad: {icon: 'a11y', accent: 'violet', description: 'Tamaño de texto, contraste, lectura y movimiento. Se guardan en tu cuenta.'},
+  comunicacion: {icon: 'chat', accent: 'orange', description: 'Cómo prefieres que te contacte el técnico.'},
+  apariencia: {icon: 'theme', accent: 'teal', description: 'Elige el tema claro u oscuro del panel.'},
+};
+
+const initialsOf = user => {
+  const parts = user.given_names ? [user.given_names, user.family_names] : (user.name || '').split(/\s+/);
+  return parts.filter(Boolean).slice(0, 2).map(part => Array.from(part.trim())[0] || '').join('').toUpperCase() || '·';
+};
+
+function TabIntro({id, label}) {
+  const meta = TAB_META[id];
+  return <div className="account-intro" data-accent={meta.accent}>
+    <span className="account-intro-icon" aria-hidden="true"><Icon name={meta.icon}/></span>
+    <div><h3>{label}</h3><p className="muted">{meta.description}</p></div>
+  </div>;
+}
+
+/** Apariencia: dos tarjetas grandes con una miniatura del panel en cada tema (radiogroup con flechas). */
+function ThemeCards({theme, onTheme}) {
+  const options = [['light', 'Claro', 'Fondo claro y texto oscuro.'], ['dark', 'Oscuro', 'Fondo oscuro, cómodo de noche.']];
+  function keys(event) {
+    if (['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) { event.preventDefault(); onTheme(); }
+  }
+  return <div className="theme-cards" role="radiogroup" aria-label="Tema" onKeyDown={keys}>
+    {options.map(([value, label, text]) => <button key={value} type="button" role="radio" aria-checked={theme === value}
+      tabIndex={theme === value ? 0 : -1} className="theme-card" data-preview={value} onClick={() => { if (theme !== value) onTheme(); }}>
+      <span className="theme-mini" aria-hidden="true"><span className="theme-mini-side"/><span className="theme-mini-main">
+        <span/><span/><span/></span></span>
+      <span className="theme-card-text"><strong>{label}</strong><small>{text}</small></span>
+      <span className="theme-card-check" aria-hidden="true">{theme === value && <Icon name="check"/>}</span>
+    </button>)}
+  </div>;
+}
+
 /**
- * Fase 4 del panel final: panel flotante del avatar. Diálogo accesible con cinco pestañas: atrapa el foco, se cierra
- * con Esc o con «Cerrar» y devuelve el foco al avatar. Al pie, «Cerrar sesión».
+ * Panel «Tu cuenta» (Fase 4; rediseño a pedido de Pimentel el 2026-11-10): diálogo centrado de hasta 880 px con el fondo
+ * oscurecido y desenfocado (pantalla completa en el celular). Encabezado con avatar, nombre, correo y plan; columna de
+ * pestañas con ícono y acento (cuadrícula de 2 columnas en el celular); contenido en tarjetas. Atrapa el foco, Esc cierra
+ * y devuelve el foco al avatar, las flechas cambian de pestaña. Las animaciones se apagan con «Reducir animaciones».
  */
 export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogout, busy, theme, onTheme, a11y, reader, returnFocus}) {
   const [tab, setTab] = useState('cuenta');
   const root = useRef(null);
   const tabs = useRef({});
+  const index = ACCOUNT_TABS.findIndex(([id]) => id === tab);
+  const label = ACCOUNT_TABS[index][1];
+  const plan = user.client_profile?.plan === 'premium' ? 'Premium' : 'Free';
   useEffect(() => {
     tabs.current.cuenta?.focus();
     return () => returnFocus?.focus?.();
@@ -179,7 +223,6 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
   function arrows(event) {
-    const index = ACCOUNT_TABS.findIndex(([id]) => id === tab);
     const step = {ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1}[event.key];
     if (!step) return;
     event.preventDefault();
@@ -189,40 +232,48 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
   return <div className="account-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}>
     <dialog open ref={root} className="account-panel" aria-modal="true" aria-labelledby="account-title" onKeyDown={keys}>
       <header className="account-head">
-        <div>
+        <span className="account-avatar" aria-hidden="true">
+          {user.avatar_url ? <img src={user.avatar_url} alt=""/> : initialsOf(user)}
+        </span>
+        <div className="account-identity">
           <h2 id="account-title">Tu cuenta</h2>
-          <p className="muted">{user.name}</p>
+          <p className="account-name">{user.name}</p>
+          {user.email && <p className="muted account-email">{user.email}</p>}
         </div>
-        <button type="button" className="panel-icon-button" aria-label="Cerrar panel de la cuenta" onClick={onClose}><Icon name="close"/></button>
+        <span className={'account-plan' + (plan === 'Premium' ? ' is-premium' : '')}>Plan {plan}</span>
+        <button type="button" className="panel-icon-button account-close" aria-label="Cerrar panel de la cuenta" onClick={onClose}><Icon name="close"/></button>
       </header>
-      <div className="account-tabs" role="tablist" aria-label="Secciones de la cuenta" onKeyDown={arrows}>
-        {ACCOUNT_TABS.map(([id, label]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab"
-          id={`account-tab-${id}`} aria-selected={tab === id} aria-controls={`account-panel-${id}`} tabIndex={tab === id ? 0 : -1}
-          onClick={() => setTab(id)}>{label}</button>)}
-      </div>
-      <div className="account-body panel-content" role="tabpanel" id={`account-panel-${tab}`} aria-labelledby={`account-tab-${tab}`}>
-        {tab === 'cuenta' && <ProfilePage user={user} onUpdate={onUpdate} onExpired={onExpired}/>}
-        {tab === 'direcciones' && <AddressesTab/>}
-        {tab === 'accesibilidad' && <>
-          <AccessibilityControls prefs={a11y[0]} onChange={a11y[1]} reader={reader} full/>
-          <div className="a11y-preview" aria-label="Vista previa">
-            <p className="kicker">Vista previa</p>
-            <p><strong>Tu técnico llega hoy entre las 3 y las 5 p. m.</strong></p>
-            <p>Así se verán los textos del panel con los ajustes que elijas.</p>
+      <div className="account-layout">
+        <div className="account-tabs" role="tablist" aria-label="Secciones de la cuenta" aria-orientation="vertical" onKeyDown={arrows}
+          style={{'--tab-index': index}}>
+          <span className="account-tab-indicator" aria-hidden="true"/>
+          {ACCOUNT_TABS.map(([id, text]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab"
+            id={`account-tab-${id}`} aria-selected={tab === id} aria-controls={`account-panel-${id}`} tabIndex={tab === id ? 0 : -1}
+            data-accent={TAB_META[id].accent} onClick={() => setTab(id)}>
+            <span className="account-tab-icon" aria-hidden="true"><Icon name={TAB_META[id].icon}/></span>{text}
+          </button>)}
+        </div>
+        <div className="account-body panel-content" role="tabpanel" id={`account-panel-${tab}`} aria-labelledby={`account-tab-${tab}`}>
+          <div className="account-pane" key={tab}>
+            <TabIntro id={tab} label={label}/>
+            {tab === 'cuenta' && <ProfilePage user={user} onUpdate={onUpdate} onExpired={onExpired}/>}
+            {tab === 'direcciones' && <AddressesTab/>}
+            {tab === 'accesibilidad' && <>
+              <section className="account-card"><AccessibilityControls prefs={a11y[0]} onChange={a11y[1]} reader={reader} full/></section>
+              <div className="a11y-preview account-card" aria-label="Vista previa">
+                <p className="kicker">Vista previa</p>
+                <p><strong>Tu técnico llega hoy entre las 3 y las 5 p. m.</strong></p>
+                <p>Así se verán los textos del panel con los ajustes que elijas.</p>
+              </div>
+            </>}
+            {tab === 'comunicacion' && <CommunicationTab/>}
+            {tab === 'apariencia' && <ThemeCards theme={theme} onTheme={onTheme}/>}
           </div>
-          <p className="muted">Se guardan en tu cuenta y se aplican en cualquier equipo donde inicies sesión.</p>
-        </>}
-        {tab === 'comunicacion' && <CommunicationTab/>}
-        {tab === 'apariencia' && <fieldset className="account-theme">
-          <legend>Tema</legend>
-          {[['light', 'Claro'], ['dark', 'Oscuro']].map(([value, label]) => <label key={value} className={'account-kind' + (theme === value ? ' is-checked' : '')}>
-            <input type="radio" name="theme" value={value} checked={theme === value} onChange={() => { if (theme !== value) onTheme(); }}/> <span>{label}</span>
-          </label>)}
-        </fieldset>}
+        </div>
       </div>
       <footer className="account-foot panel-content">
-        <button type="button" className="button outline" data-cy="logout" disabled={busy} onClick={onLogout}>
-          Cerrar sesión</button>
+        <button type="button" className="button account-logout" data-cy="logout" disabled={busy} onClick={onLogout}>
+          <Icon name="logout"/><span>Cerrar sesión</span></button>
       </footer>
     </dialog>
   </div>;
