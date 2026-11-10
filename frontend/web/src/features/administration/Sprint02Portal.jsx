@@ -1,4 +1,4 @@
-import { RealtimeProvider } from "../realtime/Realtime";
+// Fase T1: el RealtimeProvider lo pone AccountApp alrededor del panel (una sola conexión para la campana y la página).
 import Notifications from "../realtime/Notifications";
 import OffersInbox from "../offers/OffersInbox";
 import React, { useState } from "react";
@@ -19,7 +19,7 @@ export default function Sprint02Portal({ user }) {
   const selected = items.find(([key]) => key === tab);
   const Panel = selected?.[2];
   return (
-    <RealtimeProvider>
+    <>
       <RoleAnnouncements key={user.id} />
       <Notifications key={"notifications-" + user.id} userId={user.id} />
       {role === "technician" && (
@@ -49,6 +49,6 @@ export default function Sprint02Portal({ user }) {
           )}
         </>
       )}
-    </RealtimeProvider>
+    </>
   );
 }

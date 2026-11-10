@@ -14,7 +14,7 @@ const TABS = [['all', 'Todas'], ['unread', 'No leídas']];
  * contexto y tiempo relativo, estado vacío ilustrado y «Ver todas las notificaciones». Al abrir un aviso lo marca como
  * leído y lleva a su destino (onOpen). Esc cierra y devuelve el foco a la campana; el número de no leídas se anuncia.
  */
-export default function NotificationBell({userId, onOpenAll, onOpen}) {
+export default function NotificationBell({userId, onOpenAll, onOpen, onConnection}) {
   const [items, setItems] = useState([]);
   const [unread, setUnread] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -36,7 +36,9 @@ export default function NotificationBell({userId, onOpenAll, onOpen}) {
     .catch(() => { if (active.current) setFailed(true); }), [tab]);
   useEffect(() => { active.current = true; load(); return () => { active.current = false; }; }, [load]);
   useEffect(() => { if (open) (tabs.current.unread?.getAttribute('aria-selected') === 'true' ? tabs.current.unread : tabs.current.all)?.focus(); }, [open]);
-  useRealtimeResource(userId ? `users.${userId}` : null, ['notification.created'], load);
+  const connected = useRealtimeResource(userId ? `users.${userId}` : null, ['notification.created'], load);
+  // Fase T1: la barra superior muestra este estado como el único indicador de conexión.
+  useEffect(() => { onConnection?.(connected); }, [connected, onConnection]);
   const root = useDismiss(open, () => setOpen(false));
   function close() { setOpen(false); button.current?.focus(); }
   async function markAll() {

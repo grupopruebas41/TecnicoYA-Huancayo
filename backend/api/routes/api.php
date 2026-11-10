@@ -53,6 +53,10 @@ Route::prefix('v1')->group(function () {
         Route::patch('me', [ProfileController::class, 'update']);
         // Fase 1 del panel: cambio de contraseña pidiendo la actual; conserva esta sesión y cierra las demás.
         Route::post('me/password', [ProfileController::class, 'password'])->middleware('throttle:spa-auth');
+        // Fase T1 del panel del técnico: Seguridad (los tres roles) y preferencias comunes (D-105).
+        Route::post('me/sessions/revoke-others', [ProfileController::class, 'revokeOthers'])->middleware('throttle:spa-auth');
+        Route::get('me/preferences', [App\Modules\FAdministration\Http\Controllers\PreferencesController::class, 'show']);
+        Route::put('me/preferences', [App\Modules\FAdministration\Http\Controllers\PreferencesController::class, 'update']);
         Route::get('announcements', [AnnouncementController::class, 'index']);
         Route::post('media', [MediaController::class, 'store']); // D-46 y D-47; StoreMediaRequest autoriza por finalidad.
         Route::delete('media/{media}', [MediaController::class, 'retire'])->whereNumber('media'); // D-61: evidencia propia no adjunta.
@@ -75,8 +79,8 @@ Route::prefix('v1')->group(function () {
             Route::patch('client/addresses/{address}', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'update'])->whereNumber('address');
             Route::delete('client/addresses/{address}', [App\Modules\ARequests\Http\Controllers\ClientAddressController::class, 'destroy'])->whereNumber('address');
             // Fase 5 del panel final (D-97): ajustes de accesibilidad y marcas de la bienvenida y del tutorial.
-            Route::get('client/me/preferences', [App\Modules\ARequests\Http\Controllers\ClientPreferencesController::class, 'show']);
-            Route::put('client/me/preferences', [App\Modules\ARequests\Http\Controllers\ClientPreferencesController::class, 'update']);
+            Route::get('client/me/preferences', [App\Modules\FAdministration\Http\Controllers\PreferencesController::class, 'show']);
+            Route::put('client/me/preferences', [App\Modules\FAdministration\Http\Controllers\PreferencesController::class, 'update']);
             Route::get('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'show']);
             Route::put('client/me/communication', [App\Modules\ARequests\Http\Controllers\ClientCommunicationController::class, 'update']);
             // Fase 6 (D-98, D-99): «Mi hogar / Mi negocio», solo para clientes Premium (403 a free y a otros roles).

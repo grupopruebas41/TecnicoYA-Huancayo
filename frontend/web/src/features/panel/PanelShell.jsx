@@ -6,7 +6,7 @@ import Icon from './icons';
 import AccountPanel from './AccountPanel';
 import {AccessibilityContext, QuickAccessibility, canSpeak, useAccessibility, useReader} from './quickAccessibility';
 import {request} from '../administration/http';
-import {ShellContext} from './shellContext';
+import {ShellConnectionContext, ShellContext} from './shellContext';
 import './panel.css';
 
 const store = {
@@ -77,6 +77,8 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   const [collapsed, setCollapsed] = useState(() => (modern && typeof user.sidebar_collapsed === 'boolean')
     ? user.sidebar_collapsed : store.get('localStorage', 'tecnicoya.panel.collapsed') === '1');
   const [account, setAccount] = useState(false);
+  // Fase T1: un solo indicador de conexión en la barra superior, con el estado de la suscripción de la campana.
+  const [live, setLive] = useState(null);
   const avatarButton = useRef(null);
   // Fase 5 (D-97): el cliente guarda sus ajustes en la cuenta; los demás roles solo en este equipo.
   const a11y = useAccessibility(modern ? user : null);
@@ -178,7 +180,14 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           aria-expanded={drawer} onClick={() => setDrawer(!drawer)}><Icon name="menu"/></button>
         <span className="panel-title">{current?.label}</span>
         <div className="panel-actions">
-          <NotificationBell key={bellKey} userId={user.id}
+          {modern && live !== null && <p role="status" data-cy="connection" data-state={live ? 'live' : 'offline'}
+            className={'panel-connection' + (live ? ' is-live' : '')}
+            title={live ? 'Conexión en tiempo real activa.' : 'Sin conexión en tiempo real. Actualiza para ver cambios.'}>
+            <span className="panel-connection-dot" aria-hidden="true"/>
+            <span className="panel-connection-text" aria-hidden="true">{live ? 'En vivo' : 'Sin conexión'}</span>
+            <span className="sr-only">{live ? 'Conexión en tiempo real activa.' : 'Sin conexión en tiempo real. Actualiza para ver cambios.'}</span>
+          </p>}
+          <NotificationBell key={bellKey} userId={user.id} onConnection={modern ? setLive : undefined}
             onOpen={item => { const target = notificationTarget?.(item); if (target) go(target[0], target[1] || null); }}
             onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
           {modern && a11y[0].read_aloud && canSpeak() && <button type="button" className="panel-icon-button panel-read-button"
@@ -200,10 +209,12 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
         {themeNotice && <output className="notice">{themeNotice}</output>}
       </div>}
       {/* AccountApp ya está dentro del <main> de App: el contenido va en un div. */}
-      <div className="panel-content" id="contenido" tabIndex={-1} ref={content} key={`${current?.id}-${visit}`}>{current?.render({navigate: go, intent})}</div>
+      <ShellConnectionContext.Provider value={modern}>
+        <div className="panel-content" id="contenido" tabIndex={-1} ref={content} key={`${current?.id}-${visit}`}>{current?.render({navigate: go, intent})}</div>
+      </ShellConnectionContext.Provider>
     </div>
     {modern && account && <AccountPanel user={user} onUpdate={onUserChange} onExpired={onExpired} onClose={() => setAccount(false)}
-      onLogout={onLogout} busy={busy} theme={theme} onTheme={toggle} a11y={a11y} reader={reader} returnFocus={avatarButton.current}/>}
+      onLogout={onLogout} busy={busy} theme={theme} onTheme={toggle} a11y={a11y} reader={reader} returnFocus={avatarButton.current} roleLabel={roleLabel}/>}
     {children}
   </div>
   </ShellContext.Provider>

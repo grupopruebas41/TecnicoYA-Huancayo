@@ -70,6 +70,10 @@ final class MatchingFlow
             $pending = DB::table('offers')->where('round_id', $roundId)->where('status', 'pending')->orderBy('id')->get();
             foreach ($pending as $offer) {
                 $this->changeOffer($request, $offer, 'expired', 'offer.expired', 'La oferta venció sin respuesta.');
+                // Fase T1 del panel del técnico: el técnico ve en su campana la oferta que dejó vencer.
+                $userId = (int) DB::table('technician_profiles')->where('id', $offer->technician_id)->value('user_id');
+                $this->inbox->notify($userId, 'offer.expired', __('api.offer_expired_title'),
+                    __('api.offer_expired_body', ['request' => $request->id]), 'service_request', (int) $request->id);
             }
             $this->settle($request, $round);
         });

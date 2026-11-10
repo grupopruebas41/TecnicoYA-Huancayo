@@ -3,7 +3,7 @@
 namespace App\Modules\FAdministration\Http\Resources;
 
 use App\Models\User;
-use App\Modules\ARequests\Application\ClientPreferences;
+use App\Modules\FAdministration\Application\UserPreferences;
 use App\Shared\Auth\EffectivePermissions;
 use Illuminate\Support\Facades\DB;
 
@@ -25,6 +25,8 @@ final class AccountData
             // Rediseño del panel «Tu cuenta»: el correo solo va en GET y PATCH /me, para su dueño.
             ...($private ? ['email' => $user->email] : []),
             'permissions' => app(EffectivePermissions::class)->codes($user),
+            // D-105: ajustes, bienvenida y tutorial de los tres roles, para aplicarlos antes del primer render.
+            'preferences' => UserPreferences::forUser((int) $user->id),
         ];
         if ($role === 'client') {
             // D-80: el distrito principal precarga la nueva solicitud. D-91: la dirección de referencia solo la ve su
@@ -33,8 +35,8 @@ final class AccountData
             $data['client_profile'] = $client ? [
                 'client_type' => $client->client_type, 'district_id' => $client->district_id === null ? null : (int) $client->district_id,
             ] + ($private ? ['reference_address' => $client->default_address] : [])
-                // Fase 5 (D-97): los ajustes llegan con /me para aplicarlos antes del primer render, sin parpadeo.
-                + ['preferences' => ClientPreferences::forUser((int) $user->id)]
+                // Fase 5 (D-97): se conserva por compatibilidad; desde D-105 es la misma copia que `preferences`.
+                + ['preferences' => $data['preferences']]
                 // Fase 6 (D-98): plan del cliente para el menú y la etiqueta de «Tu cuenta».
                 + ['plan' => DB::table('client_profiles')->where('user_id', $user->id)->value('plan') ?? 'free'] : null;
         }

@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { makeEcho, subscribeRealtime } from "./connection";
 import { createEventDedupe } from "./eventDedupe";
+import { ShellConnectionContext } from "../panel/shellContext";
 const Context = createContext(null);
 export function RealtimeProvider({ children }) {
   const [echo, setEcho] = useState(null);
@@ -61,6 +62,7 @@ export function useRealtimeResource(name, events, refresh, version = 0) {
   return connected;
 }
 export function ConnectionStatus({ connected }) {
+  if (useContext(ShellConnectionContext)) return null;
   return (
     // Chip discreto (revisión del PR #39); el texto no cambia: lo usan las E2E del S4.
     <p role="status" className={"realtime-chip" + (connected ? " is-live" : "")}>

@@ -14,7 +14,9 @@ final class NotificationContext
     public const CATEGORIES = [
         'search' => ['request.pending', 'request.submitted', 'request.searching'],
         'offer' => ['request.awaiting_choice', 'request.assigned', 'offer.created'],
-        'cancel' => ['request.cancelled', 'request.expired', 'request.direct_declined'],
+        'cancel' => ['request.cancelled', 'request.expired', 'request.direct_declined', 'offer.expired', 'offer.withdrawn'],
+        // Fase T1 del panel del técnico: decisión de la verificación.
+        'verification' => ['technician.verification.approved', 'technician.verification.rejected'],
     ];
 
     public static function category(string $type): string

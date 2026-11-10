@@ -1430,3 +1430,37 @@ body.is-touring { overflow: hidden; }
   .panel-shell.is-touring .panel-sidebar { scroll-behavior: auto; }
 }
 html[data-motion="reduce"] .panel-shell.is-touring .panel-sidebar { scroll-behavior: auto; }
+
+/* Fase T1 del panel del técnico: un solo indicador discreto de conexión en la barra superior (texto e ícono, no solo color). */
+.panel-connection {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--ty-line, hsl(220 15% 85%));
+  border-radius: 999px;
+  font-size: .8rem;
+  color: var(--ty-muted);
+  white-space: nowrap;
+}
+.panel-connection-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid hsl(28 80% 45%);
+}
+.panel-connection.is-live .panel-connection-dot {
+  background: hsl(152 55% 36%);
+  border-color: hsl(152 55% 36%);
+  animation: panel-live 2.4s ease-in-out infinite;
+}
+@keyframes panel-live {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(152 55% 36% / .45); }
+  50% { box-shadow: 0 0 0 5px hsl(152 55% 36% / 0); }
+}
+@media (prefers-reduced-motion: reduce) { .panel-connection.is-live .panel-connection-dot { animation: none; } }
+:root[data-motion="reduce"] .panel-connection.is-live .panel-connection-dot { animation: none; }
+@media (max-width: 640px) { .panel-connection-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .panel-connection { padding: 6px; } }
+.security-sessions .account-confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }

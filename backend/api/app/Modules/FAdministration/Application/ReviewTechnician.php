@@ -3,6 +3,7 @@
 namespace App\Modules\FAdministration\Application;
 
 use App\Models\User;
+use App\Modules\CNotifications\Application\Inbox;
 use App\Modules\FAdministration\Domain\VerificationChecklist;
 use App\Shared\Audit\AuditTrail;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,8 @@ use Illuminate\Validation\ValidationException;
  */
 final class ReviewTechnician
 {
-    public function __construct(private readonly AuditTrail $audit, private readonly VerificationChecklist $checklist) {}
+    public function __construct(private readonly AuditTrail $audit, private readonly VerificationChecklist $checklist,
+        private readonly Inbox $inbox) {}
 
     public function decide(User $reviewer, int $technicianId, array $data): object
     {
@@ -50,6 +52,10 @@ final class ReviewTechnician
             $this->audit->record($reviewer, 'technician.review', 'technicians.verify', 'technician_profile', $profile->id, $data['reason'],
                 ['status' => $profile->status, 'verification_status' => $profile->verification_status],
                 ['decision' => $data['decision'], 'review_id' => $reviewId]);
+            // Fase T1 del panel del técnico: el técnico recibe la decisión en su campana (sin los documentos).
+            $kind = $approve ? 'approved' : 'rejected';
+            $this->inbox->notify((int) $profile->user_id, "technician.verification.$kind", __("api.verification_{$kind}_title"),
+                __("api.verification_{$kind}_body"), 'technician_profile', (int) $profile->id);
 
             return DB::table('technician_reviews')->find($reviewId);
         });
