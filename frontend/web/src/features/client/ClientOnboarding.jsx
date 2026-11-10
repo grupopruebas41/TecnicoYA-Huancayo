@@ -123,22 +123,22 @@ export function Tour({onDone, persist = true}) {
   useEffect(() => {
     const reduce = prefersReducedMotion();
     shell.setTourDrawer(Boolean(current.menu && window.innerWidth < 760));
+    let last = '';
     const measure = () => {
       const rect = visibleTarget(current.targets)?.getBoundingClientRect();
-      setBox(rect ? {top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height} : null);
+      const next = rect ? {top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height} : null;
+      const key = JSON.stringify(next);
+      if (key !== last) { last = key; setBox(next); }
     };
-    // Un cuadro después de expandir el menú o abrir el cajón, para que la zona ya tenga su tamaño.
-    const frame = requestAnimationFrame(() => {
+    // Visto en las capturas: el cajón entra deslizándose y el menú se desplaza con suavidad, así que la zona se mide en
+    // cada cuadro mientras el tutorial está abierto (solo actualiza si cambió). Cubre también resize y scroll.
+    let frame;
+    const loop = () => { measure(); frame = requestAnimationFrame(loop); };
+    const start = requestAnimationFrame(() => {
       visibleTarget(current.targets)?.scrollIntoView?.({block: 'center', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth'});
-      measure();
+      loop();
     });
-    const settle = setTimeout(measure, reduce ? 0 : 450);
-    window.addEventListener('resize', measure);
-    window.addEventListener('scroll', measure, true);
-    return () => {
-      cancelAnimationFrame(frame); clearTimeout(settle);
-      window.removeEventListener('resize', measure); window.removeEventListener('scroll', measure, true);
-    };
+    return () => { cancelAnimationFrame(start); cancelAnimationFrame(frame); };
   }, [current]);
   useLayoutEffect(() => {
     const size = {width: root.current?.offsetWidth || 320, height: root.current?.offsetHeight || 180};
