@@ -1,4 +1,3 @@
-import Sprint02Portal from './Sprint02Portal';
 import React, {useEffect, useState} from 'react';
 import {request} from './http';
 import SessionForm from './SessionForm';
@@ -14,10 +13,10 @@ import RequestsAdmin from '../admin/RequestsAdmin';
 import CatalogSection from '../admin/CatalogSection';
 import {Notice} from './forms';
 import ClientPanel from '../client/ClientPanel';
+import TechnicianApp, {technicianTarget} from '../technician/TechnicianApp';
 import NotificationsPage from '../client/NotificationsPage';
 import {RealtimeProvider} from '../realtime/Realtime';
 import './account.css';
-import {verificationLabel} from './labels';
 
 const roles = {client: 'Cliente', technician: 'Especialista técnico', admin: 'Administrador'};
 const routes = {client: '#cuenta/cliente', technician: '#cuenta/tecnico', admin: '#cuenta/administrador'};
@@ -100,13 +99,16 @@ export default function AccountApp() {
   // Panel del cliente (D-87): su propio menú agrupado sobre PanelShell.
   if (role === 'client') return <ClientPanel key={user.id} user={user} roleLabel={roles.client} onLogout={logout} onUserChange={setUser}
     busy={busy} notice={error} onExpired={expire}/>;
+  // Fase T2 del panel del técnico: su propio menú (Trabajo, Mi negocio, Mi desempeño y Ayuda) e Inicio.
+  if (role === 'technician') return <RealtimeProvider><TechnicianApp key={user.id} user={user} roleLabel={roles.technician} onLogout={logout}
+    onUserChange={setUser} busy={busy} notice={error} onExpired={expire}/></RealtimeProvider>;
   // Fase T1 del panel del técnico: Mi perfil y Notificaciones salen del menú (avatar y campana), como en el cliente.
   const profile = {id: 'profile', nav: false, label: 'Mi perfil', icon: 'profile', render: () => <ProfilePage key={user.id} user={user} onUpdate={setUser} onExpired={expire} password={false}/>};
   const notifications = {id: 'notifications', nav: false, label: 'Notificaciones', icon: 'bell',
     render: ({navigate}) => <NotificationsPage userId={user.id} role={role} onChange={() => {}}
       onOpen={item => { const target = staffTarget(role, item); if (target) navigate(...target); }}/>};
   // Bloque C (D-85): menú del administrador agrupado por secciones y filtrado por permisos (sin enlaces vacíos).
-  const sections = role === 'admin' ? [
+  const sections = [
     can('dashboard.view') && {id: 'home', group: 'General', label: 'Inicio', icon: 'home', render: ({navigate}) => <AdminHome navigate={navigate} permissions={user.permissions}/>},
     can('dashboard.view') && {id: 'statistics', group: 'General', label: 'Estadísticas', icon: 'chart', render: () => <StatisticsPage/>},
     can('users.manage') && {id: 'users', group: 'Gestión', label: 'Usuarios', icon: 'users', render: ({intent}) => <UsersAdmin currentUserId={user.id} intent={intent}/>},
@@ -115,24 +117,18 @@ export default function AccountApp() {
     can('catalog.manage') && {id: 'catalog', group: 'Contenido', label: 'Catálogo', icon: 'catalog', render: () => <CatalogSection/>},
     can('announcements.manage') && {id: 'announcements', group: 'Contenido', label: 'Comunicados', icon: 'announcements', render: ({intent}) => <AnnouncementsAdmin intent={intent}/>},
     profile, notifications,
-  ].filter(Boolean) : [
-    {id: 'home', label: 'Inicio', icon: 'home', render: () => <>
-      {role === 'technician' && <p className="notice">Estado de verificación: {verificationLabel(user.technician_profile?.verification_status)}. La disponibilidad se habilita después de la revisión.</p>}
-      <Sprint02Portal user={user}/>
-    </>},
-    profile, notifications,
-  ];
+  ].filter(Boolean);
   // Fase T1: el técnico y el administrador usan la misma base moderna del cliente (☰, campana, «Aa» y panel de la cuenta).
-  return <RealtimeProvider><PanelShell key={user.id} user={user} role={role} roleLabel={roles[role]} navLabel={role === 'admin' ? 'Administración' : 'Mi cuenta'}
+  return <RealtimeProvider><PanelShell key={user.id} user={user} role={role} roleLabel={roles[role]} navLabel="Administración"
     sections={sections} onLogout={logout} onUserChange={setUser} busy={busy} notice={error} modern onExpired={expire}
     notificationTarget={item => staffTarget(role, item)}
-    badges={role === 'admin' ? badges : undefined} onNavigate={role === 'admin' ? refreshBadges : undefined}/></RealtimeProvider>;
+    badges={badges} onNavigate={refreshBadges}/></RealtimeProvider>;
 }
 
-/** Fase T1: a dónde lleva un aviso del técnico o del administrador. Hasta la T2, lo del técnico vive en su Inicio. */
+/** Fase T1: a dónde lleva un aviso del administrador; los del técnico van en TechnicianApp (technicianTarget, Fase T2). */
 export function staffTarget(role, item) {
   if (role === 'admin') return item.type?.startsWith('announcement') ? ['announcements'] : null;
-  return ['home'];
+  return technicianTarget(item);
 }
 
 /**

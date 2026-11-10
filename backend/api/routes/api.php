@@ -131,6 +131,7 @@ Route::prefix('v1')->group(function () {
 
         Route::prefix('technicians/me')->middleware('role:technician')->group(function () {
             Route::get('profile', [TechnicianProfileController::class, 'profile']);
+            Route::get('home', [TechnicianProfileController::class, 'home']); // Fase T2 del panel del técnico
             Route::patch('profile', [TechnicianProfileController::class, 'updateProfile']);
             Route::post('verification-request', [TechnicianProfileController::class, 'requestVerification']); // D-50
             Route::post('documents', [TechnicianProfileController::class, 'storeDocument']);

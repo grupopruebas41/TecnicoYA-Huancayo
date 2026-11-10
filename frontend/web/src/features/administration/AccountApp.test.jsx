@@ -28,7 +28,8 @@ test.each([['S01-TC-016', 'client', 'cliente'], ['S01-TC-017', 'technician', 'te
   await logoutButton();
   await waitFor(() => expect(window.location.hash).toBe(`#cuenta/${route}`));
   expect(document.querySelector(`[data-cy=portal-${role}]`)).toBeInTheDocument();
-  if (role === 'technician') expect(screen.getByText(/Estado de verificación:/)).toHaveTextContent('Pendiente de verificación');
+  // Fase T2 del panel del técnico: su Inicio nuevo muestra la verificación desde /technicians/me/home; aquí basta su menú.
+  if (role === 'technician') expect(screen.getByRole('navigation', {name: 'Gestión del técnico'})).toBeInTheDocument();
   request.mockResolvedValueOnce(null);
   fireEvent.click(screen.getByRole('button', {name: 'Cerrar sesión'}));
   await screen.findByRole('button', {name: 'Ingresar'});

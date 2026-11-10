@@ -15,7 +15,7 @@ const store = {
 };
 const ICONS = new Set(['home', 'chart', 'users', 'verify', 'requests', 'catalog', 'announcements', 'profile', 'plus', 'search', 'bell',
   'check', 'clock', 'alert', 'close', 'image', 'star', 'menu', 'heart', 'lock', 'calendar', 'map', 'help', 'sensor', 'gift', 'book',
-  'flag', 'news', 'monitor', 'snow', 'bolt']);
+  'flag', 'news', 'monitor', 'snow', 'bolt', 'wallet', 'briefcase']);
 
 /** Agrupa las secciones por su título de grupo, en el orden en que llegan; las que no tienen grupo van sueltas. */
 function groupsOf(sections) {
@@ -115,14 +115,17 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     const target = section.premium ? 'premium' : section.id;
     return <React.Fragment key={section.id}><button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')} data-section={section.id}
       aria-current={section.id === current?.id ? 'page' : undefined} data-tooltip={collapsed ? section.label : undefined}
-      aria-describedby={badge?.count ? badgeId : undefined} disabled={locked}
+      aria-describedby={badge?.count || badge?.text ? badgeId : undefined} disabled={locked}
       onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
       <span className="panel-label">{section.label}{section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}</span>
-      {badge?.count > 0 && <span className="panel-nav-badge" aria-hidden="true">{badge.count > 99 ? '99+' : badge.count}</span>}
+      {badge?.count > 0 && <span className={'panel-nav-badge' + (badge.pulse ? ' is-pulse' : '')} aria-hidden="true">
+        {badge.pulse && <span className="panel-nav-pulse"/>}{badge.count > 99 ? '99+' : badge.count}</span>}
+      {/* Fase T2 del técnico: un estado corto en texto (porcentaje del perfil, estado de la verificación). */}
+      {!badge?.count && badge?.text && <span className="panel-nav-badge is-text" data-tone={badge.tone} aria-hidden="true">{badge.text}</span>}
     </button>
     {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
-    {badge?.count > 0 && <span id={badgeId} hidden>{badge.label}</span>}</React.Fragment>;
+    {(badge?.count > 0 || badge?.text) && <span id={badgeId} hidden>{badge.label}</span>}</React.Fragment>;
   }
   function toggleCollapsed() {
     const next = !collapsed;
@@ -139,7 +142,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
   const profile = sections.find(section => section.id === 'profile');
   return <AccessibilityContext.Provider value={{prefs: a11y[0], update: a11y[1]}}>
-  <ShellContext.Provider value={{setTourMode, setTourDrawer}}>
+  <ShellContext.Provider value={{setTourMode, setTourDrawer, openAccount: modern ? () => setAccount(true) : undefined}}>
   <div className={'panel-shell' + (collapsed && !tourMode ? ' is-collapsed' : '') + (tourMode ? ' is-touring' : '')} data-cy={`portal-${role}`}>
     {/* Fase 5 (WCAG 2.4.1): salta al contenido sin cambiar el hash, que usa el enrutado de la cuenta. */}
     {modern && <a className="skip-link" href="#contenido" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Saltar al contenido</a>}

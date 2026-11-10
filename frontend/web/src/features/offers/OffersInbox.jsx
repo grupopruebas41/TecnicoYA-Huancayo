@@ -12,7 +12,12 @@ const labels = {
   expired: "Vencida",
   withdrawn: "Retirada",
 };
-function OfferCard({ offer, serverTime, onChange }) {
+
+/**
+ * Respuesta a una oferta con idempotencia (S4): un solo intento por clave, reconciliación si la red falla y recarga
+ * ante un conflicto. Fase T2 del panel del técnico: la tarjeta destacada del Inicio usa este mismo hook.
+ */
+export function useOfferResponse(offer, onChange) {
   const [expired, setExpired] = useState(false),
     [busy, setBusy] = useState(false),
     [reject, setReject] = useState(false),
@@ -70,6 +75,12 @@ function OfferCard({ offer, serverTime, onChange }) {
       setReject(false);
     }
   }
+  return { expired, setExpired, busy, reject, setReject, reason, setReason, error, message, respond };
+}
+
+function OfferCard({ offer, serverTime, onChange }) {
+  const { expired, setExpired, busy, reject, setReject, reason, setReason, error, message, respond } =
+    useOfferResponse(offer, onChange);
   return (
     <article className="s02-card" aria-label={`Oferta ${offer.id}`}>
       <h3>Solicitud #{offer.request.id}</h3>
@@ -150,13 +161,18 @@ function OfferCard({ offer, serverTime, onChange }) {
     </article>
   );
 }
-export default function OffersInbox({ technicianId }) {
+
+/**
+ * Ofertas del técnico con su canal en tiempo real (S4). Fase T2 del panel del técnico: el Inicio usa el mismo hook,
+ * con onEvent para refrescar también sus indicadores.
+ */
+export function useOffers(technicianId, { status = "pending,accepted", onEvent } = {}) {
   const [channelId, setChannelId] = useState(technicianId);
   useEffect(() => {
     let active = true;
     if (technicianId) setChannelId(technicianId);
-    else request('/technicians/me/profile').then(({data}) => {
-      if (active) setChannelId(data.id);
+    else Promise.resolve().then(() => request('/technicians/me/profile')).then((result) => {
+      if (active) setChannelId(result?.data?.id ?? null);
     }).catch(() => {
       // La bandeja sigue disponible por HTTP y muestra el aviso de desconexión.
       if (active) setChannelId(null);
@@ -179,7 +195,7 @@ export default function OffersInbox({ technicianId }) {
         });
         setServerTime(result.meta?.server_time);
       } else {
-        const result = await request("/offers?status=pending,accepted");
+        const result = await request("/offers?status=" + status);
         const missing = rows.filter(
           (row) => !result.data.items.some((item) => item.id === row.id),
         );
@@ -203,6 +219,7 @@ export default function OffersInbox({ technicianId }) {
       return false;
     } finally {
       setLoading(false);
+      if (event !== undefined) onEvent?.();
     }
   }
   useEffect(() => {
@@ -214,6 +231,11 @@ export default function OffersInbox({ technicianId }) {
     refresh,
     (event) => rows.find((row) => row.id === event.offer_id)?.version || 0,
   );
+  return { rows, serverTime, error, loading, refresh, connected };
+}
+
+export default function OffersInbox({ technicianId }) {
+  const { rows, serverTime, error, loading, refresh, connected } = useOffers(technicianId);
   return (
     <section aria-label="Solicitudes entrantes" className="s02-panel">
       <h2>Solicitudes entrantes</h2>

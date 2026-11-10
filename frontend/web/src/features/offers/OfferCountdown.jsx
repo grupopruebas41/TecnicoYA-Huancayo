@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-// El ancla es la respuesta del servidor; performance.now evita cambios del reloj civil.
-export default function OfferCountdown({
-  expiresAt,
-  serverTime,
-  onExpire = () => {},
-}) {
+
+/**
+ * Segundos que faltan para expiresAt. El ancla es la hora del servidor; performance.now evita cambios del reloj civil.
+ * Fase T2 del panel del técnico: el anillo del Inicio usa este mismo cálculo.
+ */
+export function useCountdown(expiresAt, serverTime, onExpire = () => {}) {
   const [seconds, setSeconds] = useState(0),
     callback = useRef(onExpire);
   callback.current = onExpire;
@@ -27,12 +27,22 @@ export default function OfferCountdown({
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
   }, [expiresAt, serverTime]);
+  return seconds;
+}
+
+export const clock = (seconds) =>
+  `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+
+export default function OfferCountdown({
+  expiresAt,
+  serverTime,
+  onExpire = () => {},
+}) {
+  const seconds = useCountdown(expiresAt, serverTime, onExpire);
   return (
     <div>
       <span role="timer" aria-live="off">
-        {seconds === null
-          ? "Tiempo no disponible"
-          : `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`}
+        {seconds === null ? "Tiempo no disponible" : clock(seconds)}
       </span>
       <span aria-live="polite">{seconds === 0 ? "Plazo vencido" : ""}</span>
     </div>

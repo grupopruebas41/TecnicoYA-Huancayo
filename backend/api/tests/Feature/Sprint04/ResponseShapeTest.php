@@ -43,7 +43,8 @@ function s04OfferShape(string $responded): array
 {
     return ['id' => 'int', 'status' => 'string', 'version' => 'int', 'round' => ['id' => 'int', 'round_no' => 'int', 'kind' => 'string'],
         'available_at' => 'string', 'expires_at' => 'string', 'responded_at' => $responded, 'reference_fee' => S04_FEE,
-        'request' => ['id' => 'int', 'subcategory' => S04_REF, 'subcategories' => [S04_REF], 'district' => S04_REF, 'mode' => 'string', 'preferred_start_at' => 'null',
+        // Fase T2 del panel del técnico: specialty (id y nombre) se agrega para la tarjeta del Inicio; campo nuevo, no cambia los demás.
+        'request' => ['id' => 'int', 'subcategory' => S04_REF, 'subcategories' => [S04_REF], 'specialty' => S04_REF, 'district' => S04_REF, 'mode' => 'string', 'preferred_start_at' => 'null',
             'preferred_end_at' => 'null', 'description' => 'string',
             // D-92: urgencia informativa, equipo y síntomas del pedido con varios rubros.
             'urgency' => 'string', 'brand' => 'null', 'model' => 'null', 'symptoms' => [],

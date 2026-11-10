@@ -106,7 +106,9 @@ test('S05-TC-284 Seguridad cambia la contraseña y cierra las otras sesiones con
 test('S05-TC-285 hay un solo indicador de conexión, en la barra superior, con texto y no solo color', async () => {
   routes(technician);
   await open(technician, '/#cuenta/tecnico');
-  expect(await screen.findByRole('heading', {name: 'Inicio del técnico'})).toBeInTheDocument();
+  // Fase T2: la bandeja de ofertas (que antes estaba en el Inicio) tiene su propia sección.
+  fireEvent.click(within(screen.getByRole('navigation', {name: 'Gestión del técnico'})).getByRole('button', {name: 'Ofertas'}));
+  expect(await screen.findByRole('heading', {name: 'Solicitudes entrantes'})).toBeInTheDocument();
   const indicator = await waitFor(() => {
     const element = document.querySelector('[data-cy=connection]');
     expect(element).not.toBeNull();
@@ -150,8 +152,9 @@ test('S05-TC-287 la campana del técnico abre la página completa de Notificacio
   await open(admin, '/#cuenta/administrador');
   fireEvent.click(await screen.findByRole('button', {name: 'Notificaciones: 0 sin leer'}));
   expect(screen.getByText('Te avisaremos aquí cuando haya algo que revisar en la plataforma.')).toBeInTheDocument();
-  expect(staffTarget('technician', {type: 'offer.created'})).toEqual(['home']);
-  expect(staffTarget('technician', {type: 'technician.verification.approved'})).toEqual(['home']);
+  // Fase T2: una oferta abre Ofertas y la verificación abre Verificación (en la T1 todo iba al Inicio).
+  expect(staffTarget('technician', {type: 'offer.created'})).toEqual(['offers']);
+  expect(staffTarget('technician', {type: 'technician.verification.approved'})).toEqual(['verification']);
   expect(staffTarget('admin', {type: 'announcement.published'})).toEqual(['announcements']);
   expect(staffTarget('admin', {type: 'user.blocked'})).toBeNull();
 });

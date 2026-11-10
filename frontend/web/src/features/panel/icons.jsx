@@ -42,6 +42,9 @@ const PATHS = {
   theme: <><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></>,
   // Fase 4: menú del cliente.
   lock: <><rect x="5.5" y="10.5" width="13" height="9" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></>,
+  // Fase T2 del panel del técnico: Ganancias y Mis trabajos.
+  wallet: <><rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 9.5h17"/><path d="M15.5 14h2"/><path d="M6 6 15.5 3.5 17 6"/></>,
+  briefcase: <><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5v2"/><path d="M3.5 12.5h17"/></>,
   calendar: <><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16"/><path d="M8.5 3.5v4"/><path d="M15.5 3.5v4"/></>,
   map: <><path d="M9 5 4 7v12l5-2 6 2 5-2V5l-5 2z"/><path d="M9 5v12"/><path d="M15 7v12"/></>,
   help: <><circle cx="12" cy="12" r="8"/><path d="M9.8 9.6a2.3 2.3 0 0 1 4.4.9c0 1.6-2.2 2-2.2 3.5"/><path d="M12 16.8v.1"/></>,
