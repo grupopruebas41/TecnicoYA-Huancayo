@@ -2,6 +2,51 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-10 · Panel del técnico, Fase T2 (modo rápido): menú del técnico e Inicio con oferta en vivo
+
+- **Rama:** `feature/pimentel/tecnico/t2-inicio`, desde `main` `95df11a` (PR #56 integrado); un solo PR.
+- **Backend:**
+  - `GET /technicians/me/home` (`TechnicianHome`), solo del propio técnico (403 a otros roles):
+    - verificación con su estado (D-106 y D-107);
+    - ofertas pendientes;
+    - indicadores de 30 días;
+    - «Mi día» por franja, solo con el distrito;
+    - progreso del perfil con 8 tareas e insignias calculadas.
+  - La oferta trae `request.specialty` (campo nuevo; S04-TC-140 ajustada).
+  - `tecnicoya:demo-offer {email} {--urgent}` (D-108):
+    - solo con `APP_ENV=local` y para `demo-tecnico-…@example.test`;
+    - solicitud dirigida de demo-cliente por el matching real, en una franja de la disponibilidad del técnico;
+    - la oferta dura 10 minutos.
+  - `DemoTechnicianActivity` en el DemoSeeder, para demo-tecnico-computo: 12 ofertas (9 aceptadas, 1 rechazada, 2 vencidas), 5 trabajos completados, 1 en curso y 1 asignado hoy, 1 asignado mañana y 1 cancelado. Se reconoce por su rótulo, así que no se duplica.
+- **Frontend:**
+  - `features/technician/` (`TechnicianApp`, `TechnicianHome`, `OfferSpotlight`, `TechnicianHelp` y `technician.css`).
+  - **Menú:**
+    - Trabajo, Mi negocio, Mi desempeño y Ayuda;
+    - «Próximamente» con `aria-disabled` en Mis trabajos y Mi agenda (T3), Estadísticas (T4), Calificaciones (S6), Ganancias (S8) y Reportar;
+    - contadores: ofertas con punto que late, porcentaje del perfil y estado de la verificación.
+  - **Inicio:**
+    - saludo;
+    - oferta en vivo con anillo de 10 minutos (verde, ámbar y rojo, con el tiempo en texto) y cola por vencimiento;
+    - estado vacío;
+    - indicadores animados que respetan «Reducir animaciones»;
+    - Mi día;
+    - progreso con tareas («Hacerlo» lleva a la sección o abre la cuenta) e insignias con texto;
+    - comunicados al final.
+  - **Mi negocio:** usa los editores actuales con `TechnicianPanel only=…` hasta la T4.
+  - **Hooks compartidos con la bandeja del S4:** `useOfferResponse`, `useOffers` y `useCountdown`.
+  - `ConfirmDialog` acepta contenido.
+- **Decisiones:** D-109 propuesta, con los valores del Inicio (umbrales del anillo, indicadores, tareas, insignias y saludo).
+- **Defectos:** DEF-64 (el motivo del rechazo quedaba detrás del fondo del diálogo), corregido también en la bandeja del S4.
+- **Pruebas:**
+  - Pest: S05-TC-291 a 298, más 250 Pest del S4 y del S5 en verde;
+  - Vitest: S05-TC-299 a 306;
+  - Cypress escritas sin ejecutar: S05-TC-307 a 309 (`sprint-05/technician-home.cy.js`).
+- **Pruebas adaptadas, con explicación en el código:** S04-TC-140, S01-TC-017, S07-TC-070 y S05-TC-285 y 287.
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-10-4244f01-tecnico-t2-*`, con `e2e-technician-perfil`, la historia demo y una oferta abierta con `tecnicoya:e2e open-round`.
+- **Pendiente para el cierre común:** ejecutar las Cypress nuevas; catálogo, contrato (§ del Inicio del técnico y `tecnicoya:demo-offer`) y avance de la T2; confirmar D-109.
+- **Siguiente:** Fase T3 (Ofertas, Mis trabajos y Agenda) desde S05-TC-310.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-10 · Panel del técnico, Fase T1 (modo rápido): base común del técnico y del administrador
 
 - **Rama:** `feature/pimentel/tecnico/t1-base`, desde `main` `e5d9d8d` (PR #55 integrado); un solo PR con backend y frontend.

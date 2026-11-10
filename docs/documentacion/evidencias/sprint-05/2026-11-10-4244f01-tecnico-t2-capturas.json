@@ -1,0 +1,119 @@
+{
+  "1366-inicio": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "1366-inicio-completo": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "1366-progreso": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "1366-rechazar": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "1366-verificacion": {
+    "overflowX": false,
+    "oferta": false,
+    "tono": null,
+    "visitas": 0,
+    "insigniasObtenidas": 0,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "1366-como-funciona": {
+    "overflowX": false,
+    "oferta": false,
+    "tono": null,
+    "visitas": 0,
+    "insigniasObtenidas": 0,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "390-inicio": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "390-inicio-completo": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "390-menu": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "390-progreso": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "390-rechazar": {
+    "overflowX": false,
+    "oferta": true,
+    "tono": "ok",
+    "visitas": 2,
+    "insigniasObtenidas": 3,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "390-verificacion": {
+    "overflowX": false,
+    "oferta": false,
+    "tono": null,
+    "visitas": 0,
+    "insigniasObtenidas": 0,
+    "proximamente": 6,
+    "recortados": 1
+  },
+  "390-como-funciona": {
+    "overflowX": false,
+    "oferta": false,
+    "tono": null,
+    "visitas": 0,
+    "insigniasObtenidas": 0,
+    "proximamente": 6,
+    "recortados": 1
+  }
+}
