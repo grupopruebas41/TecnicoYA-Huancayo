@@ -27,6 +27,10 @@ function SecurityTab({onExpired}) {
   const [notice, setNotice] = useState({});
   const [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  // DEF-62: al cerrarse la confirmación, el foco vuelve al botón (si no, quedaba en el body y Esc no cerraba el panel).
+  const trigger = useRef(null);
+  const asked = useRef(false);
+  useEffect(() => { if (confirm) asked.current = true; else if (asked.current) trigger.current?.focus(); }, [confirm]);
   async function revoke() {
     setBusy(true); setNotice({});
     try {
@@ -48,7 +52,7 @@ function SecurityTab({onExpired}) {
           <button type="button" className="button primary" disabled={busy} onClick={revoke}>Sí, cerrarlas</button>
           <button type="button" className="button outline" disabled={busy} onClick={() => setConfirm(false)}>Cancelar</button>
         </div>
-        : <button type="button" className="button outline" onClick={() => setConfirm(true)}>Cerrar las otras sesiones</button>}
+        : <button ref={trigger} type="button" className="button outline" onClick={() => setConfirm(true)}>Cerrar las otras sesiones</button>}
       <Notice error={notice.error} success={notice.success}/>
     </section>
   </>;

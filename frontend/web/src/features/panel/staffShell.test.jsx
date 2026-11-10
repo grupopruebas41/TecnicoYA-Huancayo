@@ -93,6 +93,8 @@ test('S05-TC-284 Seguridad cambia la contraseña y cierra las otras sesiones con
   fireEvent.click(screen.getByRole('button', {name: 'Cerrar las otras sesiones'}));
   fireEvent.click(screen.getByRole('button', {name: 'Sí, cerrarlas'}));
   expect(await screen.findByText('Cerramos 2 sesiones en otros equipos.')).toBeInTheDocument();
+  // DEF-62: el foco vuelve al botón, así Esc sigue cerrando el panel de la cuenta.
+  expect(screen.getByRole('button', {name: 'Cerrar las otras sesiones'})).toHaveFocus();
   expect(request).toHaveBeenCalledWith('/me/sessions/revoke-others', {}, 'POST');
 
   fail = true;
