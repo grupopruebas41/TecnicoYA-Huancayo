@@ -132,6 +132,10 @@ Route::prefix('v1')->group(function () {
         Route::prefix('technicians/me')->middleware('role:technician')->group(function () {
             Route::get('profile', [TechnicianProfileController::class, 'profile']);
             Route::get('home', [TechnicianProfileController::class, 'home']); // Fase T2 del panel del técnico
+            // Fase T3: Mis trabajos y Mi agenda (solo lo propio; lo ajeno responde 404).
+            Route::get('jobs', [TechnicianProfileController::class, 'jobs']);
+            Route::get('jobs/{serviceRequest}', [TechnicianProfileController::class, 'job'])->whereNumber('serviceRequest');
+            Route::get('agenda', [TechnicianProfileController::class, 'agenda']);
             Route::patch('profile', [TechnicianProfileController::class, 'updateProfile']);
             Route::post('verification-request', [TechnicianProfileController::class, 'requestVerification']); // D-50
             Route::post('documents', [TechnicianProfileController::class, 'storeDocument']);

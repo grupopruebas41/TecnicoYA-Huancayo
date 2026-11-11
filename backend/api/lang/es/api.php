@@ -176,4 +176,8 @@ return [
     'verification_rejected_body' => 'Revisa la nota del revisor en Verificación y sube lo que falta.',
     'offer_expired_title' => 'Una oferta venció',
     'offer_expired_body' => 'La oferta de la solicitud #:request venció sin respuesta.',
+    // Fase T3 del panel del técnico.
+    'jobs_tab' => 'Elige una pestaña válida: asignados, en curso, completados o cancelados.',
+    'jobs_search' => 'La búsqueda admite hasta 60 caracteres.',
+    'agenda_week' => 'Indica la semana con una fecha válida (AAAA-MM-DD).',
 ];

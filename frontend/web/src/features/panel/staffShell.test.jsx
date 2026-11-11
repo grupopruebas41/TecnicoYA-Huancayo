@@ -108,7 +108,8 @@ test('S05-TC-285 hay un solo indicador de conexión, en la barra superior, con t
   await open(technician, '/#cuenta/tecnico');
   // Fase T2: la bandeja de ofertas (que antes estaba en el Inicio) tiene su propia sección.
   fireEvent.click(within(screen.getByRole('navigation', {name: 'Gestión del técnico'})).getByRole('button', {name: 'Ofertas'}));
-  expect(await screen.findByRole('heading', {name: 'Solicitudes entrantes'})).toBeInTheDocument();
+  // Fase T3: la página se titula «Ofertas» y conserva la región «Solicitudes entrantes» de las E2E del S4.
+  expect(await screen.findByRole('region', {name: 'Solicitudes entrantes'})).toBeInTheDocument();
   const indicator = await waitFor(() => {
     const element = document.querySelector('[data-cy=connection]');
     expect(element).not.toBeNull();
