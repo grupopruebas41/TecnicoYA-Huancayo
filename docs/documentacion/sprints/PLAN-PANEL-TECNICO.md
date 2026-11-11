@@ -248,6 +248,44 @@ Clase nueva `DemoTechnicianActivity`, que llama `DemoSeeder` (solo con `APP_ENV=
 
 Los clientes de esas solicitudes son los demo y van rotulados «(demostración)». `demo-tecnico-pendiente` queda sin bienvenida ni tutorial vistos y con los «Primeros pasos» incompletos.
 
+### Diseño pedido para la T3 y la T4 (Pimentel, 2026-11-10, revisión del #57)
+
+**Nivel visual de todas las pantallas nuevas:** el mismo del Inicio y del panel de la cuenta.
+- Tarjetas con ícono en un círculo de color y títulos claros.
+- Estados con color y con ícono.
+- Espacios ordenados y animaciones suaves que respetan «Reducir animaciones».
+- Ningún control gris del navegador.
+
+**T3 · Ofertas**
+- La misma tarjeta del Inicio: anillo, chips, y distrito, franja y tarifa con sus íconos.
+- Fecha y hora legibles, por ejemplo «mié 11 nov · 08:00–10:00».
+- El estado como etiqueta de color.
+- Aceptar y Rechazar grandes.
+- Pestañas «Pendientes» e «Historial».
+
+**T3 · Zonas y disponibilidad**
+- Semana visual de 7 columnas (Lun a Dom) por 3 franjas (Mañana, Tarde, Noche), como casillas grandes que se activan con un clic.
+- Los distritos como chips seleccionables con ícono de mapa.
+- Vista previa de «Así te ven los clientes».
+
+**T4 · Perfil profesional**
+- Una tarjeta por sección: Sobre mí, Forma de trabajo, Garantía y Experiencia.
+- Contador de caracteres.
+- Vista previa en vivo del perfil público a la derecha.
+
+**T4 · Servicios y tarifas**
+- Una tarjeta por servicio, con:
+  - el ícono de la especialidad;
+  - la tarifa en grande con «S/»;
+  - «Qué incluye»;
+  - los botones Editar y Quitar.
+- «Añadir servicio» como tarjeta con signo + y un buscador de subcategorías.
+
+**T4 · Verificación**
+- Corregir la incoherencia: el menú dice «Aprobado» y la página dice que no hay documentos. El DemoSeeder y la siembra E2E deben traer los 2 documentos obligatorios.
+- Una tarjeta por cada documento obligatorio, con su ícono y su estado: Recibido, En revisión, Aprobado u Observado (con la nota).
+- «Tipo de documento» como lista con los tipos válidos.
+- Subida con zona de arrastrar y soltar, el nombre del archivo y una barra de progreso.
 ## 5. Endpoints nuevos o cambiados
 
 | Fase | Método y ruta | Tipo |

@@ -1,0 +1,140 @@
+{
+  "1366-tecnico-en-espera": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [],
+    "fondoActivo": [],
+    "lectura": null
+  },
+  "1366-tecnico-campana-activa": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Notificaciones: 3 sin leer"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": null
+  },
+  "1366-tecnico-aa": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Accesibilidad rápida"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": "Leer la pantalla en voz alta"
+  },
+  "1366-tecnico-aa-leyendo": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Accesibilidad rápida"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": "Detener lectura"
+  },
+  "1366-tecnico-aa-cuenta": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Cuenta de Técnica E2E de perfil completo"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": null
+  },
+  "1366-tecnico-avatar-hover": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [],
+    "fondoActivo": [],
+    "lectura": null
+  },
+  "1366-admin-aa": {
+    "overflowX": false,
+    "enEspera": 0,
+    "activos": [
+      "Accesibilidad rápida"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": "Leer la pantalla en voz alta"
+  },
+  "390-tecnico-en-espera": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [],
+    "fondoActivo": [],
+    "lectura": null
+  },
+  "390-tecnico-campana-activa": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Notificaciones: 3 sin leer"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": null
+  },
+  "390-tecnico-aa": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Accesibilidad rápida"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": "Leer la pantalla en voz alta"
+  },
+  "390-tecnico-aa-leyendo": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Accesibilidad rápida"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": "Detener lectura"
+  },
+  "390-tecnico-aa-cuenta": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [
+      "Cuenta de Técnica E2E de perfil completo"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": null
+  },
+  "390-tecnico-avatar-hover": {
+    "overflowX": false,
+    "enEspera": 2,
+    "activos": [],
+    "fondoActivo": [],
+    "lectura": null
+  },
+  "390-admin-aa": {
+    "overflowX": false,
+    "enEspera": 0,
+    "activos": [
+      "Accesibilidad rápida"
+    ],
+    "fondoActivo": [
+      "rgb(31, 111, 107)"
+    ],
+    "lectura": "Leer la pantalla en voz alta"
+  }
+}

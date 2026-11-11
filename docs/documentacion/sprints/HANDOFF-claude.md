@@ -44,7 +44,18 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Pruebas adaptadas, con explicación en el código:** S04-TC-140, S01-TC-017, S07-TC-070 y S05-TC-285 y 287.
 - **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-10-4244f01-tecnico-t2-*`, con `e2e-technician-perfil`, la historia demo y una oferta abierta con `tecnicoya:e2e open-round`.
 - **Pendiente para el cierre común:** ejecutar las Cypress nuevas; catálogo, contrato (§ del Inicio del técnico y `tecnicoya:demo-offer`) y avance de la T2; confirmar D-109.
-- **Siguiente:** Fase T3 (Ofertas, Mis trabajos y Agenda) desde S05-TC-310.
+- **Correcciones pedidas antes de integrar el #57 (misma rama):**
+  - **Ofertas en espera:** tarjetas con borde y fondo suave, ícono de la especialidad en círculo, mini anillo con el mismo color verde, ámbar o rojo, «Vence a las HH:MM» destacado, «Ver» como botón primario y el título con contador («2 ofertas en espera»).
+  - **Barra superior (los tres roles):** la campana, «Aa» y el avatar se ven activos (color de acento con el ícono en blanco) mientras su panel está abierto, con hover y foco visibles.
+  - **Panel «Aa»:**
+    - botón real «Leer la pantalla en voz alta» con ícono de parlante, que cambia a «Detener lectura» con estilo activo;
+    - «Alto contraste» como interruptor de TécnicoYa;
+    - «Más ajustes en tu cuenta» abre la cuenta en la pestaña Accesibilidad.
+  - **DEF-65:** a 390 px el panel «Aa» salía por la izquierda de la pantalla.
+  - **Pruebas:** S05-TC-310 a 312 (Vitest); S05-TC-225 y 304 adaptadas con explicación.
+  - **Capturas:** `2026-11-10-daf2cc9-tecnico-t2-ajustes-*`.
+  - **Diseño de la T3 y la T4:** anotado en `PLAN-PANEL-TECNICO.md` («Diseño pedido para la T3 y la T4»).
+- **Siguiente:** Fase T3 (Ofertas, Mis trabajos y Agenda) desde S05-TC-313.
 - **Pedidos a Codex:** ninguno.
 
 ## 2026-11-10 · Panel del técnico, Fase T1 (modo rápido): base común del técnico y del administrador
