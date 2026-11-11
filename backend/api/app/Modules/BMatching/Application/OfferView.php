@@ -47,8 +47,9 @@ final class OfferView
     {
         $rounds = DB::table('offer_rounds')->whereIn('id', $offers->pluck('round_id'))->get()->keyBy('id');
         $requests = DB::table('service_requests as r')->join('subcategories as s', 's.id', '=', 'r.subcategory_id')
-            ->join('districts as d', 'd.id', '=', 'r.district_id')->whereIn('r.id', $offers->pluck('request_id'))
-            ->get(['r.*', 's.name as subcategory_name', 'd.name as district_name'])->keyBy('id');
+            ->join('districts as d', 'd.id', '=', 'r.district_id')->join('specialties as e', 'e.id', '=', 's.specialty_id')
+            ->whereIn('r.id', $offers->pluck('request_id'))
+            ->get(['r.*', 's.name as subcategory_name', 'd.name as district_name', 'e.id as specialty_ref', 'e.name as specialty_name'])->keyBy('id');
         $subcategories = RequestSubcategories::named($requests->values());
         $assigned = DB::table('participations')->whereIn('request_id', $offers->pluck('request_id'))
             ->whereIn('status', ['assigned', 'in_progress', 'completed'])->get(['request_id', 'technician_id']);
@@ -72,6 +73,8 @@ final class OfferView
                 'request' => [
                     'id' => $request->id, 'subcategory' => ['id' => $request->subcategory_id, 'name' => $request->subcategory_name],
                     'subcategories' => $subcategories[$request->id], // D-96
+                    // Fase T2 del panel del técnico: especialidad para la tarjeta de la oferta (campo nuevo, no rompe el S4).
+                    'specialty' => ['id' => (int) $request->specialty_ref, 'name' => $request->specialty_name],
                     'district' => ['id' => $request->district_id, 'name' => $request->district_name], 'mode' => $request->mode,
                     'preferred_start_at' => self::iso($request->preferred_start_at), 'preferred_end_at' => self::iso($request->preferred_end_at),
                     'description' => $request->description,

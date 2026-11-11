@@ -77,6 +77,11 @@ final class DemoSeeder extends Seeder
                 $technician = (int) DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
                 $this->portfolio($technician, $user->id, "demo-tecnico-$code", $data['portfolio'] ?? []);
                 $this->reviews($technician, $data['reviews'] ?? []);
+                // Fase T2 del panel del técnico: historia de ofertas, trabajos y visitas para ver el Inicio con datos.
+                if ($code === 'computo') {
+                    app(DemoTechnicianActivity::class)->run($technician, DB::table('client_profiles')
+                        ->whereIn('user_id', [$cliente->id, $mype->id])->orderBy('id')->pluck('id')->map(fn ($id) => (int) $id)->all());
+                }
             }
             $pending = $this->account('demo-tecnico-pendiente', 'technician', 'Técnico Demo', 'Por verificar', '900000120', $password);
             $this->technician($pending, ['name' => 'Técnico Demo por verificar', 'base' => 'HUANCAYO', 'districts' => ['HUANCAYO'],

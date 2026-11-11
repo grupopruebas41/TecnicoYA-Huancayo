@@ -106,7 +106,9 @@ test('S05-TC-284 Seguridad cambia la contraseña y cierra las otras sesiones con
 test('S05-TC-285 hay un solo indicador de conexión, en la barra superior, con texto y no solo color', async () => {
   routes(technician);
   await open(technician, '/#cuenta/tecnico');
-  expect(await screen.findByRole('heading', {name: 'Inicio del técnico'})).toBeInTheDocument();
+  // Fase T2: la bandeja de ofertas (que antes estaba en el Inicio) tiene su propia sección.
+  fireEvent.click(within(screen.getByRole('navigation', {name: 'Gestión del técnico'})).getByRole('button', {name: 'Ofertas'}));
+  expect(await screen.findByRole('heading', {name: 'Solicitudes entrantes'})).toBeInTheDocument();
   const indicator = await waitFor(() => {
     const element = document.querySelector('[data-cy=connection]');
     expect(element).not.toBeNull();
@@ -150,8 +152,56 @@ test('S05-TC-287 la campana del técnico abre la página completa de Notificacio
   await open(admin, '/#cuenta/administrador');
   fireEvent.click(await screen.findByRole('button', {name: 'Notificaciones: 0 sin leer'}));
   expect(screen.getByText('Te avisaremos aquí cuando haya algo que revisar en la plataforma.')).toBeInTheDocument();
-  expect(staffTarget('technician', {type: 'offer.created'})).toEqual(['home']);
-  expect(staffTarget('technician', {type: 'technician.verification.approved'})).toEqual(['home']);
+  // Fase T2: una oferta abre Ofertas y la verificación abre Verificación (en la T1 todo iba al Inicio).
+  expect(staffTarget('technician', {type: 'offer.created'})).toEqual(['offers']);
+  expect(staffTarget('technician', {type: 'technician.verification.approved'})).toEqual(['verification']);
   expect(staffTarget('admin', {type: 'announcement.published'})).toEqual(['announcements']);
   expect(staffTarget('admin', {type: 'user.blocked'})).toBeNull();
+});
+
+test('S05-TC-311 la campana, «Aa» y el avatar quedan activos (aria-expanded) mientras su panel está abierto', async () => {
+  routes(technician);
+  await open(technician, '/#cuenta/tecnico');
+  const bell = await screen.findByRole('button', {name: /Notificaciones: 1 sin leer/});
+  const quick = screen.getByRole('button', {name: 'Accesibilidad rápida'});
+  const avatar = screen.getByRole('button', {name: `Cuenta de ${technician.name}`});
+  [bell, quick, avatar].forEach(button => expect(button).toHaveAttribute('aria-expanded', 'false'));
+  fireEvent.click(bell);
+  expect(bell).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.keyDown(bell, {key: 'Escape'});
+  expect(bell).toHaveAttribute('aria-expanded', 'false');
+  fireEvent.click(quick);
+  expect(quick).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.click(quick);
+  expect(quick).toHaveAttribute('aria-expanded', 'false');
+  fireEvent.click(avatar);
+  expect(avatar).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.keyDown(screen.getByRole('dialog'), {key: 'Escape'});
+  expect(avatar).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('S05-TC-312 «Aa» tiene un botón real para leer en voz alta, alto contraste como interruptor y el enlace abre la cuenta en Accesibilidad', async () => {
+  const speak = vi.fn();
+  const cancel = vi.fn();
+  vi.stubGlobal('speechSynthesis', {speak, cancel});
+  vi.stubGlobal('SpeechSynthesisUtterance', function Utterance(text) { this.text = text; });
+  routes(technician, {'PUT /me/preferences': () => ({data: technician.preferences})});
+  await open(technician, '/#cuenta/tecnico');
+  fireEvent.click(screen.getByRole('button', {name: 'Accesibilidad rápida'}));
+  const panel = screen.getByRole('region', {name: 'Accesibilidad rápida'});
+  expect(within(panel).getByRole('switch', {name: /Alto contraste/})).toBeInTheDocument();
+  const read = within(panel).getByRole('button', {name: 'Leer la pantalla en voz alta'});
+  expect(read).toHaveAttribute('aria-pressed', 'false');
+  expect(read.querySelector('svg')).not.toBeNull();
+  fireEvent.click(read);
+  const stop = within(panel).getByRole('button', {name: 'Detener lectura'});
+  expect(stop).toHaveAttribute('aria-pressed', 'true');
+  expect(stop).toHaveClass('is-active');
+  fireEvent.click(stop);
+  expect(cancel).toHaveBeenCalled();
+
+  fireEvent.click(within(panel).getByRole('button', {name: 'Más ajustes en tu cuenta'}));
+  const dialog = screen.getByRole('dialog');
+  expect(within(dialog).getByRole('tab', {name: 'Accesibilidad'})).toHaveAttribute('aria-selected', 'true');
+  expect(within(dialog).getByRole('tab', {name: 'Accesibilidad'})).toHaveFocus();
 });

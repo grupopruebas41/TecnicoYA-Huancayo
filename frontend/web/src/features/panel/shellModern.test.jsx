@@ -114,7 +114,8 @@ test('S05-TC-225 «Aa» cambia el tamaño de texto, el alto contraste y lee la p
   expect(speak).toHaveBeenCalledTimes(1);
   expect(speak.mock.calls[0][0]).toMatchObject({lang: 'es-PE'});
   expect(speak.mock.calls[0][0].text).toContain('Contenido de Inicio.');
-  fireEvent.click(within(panel).getByRole('button', {name: 'Detener la lectura'}));
+  // Corrección del #57: el botón del panel «Aa» dice «Detener lectura» mientras lee.
+  fireEvent.click(within(panel).getByRole('button', {name: 'Detener lectura'}));
   expect(cancel).toHaveBeenCalled();
 });
 

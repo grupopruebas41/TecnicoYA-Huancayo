@@ -7,6 +7,8 @@ use App\Modules\FAdministration\Application\OwnTechnicianProfile;
 use App\Modules\FAdministration\Application\Portfolio;
 use App\Modules\FAdministration\Application\PublicTechnicianProfile;
 use App\Modules\FAdministration\Application\TechnicianDocuments;
+use App\Modules\FAdministration\Application\TechnicianHome;
+use App\Modules\FAdministration\Http\Resources\AccountData;
 use App\Modules\FAdministration\Application\TechnicianStatus;
 use App\Modules\FAdministration\Application\UpdateAvailability;
 use App\Modules\FAdministration\Application\UpdateServices;
@@ -28,6 +30,12 @@ final class TechnicianProfileController
     public function profile(Request $request, OwnTechnicianProfile $profiles, OwnProfileView $view): JsonResponse
     {
         return ApiResponse::data($view->for($profiles->idFor($request->user())));
+    }
+
+    /** Panel del técnico, Fase T2: Inicio (indicadores, Mi día, progreso, insignias y verificación). */
+    public function home(Request $request, OwnTechnicianProfile $profiles, TechnicianHome $home): JsonResponse
+    {
+        return ApiResponse::data($home->for($profiles->idFor($request->user()), AccountData::from($request->user()->fresh())['avatar_url']));
     }
 
     public function updateProfile(UpdateTechnicianProfileRequest $request, UpdateTechnicianProfile $update, OwnProfileView $view): JsonResponse

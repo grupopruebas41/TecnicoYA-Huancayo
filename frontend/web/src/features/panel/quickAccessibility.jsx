@@ -3,6 +3,7 @@ import '@fontsource/atkinson-hyperlegible/700.css';
 import React, {createContext, useContext, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import useDismiss from './useDismiss';
+import Icon from './icons';
 
 /**
  * Accesibilidad del cliente (Fase 4 «Aa»; Fase 5, D-97): ajustes guardados en la cuenta (GET/PUT /client/me/preferences)
@@ -108,14 +109,17 @@ export function AccessibilityControls({prefs, onChange, reader, full = false}) {
         onChange={event => onChange({[key]: event.target.checked})}/>
       <span>{label}{full && <small id={`ayuda-${key}`} className="muted">{help}</small>}</span>
     </label>)}
-    {canSpeak() && !full && <button type="button" className="button outline a11y-read" aria-pressed={speaking} onClick={() => toggleReading()}>
-      {speaking ? 'Detener la lectura' : 'Leer la pantalla en voz alta'}
+    {/* Corrección del #57: botón real y visible, con ícono de parlante; mientras lee cambia a «Detener lectura». */}
+    {!full && <button type="button" className={'a11y-read' + (speaking ? ' is-active' : '')} aria-pressed={speaking}
+      disabled={!canSpeak()} onClick={() => toggleReading()}>
+      <Icon name="announcements"/><span>{speaking ? 'Detener lectura' : 'Leer la pantalla en voz alta'}</span>
     </button>}
+    {!full && !canSpeak() && <p className="muted a11y-note">Tu navegador no permite leer en voz alta.</p>}
   </div>;
 }
 
 /** Botón «Aa» de la barra superior con su panel desplegable. */
-export function QuickAccessibility({prefs, onChange, reader}) {
+export function QuickAccessibility({prefs, onChange, reader, onMore}) {
   const [open, setOpen] = useState(false);
   const button = useRef(null);
   const root = useDismiss(open, () => setOpen(false));
@@ -125,7 +129,9 @@ export function QuickAccessibility({prefs, onChange, reader}) {
       aria-expanded={open} aria-controls="panel-accesibilidad" onClick={() => setOpen(!open)}><span aria-hidden="true">Aa</span></button>
     {open && <section id="panel-accesibilidad" className="panel-popover panel-a11y-popover" aria-label="Accesibilidad rápida">
       <AccessibilityControls prefs={prefs} onChange={onChange} reader={reader}/>
-      <p className="muted">Más ajustes en tu cuenta, pestaña Accesibilidad.</p>
+      {onMore
+        ? <button type="button" className="text-button a11y-more" onClick={() => { setOpen(false); onMore(); }}>Más ajustes en tu cuenta</button>
+        : <p className="muted">Más ajustes en tu cuenta, pestaña Accesibilidad.</p>}
     </section>}
   </div>;
 }

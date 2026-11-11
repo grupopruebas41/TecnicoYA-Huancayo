@@ -291,11 +291,10 @@ test('S07-TC-070 cliente y técnico usan la misma base con su contenido actual',
   routes(technician);
   render(<AccountApp/>);
 
-  const nav = await screen.findByRole('navigation', {name: 'Mi cuenta'});
-  // Fase T1 (D-104): Mi perfil pasa al panel de la cuenta; el menú nuevo del técnico llega en la T2.
-  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent)).toEqual(['Inicio']);
-  expect(screen.getByText('Contenido actual de technician')).toBeInTheDocument();
-  expect(screen.getByText(/Estado de verificación:/)).toHaveTextContent('Pendiente de verificación');
+  // Fase T2 del panel del técnico: menú propio (Trabajo, Mi negocio, Mi desempeño y Ayuda) sobre la misma base.
+  const nav = await screen.findByRole('navigation', {name: 'Gestión del técnico'});
+  expect(within(nav).getAllByRole('button')[0].querySelector('.panel-label').textContent).toBe('Inicio');
+  expect(await screen.findByRole('heading', {level: 2, name: /^(Buenos días|Buenas tardes|Buenas noches), Ana$/})).toBeInTheDocument();
   expect(document.querySelector('[data-cy=portal-technician]')).toBeInTheDocument();
   await act(async () => {});
 });

@@ -269,19 +269,28 @@ function PortfolioEditor({ item = {}, reload, subcategories }) {
     </MutationForm>
   );
 }
-export default function TechnicianPanel() {
+/**
+ * Fase T2 del panel del técnico: con `only` («profile», «verification», «portfolio», «availability» o «services») muestra
+ * solo esa parte, sin pestañas, como sección propia del menú «Mi negocio»; onSaved avisa al menú. El rediseño llega en la T4.
+ */
+export default function TechnicianPanel({ only, onSaved } = {}) {
   const r = useResource("/technicians/me/profile"),
     catalog = useSubcategories();
-  const [tab, setTab] = useState("profile"),
+  const [selected, setTab] = useState("profile"),
     [edit, setEdit] = useState(null),
     [notice, setNotice] = useState("");
+  const tab = only || selected;
   const p = r.data;
+  const reload = async () => {
+    await r.reload();
+    onSaved?.();
+  };
   return (
     <section className="s02-panel">
-      <h2>Mi espacio técnico</h2>
+      {!only && <h2>Mi espacio técnico</h2>}
       {notice && <output>{notice}</output>}
       <ResourceState resource={r} />
-      <nav aria-label="Gestión del técnico">
+      {!only && <nav aria-label="Gestión del técnico">
         {[
           ["profile", "Mi perfil"],
           ["portfolio", "Portafolio"],
@@ -297,9 +306,10 @@ export default function TechnicianPanel() {
             {label}
           </button>
         ))}
-      </nav>
+      </nav>}
       {p && (
         <>
+          {(!only || only === "verification") && <>
           <p>
             {technicianState(
               p.verification_status === "rejected" ? "rejected" : p.status,
@@ -309,26 +319,28 @@ export default function TechnicianPanel() {
           {p.verification_status === "rejected" && (
             <MutationForm
               label="Solicitar nueva revisión"
-              reload={r.reload}
+              reload={reload}
               onSave={async () => {
                 await request("/technicians/me/verification-request", {
                   expected_version: p.version,
                 });
-                await r.reload();
+                await reload();
               }}
             />
           )}
+          </>}
           {tab === "profile" && (
             <>
-              <Bio profile={p} reload={r.reload} />
-              <Documents profile={p} reload={r.reload} />
+              <Bio profile={p} reload={reload} />
+              {!only && <Documents profile={p} reload={reload} />}
             </>
           )}
+          {tab === "verification" && <Documents profile={p} reload={reload} />}
           {tab === "availability" && (
-            <AvailabilityEditor profile={p} reload={r.reload} />
+            <AvailabilityEditor profile={p} reload={reload} />
           )}{" "}
           {tab === "services" && (
-            <ServicesEditor profile={p} reload={r.reload} />
+            <ServicesEditor profile={p} reload={reload} />
           )}{" "}
           {tab === "portfolio" && (
             <>
@@ -340,7 +352,7 @@ export default function TechnicianPanel() {
                 <PortfolioEditor
                   key={(edit.id || "new") + "-" + edit.version}
                   item={edit}
-                  reload={r.reload}
+                  reload={reload}
                   subcategories={catalog.data || []}
                 />
               )}{" "}
@@ -364,7 +376,7 @@ export default function TechnicianPanel() {
                     </button>
                     <RetireButton
                       path={"/technicians/me/portfolio/" + t.id}
-                      reload={r.reload}
+                      reload={reload}
                       label="Retirar trabajo"
                       onRetired={() =>
                         setNotice("Trabajo retirado correctamente.")
