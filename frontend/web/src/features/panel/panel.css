@@ -1511,3 +1511,8 @@ html[data-motion="reduce"] .panel-shell.is-touring .panel-sidebar { scroll-behav
   .panel-actions :is(.panel-icon-button, .panel-avatar-button), .panel-a11y-popover .a11y-read { transition: none; }
 }
 :root[data-motion="reduce"] :is(.panel-actions .panel-icon-button, .panel-actions .panel-avatar-button, .panel-a11y-popover .a11y-read) { transition: none; }
+/* DEF-65 (capturas del #57, 390 px): el panel «Aa» se anclaba al botón y salía por la izquierda; en el celular ocupa el
+   ancho de la pantalla con 16 px a cada lado, bajo la barra superior. */
+@media (max-width: 640px) {
+  .panel-a11y-popover { position: fixed; top: 72px; left: 16px; right: 16px; width: auto; max-height: calc(100vh - 88px); overflow-y: auto; }
+}
