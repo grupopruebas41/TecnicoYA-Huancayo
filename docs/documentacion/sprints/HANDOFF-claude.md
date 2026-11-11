@@ -2,6 +2,47 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-10 · Panel del técnico, Fase T3 (modo rápido): Ofertas, Mis trabajos, Mi agenda y Zonas
+
+- **Rama:** `feature/pimentel/tecnico/t3-trabajos`, desde `main` `355e2e1` (PR #57 integrado); un solo PR, sin migraciones.
+- **Backend (`TechnicianJobs`):**
+  - `GET /technicians/me/jobs`:
+    - `tab` (asignados, en curso, completados o cancelados), `q` (hasta 60 caracteres) y paginación;
+    - `counts` por pestaña;
+    - orden por la visita o por lo más reciente;
+    - línea de tiempo;
+    - la dirección solo si el trabajo está asignado, en curso o completado.
+  - `GET /technicians/me/jobs/{id}`: 404 si el trabajo es ajeno.
+  - `GET /technicians/me/agenda?week=`: semana de lunes a domingo, hora de Lima, solo citas confirmadas.
+  - Todo responde 403 a clientes y administradores.
+- **Frontend:**
+  - **Ofertas:** Pendientes, con la tarjeta del Inicio por vencimiento, e Historial, con el estado como etiqueta de color y paginación. Las fechas se leen como «mié 11 nov · 08:00–10:00 (Mañana)».
+  - **Mis trabajos:**
+    - pestañas con contador;
+    - búsqueda con espera de 300 ms;
+    - paginación, esqueleto de carga y estado vacío por pestaña;
+    - tarjetas con dirección o aviso de privacidad, y línea de tiempo.
+  - **Zonas y disponibilidad:**
+    - semana 7 × 3 con casillas que se activan con un clic;
+    - chips de distrito;
+    - vista previa «Así te ven los clientes»;
+    - doble validación (al menos una franja y un distrito) y alertas;
+    - `PUT availability` con las franjas contiguas unidas y `pause: null` (D-104).
+  - **Mi agenda:** semana con hoy resaltado y el número de visitas por franja, navegación entre semanas, lista de visitas y el mismo editor.
+  - `format.js` con la fecha legible y la conversión entre horarios y franjas.
+- **Cypress del S4:** `login` abre «Ofertas» cuando entra un técnico.
+- **Decisiones:** D-109 aprobada.
+- **Pruebas:**
+  - Pest: S05-TC-313 a 317;
+  - Vitest: S05-TC-318 a 325, más las 379 Vitest en verde;
+  - Cypress escritas sin ejecutar: S05-TC-326 a 328 (`sprint-05/technician-work.cy.js`).
+- **Pruebas adaptadas, con explicación en el código:** S05-TC-285, 299 y 303.
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-10-a0c69d9-tecnico-t3-*`.
+- **Límite:** sin acciones «Iniciar» ni «Completar» (son del módulo de atención, Sprint 6). Los horarios personalizados que no coinciden con las franjas se ajustan al guardar, y la pantalla lo avisa.
+- **Pendiente para el cierre común:** ejecutar las Cypress (también las del S4 con el `login` nuevo); catálogo, contrato y avance de la T3.
+- **Siguiente:** Fase T4 desde S05-TC-329, con el diseño anotado en `PLAN-PANEL-TECNICO.md`.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-10 · Panel del técnico, Fase T2 (modo rápido): menú del técnico e Inicio con oferta en vivo
 
 - **Rama:** `feature/pimentel/tecnico/t2-inicio`, desde `main` `95df11a` (PR #56 integrado); un solo PR.
