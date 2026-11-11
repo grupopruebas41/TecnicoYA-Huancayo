@@ -334,3 +334,9 @@
 }
 @media (prefers-reduced-motion: reduce) { .tech-card, .tech-week-cell, .tech-district, .tech-tabs [role="tab"] { animation: none !important; transition: none !important; } }
 :root[data-motion="reduce"] :is(.tech-card, .tech-week-cell, .tech-district, .tech-tabs [role="tab"]) { animation: none !important; transition: none !important; }
+
+/* Ajustes vistos en las capturas de la T3: el buscador no hereda el estilo de etiqueta del panel y el rótulo de la vista previa se lee bien. */
+.panel-content label.tech-search { display: flex; flex-direction: row; align-items: center; gap: 8px; margin: 0; }
+.panel-content .tech-search input[type="search"] { border: 0; padding: 0; margin: 0; min-height: 40px; box-shadow: none; background: transparent; width: auto; }
+.tech-preview .kicker { color: hsl(186 60% 26%); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; }
+[data-theme="dark"] .tech-preview .kicker { color: var(--ty-accent); }
