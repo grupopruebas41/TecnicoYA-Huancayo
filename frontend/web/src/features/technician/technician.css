@@ -64,8 +64,6 @@
 }
 .tech-chip .panel-svg-icon { width: 14px; height: 14px; margin: 0; }
 .tech-chip.is-urgent { border-color: hsl(8 70% 52%); color: hsl(8 70% 40%); background: hsl(8 80% 96%); font-weight: 700; }
-.tech-queue ul { display: grid; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
-.tech-queue li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; }
 
 .tech-empty { display: grid; justify-items: center; text-align: center; gap: 6px; padding: 12px 8px; }
 .tech-empty p { margin: 0; }
