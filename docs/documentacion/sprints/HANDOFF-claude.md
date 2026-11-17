@@ -2,6 +2,20 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-17 · Seguridad: laravel/framework a v12.72.0 (DEF-66, CVE-2026-128083)
+
+- **Rama:** `feature/pimentel/seguridad/laravel-12-71`, desde `main` `355e2e1`; PR #60, que se integra **antes** del #58 y del #59.
+- **Motivo:** desde el 2026-11-13, `composer audit` falla en la CI por GHSA-63hm-g96r-2m2q (gravedad baja: inyección en la salida de tareas de Concurrency Process), que afecta a `laravel/framework` < 12.71.0. Usábamos la v12.69.3.
+- **Cambio:**
+  - `composer update laravel/framework` sin `-W` (opción A, elegida por Pimentel);
+  - el lock solo cambia `laravel/framework` (v12.69.3 a v12.72.0), sin arrastrar otros paquetes;
+  - `composer.json` sin cambios.
+- **Pruebas:**
+  - `composer audit` sin avisos;
+  - Pest completo en el slot A: 496 aprobadas (5679 aserciones);
+  - evidencias en `docs/documentacion/evidencias/sprint-05/2026-11-17-4391d72-*`.
+- **Siguiente:** cuando se integre, actualizar el #58 con `main` (merge, sin `--force`), esperar su CI y después hacer lo mismo con el #59. El pendiente de la T5 (rótulo «Mañana» cortado con texto al 150 % en el celular) quedó anotado en `PLAN-PANEL-TECNICO.md` dentro del #59.
+
 ## 2026-11-10 · Panel del técnico, Fase T2 (modo rápido): menú del técnico e Inicio con oferta en vivo
 
 - **Rama:** `feature/pimentel/tecnico/t2-inicio`, desde `main` `95df11a` (PR #56 integrado); un solo PR.
