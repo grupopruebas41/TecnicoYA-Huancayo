@@ -236,6 +236,8 @@ Las ofertas se siguen leyendo de `GET /offers`.
   - objetivos de 44 px o más;
   - contraste AA;
   - estado siempre con ícono y texto.
+- **Pendientes anotados para la T5:**
+  - **Mi agenda, texto al 150 % en el celular (390 px):** el rótulo «Mañana» de la columna de franjas se corta, porque la columna mide 52 px. Visto en las capturas de la corrección de Mi agenda (PR #59, 2026-11-17); ya pasaba antes de esa corrección. Anotado por Pimentel.
 
 ### Datos de demostración (repartidos entre las fases)
 

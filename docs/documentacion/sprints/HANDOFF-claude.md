@@ -15,7 +15,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Vitest: S05-TC-329 («Esta semana» desactivado en la actual) y S05-TC-330 (flechas sin carrera y etiqueta). S05-TC-324 se ajustó porque el nombre accesible de la flecha ya no lleva «›». Rojo `d4d9656` (3 fallan) y verde `ae01040`; 475 Vitest, lint y build en verde.
   - Sin Pest ni Cypress nuevas (no hay cambios de backend ni de flujo).
 - **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-17-*-tecnico-agenda-{antes,despues}-*` a 1366 y 390, en claro y oscuro, con foco y con texto al 150 %, más las mediciones (`*-capturas.json`) y el script.
-- **Fuera de alcance, visto en las capturas:** con texto al 150 % en el celular, el rótulo «Mañana» de la columna de franjas se corta (ya pasaba antes).
+- **Fuera de alcance, visto en las capturas:** con texto al 150 % en el celular, el rótulo «Mañana» de la columna de franjas se corta (ya pasaba antes). Queda como pendiente de la T5 en `PLAN-PANEL-TECNICO.md`.
 - **Pedidos a Codex:** ninguno.
 
 ## 2026-11-10 · Panel del técnico, Fase T3 (modo rápido): Ofertas, Mis trabajos, Mi agenda y Zonas
