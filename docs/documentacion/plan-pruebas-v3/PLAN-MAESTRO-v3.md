@@ -201,7 +201,7 @@ El catálogo base tiene 140 casos, con 26 bloqueados o condicionados. Para cumpl
 - auditoría de acciones sensibles;
 - cobertura ≥ 70 % en el módulo;
 - Quality Gate aprobado **sobre el commit integrado**;
-- sin vulnerabilidades críticas o altas nuevas;
+- sin vulnerabilidades críticas o altas nuevas: `composer audit` sin avisos y `npm audit --omit=dev --audit-level=high` (producción) limpio; los avisos de desarrollo sin parche publicado solo se toleran como «Riesgo aceptado» registrado (D-110);
 - evidencias guardadas.
 
 **Evidencias:**

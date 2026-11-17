@@ -118,6 +118,10 @@ it('S07-TC-124 cuenta técnicos por estado, usuarios nuevos por rol y comunicado
 });
 
 it('S07-TC-125 las estadísticas usan un número fijo de consultas, sin importar cuántas solicitudes haya', function () {
+    // DEF-68: con SESSION_DRIVER=database, Laravel borra las sesiones vencidas al azar (lotería [2, 100] por petición).
+    // Cuando le tocaba a una sola de las dos peticiones, sumaba un `delete from sessions` y la prueba fallaba 17 contra
+    // 16 sin que las estadísticas cambiaran. Sin lotería, el conteo mide solo lo que se quiere medir.
+    config(['session.lottery' => [0, 100]]);
     $count = function () {
         Sprint01::forgetSession();
         Sanctum::actingAs($this->admin);

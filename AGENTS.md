@@ -72,7 +72,7 @@
    - auditoría de acciones sensibles;
    - cobertura de 70 % o más en el módulo del sprint;
    - Quality Gate de SonarQube aprobado;
-   - sin vulnerabilidades críticas o altas nuevas (`composer audit`, `npm audit`);
+   - sin vulnerabilidades críticas o altas nuevas: `composer audit` sin avisos y `npm audit --omit=dev --audit-level=high` (producción) limpio. Los avisos de dependencias de **desarrollo** sin versión corregida publicada pueden quedar como «Riesgo aceptado» con su defecto y su CVE (D-110); se revisan cuando salga el parche o en el cierre del sprint;
    - evidencias guardadas.
 
 9. **Seguridad y privacidad:**
