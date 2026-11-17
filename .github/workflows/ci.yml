@@ -144,12 +144,21 @@ jobs:
           mkdir -p test-results
           set -o pipefail
           npm run build | tee test-results/build.txt
-      - name: Auditoría npm
+      # D-110: bloquean los avisos altos o críticos de las dependencias de producción. El informe completo
+      # (también desarrollo) se guarda como artefacto y se resume en el log, sin bloquear.
+      - name: Auditoría npm de producción (bloquea)
         if: always() && steps.install.outcome == 'success'
         run: |
           mkdir -p test-results
           set -o pipefail
-          npm audit --json | tee test-results/npm-audit.json
+          npm audit --omit=dev --audit-level=high | tee test-results/npm-audit-produccion.txt
+      - name: Auditoría npm completa (informativa, no bloquea)
+        if: always() && steps.install.outcome == 'success'
+        continue-on-error: true
+        run: |
+          mkdir -p test-results
+          npm audit --json > test-results/npm-audit.json || true
+          node ../../scripts/resumen-npm-audit.mjs test-results/npm-audit.json | tee test-results/npm-audit-resumen.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:

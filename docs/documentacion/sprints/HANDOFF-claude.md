@@ -2,6 +2,32 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-17 · CI: `npm audit` de producción (D-110, DEF-67) y S07-TC-125 determinista (DEF-68)
+
+- **Rama:** `feature/pimentel/calidad/ci-audit-y-s07-125`, desde `main` `3345227` (#60 integrado); un solo PR, que se integra **antes** del #58 y del #59.
+- **Motivo:** al traer `main` al #58 (merge `5dd3068`), su CI falló por dos causas ajenas a él:
+  - `npm audit`: aviso alto de `picomatch` ≤ 4.0.7 sin parche publicado;
+  - S07-TC-125: prueba intermitente.
+- **`npm audit` (D-110, opción A de Pimentel):**
+  - **Bloquea:** `npm audit --omit=dev --audit-level=high`.
+  - **No bloquea:** el informe completo `npm-audit.json` en `frontend-reportes`, más un resumen en el log y en el resumen del job (`scripts/resumen-npm-audit.mjs`).
+  - **DEF-67:** CVE-2026-112366, registrado como «Riesgo aceptado»; solo afecta a desarrollo (vite y vitest).
+  - **Revisión:** cuando salga `picomatch` 4.0.8 o en el cierre del sprint, lo que ocurra primero.
+  - Actualicé la definición de terminado en AGENTS.md §8 y en PLAN-MAESTRO-v3.
+  - Sin `npm audit fix --force` y sin cambiar vite ni vitest.
+- **S07-TC-125 (DEF-68):**
+  - **Causa:** la lotería de sesiones de Laravel (`[2, 100]`, con `SESSION_DRIVER=database`) agregaba al azar un `delete from sessions` y el conteo daba 17 contra 16.
+  - **Arreglo:** la prueba fija `session.lottery` en `[0, 100]`, con un comentario.
+  - **Verificación con la lotería forzada al 50 %:** 20 de 20 aprobadas con el arreglo y 9 fallos de 20 sin él.
+- **Pruebas en local:**
+  - `AdminInsightsTest`: 8 de 8;
+  - Vitest: 465 de 465, más lint y build;
+  - `npm audit --omit=dev --audit-level=high`: 0;
+  - evidencias en `docs/documentacion/evidencias/sprint-05/2026-11-17-{e9308a1,0e5e3bf}-*`.
+- **Siguiente:**
+  1. Cuando se integre, traer `main` al #58 otra vez, esperar su CI y avisar.
+  2. Luego hacer lo mismo con el #59.
+
 ## 2026-11-17 · Seguridad: laravel/framework a v12.72.0 (DEF-66, CVE-2026-128083)
 
 - **Rama:** `feature/pimentel/seguridad/laravel-12-71`, desde `main` `355e2e1`; PR #60, que se integra **antes** del #58 y del #59.
