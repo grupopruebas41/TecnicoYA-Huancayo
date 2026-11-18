@@ -428,3 +428,11 @@
 }
 /* Objetivos táctiles de 44 px o más en los controles propios del técnico. */
 [data-cy="portal-technician"] .text-button { min-height: 44px; display: inline-flex; align-items: center; }
+/* Medido en las capturas de la T5: «Saltar al contenido», «Abrir menú» y los controles del carrusel de comunicados
+   quedaban por debajo de 44 px dentro del panel del técnico. */
+[data-cy="portal-technician"] .skip-link { min-height: 44px; display: inline-flex; align-items: center; }
+[data-cy="portal-technician"] .panel-drawer-toggle { min-width: 44px; min-height: 44px; }
+[data-cy="portal-technician"] .carousel-controls button { min-width: 44px; min-height: 44px; }
+/* Pestaña Avisos: el ícono va en la misma línea que el nombre del aviso (la regla .a11y-switch span lo apilaba). */
+.a11y-switch .tech-alert-label { display: flex; flex-direction: row; align-items: center; gap: 6px; }
+.a11y-switch .tech-alert-label .panel-svg-icon { display: inline-block; width: 18px; height: 18px; margin: 0; }
