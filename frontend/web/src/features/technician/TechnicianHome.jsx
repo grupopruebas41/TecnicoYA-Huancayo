@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {FirstSteps} from './TechnicianOnboarding';
 import Icon from '../panel/icons';
 import {useShell} from '../panel/shellContext';
 import {prefersReducedMotion} from '../panel/quickAccessibility';
@@ -219,6 +220,8 @@ export default function TechnicianHome({user, home, navigate, onChange}) {
         <span>Verificación: <strong>{verification.label}</strong></span>
       </button>}
     </section>
+    {/* Fase T5: «Primeros pasos» arriba mientras falte alguno; luego desaparece. */}
+    <FirstSteps data={data?.first_steps} navigate={navigate}/>
     <LiveOffers navigate={navigate} onChange={onChange}/>
     {home.loading && !data && <div className="panel-card tech-skeleton" role="status">Cargando tu resumen…</div>}
     {home.error && <div className="panel-card" role="alert">

@@ -112,16 +112,16 @@ export default function ProfessionalProfile({user, onSaved}) {
     {values && <div className="tech-availability tech-biz-layout">
       <form className="tech-availability-main" onSubmit={save} noValidate aria-label="Perfil profesional">
         <SectionCard icon="profile" title="Sobre mí" id="pro-about">
-          <CountedText label="Cuéntales quién eres y en qué te especializas" name="bio" value={values.bio} max={LIMITS.bio} min={BIO_MIN}
+          <CountedText dictation label="Cuéntales quién eres y en qué te especializas" name="bio" value={values.bio} max={LIMITS.bio} min={BIO_MIN}
             rows={5} error={errors.bio} onChange={value => set('bio', value)}
             placeholder="Ejemplo: técnico en cómputo con 8 años reparando equipos de oficinas y hogares en Huancayo."/>
         </SectionCard>
         <SectionCard icon="briefcase" title="Forma de trabajo" id="pro-style">
-          <CountedText label="Cómo atiendes: diagnóstico, cotización y limpieza" name="work_style" value={values.work_style}
+          <CountedText dictation label="Cómo atiendes: diagnóstico, cotización y limpieza" name="work_style" value={values.work_style}
             max={LIMITS.work_style} rows={3} error={errors.work_style} onChange={value => set('work_style', value)}/>
         </SectionCard>
         <SectionCard icon="verify" title="Garantía" id="pro-warranty">
-          <CountedText label="Qué garantía ofreces (solo si la ofreces)" name="warranty_text" value={values.warranty_text}
+          <CountedText dictation label="Qué garantía ofreces (solo si la ofreces)" name="warranty_text" value={values.warranty_text}
             max={LIMITS.warranty_text} rows={2} error={errors.warranty_text} onChange={value => set('warranty_text', value)}/>
         </SectionCard>
         <SectionCard icon="star" title="Experiencia" id="pro-experience">

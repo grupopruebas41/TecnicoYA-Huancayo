@@ -6,6 +6,8 @@ import {clock, useCountdown} from '../offers/OfferCountdown';
 import {OfferError} from '../offers/offerErrors';
 import {useOfferResponse} from '../offers/OffersInbox';
 import {franjaOf, legibleRange} from './format';
+import {useAccessibilityContext} from '../panel/quickAccessibility';
+import {SpeakOfferButton} from './offerAlerts';
 
 /** Franja pedida en texto legible (Fase T3): «jue 13 nov · 14:00–16:00 (Tarde)» o «Lo antes posible». */
 export function slotText(request) {
@@ -47,6 +49,8 @@ export function OfferRing({seconds, total}) {
  */
 export default function OfferSpotlight({offer, serverTime, onChange, onOpenOffers}) {
   const {expired, setExpired, busy, reject, setReject, reason, setReason, error, message, respond} = useOfferResponse(offer, onChange);
+  // Fase T5: en «Modo simple», Aceptar y Rechazar extragrandes, uno debajo del otro.
+  const simple = useAccessibilityContext().prefs?.simple_mode;
   const seconds = useCountdown(offer.expires_at, serverTime, () => setExpired(true));
   const total = Math.max(1, (Date.parse(offer.expires_at) - Date.parse(offer.available_at)) / 1000) || 600;
   const request = offer.request;
@@ -74,7 +78,8 @@ export default function OfferSpotlight({offer, serverTime, onChange, onOpenOffer
     </div>
     <OfferError error={error} technician/>
     {message && <p role="status" className="notice">{message}</p>}
-    {pending && <div className="offer-actions">
+    {pending && <SpeakOfferButton offer={offer}/>}
+    {pending && <div className={'offer-actions' + (simple ? ' is-xl' : '')} data-size={simple ? 'xl' : undefined}>
       <button type="button" className="button primary offer-accept" disabled={busy || expired || !serverTime} aria-busy={busy}
         onClick={() => respond('accept')}><Icon name="check"/> Aceptar</button>
       <button type="button" className="button outline offer-reject" disabled={busy || expired || !serverTime}

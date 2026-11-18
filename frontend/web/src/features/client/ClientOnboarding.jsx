@@ -8,6 +8,8 @@ import {useShell} from '../panel/shellContext';
  * Fase 5 del panel final (D-97): bienvenida «¿Cómo prefieres usar TécnicoYa?» y mini tutorial de 4 pasos, solo la primera
  * vez. Las tarjetas están redactadas como preferencias y nunca se guarda cuál se eligió: solo los ajustes que aplica.
  * Omitir o guardar marca onboarding_completed; terminar u omitir el tutorial marca tour_completed. No vuelven a salir.
+ * Fase T5 del técnico: las tarjetas y los pasos llegan por rol (props cards y steps); una tarjeta puede traer avisos de
+ * oferta (sexto elemento), que se guardan como offer_alerts. Tampoco se guarda cuál se eligió.
  */
 export const WELCOME_CARDS = [
   ['grande', 'Letra grande y alto contraste', 'Texto al 130 % y colores más marcados.', {text_size: 130, high_contrast: true}, 'search'],
@@ -39,16 +41,20 @@ function trap(root, onEscape) {
   };
 }
 
-export function WelcomeDialog({onDone}) {
+export function WelcomeDialog({onDone, cards = WELCOME_CARDS, onAlerts}) {
   const {update} = useAccessibilityContext();
   const [chosen, setChosen] = useState([]);
   const root = useRef(null);
   useEffect(() => { root.current?.querySelector('.welcome-card')?.focus(); }, []);
   const toggle = id => setChosen(current => (current.includes(id) ? current.filter(item => item !== id) : [...current, id]));
   async function finish(apply) {
-    const settings = apply ? Object.assign({}, ...WELCOME_CARDS.filter(([id]) => chosen.includes(id)).map(card => card[3])) : {};
+    const picked = apply ? cards.filter(([id]) => chosen.includes(id)) : [];
+    const settings = Object.assign({}, ...picked.map(card => card[3]));
+    const alerts = Object.assign({}, ...picked.map(card => card[5] || {}));
     if (Object.keys(settings).length) update(settings, {save: false});
-    await save({...(Object.keys(settings).length ? {accessibility: settings} : {}), onboarding_completed: true});
+    if (Object.keys(alerts).length) onAlerts?.(alerts);
+    await save({...(Object.keys(settings).length ? {accessibility: settings} : {}), ...(Object.keys(alerts).length ? {offer_alerts: alerts} : {}),
+      onboarding_completed: true});
     onDone();
   }
   return <div className="onboarding-overlay">
@@ -57,7 +63,7 @@ export function WelcomeDialog({onDone}) {
       <h2 id="welcome-title">¿Cómo prefieres usar TécnicoYa?</h2>
       <p id="welcome-help" className="muted">Elige lo que te acomode; puedes marcar varias. Lo cambias cuando quieras en tu cuenta, pestaña Accesibilidad.</p>
       <div className="welcome-cards" role="group" aria-label="Preferencias de uso">
-        {WELCOME_CARDS.map(([id, title, text, , icon]) => <button key={id} type="button" className="welcome-card" aria-pressed={chosen.includes(id)}
+        {cards.map(([id, title, text, , icon]) => <button key={id} type="button" className="welcome-card" aria-pressed={chosen.includes(id)}
           onClick={() => toggle(id)}>
           <span className="welcome-icon" aria-hidden="true"><Icon name={icon}/></span>
           <span><strong>{title}</strong><small>{text}</small></span>
@@ -107,14 +113,14 @@ export function placeBubble(box, size, viewport = {width: window.innerWidth, hei
  * está en el menú, desplaza la zona a la vista con scrollIntoView({block: 'center'}) (menú y página) y recalcula el
  * recuadro y la burbuja con resize y scroll. El fondo queda bloqueado; con «Reducir animaciones» todo es instantáneo.
  */
-export function Tour({onDone, persist = true}) {
+export function Tour({onDone, persist = true, steps = TOUR_STEPS}) {
   const shell = useShell();
   const [step, setStep] = useState(0);
   const [box, setBox] = useState(null);
   const [place, setPlace] = useState(null);
   const root = useRef(null);
   const next = useRef(null);
-  const current = TOUR_STEPS[step];
+  const current = steps[step];
   useEffect(() => {
     shell.setTourMode(true);
     document.body.classList.add('is-touring');
@@ -154,7 +160,7 @@ export function Tour({onDone, persist = true}) {
       style={{top: box.top - 6, left: box.left - 6, width: box.width + 12, height: box.height + 12}}/>}
     <dialog open ref={root} className={'tour-bubble is-' + (place?.side || 'center')} style={place ? {top: place.top, left: place.left} : undefined}
       aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-text" onKeyDown={trap(root, end)}>
-      <p className="tour-step" aria-live="polite">Paso {step + 1} de {TOUR_STEPS.length}</p>
+      <p className="tour-step" aria-live="polite">Paso {step + 1} de {steps.length}</p>
       <h2 id="tour-title">{current.title}</h2>
       <p id="tour-text">{current.text}</p>
       <div className="tour-actions">
@@ -162,8 +168,8 @@ export function Tour({onDone, persist = true}) {
         <span>
           <button type="button" className="button outline" disabled={step === 0} onClick={() => setStep(step - 1)}>Atrás</button>
           <button ref={next} type="button" className="button primary"
-            onClick={() => (step === TOUR_STEPS.length - 1 ? end() : setStep(step + 1))}>
-            {step === TOUR_STEPS.length - 1 ? 'Terminar' : 'Siguiente'}</button>
+            onClick={() => (step === steps.length - 1 ? end() : setStep(step + 1))}>
+            {step === steps.length - 1 ? 'Terminar' : 'Siguiente'}</button>
         </span>
       </div>
     </dialog>
@@ -171,12 +177,12 @@ export function Tour({onDone, persist = true}) {
 }
 
 /** Muestra la bienvenida y luego el tutorial, solo si la cuenta no los marcó; replay repite el tutorial sin marcarlo. */
-export default function ClientOnboarding({user, replay = false, onReplayEnd = () => {}}) {
+export default function ClientOnboarding({user, replay = false, onReplayEnd = () => {}, cards = WELCOME_CARDS, steps = TOUR_STEPS, onAlerts}) {
   // D-105: preferencias comunes en /me; client_profile.preferences queda por compatibilidad.
   const prefs = user.preferences || user.client_profile?.preferences;
   const [stage, setStage] = useState(() => (!prefs ? null : !prefs.onboarding_completed_at ? 'welcome' : !prefs.tour_completed_at ? 'tour' : null));
-  if (replay) return <Tour persist={false} onDone={onReplayEnd}/>;
-  if (stage === 'welcome') return <WelcomeDialog onDone={() => setStage(prefs?.tour_completed_at ? null : 'tour')}/>;
-  if (stage === 'tour') return <Tour onDone={() => setStage(null)}/>;
+  if (replay) return <Tour persist={false} steps={steps} onDone={onReplayEnd}/>;
+  if (stage === 'welcome') return <WelcomeDialog cards={cards} onAlerts={onAlerts} onDone={() => setStage(prefs?.tour_completed_at ? null : 'tour')}/>;
+  if (stage === 'tour') return <Tour steps={steps} onDone={() => setStage(null)}/>;
   return null;
 }

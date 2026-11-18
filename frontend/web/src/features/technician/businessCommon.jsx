@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useId, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {request, uploadWithProgress} from '../administration/http';
 import {validateUpload} from '../administration/sprint02Validation';
+import {Dictation} from '../client/ProblemSearch';
 import Icon from '../panel/icons';
 import './business.css';
 
@@ -44,14 +45,18 @@ export function CharCounter({id, value, max, min = 0}) {
 }
 
 /** Campo de texto largo con su etiqueta, ayuda, contador y error. */
-export function CountedText({label, value, onChange, max, min, rows = 4, hint, error, name, placeholder}) {
+export function CountedText({label, value, onChange, max, min, rows = 4, hint, error, name, placeholder, dictation = false}) {
   const id = useId();
   return <label className="tech-field" htmlFor={id}>
     <span className="tech-field-label">{label}</span>
     {hint && <small className="muted" id={`${id}-hint`}>{hint}</small>}
     <textarea id={id} name={name} rows={rows} value={value} placeholder={placeholder} aria-invalid={Boolean(error) || value.length > max}
       aria-describedby={`${id}-count${hint ? ` ${id}-hint` : ''}${error ? ` ${id}-error` : ''}`} onChange={event => onChange(event.target.value)}/>
-    <CharCounter id={`${id}-count`} value={value} max={max} min={min}/>
+    <span className="tech-field-tools">
+      {/* Fase T5: con «Dictar por voz», un micrófono agrega lo dictado al final del texto. */}
+      {dictation && <Dictation onText={text => { if (text) onChange(value ? `${value.trimEnd()} ${text}` : text); }}/>}
+      <CharCounter id={`${id}-count`} value={value} max={max} min={min}/>
+    </span>
     {error && <span className="error" id={`${id}-error`}>{error}</span>}
   </label>;
 }

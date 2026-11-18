@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {OfferAlertsTab} from '../technician/offerAlerts';
 import {request} from '../administration/http';
 import {Notice} from '../administration/forms';
 import {useResource} from '../administration/Sprint02Common';
@@ -58,14 +59,6 @@ function SecurityTab({onExpired}) {
   </>;
 }
 
-/** Avisos del técnico: sus opciones llegan en la Fase T5; mientras tanto la pestaña lo dice, sin controles vacíos. */
-function OfferAlertsSoon() {
-  return <section className="account-card">
-    <p><span className="client-chip">Próximamente</span></p>
-    <p>Podrás elegir cómo te avisamos de una oferta nueva: sonido, vibración, destello en pantalla y lectura en voz alta.</p>
-    <p className="muted">El plazo para responder una oferta sigue siendo de 10 minutos.</p>
-  </section>;
-}
 const KINDS = [['home', 'Casa'], ['business', 'Negocio'], ['other', 'Otra']];
 const EMPTY = {kind: 'home', label: '', district_id: '', address: '', reference: '', is_default: false};
 
@@ -322,7 +315,8 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
             <TabIntro id={tab} label={label} description={description}/>
             {tab === 'cuenta' && <ProfilePage user={user} onUpdate={onUpdate} onExpired={onExpired} password={role === 'client'}/>}
             {tab === 'seguridad' && <SecurityTab onExpired={onExpired}/>}
-            {tab === 'avisos' && <OfferAlertsSoon/>}
+            {/* Fase T5 (D-112): avisos de oferta del técnico. */}
+            {tab === 'avisos' && <OfferAlertsTab/>}
             {tab === 'direcciones' && <AddressesTab/>}
             {tab === 'accesibilidad' && <>
               <section className="account-card"><AccessibilityControls prefs={a11y[0]} onChange={a11y[1]} reader={reader} full/></section>

@@ -371,3 +371,60 @@
   .tech-legend .tech-week-visits { font-size: .75rem; }
   .tech-week-cell:has(.tech-week-visits) .panel-svg-icon { transform: translate(-3px, 4px); width: 16px; height: 16px; }
 }
+
+/* ===== Fase T5: avisos de oferta, modo simple, Primeros pasos, dictado y base WCAG 2.1 AA del panel del técnico ===== */
+.tech-field-tools { display: flex; align-items: center; justify-content: flex-end; gap: 8px; min-height: 24px; }
+.tech-field-tools .problem-search-mic { width: 44px; height: 44px; }
+.tech-field-tools .problem-search-listening { margin-right: auto; }
+
+/* Leer la oferta en voz alta */
+.offer-speak { justify-self: start; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+.offer-speak .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+
+/* Modo simple: Aceptar y Rechazar extragrandes, uno debajo del otro (el plazo de 10 minutos no cambia) */
+.offer-actions.is-xl, html[data-simple="on"] .offer-actions { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.offer-actions.is-xl .button, html[data-simple="on"] .offer-actions .button { min-height: 76px; font-size: 1.45rem; border-radius: 20px; }
+.offer-actions.is-xl .panel-svg-icon, html[data-simple="on"] .offer-actions .panel-svg-icon { width: 30px; height: 30px; }
+
+/* Destello de oferta nueva: borde de color alrededor de la pantalla, sin tapar nada; fijo con «Reducir animaciones» */
+.tech-offer-flash { position: fixed; inset: 0; z-index: 90; pointer-events: none; border: 8px solid hsl(38 95% 50%);
+  box-shadow: inset 0 0 0 4px hsl(0 0% 100% / .7), inset 0 0 60px hsl(38 95% 50% / .45); animation: tech-offer-flash .6s ease-in-out 3; }
+@keyframes tech-offer-flash { 50% { opacity: .15; } }
+.tech-offer-flash[data-static], :root[data-motion="reduce"] .tech-offer-flash { animation: none; }
+@media (prefers-reduced-motion: reduce) { .tech-offer-flash { animation: none; } }
+
+/* Pestaña Avisos */
+.tech-alerts-tab { display: grid; gap: 14px; }
+.tech-alerts-tab > .button { justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.tech-alerts-tab .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+.tech-alert-label { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+
+/* Primeros pasos */
+.tech-first-steps { border: 2px solid color-mix(in srgb, var(--ty-accent) 55%, var(--ty-border)); }
+.tech-first-steps h3 { display: flex; align-items: center; gap: 8px; }
+.tech-first-steps h3 .panel-svg-icon { width: 20px; height: 20px; margin: 0; color: var(--ty-accent); }
+.tech-first-steps > p { margin: 0; }
+.tech-first-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.tech-first-list li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px;
+  border-radius: 14px; background: color-mix(in srgb, var(--ty-accent) 6%, var(--ty-surface)); }
+.tech-first-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; font-weight: 700;
+  border: 2px solid var(--ty-accent); color: var(--ty-text); }
+.tech-first-list li[data-done="true"] .tech-first-mark { background: hsl(152 50% 34%); border-color: hsl(152 50% 34%); color: white; }
+.tech-first-mark .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+.tech-first-text { display: grid; gap: 2px; }
+.tech-first-state { font-size: .8rem; font-weight: 700; color: var(--ty-muted); }
+.tech-first-list li[data-done="true"] .tech-first-state { color: hsl(152 55% 28%); }
+[data-theme="dark"] .tech-first-list li[data-done="true"] .tech-first-state { color: hsl(152 50% 65%); }
+@media (max-width: 560px) {
+  .tech-first-list li { grid-template-columns: auto minmax(0, 1fr); }
+  .tech-first-list .tech-task-go { grid-column: 1 / -1; width: 100%; }
+}
+
+/* WCAG 2.1 AA · pendiente de la T3: con texto al 150 % en el celular, el rótulo «Mañana» ya no se corta. La columna de
+   franjas toma el ancho de su texto y las casillas se reparten el resto. */
+@media (max-width: 560px) {
+  .tech-week { grid-template-columns: max-content repeat(7, minmax(0, 1fr)); }
+  .tech-week-franja strong { font-size: .8rem; white-space: nowrap; }
+}
+/* Objetivos táctiles de 44 px o más en los controles propios del técnico. */
+[data-cy="portal-technician"] .text-button { min-height: 44px; display: inline-flex; align-items: center; }
