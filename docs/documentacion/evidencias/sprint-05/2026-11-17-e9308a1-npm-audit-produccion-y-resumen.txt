@@ -1,0 +1,13 @@
+$ npm audit --omit=dev --audit-level=high
+found 0 vulnerabilities
+salida: 0
+
+$ npm audit --json > npm-audit.json; node ../../scripts/resumen-npm-audit.mjs npm-audit.json
+npm audit completo (informativo, no bloquea): 7 paquetes con avisos (7 high).
+- @vitejs/plugin-react · high · directo · >=6.0.0-beta.0 · por vite
+- @vitest/coverage-v8 · high · directo · >=3.2.0-beta.1 · por vitest
+- fdir · high · transitivo · >=5.2.1 · por picomatch
+- picomatch · high · transitivo · * · GHSA-fc5q-39xc-vjpf
+- tinyglobby · high · transitivo · * · por fdir, picomatch
+- vite · high · directo · >=6.3.0-beta.0 · por picomatch, tinyglobby
+- vitest · high · directo · >=3.1.2 · por @vitest/coverage-v8, picomatch, tinyglobby, vite

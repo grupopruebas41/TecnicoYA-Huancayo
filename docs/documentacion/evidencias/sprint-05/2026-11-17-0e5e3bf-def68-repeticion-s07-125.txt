@@ -1,0 +1,227 @@
+Repetición de S07-TC-125 (DEF-68) con la lotería de sesiones forzada al 50 % antes de cada caso; archivo temporal no versionado,
+copia del cuerpo de la prueba con y sin config(['session.lottery' => [0, 100]]).
+
+
+   FAIL  Tests\Feature\Sprint07\TmpDef68RepeticionTest
+  ✓ it corregida with (1)                                                                                       77.99s  
+  ✓ it corregida with (2)                                                                                        1.22s  
+  ✓ it corregida with (3)                                                                                        1.26s  
+  ✓ it corregida with (4)                                                                                        1.35s  
+  ✓ it corregida with (5)                                                                                        1.10s  
+  ✓ it corregida with (6)                                                                                        1.09s  
+  ✓ it corregida with (7)                                                                                        1.11s  
+  ✓ it corregida with (8)                                                                                        1.16s  
+  ✓ it corregida with (9)                                                                                        1.05s  
+  ✓ it corregida with (10)                                                                                       1.10s  
+  ✓ it corregida with (11)                                                                                       1.24s  
+  ✓ it corregida with (12)                                                                                       1.12s  
+  ✓ it corregida with (13)                                                                                       1.07s  
+  ✓ it corregida with (14)                                                                                       1.10s  
+  ✓ it corregida with (15)                                                                                       1.06s  
+  ✓ it corregida with (16)                                                                                       1.16s  
+  ✓ it corregida with (17)                                                                                       1.07s  
+  ✓ it corregida with (18)                                                                                       1.03s  
+  ✓ it corregida with (19)                                                                                       1.08s  
+  ✓ it corregida with (20)                                                                                       1.24s  
+  ✓ it control sin arreglo with (1)                                                                              1.13s  
+  ✓ it control sin arreglo with (2)                                                                              1.11s  
+  ✓ it control sin arreglo with (3)                                                                              1.11s  
+  ⨯ it control sin arreglo with (4)                                                                              1.13s  
+  ✓ it control sin arreglo with (5)                                                                              1.11s  
+  ✓ it control sin arreglo with (6)                                                                              1.10s  
+  ✓ it control sin arreglo with (7)                                                                              1.19s  
+  ✓ it control sin arreglo with (8)                                                                              1.43s  
+  ✓ it control sin arreglo with (9)                                                                              1.34s  
+  ⨯ it control sin arreglo with (10)                                                                             1.15s  
+  ⨯ it control sin arreglo with (11)                                                                             1.21s  
+  ⨯ it control sin arreglo with (12)                                                                             1.07s  
+  ⨯ it control sin arreglo with (13)                                                                             1.17s  
+  ✓ it control sin arreglo with (14)                                                                             1.62s  
+  ✓ it control sin arreglo with (15)                                                                             2.39s  
+  ✓ it control sin arreglo with (16)                                                                             1.39s  
+  ⨯ it control sin arreglo with (17)                                                                             1.08s  
+  ⨯ it control sin arreglo with (18)                                                                             1.16s  
+  ⨯ it control sin arreglo with (19)                                                                             1.04s  
+  ⨯ it control sin arreglo with (20)                                                                             1.08s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (4)                              
+  Failed asserting that 16 is identical to 17.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (10)                             
+  Failed asserting that 17 is identical to 16.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (11)                             
+  Failed asserting that 16 is identical to 17.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (12)                             
+  Failed asserting that 17 is identical to 16.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (13)                             
+  Failed asserting that 17 is identical to 16.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (17)                             
+  Failed asserting that 16 is identical to 17.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (18)                             
+  Failed asserting that 16 is identical to 17.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (19)                             
+  Failed asserting that 17 is identical to 16.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint07\TmpDef68RepeticionTest > it control sin arreglo with (20)                             
+  Failed asserting that 16 is identical to 17.
+
+  at tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+     36▕     $few = $count();
+     37▕     foreach (range(1, 25) as $index) {
+     38▕         Sprint04::sentRequest(['created_at' => now(), 'district_id' => Sprint04::district($index % 2 ? 'HUANCAYO' : 'EL-TAMBO')]);
+     39▕     }
+  ➜  40▕     expect($count())->toBe($few)->and($few)->toBeLessThanOrEqual(20);
+     41▕ }
+     42▕ 
+     43▕ it('corregida', fn () => def68Body($this, true))->with(range(1, 20));
+     44▕ it('control sin arreglo', fn () => def68Body($this, false))->with(range(1, 20));
+
+  1   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:40
+  2   tests\Feature\Sprint07\TmpDef68RepeticionTest.php:44
+
+
+  Tests:    9 failed, 31 passed (182 assertions)
+  Duration: 125.21s
+
+
+Archivo real tests/Feature/Sprint07/AdminInsightsTest.php con el arreglo:
+
+   PASS  Tests\Feature\Sprint07\AdminInsightsTest
+  ✓ it S07-TC-121 las estadísticas exigen dashboard.view, aceptan 7, 30 o 90 días y devuelven un día por fecha… 70.93s  
+  ✓ it S07-TC-122 agrega solicitudes por día, especialidad y distrito, y el embudo enviado, con ofertas, asigna… 1.49s  
+  ✓ it S07-TC-123 calcula la tasa de aceptación de ofertas y el tiempo medio de respuesta; sin respuestas devue… 1.19s  
+  ✓ it S07-TC-124 cuenta técnicos por estado, usuarios nuevos por rol y comunicados vigentes por audiencia       0.59s  
+  ✓ it S07-TC-125 las estadísticas usan un número fijo de consultas, sin importar cuántas solicitudes haya       1.24s  
+  ✓ it S07-TC-126 lista las solicitudes en solo lectura con filtros por estado, distrito, especialidad, fecha y… 1.88s  
+  ✓ it S07-TC-127 el detalle de una solicitud muestra la línea de tiempo en orden, el cliente y el técnico asig… 1.27s  
+  ✓ it S07-TC-128 el Inicio entrega los contadores del menú y los últimos 5 eventos relevantes, sin datos perso… 0.58s  
+
+  Tests:    8 passed (127 assertions)
+  Duration: 79.51s
+

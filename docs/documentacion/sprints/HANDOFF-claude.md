@@ -18,6 +18,46 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Fuera de alcance, visto en las capturas:** con texto al 150 % en el celular, el rótulo «Mañana» de la columna de franjas se corta (ya pasaba antes). Queda como pendiente de la T5 en `PLAN-PANEL-TECNICO.md`.
 - **Pedidos a Codex:** ninguno.
 
+## 2026-11-17 · CI: `npm audit` de producción (D-110, DEF-67) y S07-TC-125 determinista (DEF-68)
+
+- **Rama:** `feature/pimentel/calidad/ci-audit-y-s07-125`, desde `main` `3345227` (#60 integrado); un solo PR, que se integra **antes** del #58 y del #59.
+- **Motivo:** al traer `main` al #58 (merge `5dd3068`), su CI falló por dos causas ajenas a él:
+  - `npm audit`: aviso alto de `picomatch` ≤ 4.0.7 sin parche publicado;
+  - S07-TC-125: prueba intermitente.
+- **`npm audit` (D-110, opción A de Pimentel):**
+  - **Bloquea:** `npm audit --omit=dev --audit-level=high`.
+  - **No bloquea:** el informe completo `npm-audit.json` en `frontend-reportes`, más un resumen en el log y en el resumen del job (`scripts/resumen-npm-audit.mjs`).
+  - **DEF-67:** CVE-2026-112366, registrado como «Riesgo aceptado»; solo afecta a desarrollo (vite y vitest).
+  - **Revisión:** cuando salga `picomatch` 4.0.8 o en el cierre del sprint, lo que ocurra primero.
+  - Actualicé la definición de terminado en AGENTS.md §8 y en PLAN-MAESTRO-v3.
+  - Sin `npm audit fix --force` y sin cambiar vite ni vitest.
+- **S07-TC-125 (DEF-68):**
+  - **Causa:** la lotería de sesiones de Laravel (`[2, 100]`, con `SESSION_DRIVER=database`) agregaba al azar un `delete from sessions` y el conteo daba 17 contra 16.
+  - **Arreglo:** la prueba fija `session.lottery` en `[0, 100]`, con un comentario.
+  - **Verificación con la lotería forzada al 50 %:** 20 de 20 aprobadas con el arreglo y 9 fallos de 20 sin él.
+- **Pruebas en local:**
+  - `AdminInsightsTest`: 8 de 8;
+  - Vitest: 465 de 465, más lint y build;
+  - `npm audit --omit=dev --audit-level=high`: 0;
+  - evidencias en `docs/documentacion/evidencias/sprint-05/2026-11-17-{e9308a1,0e5e3bf}-*`.
+- **Siguiente:**
+  1. Cuando se integre, traer `main` al #58 otra vez, esperar su CI y avisar.
+  2. Luego hacer lo mismo con el #59.
+
+## 2026-11-17 · Seguridad: laravel/framework a v12.72.0 (DEF-66, CVE-2026-128083)
+
+- **Rama:** `feature/pimentel/seguridad/laravel-12-71`, desde `main` `355e2e1`; PR #60, que se integra **antes** del #58 y del #59.
+- **Motivo:** desde el 2026-11-13, `composer audit` falla en la CI por GHSA-63hm-g96r-2m2q (gravedad baja: inyección en la salida de tareas de Concurrency Process), que afecta a `laravel/framework` < 12.71.0. Usábamos la v12.69.3.
+- **Cambio:**
+  - `composer update laravel/framework` sin `-W` (opción A, elegida por Pimentel);
+  - el lock solo cambia `laravel/framework` (v12.69.3 a v12.72.0), sin arrastrar otros paquetes;
+  - `composer.json` sin cambios.
+- **Pruebas:**
+  - `composer audit` sin avisos;
+  - Pest completo en el slot A: 496 aprobadas (5679 aserciones);
+  - evidencias en `docs/documentacion/evidencias/sprint-05/2026-11-17-4391d72-*`.
+- **Siguiente:** cuando se integre, actualizar el #58 con `main` (merge, sin `--force`), esperar su CI y después hacer lo mismo con el #59. El pendiente de la T5 (rótulo «Mañana» cortado con texto al 150 % en el celular) quedó anotado en `PLAN-PANEL-TECNICO.md` dentro del #59.
+
 ## 2026-11-10 · Panel del técnico, Fase T3 (modo rápido): Ofertas, Mis trabajos, Mi agenda y Zonas
 
 - **Rama:** `feature/pimentel/tecnico/t3-trabajos`, desde `main` `355e2e1` (PR #57 integrado); un solo PR, sin migraciones.
