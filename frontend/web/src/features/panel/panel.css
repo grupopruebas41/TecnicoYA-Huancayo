@@ -1562,3 +1562,14 @@ html[data-motion="reduce"] .panel-shell.is-touring .panel-sidebar { scroll-behav
   :is(.panel-shell, .account-overlay) :is(.button.outline, button.outline, .s02-modal button, .s02-panel button) { transition: none; }
 }
 :root[data-motion="reduce"] :is(.panel-shell, .account-overlay) :is(.button.outline, button.outline, .s02-modal button, .s02-panel button) { transition: none; }
+
+/* Revisión del #63 · etiquetas del menú (técnico, cliente y administrador): ninguna se corta ni queda bajo la barra de
+   desplazamiento. El texto cede (min-width: 0) y la etiqueta no (flex-shrink: 0); si no caben juntos (texto al 150 %),
+   la etiqueta baja a la línea siguiente en vez de salirse. La barra se reserva siempre y solo se ve al pasar el mouse. */
+.panel-sidebar { scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: transparent transparent; }
+.panel-sidebar:hover, .panel-sidebar:focus-within { scrollbar-color: var(--ty-sidebar-border) transparent; }
+.panel-nav-text { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.panel-nav-text > .panel-label { flex: 1 1 auto; min-width: 0; white-space: normal; overflow-wrap: break-word; line-height: 1.25; }
+.panel-nav-text > .panel-nav-badge { flex-shrink: 0; }
+/* Contraído en escritorio: el contenedor desaparece y el texto y el punto vuelven a colgar del ítem, como antes. */
+@media (min-width: 761px) { .panel-shell.is-collapsed .panel-nav-text { display: contents; } }

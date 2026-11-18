@@ -13,6 +13,7 @@ use Illuminate\Validation\Rule;
  * GET y PUT /me/preferences para los tres roles (D-105); /client/me/preferences (D-97) usa el mismo controlador. El PUT
  * acepta ajustes parciales de la lista blanca y las marcas onboarding_completed y tour_completed, que se fijan una sola
  * vez. Cualquier otra clave, como datos de salud o la tarjeta elegida, se rechaza y no se guarda.
+ * Fase T5 (D-112): offer_alerts (sonido, vibración, destello y voz) solo para el técnico; otro rol recibe 422.
  */
 final class PreferencesController
 {
@@ -29,13 +30,22 @@ final class PreferencesController
         foreach (array_diff($flags, ['text_size']) as $flag) {
             $rules["accessibility.$flag"] = ['sometimes', 'boolean'];
         }
+        $rules['offer_alerts'] = ['sometimes', 'array'];
+        foreach (array_keys(UserPreferences::OFFER_ALERTS) as $flag) {
+            $rules["offer_alerts.$flag"] = ['sometimes', 'boolean'];
+        }
+        if ($request->has('offer_alerts') && DB::table('roles')->where('id', $request->user()->role_id)->value('code') !== 'technician') {
+            return ApiResponse::error('VALIDATION_FAILED', __('api.offer_alerts_role'), 422, ['offer_alerts' => [__('api.offer_alerts_role')]]);
+        }
         $data = $request->validate($rules, [
             'accessibility.text_size.in' => __('api.text_size'), 'accessibility.*.boolean' => __('api.preference_boolean'),
             'onboarding_completed.accepted' => __('api.preference_flag'), 'tour_completed.accepted' => __('api.preference_flag'),
+            'offer_alerts.*.boolean' => __('api.preference_boolean'), 'offer_alerts.array' => __('api.preference_unknown'),
         ]);
         $unknown = array_merge(
-            array_diff(array_keys($request->all()), ['accessibility', 'onboarding_completed', 'tour_completed']),
+            array_diff(array_keys($request->all()), ['accessibility', 'onboarding_completed', 'tour_completed', 'offer_alerts']),
             array_map(fn ($key) => "accessibility.$key", array_diff(array_keys((array) $request->input('accessibility', [])), $flags)),
+            array_map(fn ($key) => "offer_alerts.$key", array_diff(array_keys((array) $request->input('offer_alerts', [])), array_keys(UserPreferences::OFFER_ALERTS))),
         );
         if ($unknown !== []) {
             return ApiResponse::error('VALIDATION_FAILED', __('api.preference_unknown'), 422,
@@ -52,6 +62,11 @@ final class PreferencesController
                     $next[$flag] = filter_var($next[$flag], FILTER_VALIDATE_BOOLEAN);
                 }
                 $changes['accessibility_prefs'] = json_encode($next);
+            }
+            if (isset($data['offer_alerts'])) {
+                $alerts = array_map(fn ($value) => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+                    array_merge(UserPreferences::forUser($userId)['offer_alerts'], $data['offer_alerts']));
+                $changes['offer_alert_prefs'] = json_encode($alerts);
             }
             if (! empty($data['onboarding_completed']) && $row->onboarding_completed_at === null) {
                 $changes['onboarding_completed_at'] = now();

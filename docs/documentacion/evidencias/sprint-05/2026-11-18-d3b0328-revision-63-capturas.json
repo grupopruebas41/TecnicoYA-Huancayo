@@ -1,0 +1,478 @@
+{
+  "1366-light-texto100-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-light-menu-contraido": {
+    "tooltip": "Verificación: Falta un documento",
+    "punto": [
+      16,
+      16
+    ],
+    "dentro": true
+  },
+  "1366-light-texto150-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-light-texto150-menu-tecnico-aprobado": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Ofertas",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Perfil profesional",
+        "texto": "63 %",
+        "title": "Perfil al 63 %",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Aprobado",
+        "title": "Verificación: Aprobado",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-light-texto150-menu-cliente": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Mis solicitudes",
+        "texto": "3",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-light-texto150-menu-admin": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Verificación",
+        "texto": "4",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Comunicados",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-dark-texto100-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-dark-menu-contraido": {
+    "tooltip": "Verificación: Falta un documento",
+    "punto": [
+      16,
+      16
+    ],
+    "dentro": true
+  },
+  "1366-dark-texto100-menu-tecnico-aprobado": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Ofertas",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Perfil profesional",
+        "texto": "63 %",
+        "title": "Perfil al 63 %",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Aprobado",
+        "title": "Verificación: Aprobado",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-dark-texto100-menu-cliente": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Mis solicitudes",
+        "texto": "3",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-dark-texto100-menu-admin": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Verificación",
+        "texto": "4",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Comunicados",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "1366-dark-texto150-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-light-texto100-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-light-texto150-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-light-texto150-menu-tecnico-aprobado": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Ofertas",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Perfil profesional",
+        "texto": "63 %",
+        "title": "Perfil al 63 %",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Aprobado",
+        "title": "Verificación: Aprobado",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-light-texto150-menu-cliente": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Mis solicitudes",
+        "texto": "3",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-light-texto150-menu-admin": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Verificación",
+        "texto": "4",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Comunicados",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-dark-texto100-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-dark-texto100-menu-tecnico-aprobado": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Ofertas",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Perfil profesional",
+        "texto": "63 %",
+        "title": "Perfil al 63 %",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Aprobado",
+        "title": "Verificación: Aprobado",
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-dark-texto100-menu-cliente": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Mis solicitudes",
+        "texto": "3",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-dark-texto100-menu-admin": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Verificación",
+        "texto": "4",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      },
+      {
+        "item": "Comunicados",
+        "texto": "1",
+        "title": null,
+        "dentro": true,
+        "letraPx": 12,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  },
+  "390-dark-texto150-menu-tecnico": {
+    "barraReservada": "stable",
+    "etiquetas": [
+      {
+        "item": "Perfil profesional",
+        "texto": "0 %",
+        "title": "Perfil al 0 %",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      },
+      {
+        "item": "Verificación",
+        "texto": "Falta 1",
+        "title": "Verificación: Falta un documento",
+        "dentro": true,
+        "letraPx": 18,
+        "textoCortado": false
+      }
+    ],
+    "desborde": false,
+    "quienDesborda": []
+  }
+}

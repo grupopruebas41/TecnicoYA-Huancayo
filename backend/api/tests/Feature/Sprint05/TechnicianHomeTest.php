@@ -166,6 +166,16 @@ it('S05-TC-295 la verificación del menú: aprobado, falta un documento, en revi
     expect($state()['label'])->toBe('Observado');
 });
 
+it('S05-TC-372 sin documentos, la verificación dice «Faltan 2 documentos» (el menú muestra «Falta 2»; revisión del #63)', function () {
+    DB::table('technician_profiles')->where('id', $this->technician->id)->update(['verification_status' => 'pending', 'status' => 'pending_verification']);
+    DB::table('technician_documents')->where('technician_id', $this->technician->id)->delete();
+    Sanctum::actingAs($this->technician->user);
+
+    expect($this->getJson('/api/v1/technicians/me/home')->assertOk()->json('data.verification'))
+        ->toMatchArray(['state' => 'missing', 'label' => 'Faltan 2 documentos'])
+        ->missing->toHaveCount(2);
+});
+
 it('S05-TC-296 tecnicoya:demo-offer solo corre en local y solo para técnicos demo [D-108]', function () {
     expect(Artisan::call('tecnicoya:demo-offer', ['email' => 'demo-tecnico-computo@example.test']))->toBe(1)
         ->and(Artisan::output())->toContain('solo corre en desarrollo');

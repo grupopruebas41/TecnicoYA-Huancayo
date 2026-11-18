@@ -1,6 +1,7 @@
 /* Panel del técnico, Fase T2: Inicio con oferta en vivo, indicadores, Mi día, progreso e insignias. Mismo lenguaje del
    panel del cliente (tarjetas, acentos y animaciones suaves que se apagan con «Reducir animaciones»). */
-.tech-home { display: grid; gap: 18px; }
+/* Revisión del #63: la columna no crece con el contenido (con texto al 150 % en el celular el Inicio medía 430 px). */
+.tech-home { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 .tech-home > *, .tech-section { animation: tech-rise 220ms ease-out both; animation-delay: calc(var(--i, 0) * 60ms); }
 @keyframes tech-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
@@ -22,9 +23,9 @@
 .tech-skeleton { min-height: 120px; display: grid; place-items: center; color: var(--ty-muted); }
 
 /* Oferta en vivo */
-.tech-live { display: grid; gap: 12px; }
+.tech-live { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .offer-spotlight {
-  display: grid; gap: 16px; border: 2px solid color-mix(in srgb, var(--ty-accent) 60%, transparent);
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; border: 2px solid color-mix(in srgb, var(--ty-accent) 60%, transparent);
   background: linear-gradient(135deg, color-mix(in srgb, var(--ty-accent) 14%, var(--ty-surface)), var(--ty-surface) 60%);
 }
 .offer-spotlight[data-urgent] { border-color: hsl(8 70% 52%); }
@@ -39,7 +40,8 @@
 .offer-facts dt { display: flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--ty-muted); }
 .offer-facts dt .panel-svg-icon { width: 16px; height: 16px; margin: 0; }
 .offer-facts dd { margin: 0; font-weight: 600; }
-.offer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* Revisión del #63: con letra grande en el celular, Aceptar y Rechazar se apilan en vez de salirse de la tarjeta. */
+.offer-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8em), 1fr)); gap: 12px; }
 .offer-actions .button { min-height: 56px; font-size: 1.1rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 .offer-actions .panel-svg-icon { width: 22px; height: 22px; margin: 0; }
 .offer-reason { display: grid; gap: 6px; }
@@ -128,11 +130,21 @@
 .panel-nav-pulse { position: absolute; top: -3px; right: -3px; width: 9px; height: 9px; border-radius: 50%; background: hsl(4 72% 52%);
   box-shadow: 0 0 0 0 hsl(4 72% 52% / .6); animation: tech-dot 1.6s ease-out infinite; }
 @keyframes tech-dot { 70% { box-shadow: 0 0 0 7px hsl(4 72% 52% / 0); } 100% { box-shadow: 0 0 0 0 hsl(4 72% 52% / 0); } }
-.panel-nav-badge.is-text { width: auto; min-width: 0; padding: 0 8px; font-size: .72rem; white-space: nowrap; }
-.panel-nav-badge.is-text[data-tone="ok"] { background: hsl(152 50% 34%); color: white; }
-.panel-nav-badge.is-text[data-tone="warn"] { background: hsl(38 90% 42%); color: hsl(30 70% 10%); }
-.panel-nav-badge.is-text[data-tone="danger"] { background: hsl(4 65% 46%); color: white; }
-.panel-nav-badge.is-text[data-tone="info"] { background: hsl(205 60% 40%); color: white; }
+/* Revisión del #63: estado corto con ícono (no solo color), letra de 12 px o más y colores con contraste AA sobre el menú
+   oscuro en los dos temas: verde aprobado, ámbar pendiente, azul en revisión y rojo suave observado. */
+.panel-nav-badge.is-text { display: inline-flex; align-items: center; gap: 4px; width: auto; min-width: 0; min-height: 22px; margin-left: auto;
+  padding: 2px 9px 2px 7px; font-size: .75rem; line-height: 1.2; white-space: nowrap; border-radius: 999px; }
+.panel-nav-badge.is-text .panel-svg-icon { width: 12px; height: 12px; margin: 0; flex: none; stroke-width: 2.6; }
+.panel-nav-badge.is-text[data-tone="ok"] { background: hsl(152 55% 28%); color: white; }
+.panel-nav-badge.is-text[data-tone="warn"] { background: hsl(42 96% 56%); color: hsl(28 85% 13%); }
+.panel-nav-badge.is-text[data-tone="danger"] { background: hsl(4 90% 89%); color: hsl(4 72% 28%); }
+.panel-nav-badge.is-text[data-tone="info"] { background: hsl(205 70% 36%); color: white; }
+/* Menú contraído (escritorio): un punto de color sobre el ícono; el texto queda en el tooltip y en la descripción. */
+@media (min-width: 761px) {
+  .panel-shell.is-collapsed .panel-nav-badge.is-text { top: 6px; right: 14px; width: 12px; height: 12px; min-width: 0; min-height: 0; padding: 0;
+    border: 2px solid var(--ty-sidebar-bg); box-sizing: content-box; }
+  .panel-shell.is-collapsed .panel-nav-badge.is-text > * { display: none; }
+}
 
 @media (max-width: 980px) {
   .tech-row { grid-template-columns: minmax(0, 1fr); }
@@ -371,3 +383,68 @@
   .tech-legend .tech-week-visits { font-size: .75rem; }
   .tech-week-cell:has(.tech-week-visits) .panel-svg-icon { transform: translate(-3px, 4px); width: 16px; height: 16px; }
 }
+
+/* ===== Fase T5: avisos de oferta, modo simple, Primeros pasos, dictado y base WCAG 2.1 AA del panel del técnico ===== */
+.tech-field-tools { display: flex; align-items: center; justify-content: flex-end; gap: 8px; min-height: 24px; }
+.tech-field-tools .problem-search-mic { width: 44px; height: 44px; }
+.tech-field-tools .problem-search-listening { margin-right: auto; }
+
+/* Leer la oferta en voz alta */
+.offer-speak { justify-self: start; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+.offer-speak .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+
+/* Modo simple: Aceptar y Rechazar extragrandes, uno debajo del otro (el plazo de 10 minutos no cambia) */
+.offer-actions.is-xl, html[data-simple="on"] .offer-actions { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.offer-actions.is-xl .button, html[data-simple="on"] .offer-actions .button { min-height: 76px; font-size: 1.45rem; border-radius: 20px; }
+.offer-actions.is-xl .panel-svg-icon, html[data-simple="on"] .offer-actions .panel-svg-icon { width: 30px; height: 30px; }
+
+/* Destello de oferta nueva: borde de color alrededor de la pantalla, sin tapar nada; fijo con «Reducir animaciones» */
+.tech-offer-flash { position: fixed; inset: 0; z-index: 90; pointer-events: none; border: 8px solid hsl(38 95% 50%);
+  box-shadow: inset 0 0 0 4px hsl(0 0% 100% / .7), inset 0 0 60px hsl(38 95% 50% / .45); animation: tech-offer-flash .6s ease-in-out 3; }
+@keyframes tech-offer-flash { 50% { opacity: .15; } }
+.tech-offer-flash[data-static], :root[data-motion="reduce"] .tech-offer-flash { animation: none; }
+@media (prefers-reduced-motion: reduce) { .tech-offer-flash { animation: none; } }
+
+/* Pestaña Avisos */
+.tech-alerts-tab { display: grid; gap: 14px; }
+.tech-alerts-tab > .button { justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.tech-alerts-tab .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+.tech-alert-label { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+
+/* Primeros pasos */
+.tech-first-steps { border: 2px solid color-mix(in srgb, var(--ty-accent) 55%, var(--ty-border)); }
+.tech-first-steps h3 { display: flex; align-items: center; gap: 8px; }
+.tech-first-steps h3 .panel-svg-icon { width: 20px; height: 20px; margin: 0; color: var(--ty-accent); }
+.tech-first-steps > p { margin: 0; }
+.tech-first-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.tech-first-list li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px;
+  border-radius: 14px; background: color-mix(in srgb, var(--ty-accent) 6%, var(--ty-surface)); }
+.tech-first-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; font-weight: 700;
+  border: 2px solid var(--ty-accent); color: var(--ty-text); }
+.tech-first-list li[data-done="true"] .tech-first-mark { background: hsl(152 50% 34%); border-color: hsl(152 50% 34%); color: white; }
+.tech-first-mark .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+.tech-first-text { display: grid; gap: 2px; }
+.tech-first-state { font-size: .8rem; font-weight: 700; color: var(--ty-muted); }
+.tech-first-list li[data-done="true"] .tech-first-state { color: hsl(152 55% 28%); }
+[data-theme="dark"] .tech-first-list li[data-done="true"] .tech-first-state { color: hsl(152 50% 65%); }
+@media (max-width: 560px) {
+  .tech-first-list li { grid-template-columns: auto minmax(0, 1fr); }
+  .tech-first-list .tech-task-go { grid-column: 1 / -1; width: 100%; }
+}
+
+/* WCAG 2.1 AA · pendiente de la T3: con texto al 150 % en el celular, el rótulo «Mañana» ya no se corta. La columna de
+   franjas toma el ancho de su texto y las casillas se reparten el resto. */
+@media (max-width: 560px) {
+  .tech-week { grid-template-columns: max-content repeat(7, minmax(0, 1fr)); }
+  .tech-week-franja strong { font-size: .8rem; white-space: nowrap; }
+}
+/* Objetivos táctiles de 44 px o más en los controles propios del técnico. */
+[data-cy="portal-technician"] .text-button { min-height: 44px; display: inline-flex; align-items: center; }
+/* Medido en las capturas de la T5: «Saltar al contenido», «Abrir menú» y los controles del carrusel de comunicados
+   quedaban por debajo de 44 px dentro del panel del técnico. */
+[data-cy="portal-technician"] .skip-link { min-height: 44px; display: inline-flex; align-items: center; }
+[data-cy="portal-technician"] .panel-drawer-toggle { min-width: 44px; min-height: 44px; }
+[data-cy="portal-technician"] .carousel-controls button, [data-cy="portal-technician"] .carousel-actions button { min-width: 44px; min-height: 44px; }
+/* Pestaña Avisos: el ícono va en la misma línea que el nombre del aviso (la regla .a11y-switch span lo apilaba). */
+.a11y-switch .tech-alert-label { display: flex; flex-direction: row; align-items: center; gap: 6px; }
+.a11y-switch .tech-alert-label .panel-svg-icon { display: inline-block; width: 18px; height: 18px; margin: 0; }

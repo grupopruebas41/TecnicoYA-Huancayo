@@ -11,8 +11,9 @@ const recognitionClass = () => (typeof window === 'undefined' ? null : window.Sp
 /**
  * Fase 5 (D-97): dictado por voz. Solo aparece con el ajuste «Dictar por voz» y si el navegador lo soporta; se activa
  * al tocar el micrófono y, la primera vez de la sesión, después de aceptar el aviso. Si no acepta, no se activa.
+ * Fase T5: también lo usan los textos largos del perfil del técnico.
  */
-function Dictation({onText}) {
+export function Dictation({onText}) {
   const {prefs} = useAccessibilityContext();
   const [asking, setAsking] = useState(false);
   const [listening, setListening] = useState(false);

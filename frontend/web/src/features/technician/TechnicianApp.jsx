@@ -14,6 +14,8 @@ import NotificationsPage from '../client/NotificationsPage';
 import {PrivacyPage} from '../client/ClientPages';
 import TechnicianHome from './TechnicianHome';
 import {TechnicianFaq, TechnicianHowItWorks} from './TechnicianHelp';
+import TechnicianOnboarding from './TechnicianOnboarding';
+import {OfferAlertWatcher, loadOfferAlerts} from './offerAlerts';
 import './technician.css';
 
 /** Datos del Inicio (GET /technicians/me/home); se recargan al navegar y cuando cambia una oferta. */
@@ -32,6 +34,19 @@ export function useTechnicianHome(tick) {
 }
 
 const VERIFICATION_TONE = {approved: 'ok', in_review: 'info', missing: 'warn', observed: 'danger'};
+const TONE_ICON = {ok: 'check', info: 'clock', warn: 'alert', danger: 'alert'};
+
+/**
+ * Revisión del #63: en el menú, la verificación muestra un texto corto («Aprobado», «En revisión», «Falta 1» u «Observado»);
+ * el texto completo («Falta un documento») va en el title y en el aria-label, y la página de Verificación lo sigue mostrando entero.
+ */
+export function verificationBadge(verification) {
+  const missing = Array.isArray(verification.missing) && verification.missing.length > 0 ? verification.missing.length : 1;
+  const short = {approved: 'Aprobado', in_review: 'En revisión', observed: 'Observado', missing: `Falta ${missing}`}[verification.state]
+    || verification.label;
+  const tone = VERIFICATION_TONE[verification.state];
+  return {text: short, tone, icon: TONE_ICON[tone], label: `Verificación: ${verification.label}`};
+}
 
 /** Contadores del menú: ofertas pendientes (con punto que late), avance del perfil y estado de la verificación. */
 export function technicianBadges(data) {
@@ -40,8 +55,9 @@ export function technicianBadges(data) {
   const percent = data.progress.percent;
   return {
     offers: {count: pending, pulse: pending > 0, label: `${pending} ${pending === 1 ? 'oferta pendiente' : 'ofertas pendientes'}`},
-    'profile-pro': {text: `${percent} %`, tone: percent === 100 ? 'ok' : 'warn', label: `Perfil al ${percent} %`},
-    verification: {text: data.verification.label, tone: VERIFICATION_TONE[data.verification.state], label: `Verificación: ${data.verification.label}`},
+    'profile-pro': {text: `${percent} %`, tone: percent === 100 ? 'ok' : 'warn', icon: percent === 100 ? 'check' : 'profile',
+      label: `Perfil al ${percent} %`},
+    verification: verificationBadge(data.verification),
   };
 }
 
@@ -61,8 +77,11 @@ export function technicianTarget(item) {
  */
 export default function TechnicianApp({user, roleLabel, onLogout, onUserChange, busy, notice, onExpired}) {
   const [tick, setTick] = useState(0);
+  const [tour, setTour] = useState(false);
   const refresh = useCallback(() => setTick(value => value + 1), []);
   const home = useTechnicianHome(tick);
+  // Fase T5 (D-112): los avisos de oferta de la cuenta, para el vigilante y la pestaña «Avisos».
+  useEffect(() => { loadOfferAlerts(user.preferences?.offer_alerts); }, [user.id]);
   const sections = [
     {id: 'home', group: 'Trabajo', label: 'Inicio', icon: 'home',
       render: ({navigate}) => <TechnicianHome user={user} home={home} navigate={navigate} onChange={refresh}/>},
@@ -81,7 +100,8 @@ export default function TechnicianApp({user, roleLabel, onLogout, onUserChange, 
     {id: 'stats', group: 'Mi desempeño', label: 'Estadísticas', icon: 'chart', render: () => <StatsPage/>},
     {id: 'ratings', group: 'Mi desempeño', label: 'Calificaciones', icon: 'star', soon: true},
     {id: 'earnings', group: 'Mi desempeño', label: 'Ganancias', icon: 'wallet', soon: true},
-    {id: 'how', group: 'Ayuda', label: 'Cómo funciona', icon: 'book', render: ({navigate}) => <TechnicianHowItWorks navigate={navigate}/>},
+    {id: 'how', group: 'Ayuda', label: 'Cómo funciona', icon: 'book',
+      render: ({navigate}) => <TechnicianHowItWorks navigate={navigate} onTour={() => setTour(true)}/>},
     {id: 'faq', group: 'Ayuda', label: 'Preguntas frecuentes', icon: 'help', render: () => <TechnicianFaq/>},
     {id: 'report', group: 'Ayuda', label: 'Reportar un problema', icon: 'flag', soon: true},
     {id: 'privacy', group: 'Ayuda', label: 'Privacidad y términos', icon: 'verify', render: () => <PrivacyPage/>},
@@ -92,5 +112,9 @@ export default function TechnicianApp({user, roleLabel, onLogout, onUserChange, 
   ];
   return <PanelShell user={user} role="technician" roleLabel={roleLabel} navLabel="Gestión del técnico" sections={sections}
     onLogout={onLogout} onUserChange={onUserChange} busy={busy} notice={notice} badges={technicianBadges(home.data)}
-    onNavigate={refresh} modern onExpired={onExpired} notificationTarget={technicianTarget}/>;
+    onNavigate={refresh} modern onExpired={onExpired} notificationTarget={technicianTarget}>
+    {/* Fase T5: bienvenida y tutorial la primera vez (se repite desde Cómo funciona) y avisos de ofertas nuevas. */}
+    <TechnicianOnboarding user={user} replay={tour} onReplayEnd={() => setTour(false)}/>
+    <OfferAlertWatcher/>
+  </PanelShell>;
 }

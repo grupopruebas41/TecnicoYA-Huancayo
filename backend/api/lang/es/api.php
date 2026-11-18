@@ -187,4 +187,6 @@ return [
     'image_caption_required' => 'Escribe el texto alternativo de la imagen: qué se ve en la foto.',
     'image_caption_max' => 'El texto alternativo admite hasta 180 caracteres.',
     'image_captions_count' => 'Escribe el texto alternativo de cada imagen.',
+    // Fase T5 del panel del técnico.
+    'offer_alerts_role' => 'Los avisos de oferta solo existen en la cuenta de un técnico.',
 ];

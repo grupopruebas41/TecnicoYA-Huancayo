@@ -1,0 +1,14 @@
+   ✓ S05-TC-282 el técnico tiene la barra del cliente: ☰ junto al logo, campana, «Aa» y avatar, y abajo solo «Ir al sitio» 290ms
+   × S05-TC-283 el panel de la cuenta del técnico tiene sus 5 pestañas, su rol y «Avisos» con sus interruptores 170ms
+   ✓ S05-TC-284 Seguridad cambia la contraseña y cierra las otras sesiones con confirmación y alertas de éxito y error 336ms
+   ✓ S05-TC-285 hay un solo indicador de conexión, en la barra superior, con texto y no solo color 83ms
+   ✓ S05-TC-286 el administrador tiene sus 4 pestañas y guarda la accesibilidad en /me/preferences [D-105] 129ms
+   ✓ S05-TC-287 la campana del técnico abre la página completa de Notificaciones y cada aviso lleva a su sección 138ms
+   ✓ S05-TC-311 la campana, «Aa» y el avatar quedan activos (aria-expanded) mientras su panel está abierto 144ms
+   ✓ S05-TC-312 «Aa» tiene un botón real para leer en voz alta, alto contraste como interruptor y el enlace abre la cuenta en Accesibilidad 105ms
+ FAIL  src/features/technician/technicianOnboarding.test.jsx [ src/features/technician/technicianOnboarding.test.jsx ]
+Error: Failed to resolve import "./TechnicianOnboarding" from "src/features/technician/technicianOnboarding.test.jsx". Does the file exist?
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/features/panel/staffShell.test.jsx > S05-TC-283 el panel de la cuenta del técnico tiene sus 5 pestañas, su rol y «Avisos» con sus interruptores
+TestingLibraryElementError: Unable to find an accessible element with the role "switch"
+      Tests  1 failed | 7 passed (8)

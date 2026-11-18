@@ -1,0 +1,4 @@
+  ⨯ it S05-TC-354 los avisos de oferta se guardan en la cuenta del técnico con sus valores por omisión; nadie…  77.47s  
+  ⨯ it S05-TC-355 «Primeros pasos» del Inicio lista perfil, documentos, zonas y horarios y servicios con tarifa… 0.65s  
+  ⨯ it S05-TC-356 demo-tecnico-pendiente empieza sin bienvenida ni tutorial; los técnicos E2E ya los vieron, sa… 0.45s  
+  Tests:    3 failed (3 assertions)

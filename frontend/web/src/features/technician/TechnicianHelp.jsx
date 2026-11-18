@@ -27,7 +27,7 @@ function Page({title, intro, children}) {
   </section>;
 }
 
-export function TechnicianHowItWorks({navigate}) {
+export function TechnicianHowItWorks({navigate, onTour}) {
   return <Page title="Cómo funciona" intro="Así llegan y se atienden los trabajos en TécnicoYa.">
     <ol className="how-steps">
       {STEPS.map((step, index) => <li key={step.title}>
@@ -38,6 +38,8 @@ export function TechnicianHowItWorks({navigate}) {
     <div className="how-actions">
       <button type="button" className="button primary" onClick={() => navigate('offers')}>Ver mis ofertas</button>
       <button type="button" className="button outline" onClick={() => navigate('profile-pro')}>Completar mi perfil</button>
+      {/* Fase T5: repite el tutorial de 5 pasos sin volver a marcarlo. */}
+      {onTour && <button type="button" className="button outline" onClick={onTour}><Icon name="book"/> Ver el tutorial otra vez</button>}
     </div>
   </Page>;
 }

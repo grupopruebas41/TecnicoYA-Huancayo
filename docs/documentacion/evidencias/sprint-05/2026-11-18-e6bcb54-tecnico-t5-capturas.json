@@ -1,0 +1,160 @@
+{
+  "1366-light-bienvenida": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "1366-light-bienvenida-elegida": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "1366-light-tutorial-paso-1": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "1366-light-tutorial-paso-2": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "1366-light-tutorial-paso-3": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "1366-light-tutorial-paso-4": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "1366-light-tutorial-paso-5": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "1366-light-inicio-primeros-pasos": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "1366-light-cuenta-avisos": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "1366-light-cuenta-avisos-probar": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "1366-light-como-funciona": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "1366-light-oferta-modo-simple": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "1366-light-agenda-texto150-franjas": [
+    {
+      "texto": "Mañana",
+      "cortado": false
+    },
+    {
+      "texto": "Tarde",
+      "cortado": false
+    },
+    {
+      "texto": "Noche",
+      "cortado": false
+    }
+  ],
+  "1366-light-agenda-texto150": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-bienvenida": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-bienvenida-elegida": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-tutorial-paso-1": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "390-light-tutorial-paso-2": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "390-light-tutorial-paso-3": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "390-light-tutorial-paso-4": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "390-light-tutorial-paso-5": {
+    "overflowX": false,
+    "burbujaDentro": true,
+    "menosDe44": []
+  },
+  "390-light-inicio-primeros-pasos": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-cuenta-avisos": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-cuenta-avisos-probar": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-como-funciona": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-oferta-modo-simple": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  },
+  "390-light-agenda-texto150-franjas": [
+    {
+      "texto": "Mañana",
+      "cortado": false
+    },
+    {
+      "texto": "Tarde",
+      "cortado": false
+    },
+    {
+      "texto": "Noche",
+      "cortado": false
+    }
+  ],
+  "390-light-agenda-texto150": {
+    "overflowX": false,
+    "burbujaDentro": null,
+    "menosDe44": []
+  }
+}

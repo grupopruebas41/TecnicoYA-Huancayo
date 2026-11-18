@@ -21,7 +21,7 @@ export const TOGGLES = [
   ['reduce_motion', 'Reducir animaciones', 'Pausa los carruseles, los videos y las transiciones.'],
   ['strong_focus', 'Foco grueso y enlaces subrayados', 'Un contorno de 3 px marca dónde estás al usar el teclado.'],
   ['read_aloud', 'Leer en voz alta', 'Agrega un botón para escuchar la pantalla.'],
-  ['dictation', 'Dictar por voz', 'Muestra un micrófono en «¿Qué se malogró?».'],
+  ['dictation', 'Dictar por voz', 'Muestra un micrófono en los textos largos, como «¿Qué se malogró?» o «Sobre mí».'],
   ['simple_mode', 'Modo simple', 'Botones más grandes y menos elementos decorativos.'],
 ];
 const KEY = 'tecnicoya.accesibilidad';
