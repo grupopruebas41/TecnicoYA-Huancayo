@@ -2,6 +2,82 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-18 · Revisión del #62 (antes de integrar): botones, diálogos, selector de subcategorías y tarifa S/ 120,00
+
+- **Rama:** la misma, `feature/pimentel/tecnico/t4-negocio`; commit `3d1da0e` (pedido de Pimentel en la revisión del #62).
+- **Botones secundarios (los tres roles, `panel.css`):**
+  - al pasar el mouse y con el foco se rellenan con el acento y el texto sobre acento (claro: #1f6f6b con blanco, 5,9:1);
+  - «Quitar» se rellena de rojo suave con el texto rojo oscuro;
+  - transición suave, apagada con «Reducir animaciones».
+- **`TechDialog` (`businessCommon.jsx`), montado con un portal en `body`:**
+  - centrado, con el fondo oscurecido y desenfocado;
+  - entrada con escala y profundidad (la perspectiva solo vive dentro de la animación);
+  - hasta 760 px de ancho con desplazamiento interno; pantalla completa en el celular;
+  - foco atrapado; Esc o el fondo lo cierran y el foco vuelve al botón que lo abrió;
+  - Cancelar y Guardar fijos al pie.
+- **«Añadir servicio» en el diálogo:**
+  - buscador y filtros por especialidad (Todas, Cómputo, Refrigeración comercial y Electricidad) con su ícono y color;
+  - tarjetas iguales agrupadas por especialidad (2 columnas; 1 en el celular) con la descripción o la tarifa sugerida;
+  - «Ya lo ofreces» desactivadas;
+  - flechas, Inicio, Fin, Enter y Espacio;
+  - el formulario aparece debajo del grupo de la tarjeta elegida;
+  - sin resultados: «No encontramos “…”. Prueba con otra palabra».
+- **Portafolio:** «Añadir trabajo» y «Editar» abren el mismo diálogo.
+- **Tarifa:** `soles()` en `format.js` da «S/ 120,00» y «S/ 1 200,00», como `feeLabel` de las ofertas.
+- **Defectos:** DEF-70 (choque de clases CSS con `marketplace.css` y `search.css`), corregido.
+- **Pruebas:**
+  - Vitest: S05-TC-342, 343 y 345 actualizadas; S05-TC-353 nueva (diálogo).
+  - Las 30 del técnico, lint y build en verde.
+  - La suite completa dio tiempos límite al azar en local (5 s), con el servidor de desarrollo del usuario (puerto 3000 y Vite) corriendo a la vez; aisladas pasan. Lo confirma la CI.
+  - Sin cambios de backend.
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-18-3d1da0e-tecnico-t4-*` (23 por ancho, con el estado al pasar el mouse y los diálogos), sin desbordes, controles nativos ni errores de página. Las `582ec09` quedan como el antes.
+- **Siguiente:** T5 desde **S05-TC-354**.
+
+## 2026-11-17 · Panel del técnico, Fase T4 (modo rápido): Mi negocio y Estadísticas
+
+- **Rama:** `feature/pimentel/tecnico/t4-negocio`, desde `main` `4f484b0` (con #59, #60 y #61 integrados); un solo PR.
+- **Commits (TDD):** `8327327` Pest en rojo, `cbfc25c` backend, `9899c88` Vitest en rojo y Cypress escritas, `5539851` frontend, `582ec09` ajustes vistos en las capturas, más la documentación.
+- **Backend:**
+  - `GET /technicians/me/stats?period=week|month` (`TechnicianStats`):
+    - 8 semanas de lunes a domingo o 6 meses, en hora de Lima;
+    - aceptadas, rechazadas, vencidas, tasa de aceptación (D-109), tiempo medio de respuesta y completados, por período y en total;
+    - solo datos del propio técnico.
+  - `GET /technicians/me/verification` (`TechnicianVerification`):
+    - una tarjeta por documento obligatorio con Recibido, En revisión, Aprobado u Observado con la nota (D-106 y D-107);
+    - el mismo estado general del menú;
+    - tipos válidos (D-111, propuesta), límites y si puede pedir una nueva revisión.
+  - `PATCH /technicians/me/portfolio/order` y migración `000038` (`portfolio_items.position`, inicial por `created_at`): lo nuevo va primero; el orden vale también en la galería pública.
+  - `image_captions`: texto alternativo obligatorio en cada imagen nueva del portafolio (POST y PATCH). Las imágenes que ya estaban conservan el suyo.
+  - Todo lo nuevo responde 403 al cliente y al administrador.
+  - **Siembras:**
+    - `DemoSeeder::verificationDocuments`: los 2 documentos obligatorios, PDF sintéticos privados, en los técnicos demo verificados; `demo-tecnico-pendiente` queda con uno en revisión y otro por subir;
+    - `Sprint05E2ESeeder` los agrega a e2e-technician-frio, e2e-technician-perfil, e2e-demo-rosa y e2e-demo-diego;
+    - `DemoTechnicianActivity::history`: historial de 30 a 158 días atrás para los gráficos, sin cambiar el Inicio.
+- **Frontend (`features/technician/`):**
+  - `ProfessionalProfile`: tarjetas Sobre mí, Forma de trabajo, Garantía y Experiencia; contador de caracteres; años con botones − y +; distrito base en una lista con estilo propio; vista previa en vivo sin llamar al perfil público.
+  - `ServicesPage`: tarjeta por servicio con el ícono de la especialidad, la tarifa grande con «S/», «Qué incluye», Editar y Quitar (con confirmación); «Añadir servicio» con buscador y los rubros declarados.
+  - `PortfolioPage`: antes y después con su etiqueta, texto alternativo obligatorio, Subir y Bajar, y Quitar con confirmación.
+  - `VerificationPage`: aviso del estado general, tarjeta por documento con estado, ícono y nota, «Tipo de documento» como lista y subida con arrastrar y soltar, nombre del archivo y barra de progreso (`uploadWithProgress` en `http.js`, con XMLHttpRequest).
+  - `StatsPage`: 4 indicadores, resumen en texto, 4 gráficos SVG de un solo eje (paleta validada en orden fijo, leyenda, detalle al pasar o al enfocar cada barra) y la tabla de datos; por semana y por mes.
+  - Comunes en `businessCommon.jsx` y `business.css`; todo respeta «Reducir animaciones».
+- **Decisiones:** D-103 a D-108 pasan a «Decisiones tomadas» sin cambiar su texto ni su fecha (pedido de Pimentel). **D-111** queda pendiente: lista de «Tipo de documento» (A, recomendada y aplicada: los 2 obligatorios más «Otro documento de respaldo»; B: solo los 2).
+- **Defectos:** DEF-69 (menú «Aprobado» con la página «No has adjuntado documentos»), corregido.
+- **Pruebas:**
+  - Pest: S05-TC-331 a 339 en verde; suite completa 510 de 510 (5901 aserciones) en el slot A.
+  - Vitest: S05-TC-340 a 349; 485 de 485, más lint y build.
+  - Cypress escritas sin ejecutar: S05-TC-350 a 352 (`sprint-05/technician-business.cy.js`).
+  - Evidencias del rojo: `2026-11-17-8327327-tecnico-t4-pest-rojo.txt` y `2026-11-17-9899c88-tecnico-t4-vitest-rojo.txt`.
+- **Pruebas adaptadas, con explicación en el código:**
+  - S02-TC-007, S02-TC-042 y S05-TC-196 envían el texto alternativo de sus imágenes nuevas;
+  - S05-TC-299: Estadísticas ya no es «Próximamente».
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-18-582ec09-tecnico-t4-*`, a 1366 y 390 en tema claro: 18 pantallas por ancho, con Rosa (aprobada) y Diego (observado). Incluyen las mediciones (`*-capturas.json`: sin desborde horizontal, sin controles nativos y sin errores de página) y el script. Las imágenes del antes y el después se dibujan en un canvas (sintéticas).
+- **Pendiente para el cierre común:**
+  - Cypress del S2 del técnico que usaban el panel viejo: S02-TC-071, 072 y 074 se suman a la 073 y la 075, que quedaron obsoletas en la T3. Hay que reescribirlas sobre las pantallas nuevas.
+  - Catálogo, contrato (§ de stats, verification y order) y avance de la T4.
+  - `Sprint02Portal` y `TechnicianPanel` ya no se usan en la app; solo los usan sus Vitest del S2. Retirarlos en el cierre.
+- **Siguiente:** Fase T5 desde S05-TC-354 (la 353 la usa la revisión del #62), D-112 y DEF-71.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-17 · Corrección de Mi agenda del técnico: navegación de semanas y contador «Visitas»
 
 - **Rama:** `feature/pimentel/tecnico/t3-agenda-semanas`, desde `feature/pimentel/tecnico/t3-trabajos` (`7f7f713`), porque Mi agenda aún no estaba en `main`; PR #59. Tras integrarse el #58, se trajo `main` (merge `6e6e6e8`) y el diff quedó solo en esta corrección, más D-109 pasada a «Decisiones tomadas» (pedido de Pimentel).

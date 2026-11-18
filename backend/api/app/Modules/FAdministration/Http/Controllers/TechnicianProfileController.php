@@ -9,6 +9,8 @@ use App\Modules\FAdministration\Application\PublicTechnicianProfile;
 use App\Modules\FAdministration\Application\TechnicianDocuments;
 use App\Modules\FAdministration\Application\TechnicianHome;
 use App\Modules\FAdministration\Application\TechnicianJobs;
+use App\Modules\FAdministration\Application\TechnicianStats;
+use App\Modules\FAdministration\Application\TechnicianVerification;
 use Carbon\CarbonImmutable;
 use Illuminate\Validation\Rule;
 use App\Modules\FAdministration\Http\Resources\AccountData;
@@ -64,6 +66,30 @@ final class TechnicianProfileController
         $day = $week ? CarbonImmutable::parse($week, TechnicianHome::TIMEZONE) : CarbonImmutable::now(TechnicianHome::TIMEZONE);
 
         return ApiResponse::data($jobs->agenda($profiles->idFor($request->user()), $day->startOfWeek(CarbonImmutable::MONDAY)));
+    }
+
+    /** Fase T4: estadísticas de desempeño del propio técnico, por semana (8) o por mes (6). */
+    public function stats(Request $request, OwnTechnicianProfile $profiles, TechnicianStats $stats): JsonResponse
+    {
+        $period = $request->validate(['period' => ['sometimes', Rule::in(array_keys(TechnicianStats::PERIODS))]],
+            ['period.in' => __('api.stats_period')])['period'] ?? 'week';
+
+        return ApiResponse::data($stats->for($profiles->idFor($request->user()), $period));
+    }
+
+    /** Fase T4: Verificación, con el estado de cada documento obligatorio (D-106 y D-107). Solo los del técnico de la sesión. */
+    public function verification(Request $request, OwnTechnicianProfile $profiles, TechnicianVerification $verification): JsonResponse
+    {
+        return ApiResponse::data($verification->for($profiles->idFor($request->user())));
+    }
+
+    /** Fase T4: orden del portafolio; trae todos los trabajos vigentes del técnico, una vez cada uno. */
+    public function orderPortfolio(Request $request, Portfolio $portfolio): JsonResponse
+    {
+        $data = $request->validate(['ids' => ['required', 'array', 'min:1', 'max:200'], 'ids.*' => ['integer', 'distinct']],
+            ['ids.required' => __('api.portfolio_order_ids'), 'ids.array' => __('api.portfolio_order_ids')]);
+
+        return ApiResponse::data(['ids' => $portfolio->reorder($request->user(), $data['ids'])]);
     }
 
     public function updateProfile(UpdateTechnicianProfileRequest $request, UpdateTechnicianProfile $update, OwnProfileView $view): JsonResponse

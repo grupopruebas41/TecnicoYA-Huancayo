@@ -48,7 +48,9 @@ it('S02-TC-042 CRUD-01 edita y retira un trabajo propio: sale de la galería y s
     Sprint01::assertSpanishValidation($this->patchJson($url, ['media_ids' => $images, 'expected_version' => 1]), ['media_ids']);
     // Precisión v1.1 del contrato (§5.5): la fecha del trabajo no puede ser futura.
     Sprint01::assertSpanishValidation($this->patchJson($url, ['performed_on' => now()->addDay()->toDateString(), 'expected_version' => 1]), ['performed_on']);
-    $this->patchJson($url, ['title' => 'Cambio de compresor', 'media_ids' => [$images[0]], 'expected_version' => 1])->assertOk()
+    // Fase T4 (S05-TC-337): la imagen nueva lleva su texto alternativo obligatorio.
+    $this->patchJson($url, ['title' => 'Cambio de compresor', 'media_ids' => [$images[0]], 'image_captions' => ['Compresor nuevo instalado'],
+        'expected_version' => 1])->assertOk()
         ->assertJsonPath('data.title', 'Cambio de compresor')->assertJsonPath('data.version', 2)
         ->assertJsonPath('data.images.0.media_id', $images[0]);
     // Refuerzo S2.6 (mutación): la versión vieja responde 409 sin cambiar el trabajo editado.

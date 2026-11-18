@@ -135,7 +135,9 @@ it('S05-TC-196 el portafolio marca cada imagen como antes o después y valida la
     Sanctum::actingAs($this->technician->user);
     $before = MediaFileFactory::new()->publicImage()->create(['owner_id' => $this->technician->user_id]);
     $after = MediaFileFactory::new()->publicImage()->create(['owner_id' => $this->technician->user_id]);
-    $payload = ['title' => 'Cambio de compresor', 'status' => 'published', 'media_ids' => [$before->id, $after->id]];
+    // Fase T4 (S05-TC-337): cada imagen nueva lleva su texto alternativo obligatorio.
+    $payload = ['title' => 'Cambio de compresor', 'status' => 'published', 'media_ids' => [$before->id, $after->id],
+        'image_captions' => ['Equipo antes del cambio', 'Equipo después del cambio']];
 
     Sprint01::assertSpanishValidation($this->postJson('/api/v1/technicians/me/portfolio', $payload + ['image_stages' => ['antes', 'after']]), ['image_stages.0']);
     Sprint01::assertSpanishValidation($this->postJson('/api/v1/technicians/me/portfolio', $payload + ['image_stages' => ['before']]), ['image_stages']);

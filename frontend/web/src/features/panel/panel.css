@@ -1528,3 +1528,37 @@ html[data-motion="reduce"] .panel-shell.is-touring .panel-sidebar { scroll-behav
 @media (max-width: 640px) {
   .panel-a11y-popover { position: fixed; top: 72px; left: 16px; right: 16px; width: auto; max-height: calc(100vh - 88px); overflow-y: auto; }
 }
+
+/* ===== Botones secundarios (con borde) del panel, en los tres roles (pedido del 2026-11-18, revisión del #62) =====
+   Al pasar el mouse y con el foco se rellenan con el color de acento y el texto pasa al color sobre acento (claro:
+   #1f6f6b con blanco, 5,9:1; oscuro: dorado con el fondo oscuro como texto). «Quitar» y los demás de peligro se rellenan
+   de rojo suave con el texto rojo oscuro (AA). La transición se apaga con «Reducir animaciones». */
+:is(.panel-shell, .account-overlay) :is(.button.outline, button.outline, .s02-modal button,
+  .s02-panel button:not([type="submit"]):not([aria-pressed="true"]):not(.primary)) {
+  transition: background-color .16s ease, color .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+:is(.panel-shell, .account-overlay) :is(.button.outline, button.outline, .s02-modal button,
+  .s02-panel button:not([type="submit"]):not([aria-pressed="true"]):not(.primary)):is(:hover, :focus-visible):not(:disabled):not([aria-disabled="true"]) {
+  background: var(--ty-accent);
+  border-color: var(--ty-accent);
+  color: var(--ty-on-accent);
+  transform: none;
+}
+:is(.panel-shell, .account-overlay) :is(.button.outline, button.outline, .s02-modal button):focus-visible {
+  outline: 3px solid var(--ty-accent);
+  outline-offset: 2px;
+}
+:is(.panel-shell, .account-overlay) :is(.button.outline, button.outline).tech-danger:is(:hover, :focus-visible):not(:disabled) {
+  background: #fde7e4 !important;
+  border-color: #b42318 !important;
+  color: #8f1c12 !important;
+}
+[data-theme="dark"] :is(.panel-shell, .account-overlay) :is(.button.outline, button.outline).tech-danger:is(:hover, :focus-visible):not(:disabled) {
+  background: #5c1f1a !important;
+  border-color: #ff9d8f !important;
+  color: #ffe1dc !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.panel-shell, .account-overlay) :is(.button.outline, button.outline, .s02-modal button, .s02-panel button) { transition: none; }
+}
+:root[data-motion="reduce"] :is(.panel-shell, .account-overlay) :is(.button.outline, button.outline, .s02-modal button, .s02-panel button) { transition: none; }

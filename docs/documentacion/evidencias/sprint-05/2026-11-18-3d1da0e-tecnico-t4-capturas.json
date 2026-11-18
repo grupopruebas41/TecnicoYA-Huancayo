@@ -1,0 +1,302 @@
+{
+  "consola": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+  ],
+  "1366-light-perfil": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-perfil-guardado": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Guardamos tu perfil profesional."
+    ]
+  },
+  "1366-light-servicios": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-servicios-editar-hover": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-servicios-quitar-hover": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-servicios-editar": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-servicios-anadir": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-servicios-anadir-elegido": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-servicios-anadir-filtro": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-servicios-anadir-sin-resultados": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-portafolio-alt-obligatorio": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-portafolio-nuevo": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-portafolio": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Añadimos «Vitrina sin escarcha (sintético)» a tu portafolio."
+    ]
+  },
+  "1366-light-portafolio-orden": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Movimos «Vitrina sin escarcha (sintético)» al puesto 2 de 6."
+    ]
+  },
+  "1366-light-portafolio-quitar": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Movimos «Vitrina sin escarcha (sintético)» al puesto 2 de 6."
+    ]
+  },
+  "1366-light-verificacion": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-verificacion-subida": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-verificacion-recibido": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Recibimos tu «Otro documento de respaldo». Lo verás como «Recibido» hasta que el equipo lo revise."
+    ]
+  },
+  "1366-light-estadisticas-semana": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-estadisticas-detalle": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-estadisticas-mes": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-menu": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "1366-light-verificacion-observado": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-perfil": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-perfil-guardado": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Guardamos tu perfil profesional."
+    ]
+  },
+  "390-light-servicios": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-servicios-editar-hover": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-servicios-quitar-hover": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-servicios-editar": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-servicios-anadir": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-servicios-anadir-elegido": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-servicios-anadir-filtro": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-servicios-anadir-sin-resultados": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-portafolio-alt-obligatorio": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-portafolio-nuevo": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-portafolio": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Añadimos «Cámara de frío sin escarcha (sintético)» a tu portafolio."
+    ]
+  },
+  "390-light-portafolio-orden": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Movimos «Cámara de frío sin escarcha (sintético)» al puesto 2 de 7."
+    ]
+  },
+  "390-light-portafolio-quitar": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Movimos «Cámara de frío sin escarcha (sintético)» al puesto 2 de 7."
+    ]
+  },
+  "390-light-verificacion": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-verificacion-subida": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-verificacion-recibido": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": [
+      "Recibimos tu «Otro documento de respaldo». Lo verás como «Recibido» hasta que el equipo lo revise."
+    ]
+  },
+  "390-light-estadisticas-semana": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-estadisticas-detalle": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-estadisticas-mes": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-menu": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  },
+  "390-light-verificacion-observado": {
+    "overflowX": false,
+    "controlesNativos": 0,
+    "fueraDeLaPantalla": [],
+    "alertas": []
+  }
+}

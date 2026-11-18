@@ -58,3 +58,30 @@ export async function request(path, body, method = body ? 'POST' : 'GET', option
   if (body !== undefined && !multipart) headers['Content-Type'] = 'application/json';
   return send(`/api/v1${path}`, {method, headers, ...(body !== undefined ? {body: multipart ? body : JSON.stringify(body)} : {})});
 }
+
+/**
+ * Fase T4: sube un archivo a POST /media informando el avance (0 a 100) para la barra de progreso. Usa XMLHttpRequest
+ * porque fetch no informa el avance de la subida. Misma sesión, la misma cookie CSRF y los mismos mensajes que request().
+ */
+export async function uploadWithProgress(form, onProgress = () => {}) {
+  await send('/sanctum/csrf-cookie');
+  const cookie = document.cookie.split('; ').find(item => item.startsWith('XSRF-TOKEN='));
+  if (!cookie) throw new ApiError('No se pudo preparar la sesión segura. Permite las cookies y vuelve a intentarlo.', 419);
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${origin}/api/v1/media`);
+    xhr.withCredentials = true;
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('X-XSRF-TOKEN', decodeURIComponent(cookie.slice('XSRF-TOKEN='.length)));
+    xhr.upload.onprogress = event => { if (event.lengthComputable) onProgress(Math.round(event.loaded / event.total * 100)); };
+    xhr.onerror = () => reject(new ApiError('No pudimos subir el archivo. Revisa tu conexión e inténtalo de nuevo.', 0));
+    xhr.onload = () => {
+      let body = null;
+      try { body = JSON.parse(xhr.responseText); } catch { body = null; }
+      if (xhr.status >= 200 && xhr.status < 300 && body?.data) { onProgress(100); resolve(body); return; }
+      reject(new ApiError(apiMessage(body?.error?.message || body?.message || statusMessage(xhr.status)), xhr.status,
+        body?.error?.fields || body?.errors, body?.error?.code));
+    };
+    xhr.send(form);
+  });
+}

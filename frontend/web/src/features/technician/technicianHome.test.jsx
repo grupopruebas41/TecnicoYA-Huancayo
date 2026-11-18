@@ -85,9 +85,10 @@ test('S05-TC-299 el menú del técnico agrupa Trabajo, Mi negocio, Mi desempeño
     ['Ayuda', ['Cómo funciona', 'Preguntas frecuentes', 'Reportar un problema', 'Privacidad y términos']],
   ]);
   const soon = [...nav().querySelectorAll('[aria-disabled="true"]')].map(item => item.querySelector('.panel-label').firstChild.textContent);
-  // Fase T3: Mis trabajos y Mi agenda ya están listos; siguen «Próximamente» los de la T4, el S6 y el S8.
-  expect(soon).toEqual(['Estadísticas', 'Calificaciones', 'Ganancias', 'Reportar un problema']);
-  fireEvent.click(within(nav()).getByRole('button', {name: /Estadísticas/}));
+  // Fase T3: Mis trabajos y Mi agenda ya están listos. Fase T4: también Estadísticas (S05-TC-347); siguen «Próximamente»
+  // los del S6 y el S8 y Reportar un problema.
+  expect(soon).toEqual(['Calificaciones', 'Ganancias', 'Reportar un problema']);
+  fireEvent.click(within(nav()).getByRole('button', {name: /Calificaciones/}));
   expect(within(nav()).getByRole('button', {name: 'Inicio'})).toHaveAttribute('aria-current', 'page');
   const foot = document.querySelector('.panel-sidebar-foot');
   expect(foot.querySelectorAll('.panel-nav-item')).toHaveLength(1);

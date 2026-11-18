@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
  * trabajos»), uno en curso y uno asignado hoy («Mi día»), uno asignado mañana y uno cancelado. Las respuestas rápidas
  * (mediana < 2 min) dan la insignia «Respuesta rápida». Todo es sintético y rotulado «(demostración)»; no se repite si
  * el técnico ya tiene su historia de demostración. La oferta en vivo se crea aparte con `tecnicoya:demo-offer` (D-108).
+ * Fase T4: `history()` agrega meses anteriores (más de 30 días atrás, así no cambia el Inicio) para las estadísticas.
  */
 final class DemoTechnicianActivity
 {
@@ -28,12 +29,33 @@ final class DemoTechnicianActivity
         [0, '15:00', 'accepted', 80, 'assigned'], [1, '10:00', 'accepted', 100, 'assigned'],
     ];
 
+    /** Fase T4: la misma forma, de 30 a 158 días atrás (la oferta se publica un día antes de la visita). */
+    private const OLDER = [
+        [-30, '10:00', 'accepted', 60, 'completed'], [-32, '10:00', 'accepted', 55, 'completed'], [-34, '15:00', 'expired', null, null],
+        [-39, '09:00', 'accepted', 80, 'completed'], [-41, '11:00', 'rejected', 240, null], [-46, '10:00', 'accepted', 65, 'completed'],
+        [-50, '16:00', 'accepted', 95, 'completed'], [-53, '09:00', 'expired', null, null], [-56, '14:00', 'accepted', 70, 'completed'],
+        [-72, '10:00', 'accepted', 60, 'completed'], [-88, '09:00', 'accepted', 120, 'completed'], [-95, '15:00', 'rejected', 200, null],
+        [-104, '10:00', 'accepted', 75, 'completed'], [-118, '11:00', 'expired', null, null], [-126, '10:00', 'accepted', 90, 'completed'],
+        [-140, '09:00', 'accepted', 50, 'completed'], [-150, '16:00', 'expired', null, null], [-158, '10:00', 'accepted', 85, 'completed'],
+    ];
+
     private const REQUEST_STATUS = ['completed' => 'completed', 'in_progress' => 'in_progress', 'assigned' => 'assigned',
         'cancelled' => 'cancelled', 'rejected' => 'cancelled', 'expired' => 'expired'];
 
     public function run(int $technicianId, array $clientIds): void
     {
-        if (DB::table('service_requests')->where('target_technician_id', $technicianId)->where('description', 'like', 'Trabajo de demostración #%')->exists()) {
+        $this->seed($technicianId, $clientIds, self::HISTORY, 'Trabajo de demostración #');
+    }
+
+    /** Fase T4: historial anterior a los últimos 30 días, para los gráficos de 8 semanas y 6 meses. */
+    public function history(int $technicianId, array $clientIds): void
+    {
+        $this->seed($technicianId, $clientIds, self::OLDER, 'Historial de demostración #');
+    }
+
+    private function seed(int $technicianId, array $clientIds, array $rows, string $marker): void
+    {
+        if (DB::table('service_requests')->where('target_technician_id', $technicianId)->where('description', 'like', $marker.'%')->exists()) {
             return;
         }
         $service = DB::table('technician_services')->where('technician_id', $technicianId)->where('active', 1)->orderBy('id')->first();
@@ -43,7 +65,7 @@ final class DemoTechnicianActivity
         }
         $rule = app(RuleBook::class)->currentVersionId();
         $today = CarbonImmutable::now(self::TZ)->startOfDay();
-        foreach (self::HISTORY as $index => [$days, $time, $offerStatus, $seconds, $job]) {
+        foreach ($rows as $index => [$days, $time, $offerStatus, $seconds, $job]) {
             $start = CarbonImmutable::parse($today->addDays($days)->toDateString().' '.$time, self::TZ)->utc();
             $end = $start->addHours(2);
             $available = $start->subDay();
@@ -51,7 +73,7 @@ final class DemoTechnicianActivity
             $requestId = DB::table('service_requests')->insertGetId([
                 'client_id' => $clientIds[$index % count($clientIds)], 'subcategory_id' => $service->subcategory_id,
                 'district_id' => $districts[$index % $districts->count()],
-                'description' => 'Trabajo de demostración #'.($index + 1).': revisión y mantenimiento del equipo (demostración).',
+                'description' => $marker.($index + 1).': revisión y mantenimiento del equipo (demostración).',
                 'address' => 'Dirección de demostración '.(100 + $index), 'mode' => 'scheduled',
                 'preferred_start_at' => $start, 'preferred_end_at' => $end, 'urgency' => 'normal',
                 'source' => 'profile', 'target_technician_id' => $technicianId, 'status' => $status,

@@ -1,0 +1,15 @@
+ ✓ src/features/technician/technicianBusiness.test.jsx (10 tests) 2394ms
+   ✓ S05-TC-340 Perfil profesional: una tarjeta por sección, contador de caracteres y vista previa en vivo sin llamar al perfil público 483ms
+   ✓ S05-TC-345 un trabajo nuevo pide el texto alternativo de cada foto antes de guardarlo y envía etapas y textos 363ms
+ ✓ src/features/technician/technicianPages.test.jsx (10 tests) 2302ms
+   ✓ S05-TC-319 Ofertas tiene Pendientes (la tarjeta del Inicio, por vencimiento) e Historial con el estado como etiqueta de color 447ms
+   ✓ S05-TC-322 Zonas y disponibilidad: casillas grandes por franja, chips de distrito, vista previa y guardado con alerta 399ms
+   ✓ S05-TC-323 Zonas valida en el cliente (al menos una franja y un distrito) y explica los errores del servidor 552ms
+ ✓ src/features/technician/technicianHome.test.jsx (9 tests) 3202ms
+   ✓ S05-TC-299 el menú del técnico agrupa Trabajo, Mi negocio, Mi desempeño y Ayuda, y lo no listo dice «Próximamente» 532ms
+   ✓ S05-TC-300 el menú muestra las ofertas pendientes con su punto que late, el avance del perfil y el estado de la verificación 365ms
+   ✓ S05-TC-304 el Inicio saluda, destaca la oferta que vence primero, lista las demás y sin ofertas muestra su estado vacío 429ms
+   ✓ S05-TC-305 indicadores, Mi día por franja, progreso con tareas que llevan a su sección e insignias con texto 1259ms
+      Tests  29 passed (29)
+
+Suite completa: Test Files 54 passed (54) · Tests 485 passed (485) · npm run lint y npm run build aprobados

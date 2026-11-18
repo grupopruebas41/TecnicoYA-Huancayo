@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Modules\FAdministration\Application\TechnicianHome;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -77,15 +78,23 @@ final class DemoSeeder extends Seeder
                 $technician = (int) DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
                 $this->portfolio($technician, $user->id, "demo-tecnico-$code", $data['portfolio'] ?? []);
                 $this->reviews($technician, $data['reviews'] ?? []);
-                // Fase T2 del panel del técnico: historia de ofertas, trabajos y visitas para ver el Inicio con datos.
+                // Fase T4: los 2 documentos obligatorios aprobados, coherentes con la insignia «Verificado».
+                $this->verificationDocuments($technician, $user->id, 'approved');
+                // Fase T2 del panel del técnico: historia de ofertas, trabajos y visitas para ver el Inicio con datos;
+                // Fase T4: historial de meses anteriores para las estadísticas.
                 if ($code === 'computo') {
-                    app(DemoTechnicianActivity::class)->run($technician, DB::table('client_profiles')
-                        ->whereIn('user_id', [$cliente->id, $mype->id])->orderBy('id')->pluck('id')->map(fn ($id) => (int) $id)->all());
+                    $clients = DB::table('client_profiles')->whereIn('user_id', [$cliente->id, $mype->id])->orderBy('id')->pluck('id')
+                        ->map(fn ($id) => (int) $id)->all();
+                    app(DemoTechnicianActivity::class)->run($technician, $clients);
+                    app(DemoTechnicianActivity::class)->history($technician, $clients);
                 }
             }
             $pending = $this->account('demo-tecnico-pendiente', 'technician', 'Técnico Demo', 'Por verificar', '900000120', $password);
             $this->technician($pending, ['name' => 'Técnico Demo por verificar', 'base' => 'HUANCAYO', 'districts' => ['HUANCAYO'],
                 'services' => ['computo-mantenimiento' => '45.00']], 'pending_verification', 'pending');
+            // Fase T4: un documento en revisión y el otro por subir («Falta un documento»).
+            $this->verificationDocuments((int) DB::table('technician_profiles')->where('user_id', $pending->id)->value('id'), $pending->id,
+                'pending', ['identity']);
 
             $this->subcategoryPhotos($admin->id);
             foreach (self::ANNOUNCEMENTS as $slug => $data) {
@@ -185,6 +194,37 @@ final class DemoSeeder extends Seeder
         }
 
         return null;
+    }
+
+    /**
+     * Fase T4 (D-107): documentos obligatorios de verificación, privados y sintéticos (un PDF mínimo sin datos
+     * personales), con el estado pedido. Así el menú «Aprobado» coincide con la página de Verificación. No duplica: si ya
+     * hay un documento de ese tipo obligatorio, lo deja como está. También lo usa Sprint05E2ESeeder.
+     *
+     * @param  list<string>  $keys  claves de TechnicianHome::REQUIRED_DOCUMENTS
+     */
+    public function verificationDocuments(int $technician, int $ownerId, string $status, array $keys = ['identity', 'certificate']): void
+    {
+        $present = DB::table('technician_documents')->where('technician_id', $technician)->pluck('document_type')
+            ->map(fn ($type) => TechnicianHome::requiredKey((string) $type))->filter()->all();
+        foreach ($keys as $key) {
+            if (in_array($key, $present, true)) {
+                continue;
+            }
+            $label = TechnicianHome::REQUIRED_DOCUMENTS[$key]['label'];
+            $content = "%PDF-1.4\n% Documento sintético de demostración: $label. Sin datos personales.\n%%EOF\n";
+            $storageKey = "media/demo/verificacion-$technician-$key.pdf";
+            Storage::disk('local')->put($storageKey, $content);
+            DB::table('media_files')->updateOrInsert(['disk' => 'local', 'storage_key' => $storageKey], [
+                'owner_id' => $ownerId, 'original_name' => "demo-$key.pdf", 'mime_type' => 'application/pdf', 'byte_size' => strlen($content),
+                'sha256' => hash('sha256', $content), 'visibility' => 'private', 'scan_status' => 'clean', 'purpose' => 'document',
+            ]);
+            DB::table('technician_documents')->insert([
+                'technician_id' => $technician, 'document_type' => $label, 'review_status' => $status,
+                'media_id' => (int) DB::table('media_files')->where('disk', 'local')->where('storage_key', $storageKey)->value('id'),
+                'reviewed_at' => $status === 'pending' ? null : now()->subMonth(),
+            ]);
+        }
     }
 
     /** D-101: reseñas de ejemplo, solo en local; no son calificaciones y el panel las rotula como demostración. */

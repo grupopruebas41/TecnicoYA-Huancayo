@@ -4,10 +4,13 @@ namespace App\Modules\FAdministration\Application;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Portafolio del técnico, separado de sus documentos privados de verificación. Retirar un trabajo lo saca de la
  * galería sin borrar filas ni imágenes (RT-05). Un trabajo ajeno o retirado responde 404.
+ * Fase T4: el técnico elige el orden (`position`; lo nuevo va primero) y cada imagen lleva su texto alternativo
+ * (`caption`). Al editar, una imagen que ya estaba conserva el suyo si no se envía otro.
  */
 final class Portfolio
 {
@@ -19,6 +22,7 @@ final class Portfolio
     {
         return DB::transaction(function () use ($user, $data) {
             $profile = $this->profiles->lockFor($user);
+            DB::table('portfolio_items')->where('technician_id', $profile->id)->increment('position');
             $itemId = DB::table('portfolio_items')->insertGetId([
                 'technician_id' => $profile->id,
                 'subcategory_id' => $data['subcategory_id'] ?? null,
@@ -26,8 +30,9 @@ final class Portfolio
                 'description' => $data['description'] ?? null,
                 'performed_on' => $data['performed_on'] ?? null,
                 'status' => $data['status'],
+                'position' => 1,
             ]);
-            $this->replaceImages($itemId, $data['media_ids'], $data['image_stages'] ?? []);
+            $this->replaceImages($itemId, $data['media_ids'], $data['image_stages'] ?? [], $data['image_captions'] ?? []);
 
             return DB::table('portfolio_items')->find($itemId);
         });
@@ -42,10 +47,37 @@ final class Portfolio
                 'version' => $item->version + 1, 'updated_at' => now(),
             ]);
             if (isset($data['media_ids'])) {
-                $this->replaceImages($itemId, $data['media_ids'], $data['image_stages'] ?? []);
+                $this->replaceImages($itemId, $data['media_ids'], $data['image_stages'] ?? [], $data['image_captions'] ?? []);
             }
 
             return DB::table('portfolio_items')->find($itemId);
+        });
+    }
+
+    /**
+     * Fase T4: nuevo orden del portafolio. Trae exactamente los trabajos vigentes (no retirados) del técnico, una vez
+     * cada uno; si no, responde 422 y no cambia nada.
+     *
+     * @param  list<int>  $ids
+     * @return list<int>
+     */
+    public function reorder(User $user, array $ids): array
+    {
+        return DB::transaction(function () use ($user, $ids) {
+            $profile = $this->profiles->lockFor($user);
+            $current = DB::table('portfolio_items')->where('technician_id', $profile->id)->where('status', '!=', 'retired')
+                ->lockForUpdate()->pluck('id')->map(fn ($id) => (int) $id)->sort()->values()->all();
+            $wanted = array_map('intval', array_values($ids));
+            $sorted = $wanted;
+            sort($sorted);
+            if ($sorted !== $current) {
+                throw ValidationException::withMessages(['ids' => __('api.portfolio_order')]);
+            }
+            foreach ($wanted as $index => $id) {
+                DB::table('portfolio_items')->where('id', $id)->update(['position' => $index + 1]);
+            }
+
+            return $wanted;
         });
     }
 
@@ -57,11 +89,11 @@ final class Portfolio
         });
     }
 
-    /** Trabajos no retirados del técnico, con todas sus imágenes (vista del propio técnico). */
+    /** Trabajos no retirados del técnico, en su orden y con todas sus imágenes (vista del propio técnico). */
     public function ownItems(int $technicianId): array
     {
         return DB::table('portfolio_items')->where('technician_id', $technicianId)->where('status', '!=', 'retired')
-            ->orderByDesc('id')->get()->map(fn (object $item) => $this->present($item))->all();
+            ->orderBy('position')->orderByDesc('id')->get()->map(fn (object $item) => $this->present($item))->all();
     }
 
     public function present(object $item): array
@@ -72,13 +104,13 @@ final class Portfolio
         ];
     }
 
-    /** Trabajos publicados de un técnico habilitado; solo imágenes públicas revisadas. */
+    /** Trabajos publicados de un técnico habilitado, en el orden que eligió; solo imágenes públicas revisadas. */
     public function publicGallery(int $technicianId): array
     {
         $active = DB::table('technician_profiles')->where('id', $technicianId)->where('status', 'active')->exists();
         abort_unless($active, 404);
         $items = DB::table('portfolio_items')->where('technician_id', $technicianId)->where('status', 'published')
-            ->orderByDesc('performed_on')->orderByDesc('id')->get(['id', 'title', 'description', 'performed_on']);
+            ->orderBy('position')->orderByDesc('id')->get(['id', 'title', 'description', 'performed_on']);
 
         return $items->map(fn (object $item) => (array) $item + ['images' => $this->images($item->id, true)])->all();
     }
@@ -93,13 +125,16 @@ final class Portfolio
         return $item;
     }
 
-    private function replaceImages(int $itemId, array $mediaIds, array $stages = []): void
+    private function replaceImages(int $itemId, array $mediaIds, array $stages = [], array $captions = []): void
     {
+        $previous = DB::table('portfolio_images')->where('portfolio_id', $itemId)->pluck('caption', 'media_id');
         DB::table('portfolio_images')->where('portfolio_id', $itemId)->delete();
         $stages = array_values($stages);
+        $captions = array_values($captions);
         foreach (array_values($mediaIds) as $position => $mediaId) {
+            $caption = trim((string) ($captions[$position] ?? ''));
             DB::table('portfolio_images')->insert(['portfolio_id' => $itemId, 'media_id' => $mediaId, 'position' => $position,
-                'stage' => $stages[$position] ?? null]);
+                'stage' => $stages[$position] ?? null, 'caption' => $caption !== '' ? $caption : ($previous[$mediaId] ?? null)]);
         }
     }
 

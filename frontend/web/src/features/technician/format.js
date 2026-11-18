@@ -68,3 +68,9 @@ export function scheduleSummary(matrix) {
   });
   return groups.map(group => `${group.to ? `${group.from} a ${group.to}` : group.from} · ${group.key}`).join('; ');
 }
+
+/** Tarifa en formato peruano, como en el resto de la plataforma: «S/ 120,00» y «S/ 1 200,00» (coma decimal). */
+export function soles(value) {
+  const [whole, decimal] = Number(value).toFixed(2).split('.');
+  return `S/ ${whole.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')},${decimal}`;
+}
