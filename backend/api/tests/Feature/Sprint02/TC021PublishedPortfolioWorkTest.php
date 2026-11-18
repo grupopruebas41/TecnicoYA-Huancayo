@@ -45,6 +45,8 @@ it('S02-TC-007 publica un trabajo con su imagen en la galería pública sin docu
         'subcategory_id' => Sprint02::subcategoryId(),
         'performed_on' => $performedOn,
         'media_ids' => [$image->id],
+        // Fase T4 (S05-TC-337): cada imagen nueva lleva su texto alternativo obligatorio.
+        'image_captions' => ['Placa base con los condensadores nuevos'],
         'status' => 'published',
     ])->assertCreated();
     // Refuerzo S2.6 (mutación): se guardan los campos opcionales enviados.

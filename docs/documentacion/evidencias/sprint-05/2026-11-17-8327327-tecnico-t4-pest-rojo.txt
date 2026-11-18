@@ -1,0 +1,10 @@
+  ⨯ it S05-TC-331 las estadísticas por semana dan 8 semanas de lunes a domingo (Lima) con tasa, tiempo medio,…  80.52s  
+  ⨯ it S05-TC-332 las estadísticas por mes dan 6 meses con el límite del mes en hora de Lima y validan el perío… 0.60s  
+  ⨯ it S05-TC-333 las estadísticas solo cuentan las ofertas del propio técnico y responden 403 al cliente y al…  0.55s  
+  ⨯ it S05-TC-334 la verificación muestra cada documento obligatorio como Recibido, En revisión, Aprobado u Obs… 0.68s  
+  ⨯ it S05-TC-335 los documentos de verificación nunca se muestran a otro técnico, a un cliente ni en el perfil… 0.62s  
+  ⨯ it S05-TC-336 el técnico ordena su portafolio y el orden se respeta en su perfil y en la galería pública; u… 1.06s  
+  ⨯ it S05-TC-337 el texto alternativo es obligatorio en cada imagen nueva del portafolio; las imágenes que ya…  0.68s  
+  ⨯ it S05-TC-338 la demo trae los 2 documentos obligatorios: el menú «Aprobado» coincide con la página de veri… 0.49s  
+  ⨯ it S05-TC-339 el historial de demostración llena las estadísticas de 8 semanas y 6 meses sin duplicarse ni…  0.77s  
+  Tests:    9 failed (11 assertions)

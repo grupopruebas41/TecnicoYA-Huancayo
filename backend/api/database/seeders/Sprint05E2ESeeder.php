@@ -27,6 +27,7 @@ final class Sprint05E2ESeeder extends Seeder
             $this->profileTechnician();
             $this->demoTechnicians();
             $this->premiumClient();
+            $this->verificationDocuments();
         });
     }
 
@@ -45,6 +46,23 @@ final class Sprint05E2ESeeder extends Seeder
             'district_id' => $district, 'default_address' => 'Av. Sintética 742, El Tambo', 'onboarding_completed_at' => now(),
             'tour_completed_at' => now(), 'updated_at' => now()]);
         app(DemoPremium::class)->run($user->id, (int) DB::table('client_profiles')->where('user_id', $user->id)->value('id'), $district);
+    }
+
+    /**
+     * Fase T4 (D-107): los técnicos E2E verificados traen sus 2 documentos obligatorios aprobados, para que el menú
+     * «Aprobado» coincida con la página de Verificación. e2e-technician-frio ya tenía su certificado (S03); se agrega
+     * solo el documento de identidad.
+     */
+    private function verificationDocuments(): void
+    {
+        $builder = app(DemoSeeder::class);
+        foreach (['e2e-technician-frio', 'e2e-technician-perfil', 'e2e-demo-rosa', 'e2e-demo-diego'] as $alias) {
+            $profile = DB::table('technician_profiles as t')->join('users as u', 'u.id', '=', 't.user_id')
+                ->where('u.email', "$alias@example.test")->first(['t.id', 't.user_id']);
+            if ($profile) {
+                $builder->verificationDocuments((int) $profile->id, (int) $profile->user_id, 'approved');
+            }
+        }
     }
 
     /** D-101: los dos técnicos de demostración, con cuentas E2E (la contraseña es TECNICOYA_E2E_PASSWORD). */

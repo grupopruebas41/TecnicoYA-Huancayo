@@ -141,6 +141,9 @@ Route::prefix('v1')->group(function () {
             Route::post('documents', [TechnicianProfileController::class, 'storeDocument']);
             Route::put('availability', [TechnicianProfileController::class, 'availability']);
             Route::put('services', [TechnicianProfileController::class, 'services']);
+            Route::get('stats', [TechnicianProfileController::class, 'stats']); // Fase T4
+            Route::get('verification', [TechnicianProfileController::class, 'verification']); // Fase T4
+            Route::patch('portfolio/order', [TechnicianProfileController::class, 'orderPortfolio']); // Fase T4
             Route::post('portfolio', [TechnicianProfileController::class, 'storePortfolio']);
             Route::patch('portfolio/{item}', [TechnicianProfileController::class, 'updatePortfolio'])->whereNumber('item');
             Route::delete('portfolio/{item}', [TechnicianProfileController::class, 'retirePortfolio'])->whereNumber('item');

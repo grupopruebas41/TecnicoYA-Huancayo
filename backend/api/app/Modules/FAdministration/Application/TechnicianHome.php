@@ -130,23 +130,31 @@ final class TechnicianHome
         ];
     }
 
-    /** Tipos obligatorios presentes (no rechazados), por coincidencia con el tipo declarado. */
-    private function documents(int $technicianId): array
+    /** Documento obligatorio al que corresponde un tipo declarado (D-107), o null si no es ninguno. */
+    public static function requiredKey(string $type): ?string
     {
-        $types = DB::table('technician_documents')->where('technician_id', $technicianId)->where('review_status', '!=', 'rejected')
-            ->pluck('document_type')->map(fn ($type) => mb_strtolower((string) $type));
-        $present = [];
+        $type = mb_strtolower($type);
         foreach (self::REQUIRED_DOCUMENTS as $key => $required) {
-            if ($types->contains(fn ($type) => collect($required['match'])->contains(fn ($word) => str_contains($type, $word)))) {
-                $present[] = $key;
+            if (collect($required['match'])->contains(fn ($word) => str_contains($type, $word))) {
+                return $key;
             }
         }
+
+        return null;
+    }
+
+    /** Tipos obligatorios presentes (no rechazados), por coincidencia con el tipo declarado. */
+    public function documents(int $technicianId): array
+    {
+        $present = DB::table('technician_documents')->where('technician_id', $technicianId)->where('review_status', '!=', 'rejected')
+            ->pluck('document_type')->map(fn ($type) => self::requiredKey((string) $type))->filter()->unique()->values()->all();
+        $present = array_values(array_intersect(array_keys(self::REQUIRED_DOCUMENTS), $present));
 
         return ['present' => $present, 'rejected' => DB::table('technician_documents')->where('technician_id', $technicianId)->where('review_status', 'rejected')->exists()];
     }
 
     /** Estado para el menú: aprobado, observado, falta un documento o en revisión (D-106). */
-    private function verification(object $profile, array $documents): array
+    public function verification(object $profile, array $documents): array
     {
         $missing = array_values(array_map(fn ($key) => self::REQUIRED_DOCUMENTS[$key]['label'],
             array_diff(array_keys(self::REQUIRED_DOCUMENTS), $documents['present'])));

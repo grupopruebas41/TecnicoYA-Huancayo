@@ -180,4 +180,11 @@ return [
     'jobs_tab' => 'Elige una pestaña válida: asignados, en curso, completados o cancelados.',
     'jobs_search' => 'La búsqueda admite hasta 60 caracteres.',
     'agenda_week' => 'Indica la semana con una fecha válida (AAAA-MM-DD).',
+    // Fase T4 del panel del técnico.
+    'stats_period' => 'Elige un período válido: semana o mes.',
+    'portfolio_order' => 'El orden debe incluir cada uno de tus trabajos del portafolio una sola vez.',
+    'portfolio_order_ids' => 'Envía la lista de tus trabajos en el orden que quieres mostrarlos.',
+    'image_caption_required' => 'Escribe el texto alternativo de la imagen: qué se ve en la foto.',
+    'image_caption_max' => 'El texto alternativo admite hasta 180 caracteres.',
+    'image_captions_count' => 'Escribe el texto alternativo de cada imagen.',
 ];
