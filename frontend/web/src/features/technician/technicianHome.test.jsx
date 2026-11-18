@@ -85,8 +85,9 @@ test('S05-TC-299 el menú del técnico agrupa Trabajo, Mi negocio, Mi desempeño
     ['Ayuda', ['Cómo funciona', 'Preguntas frecuentes', 'Reportar un problema', 'Privacidad y términos']],
   ]);
   const soon = [...nav().querySelectorAll('[aria-disabled="true"]')].map(item => item.querySelector('.panel-label').firstChild.textContent);
-  expect(soon).toEqual(['Mis trabajos', 'Mi agenda', 'Estadísticas', 'Calificaciones', 'Ganancias', 'Reportar un problema']);
-  fireEvent.click(within(nav()).getByRole('button', {name: /Mis trabajos/}));
+  // Fase T3: Mis trabajos y Mi agenda ya están listos; siguen «Próximamente» los de la T4, el S6 y el S8.
+  expect(soon).toEqual(['Estadísticas', 'Calificaciones', 'Ganancias', 'Reportar un problema']);
+  fireEvent.click(within(nav()).getByRole('button', {name: /Estadísticas/}));
   expect(within(nav()).getByRole('button', {name: 'Inicio'})).toHaveAttribute('aria-current', 'page');
   const foot = document.querySelector('.panel-sidebar-foot');
   expect(foot.querySelectorAll('.panel-nav-item')).toHaveLength(1);
@@ -150,7 +151,8 @@ test('S05-TC-303 la oferta en vivo muestra lo necesario sin la dirección y resp
   expect(within(card).getByRole('heading', {name: 'Cómputo · Solicitud #101'})).toBeInTheDocument();
   expect(within(card).getByRole('list', {name: 'Trabajos pedidos'})).toHaveTextContent('Mantenimiento preventivo');
   expect(card).toHaveTextContent('Chilca');
-  expect(card).toHaveTextContent(/Tarde \(12–18\) · .*14:00–16:00/);
+  // Fase T3: fecha legible «vie 13 nov · 14:00–16:00 (Tarde)».
+  expect(card).toHaveTextContent(/vie 13 nov · 14:00–16:00 \(Tarde\)/);
   expect(card).toHaveTextContent('S/ 80,00 (referencial)');
   expect(within(card).getByText('Urgente')).toBeInTheDocument();
   expect(card).not.toHaveTextContent(/Dirección|Jr\.|Av\./);

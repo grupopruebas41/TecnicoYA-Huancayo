@@ -124,7 +124,7 @@ function Progress({data, navigate}) {
   </section>;
 }
 
-function EmptyOffers() {
+export function EmptyOffers() {
   return <div className="tech-empty">
     <svg viewBox="0 0 120 90" aria-hidden="true" className="tech-empty-art">
       <circle cx="60" cy="45" r="38" className="tech-empty-glow"/>

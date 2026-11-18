@@ -8,6 +8,9 @@ use App\Modules\FAdministration\Application\Portfolio;
 use App\Modules\FAdministration\Application\PublicTechnicianProfile;
 use App\Modules\FAdministration\Application\TechnicianDocuments;
 use App\Modules\FAdministration\Application\TechnicianHome;
+use App\Modules\FAdministration\Application\TechnicianJobs;
+use Carbon\CarbonImmutable;
+use Illuminate\Validation\Rule;
 use App\Modules\FAdministration\Http\Resources\AccountData;
 use App\Modules\FAdministration\Application\TechnicianStatus;
 use App\Modules\FAdministration\Application\UpdateAvailability;
@@ -36,6 +39,31 @@ final class TechnicianProfileController
     public function home(Request $request, OwnTechnicianProfile $profiles, TechnicianHome $home): JsonResponse
     {
         return ApiResponse::data($home->for($profiles->idFor($request->user()), AccountData::from($request->user()->fresh())['avatar_url']));
+    }
+
+    /** Fase T3: Mis trabajos por pestaña, con conteos, búsqueda y paginación. */
+    public function jobs(Request $request, OwnTechnicianProfile $profiles, TechnicianJobs $jobs): JsonResponse
+    {
+        $filters = $request->validate([
+            'tab' => ['sometimes', Rule::in(TechnicianJobs::TABS)], 'q' => ['sometimes', 'nullable', 'string', 'max:60'],
+            'page' => ['sometimes', 'integer', 'min:1'], 'per_page' => ['sometimes', 'integer', 'min:1', 'max:30'],
+        ], ['tab.in' => __('api.jobs_tab'), 'q.max' => __('api.jobs_search')]);
+
+        return ApiResponse::data($jobs->list($profiles->idFor($request->user()), $filters));
+    }
+
+    public function job(Request $request, int $serviceRequest, OwnTechnicianProfile $profiles, TechnicianJobs $jobs): JsonResponse
+    {
+        return ApiResponse::data($jobs->detail($profiles->idFor($request->user()), $serviceRequest));
+    }
+
+    /** Fase T3: Mi agenda, una semana de lunes a domingo (hora de Lima); sin fecha, la semana actual. */
+    public function agenda(Request $request, OwnTechnicianProfile $profiles, TechnicianJobs $jobs): JsonResponse
+    {
+        $week = $request->validate(['week' => ['sometimes', 'date_format:Y-m-d']], ['week.date_format' => __('api.agenda_week')])['week'] ?? null;
+        $day = $week ? CarbonImmutable::parse($week, TechnicianHome::TIMEZONE) : CarbonImmutable::now(TechnicianHome::TIMEZONE);
+
+        return ApiResponse::data($jobs->agenda($profiles->idFor($request->user()), $day->startOfWeek(CarbonImmutable::MONDAY)));
     }
 
     public function updateProfile(UpdateTechnicianProfileRequest $request, UpdateTechnicianProfile $update, OwnProfileView $view): JsonResponse

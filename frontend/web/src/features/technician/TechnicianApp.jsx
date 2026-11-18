@@ -2,7 +2,9 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {request} from '../administration/http';
 import PanelShell from '../panel/PanelShell';
 import ProfilePage from '../panel/ProfilePage';
-import OffersInbox from '../offers/OffersInbox';
+import OffersPage from './OffersPage';
+import JobsPage from './JobsPage';
+import {AgendaPage, ZonesPage} from './Availability';
 import TechnicianPanel from '../administration/TechnicianPanel';
 import NotificationsPage from '../client/NotificationsPage';
 import {PrivacyPage} from '../client/ClientPages';
@@ -39,9 +41,10 @@ export function technicianBadges(data) {
   };
 }
 
-/** A dónde lleva cada aviso del técnico (Fase T2): ofertas, verificación o el Inicio (los trabajos llegan en la T3). */
+/** A dónde lleva cada aviso del técnico: ofertas, trabajos (asignado o cancelado, Fase T3), verificación o el Inicio. */
 export function technicianTarget(item) {
   if (item.type?.startsWith('offer.')) return ['offers'];
+  if (item.type === 'request.assigned' || item.type === 'request.cancelled') return ['jobs'];
   if (item.type?.startsWith('technician.verification')) return ['verification'];
   return ['home'];
 }
@@ -55,8 +58,8 @@ function BusinessPage({title, intro, only, onSaved}) {
 
 /**
  * Panel del técnico (Fase T2, D-104): menú agrupado en Trabajo, Mi negocio, Mi desempeño y Ayuda sobre PanelShell
- * moderno. Lo que no está listo va con «Próximamente» y aria-disabled (Mis trabajos y Mi agenda en la T3, Estadísticas
- * en la T4, Calificaciones en el S6 y Ganancias en el S8); ningún enlace lleva a una página vacía.
+ * moderno. Lo que no está listo va con «Próximamente» y aria-disabled (Estadísticas en la T4, Calificaciones en el S6
+ * y Ganancias en el S8); ningún enlace lleva a una página vacía. Desde la T3: Ofertas, Mis trabajos, Mi agenda y Zonas.
  */
 export default function TechnicianApp({user, roleLabel, onLogout, onUserChange, busy, notice, onExpired}) {
   const [tick, setTick] = useState(0);
@@ -65,17 +68,18 @@ export default function TechnicianApp({user, roleLabel, onLogout, onUserChange, 
   const sections = [
     {id: 'home', group: 'Trabajo', label: 'Inicio', icon: 'home',
       render: ({navigate}) => <TechnicianHome user={user} home={home} navigate={navigate} onChange={refresh}/>},
-    {id: 'offers', group: 'Trabajo', label: 'Ofertas', icon: 'bolt', render: () => <OffersInbox/>},
-    {id: 'jobs', group: 'Trabajo', label: 'Mis trabajos', icon: 'briefcase', soon: true},
-    {id: 'agenda', group: 'Trabajo', label: 'Mi agenda', icon: 'calendar', soon: true},
+    // Fase T3: Ofertas con Pendientes e Historial, Mis trabajos y Mi agenda.
+    {id: 'offers', group: 'Trabajo', label: 'Ofertas', icon: 'bolt',
+      render: () => <OffersPage pendingCount={home.data?.offers?.pending ?? 0} onChange={refresh}/>},
+    {id: 'jobs', group: 'Trabajo', label: 'Mis trabajos', icon: 'briefcase', render: () => <JobsPage/>},
+    {id: 'agenda', group: 'Trabajo', label: 'Mi agenda', icon: 'calendar', render: () => <AgendaPage onSaved={refresh}/>},
     {id: 'profile-pro', group: 'Mi negocio', label: 'Perfil profesional', icon: 'profile', render: () => <BusinessPage only="profile"
       title="Perfil profesional" intro="Lo que ven los clientes en tu perfil público." onSaved={refresh}/>},
     {id: 'services', group: 'Mi negocio', label: 'Servicios y tarifas', icon: 'catalog', render: () => <BusinessPage only="services"
       title="Servicios y tarifas" intro="Tus trabajos con su tarifa referencial." onSaved={refresh}/>},
     {id: 'portfolio', group: 'Mi negocio', label: 'Portafolio', icon: 'image', render: () => <BusinessPage only="portfolio"
       title="Portafolio" intro="Muestra trabajos reales para ganar la confianza del cliente." onSaved={refresh}/>},
-    {id: 'zones', group: 'Mi negocio', label: 'Zonas y disponibilidad', icon: 'map', render: () => <BusinessPage only="availability"
-      title="Zonas y disponibilidad" intro="Los distritos que atiendes y tus horarios." onSaved={refresh}/>},
+    {id: 'zones', group: 'Mi negocio', label: 'Zonas y disponibilidad', icon: 'map', render: () => <ZonesPage onSaved={refresh}/>},
     {id: 'verification', group: 'Mi negocio', label: 'Verificación', icon: 'verify', render: () => <BusinessPage only="verification"
       title="Verificación" intro="Tus documentos solo los ves tú y el equipo que los revisa." onSaved={refresh}/>},
     {id: 'stats', group: 'Mi desempeño', label: 'Estadísticas', icon: 'chart', soon: true},

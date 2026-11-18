@@ -5,17 +5,12 @@ import {feeLabel} from '../offers/CandidateCard';
 import {clock, useCountdown} from '../offers/OfferCountdown';
 import {OfferError} from '../offers/offerErrors';
 import {useOfferResponse} from '../offers/OffersInbox';
+import {franjaOf, legibleRange} from './format';
 
-const SLOTS = [[12, 'Mañana (08–12)'], [18, 'Tarde (12–18)'], [24, 'Noche (18–21)']];
-const limaHour = iso => Number(new Intl.DateTimeFormat('es-PE', {hour: 'numeric', hourCycle: 'h23', timeZone: 'America/Lima'}).format(new Date(iso)));
-const limaDay = iso => new Intl.DateTimeFormat('es-PE', {weekday: 'short', day: 'numeric', month: 'short', timeZone: 'America/Lima'}).format(new Date(iso));
-const limaTime = iso => new Intl.DateTimeFormat('es-PE', {hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'America/Lima'}).format(new Date(iso));
-
-/** Franja pedida en texto: «Tarde (12–18) · jue. 13 nov., 14:00–16:00» o «Lo antes posible». */
+/** Franja pedida en texto legible (Fase T3): «jue 13 nov · 14:00–16:00 (Tarde)» o «Lo antes posible». */
 export function slotText(request) {
   if (!request.preferred_start_at) return 'Lo antes posible';
-  const slot = SLOTS.find(([limit]) => limaHour(request.preferred_start_at) < limit)?.[1];
-  return `${slot} · ${limaDay(request.preferred_start_at)}, ${limaTime(request.preferred_start_at)}–${limaTime(request.preferred_end_at)}`;
+  return `${legibleRange(request.preferred_start_at, request.preferred_end_at)} (${franjaOf(request.preferred_start_at).label})`;
 }
 
 /** Tono del anillo: verde con más de 5 minutos, ámbar hasta 2 y rojo en los últimos 2 (también en texto). */

@@ -1,0 +1,110 @@
+{
+  "1366-ofertas-pendientes": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "1366-ofertas-historial": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "1366-trabajos-asignados": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "1366-trabajos-completados": {
+    "overflowX": false,
+    "tarjetas": 5,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "1366-trabajos-cancelados": {
+    "overflowX": false,
+    "tarjetas": 1,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "1366-agenda": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  },
+  "1366-agenda-completa": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  },
+  "1366-zonas": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  },
+  "1366-zonas-guardado": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  },
+  "390-ofertas-pendientes": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "390-ofertas-historial": {
+    "overflowX": false,
+    "tarjetas": 10,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "390-trabajos-asignados": {
+    "overflowX": false,
+    "tarjetas": 2,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "390-trabajos-completados": {
+    "overflowX": false,
+    "tarjetas": 5,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "390-trabajos-cancelados": {
+    "overflowX": false,
+    "tarjetas": 1,
+    "casillas": 0,
+    "recortados": 0
+  },
+  "390-agenda": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  },
+  "390-agenda-completa": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  },
+  "390-zonas": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  },
+  "390-zonas-guardado": {
+    "overflowX": false,
+    "tarjetas": 0,
+    "casillas": 21,
+    "recortados": 0
+  }
+}

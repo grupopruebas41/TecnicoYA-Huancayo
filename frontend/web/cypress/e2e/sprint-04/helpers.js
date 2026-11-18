@@ -11,6 +11,11 @@ export function login(account) {
   cy.get("[data-cy=login-submit]").click();
   cy.get("[data-cy^=portal-]").should("be.visible"); // Fase 4: el cliente ya no tiene «Cerrar sesión» a la vista.
   dismissOnboarding(); // Fase 5: la bienvenida sale la primera vez que entra un cliente.
+  // Panel del técnico (T2 y T3): entra al Inicio; las pruebas del S4 trabajan con la bandeja, que vive en «Ofertas».
+  if (account.startsWith("e2e-technician")) {
+    cy.get('nav[aria-label="Gestión del técnico"]').contains("button", "Ofertas").click();
+    cy.get('[aria-label="Solicitudes entrantes"]').should("be.visible");
+  }
 }
 export function read(path) {
   return cy.request({
