@@ -217,6 +217,12 @@ Las ofertas se siguen leyendo de `GET /offers`.
 
 **Migración:** `000038_add_portfolio_order` (`portfolio_items.position`).
 
+**Hecho (2026-11-17, rama `feature/pimentel/tecnico/t4-negocio`):**
+- IDs S05-TC-331 a 352: Pest 331 a 339, Vitest 340 a 349 y Cypress escritas 350 a 352.
+- DEF-69 corregido (menú «Aprobado» sin documentos).
+- D-111 (lista de «Tipo de documento») queda propuesta y aplicada con la opción A hasta que se decida.
+- **Siguiente numeración:** D-112, DEF-70 y S05-TC-353 para la T5.
+
 ### T5 · Accesibilidad, bienvenida y tutorial del técnico
 
 - **Ajustes:** los 8 del cliente, en la cuenta (D-105).
