@@ -2,6 +2,32 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-18 · Revisión del #63 (antes de integrar): etiquetas del menú sin cortes
+
+- **Rama:** la misma, `feature/pimentel/tecnico/t5-accesibilidad`. Pedido de Pimentel en la revisión del #63.
+- **Commits:**
+  - `e3917ea`: pruebas en rojo S05-TC-372 (Pest) y S05-TC-373 (Vitest);
+  - `7d740c3`: implementación;
+  - `c199372`, `e936300` y `d3b0328`: ajustes vistos en las capturas.
+- **Cambios:**
+  - **`PanelShell`, para técnico, cliente y administrador:**
+    - el texto del ítem y su etiqueta van juntos en `.panel-nav-text`: el texto con `min-width: 0` y la etiqueta con `flex-shrink: 0`;
+    - si no caben lado a lado (texto al 115 % o más), la etiqueta baja bajo el texto, que nunca se separa de su ícono;
+    - el menú reserva la barra (`scrollbar-gutter: stable`) y solo la muestra al pasar el mouse;
+    - con el menú contraído, el estado es un punto de color sobre el ícono y el tooltip lleva el texto completo.
+  - **Verificación en el menú:** «Aprobado», «En revisión», «Falta N» u «Observado», con ícono. El texto completo va en `title`, `aria-label` y la descripción del ítem. La página de Verificación no cambia.
+  - **Backend:** el texto completo dice «Faltan 2 documentos» cuando faltan los dos.
+  - **Colores AA sobre el menú oscuro:** verde 6,1:1, ámbar 8,7:1, azul 6,1:1 y rojo suave 7,4:1. Letra de 12 px, que crece con el tamaño de texto.
+  - **Visto en las capturas:** el Inicio del técnico se desbordaba a 390 px con texto al 150 % (430 px). Ahora la columna del Inicio y la oferta en vivo no crecen con su contenido, y Aceptar y Rechazar se apilan si no caben.
+- **Pruebas:**
+  - S05-TC-300 se adaptó: espera «Falta 1» en vez de «Falta un documento» (explicado en el commit).
+  - Vitest 499 de 499, lint 0 y build correcto.
+  - Pest: `TechnicianHomeTest` y `TechnicianOnboardingTest`, 12 de 12.
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-18-d3b0328-revision-63-*`.
+  - 1366 y 390, claro y oscuro, texto al 100 y al 150 %; técnico, técnico aprobado, cliente y administrador; menú contraído.
+  - Mediciones en `…-capturas.json`: 20 capturas sin problemas (etiquetas dentro del menú, letra de 12 px o más, texto sin cortar y sin desborde).
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-18 · Panel del técnico, Fase T5 (modo rápido): accesibilidad, avisos, bienvenida, tutorial y Primeros pasos
 
 - **Rama:** `feature/pimentel/tecnico/t5-accesibilidad`, desde `main` `797efc0` (#62 integrado); un solo PR.
