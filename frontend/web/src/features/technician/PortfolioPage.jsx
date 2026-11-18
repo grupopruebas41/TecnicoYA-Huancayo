@@ -37,8 +37,12 @@ function WorkEditor({item, subcategories, onCancel, onSaved}) {
   const [busy, setBusy] = useState(false);
   const title = useRef(null);
   useEffect(() => { title.current?.focus(); }, []);
-  const set = (field, value) => setValues(current => ({...current, [field]: value}));
-  const setImage = (index, field, value) => setImages(current => current.map((image, position) => (position === index ? {...image, [field]: value} : image)));
+  // Al corregir un campo se borra su error (el resto se vuelve a validar al guardar).
+  const set = (field, value) => { setValues(current => ({...current, [field]: value})); setErrors(current => ({...current, [field]: undefined})); };
+  const setImage = (index, field, value) => {
+    setImages(current => current.map((image, position) => (position === index ? {...image, [field]: value} : image)));
+    if (field === 'caption') setErrors(current => ({...current, [`caption-${index}`]: undefined}));
+  };
   function add(media) {
     setImages(current => (current.length >= 5 ? current : [...current, {media_id: media.id, url: media.url, caption: '',
       stage: current.some(image => image.stage === 'before') ? 'after' : current.length ? 'after' : 'before'}]));

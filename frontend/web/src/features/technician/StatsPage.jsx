@@ -14,6 +14,11 @@ export function duration(seconds) {
 const percent = value => (value === null || value === undefined ? '—' : `${value} %`);
 const unit = period => (period === 'week' ? 'semana' : 'mes');
 const ofBucket = (bucket, period) => (period === 'week' ? `la semana del ${bucket.label}` : bucket.label);
+/** «La semana» o «El mes», con el artículo y el adjetivo en su género. */
+const theUnit = period => (period === 'week' ? 'La semana' : 'El mes');
+/** Tras «La semana…» basta «la del 9 nov»; el mes se nombra solo. */
+const sameBucket = (bucket, period) => (period === 'week' ? `la del ${bucket.label}` : bucket.label);
+const fastestOf = period => (period === 'week' ? 'tu semana más rápida' : 'tu mes más rápido');
 
 /** Resumen en texto de las estadísticas, para leer sin ver los gráficos. */
 export function statsSummary(data) {
@@ -28,9 +33,16 @@ export function statsSummary(data) {
   const parts = [`En ${span} aceptaste ${totals.accepted} de ${offers} ${offers === 1 ? 'oferta' : 'ofertas'} (${percent(totals.acceptance_rate)})`
     + `, dejaste vencer ${totals.expired} y completaste ${totals.completed} ${totals.completed === 1 ? 'trabajo' : 'trabajos'}.`];
   if (totals.avg_response_seconds !== null) parts.push(`Respondiste en ${duration(totals.avg_response_seconds)} en promedio.`);
-  if (busiest.bucket) parts.push(`El ${unit(period)} con más ofertas fue ${ofBucket(busiest.bucket, period)} (${busiest.total}).`);
+  if (busiest.bucket) parts.push(`${theUnit(period)} con más ofertas fue ${sameBucket(busiest.bucket, period)} (${busiest.total}).`);
   return parts.join(' ');
 }
+
+/** Tramos de la línea sin cruzar los períodos sin datos (la línea se corta donde no hay valor). */
+export const segments = points => points.reduce((all, point) => {
+  if (point[1] === null || point[1] === undefined) return [...all, []];
+  all[all.length - 1].push(point);
+  return all;
+}, [[]]).filter(segment => segment.length);
 
 const niceMax = value => { if (value <= 4) return 4; const step = 10 ** Math.floor(Math.log10(value)); return Math.ceil(value / step) * step; };
 
@@ -65,8 +77,8 @@ export function BarChart({title, summary, buckets, series, format = value => Str
           <line x1={left} x2={width - 8} y1={y(tick)} y2={y(tick)}/>
           <text x={left - 6} y={y(tick) + 4} textAnchor="end">{format(Math.round(tick))}</text>
         </g>)}
-        {line && <polyline className="tech-chart-line" data-series="1"
-          points={points.filter(([, value]) => value !== null && value !== undefined).map(([x, value]) => `${x},${y(value)}`).join(' ')}/>}
+        {line && segments(points).map(segment => <polyline key={segment[0][0]} className="tech-chart-line" data-series="1"
+          points={segment.map(([x, value]) => `${x},${y(value)}`).join(' ')}/>)}
         {buckets.map((bucket, index) => {
           const x = left + band * index + (band - bar) / 2;
           let base = 0;
@@ -89,7 +101,8 @@ export function BarChart({title, summary, buckets, series, format = value => Str
           </g>;
         })}
       </svg>
-      {hover !== null && <div className="tech-chart-tip" aria-hidden="true" style={{left: `${((left + band * hover + band / 2) / width) * 100}%`}}>
+      {hover !== null && <div className="tech-chart-tip" aria-hidden="true" data-side={hover < buckets.length / 3 ? 'start' : hover >= buckets.length * 2 / 3 ? 'end' : 'middle'}
+        style={{left: `${((left + band * hover + band / 2) / width) * 100}%`}}>
         <strong>{buckets[hover].label}</strong>
         {series.map(([key, name], index) => <span key={key}>{series.length > 1 && <i className="tech-swatch" data-series={index + 1} aria-hidden="true"/>}
           {name}: {buckets[hover][key] === null || buckets[hover][key] === undefined ? 'sin datos' : format(buckets[hover][key])}</span>)}
@@ -162,12 +175,12 @@ export default function StatsPage() {
         <section className="panel-card tech-section" aria-label="Tiempo medio de respuesta">
           <BarChart title={`Tiempo medio de respuesta por ${name} (segundos)`} buckets={data.buckets}
             series={[['avg_response_seconds', 'Tiempo medio']]} format={value => `${value} s`}
-            summary={fastest ? `En promedio respondiste en ${duration(data.totals.avg_response_seconds)}; tu ${name} más rápido fue ${ofBucket(fastest, period)} (${duration(fastest.avg_response_seconds)}).`
+            summary={fastest ? `En promedio respondiste en ${duration(data.totals.avg_response_seconds)}; ${fastestOf(period)} fue ${sameBucket(fastest, period)} (${duration(fastest.avg_response_seconds)}).`
               : 'Todavía no respondiste ofertas en este período.'}/>
         </section>
         <section className="panel-card tech-section" aria-label="Trabajos completados">
           <BarChart title={`Trabajos completados por ${name}`} buckets={data.buckets} series={[['completed', 'Completados']]}
-            summary={most?.completed ? `Completaste ${data.totals.completed} trabajos; el ${name} con más fue ${ofBucket(most, period)} (${most.completed}).`
+            summary={most?.completed ? `Completaste ${data.totals.completed} trabajos; ${theUnit(period).toLowerCase()} con más fue ${sameBucket(most, period)} (${most.completed}).`
               : 'Todavía no completaste trabajos en este período.'}/>
         </section>
       </div>

@@ -5,7 +5,7 @@ import ProfessionalProfile from './ProfessionalProfile';
 import ServicesPage from './ServicesPage';
 import PortfolioPage from './PortfolioPage';
 import VerificationPage from './VerificationPage';
-import StatsPage, {duration, statsSummary} from './StatsPage';
+import StatsPage, {duration, segments, statsSummary} from './StatsPage';
 import {request, uploadWithProgress} from '../administration/http';
 // S05-TC-340 a 349 · Panel del técnico, Fase T4 (modo rápido): Perfil profesional con vista previa en vivo, Servicios y
 // tarifas, Portafolio (antes y después, texto alternativo, orden y retiro), Verificación (estados de cada documento,
@@ -214,6 +214,8 @@ test('S05-TC-345 un trabajo nuevo pide el texto alternativo de cada foto antes d
   expect(screen.getAllByText('Escribe el texto alternativo: qué se ve en la foto.')).toHaveLength(2);
   expect(request).not.toHaveBeenCalledWith('/technicians/me/portfolio', expect.anything(), 'POST');
   type(/^Texto alternativo de la foto 1/, 'Cámara con hielo acumulado');
+  // Al escribirlo, su error desaparece; el de la otra foto sigue.
+  expect(screen.getAllByText('Escribe el texto alternativo: qué se ve en la foto.')).toHaveLength(1);
   type(/^Texto alternativo de la foto 2/, 'Cámara limpia y funcionando');
   fireEvent.click(screen.getByRole('button', {name: 'Guardar trabajo'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/technicians/me/portfolio', expect.objectContaining({
@@ -312,6 +314,8 @@ test('S05-TC-349 cada barra del gráfico muestra su detalle al enfocarla; sin da
   fireEvent.blur(bar);
   expect(document.querySelector('.tech-chart-tip')).toBeNull();
   expect(screen.getAllByRole('img', {name: /2 nov: Completados 0/})).toHaveLength(1);
+  // La línea de la tasa se corta en los períodos sin datos en lugar de unirlos.
+  expect(segments([[1, 50], [2, null], [3, 75], [4, 80]])).toEqual([[[1, 50]], [[3, 75], [4, 80]]]);
   expect(duration(null)).toBe('—');
   expect(duration(45)).toBe('45 s');
   expect(duration(125)).toBe('2 min 05 s');
