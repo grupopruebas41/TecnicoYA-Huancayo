@@ -1,0 +1,15 @@
+   × S05-TC-299 el menú del técnico agrupa Trabajo, Mi negocio, Mi desempeño y Ayuda, y lo no listo dice «Próximamente» 163ms
+   ✓ S05-TC-300 el menú muestra las ofertas pendientes con su punto que late, el avance del perfil y el estado de la verificación 163ms
+   ✓ S05-TC-301 el anillo pasa de verde a ámbar y a rojo en sus bordes y dice el tiempo en texto 10ms
+   ✓ S05-TC-302 la cuenta regresiva de 10 minutos llega a cero con el reloj controlado y desactiva los botones 45ms
+   ✓ S05-TC-303 la oferta en vivo muestra lo necesario sin la dirección y responde con idempotencia; rechazar pide confirmación 89ms
+   ✓ S05-TC-304 el Inicio saluda, destaca la oferta que vence primero, lista las demás y sin ofertas muestra su estado vacío 154ms
+   ✓ S05-TC-305 indicadores, Mi día por franja, progreso con tareas que llevan a su sección e insignias con texto 885ms
+   ✓ S05-TC-306 la Ayuda del técnico explica el flujo de la oferta y responde sus dudas 136ms
+   ✓ S05-TC-310 cada oferta en espera es una tarjeta con ícono, tiempo restante con color, hora de vencimiento y «Ver» primario 85ms
+ FAIL  src/features/technician/technicianBusiness.test.jsx [ src/features/technician/technicianBusiness.test.jsx ]
+Error: Failed to resolve import "./PortfolioPage" from "src/features/technician/technicianBusiness.test.jsx". Does the file exist?
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/features/technician/technicianHome.test.jsx > S05-TC-299 el menú del técnico agrupa Trabajo, Mi negocio, Mi desempeño y Ayuda, y lo no listo dice «Próximamente»
+AssertionError: expected [ 'Estadísticas', …(3) ] to deeply equal [ 'Calificaciones', 'Ganancias', …(1) ]
+      Tests  1 failed | 8 passed (9)

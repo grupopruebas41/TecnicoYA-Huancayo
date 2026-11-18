@@ -5,7 +5,11 @@ import ProfilePage from '../panel/ProfilePage';
 import OffersPage from './OffersPage';
 import JobsPage from './JobsPage';
 import {AgendaPage, ZonesPage} from './Availability';
-import TechnicianPanel from '../administration/TechnicianPanel';
+import ProfessionalProfile from './ProfessionalProfile';
+import ServicesPage from './ServicesPage';
+import PortfolioPage from './PortfolioPage';
+import VerificationPage from './VerificationPage';
+import StatsPage from './StatsPage';
 import NotificationsPage from '../client/NotificationsPage';
 import {PrivacyPage} from '../client/ClientPages';
 import TechnicianHome from './TechnicianHome';
@@ -49,17 +53,11 @@ export function technicianTarget(item) {
   return ['home'];
 }
 
-function BusinessPage({title, intro, only, onSaved}) {
-  return <section className="panel-page tech-business" aria-labelledby={`tech-${only}`}>
-    <header className="client-page-head"><h2 id={`tech-${only}`}>{title}</h2><p className="muted">{intro}</p></header>
-    <TechnicianPanel only={only} onSaved={onSaved}/>
-  </section>;
-}
-
 /**
  * Panel del técnico (Fase T2, D-104): menú agrupado en Trabajo, Mi negocio, Mi desempeño y Ayuda sobre PanelShell
- * moderno. Lo que no está listo va con «Próximamente» y aria-disabled (Estadísticas en la T4, Calificaciones en el S6
- * y Ganancias en el S8); ningún enlace lleva a una página vacía. Desde la T3: Ofertas, Mis trabajos, Mi agenda y Zonas.
+ * moderno. Lo que no está listo va con «Próximamente» y aria-disabled (Calificaciones en el S6
+ * y Ganancias en el S8); ningún enlace lleva a una página vacía. Desde la T3: Ofertas, Mis trabajos, Mi agenda y Zonas;
+ * desde la T4: Perfil profesional, Servicios y tarifas, Portafolio, Verificación y Estadísticas.
  */
 export default function TechnicianApp({user, roleLabel, onLogout, onUserChange, busy, notice, onExpired}) {
   const [tick, setTick] = useState(0);
@@ -73,16 +71,14 @@ export default function TechnicianApp({user, roleLabel, onLogout, onUserChange, 
       render: () => <OffersPage pendingCount={home.data?.offers?.pending ?? 0} onChange={refresh}/>},
     {id: 'jobs', group: 'Trabajo', label: 'Mis trabajos', icon: 'briefcase', render: () => <JobsPage/>},
     {id: 'agenda', group: 'Trabajo', label: 'Mi agenda', icon: 'calendar', render: () => <AgendaPage onSaved={refresh}/>},
-    {id: 'profile-pro', group: 'Mi negocio', label: 'Perfil profesional', icon: 'profile', render: () => <BusinessPage only="profile"
-      title="Perfil profesional" intro="Lo que ven los clientes en tu perfil público." onSaved={refresh}/>},
-    {id: 'services', group: 'Mi negocio', label: 'Servicios y tarifas', icon: 'catalog', render: () => <BusinessPage only="services"
-      title="Servicios y tarifas" intro="Tus trabajos con su tarifa referencial." onSaved={refresh}/>},
-    {id: 'portfolio', group: 'Mi negocio', label: 'Portafolio', icon: 'image', render: () => <BusinessPage only="portfolio"
-      title="Portafolio" intro="Muestra trabajos reales para ganar la confianza del cliente." onSaved={refresh}/>},
+    // Fase T4: Mi negocio rediseñado (perfil con vista previa, servicios, portafolio y verificación) y Estadísticas.
+    {id: 'profile-pro', group: 'Mi negocio', label: 'Perfil profesional', icon: 'profile',
+      render: () => <ProfessionalProfile user={user} onSaved={refresh}/>},
+    {id: 'services', group: 'Mi negocio', label: 'Servicios y tarifas', icon: 'catalog', render: () => <ServicesPage onSaved={refresh}/>},
+    {id: 'portfolio', group: 'Mi negocio', label: 'Portafolio', icon: 'image', render: () => <PortfolioPage onSaved={refresh}/>},
     {id: 'zones', group: 'Mi negocio', label: 'Zonas y disponibilidad', icon: 'map', render: () => <ZonesPage onSaved={refresh}/>},
-    {id: 'verification', group: 'Mi negocio', label: 'Verificación', icon: 'verify', render: () => <BusinessPage only="verification"
-      title="Verificación" intro="Tus documentos solo los ves tú y el equipo que los revisa." onSaved={refresh}/>},
-    {id: 'stats', group: 'Mi desempeño', label: 'Estadísticas', icon: 'chart', soon: true},
+    {id: 'verification', group: 'Mi negocio', label: 'Verificación', icon: 'verify', render: () => <VerificationPage onSaved={refresh}/>},
+    {id: 'stats', group: 'Mi desempeño', label: 'Estadísticas', icon: 'chart', render: () => <StatsPage/>},
     {id: 'ratings', group: 'Mi desempeño', label: 'Calificaciones', icon: 'star', soon: true},
     {id: 'earnings', group: 'Mi desempeño', label: 'Ganancias', icon: 'wallet', soon: true},
     {id: 'how', group: 'Ayuda', label: 'Cómo funciona', icon: 'book', render: ({navigate}) => <TechnicianHowItWorks navigate={navigate}/>},
