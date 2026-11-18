@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useId, useRef, useState} from 'react';
+import {createPortal} from 'react-dom';
 import {request, uploadWithProgress} from '../administration/http';
 import {validateUpload} from '../administration/sprint02Validation';
 import Icon from '../panel/icons';
@@ -137,7 +138,7 @@ export function SelectField({label, value, onChange, children, error, hint}) {
   return <label className="tech-field" htmlFor={id}>
     <span className="tech-field-label">{label}</span>
     {hint && <small className="muted">{hint}</small>}
-    <span className="tech-select"><select id={id} value={value} aria-invalid={Boolean(error)}
+    <span className="tech-selectbox"><select id={id} value={value} aria-invalid={Boolean(error)}
       aria-describedby={error ? `${id}-error` : undefined} onChange={event => onChange(event.target.value)}>{children}</select>
       <Icon name="chevron"/></span>
     {error && <span className="error" id={`${id}-error`}>{error}</span>}
@@ -149,4 +150,43 @@ export function apiError(failure, fallback) {
   if (failure?.status === 409) return 'Tu perfil cambió en otra pestaña. Cargamos lo último; revisa y guarda otra vez.';
   const fields = failure?.fields && Object.values(failure.fields).flat()[0];
   return fields || failure?.message || fallback;
+}
+
+const FOCUSABLE = 'button:not(:disabled), input:not(:disabled):not([tabindex="-1"]), select:not(:disabled), textarea:not(:disabled), a[href], [tabindex="0"]';
+
+/**
+ * Diálogo centrado y sobrepuesto (como «Tu cuenta»): fondo oscurecido y desenfocado, entrada con escala y algo de
+ * profundidad (se apaga con «Reducir animaciones»), hasta 760 px de ancho con desplazamiento interno y pantalla completa
+ * en el celular. Foco atrapado; Esc o el fondo lo cierran y el foco vuelve al botón que lo abrió. El pie queda fijo.
+ */
+export function TechDialog({title, icon = 'plus', onClose, footer, children, busy = false}) {
+  const titleId = useId();
+  const root = useRef(null);
+  const [opener] = useState(() => (typeof document === 'undefined' ? null : document.activeElement));
+  useEffect(() => {
+    const target = root.current?.querySelector('[data-autofocus]') || root.current?.querySelector(FOCUSABLE);
+    target?.focus();
+    document.body.classList.add('tech-dialog-open');
+    return () => { document.body.classList.remove('tech-dialog-open'); opener?.focus?.(); };
+  }, [opener]);
+  function keys(event) {
+    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); if (!busy) onClose(); return; }
+    if (event.key !== 'Tab') return;
+    const focusable = [...root.current.querySelectorAll(FOCUSABLE)].filter(element => !element.closest('[hidden]'));
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+  return createPortal(<div className="tech-dialog-overlay" onMouseDown={event => { if (event.target === event.currentTarget && !busy) onClose(); }}>
+    <div ref={root} className="tech-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId} onKeyDown={keys}>
+      <header className="tech-dialog-head">
+        <span className="tech-card-icon" aria-hidden="true"><Icon name={icon}/></span>
+        <h2 id={titleId}>{title}</h2>
+        <button type="button" className="tech-dialog-close" aria-label="Cerrar" onClick={onClose} disabled={busy}><Icon name="close"/></button>
+      </header>
+      <div className="panel-content tech-dialog-body">{children}</div>
+      {footer && <footer className="panel-content tech-dialog-foot">{footer}</footer>}
+    </div>
+  </div>, document.body);
 }

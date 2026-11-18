@@ -4,23 +4,28 @@ import {validateRate} from '../administration/sprint02Validation';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import {specialtyIcon} from '../client/specialtyIcon';
 import Icon from '../panel/icons';
-import {Alerts, CountedText, apiError, useOwnProfile} from './businessCommon';
+import {Alerts, CountedText, TechDialog, apiError, useOwnProfile} from './businessCommon';
+import {soles} from './format';
 
 export const INCLUDES_MAX = 300;
 const plain = text => (text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-const money = value => `S/ ${Number(value).toLocaleString('es-PE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+/** Color de cada especialidad por su ícono: cómputo azul, refrigeración aguamarina y electricidad ámbar. */
+const TONES = {monitor: 'computo', snow: 'frio', bolt: 'electricidad', catalog: 'otro'};
+const toneOf = name => TONES[specialtyIcon(name)];
+/** Lo que el técnico escribe con coma («95,50») se envía con punto; lo guardado se muestra con coma. */
+const toInput = value => (value === '' || value === null || value === undefined ? '' : String(value).replace('.', ','));
 
-/** Catálogo activo: especialidades y subcategorías (para el ícono de cada servicio y el buscador). */
+/** Catálogo activo: especialidades y subcategorías (para el ícono de cada servicio y el selector). */
 function useCatalog() {
-  const [catalog, setCatalog] = useState({specialties: [], subcategories: [], error: ''});
+  const [catalog, setCatalog] = useState({specialties: [], subcategories: [], error: '', loading: true});
   useEffect(() => {
     let active = true;
     (async () => {
       try {
         const specialties = (await request('/catalog/specialties'))?.data || [];
         const lists = await Promise.all(specialties.map(item => request(`/catalog/subcategories?specialty_id=${item.id}`)));
-        if (active) setCatalog({specialties, subcategories: lists.flatMap(list => list?.data || []), error: ''});
-      } catch (failure) { if (active) setCatalog(current => ({...current, error: failure.message || 'No pudimos cargar el catálogo.'})); }
+        if (active) setCatalog({specialties, subcategories: lists.flatMap(list => list?.data || []), error: '', loading: false});
+      } catch (failure) { if (active) setCatalog(current => ({...current, loading: false, error: failure.message || 'No pudimos cargar el catálogo.'})); }
     })();
     return () => { active = false; };
   }, []);
@@ -36,41 +41,133 @@ export function validateService(service) {
   return errors;
 }
 
-function ServiceForm({service, title, onCancel, onSave, busy}) {
-  const [fee, setFee] = useState(service.reference_fee ? String(service.reference_fee) : '');
+/** Tarifa y «Qué incluye». Con formId sus botones van fuera (al pie del diálogo); si no, lleva los suyos. */
+function ServiceForm({service, title, onCancel, onSave, busy, formId, autoFocus = true, suggested}) {
+  const [fee, setFee] = useState(toInput(service.reference_fee));
   const [includes, setIncludes] = useState(service.includes || '');
   const [errors, setErrors] = useState({});
   const first = useRef(null);
-  useEffect(() => { first.current?.focus(); }, []);
+  useEffect(() => { if (autoFocus) first.current?.focus(); }, [autoFocus]);
   function submit(event) {
     event.preventDefault();
-    const next = {...service, reference_fee: fee.replace(',', '.'), includes};
+    const next = {...service, reference_fee: fee.trim().replace(',', '.'), includes};
     const invalid = validateService(next);
     setErrors(invalid);
     if (!Object.keys(invalid).length) onSave(next);
   }
-  return <form className="tech-service-form" onSubmit={submit} noValidate aria-label={title}>
+  return <form id={formId} className="tech-service-form" onSubmit={submit} noValidate aria-label={title}>
     <p className="tech-service-form-title"><strong>{title}</strong></p>
     <label className="tech-field">
       <span className="tech-field-label">Tarifa referencial</span>
+      {suggested && <small className="muted">La tarifa de referencia del catálogo empieza en {soles(suggested)}.</small>}
       <span className="tech-money"><span aria-hidden="true">S/</span>
         <input ref={first} type="text" inputMode="decimal" value={fee} aria-invalid={Boolean(errors.reference_fee)}
-          aria-describedby={errors.reference_fee ? 'service-fee-error' : undefined} onChange={event => setFee(event.target.value)}
-          placeholder="80.00"/></span>
-      {errors.reference_fee && <span className="error" id="service-fee-error">{errors.reference_fee}</span>}
+          aria-describedby={errors.reference_fee ? `${formId || 'service'}-fee-error` : undefined} onChange={event => setFee(event.target.value)}
+          placeholder="80,00"/></span>
+      {errors.reference_fee && <span className="error" id={`${formId || 'service'}-fee-error`}>{errors.reference_fee}</span>}
     </label>
     <CountedText label="Qué incluye" value={includes} max={INCLUDES_MAX} rows={3} error={errors.includes} onChange={setIncludes}
       placeholder="Ejemplo: diagnóstico, limpieza interna y prueba final."/>
-    <div className="tech-service-actions">
+    {!formId && <div className="tech-service-actions">
       <button type="button" className="button outline" onClick={onCancel} disabled={busy}>Cancelar</button>
       <button type="submit" className="button primary" disabled={busy} aria-busy={busy}>{busy ? 'Guardando…' : 'Guardar servicio'}</button>
-    </div>
+    </div>}
   </form>;
 }
 
 /**
- * Servicios y tarifas (Fase T4): una tarjeta por servicio con el ícono de la especialidad, la tarifa en grande con «S/»,
- * «Qué incluye», Editar y Quitar (con confirmación); «Añadir servicio» busca entre las subcategorías activas.
+ * Diálogo «Añadir servicio»: buscador, filtros por especialidad (con su ícono y color), tarjetas iguales agrupadas por
+ * especialidad (2 columnas; 1 en el celular), «Ya lo ofreces» en las que ya tiene y, al elegir una, la tarifa y «Qué
+ * incluye» debajo. Las tarjetas son un grupo de opciones: las flechas mueven el foco y Enter o Espacio eligen.
+ */
+export function AddServiceDialog({catalog, offered, declared, busy, onClose, onSave}) {
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('all');
+  const [selected, setSelected] = useState(null);
+  const cards = useRef({});
+  const form = useRef(null);
+  const words = plain(query.trim());
+  const specialties = catalog.specialties.filter(item => catalog.subcategories.some(entry => entry.specialty_id === item.id));
+  const groups = specialties.filter(item => filter === 'all' || item.id === filter).map(specialty => ({
+    specialty,
+    items: catalog.subcategories.filter(entry => entry.specialty_id === specialty.id
+      && (!words || plain(`${entry.name} ${entry.description || ''} ${specialty.name}`).includes(words))),
+  })).filter(group => group.items.length);
+  const order = groups.flatMap(group => group.items).filter(item => !offered.has(item.id));
+  const current = order.find(item => item.id === selected?.id) || order[0];
+  const choose = item => { setSelected(item); requestAnimationFrame(() => form.current?.scrollIntoView?.({block: 'nearest', behavior: 'smooth'})); };
+  function keys(event, item) {
+    const step = {ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1}[event.key];
+    if (step) {
+      event.preventDefault();
+      const index = order.findIndex(entry => entry.id === item.id);
+      cards.current[order[(index + step + order.length) % order.length].id]?.focus();
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      choose(item);
+    } else if (event.key === 'Home' || event.key === 'End') {
+      event.preventDefault();
+      cards.current[(event.key === 'Home' ? order[0] : order[order.length - 1]).id]?.focus();
+    }
+  }
+  // El formulario aparece debajo del grupo de la tarjeta elegida (o al final si un filtro la oculta).
+  const pickForm = selected && <div ref={form} className="tech-pick-form">
+    <ServiceForm key={selected.id} formId="add-service-form" autoFocus={false} busy={busy} suggested={selected.reference_fee}
+      title={`Tu tarifa para «${selected.name}»`}
+      service={{subcategory_id: selected.id, subcategory_name: selected.name, reference_fee: '', includes: ''}} onSave={onSave}/>
+  </div>;
+  const footer = <>
+    <button type="button" className="button outline" onClick={onClose} disabled={busy}>Cancelar</button>
+    <button type="submit" form="add-service-form" className="button primary" disabled={busy || !selected} aria-busy={busy}>
+      {busy ? 'Guardando…' : 'Guardar servicio'}</button>
+  </>;
+  return <TechDialog title="Añadir servicio" icon="plus" onClose={onClose} footer={footer} busy={busy}>
+    <label className="tech-search" htmlFor="service-search"><Icon name="search"/>
+      <span className="tech-sr">Buscar subcategoría</span>
+      <input id="service-search" type="search" data-autofocus value={query} placeholder="Buscar: impresoras, vitrinas, tableros…"
+        onChange={event => setQuery(event.target.value)}/></label>
+    <div className="tech-filters" role="group" aria-label="Filtrar por especialidad">
+      <button type="button" className="tech-filter" aria-pressed={filter === 'all'} onClick={() => setFilter('all')}>
+        <Icon name="catalog"/> Todas</button>
+      {specialties.map(item => <button key={item.id} type="button" className="tech-filter" data-tone={toneOf(item.name)}
+        aria-pressed={filter === item.id} onClick={() => setFilter(item.id)}><Icon name={specialtyIcon(item.name)}/> {item.name}</button>)}
+    </div>
+    {catalog.loading && <p className="muted" role="status">Cargando las subcategorías…</p>}
+    {!catalog.loading && !groups.length && <p className="tech-no-results" role="status">
+      No encontramos “{query.trim()}”. Prueba con otra palabra.</p>}
+    <div className="tech-picker">
+      {groups.map(({specialty, items}) => <section key={specialty.id} className="tech-picker-group" aria-labelledby={`picker-${specialty.id}`}>
+        <h3 id={`picker-${specialty.id}`} data-tone={toneOf(specialty.name)}><span className="tech-picker-dot" aria-hidden="true">
+          <Icon name={specialtyIcon(specialty.name)}/></span>{specialty.name}</h3>
+        <div className="tech-picker-grid" role="radiogroup" aria-labelledby={`picker-${specialty.id}`}>
+          {items.map(item => {
+            const taken = offered.has(item.id);
+            const checked = selected?.id === item.id;
+            const wasDeclared = declared.has(item.id);
+            return <button key={item.id} ref={element => { cards.current[item.id] = element; }} type="button" role="radio"
+              className="tech-pick" data-tone={toneOf(specialty.name)} aria-checked={checked} disabled={taken}
+              tabIndex={!taken && current?.id === item.id ? 0 : -1} onClick={() => choose(item)} onKeyDown={event => keys(event, item)}>
+              <span className="tech-pick-icon" aria-hidden="true"><Icon name={checked ? 'check' : specialtyIcon(specialty.name)}/></span>
+              <span className="tech-pick-text">
+                <strong>{item.name}</strong>
+                {taken ? <span className="tech-pick-tag">Ya lo ofreces</span>
+                  : item.description ? <small>{item.description}</small>
+                    : item.reference_fee ? <small>Tarifa sugerida desde {soles(item.reference_fee)}</small> : null}
+                {!taken && wasDeclared && <span className="tech-pick-tag is-declared">Lo declaraste al registrarte</span>}
+              </span>
+            </button>;
+          })}
+        </div>
+        {selected?.specialty_id === specialty.id && items.some(item => item.id === selected.id) && pickForm}
+      </section>)}
+    </div>
+    {selected && !groups.some(group => group.items.some(item => item.id === selected.id)) && pickForm}
+  </TechDialog>;
+}
+
+/**
+ * Servicios y tarifas (Fase T4): una tarjeta por servicio con el ícono de la especialidad, la tarifa en grande con «S/»
+ * (formato peruano, «S/ 120,00»), «Qué incluye», Editar y Quitar (con confirmación); «Añadir servicio» abre un diálogo.
  * Todo se guarda con PUT /technicians/me/services, que ya existe (versión del perfil y tarifa versionada, D-48).
  */
 export default function ServicesPage({onSaved}) {
@@ -78,7 +175,6 @@ export default function ServicesPage({onSaved}) {
   const catalog = useCatalog();
   const [editing, setEditing] = useState(null);
   const [adding, setAdding] = useState(false);
-  const [query, setQuery] = useState('');
   const [removing, setRemoving] = useState(null);
   const [notice, setNotice] = useState({});
   const [busy, setBusy] = useState(false);
@@ -86,9 +182,7 @@ export default function ServicesPage({onSaved}) {
   const bySubcategory = useMemo(() => new Map(catalog.subcategories.map(item => [item.id, item])), [catalog.subcategories]);
   const specialtyOf = id => catalog.specialties.find(item => item.id === bySubcategory.get(id)?.specialty_id)?.name || '';
   const offered = new Set(services.map(service => service.subcategory_id));
-  const declared = (own.data?.declared_subcategories || []).filter(item => !offered.has(item.subcategory_id));
-  const results = catalog.subcategories.filter(item => !offered.has(item.id)
-    && (!query.trim() || plain(`${item.name} ${specialtyOf(item.id)}`).includes(plain(query.trim())))).slice(0, 12);
+  const declared = new Set((own.data?.declared_subcategories || []).map(item => item.subcategory_id));
 
   async function persist(list, success) {
     setBusy(true); setNotice({});
@@ -99,7 +193,7 @@ export default function ServicesPage({onSaved}) {
         expected_version: own.data.version,
       }, 'PUT');
       await own.reload();
-      setEditing(null); setAdding(false); setQuery('');
+      setEditing(null); setAdding(false);
       setNotice({success});
       onSaved?.();
       return true;
@@ -114,8 +208,6 @@ export default function ServicesPage({onSaved}) {
     const list = exists ? services.map(item => (item.subcategory_id === service.subcategory_id ? service : item)) : [...services, service];
     return persist(list, exists ? `Actualizamos «${service.subcategory_name}».` : `Añadimos «${service.subcategory_name}» a tus servicios.`);
   };
-  const choose = item => { setEditing({subcategory_id: item.id ?? item.subcategory_id, subcategory_name: item.name ?? item.subcategory_name,
-    reference_fee: '', includes: '', isNew: true}); };
 
   return <section className="panel-page tech-page" aria-labelledby="tech-services-title">
     <header className="client-page-head">
@@ -126,11 +218,11 @@ export default function ServicesPage({onSaved}) {
     {own.error && <p className="error" role="alert">{own.error.message || 'No pudimos cargar tus servicios.'}</p>}
     {catalog.error && <p className="error" role="alert">{catalog.error}</p>}
     {!own.data && !own.error && <div className="panel-card tech-skeleton" role="status">Cargando tus servicios…</div>}
-    {own.data && <ul className="tech-services" aria-label="Tus servicios">
+    {own.data && <ul className="tech-svc-list" aria-label="Tus servicios">
       {services.map(service => {
         const specialty = specialtyOf(service.subcategory_id);
-        const isEditing = editing?.subcategory_id === service.subcategory_id && !editing.isNew;
-        return <li key={service.subcategory_id} className="tech-service" data-editing={isEditing}>
+        const isEditing = editing?.subcategory_id === service.subcategory_id;
+        return <li key={service.subcategory_id} className="tech-service" data-editing={isEditing} data-tone={specialty ? toneOf(specialty) : undefined}>
           <div className="tech-service-top">
             <span className="tech-card-icon" aria-hidden="true"><Icon name={specialtyIcon(specialty)}/></span>
             <div className="tech-service-name">
@@ -141,13 +233,13 @@ export default function ServicesPage({onSaved}) {
           {isEditing ? <ServiceForm service={service} title={`Editar «${service.subcategory_name}»`} busy={busy}
             onCancel={() => setEditing(null)} onSave={save}/> : <>
             <p className="tech-fee"><span className="tech-fee-label">Tarifa referencial</span>
-              <strong>{money(service.reference_fee)}</strong></p>
+              <strong>{soles(service.reference_fee)}</strong></p>
             <div className="tech-includes">
               <span className="tech-fee-label">Qué incluye</span>
               {service.includes ? <p>{service.includes}</p> : <p className="muted">Todavía no lo describes. Los clientes eligen mejor si lo sabes.</p>}
             </div>
             <div className="tech-service-actions">
-              <button type="button" className="button outline" onClick={() => { setAdding(false); setEditing(service); }}
+              <button type="button" className="button outline" onClick={() => setEditing(service)}
                 aria-label={`Editar ${service.subcategory_name}`}><Icon name="edit"/> Editar</button>
               <button type="button" className="button outline tech-danger" onClick={() => setRemoving(service)}
                 aria-label={`Quitar ${service.subcategory_name}`}><Icon name="trash"/> Quitar</button>
@@ -156,31 +248,16 @@ export default function ServicesPage({onSaved}) {
         </li>;
       })}
       <li className="tech-service is-add">
-        {editing?.isNew ? <ServiceForm service={editing} title={`Nuevo servicio: «${editing.subcategory_name}»`} busy={busy}
-          onCancel={() => setEditing(null)} onSave={save}/>
-          : adding ? <div className="tech-add-search">
-            <label className="tech-search" htmlFor="service-search"><Icon name="search"/>
-              <span className="tech-sr">Buscar subcategoría</span>
-              <input id="service-search" type="search" autoFocus value={query} placeholder="Buscar: impresoras, vitrinas, tableros…"
-                onChange={event => setQuery(event.target.value)}/></label>
-            {declared.length > 0 && !query && <p className="muted">Declaraste estos rubros al registrarte:</p>}
-            <ul className="tech-add-results" aria-label="Subcategorías disponibles">
-              {(query ? results : [...declared.map(item => ({id: item.subcategory_id, name: item.subcategory_name})), ...results]
-                .filter((item, index, all) => all.findIndex(other => other.id === item.id) === index).slice(0, 12))
-                .map(item => <li key={item.id}><button type="button" className="tech-district" onClick={() => choose(item)}>
-                  <Icon name={specialtyIcon(specialtyOf(item.id))}/>{item.name}</button></li>)}
-            </ul>
-            {query && !results.length && <p className="muted" role="status">No hay subcategorías que coincidan con «{query}».</p>}
-            <button type="button" className="button outline" onClick={() => { setAdding(false); setQuery(''); }}>Cerrar</button>
-          </div>
-          : <button type="button" className="tech-add-card" onClick={() => { setEditing(null); setAdding(true); }}>
-            <span className="tech-add-plus" aria-hidden="true"><Icon name="plus"/></span>
-            <strong>Añadir servicio</strong>
-            <small className="muted">Busca la subcategoría que atiendes</small>
-          </button>}
+        <button type="button" className="tech-add-card" onClick={() => { setEditing(null); setNotice({}); setAdding(true); }}>
+          <span className="tech-add-plus" aria-hidden="true"><Icon name="plus"/></span>
+          <strong>Añadir servicio</strong>
+          <small className="muted">Elige la subcategoría que atiendes</small>
+        </button>
       </li>
     </ul>}
     {own.data && !services.length && <p className="muted">Aún no tienes servicios. Sin un servicio con tarifa no recibes ofertas.</p>}
+    {adding && <AddServiceDialog catalog={catalog} offered={offered} declared={declared} busy={busy}
+      onClose={() => setAdding(false)} onSave={save}/>}
     {removing && <ConfirmDialog title={`¿Quitar «${removing.subcategory_name}»?`} busy={busy}
       description="Dejarás de recibir ofertas de este servicio y ya no aparecerá en tu perfil. Puedes volver a añadirlo cuando quieras."
       onCancel={() => setRemoving(null)}

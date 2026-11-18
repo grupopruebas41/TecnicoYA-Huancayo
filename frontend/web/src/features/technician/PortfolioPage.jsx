@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {request} from '../administration/http';
 import {useSubcategories} from '../administration/Sprint02Common';
 import {validatePerformedOn} from '../administration/sprint02Validation';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import Icon from '../panel/icons';
-import {Alerts, CountedText, DropZone, SelectField, apiError, useOwnProfile} from './businessCommon';
+import {Alerts, CountedText, DropZone, SelectField, TechDialog, apiError, useOwnProfile} from './businessCommon';
 
 export const CAPTION_MAX = 180;
 const STAGES = {before: 'Antes', after: 'Después'};
@@ -35,13 +35,11 @@ function WorkEditor({item, subcategories, onCancel, onSaved}) {
   const [errors, setErrors] = useState({});
   const [notice, setNotice] = useState({});
   const [busy, setBusy] = useState(false);
-  const title = useRef(null);
-  useEffect(() => { title.current?.focus(); }, []);
   // Al corregir un campo se borra su error (el resto se vuelve a validar al guardar).
-  const set = (field, value) => { setValues(current => ({...current, [field]: value})); setErrors(current => ({...current, [field]: undefined})); };
+  const set = (field, value) => { setValues(current => ({...current, [field]: value})); setErrors(current => ({...current, [field]: undefined})); setNotice({}); };
   const setImage = (index, field, value) => {
     setImages(current => current.map((image, position) => (position === index ? {...image, [field]: value} : image)));
-    if (field === 'caption') setErrors(current => ({...current, [`caption-${index}`]: undefined}));
+    if (field === 'caption') { setErrors(current => ({...current, [`caption-${index}`]: undefined})); setNotice({}); }
   };
   function add(media) {
     setImages(current => (current.length >= 5 ? current : [...current, {media_id: media.id, url: media.url, caption: '',
@@ -66,11 +64,18 @@ function WorkEditor({item, subcategories, onCancel, onSaved}) {
       setNotice({error: apiError(failure, 'No pudimos guardar el trabajo. Inténtalo de nuevo.')});
     } finally { setBusy(false); }
   }
-  return <form className="panel-card tech-section tech-work-editor" onSubmit={save} noValidate aria-labelledby="work-editor-title">
-    <h3 id="work-editor-title"><Icon name={item.id ? 'edit' : 'plus'}/> {item.id ? `Editar «${item.title}»` : 'Nuevo trabajo'}</h3>
+  // El diálogo pone el foco en el título (data-autofocus); Cancelar y Guardar quedan fijos al pie.
+  const footer = <>
+    <Alerts notice={notice}/>
+    <button type="button" className="button outline" onClick={onCancel} disabled={busy}>Cancelar</button>
+    <button type="submit" form="work-form" className="button primary" disabled={busy} aria-busy={busy}>{busy ? 'Guardando…' : 'Guardar trabajo'}</button>
+  </>;
+  return <TechDialog title={item.id ? `Editar «${item.title}»` : 'Nuevo trabajo'} icon={item.id ? 'edit' : 'plus'} onClose={onCancel}
+    footer={footer} busy={busy}>
+  <form id="work-form" className="tech-work-editor" onSubmit={save} noValidate aria-label={item.id ? `Editar «${item.title}»` : 'Nuevo trabajo'}>
     <div className="tech-biz-grid">
       <label className="tech-field"><span className="tech-field-label">Título del trabajo</span>
-        <input ref={title} value={values.title} aria-invalid={Boolean(errors.title)} aria-describedby={errors.title ? 'work-title-error' : undefined}
+        <input data-autofocus value={values.title} aria-invalid={Boolean(errors.title)} aria-describedby={errors.title ? 'work-title-error' : undefined}
           onChange={event => set('title', event.target.value)} placeholder="Ejemplo: cambio de compresor en vitrina"/>
         {errors.title && <span className="error" id="work-title-error">{errors.title}</span>}</label>
       <label className="tech-field"><span className="tech-field-label">Fecha del trabajo</span>
@@ -98,7 +103,7 @@ function WorkEditor({item, subcategories, onCancel, onSaved}) {
         {images.map((image, index) => <li key={image.media_id} className="tech-photo">
           <img src={image.url} alt={image.caption || `Foto ${index + 1} sin texto alternativo`}/>
           <div className="tech-photo-fields">
-            <fieldset className="tech-stage"><legend>Etapa de la foto {index + 1}</legend>
+            <fieldset className="tech-photo-stage"><legend>Etapa de la foto {index + 1}</legend>
               {Object.entries(STAGES).map(([value, label]) => <button key={value} type="button" aria-pressed={image.stage === value}
                 onClick={() => setImage(index, 'stage', image.stage === value ? '' : value)}>{label}</button>)}
             </fieldset>
@@ -115,12 +120,8 @@ function WorkEditor({item, subcategories, onCancel, onSaved}) {
       {images.length < 5 && <DropZone purpose="portfolio" compact label={images.length ? 'Añadir otra foto (por ejemplo, el después)' : 'Sube la foto del antes'}
         onUploaded={add}/>}
     </div>
-    <div className="tech-save">
-      <Alerts notice={notice}/>
-      <button type="button" className="button outline" onClick={onCancel} disabled={busy}>Cancelar</button>
-      <button type="submit" className="button primary" disabled={busy} aria-busy={busy}>{busy ? 'Guardando…' : 'Guardar trabajo'}</button>
-    </div>
-  </form>;
+  </form>
+  </TechDialog>;
 }
 
 /** Miniaturas del trabajo: la del antes y la del después, con su etiqueta. */
@@ -186,8 +187,8 @@ export default function PortfolioPage({onSaved}) {
     <header className="client-page-head tech-head-row">
       <div><h2 id="tech-portfolio-title">Portafolio</h2>
         <p className="muted">Muestra trabajos reales con fotos del antes y del después. El orden de aquí es el de tu perfil público.</p></div>
-      {!editing && <button type="button" className="button primary" onClick={() => { setNotice({}); setEditing({}); }}>
-        <Icon name="plus"/> Añadir trabajo</button>}
+      <button type="button" className="button primary" onClick={() => { setNotice({}); setEditing({}); }}>
+        <Icon name="plus"/> Añadir trabajo</button>
     </header>
     <Alerts notice={notice}/>
     {own.error && <p className="error" role="alert">{own.error.message || 'No pudimos cargar tu portafolio.'}</p>}
@@ -200,7 +201,7 @@ export default function PortfolioPage({onSaved}) {
       <p className="muted">Agrega 2 trabajos publicados para completar tu perfil.</p>
     </div>}
     {own.data && items.length > 0 && <ol className="tech-works" aria-label="Tus trabajos, en el orden de tu perfil">
-      {ordered.map((item, index) => <li key={item.id} className="tech-work">
+      {ordered.map((item, index) => <li key={item.id} className="tech-work-item">
         <BeforeAfter images={item.images || []}/>
         <div className="tech-work-body">
           <div className="tech-card-head">

@@ -13,9 +13,11 @@ import {request, uploadWithProgress} from '../administration/http';
 vi.mock('../administration/http', () => ({request: vi.fn(), uploadWithProgress: vi.fn(), serverNow: () => Date.now()}));
 
 const districts = [{id: 1, name: 'Huancayo'}, {id: 2, name: 'El Tambo'}];
-const specialties = [{id: 1, name: 'Cómputo'}, {id: 2, name: 'Refrigeración comercial'}];
-const subcategories = {1: [{id: 11, specialty_id: 1, name: 'Reparación de hardware'}, {id: 12, specialty_id: 1, name: 'Impresoras'}],
-  2: [{id: 21, specialty_id: 2, name: 'Vitrinas'}]};
+const specialties = [{id: 1, name: 'Cómputo'}, {id: 2, name: 'Refrigeración comercial'}, {id: 3, name: 'Electricidad'}];
+const subcategories = {1: [{id: 11, specialty_id: 1, name: 'Reparación de hardware', description: 'Placas, discos y fuentes.', reference_fee: '70.00'},
+  {id: 12, specialty_id: 1, name: 'Impresoras', description: null, reference_fee: '60.00'}],
+  2: [{id: 21, specialty_id: 2, name: 'Vitrinas', description: 'Vitrinas exhibidoras de bodegas.', reference_fee: null}],
+  3: [{id: 31, specialty_id: 3, name: 'Tableros eléctricos', description: 'Revisión y cambio de llaves.', reference_fee: '90.00'}]};
 const image = (id, stage, caption = `Foto ${id}`) => ({media_id: id, url: `/api/v1/media/${id}`, stage, caption, position: 0});
 let profile;
 const own = () => ({
@@ -129,7 +131,8 @@ test('S05-TC-342 Servicios: tarjeta con ícono, tarifa grande con «S/», «Qué
   render(<ServicesPage/>);
   const card = (await screen.findByRole('heading', {name: 'Reparación de hardware', level: 3})).closest('li');
   expect(card.querySelector('.tech-card-icon .panel-svg-icon')).not.toBeNull();
-  expect(within(card).getByText(/S\/\s?80[.,]00/)).toBeInTheDocument();
+  // Formato peruano, igual que en el resto de la plataforma.
+  expect(within(card).getByText('S/ 80,00')).toBeInTheDocument();
   expect(within(card).getByText('Diagnóstico y limpieza.')).toBeInTheDocument();
 
   fireEvent.click(within(card).getByRole('button', {name: 'Editar Reparación de hardware'}));
@@ -149,29 +152,53 @@ test('S05-TC-342 Servicios: tarjeta con ícono, tarifa grande con «S/», «Qué
   expect(await screen.findByText('Quitamos «Reparación de hardware» de tus servicios.')).toBeInTheDocument();
 });
 
-test('S05-TC-343 «Añadir servicio» busca subcategorías, sugiere las declaradas y valida la tarifa antes de guardar', async () => {
+test('S05-TC-343 «Añadir servicio» filtra por especialidad, agrupa tarjetas, marca «Ya lo ofreces», elige con el teclado y valida la tarifa', async () => {
   routes({'PUT /technicians/me/services': async () => ({data: {}})});
   render(<ServicesPage/>);
   fireEvent.click(await screen.findByRole('button', {name: /Añadir servicio/}));
-  const results = screen.getByRole('list', {name: 'Subcategorías disponibles'});
-  await waitFor(() => expect(within(results).getByRole('button', {name: 'Vitrinas'})).toBeInTheDocument());
-  expect(within(results).queryByRole('button', {name: 'Reparación de hardware'})).toBeNull(); // ya lo ofrece
+  const dialog = screen.getByRole('dialog', {name: 'Añadir servicio'});
+  await waitFor(() => expect(within(dialog).getAllByRole('radio')).toHaveLength(4));
+  expect(within(dialog).getAllByRole('heading', {level: 3}).map(heading => heading.textContent)).toEqual(['Cómputo', 'Refrigeración comercial', 'Electricidad']);
+  const filters = within(dialog).getByRole('group', {name: 'Filtrar por especialidad'});
+  expect(within(filters).getAllByRole('button').map(button => button.textContent.trim())).toEqual(['Todas', 'Cómputo', 'Refrigeración comercial', 'Electricidad']);
+  expect(within(filters).getByRole('button', {name: 'Electricidad'})).toHaveAttribute('data-tone', 'electricidad');
+  const taken = within(dialog).getByRole('radio', {name: /Reparación de hardware/});
+  expect(taken).toBeDisabled();
+  expect(taken).toHaveTextContent('Ya lo ofreces');
+  expect(within(dialog).getByRole('radio', {name: /Vitrinas/})).toHaveTextContent('Lo declaraste al registrarte');
+
+  fireEvent.click(within(filters).getByRole('button', {name: 'Electricidad'}));
+  expect(within(dialog).getAllByRole('radio').map(radio => radio.querySelector('strong').textContent)).toEqual(['Tableros eléctricos']);
+  fireEvent.click(within(filters).getByRole('button', {name: 'Todas'}));
   type('Buscar subcategoría', 'impres');
-  expect(within(results).getAllByRole('button').map(button => button.textContent)).toEqual(['Impresoras']);
+  expect(within(dialog).getByRole('radio', {name: /Impresoras/})).toHaveTextContent('Tarifa sugerida desde S/ 60,00');
   type('Buscar subcategoría', 'zzz');
-  expect(screen.getByText('No hay subcategorías que coincidan con «zzz».')).toBeInTheDocument();
-  type('Buscar subcategoría', 'vitri');
-  fireEvent.click(within(results).getByRole('button', {name: 'Vitrinas'}));
+  expect(within(dialog).getByText('No encontramos “zzz”. Prueba con otra palabra.')).toBeInTheDocument();
+  type('Buscar subcategoría', '');
+
+  // Teclado: la primera opción libre recibe el foco, las flechas avanzan y Enter elige.
+  const printers = within(dialog).getByRole('radio', {name: /Impresoras/});
+  expect(printers).toHaveAttribute('tabindex', '0');
+  printers.focus();
+  fireEvent.keyDown(printers, {key: 'ArrowDown'});
+  const fridges = within(dialog).getByRole('radio', {name: /Vitrinas/});
+  expect(fridges).toHaveFocus();
+  fireEvent.keyDown(fridges, {key: 'Enter'});
+  expect(fridges).toHaveAttribute('aria-checked', 'true');
+  // El formulario aparece debajo del grupo de la tarjeta elegida, fuera del grupo de opciones.
+  expect(fridges.closest('section')).toContainElement(within(dialog).getByLabelText(/^Tarifa referencial/));
+  expect(fridges.closest('[role="radiogroup"]')).not.toContainElement(within(dialog).getByLabelText(/^Tarifa referencial/));
   type(/^Tarifa referencial/, '0');
-  fireEvent.click(screen.getByRole('button', {name: 'Guardar servicio'}));
-  expect(screen.getByText('La tarifa debe estar entre S/ 1,00 y S/ 5 000,00.')).toBeInTheDocument();
+  fireEvent.click(within(dialog).getByRole('button', {name: 'Guardar servicio'}));
+  expect(within(dialog).getByText('La tarifa debe estar entre S/ 1,00 y S/ 5 000,00.')).toBeInTheDocument();
   expect(request).not.toHaveBeenCalledWith('/technicians/me/services', expect.anything(), 'PUT');
-  type(/^Tarifa referencial/, '120');
+  type(/^Tarifa referencial/, '120,50');
   type(/^Qué incluye/, 'Limpieza del condensador.');
-  fireEvent.click(screen.getByRole('button', {name: 'Guardar servicio'}));
+  fireEvent.click(within(dialog).getByRole('button', {name: 'Guardar servicio'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/technicians/me/services', expect.objectContaining({
-    services: [expect.objectContaining({subcategory_id: 11}), {subcategory_id: 21, reference_fee: '120', includes: 'Limpieza del condensador.'}]}), 'PUT'));
+    services: [expect.objectContaining({subcategory_id: 11}), {subcategory_id: 21, reference_fee: '120.50', includes: 'Limpieza del condensador.'}]}), 'PUT'));
   expect(await screen.findByRole('status')).toHaveTextContent('Añadimos «Vitrinas» a tus servicios.');
+  expect(screen.queryByRole('dialog')).toBeNull();
 });
 
 test('S05-TC-344 Portafolio: antes y después con su etiqueta, cambia el orden con Subir y Bajar y quita con confirmación', async () => {
@@ -321,4 +348,39 @@ test('S05-TC-349 cada barra del gráfico muestra su detalle al enfocarla; sin da
   expect(duration(125)).toBe('2 min 05 s');
   expect(statsSummary({period: 'month', buckets: [bucket], totals: {accepted: 0, rejected: 0, expired: 0, completed: 0,
     acceptance_rate: null, avg_response_seconds: null}})).toBe('En los últimos 6 meses todavía no tienes ofertas respondidas ni trabajos completados.');
+});
+
+test('S05-TC-353 los diálogos «Añadir servicio» y «Nuevo trabajo» atrapan el foco, se cierran con Esc o el fondo y devuelven el foco al botón que los abrió', async () => {
+  routes();
+  render(<ServicesPage/>);
+  const open = await screen.findByRole('button', {name: /Añadir servicio/});
+  open.focus();
+  fireEvent.click(open);
+  const dialog = screen.getByRole('dialog', {name: 'Añadir servicio'});
+  expect(dialog).toHaveAttribute('aria-modal', 'true');
+  expect(screen.getByLabelText('Buscar subcategoría')).toHaveFocus();
+  expect(document.body).toHaveClass('tech-dialog-open');
+  // Foco atrapado: desde el último control, Tab vuelve al primero (Cerrar), y Mayús+Tab al revés.
+  const cancel = within(dialog).getByRole('button', {name: 'Cancelar'});
+  cancel.focus();
+  fireEvent.keyDown(dialog, {key: 'Tab'});
+  expect(within(dialog).getByRole('button', {name: 'Cerrar'})).toHaveFocus();
+  fireEvent.keyDown(dialog, {key: 'Tab', shiftKey: true});
+  expect(cancel).toHaveFocus();
+  fireEvent.keyDown(dialog, {key: 'Escape'});
+  expect(screen.queryByRole('dialog')).toBeNull();
+  expect(open).toHaveFocus();
+  expect(document.body).not.toHaveClass('tech-dialog-open');
+  cleanup();
+
+  render(<PortfolioPage/>);
+  const add = await screen.findByRole('button', {name: /Añadir trabajo/});
+  add.focus();
+  fireEvent.click(add);
+  const work = screen.getByRole('dialog', {name: 'Nuevo trabajo'});
+  expect(screen.getByLabelText('Título del trabajo')).toHaveFocus();
+  expect(within(work).getByRole('button', {name: 'Guardar trabajo'}).closest('footer')).not.toBeNull();
+  fireEvent.mouseDown(work.parentElement);
+  expect(screen.queryByRole('dialog')).toBeNull();
+  expect(add).toHaveFocus();
 });
