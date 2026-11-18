@@ -2,6 +2,22 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-17 · Corrección de Mi agenda del técnico: navegación de semanas y contador «Visitas»
+
+- **Rama:** `feature/pimentel/tecnico/t3-agenda-semanas`, desde `feature/pimentel/tecnico/t3-trabajos` (`7f7f713`), porque Mi agenda aún no estaba en `main`; PR #59. Tras integrarse el #58, se trajo `main` (merge `6e6e6e8`) y el diff quedó solo en esta corrección, más D-109 pasada a «Decisiones tomadas» (pedido de Pimentel).
+- **Cambios (solo frontend, sin backend):**
+  - «Semana anterior», «Esta semana» y «Semana siguiente» en un grupo segmentado de 3 botones iguales, con chevrons SVG de 20 px (trazo 2,6), resaltado en hover y en foco; en el celular las flechas muestran solo el ícono, con `aria-label`.
+  - «Esta semana» siempre visible, con `aria-disabled` y atenuado en la semana actual.
+  - El rango tiene ancho fijo (no se mueve) y lleva la etiqueta «Semana actual», «Próxima semana», «Semana pasada» o «En/Hace N semanas» (`weekTag`).
+  - La semana vive en el estado (su lunes, hora de Lima) y el rango se calcula en el cliente. **Defecto visto en las capturas del antes:** con la respuesta aún sin pintar, «Semana anterior» partía de la semana vieja y volvía a la actual.
+  - Contadores centrados (`inline-flex`, `align-items`/`justify-content: center`, `line-height: 1`, alto fijo): leyenda «Visitas» (se desviaba 2,9 px porque heredaba el `inline-flex` de `.tech-legend span`), casillas de la semana (1 a 1,5 px con texto al 150 %; en el celular, círculo fijo de 18 px) y contador numérico del menú (`panel.css`, común a todos los paneles).
+- **Pruebas:**
+  - Vitest: S05-TC-329 («Esta semana» desactivado en la actual) y S05-TC-330 (flechas sin carrera y etiqueta). S05-TC-324 se ajustó porque el nombre accesible de la flecha ya no lleva «›». Rojo `d4d9656` (3 fallan) y verde `ae01040`; 475 Vitest, lint y build en verde.
+  - Sin Pest ni Cypress nuevas (no hay cambios de backend ni de flujo).
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-17-*-tecnico-agenda-{antes,despues}-*` a 1366 y 390, en claro y oscuro, con foco y con texto al 150 %, más las mediciones (`*-capturas.json`) y el script.
+- **Fuera de alcance, visto en las capturas:** con texto al 150 % en el celular, el rótulo «Mañana» de la columna de franjas se corta (ya pasaba antes). Queda como pendiente de la T5 en `PLAN-PANEL-TECNICO.md`.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-17 · CI: `npm audit` de producción (D-110, DEF-67) y S07-TC-125 determinista (DEF-68)
 
 - **Rama:** `feature/pimentel/calidad/ci-audit-y-s07-125`, desde `main` `3345227` (#60 integrado); un solo PR, que se integra **antes** del #58 y del #59.
@@ -80,7 +96,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-10-a0c69d9-tecnico-t3-*`.
 - **Límite:** sin acciones «Iniciar» ni «Completar» (son del módulo de atención, Sprint 6). Los horarios personalizados que no coinciden con las franjas se ajustan al guardar, y la pantalla lo avisa.
 - **Pendiente para el cierre común:** ejecutar las Cypress (también las del S4 con el `login` nuevo); catálogo, contrato y avance de la T3.
-- **Siguiente:** Fase T4 desde S05-TC-329, con el diseño anotado en `PLAN-PANEL-TECNICO.md`.
+- **Siguiente:** Fase T4 desde S05-TC-331 (la 329 y la 330 las usa la corrección de Mi agenda), con el diseño anotado en `PLAN-PANEL-TECNICO.md`.
 - **Pedidos a Codex:** ninguno.
 
 ## 2026-11-10 · Panel del técnico, Fase T2 (modo rápido): menú del técnico e Inicio con oferta en vivo

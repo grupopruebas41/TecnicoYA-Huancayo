@@ -278,14 +278,34 @@
 .tech-week.is-editable .tech-week-cell { cursor: pointer; min-height: 64px; }
 .tech-week.is-editable .tech-week-cell:hover { transform: translateY(-1px); border-color: var(--ty-accent); }
 .tech-week-cell:focus-visible { outline: 3px solid var(--ty-accent); outline-offset: 2px; }
-.tech-week-visits { position: absolute; top: 4px; right: 4px; min-width: 20px; height: 20px; padding: 0 5px; display: inline-grid;
-  place-items: center; border-radius: 999px; background: var(--ty-accent); color: var(--ty-on-accent); font-size: .75rem; font-weight: 700; }
+/* Contador de visitas: círculo de tamaño fijo (crece en em con el texto) con el número centrado en los dos ejes. */
+.tech-week-visits { position: absolute; top: 4px; right: 4px; box-sizing: border-box; min-width: 1.7em; height: 1.7em; padding: 0 .4em;
+  display: inline-flex; align-items: center; justify-content: center; line-height: 1; border-radius: 999px;
+  background: var(--ty-accent); color: var(--ty-on-accent); font-size: .75rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .tech-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 0; font-size: .85rem; }
-.tech-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.tech-legend > span { display: inline-flex; align-items: center; gap: 6px; }
 .tech-legend .panel-svg-icon { width: 16px; height: 16px; margin: 0; }
 .tech-legend .tech-week-visits { position: static; }
-.tech-weeknav { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.tech-weeknav strong { flex: 1; text-align: center; min-width: 160px; }
+
+/* Navegación de semanas: rango con su etiqueta (ancho fijo, no se mueve) y un grupo de 3 botones iguales. */
+.tech-weeknav { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 20px; }
+.tech-weeknav-heading { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 14em; text-align: center; }
+.tech-weeknav-title { font-size: 1.05rem; white-space: nowrap; }
+.tech-weeknav-tag { display: inline-flex; align-items: center; min-height: 1.6em; padding: 0 .7em; border-radius: 999px; font-size: .75rem;
+  font-weight: 700; line-height: 1; border: 1px solid var(--ty-control-border, var(--ty-muted)); color: var(--ty-text); }
+.tech-weeknav-tag[data-current="true"] { background: var(--ty-accent); border-color: var(--ty-accent); color: var(--ty-on-accent); }
+.tech-weeknav-group { display: inline-flex; border-radius: 12px; border: 1px solid var(--ty-control-border, var(--ty-muted));
+  background: var(--ty-surface); }
+.tech-weeknav-button { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px;
+  padding: 0 16px; border: 0; border-right: 1px solid var(--ty-control-border, var(--ty-muted)); background: transparent; color: var(--ty-text);
+  font: inherit; font-weight: 600; line-height: 1.2; cursor: pointer; transition: background-color .15s ease; }
+.tech-weeknav-button:first-child { border-radius: 11px 0 0 11px; }
+.tech-weeknav-button:last-child { border-right: 0; border-radius: 0 11px 11px 0; }
+.tech-weeknav-button:hover:not([aria-disabled="true"]) { background: color-mix(in srgb, var(--ty-accent) 14%, transparent); }
+.tech-weeknav-button:focus-visible { z-index: 1; outline: 3px solid var(--ty-accent); outline-offset: 2px;
+  background: color-mix(in srgb, var(--ty-accent) 14%, transparent); }
+.tech-weeknav-button[aria-disabled="true"] { cursor: not-allowed; color: var(--ty-muted); opacity: .7; }
+.tech-weeknav-chevron { flex: 0 0 auto; width: 1.25em; min-width: 20px; height: 1.25em; min-height: 20px; }
 .tech-visit-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .tech-visit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 10px 12px; border-radius: 12px;
   border-left: 4px solid var(--ty-accent); background: color-mix(in srgb, var(--ty-accent) 7%, var(--ty-surface)); }
@@ -330,10 +350,15 @@
   .tech-tabs { display: flex; width: 100%; border-radius: 16px; }
   .tech-tabs [role="tab"] { flex: 1 1 auto; justify-content: center; padding: 0 10px; }
   .tech-search { max-width: none; }
-  .tech-weeknav strong { order: -1; flex-basis: 100%; }
+  .tech-weeknav { flex-direction: column; align-items: stretch; }
+  .tech-weeknav-heading { width: auto; }
+  .tech-weeknav-group { display: flex; }
+  .tech-weeknav-button { flex: 1 1 auto; }
+  .tech-weeknav-button.is-arrow { flex: 0 0 56px; padding: 0; }
+  .tech-weeknav-button.is-arrow .tech-weeknav-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
-@media (prefers-reduced-motion: reduce) { .tech-card, .tech-week-cell, .tech-district, .tech-tabs [role="tab"] { animation: none !important; transition: none !important; } }
-:root[data-motion="reduce"] :is(.tech-card, .tech-week-cell, .tech-district, .tech-tabs [role="tab"]) { animation: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .tech-card, .tech-week-cell, .tech-district, .tech-weeknav-button, .tech-tabs [role="tab"] { animation: none !important; transition: none !important; } }
+:root[data-motion="reduce"] :is(.tech-card, .tech-week-cell, .tech-district, .tech-weeknav-button, .tech-tabs [role="tab"]) { animation: none !important; transition: none !important; }
 
 /* Ajustes vistos en las capturas de la T3: el buscador no hereda el estilo de etiqueta del panel y el rótulo de la vista previa se lee bien. */
 .panel-content label.tech-search { display: flex; flex-direction: row; align-items: center; gap: 8px; margin: 0; }
@@ -341,6 +366,8 @@
 .tech-preview .kicker { color: hsl(186 60% 26%); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; }
 [data-theme="dark"] .tech-preview .kicker { color: var(--ty-accent); }
 @media (max-width: 560px) {
-  .tech-week-visits { top: 2px; right: 2px; min-width: 16px; height: 16px; padding: 0 4px; font-size: .65rem; }
+  /* En el celular la casilla no crece con el texto: el círculo queda fijo en 18 px para no tapar la marca. */
+  .tech-week-cell .tech-week-visits { top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 4px; font-size: 11px; }
+  .tech-legend .tech-week-visits { font-size: .75rem; }
   .tech-week-cell:has(.tech-week-visits) .panel-svg-icon { transform: translate(-3px, 4px); width: 16px; height: 16px; }
 }

@@ -3,7 +3,7 @@ import {afterEach, beforeEach, expect, test, vi} from 'vitest';
 import {act, cleanup, fireEvent, render, screen, waitFor, within} from '@testing-library/react';
 import OffersPage from './OffersPage';
 import JobsPage from './JobsPage';
-import {AgendaPage, ZonesPage} from './Availability';
+import {AgendaPage, ZonesPage, weekTag} from './Availability';
 import {technicianTarget} from './TechnicianApp';
 import {hasCustomSlots, legibleRange, matrixFrom, scheduleSummary, slotsFrom} from './format';
 import {request} from '../administration/http';
@@ -200,7 +200,8 @@ test('S05-TC-324 Mi agenda muestra la semana con hoy resaltado, cuenta las visit
   expect(within(grid).getByRole('img', {name: 'Lunes, Tarde (12:00–18:00): disponible'})).toBeInTheDocument();
   expect(screen.getByRole('region', {name: 'Visitas de la semana'})).toHaveTextContent('jue 12 nov · 09:00–11:00');
   expect(screen.getByText('lun 9 nov al dom 15 nov')).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', {name: 'Semana siguiente ›'}));
+  // Ajuste de la corrección de Mi agenda: la flecha es un ícono y su nombre accesible ya no lleva «›».
+  fireEvent.click(screen.getByRole('button', {name: 'Semana siguiente'}));
   await waitFor(() => expect(request).toHaveBeenCalledWith('/technicians/me/agenda?week=2026-11-16'));
   expect(await screen.findByText('No tienes visitas programadas esta semana.')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', {name: 'Esta semana'}));
@@ -208,6 +209,54 @@ test('S05-TC-324 Mi agenda muestra la semana con hoy resaltado, cuenta las visit
   fireEvent.click(screen.getByRole('button', {name: /Editar disponibilidad y zonas/}));
   expect(screen.getByRole('button', {name: /Cerrar la edición/})).toHaveAttribute('aria-expanded', 'true');
   expect(await screen.findByRole('group', {name: 'Disponibilidad por franja'})).toBeInTheDocument();
+});
+
+// S05-TC-329 y 330 · Corrección de Mi agenda: grupo de 3 botones, «Esta semana» desactivado en la actual y etiqueta de la semana.
+const emptyWeek = (body, path) => {
+  const start = path.match(/week=([\d-]+)/)?.[1] || '2026-11-09';
+  return {data: {week_start: start, week_end: start, visits: []}};
+};
+
+test('S05-TC-329 «Esta semana» siempre está, pero desactivado mientras se ve la semana actual', async () => {
+  vi.useFakeTimers({toFake: ['Date'], now: new Date(SERVER)});
+  routes({'GET /technicians/me/agenda': emptyWeek});
+  render(<AgendaPage/>);
+  const nav = screen.getByRole('group', {name: 'Cambiar de semana'});
+  const thisWeek = within(nav).getByRole('button', {name: 'Esta semana'});
+  expect(within(nav).getAllByRole('button').map(button => button.getAttribute('aria-label') || button.textContent))
+    .toEqual(['Semana anterior', 'Esta semana', 'Semana siguiente']);
+  expect(thisWeek).toHaveAttribute('aria-disabled', 'true');
+  expect(screen.getByText('Semana actual')).toBeInTheDocument();
+  await screen.findByRole('group', {name: 'Semana'});
+  const calls = request.mock.calls.length;
+  fireEvent.click(thisWeek);
+  expect(request).toHaveBeenCalledTimes(calls);
+  fireEvent.click(within(nav).getByRole('button', {name: 'Semana siguiente'}));
+  expect(thisWeek).toHaveAttribute('aria-disabled', 'false');
+  expect(screen.getByText('Próxima semana')).toBeInTheDocument();
+  await waitFor(() => expect(request).toHaveBeenCalledWith('/technicians/me/agenda?week=2026-11-16'));
+  fireEvent.click(thisWeek);
+  expect(thisWeek).toHaveAttribute('aria-disabled', 'true');
+  expect(screen.getByText('lun 9 nov al dom 15 nov')).toBeInTheDocument();
+  await waitFor(() => expect(request).toHaveBeenLastCalledWith('/technicians/me/profile'));
+});
+
+test('S05-TC-330 las flechas avanzan desde la semana elegida aunque no haya cargado y la etiqueta dice cuál se ve', async () => {
+  vi.useFakeTimers({toFake: ['Date'], now: new Date(SERVER)});
+  routes({'GET /technicians/me/agenda': () => new Promise(() => {})});
+  render(<AgendaPage/>);
+  const nav = screen.getByRole('group', {name: 'Cambiar de semana'});
+  fireEvent.click(within(nav).getByRole('button', {name: 'Semana anterior'}));
+  expect(screen.getByText('Semana pasada')).toBeInTheDocument();
+  expect(screen.getByText('lun 2 nov al dom 8 nov')).toBeInTheDocument();
+  fireEvent.click(within(nav).getByRole('button', {name: 'Semana siguiente'}));
+  fireEvent.click(within(nav).getByRole('button', {name: 'Semana siguiente'}));
+  fireEvent.click(within(nav).getByRole('button', {name: 'Semana siguiente'}));
+  expect(screen.getByText('En 2 semanas')).toBeInTheDocument();
+  expect(screen.getByText('lun 23 nov al dom 29 nov')).toBeInTheDocument();
+  expect(request).toHaveBeenLastCalledWith('/technicians/me/profile');
+  expect(request).toHaveBeenCalledWith('/technicians/me/agenda?week=2026-11-23');
+  expect([0, 1, -1, 3, -2].map(weekTag)).toEqual(['Semana actual', 'Próxima semana', 'Semana pasada', 'En 3 semanas', 'Hace 2 semanas']);
 });
 
 test('S05-TC-325 los avisos de asignación y cancelación llevan a Mis trabajos', () => {

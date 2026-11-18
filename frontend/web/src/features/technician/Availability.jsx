@@ -162,13 +162,34 @@ export function ZonesPage({onSaved}) {
 const isoDate = date => date.toISOString().slice(0, 10);
 const addDays = (iso, days) => { const date = new Date(`${iso}T12:00:00Z`); date.setUTCDate(date.getUTCDate() + days); return isoDate(date); };
 const limaToday = () => new Intl.DateTimeFormat('en-CA', {timeZone: 'America/Lima'}).format(new Date());
+const mondayOf = iso => addDays(iso, -((new Date(`${iso}T12:00:00Z`).getUTCDay() + 6) % 7));
+
+/** Cuál semana se ve, respecto de la actual: «Semana actual», «Próxima semana», «Semana pasada» o «En/Hace N semanas». */
+export function weekTag(offset) {
+  if (offset === 0) return 'Semana actual';
+  if (offset === 1) return 'Próxima semana';
+  if (offset === -1) return 'Semana pasada';
+  return offset > 0 ? `En ${offset} semanas` : `Hace ${-offset} semanas`;
+}
+
+/** Chevron con trazo grueso (20 px) para las flechas de la navegación de semanas. */
+function Chevron({left = false}) {
+  return <svg className="tech-weeknav-chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+    strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <path d={left ? 'm14.5 6 -6 6 6 6' : 'm9.5 6 6 6 -6 6'}/></svg>;
+}
 
 /**
  * Mi agenda (Fase T3): semana visual con las franjas activas y las visitas programadas (GET /technicians/me/agenda),
  * navegación por semanas y lista de visitas por día. «Editar disponibilidad y zonas» abre el mismo editor.
+ * La semana que se ve vive en el estado (su lunes), no en la respuesta: así las flechas no usan una semana vieja
+ * mientras carga la nueva, y «Esta semana» sabe si ya se está en la actual.
  */
 export function AgendaPage({onSaved}) {
-  const [week, setWeek] = useState(null);
+  const currentWeek = useMemo(() => mondayOf(limaToday()), []);
+  const [week, setWeek] = useState(currentWeek);
+  const offset = Math.round((Date.parse(`${week}T12:00:00Z`) - Date.parse(`${currentWeek}T12:00:00Z`)) / (7 * 86400000));
+  const isCurrent = offset === 0;
   const [state, setState] = useState({data: null, error: null, loading: true});
   const [slots, setSlots] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -176,26 +197,36 @@ export function AgendaPage({onSaved}) {
   useEffect(() => {
     let active = true;
     setState(current => ({...current, loading: true}));
-    Promise.all([request(`/technicians/me/agenda${week ? `?week=${week}` : ''}`), request('/technicians/me/profile')])
+    Promise.all([request(`/technicians/me/agenda${isCurrent ? '' : `?week=${week}`}`), request('/technicians/me/profile')])
       .then(([agenda, me]) => { if (active) { setState({data: agenda?.data, error: null, loading: false}); setSlots(me?.data?.availability?.slots || []); } })
       .catch(error => { if (active) setState(current => ({...current, error, loading: false})); });
     return () => { active = false; };
-  }, [week, tick]);
+  }, [week, isCurrent, tick]);
   const data = state.data;
   const dates = useMemo(() => (data ? Array.from({length: 7}, (_, index) => addDays(data.week_start, index)) : null), [data]);
   const matrix = useMemo(() => matrixFrom(slots || []), [slots]);
   const today = limaToday();
-  const range = data ? `${legibleRange(`${data.week_start}T17:00:00Z`).split(' · ')[0]} al ${legibleRange(`${data.week_end}T17:00:00Z`).split(' · ')[0]}` : '';
+  const day = iso => legibleRange(`${iso}T17:00:00Z`).split(' · ')[0];
+  const range = `${day(week)} al ${day(addDays(week, 6))}`;
   return <section className="panel-page tech-page" aria-labelledby="tech-agenda-title">
     <header className="client-page-head">
       <h2 id="tech-agenda-title">Mi agenda</h2>
       <p className="muted">Tus visitas de la semana y las franjas en las que recibes ofertas.</p>
     </header>
-    <div className="tech-weeknav" role="group" aria-label="Cambiar de semana">
-      <button type="button" className="button outline" disabled={!data} onClick={() => setWeek(addDays(data.week_start, -7))}>‹ Semana anterior</button>
-      <strong aria-live="polite">{range}</strong>
-      <button type="button" className="button outline" disabled={!data} onClick={() => setWeek(addDays(data.week_start, 7))}>Semana siguiente ›</button>
-      {week && <button type="button" className="text-button" onClick={() => setWeek(null)}>Esta semana</button>}
+    <div className="tech-weeknav">
+      <p className="tech-weeknav-heading" aria-live="polite">
+        <strong className="tech-weeknav-title">{range}</strong>
+        <span className="tech-weeknav-tag" data-current={isCurrent}>{weekTag(offset)}</span>
+      </p>
+      <div className="tech-weeknav-group" role="group" aria-label="Cambiar de semana">
+        <button type="button" className="tech-weeknav-button is-arrow" aria-label="Semana anterior" onClick={() => setWeek(addDays(week, -7))}>
+          <Chevron left/><span className="tech-weeknav-label">Semana anterior</span></button>
+        <button type="button" className="tech-weeknav-button" aria-disabled={isCurrent}
+          title={isCurrent ? 'Ya estás viendo la semana actual' : undefined}
+          onClick={() => { if (!isCurrent) setWeek(currentWeek); }}>Esta semana</button>
+        <button type="button" className="tech-weeknav-button is-arrow" aria-label="Semana siguiente" onClick={() => setWeek(addDays(week, 7))}>
+          <span className="tech-weeknav-label">Semana siguiente</span><Chevron/></button>
+      </div>
     </div>
     {state.error && <p className="error" role="alert">{state.error.message || 'No pudimos cargar tu agenda.'}</p>}
     {state.loading && !data && <div className="panel-card tech-skeleton" role="status">Cargando tu agenda…</div>}

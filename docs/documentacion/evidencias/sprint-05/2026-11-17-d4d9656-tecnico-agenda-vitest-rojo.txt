@@ -1,0 +1,713 @@
+
+ RUN  v5.0.3 <repo>/frontend/web
+
+ ❯ src/features/technician/technicianPages.test.jsx (10 tests | 3 failed) 1230ms
+   ✓ S05-TC-318 las franjas se leen y se guardan sin perder horas: cubrir entera, unir contiguas y resumir el horario 33ms
+   ✓ S05-TC-319 Ofertas tiene Pendientes (la tarjeta del Inicio, por vencimiento) e Historial con el estado como etiqueta de color 240ms
+   ✓ S05-TC-320 Mis trabajos muestra pestañas con contador, estado con ícono, visita legible, dirección solo si es suyo y la línea de tiempo 86ms
+   ✓ S05-TC-321 la búsqueda espera a que termines de escribir, muestra «Sin resultados» y pagina 124ms
+   ✓ S05-TC-322 Zonas y disponibilidad: casillas grandes por franja, chips de distrito, vista previa y guardado con alerta 259ms
+   ✓ S05-TC-323 Zonas valida en el cliente (al menos una franja y un distrito) y explica los errores del servidor 230ms
+   × S05-TC-324 Mi agenda muestra la semana con hoy resaltado, cuenta las visitas por franja, cambia de semana y abre el editor 183ms
+   × S05-TC-329 «Esta semana» siempre está, pero desactivado mientras se ve la semana actual 48ms
+   × S05-TC-330 las flechas avanzan desde la semana elegida aunque no haya cargado y la etiqueta dice cuál se ve 21ms
+   ✓ S05-TC-325 los avisos de asignación y cancelación llevan a Mis trabajos 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/technician/technicianPages.test.jsx > S05-TC-324 Mi agenda muestra la semana con hoy resaltado, cuenta las visitas por franja, cambia de semana y abre el editor
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Semana siguiente"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "Mi agenda":
+  <section
+    aria-labelledby="tech-agenda-title"
+    class="panel-page tech-page"
+  />
+
+  Name "Semana":
+  <section
+    aria-label="Semana"
+    class="panel-card tech-section"
+  />
+
+  Name "Visitas de la semana":
+  <section
+    aria-labelledby="tech-visits-title"
+    class="panel-card tech-section"
+  />
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  <header
+    class="client-page-head"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Mi agenda":
+  <h2
+    id="tech-agenda-title"
+  />
+
+  Name "Visitas de la semana":
+  <h3
+    id="tech-visits-title"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="muted"
+  />
+
+  Name "":
+  <p
+    class="muted tech-legend"
+  />
+
+  --------------------------------------------------
+  group:
+
+  Name "Cambiar de semana":
+  <div
+    aria-label="Cambiar de semana"
+    class="tech-weeknav"
+    role="group"
+  />
+
+  Name "Semana":
+  <div
+    aria-label="Semana"
+    class="tech-week"
+    role="group"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "‹ Semana anterior":
+  <button
+    class="button outline"
+    type="button"
+  />
+
+  Name "Semana siguiente ›":
+  <button
+    class="button outline"
+    type="button"
+  />
+
+  Name "Editar disponibilidad y zonas":
+  <button
+    aria-controls="agenda-editor"
+    aria-expanded="false"
+    class="button primary"
+    type="button"
+  />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong
+    aria-live="polite"
+  />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------
+  img:
+
+  Name "Lunes, Mañana (08:00–12:00): disponible":
+  <span
+    aria-label="Lunes, Mañana (08:00–12:00): disponible"
+    class="tech-week-cell"
+    data-franja="morning"
+    data-on="true"
+    role="img"
+  />
+
+  Name "Martes, Mañana (08:00–12:00): no disponible":
+  <span
+    aria-label="Martes, Mañana (08:00–12:00): no disponible"
+    class="tech-week-cell"
+    data-franja="morning"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Miércoles, Mañana (08:00–12:00): no disponible":
+  <span
+    aria-label="Miércoles, Mañana (08:00–12:00): no disponible"
+    class="tech-week-cell"
+    data-franja="morning"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Jueves, Mañana (08:00–12:00): no disponible, 2 visitas":
+  <span
+    aria-label="Jueves, Mañana (08:00–12:00): no disponible, 2 visitas"
+    class="tech-week-cell"
+    data-franja="morning"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Viernes, Mañana (08:00–12:00): no disponible":
+  <span
+    aria-label="Viernes, Mañana (08:00–12:00): no disponible"
+    class="tech-week-cell"
+    data-franja="morning"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Sábado, Mañana (08:00–12:00): disponible":
+  <span
+    aria-label="Sábado, Mañana (08:00–12:00): disponible"
+    class="tech-week-cell"
+    data-franja="morning"
+    data-on="true"
+    role="img"
+  />
+
+  Name "Domingo, Mañana (08:00–12:00): no disponible":
+  <span
+    aria-label="Domingo, Mañana (08:00–12:00): no disponible"
+    class="tech-week-cell"
+    data-franja="morning"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Lunes, Tarde (12:00–18:00): disponible":
+  <span
+    aria-label="Lunes, Tarde (12:00–18:00): disponible"
+    class="tech-week-cell"
+    data-franja="afternoon"
+    data-on="true"
+    role="img"
+  />
+
+  Name "Martes, Tarde (12:00–18:00): no disponible":
+  <span
+    aria-label="Martes, Tarde (12:00–18:00): no disponible"
+    class="tech-week-cell"
+    data-franja="afternoon"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Miércoles, Tarde (12:00–18:00): no disponible":
+  <span
+    aria-label="Miércoles, Tarde (12:00–18:00): no disponible"
+    class="tech-week-cell"
+    data-franja="afternoon"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Jueves, Tarde (12:00–18:00): no disponible":
+  <span
+    aria-label="Jueves, Tarde (12:00–18:00): no disponible"
+    class="tech-week-cell"
+    data-franja="afternoon"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Viernes, Tarde (12:00–18:00): no disponible":
+  <span
+    aria-label="Viernes, Tarde (12:00–18:00): no disponible"
+    class="tech-week-cell"
+    data-franja="afternoon"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Sábado, Tarde (12:00–18:00): no disponible":
+  <span
+    aria-label="Sábado, Tarde (12:00–18:00): no disponible"
+    class="tech-week-cell"
+    data-franja="afternoon"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Domingo, Tarde (12:00–18:00): no disponible":
+  <span
+    aria-label="Domingo, Tarde (12:00–18:00): no disponible"
+    class="tech-week-cell"
+    data-franja="afternoon"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Lunes, Noche (18:00–21:00): no disponible":
+  <span
+    aria-label="Lunes, Noche (18:00–21:00): no disponible"
+    class="tech-week-cell"
+    data-franja="night"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Martes, Noche (18:00–21:00): no disponible":
+  <span
+    aria-label="Martes, Noche (18:00–21:00): no disponible"
+    class="tech-week-cell"
+    data-franja="night"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Miércoles, Noche (18:00–21:00): no disponible":
+  <span
+    aria-label="Miércoles, Noche (18:00–21:00): no disponible"
+    class="tech-week-cell"
+    data-franja="night"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Jueves, Noche (18:00–21:00): no disponible":
+  <span
+    aria-label="Jueves, Noche (18:00–21:00): no disponible"
+    class="tech-week-cell"
+    data-franja="night"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Viernes, Noche (18:00–21:00): no disponible":
+  <span
+    aria-label="Viernes, Noche (18:00–21:00): no disponible"
+    class="tech-week-cell"
+    data-franja="night"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Sábado, Noche (18:00–21:00): no disponible":
+  <span
+    aria-label="Sábado, Noche (18:00–21:00): no disponible"
+    class="tech-week-cell"
+    data-franja="night"
+    data-on="false"
+    role="img"
+  />
+
+  Name "Domingo, Noche (18:00–21:00): no disponible":
+  <span
+    aria-label="Domingo, Noche (18:00–21:00): no disponible"
+    class="tech-week-cell"
+    data-franja="night"
+    data-on="false"
+    role="img"
+  />
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  <ul
+    class="tech-visit-list"
+  />
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  <li
+    class="tech-visit-row"
+    data-status="in_progress"
+  />
+
+  Name "":
+  <li
+    class="tech-visit-row"
+    data-status="assigned"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-labelledby="tech-agenda-title"
+      class="panel-page tech-page"
+    >
+      <header
+        class="client-page-head"
+      >
+        <h2
+          id="tech-agenda-title"
+        >
+          Mi agenda
+        </h2>
+        <p
+          class="muted"
+        >
+          Tus visitas de la semana y las franjas en las que recibes ofertas.
+        </p>
+      </header>
+      <div
+        aria-label="Cambiar de semana"
+        class="tech-weeknav"
+        role="group"
+      >
+        <button
+          class="button outline"
+          type="button"
+        >
+          ‹ Semana anterior
+        </button>
+        <strong
+          aria-live="polite"
+        >
+          lun 9 nov al dom 15 nov
+        </strong>
+        <button
+          class="button outline"
+          type="button"
+        >
+          Semana siguiente ›
+        </button>
+      </div>
+      <section
+        aria-label="Semana"
+        class="panel-card tech-section"
+      >
+        <div
+          aria-label="Semana"
+          class="tech-week"
+          role="group"
+        >
+          <span
+            aria-hidden="true"
+            class="tech-week-corner"
+          />
+          <span
+            aria-hidden="true"
+            class="tech-week-day"
+          >
+            Lun
+            <small>
+              9
+            </small>
+          </span>
+          <span
+            aria-hidden="true"
+            class="tech-week-day"
+          >
+            Mar
+            <small>
+              10
+            </small>
+          </span>
+          <span
+            aria-hidden="true"
+            class="tech-week-day"
+          >
+            Mié
+            <small>
+              11
+            </small>
+          </span>
+          <span
+            aria-hidden="true"
+            class="tech-week-day is-today"
+          >
+            Jue
+            <small>
+              12
+            </small>
+          </span>
+          <span
+            aria-hidden="true"
+            class="tech-week-day"
+          >
+            Vie
+            <small>
+              13
+            </small>
+          </span>
+          <span
+            aria-hidden="true"
+            class="tech-week-day"
+          >
+            Sáb
+            <small>
+              14
+            </small>
+          </span>
+          <span
+            aria-hidden="true"
+            class="tech-week-day"
+          >
+            Dom
+            <small>
+              15
+            </small>
+          </span>
+          <span
+            class="tech-week-franja"
+            data-franja="morning"
+          >
+            <strong>
+              Mañana
+            </strong>
+            <small>
+              08
+              –
+              12
+            </small>
+          </span>
+          <span
+            aria-label="Lunes, Mañana (08:00–12:00): disponible"
+            class="tech-week-cell"
+            data-franja="morning"
+            data-on="true"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class="panel-svg-icon"
+              fill="none"
+              focusable="false"
+              height="20"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+              width="20"
+            >
+              <path
+                d="m5 12.5 4.5 4.5L19 7.5"
+              />
+            </svg>
+          </span>
+          <span
+            aria-label="Martes, Mañana (08:00–12:00): no disponible"
+            class="tech-week-cell"
+            data-franja="morning"
+            data-on="false"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class="panel-svg-icon"
+              fill="none"
+              focusable="false"
+              height="20"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+              width="20"
+            >
+              <path
+                d="m6.5 6.5 11 11"
+              />
+              <path
+                d="m17.5 6.5-11 11"
+              />
+            </svg>
+          </span>
+          <span
+            aria-label="Miércoles, Mañana (08:00–12:00): no disponible"
+            class="tech-week-cell"
+            data-franja="morning"...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/technician/technicianPages.test.jsx:204:26
+    202|   expect(screen.getByText('lun 9 nov al dom 15 nov')).toBeInTheDocumen…
+    203|   // Ajuste de la corrección de Mi agenda: la flecha es un ícono y su …
+    204|   fireEvent.click(screen.getByRole('button', {name: 'Semana siguiente'…
+       |                          ^
+    205|   await waitFor(() => expect(request).toHaveBeenCalledWith('/technicia…
+    206|   expect(await screen.findByText('No tienes visitas programadas esta s…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/features/technician/technicianPages.test.jsx > S05-TC-329 «Esta semana» siempre está, pero desactivado mientras se ve la semana actual
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Esta semana"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "‹ Semana anterior":
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  />
+
+  --------------------------------------------------strong:
+
+  Name "":
+  <strong
+    aria-live="polite"
+  />
+
+  --------------------------------------------------button:
+
+  Name "Semana siguiente ›":
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<div
+  aria-label="Cambiar de semana"
+  class="tech-weeknav"
+  role="group"
+>
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  >
+    ‹ Semana anterior
+  </button>
+  <strong
+    aria-live="polite"
+  />
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  >
+    Semana siguiente ›
+  </button>
+</div>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/technician/technicianPages.test.jsx:225:32
+    223|   render(<AgendaPage/>);
+    224|   const nav = screen.getByRole('group', {name: 'Cambiar de semana'});
+    225|   const thisWeek = within(nav).getByRole('button', {name: 'Esta semana…
+       |                                ^
+    226|   expect(within(nav).getAllByRole('button').map(button => button.getAt…
+    227|     .toEqual(['Semana anterior', 'Esta semana', 'Semana siguiente']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/features/technician/technicianPages.test.jsx > S05-TC-330 las flechas avanzan desde la semana elegida aunque no haya cargado y la etiqueta dice cuál se ve
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Semana anterior"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "‹ Semana anterior":
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  />
+
+  --------------------------------------------------strong:
+
+  Name "":
+  <strong
+    aria-live="polite"
+  />
+
+  --------------------------------------------------button:
+
+  Name "Semana siguiente ›":
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<div
+  aria-label="Cambiar de semana"
+  class="tech-weeknav"
+  role="group"
+>
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  >
+    ‹ Semana anterior
+  </button>
+  <strong
+    aria-live="polite"
+  />
+  <button
+    class="button outline"
+    disabled=""
+    type="button"
+  >
+    Semana siguiente ›
+  </button>
+</div>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/technician/technicianPages.test.jsx:249:31
+    247|   render(<AgendaPage/>);
+    248|   const nav = screen.getByRole('group', {name: 'Cambiar de semana'});
+    249|   fireEvent.click(within(nav).getByRole('button', {name: 'Semana anter…
+       |                               ^
+    250|   expect(screen.getByText('Semana pasada')).toBeInTheDocument();
+    251|   expect(screen.getByText('lun 2 nov al dom 8 nov')).toBeInTheDocument…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 7 passed (10)
+   Start at  01:26:05
+   Duration  4.41s (tests 30%, import 26%, transform 21%, environment 19%, setup 4%)
+
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml

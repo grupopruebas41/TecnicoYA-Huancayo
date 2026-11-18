@@ -1,0 +1,192 @@
+{
+  "1366-light-menu": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "1366-light-agenda-actual": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "1366-light-agenda-siguiente": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0
+    ],
+    "rango": "lun 23 nov al dom 29 nov",
+    "etiqueta": "Próxima semana",
+    "estaSemanaDesactivado": "false"
+  },
+  "1366-light-agenda-anterior": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 9 nov al dom 15 nov",
+    "etiqueta": "Semana pasada",
+    "estaSemanaDesactivado": "false"
+  },
+  "1366-light-agenda-foco": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "1366-dark-agenda-actual": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "1366-dark-agenda-siguiente": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0
+    ],
+    "rango": "lun 23 nov al dom 29 nov",
+    "etiqueta": "Próxima semana",
+    "estaSemanaDesactivado": "false"
+  },
+  "1366-light-agenda-texto150": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "390-light-menu": {
+    "overflowX": false,
+    "desvioContadores": [],
+    "rango": null,
+    "etiqueta": null,
+    "estaSemanaDesactivado": null
+  },
+  "390-light-agenda-actual": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "390-light-agenda-siguiente": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0
+    ],
+    "rango": "lun 23 nov al dom 29 nov",
+    "etiqueta": "Próxima semana",
+    "estaSemanaDesactivado": "false"
+  },
+  "390-light-agenda-anterior": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 9 nov al dom 15 nov",
+    "etiqueta": "Semana pasada",
+    "estaSemanaDesactivado": "false"
+  },
+  "390-light-agenda-foco": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "390-dark-agenda-actual": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  },
+  "390-dark-agenda-siguiente": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0
+    ],
+    "rango": "lun 23 nov al dom 29 nov",
+    "etiqueta": "Próxima semana",
+    "estaSemanaDesactivado": "false"
+  },
+  "390-light-agenda-texto150": {
+    "overflowX": false,
+    "desvioContadores": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rango": "lun 16 nov al dom 22 nov",
+    "etiqueta": "Semana actual",
+    "estaSemanaDesactivado": "true"
+  }
+}

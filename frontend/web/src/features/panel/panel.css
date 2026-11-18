@@ -667,6 +667,18 @@
   line-height: 1.5;
   text-align: center;
 }
+/* Contador numérico: círculo de alto fijo con el número centrado en los dos ejes (corrección de Mi agenda del técnico). */
+.panel-nav-badge:not(.is-text) {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.85em;
+  min-width: 1.85em;
+  padding: 0 0.45em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
 .panel-shell.is-collapsed .panel-nav-badge {
   position: absolute;
   top: 4px;
