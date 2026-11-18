@@ -82,7 +82,16 @@ it('S05-TC-356 demo-tecnico-pendiente empieza sin bienvenida ni tutorial; los t�
     // Como S03-TC-085: la guarda solo lee la configuración; la conexión abierta sigue en la base de pruebas real.
     expect(DB::connection()->getDatabaseName())->toEndWith('_testing');
     config(['database.connections.mysql.database' => 'tecnicoya_testing']);
-    $this->seed(Sprint05E2ESeeder::class);
+    // Contraseña sintética y aleatoria solo para esta siembra (las Sprint01 a 05 la exigen de 24 caracteres o más).
+    $password = 'e2e-'.bin2hex(random_bytes(16));
+    putenv("TECNICOYA_E2E_PASSWORD=$password");
+    $_ENV['TECNICOYA_E2E_PASSWORD'] = $_SERVER['TECNICOYA_E2E_PASSWORD'] = $password;
+    try {
+        $this->seed(Sprint05E2ESeeder::class);
+    } finally {
+        putenv('TECNICOYA_E2E_PASSWORD');
+        unset($_ENV['TECNICOYA_E2E_PASSWORD'], $_SERVER['TECNICOYA_E2E_PASSWORD']);
+    }
     $marks = DB::table('users as u')->join('roles as r', 'r.id', '=', 'u.role_id')->where('r.code', 'technician')->where('u.email', 'like', 'e2e-%')
         ->pluck('u.tour_completed_at', 'u.email');
     expect($marks->keys())->toContain('e2e-technician-frio@example.test', 'e2e-technician-nuevo@example.test')

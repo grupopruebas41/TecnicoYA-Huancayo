@@ -28,6 +28,7 @@ final class Sprint05E2ESeeder extends Seeder
             $this->demoTechnicians();
             $this->premiumClient();
             $this->verificationDocuments();
+            $this->firstVisits();
         });
     }
 
@@ -63,6 +64,27 @@ final class Sprint05E2ESeeder extends Seeder
                 $builder->verificationDocuments((int) $profile->id, (int) $profile->user_id, 'approved');
             }
         }
+    }
+
+    /**
+     * Fase T5: los técnicos E2E ya vieron la bienvenida y el tutorial, para que las Cypress de las fases anteriores no
+     * los encuentren. e2e-technician-nuevo es la excepción: técnico por verificar, sin servicios, zonas ni documentos,
+     * que vuelve a su primera visita en cada siembra (bienvenida, tutorial y «Primeros pasos»).
+     */
+    private function firstVisits(): void
+    {
+        $builder = app(DemoSeeder::class);
+        $role = (int) DB::table('roles')->where('code', 'technician')->value('id');
+        $user = User::firstOrNew(['email' => 'e2e-technician-nuevo@example.test']);
+        $user->forceFill(['name' => 'Técnico E2E nuevo', 'given_names' => 'Técnico', 'family_names' => 'E2E nuevo', 'phone' => '900000096',
+            'is_active' => true, 'role_id' => $role, 'password' => env('TECNICOYA_E2E_PASSWORD'),
+            'email_verified_at' => $user->email_verified_at ?? now()])->save();
+        DB::table('technician_profiles')->updateOrInsert(['user_id' => $user->id], ['display_name' => 'Técnico E2E nuevo', 'bio' => null,
+            'status' => 'pending_verification', 'verification_status' => 'pending', 'experience_years' => 2, 'base_district_id' => null,
+            'available_now' => false, 'updated_at' => now()]);
+        DB::table('users')->where('role_id', $role)->where('email', 'like', 'e2e-%')->where('id', '!=', $user->id)
+            ->pluck('id')->each(fn ($id) => $builder->firstVisit((int) $id, false));
+        $builder->firstVisit($user->id, true);
     }
 
     /** D-101: los dos técnicos de demostración, con cuentas E2E (la contraseña es TECNICOYA_E2E_PASSWORD). */

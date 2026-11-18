@@ -71,9 +71,28 @@ final class TechnicianHome
             ],
             'today' => $visits,
             'progress' => ['percent' => $percent, 'done' => $done, 'total' => count($tasks), 'tasks' => $tasks],
+            'first_steps' => self::firstSteps($tasks),
             'badges' => $this->badges($technicianId, $profile, $percent),
             'generated_at' => $now->toISOString(),
         ];
+    }
+
+    /**
+     * Fase T5: «Primeros pasos» del Inicio, 4 pasos hechos de las tareas del progreso (D-109): perfil («Sobre mí» y distrito
+     * base), documentos obligatorios (D-107), zonas y horarios, y un servicio con tarifa. Al completarlos, el Inicio los oculta.
+     */
+    public static function firstSteps(array $tasks): array
+    {
+        $done = fn (string ...$codes) => collect($tasks)->whereIn('code', $codes)->every(fn (array $task) => $task['done']);
+        $steps = [
+            ['code' => 'profile', 'label' => 'Completa tu perfil: «Sobre mí» y distrito base', 'section' => 'profile-pro', 'done' => $done('about', 'base_district')],
+            ['code' => 'documents', 'label' => 'Sube tus 2 documentos de verificación', 'section' => 'verification', 'done' => $done('documents')],
+            ['code' => 'zones', 'label' => 'Elige tus zonas y tus horarios', 'section' => 'zones', 'done' => $done('zones', 'availability')],
+            ['code' => 'services', 'label' => 'Agrega un servicio con su tarifa', 'section' => 'services', 'done' => $done('services')],
+        ];
+        $completed = count(array_filter($steps, fn (array $step) => $step['done']));
+
+        return ['steps' => $steps, 'completed' => $completed, 'total' => count($steps), 'done' => $completed === count($steps)];
     }
 
     /** Franja de una hora local: Mañana 08–12, Tarde 12–18 y Noche 18–21 (las mismas del pedido). */

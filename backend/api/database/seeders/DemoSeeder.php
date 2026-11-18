@@ -80,6 +80,7 @@ final class DemoSeeder extends Seeder
                 $this->reviews($technician, $data['reviews'] ?? []);
                 // Fase T4: los 2 documentos obligatorios aprobados, coherentes con la insignia «Verificado».
                 $this->verificationDocuments($technician, $user->id, 'approved');
+                $this->firstVisit($user->id, false);
                 // Fase T2 del panel del técnico: historia de ofertas, trabajos y visitas para ver el Inicio con datos;
                 // Fase T4: historial de meses anteriores para las estadísticas.
                 if ($code === 'computo') {
@@ -95,6 +96,8 @@ final class DemoSeeder extends Seeder
             // Fase T4: un documento en revisión y el otro por subir («Falta un documento»).
             $this->verificationDocuments((int) DB::table('technician_profiles')->where('user_id', $pending->id)->value('id'), $pending->id,
                 'pending', ['identity']);
+            // Fase T5: demo-tecnico-pendiente ve la bienvenida y el tutorial en cada siembra; los verificados ya los vieron.
+            $this->firstVisit($pending->id, true);
 
             $this->subcategoryPhotos($admin->id);
             foreach (self::ANNOUNCEMENTS as $slug => $data) {
@@ -225,6 +228,22 @@ final class DemoSeeder extends Seeder
                 'reviewed_at' => $status === 'pending' ? null : now()->subMonth(),
             ]);
         }
+    }
+
+    /**
+     * Fase T5: primera visita. Con $fresh la cuenta vuelve a ver la bienvenida y el tutorial (sin ajustes ni avisos
+     * guardados); si no, quedan marcados como vistos para no interrumpir. También lo usa Sprint05E2ESeeder.
+     */
+    public function firstVisit(int $userId, bool $fresh): void
+    {
+        if ($fresh) {
+            DB::table('users')->where('id', $userId)->update(['onboarding_completed_at' => null, 'tour_completed_at' => null,
+                'accessibility_prefs' => null, 'offer_alert_prefs' => null]);
+
+            return;
+        }
+        DB::table('users')->where('id', $userId)->whereNull('onboarding_completed_at')->update(['onboarding_completed_at' => now()]);
+        DB::table('users')->where('id', $userId)->whereNull('tour_completed_at')->update(['tour_completed_at' => now()]);
     }
 
     /** D-101: reseñas de ejemplo, solo en local; no son calificaciones y el panel las rotula como demostración. */
