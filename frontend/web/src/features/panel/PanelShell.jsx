@@ -118,7 +118,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     const target = section.premium ? 'premium' : section.id;
     return <React.Fragment key={section.id}><button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')} data-section={section.id}
       aria-current={section.id === current?.id ? 'page' : undefined}
-      data-tooltip={collapsed ? (badge?.text && !badge.count ? `${section.label} · ${badge.label}` : section.label) : undefined}
+      data-tooltip={collapsed ? (badge?.text && !badge.count ? (badge.label.startsWith(section.label) ? badge.label : `${section.label} · ${badge.label}`) : section.label) : undefined}
       aria-describedby={badge?.count || badge?.text ? badgeId : undefined} disabled={locked}
       onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
