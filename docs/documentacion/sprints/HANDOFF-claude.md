@@ -4,7 +4,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 
 ## 2026-11-17 · Corrección de Mi agenda del técnico: navegación de semanas y contador «Visitas»
 
-- **Rama:** `feature/pimentel/tecnico/t3-agenda-semanas`, desde `feature/pimentel/tecnico/t3-trabajos` (`7f7f713`), porque Mi agenda aún no está en `main`. El PR va contra `main` (la CI solo corre ahí) y se integra **después del #58**; hasta entonces su diff incluye los commits de la T3.
+- **Rama:** `feature/pimentel/tecnico/t3-agenda-semanas`, desde `feature/pimentel/tecnico/t3-trabajos` (`7f7f713`), porque Mi agenda aún no estaba en `main`; PR #59. Tras integrarse el #58, se trajo `main` (merge `6e6e6e8`) y el diff quedó solo en esta corrección, más D-109 pasada a «Decisiones tomadas» (pedido de Pimentel).
 - **Cambios (solo frontend, sin backend):**
   - «Semana anterior», «Esta semana» y «Semana siguiente» en un grupo segmentado de 3 botones iguales, con chevrons SVG de 20 px (trazo 2,6), resaltado en hover y en foco; en el celular las flechas muestran solo el ícono, con `aria-label`.
   - «Esta semana» siempre visible, con `aria-disabled` y atenuado en la semana actual.
@@ -96,7 +96,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
 - **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-10-a0c69d9-tecnico-t3-*`.
 - **Límite:** sin acciones «Iniciar» ni «Completar» (son del módulo de atención, Sprint 6). Los horarios personalizados que no coinciden con las franjas se ajustan al guardar, y la pantalla lo avisa.
 - **Pendiente para el cierre común:** ejecutar las Cypress (también las del S4 con el `login` nuevo); catálogo, contrato y avance de la T3.
-- **Siguiente:** Fase T4 desde S05-TC-329, con el diseño anotado en `PLAN-PANEL-TECNICO.md`.
+- **Siguiente:** Fase T4 desde S05-TC-331 (la 329 y la 330 las usa la corrección de Mi agenda), con el diseño anotado en `PLAN-PANEL-TECNICO.md`.
 - **Pedidos a Codex:** ninguno.
 
 ## 2026-11-10 · Panel del técnico, Fase T2 (modo rápido): menú del técnico e Inicio con oferta en vivo
