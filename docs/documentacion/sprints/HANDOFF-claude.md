@@ -2,6 +2,37 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-18 · Revisión del #62 (antes de integrar): botones, diálogos, selector de subcategorías y tarifa S/ 120,00
+
+- **Rama:** la misma, `feature/pimentel/tecnico/t4-negocio`; commit `3d1da0e` (pedido de Pimentel en la revisión del #62).
+- **Botones secundarios (los tres roles, `panel.css`):**
+  - al pasar el mouse y con el foco se rellenan con el acento y el texto sobre acento (claro: #1f6f6b con blanco, 5,9:1);
+  - «Quitar» se rellena de rojo suave con el texto rojo oscuro;
+  - transición suave, apagada con «Reducir animaciones».
+- **`TechDialog` (`businessCommon.jsx`), montado con un portal en `body`:**
+  - centrado, con el fondo oscurecido y desenfocado;
+  - entrada con escala y profundidad (la perspectiva solo vive dentro de la animación);
+  - hasta 760 px de ancho con desplazamiento interno; pantalla completa en el celular;
+  - foco atrapado; Esc o el fondo lo cierran y el foco vuelve al botón que lo abrió;
+  - Cancelar y Guardar fijos al pie.
+- **«Añadir servicio» en el diálogo:**
+  - buscador y filtros por especialidad (Todas, Cómputo, Refrigeración comercial y Electricidad) con su ícono y color;
+  - tarjetas iguales agrupadas por especialidad (2 columnas; 1 en el celular) con la descripción o la tarifa sugerida;
+  - «Ya lo ofreces» desactivadas;
+  - flechas, Inicio, Fin, Enter y Espacio;
+  - el formulario aparece debajo del grupo de la tarjeta elegida;
+  - sin resultados: «No encontramos “…”. Prueba con otra palabra».
+- **Portafolio:** «Añadir trabajo» y «Editar» abren el mismo diálogo.
+- **Tarifa:** `soles()` en `format.js` da «S/ 120,00» y «S/ 1 200,00», como `feeLabel` de las ofertas.
+- **Defectos:** DEF-70 (choque de clases CSS con `marketplace.css` y `search.css`), corregido.
+- **Pruebas:**
+  - Vitest: S05-TC-342, 343 y 345 actualizadas; S05-TC-353 nueva (diálogo).
+  - Las 30 del técnico, lint y build en verde.
+  - La suite completa dio tiempos límite al azar en local (5 s), con el servidor de desarrollo del usuario (puerto 3000 y Vite) corriendo a la vez; aisladas pasan. Lo confirma la CI.
+  - Sin cambios de backend.
+- **Capturas:** `docs/documentacion/evidencias/sprint-05/2026-11-18-3d1da0e-tecnico-t4-*` (23 por ancho, con el estado al pasar el mouse y los diálogos), sin desbordes, controles nativos ni errores de página. Las `582ec09` quedan como el antes.
+- **Siguiente:** T5 desde **S05-TC-354**.
+
 ## 2026-11-17 · Panel del técnico, Fase T4 (modo rápido): Mi negocio y Estadísticas
 
 - **Rama:** `feature/pimentel/tecnico/t4-negocio`, desde `main` `4f484b0` (con #59, #60 y #61 integrados); un solo PR.
@@ -44,7 +75,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Cypress del S2 del técnico que usaban el panel viejo: S02-TC-071, 072 y 074 se suman a la 073 y la 075, que quedaron obsoletas en la T3. Hay que reescribirlas sobre las pantallas nuevas.
   - Catálogo, contrato (§ de stats, verification y order) y avance de la T4.
   - `Sprint02Portal` y `TechnicianPanel` ya no se usan en la app; solo los usan sus Vitest del S2. Retirarlos en el cierre.
-- **Siguiente:** Fase T5 desde S05-TC-353, D-112 y DEF-70.
+- **Siguiente:** Fase T5 desde S05-TC-354 (la 353 la usa la revisión del #62), D-112 y DEF-71.
 - **Pedidos a Codex:** ninguno.
 
 ## 2026-11-17 · Corrección de Mi agenda del técnico: navegación de semanas y contador «Visitas»

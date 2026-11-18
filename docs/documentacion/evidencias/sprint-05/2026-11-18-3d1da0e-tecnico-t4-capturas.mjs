@@ -147,13 +147,28 @@ try {
     await menu('Servicios y tarifas');
     await page.locator('.tech-service-name small').first().waitFor();
     await shot('servicios');
+    // Botones secundarios al pasar el mouse: Editar se rellena con el acento y Quitar de rojo suave.
+    await page.locator('.tech-service').first().getByRole('button', {name: /^Editar/}).hover();
+    await shot('servicios-editar-hover', false);
+    await page.locator('.tech-service').first().getByRole('button', {name: /^Quitar/}).hover();
+    await shot('servicios-quitar-hover', false);
     await page.locator('.tech-service').first().getByRole('button', {name: /^Editar/}).click();
     await shot('servicios-editar');
     await page.getByRole('button', {name: 'Cancelar'}).first().click();
+    // Diálogo «Añadir servicio»: filtros, tarjetas agrupadas, «Ya lo ofreces», elección y búsqueda sin resultados.
     await page.getByRole('button', {name: /Añadir servicio/}).click();
-    await page.getByLabel('Buscar subcategoría').fill('mant');
-    await shot('servicios-anadir');
-    await page.getByRole('button', {name: 'Cerrar'}).click();
+    await page.getByRole('dialog').getByRole('radio').first().waitFor();
+    await page.waitForTimeout(400);
+    await shot('servicios-anadir', false);
+    await page.getByRole('dialog').getByRole('radio', {disabled: false}).first().click();
+    await page.getByRole('dialog').getByLabel(/^Tarifa referencial/).fill('95,50');
+    await page.waitForTimeout(500);
+    await shot('servicios-anadir-elegido', false);
+    await page.getByRole('dialog').getByRole('button', {name: 'Electricidad'}).click();
+    await shot('servicios-anadir-filtro', false);
+    await page.getByLabel('Buscar subcategoría').fill('zzz');
+    await shot('servicios-anadir-sin-resultados', false);
+    await page.keyboard.press('Escape');
     // Portafolio: nuevo trabajo con antes y después, guardado, orden y confirmación de retiro.
     await menu('Portafolio');
     await page.getByRole('list', {name: /Tus trabajos/}).waitFor();
@@ -164,10 +179,10 @@ try {
     await page.getByTestId('drop-portfolio').setInputFiles(path.join(tmpDir, 'despues.png'));
     await page.getByLabel(/^Texto alternativo de la foto 2/).waitFor();
     await page.getByRole('button', {name: 'Guardar trabajo'}).click();
-    await shot('portafolio-alt-obligatorio');
+    await shot('portafolio-alt-obligatorio', false);
     await page.getByLabel(/^Texto alternativo de la foto 1/).fill('Vitrina con escarcha y luces apagadas');
     await page.getByLabel(/^Texto alternativo de la foto 2/).fill('Vitrina limpia, iluminada y con productos');
-    await shot('portafolio-nuevo');
+    await shot('portafolio-nuevo', false);
     await page.getByRole('button', {name: 'Guardar trabajo'}).click();
     await page.getByText(/Añadimos «(Vitrina|Cámara de frío) sin escarcha/).waitFor();
     await shot('portafolio');

@@ -221,7 +221,8 @@ Las ofertas se siguen leyendo de `GET /offers`.
 - IDs S05-TC-331 a 352: Pest 331 a 339, Vitest 340 a 349 y Cypress escritas 350 a 352.
 - DEF-69 corregido (menú «Aprobado» sin documentos).
 - D-111 (lista de «Tipo de documento») queda propuesta y aplicada con la opción A hasta que se decida.
-- **Siguiente numeración:** D-112, DEF-70 y S05-TC-353 para la T5.
+- Revisión del #62 (2026-11-18): S05-TC-353 (diálogo) y DEF-70 (choque de clases CSS).
+- **Siguiente numeración:** D-112, DEF-71 y S05-TC-354 para la T5.
 
 ### T5 · Accesibilidad, bienvenida y tutorial del técnico
 
@@ -332,7 +333,7 @@ Son rangos orientativos desde **S05-TC-275**; el catálogo fija los definitivos.
 | T2 | S05-TC-293 a 310 | 5 (`home`: indicadores, progreso, insignias y permisos) | 10 (menú, Próximamente, anillo con reloj falso, aceptar y rechazar, vacío, reducir animaciones) | 3 |
 | T3 | S05-TC-311 a 330 | 8 (pestañas y conteos, dirección solo si está asignado, ajeno 404, búsqueda, agenda) | 9 (pestañas, búsqueda, skeleton, vacío, edición de franjas) | 3 |
 | T4 | S05-TC-331 a 352 | 9 (estadísticas por período, verificación sin fuga a otros, orden del portafolio, `caption` obligatorio) | 10 (vista previa en vivo, servicios, portafolio, estados de documentos, gráficos con texto) | 3 |
-| T5 | S05-TC-353 a 370 | 3 (preferencias de avisos, Primeros pasos) | 12 (bienvenida, tutorial, avisos con `vi.useFakeTimers`, voz simulada, modo simple) | 3 |
+| T5 | S05-TC-354 a 370 (la 353 la usó la revisión del #62) | 3 (preferencias de avisos, Primeros pasos) | 12 (bienvenida, tutorial, avisos con `vi.useFakeTimers`, voz simulada, modo simple) | 3 |
 
 **Total previsto:** unas 32 Pest, 49 Vitest y 15 Cypress escritas.
 
