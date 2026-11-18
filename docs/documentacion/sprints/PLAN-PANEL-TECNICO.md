@@ -243,6 +243,7 @@ Las ofertas se siguen leyendo de `GET /offers`.
   - objetivos de 44 px o más;
   - contraste AA;
   - estado siempre con ícono y texto.
+- **Hecho (2026-11-18, rama `feature/pimentel/tecnico/t5-accesibilidad`):** IDs S05-TC-354 a 371 (Pest 354 a 356, Vitest 357 a 368 y Cypress escritas 369 a 371); D-111 aprobada; D-112 (valores por omisión de los avisos) propuesta y aplicada con la opción A. El rótulo «Mañana» cortado quedó corregido.
 - **Pendientes anotados para la T5:**
   - **Mi agenda, texto al 150 % en el celular (390 px):** el rótulo «Mañana» de la columna de franjas se corta, porque la columna mide 52 px. Visto en las capturas de la corrección de Mi agenda (PR #59, 2026-11-17); ya pasaba antes de esa corrección. Anotado por Pimentel.
 

@@ -2,6 +2,50 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-18 · Panel del técnico, Fase T5 (modo rápido): accesibilidad, avisos, bienvenida, tutorial y Primeros pasos
+
+- **Rama:** `feature/pimentel/tecnico/t5-accesibilidad`, desde `main` `797efc0` (#62 integrado); un solo PR.
+- **Commits (TDD):** `555d9f3` Pest en rojo, `53e376a` backend, `fa73f97` Vitest en rojo, `4a078c6` frontend, `aadc6b4` Cypress escritas; `03a5083` `offer_alerts` solo para técnicos (la suite completa encontró S05-TC-240 en rojo: el cliente también lo recibía); `35138ac` y `e6bcb54` objetivos de 44 px y rótulo de «Avisos», vistos en las capturas; más la documentación.
+- **Backend:**
+  - **`/me/preferences`:** `offer_alerts` (sonido, vibración, destello y voz) en `users.offer_alert_prefs`, con los valores de D-112 (propuesta, opción A aplicada).
+    - Solo el técnico los cambia; otro rol recibe 422.
+    - Las claves ajenas se rechazan.
+  - **`GET /technicians/me/home`:** `first_steps`, con 4 pasos hechos de las tareas del progreso (D-109): perfil, documentos, zonas y horarios, y servicio con tarifa.
+  - **`DemoSeeder::firstVisit`:** `demo-tecnico-pendiente` vuelve a su primera visita en cada siembra (sin ajustes ni avisos); los técnicos verificados ya la vieron.
+  - **`Sprint05E2ESeeder`:**
+    - todos los técnicos E2E marcan la bienvenida y el tutorial como vistos, para no romper las Cypress anteriores;
+    - `e2e-technician-nuevo` (por verificar, sin servicios, zonas ni documentos) empieza de cero en cada siembra.
+- **Frontend:**
+  - **Los 8 ajustes de accesibilidad** del cliente ya estaban en la cuenta del técnico desde la T1 (D-105). En la T5:
+    - el dictado llega a los textos del Perfil profesional (`Dictation` exportado de `ProblemSearch`);
+    - el modo simple agranda Aceptar y Rechazar.
+  - **`offerAlerts.jsx`:**
+    - pestaña «Avisos»: 4 interruptores, «Probar el aviso», alertas y vuelta atrás si falla;
+    - `OfferAlertWatcher` avisa de cada oferta nueva desde cualquier página (la primera carga no avisa): sonido con Web Audio, `navigator.vibrate`, destello (fijo con «Reducir animaciones») y voz es-PE, con anuncio para lectores de pantalla;
+    - «Leer la oferta en voz alta» en la oferta en vivo.
+  - **`ClientOnboarding` generalizado** (`cards`, `steps` y `onAlerts`). `TechnicianOnboarding` suma la tarjeta «Avisos de ofertas más notorios» y un tutorial de 5 pasos: Ofertas, Primeros pasos, Mi negocio, campana y cuenta, y «Aa». Se repite desde Ayuda › Cómo funciona sin volver a marcarlo.
+  - **`FirstSteps`** en el Inicio; desaparece al completarse.
+  - **WCAG 2.1 AA:**
+    - el rótulo «Mañana» no se corta con texto al 150 % en el celular (medido);
+    - «Saltar al contenido», «Abrir menú», los botones del carrusel (también «Pantalla completa») y los botones de texto miden 44 px en el panel del técnico (medido: ningún control por debajo de 44 px en las capturas).
+- **Decisiones:**
+  - D-111 aprobada (opción A, Pimentel, 2026-11-18).
+  - D-112 pendiente: valores por omisión de los avisos.
+- **Pruebas:**
+  - Pest: S05-TC-354 a 356; suite completa 513 de 513 (`2026-11-18-e6bcb54-tecnico-t5-pest-verde.txt`).
+  - Vitest: S05-TC-357 a 368; 498 de 498, más lint y build.
+  - Capturas: `docs/documentacion/evidencias/sprint-05/2026-11-18-e6bcb54-tecnico-t5-*` (1366 y 390, tema claro; bienvenida, 5 pasos del tutorial, Primeros pasos, Avisos, Cómo funciona, modo simple y agenda al 150 %), con mediciones en `…-capturas.json`: sin desborde, burbuja siempre dentro y «Mañana» sin cortar.
+  - Cypress escritas sin ejecutar: S05-TC-369 a 371 (`sprint-05/technician-onboarding.cy.js`).
+  - Adaptadas, con explicación en el código:
+    - S05-TC-283 («Avisos» con interruptores);
+    - el técnico simulado de `staffShell.test.jsx` ya vio la bienvenida;
+    - S05-TC-356 recibe una contraseña sintética para la siembra E2E.
+- **Lección:** la primera corrida completa de Pest coincidió con las capturas, que hacen `migrate:fresh` en la misma base del slot A, y dio 95 fallos falsos (QueryException y Deadlock). Nunca correr Pest y el script de capturas a la vez.
+- **Pendiente para el cierre común (pedido de Pimentel, 2026-11-18):**
+  - reescribir las Cypress S02-TC-071 a 075 sobre las pantallas nuevas, junto con la ejecución de todas las Cypress (cliente, S4 y técnico);
+  - catálogo, contrato y avances de T1 a T5.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-18 · Revisión del #62 (antes de integrar): botones, diálogos, selector de subcategorías y tarifa S/ 120,00
 
 - **Rama:** la misma, `feature/pimentel/tecnico/t4-negocio`; commit `3d1da0e` (pedido de Pimentel en la revisión del #62).
