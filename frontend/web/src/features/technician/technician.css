@@ -1,6 +1,7 @@
 /* Panel del técnico, Fase T2: Inicio con oferta en vivo, indicadores, Mi día, progreso e insignias. Mismo lenguaje del
    panel del cliente (tarjetas, acentos y animaciones suaves que se apagan con «Reducir animaciones»). */
-.tech-home { display: grid; gap: 18px; }
+/* Revisión del #63: la columna no crece con el contenido (con texto al 150 % en el celular el Inicio medía 430 px). */
+.tech-home { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 .tech-home > *, .tech-section { animation: tech-rise 220ms ease-out both; animation-delay: calc(var(--i, 0) * 60ms); }
 @keyframes tech-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
@@ -22,9 +23,9 @@
 .tech-skeleton { min-height: 120px; display: grid; place-items: center; color: var(--ty-muted); }
 
 /* Oferta en vivo */
-.tech-live { display: grid; gap: 12px; }
+.tech-live { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .offer-spotlight {
-  display: grid; gap: 16px; border: 2px solid color-mix(in srgb, var(--ty-accent) 60%, transparent);
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; border: 2px solid color-mix(in srgb, var(--ty-accent) 60%, transparent);
   background: linear-gradient(135deg, color-mix(in srgb, var(--ty-accent) 14%, var(--ty-surface)), var(--ty-surface) 60%);
 }
 .offer-spotlight[data-urgent] { border-color: hsl(8 70% 52%); }
@@ -39,7 +40,8 @@
 .offer-facts dt { display: flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--ty-muted); }
 .offer-facts dt .panel-svg-icon { width: 16px; height: 16px; margin: 0; }
 .offer-facts dd { margin: 0; font-weight: 600; }
-.offer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* Revisión del #63: con letra grande en el celular, Aceptar y Rechazar se apilan en vez de salirse de la tarjeta. */
+.offer-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8em), 1fr)); gap: 12px; }
 .offer-actions .button { min-height: 56px; font-size: 1.1rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 .offer-actions .panel-svg-icon { width: 22px; height: 22px; margin: 0; }
 .offer-reason { display: grid; gap: 6px; }
