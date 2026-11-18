@@ -122,6 +122,8 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       aria-describedby={badge?.count || badge?.text ? badgeId : undefined} disabled={locked}
       onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
+      {/* Revisión del #63: texto y etiqueta juntos; si no caben lado a lado, la etiqueta baja bajo el texto (nunca se corta). */}
+      <span className="panel-nav-text">
       <span className="panel-label">{section.label}{section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}</span>
       {badge?.count > 0 && <span className={'panel-nav-badge' + (badge.pulse ? ' is-pulse' : '')} aria-hidden="true">
         {badge.pulse && <span className="panel-nav-pulse"/>}{badge.count > 99 ? '99+' : badge.count}</span>}
@@ -131,6 +133,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       {!badge?.count && badge?.text && <span className="panel-nav-badge is-text" data-tone={badge.tone}
         title={badge.label} aria-label={badge.label} aria-hidden="true">
         {badge.icon && ICONS.has(badge.icon) && <Icon name={badge.icon}/>}<span className="panel-nav-badge-text">{badge.text}</span></span>}
+      </span>
     </button>
     {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
     {(badge?.count > 0 || badge?.text) && <span id={badgeId} hidden>{badge.label}</span>}</React.Fragment>;
