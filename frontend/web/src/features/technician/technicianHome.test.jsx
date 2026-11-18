@@ -105,10 +105,32 @@ test('S05-TC-300 el menú muestra las ofertas pendientes con su punto que late, 
   expect(within(nav()).getByRole('button', {name: 'Perfil profesional'}).querySelector('.is-text')).toHaveTextContent('63 %');
   expect(within(nav()).getByRole('button', {name: 'Verificación'})).toHaveAccessibleDescription('Verificación: En revisión');
   // Sin ofertas no hay punto y con el perfil completo el tono cambia.
-  const quiet = technicianBadges(home({offers: {pending: 0}, progress: {...home().progress, percent: 100}, verification: {state: 'missing', label: 'Falta un documento'}}));
+  // Revisión del #63: el menú muestra el texto corto («Falta 1»); el completo queda en la descripción (ver S05-TC-373).
+  const quiet = technicianBadges(home({offers: {pending: 0}, progress: {...home().progress, percent: 100},
+    verification: {state: 'missing', label: 'Falta un documento', missing: ['Certificado o constancia técnica']}}));
   expect(quiet.offers).toMatchObject({count: 0, pulse: false});
   expect(quiet['profile-pro']).toMatchObject({text: '100 %', tone: 'ok'});
-  expect(quiet.verification).toMatchObject({text: 'Falta un documento', tone: 'warn'});
+  expect(quiet.verification).toMatchObject({text: 'Falta 1', tone: 'warn'});
+});
+
+test('S05-TC-373 la etiqueta de Verificación del menú es corta y lleva el texto completo en title, aria-label y descripción', async () => {
+  routes({'GET /technicians/me/home': async () => ({data: home({verification: {state: 'missing', label: 'Falta un documento',
+    missing: ['Certificado o constancia técnica']}})})});
+  app();
+  const item = within(nav()).getByRole('button', {name: 'Verificación'});
+  await waitFor(() => expect(item.querySelector('.panel-nav-badge.is-text')).toHaveTextContent(/^Falta 1$/));
+  const badge = item.querySelector('.panel-nav-badge.is-text');
+  expect(badge).toHaveAttribute('aria-label', 'Verificación: Falta un documento');
+  expect(badge).toHaveAttribute('title', 'Verificación: Falta un documento');
+  expect(badge.querySelector('svg')).not.toBeNull();
+  expect(item).toHaveAccessibleDescription('Verificación: Falta un documento');
+  expect(item).toHaveAccessibleName('Verificación');
+  // Los demás estados también son cortos; con dos documentos por subir, «Falta 2».
+  const short = (verification) => technicianBadges(home({verification})).verification.text;
+  expect(short({state: 'approved', label: 'Aprobado', missing: []})).toBe('Aprobado');
+  expect(short({state: 'in_review', label: 'En revisión', missing: []})).toBe('En revisión');
+  expect(short({state: 'observed', label: 'Observado', missing: []})).toBe('Observado');
+  expect(short({state: 'missing', label: 'Faltan 2 documentos', missing: ['DNI', 'Certificado']})).toBe('Falta 2');
 });
 
 test('S05-TC-301 el anillo pasa de verde a ámbar y a rojo en sus bordes y dice el tiempo en texto', () => {
