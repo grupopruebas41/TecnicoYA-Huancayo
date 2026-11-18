@@ -14,7 +14,9 @@ vi.mock('../administration/Sprint02Portal', () => ({default: () => <section><h2>
 const technician = {id: '8', name: 'Técnico Demo', given_names: 'Técnico', family_names: 'Demo', email: 'demo-tecnico@example.test', version: 2,
   theme_preference: 'light', sidebar_collapsed: null, avatar_url: null, role: {code: 'technician'}, permissions: [],
   preferences: {accessibility: {text_size: 130, high_contrast: false, readable_font: false, reduce_motion: false, strong_focus: false,
-    read_aloud: false, dictation: false, simple_mode: false}, onboarding_completed_at: null, tour_completed_at: null},
+    read_aloud: false, dictation: false, simple_mode: false},
+    // Fase T5: estas pruebas son de la barra y la cuenta; el técnico ya vio la bienvenida y el tutorial (S05-TC-361 a 364).
+    onboarding_completed_at: '2026-11-10T15:00:00.000Z', tour_completed_at: '2026-11-10T15:00:00.000Z'},
   technician_profile: {verification_status: 'approved', status: 'active', declared_subcategories: []}};
 const admin = {...technician, id: '7', name: 'Ana Quispe', given_names: 'Ana', family_names: 'Quispe', role: {code: 'admin'},
   permissions: ['catalog.manage'], technician_profile: undefined, preferences: undefined};
@@ -59,7 +61,7 @@ test('S05-TC-282 el técnico tiene la barra del cliente: ☰ junto al logo, camp
   expect(document.documentElement.dataset.textSize).toBe('130');
 });
 
-test('S05-TC-283 el panel de la cuenta del técnico tiene sus 5 pestañas, su rol y «Avisos» como Próximamente', async () => {
+test('S05-TC-283 el panel de la cuenta del técnico tiene sus 5 pestañas, su rol y «Avisos» con sus interruptores', async () => {
   routes(technician);
   fireEvent.click(await open(technician, '/#cuenta/tecnico'));
   const dialog = screen.getByRole('dialog');
@@ -69,7 +71,8 @@ test('S05-TC-283 el panel de la cuenta del técnico tiene sus 5 pestañas, su ro
   // Mi cuenta ya no repite la contraseña: va en Seguridad.
   expect(within(dialog).queryByRole('form', {name: 'Cambiar contraseña'})).not.toBeInTheDocument();
   fireEvent.click(within(dialog).getByRole('tab', {name: 'Avisos'}));
-  expect(within(dialog).getByText('Próximamente')).toBeInTheDocument();
+  // Fase T5 (D-112): «Avisos» deja de ser «Próximamente» y trae sus 4 interruptores (S05-TC-357).
+  expect(within(dialog).getAllByRole('switch')).toHaveLength(4);
   expect(within(dialog).getByText(/sigue siendo de 10 minutos/)).toBeInTheDocument();
   expect(within(dialog).getByRole('button', {name: /Cerrar sesión/})).toHaveAttribute('data-cy', 'logout');
 });
