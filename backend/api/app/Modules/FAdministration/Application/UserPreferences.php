@@ -24,16 +24,21 @@ final class UserPreferences
 
     public static function forUser(int $userId): array
     {
-        $row = DB::table('users')->where('id', $userId)->first(['accessibility_prefs', 'onboarding_completed_at', 'tour_completed_at', 'offer_alert_prefs']);
+        $row = DB::table('users')->where('id', $userId)->first(['accessibility_prefs', 'onboarding_completed_at', 'tour_completed_at', 'offer_alert_prefs', 'role_id']);
         $saved = is_string($row?->accessibility_prefs) ? (json_decode($row->accessibility_prefs, true) ?: []) : [];
         $alerts = is_string($row?->offer_alert_prefs) ? (json_decode($row->offer_alert_prefs, true) ?: []) : [];
         $iso = fn ($value) => $value === null ? null : Carbon::parse($value)->toISOString();
 
-        return [
+        $prefs = [
             'accessibility' => array_intersect_key($saved, self::DEFAULTS) + self::DEFAULTS,
             'onboarding_completed_at' => $iso($row?->onboarding_completed_at),
             'tour_completed_at' => $iso($row?->tour_completed_at),
-            'offer_alerts' => array_intersect_key($alerts, self::OFFER_ALERTS) + self::OFFER_ALERTS,
         ];
+        // Los avisos de oferta solo existen en la cuenta de un técnico (el PUT los rechaza para los demás roles).
+        if ($row !== null && DB::table('roles')->where('id', $row->role_id)->value('code') === 'technician') {
+            $prefs['offer_alerts'] = array_intersect_key($alerts, self::OFFER_ALERTS) + self::OFFER_ALERTS;
+        }
+
+        return $prefs;
     }
 }
