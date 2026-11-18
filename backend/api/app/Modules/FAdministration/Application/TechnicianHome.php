@@ -180,7 +180,7 @@ final class TechnicianHome
         [$state, $label] = match (true) {
             $profile->verification_status === 'approved' => ['approved', 'Aprobado'],
             $profile->verification_status === 'rejected' => ['observed', 'Observado'],
-            $missing !== [] => ['missing', 'Falta un documento'],
+            $missing !== [] => ['missing', count($missing) === 1 ? 'Falta un documento' : 'Faltan '.count($missing).' documentos'],
             default => ['in_review', 'En revisión'],
         };
 

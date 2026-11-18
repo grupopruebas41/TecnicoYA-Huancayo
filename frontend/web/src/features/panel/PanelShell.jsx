@@ -117,7 +117,8 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     }
     const target = section.premium ? 'premium' : section.id;
     return <React.Fragment key={section.id}><button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')} data-section={section.id}
-      aria-current={section.id === current?.id ? 'page' : undefined} data-tooltip={collapsed ? section.label : undefined}
+      aria-current={section.id === current?.id ? 'page' : undefined}
+      data-tooltip={collapsed ? (badge?.text && !badge.count ? `${section.label} · ${badge.label}` : section.label) : undefined}
       aria-describedby={badge?.count || badge?.text ? badgeId : undefined} disabled={locked}
       onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
@@ -125,7 +126,11 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
       {badge?.count > 0 && <span className={'panel-nav-badge' + (badge.pulse ? ' is-pulse' : '')} aria-hidden="true">
         {badge.pulse && <span className="panel-nav-pulse"/>}{badge.count > 99 ? '99+' : badge.count}</span>}
       {/* Fase T2 del técnico: un estado corto en texto (porcentaje del perfil, estado de la verificación). */}
-      {!badge?.count && badge?.text && <span className="panel-nav-badge is-text" data-tone={badge.tone} aria-hidden="true">{badge.text}</span>}
+      {/* Revisión del #63: texto corto en el menú («50 %», «Falta 1») con ícono; el texto completo va en title y aria-label,
+          y en la descripción del ítem (aria-describedby, abajo) sin cambiar su nombre. Contraído, queda un punto de color sobre el ícono. */}
+      {!badge?.count && badge?.text && <span className="panel-nav-badge is-text" data-tone={badge.tone}
+        title={badge.label} aria-label={badge.label} aria-hidden="true">
+        {badge.icon && ICONS.has(badge.icon) && <Icon name={badge.icon}/>}<span className="panel-nav-badge-text">{badge.text}</span></span>}
     </button>
     {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
     {(badge?.count > 0 || badge?.text) && <span id={badgeId} hidden>{badge.label}</span>}</React.Fragment>;

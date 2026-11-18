@@ -34,6 +34,19 @@ export function useTechnicianHome(tick) {
 }
 
 const VERIFICATION_TONE = {approved: 'ok', in_review: 'info', missing: 'warn', observed: 'danger'};
+const TONE_ICON = {ok: 'check', info: 'clock', warn: 'alert', danger: 'alert'};
+
+/**
+ * Revisión del #63: en el menú, la verificación muestra un texto corto («Aprobado», «En revisión», «Falta 1» u «Observado»);
+ * el texto completo («Falta un documento») va en el title y en el aria-label, y la página de Verificación lo sigue mostrando entero.
+ */
+export function verificationBadge(verification) {
+  const missing = Array.isArray(verification.missing) && verification.missing.length > 0 ? verification.missing.length : 1;
+  const short = {approved: 'Aprobado', in_review: 'En revisión', observed: 'Observado', missing: `Falta ${missing}`}[verification.state]
+    || verification.label;
+  const tone = VERIFICATION_TONE[verification.state];
+  return {text: short, tone, icon: TONE_ICON[tone], label: `Verificación: ${verification.label}`};
+}
 
 /** Contadores del menú: ofertas pendientes (con punto que late), avance del perfil y estado de la verificación. */
 export function technicianBadges(data) {
@@ -42,8 +55,9 @@ export function technicianBadges(data) {
   const percent = data.progress.percent;
   return {
     offers: {count: pending, pulse: pending > 0, label: `${pending} ${pending === 1 ? 'oferta pendiente' : 'ofertas pendientes'}`},
-    'profile-pro': {text: `${percent} %`, tone: percent === 100 ? 'ok' : 'warn', label: `Perfil al ${percent} %`},
-    verification: {text: data.verification.label, tone: VERIFICATION_TONE[data.verification.state], label: `Verificación: ${data.verification.label}`},
+    'profile-pro': {text: `${percent} %`, tone: percent === 100 ? 'ok' : 'warn', icon: percent === 100 ? 'check' : 'profile',
+      label: `Perfil al ${percent} %`},
+    verification: verificationBadge(data.verification),
   };
 }
 
