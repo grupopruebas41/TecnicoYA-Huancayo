@@ -107,7 +107,7 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
   }, [state.items, symptoms]);
   // Atajo o sugerencia del Inicio (D-93, D-94): marca esa subcategoría y empieza en el detalle de su especialidad.
   useEffect(() => {
-    if (presetApplied.current || !catalog.loaded) return;
+    if (presetApplied.current || !preset || !catalog.loaded) return;
     const specialty = catalog.specialties.find((item) => item.id === +preset.specialty_id);
     const sub = subcategories[+preset.specialty_id]?.items.find((item) => item.id === +preset.subcategory_id);
     if (!specialty || !sub) return;

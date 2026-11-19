@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import {useRealtimeResource} from '../realtime/Realtime';
 import useDismiss from './useDismiss';
+import useEvents from '../../lib/useEvents';
 import Icon from './icons';
 import {EmptyNotifications, NotificationList, markOpened} from './notificationView';
 
@@ -41,6 +42,8 @@ export default function NotificationBell({userId, onOpenAll, onOpen, onConnectio
   useEffect(() => { onConnection?.(connected); }, [connected, onConnection]);
   const root = useDismiss(open, () => setOpen(false));
   function close() { setOpen(false); button.current?.focus(); }
+  // Cierre S4-S5 (Sonar S6847): Esc dentro del contenedor cierra; se escucha como evento nativo, no en un div con onKeyDown.
+  useEvents(root, {keydown: event => { if (event.key === 'Escape' && open) close(); }});
   async function markAll() {
     setBusy(true); setError('');
     try { await request('/notifications/read-all', {}); await load(); }
@@ -60,7 +63,7 @@ export default function NotificationBell({userId, onOpenAll, onOpen, onConnectio
     const next = tab === 'all' ? 'unread' : 'all';
     setTab(next); tabs.current[next]?.focus();
   }
-  return <div className="panel-bell" ref={root} onKeyDown={event => { if (event.key === 'Escape' && open) close(); }}>
+  return <div className="panel-bell" ref={root}>
     <button ref={button} type="button" className="panel-icon-button" aria-label={`Notificaciones: ${unread} sin leer`}
       aria-expanded={open} aria-controls="panel-notifications" onClick={() => setOpen(!open)}>
       <Icon name="bell"/>
@@ -74,7 +77,7 @@ export default function NotificationBell({userId, onOpenAll, onOpen, onConnectio
         <button type="button" className="panel-icon-button notif-close" aria-label="Cerrar notificaciones" onClick={close}><Icon name="close"/></button>
       </header>
       <div className="notif-toolbar">
-        <div className="notif-tabs" role="tablist" aria-label="Filtrar notificaciones" onKeyDown={arrows}>
+        <div className="notif-tabs" role="tablist" tabIndex={-1} aria-label="Filtrar notificaciones" onKeyDown={arrows}>
           {TABS.map(([id, label]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab" aria-selected={tab === id}
             tabIndex={tab === id ? 0 : -1} onClick={() => setTab(id)}>{label}</button>)}
         </div>

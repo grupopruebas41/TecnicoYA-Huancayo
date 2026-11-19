@@ -25,6 +25,9 @@ use Illuminate\Support\Facades\DB;
  */
 final class E2ETasks extends Command
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const USERS_U = 'users as u';
+
     protected $signature = 'tecnicoya:e2e {task : clock, jobs, open-round o replay} {argument? : desfase o correo}';
 
     protected $description = 'Tareas E2E del Sprint 4: reloj del servidor, jobs, ronda de prueba y reenvío de un evento (solo slots de prueba).';
@@ -62,11 +65,11 @@ final class E2ETasks extends Command
 
     private function openRound(MatchingFlow $flow, RuleBook $rules): int
     {
-        $technician = DB::table('technician_profiles as t')->join('users as u', 'u.id', '=', 't.user_id')
+        $technician = DB::table('technician_profiles as t')->join(self::USERS_U, 'u.id', '=', 't.user_id')
             ->where('u.email', (string) $this->argument('argument'))->first(['t.id']);
         $service = $technician ? DB::table('technician_services')->where('technician_id', $technician->id)->where('active', 1)->first() : null;
         $district = $technician ? DB::table('technician_districts')->where('technician_id', $technician->id)->where('active', 1)->value('district_id') : null;
-        $client = DB::table('client_profiles as c')->join('users as u', 'u.id', '=', 'c.user_id')
+        $client = DB::table('client_profiles as c')->join(self::USERS_U, 'u.id', '=', 'c.user_id')
             ->where('u.email', 'e2e-client-direct@example.test')->value('c.id');
         if (! $service || ! $district || ! $client) {
             return $this->fail('El técnico debe ser un técnico E2E con un servicio y un distrito activos (Sprint04E2ESeeder).');
@@ -88,7 +91,7 @@ final class E2ETasks extends Command
     {
         $target = (string) $this->argument('argument');
         $requests = DB::table('service_requests as r')->join('client_profiles as c', 'c.id', '=', 'r.client_id')
-            ->join('users as u', 'u.id', '=', 'c.user_id')->where('u.email', 'like', 'e2e-client-%@example.test')
+            ->join(self::USERS_U, 'u.id', '=', 'c.user_id')->where('u.email', 'like', 'e2e-client-%@example.test')
             ->when(ctype_digit($target), fn ($query) => $query->where('r.id', (int) $target), fn ($query) => $query->where('u.email', $target))
             ->pluck('r.id');
         $event = $requests->isEmpty() ? null : DB::table('outbox_events')->whereNotNull('published_at')

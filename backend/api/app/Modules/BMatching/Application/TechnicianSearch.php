@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\DB;
  */
 final class TechnicianSearch
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const SERVICES_S = 'technician_services as s';
+    private const SUBCATEGORIES_C = 'subcategories as c';
+    private const SPECIALTIES_P = 'specialties as p';
+
     public const DEFAULT_PER_PAGE = 12;
 
     public const COLUMNS = ['t.id', 't.display_name', 't.provider_type', 't.experience_years'];
@@ -81,8 +86,8 @@ final class TechnicianSearch
      */
     public function pricesBySpecialty(): array
     {
-        return DB::table('technician_services as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')
-            ->join('specialties as p', 'p.id', '=', 'c.specialty_id')
+        return DB::table(self::SERVICES_S)->join(self::SUBCATEGORIES_C, 'c.id', '=', 's.subcategory_id')
+            ->join(self::SPECIALTIES_P, 'p.id', '=', 'c.specialty_id')
             ->where('s.active', 1)->where('c.active', 1)->where('p.active', 1)
             ->whereIn('s.technician_id', $this->eligible([])->select('t.id'))
             ->groupBy('p.id', 'p.name', 'p.display_order')->orderBy('p.display_order')->orderBy('p.id')
@@ -94,8 +99,8 @@ final class TechnicianSearch
     /** Servicios activos que cumplen los filtros. D-88: la tarifa máxima se aplica al mismo servicio que cumple los demás. */
     private function services(array $filters): Builder
     {
-        return DB::table('technician_services as s')
-            ->join('subcategories as c', 'c.id', '=', 's.subcategory_id')->join('specialties as p', 'p.id', '=', 'c.specialty_id')
+        return DB::table(self::SERVICES_S)
+            ->join(self::SUBCATEGORIES_C, 'c.id', '=', 's.subcategory_id')->join(self::SPECIALTIES_P, 'p.id', '=', 'c.specialty_id')
             ->where('s.active', 1)->where('c.active', 1)->where('p.active', 1)
             ->when(isset($filters['subcategory_id']), fn (Builder $q) => $q->where('c.id', $filters['subcategory_id']))
             ->when(isset($filters['specialty_id']), fn (Builder $q) => $q->where('p.id', $filters['specialty_id']))
@@ -127,8 +132,8 @@ final class TechnicianSearch
     private function cards(array $rows, ?int $origin, ?int $clientUserId = null): array
     {
         $ids = array_column($rows, 'id');
-        $services = DB::table('technician_services as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')
-            ->join('specialties as p', 'p.id', '=', 'c.specialty_id')
+        $services = DB::table(self::SERVICES_S)->join(self::SUBCATEGORIES_C, 'c.id', '=', 's.subcategory_id')
+            ->join(self::SPECIALTIES_P, 'p.id', '=', 'c.specialty_id')
             ->whereIn('s.technician_id', $ids)->where('s.active', 1)->where('c.active', 1)->where('p.active', 1)
             ->orderBy('p.display_order')->orderBy('c.display_order')
             ->get(['s.technician_id', 's.subcategory_id', 'c.name as subcategory_name', 's.reference_fee', 's.currency',

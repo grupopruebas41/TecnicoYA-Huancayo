@@ -48,9 +48,10 @@ function TechnicianSkills({specialties, values, onChange, errors}) {
 }
 
 /** Alta (sin contraseña: la persona la define con el enlace de activación) o edición con motivo y versión. */
-export default function UserForm({user = null, profile = null, onCancel, onSaved}) {
+export default function UserForm({user, profile = null, onCancel, onSaved}) {
   const editing = Boolean(user);
-  const original = editing ? {
+  // Cierre S4-S5 (Sonar S2259): la condición es el propio user, no su copia booleana.
+  const original = user ? {
     ...emptyUser, account_type: user.role, given_names: user.given_names || '', family_names: user.family_names || '', email: user.email || '',
     phone: user.phone || '', district_id: user.district?.id ? String(user.district.id) : '',
     client_type: profile?.client_type || 'household', business_name: profile?.business_name || '', reference_address: profile?.reference_address || '',
@@ -72,7 +73,7 @@ export default function UserForm({user = null, profile = null, onCancel, onSaved
     if (Object.keys(invalid).length) { setError('Revisa los campos indicados.'); return; }
     setBusy(true);
     try {
-      if (editing) {
+      if (user) {
         const changes = userChanges(original, values);
         if (!Object.keys(changes).length) { setError('No cambiaste ningún dato.'); return; }
         await request(`/admin/users/${user.id}`, {...changes, reason: values.reason.trim(), expected_version: user.version}, 'PATCH');

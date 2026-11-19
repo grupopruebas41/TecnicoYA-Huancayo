@@ -187,7 +187,7 @@ function Block({ id, title, children }) {
 /** Calificaciones reales (Sprint 6) o, mientras tanto, reseñas de ejemplo con su marca visible. */
 function Ratings({ profile }) {
   const summary = profile.rating?.count > 0 ? profile.rating : profile.sample_rating;
-  const sample = !(profile.rating?.count > 0);
+  const sample = !profile.rating?.count || profile.rating.count <= 0;
   if (!summary?.count) {
     return (
       <div className="client-empty">

@@ -4,6 +4,9 @@
 // Cada frase: [texto, tipo, peso]. objeto = el equipo o lugar (6), sintoma = lo que le pasa (4), general = frase
 // ambigua que vale la mitad sin un objeto de la misma especialidad (3); las frases que combinan objeto y síntoma
 // pesan 9. Español de Huancayo: «malogrado», «no prende», «chispea», «bota aire caliente».
+// Cierre S4-S5 (Sonar S1192): textos que se repiten en varias entradas.
+$noEnfria = 'no enfria';
+
 return [
     'computo-hardware' => [
         ['laptop', 'objeto', 6], ['computadora', 'objeto', 6], ['pantalla', 'objeto', 5], ['teclado', 'objeto', 5],
@@ -65,7 +68,7 @@ return [
     ],
     'frio-domestico' => [
         ['refrigeradora', 'objeto', 6], ['refrigeradora no enfria', 'sintoma', 9], ['nevera', 'objeto', 6],
-        ['refrigeradora hace ruido', 'sintoma', 8], ['congelador de casa', 'objeto', 7], ['no enfria', 'sintoma', 4],
+        ['refrigeradora hace ruido', 'sintoma', 8], ['congelador de casa', 'objeto', 7], [$noEnfria, 'sintoma', 4],
         ['gotea agua', 'sintoma', 4], ['hielo en el congelador', 'sintoma', 6], ['frigobar', 'objeto', 6], ['no congela', 'sintoma', 4],
         ['hace ruido', 'general', 2],
     ],
@@ -73,7 +76,7 @@ return [
         ['vitrina', 'objeto', 6], ['vitrina con escarcha', 'sintoma', 9], ['vitrina no enfria', 'sintoma', 9],
         ['exhibidora', 'objeto', 6], ['vitrina de bebidas', 'objeto', 8], ['visicooler', 'objeto', 7], ['escarcha', 'sintoma', 4],
         ['vitrina de helados', 'objeto', 8], ['puerta no cierra', 'sintoma', 4], ['empana el vidrio', 'sintoma', 5],
-        ['no enfria', 'sintoma', 3],
+        [$noEnfria, 'sintoma', 3],
     ],
     'frio-camaras' => [
         ['camara de frio', 'objeto', 9], ['camara frigorifica', 'objeto', 9], ['cuarto frio', 'objeto', 8],
@@ -84,7 +87,7 @@ return [
     'frio-congeladores' => [
         ['congeladora', 'objeto', 6], ['congeladora no enfria', 'sintoma', 9], ['congeladora no congela', 'sintoma', 9],
         ['congeladora horizontal', 'objeto', 8], ['conservadora', 'objeto', 6], ['congeladora industrial', 'objeto', 8],
-        ['no congela', 'sintoma', 4], ['se descongela', 'sintoma', 5], ['hielo', 'general', 2], ['no enfria', 'sintoma', 4],
+        ['no congela', 'sintoma', 4], ['se descongela', 'sintoma', 5], ['hielo', 'general', 2], [$noEnfria, 'sintoma', 4],
         ['congeladora bota agua', 'sintoma', 8],
     ],
     'frio-climatizacion' => [

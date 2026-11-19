@@ -36,7 +36,7 @@ export async function encodeCrop(image, rect, size, maxBytes) {
   for (const type of ['image/webp', 'image/jpeg']) {
     for (const quality of QUALITIES) {
       const blob = await toBlob(canvas, type, quality);
-      if (!blob || blob.type !== type) break;
+      if (blob?.type !== type) break;
       if (blob.size <= maxBytes) return blob;
     }
   }

@@ -1075,3 +1075,8 @@
   top: auto;
   bottom: calc(100% + 8px);
 }
+
+/* Cierre S4-S5 (Sonar S1082/S6847): el botón del título cubre toda la tarjeta; el menú «⋯» queda por encima. */
+.announcement-card.is-clickable { position: relative; }
+.announcement-card.is-clickable .announcement-card-open::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.announcement-card.is-clickable .announcement-menu { z-index: 1; }

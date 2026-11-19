@@ -97,7 +97,7 @@ export default function JobsPage() {
       <p className="muted">Tus trabajos asignados, en curso y su historial.</p>
     </header>
     <div className="tech-toolbar">
-      <div className="tech-tabs" role="tablist" aria-label="Estado de los trabajos" onKeyDown={keys}>
+      <div className="tech-tabs" role="tablist" tabIndex={-1} aria-label="Estado de los trabajos" onKeyDown={keys}>
         {JOB_TABS.map(([id, label]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab" id={`trabajos-${id}`}
           aria-selected={tab === id} aria-controls="trabajos-panel" tabIndex={tab === id ? 0 : -1} onClick={() => choose(id)}>
           {label}<span className="tech-tab-count">{counts[id] ?? 0}</span>

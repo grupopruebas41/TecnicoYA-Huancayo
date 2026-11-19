@@ -69,7 +69,7 @@ export function outputSize(rect, slot) {
 
 /** Igual que GeniallyUrl del servidor: https://view.genially.com/<código>, con un nombre legible opcional. */
 export function normalizeGenially(value) {
-  const match = /^https:\/\/view\.genially\.com\/([A-Za-z0-9]{6,64})(?:\/[A-Za-z0-9-]{1,120})?\/?(?:[?#].*)?$/i.exec(String(value ?? '').trim());
+  const match = /^https:\/\/view\.genially\.com\/([a-z0-9]{6,64})(?:\/[a-z0-9-]{1,120})?\/?(?:[?#].*)?$/i.exec(String(value ?? '').trim());
   return match ? 'https://view.genially.com/' + match[1] : null;
 }
 
@@ -104,14 +104,23 @@ export function validateCarousel(v) {
   if (v.source === 'image' && !v.image?.id) add('image_media_id', 'Elige la imagen principal.');
   if (v.source === 'genially' && !normalizeGenially(v.genially_url)) add('genially_url', 'Pega un enlace con la forma https://view.genially.com/<código>.');
   if (!AUDIENCE_OPTIONS.some(option => option.value === v.audience)) add('audiences', 'Elige la audiencia.');
+  validateWindow(v, add);
+  validateLink(v, add);
+  return errors;
+}
+
+// Cierre S4-S5 (Sonar S3776): la vigencia y el enlace se validan aparte; mismos mensajes y orden que antes.
+function validateWindow(v, add) {
   const starts = new Date(v.starts_at), ends = new Date(v.ends_at);
   if (!v.starts_at || Number.isNaN(starts.getTime())) add('starts_at', 'Indica el inicio de la vigencia.');
   if (!v.ends_at || Number.isNaN(ends.getTime())) add('ends_at', 'Indica el fin de la vigencia.');
   else if (ends <= starts) add('ends_at', 'El fin debe ser posterior al inicio.');
+}
+
+function validateLink(v, add) {
   if (v.link_url && !/^https?:\/\/\S+$/i.test(v.link_url.trim())) add('link_url', 'El enlace debe empezar con http:// o https://.');
   if (v.link_url && !v.link_label?.trim()) add('link_label', 'Escribe la etiqueta del botón del enlace.');
   if (Array.from(v.link_label || '').length > 40) add('link_label', 'La etiqueta admite hasta 40 caracteres.');
-  return errors;
 }
 
 export function toPayload(v) {

@@ -31,6 +31,19 @@ function ActionsMenu({item, onAction}) {
   const root = useDismiss(open, () => setOpen(false));
   const close = () => { setOpen(false); button.current?.focus(); };
   const reasonId = `announcement-delete-reason-${item.id}`;
+  // Cierre S4-S5 (Sonar S6852): menú de WAI-ARIA. Al abrirse, el foco va a la primera acción; flechas, Inicio y Fin
+  // recorren las acciones (roving tabindex) y Esc lo cierra devolviendo el foco al botón «⋯».
+  const list = useRef(null);
+  useEffect(() => { if (open) list.current?.querySelector('[role="menuitem"]')?.focus(); }, [open]);
+  function menuKeys(event) {
+    if (event.key === 'Escape') { close(); return; }
+    const items = [...list.current.querySelectorAll('[role="menuitem"]')];
+    const at = items.indexOf(document.activeElement);
+    const target = {ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: items.length - 1}[event.key];
+    if (target === undefined) return;
+    event.preventDefault();
+    items[(target + items.length) % items.length].focus();
+  }
   // En la última fila el menú se abre hacia arriba para no salir del contenido (mide unos 280 px).
   const toggle = () => {
     const rect = button.current?.getBoundingClientRect();
@@ -40,13 +53,17 @@ function ActionsMenu({item, onAction}) {
   return <div className="announcement-menu" ref={root}>
     <button ref={button} type="button" className="announcement-menu-button" aria-haspopup="menu" aria-expanded={open}
       aria-label={`Acciones de «${item.title}»`} onClick={toggle}><span aria-hidden="true">⋯</span></button>
-    {open && <div role="menu" className={'panel-popover announcement-menu-list' + (up ? ' opens-up' : '')} aria-label={`Acciones de «${item.title}»`}
-      onKeyDown={event => { if (event.key === 'Escape') close(); }}>
+    {open && <div ref={list} role="menu" tabIndex={-1} className={'panel-popover announcement-menu-list' + (up ? ' opens-up' : '')}
+      aria-label={`Acciones de «${item.title}»`} onKeyDown={menuKeys}>
       {actionsFor(item).map(action => {
         const blocked = action === 'delete' && deleteBlocked(item);
-        return <button key={action} type="button" role="menuitem" aria-disabled={action === 'delete' ? String(blocked) : undefined}
+        return <button key={action} type="button" role="menuitem" tabIndex={-1} aria-disabled={action === 'delete' ? String(blocked) : undefined}
           aria-describedby={blocked ? reasonId : undefined} className={action === 'delete' ? 'is-danger' : undefined}
-          onClick={() => { if (blocked) return; setOpen(false); onAction(action, item); }}>{ACTION_LABELS[action]}</button>;
+          onClick={() => {
+            if (blocked) return;
+            setOpen(false);
+            onAction(action, item);
+          }}>{ACTION_LABELS[action]}</button>;
       })}
       {deleteBlocked(item) && <small id={reasonId} className="announcement-menu-reason">{DELETE_BLOCKED}</small>}
     </div>}
@@ -56,9 +73,9 @@ function ActionsMenu({item, onAction}) {
 function AnnouncementCard({item, onAction}) {
   const phase = phaseOf(item);
   const titleId = `announcement-card-title-${item.id}`;
-  // Un clic en la tarjeta abre el editor; el título es el botón para el teclado. El menú «⋯» no abre el editor.
-  const open = event => { if (!event.target.closest('.announcement-menu')) onAction('edit', item); };
-  return <article className="announcement-card is-clickable" aria-labelledby={titleId} onClick={open}>
+  // Un clic en la tarjeta abre el editor. Cierre S4-S5 (Sonar S1082/S6847): el botón del título se estira sobre toda la
+  // tarjeta (CSS ::after), así el clic en cualquier parte y Enter o Espacio usan el mismo botón nativo; el menú «⋯» queda encima.
+  return <article className="announcement-card is-clickable" aria-labelledby={titleId}>
     <div className="announcement-thumb">
       {item.image_url ? <img src={item.image_url} alt=""/> : <span className="announcement-thumb-empty">{item.source === 'genially' ? 'Genially' : 'Texto'}</span>}
     </div>
@@ -67,7 +84,7 @@ function AnnouncementCard({item, onAction}) {
         <span className={`announcement-phase is-${phase}`}>{PHASE_LABELS[phase]}</span>
         <ActionsMenu item={item} onAction={onAction}/>
       </div>
-      <h3 id={titleId}><button type="button" className="announcement-card-open">{item.title}</button></h3>
+      <h3 id={titleId}><button type="button" className="announcement-card-open" onClick={() => onAction('edit', item)}>{item.title}</button></h3>
       <ul className="announcement-tags" aria-label="Etiquetas">
         {(item.audiences || []).map(audience => <li key={audience} className="tag is-audience">{AUDIENCE_TAGS[audience]}</li>)}
         {item.kind && <li className="tag is-kind">{KIND_LABELS[item.kind]}</li>}

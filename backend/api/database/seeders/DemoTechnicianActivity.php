@@ -17,26 +17,33 @@ use Illuminate\Support\Facades\DB;
  */
 final class DemoTechnicianActivity
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const AT_09 = '09:00';
+    private const AT_10 = '10:00';
+    private const AT_14 = '14:00';
+    private const AT_15 = '15:00';
+    private const AT_16 = '16:00';
+
     private const TZ = 'America/Lima';
 
     /** [días desde hoy, hora local, estado de la oferta, segundos para responder, estado del trabajo] */
     private const HISTORY = [
-        [-12, '09:00', 'accepted', 45, 'completed'], [-10, '09:00', 'accepted', 60, 'completed'],
-        [-8, '10:00', 'accepted', 75, 'completed'], [-5, '09:00', 'accepted', 90, 'completed'],
-        [-3, '14:00', 'accepted', 110, 'completed'], [-6, '15:00', 'rejected', 300, null],
-        [-4, '10:00', 'expired', null, null], [-1, '16:00', 'expired', null, null],
-        [-2, '14:00', 'accepted', 70, 'cancelled'], [0, '09:00', 'accepted', 50, 'in_progress'],
-        [0, '15:00', 'accepted', 80, 'assigned'], [1, '10:00', 'accepted', 100, 'assigned'],
+        [-12, self::AT_09, 'accepted', 45, 'completed'], [-10, self::AT_09, 'accepted', 60, 'completed'],
+        [-8, self::AT_10, 'accepted', 75, 'completed'], [-5, self::AT_09, 'accepted', 90, 'completed'],
+        [-3, self::AT_14, 'accepted', 110, 'completed'], [-6, self::AT_15, 'rejected', 300, null],
+        [-4, self::AT_10, 'expired', null, null], [-1, self::AT_16, 'expired', null, null],
+        [-2, self::AT_14, 'accepted', 70, 'cancelled'], [0, self::AT_09, 'accepted', 50, 'in_progress'],
+        [0, self::AT_15, 'accepted', 80, 'assigned'], [1, self::AT_10, 'accepted', 100, 'assigned'],
     ];
 
     /** Fase T4: la misma forma, de 30 a 158 días atrás (la oferta se publica un día antes de la visita). */
     private const OLDER = [
-        [-30, '10:00', 'accepted', 60, 'completed'], [-32, '10:00', 'accepted', 55, 'completed'], [-34, '15:00', 'expired', null, null],
-        [-39, '09:00', 'accepted', 80, 'completed'], [-41, '11:00', 'rejected', 240, null], [-46, '10:00', 'accepted', 65, 'completed'],
-        [-50, '16:00', 'accepted', 95, 'completed'], [-53, '09:00', 'expired', null, null], [-56, '14:00', 'accepted', 70, 'completed'],
-        [-72, '10:00', 'accepted', 60, 'completed'], [-88, '09:00', 'accepted', 120, 'completed'], [-95, '15:00', 'rejected', 200, null],
-        [-104, '10:00', 'accepted', 75, 'completed'], [-118, '11:00', 'expired', null, null], [-126, '10:00', 'accepted', 90, 'completed'],
-        [-140, '09:00', 'accepted', 50, 'completed'], [-150, '16:00', 'expired', null, null], [-158, '10:00', 'accepted', 85, 'completed'],
+        [-30, self::AT_10, 'accepted', 60, 'completed'], [-32, self::AT_10, 'accepted', 55, 'completed'], [-34, self::AT_15, 'expired', null, null],
+        [-39, self::AT_09, 'accepted', 80, 'completed'], [-41, '11:00', 'rejected', 240, null], [-46, self::AT_10, 'accepted', 65, 'completed'],
+        [-50, self::AT_16, 'accepted', 95, 'completed'], [-53, self::AT_09, 'expired', null, null], [-56, self::AT_14, 'accepted', 70, 'completed'],
+        [-72, self::AT_10, 'accepted', 60, 'completed'], [-88, self::AT_09, 'accepted', 120, 'completed'], [-95, self::AT_15, 'rejected', 200, null],
+        [-104, self::AT_10, 'accepted', 75, 'completed'], [-118, '11:00', 'expired', null, null], [-126, self::AT_10, 'accepted', 90, 'completed'],
+        [-140, self::AT_09, 'accepted', 50, 'completed'], [-150, self::AT_16, 'expired', null, null], [-158, self::AT_10, 'accepted', 85, 'completed'],
     ];
 
     private const REQUEST_STATUS = ['completed' => 'completed', 'in_progress' => 'in_progress', 'assigned' => 'assigned',

@@ -48,24 +48,30 @@ export function validateRegistration(values, {specialtyNames = {}} = {}) {
   if (!PERU_MOBILE.test(values.phone)) invalid('phone', 'El teléfono debe tener 9 dígitos y empezar en 9.');
   Object.assign(errors, validatePassword(values.password, values.password_confirmation));
   if (!values.terms_accepted) invalid('terms_accepted', 'Debes aceptar los Términos y la Privacidad.');
-  if (values.account_type === 'client') {
-    if (!values.district_id) invalid('district_id', 'Elige tu distrito.');
-    if (!['household', 'mype'].includes(values.client_type)) invalid('client_type', 'Selecciona un tipo de cliente válido.');
-    if (length(values.business_name) > 180) invalid('business_name', 'La razón social admite hasta 180 caracteres.');
-    if (length(values.reference_address) > 255) invalid('reference_address', 'La dirección admite hasta 255 caracteres.');
-  } else {
-    if (!values.base_district_id) invalid('base_district_id', 'Elige tu distrito base.');
-    if (!values.specialty_ids.length) invalid('specialty_ids', 'Elige al menos una especialidad.');
-    // Al menos un rubro por especialidad marcada (D-80).
-    values.specialty_ids.filter(id => !values.subcategories[id]?.length)
-      .forEach(id => invalid(`subcategories.${id}`, `Elige al menos un rubro de ${specialtyNames[id] || 'esta especialidad'}.`));
-    const years = Number(values.experience_years);
-    if (values.experience_years === '' || !Number.isInteger(years) || years < 0 || years > 50) {
-      invalid('experience_years', 'Indica tus años de experiencia, de 0 a 50.');
-    }
-    if (values.whatsapp && !PERU_MOBILE.test(values.whatsapp)) invalid('whatsapp', 'El WhatsApp debe tener 9 dígitos y empezar en 9.');
-  }
+  if (values.account_type === 'client') clientRegistrationErrors(values, invalid);
+  else technicianRegistrationErrors(values, specialtyNames, invalid);
   return errors;
+}
+
+// Cierre S4-S5 (Sonar S3776): los campos propios de cada tipo de cuenta se validan aparte; mismos mensajes y orden.
+function clientRegistrationErrors(values, invalid) {
+  if (!values.district_id) invalid('district_id', 'Elige tu distrito.');
+  if (!['household', 'mype'].includes(values.client_type)) invalid('client_type', 'Selecciona un tipo de cliente válido.');
+  if (length(values.business_name) > 180) invalid('business_name', 'La razón social admite hasta 180 caracteres.');
+  if (length(values.reference_address) > 255) invalid('reference_address', 'La dirección admite hasta 255 caracteres.');
+}
+
+function technicianRegistrationErrors(values, specialtyNames, invalid) {
+  if (!values.base_district_id) invalid('base_district_id', 'Elige tu distrito base.');
+  if (!values.specialty_ids.length) invalid('specialty_ids', 'Elige al menos una especialidad.');
+  // Al menos un rubro por especialidad marcada (D-80).
+  values.specialty_ids.filter(id => !values.subcategories[id]?.length)
+    .forEach(id => invalid(`subcategories.${id}`, `Elige al menos un rubro de ${specialtyNames[id] || 'esta especialidad'}.`));
+  const years = Number(values.experience_years);
+  if (values.experience_years === '' || !Number.isInteger(years) || years < 0 || years > 50) {
+    invalid('experience_years', 'Indica tus años de experiencia, de 0 a 50.');
+  }
+  if (values.whatsapp && !PERU_MOBILE.test(values.whatsapp)) invalid('whatsapp', 'El WhatsApp debe tener 9 dígitos y empezar en 9.');
 }
 
 /** Cuerpo de POST /auth/register: solo los campos del tipo de cuenta; el distrito base siempre va entre los atendidos. */

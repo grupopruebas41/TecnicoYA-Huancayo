@@ -182,7 +182,7 @@ export function DetailStep({ items, active, onActive, symptoms, onItem, sameDesc
         </div>
         {items.length > 1 && (
           <label className="order-inline-check">
-            <input type="checkbox" checked={sameDescription} onChange={(e) => onSameDescription(e.target.checked, item.specialty_id)} />
+            <input type="checkbox" checked={sameDescription} onChange={(e) => onSameDescription(e.target.checked, item.specialty_id)} />{" "}
             Usar la misma descripción para todas
           </label>
         )}
@@ -372,7 +372,7 @@ export function SummaryStep({ state, districts, symptoms, onEdit, onConfirm, err
       </article>
       <label className="order-inline-check order-confirm">
         <input type="checkbox" name="confirmed" checked={state.confirmed} aria-invalid={!!error} aria-describedby={error ? "confirmed-error" : undefined}
-          onChange={(e) => onConfirm(e.target.checked)} />
+          onChange={(e) => onConfirm(e.target.checked)} />{" "}
         Confirmo que el resumen es correcto
       </label>
       <FieldError id="confirmed-error" message={error} />

@@ -112,7 +112,7 @@ export default function OffersPage({pendingCount = 0, onChange}) {
       <h2>Ofertas</h2>
       <p className="muted">Tienes 10 minutos para responder cada oferta. La dirección exacta se ve cuando el cliente te elige.</p>
     </header>
-    <div className="tech-tabs" role="tablist" aria-label="Ofertas" onKeyDown={keys}>
+    <div className="tech-tabs" role="tablist" tabIndex={-1} aria-label="Ofertas" onKeyDown={keys}>
       {TABS.map(([id, label, count]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab" id={`ofertas-${id}`}
         aria-selected={tab === id} aria-controls={`ofertas-panel-${id}`} tabIndex={tab === id ? 0 : -1} onClick={() => setTab(id)}>
         {label}{count !== null && <span className="tech-tab-count" aria-label={`${count} pendientes`}>{count}</span>}

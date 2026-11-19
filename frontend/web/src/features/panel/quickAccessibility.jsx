@@ -2,6 +2,7 @@ import '@fontsource/atkinson-hyperlegible/400.css';
 import '@fontsource/atkinson-hyperlegible/700.css';
 import React, {createContext, useContext, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
+import useEvents from '../../lib/useEvents';
 import useDismiss from './useDismiss';
 import Icon from './icons';
 
@@ -124,7 +125,9 @@ export function QuickAccessibility({prefs, onChange, reader, onMore}) {
   const button = useRef(null);
   const root = useDismiss(open, () => setOpen(false));
   function close() { setOpen(false); button.current?.focus(); }
-  return <div className="panel-a11y" ref={root} onKeyDown={event => { if (event.key === 'Escape' && open) close(); }}>
+  // Cierre S4-S5 (Sonar S6847): Esc dentro del contenedor cierra; se escucha como evento nativo, no en un div con onKeyDown.
+  useEvents(root, {keydown: event => { if (event.key === 'Escape' && open) close(); }});
+  return <div className="panel-a11y" ref={root}>
     <button ref={button} type="button" className="panel-icon-button panel-a11y-button" aria-label="Accesibilidad rápida"
       aria-expanded={open} aria-controls="panel-accesibilidad" onClick={() => setOpen(!open)}><span aria-hidden="true">Aa</span></button>
     {open && <section id="panel-accesibilidad" className="panel-popover panel-a11y-popover" aria-label="Accesibilidad rápida">

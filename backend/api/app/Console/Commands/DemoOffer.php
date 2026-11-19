@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\DB;
  */
 final class DemoOffer extends Command
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const LIMA = 'America/Lima';
+
     protected $signature = 'tecnicoya:demo-offer
         {email : Correo del técnico demo (demo-tecnico-…@example.test)}
         {--urgent : Marca la solicitud como urgente}';
@@ -63,7 +66,7 @@ final class DemoOffer extends Command
         if (! $offer) {
             return $this->refuse("El matching no pudo ofrecer la solicitud #{$requestId} a este técnico (revisa su disponibilidad y sus citas).");
         }
-        $expires = CarbonImmutable::parse($offer->expires_at, 'UTC')->setTimezone('America/Lima')->format('H:i');
+        $expires = CarbonImmutable::parse($offer->expires_at, 'UTC')->setTimezone(self::LIMA)->format('H:i');
         $this->info("Oferta #{$offer->id} creada (solicitud #{$requestId}). Vence a las {$expires}, hora de Lima.");
 
         return self::SUCCESS;
@@ -73,14 +76,14 @@ final class DemoOffer extends Command
     private function window(int $technicianId): ?array
     {
         $slots = DB::table('availability_slots')->where('technician_id', $technicianId)->where('active', 1)->where('kind', 'weekly')->get();
-        $earliest = CarbonImmutable::now('America/Lima')->addMinutes(30)->ceilHour();
+        $earliest = CarbonImmutable::now(self::LIMA)->addMinutes(30)->ceilHour();
         for ($day = 0; $day <= 7; $day++) {
             $date = $earliest->startOfDay()->addDays($day);
             foreach ($slots->where('weekday', $date->dayOfWeekIso)->sortBy('local_start') as $slot) {
-                $start = CarbonImmutable::parse($date->toDateString().' '.$slot->local_start, 'America/Lima');
+                $start = CarbonImmutable::parse($date->toDateString().' '.$slot->local_start, self::LIMA);
                 $start = $start->lt($earliest) ? $earliest : $start;
                 $end = $start->addHours(2);
-                if ($end->lte(CarbonImmutable::parse($date->toDateString().' '.$slot->local_end, 'America/Lima'))
+                if ($end->lte(CarbonImmutable::parse($date->toDateString().' '.$slot->local_end, self::LIMA))
                     && ! $this->busy($technicianId, $start, $end)) {
                     return [$start->utc(), $end->utc()];
                 }

@@ -1,3 +1,5 @@
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
 // S07-TC-105 a 108 · Bloque B (D-84) · Editar un comunicado en cualquier estado, restaurar un retirado como borrador
 // y eliminarlo de forma definitiva escribiendo ELIMINAR. «Retirar» sigue como en S07-TC-094.
 import React from 'react';
@@ -73,7 +75,12 @@ test('S07-TC-105 el menú ofrece Editar en todo estado y Eliminar solo en borrad
   expect(titles()).toEqual(['Aviso viejo']);
   fireEvent.change(screen.getByLabelText('Filtrar por estado'), {target: {value: ''}});
 
-  fireEvent.click(screen.getByRole('article', {name: 'Campaña de octubre'}).querySelector('img'));
+  // Cierre S4-S5 (Sonar S1082/S6847): el clic en la tarjeta lo recibe el botón del título, estirado con ::after sobre toda la
+  // tarjeta (jsdom no calcula esa capa, por eso se pulsa el botón y se comprueba la regla CSS que lo estira).
+  const card = screen.getByRole('article', {name: 'Campaña de octubre'});
+  fireEvent.click(within(card).getByRole('button', {name: 'Campaña de octubre'}));
+  const css = readFileSync(resolve('src/features/announcements/announcements.css'), 'utf8');
+  expect(css).toMatch(/.announcement-card.is-clickable .announcement-card-open::after {[^}]*inset: 0/);
   expect(screen.getByRole('heading', {name: 'Editar comunicado'})).toBeInTheDocument();
   expect(screen.getByLabelText('Título interno')).toHaveValue('Campaña de octubre');
 });
