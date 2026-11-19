@@ -4,6 +4,7 @@ import {request, uploadWithProgress} from '../administration/http';
 import {validateUpload} from '../administration/sprint02Validation';
 import {Dictation} from '../client/ProblemSearch';
 import Icon from '../panel/icons';
+import DismissBackdrop from '../../components/DismissBackdrop';
 import './business.css';
 
 /** Perfil propio (GET /technicians/me/profile) con recarga; lo comparten las páginas de Mi negocio (Fase T4). */
@@ -183,8 +184,10 @@ export function TechDialog({title, icon = 'plus', onClose, footer, children, bus
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
-  return createPortal(<div className="tech-dialog-overlay" onMouseDown={event => { if (event.target === event.currentTarget && !busy) onClose(); }}>
-    <div ref={root} className="tech-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId} onKeyDown={keys}>
+  // Cierre S4-S5 (Sonar S6847/S6848): el fondo es un botón nativo (DismissBackdrop) y el diálogo es <dialog> nativo.
+  return createPortal(<div className="tech-dialog-overlay">
+    <DismissBackdrop onClose={onClose} disabled={busy}/>
+    <dialog open ref={root} className="tech-dialog" aria-modal="true" aria-labelledby={titleId} onKeyDown={keys}>
       <header className="tech-dialog-head">
         <span className="tech-card-icon" aria-hidden="true"><Icon name={icon}/></span>
         <h2 id={titleId}>{title}</h2>
@@ -192,6 +195,6 @@ export function TechDialog({title, icon = 'plus', onClose, footer, children, bus
       </header>
       <div className="panel-content tech-dialog-body">{children}</div>
       {footer && <footer className="panel-content tech-dialog-foot">{footer}</footer>}
-    </div>
+    </dialog>
   </div>, document.body);
 }

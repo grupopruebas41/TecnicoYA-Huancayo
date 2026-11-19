@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import DismissBackdrop from '../../components/DismissBackdrop';
 
 /**
  * Miniaturas de las fotos de una solicitud que se amplían al clic (revisión del PR #39). El visor es un diálogo
@@ -21,13 +22,15 @@ export default function PhotoGallery({photos = [], requestId}) {
       ref={node => { thumbs.current[index] = node; }} onClick={() => setOpen(index)}>
       <img src={photo.url} alt={photo.caption || `Evidencia ${index + 1} de la solicitud`} loading="lazy"/>
     </button>)}
-    {open !== null && <div className="client-lightbox" role="dialog" aria-modal="true" aria-label={`Foto ${open + 1} de la solicitud #${requestId}`}
-      onKeyDown={event => { if (event.key === 'Escape') dismiss(); }} onClick={event => { if (event.target === event.currentTarget) dismiss(); }}>
+    {/* Cierre S4-S5 (Sonar S6847/S6848): el fondo es un botón nativo (DismissBackdrop) y el diálogo es <dialog> nativo. */}
+    {open !== null && <dialog open className="client-lightbox" aria-modal="true" aria-label={`Foto ${open + 1} de la solicitud #${requestId}`}
+      onKeyDown={event => { if (event.key === 'Escape') dismiss(); }}>
+      <DismissBackdrop onClose={dismiss}/>
       <figure>
         <img src={photos[open].url} alt={photos[open].caption || `Evidencia ${open + 1} de la solicitud`}/>
         {photos[open].caption && <figcaption>{photos[open].caption}</figcaption>}
       </figure>
       <button ref={close} type="button" className="button primary" onClick={dismiss}>Cerrar</button>
-    </div>}
+    </dialog>}
   </div>;
 }

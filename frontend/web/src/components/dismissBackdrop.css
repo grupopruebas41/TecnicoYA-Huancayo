@@ -1,0 +1,28 @@
+/* Cierre S4-S5: botón transparente que cubre el fondo del diálogo; el diálogo va encima (position relative, z-index 1). */
+.dismiss-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: default;
+}
+.dismiss-backdrop:disabled { cursor: default; opacity: 1; }
+/* Los diálogos nativos (<dialog open>) sin los estilos propios del navegador: se ven igual que los div de antes. */
+dialog.tech-dialog, dialog.auth-dialog, dialog.ty-legal-panel, dialog.account-panel, dialog.premium-dialog {
+  position: relative;
+  z-index: 1;
+  inset: auto;
+  margin: 0;
+}
+dialog.tech-dialog { padding: 0; }
+dialog.auth-dialog, dialog.ty-legal-panel { color: inherit; }
+dialog.client-lightbox { margin: 0; border: 0; width: auto; height: auto; max-width: none; max-height: none; color: inherit; }
+dialog.client-lightbox > :not(.dismiss-backdrop) { position: relative; z-index: 1; }

@@ -318,6 +318,7 @@ test('S07-TC-071 la campana y el menú del avatar se cierran con Escape desde su
   fireEvent.click(avatar);
   fireEvent.mouseDown(within(screen.getByRole('dialog')).getByRole('tab', {name: 'Seguridad'}));
   expect(screen.getByRole('dialog')).toBeInTheDocument();
-  fireEvent.mouseDown(document.querySelector('.account-overlay'));
+  // Cierre S4-S5 (Sonar S6848): el fondo ya no escucha mousedown; es un botón nativo «Cerrar panel de la cuenta» que se pulsa.
+  fireEvent.click(document.querySelector('.account-overlay > .dismiss-backdrop'));
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });

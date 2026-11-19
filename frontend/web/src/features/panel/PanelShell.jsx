@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import NotificationBell from './NotificationBell';
 import useTheme from './useTheme';
 import useDismiss from './useDismiss';
+import useEvents from '../../lib/useEvents';
 import Icon from './icons';
 import AccountPanel from './AccountPanel';
 import {AccessibilityContext, QuickAccessibility, canSpeak, useAccessibility, useReader} from './quickAccessibility';
@@ -40,8 +41,10 @@ function AvatarMenu({user, theme, onTheme, onProfile, onLogout, busy}) {
   useEffect(() => { if (open) menu.current?.querySelector('[role=menuitem]')?.focus(); }, [open]);
   const root = useDismiss(open, () => setOpen(false));
   function close() { setOpen(false); button.current?.focus(); }
+  // Cierre S4-S5 (Sonar S6847): Esc dentro del contenedor cierra; se escucha como evento nativo, no en un div con onKeyDown.
+  useEvents(root, {keydown: event => { if (event.key === 'Escape' && open) close(); }});
   const run = action => () => { setOpen(false); action(); };
-  return <div className="panel-avatar" ref={root} onKeyDown={event => { if (event.key === 'Escape' && open) close(); }}>
+  return <div className="panel-avatar" ref={root}>
     <button ref={button} type="button" className="panel-avatar-button" aria-label={`Menú de ${user.name}`} aria-haspopup="menu"
       aria-expanded={open} onClick={() => setOpen(!open)}>
       {user.avatar_url ? <img src={user.avatar_url} alt=""/> : <span aria-hidden="true">{initials(user)}</span>}
@@ -93,6 +96,9 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   const [tourDrawer, setTourDrawer] = useState(false);
   const drawerButton = useRef(null);
   const nav = useRef(null);
+  const sidebar = useRef(null);
+  // Cierre S4-S5 (Sonar S6847): Esc dentro del menú lateral abierto como cajón lo cierra (evento nativo del aside).
+  useEvents(sidebar, {keydown: event => { if (event.key === 'Escape' && drawer) closeDrawer(); }});
   const {theme, toggle, notice: themeNotice} = useTheme(user, onUserChange);
   useEffect(() => { if (drawer) nav.current?.querySelector('button')?.focus(); }, [drawer]);
   const [intent, setIntent] = useState(initialIntent);
@@ -157,7 +163,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   <div className={'panel-shell' + (collapsed && !tourMode ? ' is-collapsed' : '') + (tourMode ? ' is-touring' : '')} data-cy={`portal-${role}`}>
     {/* Fase 5 (WCAG 2.4.1): salta al contenido sin cambiar el hash, que usa el enrutado de la cuenta. */}
     {modern && <a className="skip-link" href="#contenido" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Saltar al contenido</a>}
-    <aside className={'panel-sidebar' + (drawer || tourDrawer ? ' is-open' : '')} onKeyDown={event => { if (event.key === 'Escape' && drawer) closeDrawer(); }}>
+    <aside ref={sidebar} className={'panel-sidebar' + (drawer || tourDrawer ? ' is-open' : '')}>
       {/* Encabezado principal de la página: la marca y el rol (la sección activa es el h2 de su contenido). */}
       <div className={'panel-brand-row' + (modern ? ' is-modern' : '')}>
         {modern && <button type="button" className="panel-icon-button panel-brand-toggle" aria-expanded={!collapsed}

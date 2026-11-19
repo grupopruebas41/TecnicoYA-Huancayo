@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {request} from '../administration/http';
 import {Notice} from '../administration/forms';
+import DismissBackdrop from '../../components/DismissBackdrop';
 import Icon from '../panel/icons';
 import './premium.css';
 
@@ -100,7 +101,9 @@ function SensorDetail({device, onClose}) {
   const close = useRef(null);
   const opener = useRef(document.activeElement);
   useEffect(() => { close.current?.focus(); const back = opener.current; return () => back?.focus?.(); }, []);
-  return <div className="premium-overlay" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
+  // Cierre S4-S5 (Sonar S6847/S6848): el fondo es un botón nativo (DismissBackdrop) y el diálogo es <dialog> nativo.
+  return <div className="premium-overlay">
+    <DismissBackdrop onClose={onClose}/>
     <dialog open className="premium-dialog" aria-modal="true" aria-labelledby="sensor-detalle"
       onKeyDown={e => { if (e.key === 'Escape') { e.preventDefault(); onClose(); } }}>
       <header className="premium-dialog-head">

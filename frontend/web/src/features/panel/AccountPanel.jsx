@@ -6,6 +6,7 @@ import {useResource} from '../administration/Sprint02Common';
 import ProfilePage, {PasswordChange} from './ProfilePage';
 import {AccessibilityControls} from './quickAccessibility';
 import Icon from './icons';
+import DismissBackdrop from '../../components/DismissBackdrop';
 
 export const ACCOUNT_TABS = [
   ['cuenta', 'Mi cuenta'], ['direcciones', 'Mis direcciones'], ['accesibilidad', 'Accesibilidad'],
@@ -236,7 +237,7 @@ function ThemeCards({theme, onTheme}) {
   function keys(event) {
     if (['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) { event.preventDefault(); onTheme(); }
   }
-  return <div className="theme-cards" role="radiogroup" aria-label="Tema" onKeyDown={keys}>
+  return <div className="theme-cards" role="radiogroup" tabIndex={-1} aria-label="Tema" onKeyDown={keys}>
     {options.map(([value, label, text]) => <button key={value} type="button" role="radio" aria-checked={theme === value}
       tabIndex={theme === value ? 0 : -1} className="theme-card" data-preview={value} onClick={() => { if (theme !== value) onTheme(); }}>
       <span className="theme-mini" aria-hidden="true"><span className="theme-mini-side"/><span className="theme-mini-main">
@@ -284,7 +285,9 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
     const next = TABS[(index + step + TABS.length) % TABS.length][0];
     setTab(next); tabs.current[next]?.focus();
   }
-  return <div className="account-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}>
+  // Cierre S4-S5 (Sonar S6847/S6848): el fondo es un botón nativo (DismissBackdrop) y el diálogo es <dialog> nativo.
+  return <div className="account-overlay">
+    <DismissBackdrop onClose={onClose}/>
     <dialog open ref={root} className="account-panel" aria-modal="true" aria-labelledby="account-title" onKeyDown={keys}>
       <header className="account-head">
         <span className="account-avatar" aria-hidden="true">
@@ -301,7 +304,7 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
         <button type="button" className="panel-icon-button account-close" aria-label="Cerrar panel de la cuenta" onClick={onClose}><Icon name="close"/></button>
       </header>
       <div className="account-layout">
-        <div className="account-tabs" role="tablist" aria-label="Secciones de la cuenta" aria-orientation="vertical" onKeyDown={arrows}
+        <div className="account-tabs" role="tablist" tabIndex={-1} aria-label="Secciones de la cuenta" aria-orientation="vertical" onKeyDown={arrows}
           style={{'--tab-index': index}}>
           <span className="account-tab-indicator" aria-hidden="true"/>
           {TABS.map(([id, text]) => <button key={id} ref={el => { tabs.current[id] = el; }} type="button" role="tab"

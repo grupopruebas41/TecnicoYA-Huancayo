@@ -380,7 +380,8 @@ test('S05-TC-353 los diálogos «Añadir servicio» y «Nuevo trabajo» atrapan 
   const work = screen.getByRole('dialog', {name: 'Nuevo trabajo'});
   expect(screen.getByLabelText('Título del trabajo')).toHaveFocus();
   expect(within(work).getByRole('button', {name: 'Guardar trabajo'}).closest('footer')).not.toBeNull();
-  fireEvent.mouseDown(work.parentElement);
+  // Cierre S4-S5 (Sonar S6848): el fondo es un botón nativo «Cerrar al tocar fuera»; antes se probaba con mousedown en el div.
+  fireEvent.click(within(work.parentElement).getByRole('button', {name: 'Cerrar al tocar fuera'}));
   expect(screen.queryByRole('dialog')).toBeNull();
   expect(add).toHaveFocus();
 });

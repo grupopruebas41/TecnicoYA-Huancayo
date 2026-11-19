@@ -166,7 +166,8 @@ export default function ProblemSearch({onSelect, onNoMatch, chips = [], label = 
       {state.status === 'ready' && <ul id={listId} role="listbox" aria-label="Sugerencias" className="problem-search-list">
         {state.items.map((item, index) => <li key={item.subcategory_id} id={`${listId}-${index}`} role="option"
           aria-selected={index === active} className={index === active ? 'is-active' : undefined}
-          onMouseDown={event => event.preventDefault()} onClick={() => choose(item)}>
+          onMouseDown={event => event.preventDefault()} onClick={() => choose(item)}
+          onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(item); } }}>
           <span className="problem-search-specialty" aria-hidden="true"><Icon name={specialtyIcon(item.specialty_name)}/></span>
           <span className="problem-search-text"><strong>{item.subcategory_name}</strong><small>{item.specialty_name}</small></span>
           {index === 0 && <span className="client-chip is-likely">Más probable</span>}

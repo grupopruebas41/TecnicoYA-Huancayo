@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { setAuthIntent } from "./config";
+import DismissBackdrop from "../components/DismissBackdrop";
 import { contactItems } from "./contact";
 import { navigateToPath, navigateToSection, scrollToSection, scrollToTop } from "./navigation";
 export function AuthLink({
@@ -207,15 +208,16 @@ function LegalDialog({ kind, onClose }) {
     close.current?.focus();
   }, [kind]);
   return (
-    // Cierre S4-S5 (Sonar S1082): Esc se escucha en el mismo fondo que cierra con el clic; el panel solo atrapa Tab.
-    <div className="ty-legal-backdrop" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
-      onKeyDown={(event) => { if (event.key === "Escape") onClose(); }}>
-      <div
+    // Cierre S4-S5 (Sonar S6847/S6848): el fondo es un botón nativo (DismissBackdrop) y el diálogo es <dialog> nativo.
+    <div className="ty-legal-backdrop">
+      <DismissBackdrop onClose={onClose} />
+      <dialog
+        open
         className="ty-legal-panel"
-        role="dialog"
         aria-modal="true"
         aria-labelledby="ty-legal-title"
         onKeyDown={(event) => {
+          if (event.key === "Escape") onClose();
           // Con un solo control enfocable, Tab no debe salir del panel.
           if (event.key === "Tab") {
             event.preventDefault();
@@ -228,7 +230,7 @@ function LegalDialog({ kind, onClose }) {
         <button ref={close} type="button" className="ty-button ty-outline" onClick={onClose}>
           Cerrar
         </button>
-      </div>
+      </dialog>
     </div>
   );
 }
