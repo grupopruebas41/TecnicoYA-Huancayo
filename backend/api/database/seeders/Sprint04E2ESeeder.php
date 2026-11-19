@@ -56,6 +56,8 @@ final class Sprint04E2ESeeder extends Seeder
                 ['source' => 'profile', 'target_technician_id' => $electro->id]), 1);
             $flow->prepare($this->request($clients['pending'], 'electricidad-tierra', $huancayo, $rules), 1);
         });
+        // Cierre S4-S5: las cuentas E2E ya vieron la bienvenida y el tutorial (E2EFirstVisits).
+        E2EFirstVisits::markSeen();
     }
 
     private function client(string $suffix): int

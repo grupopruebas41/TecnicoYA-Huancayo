@@ -39,5 +39,7 @@ final class Sprint01E2ESeeder extends Seeder
                 }
             }
         });
+        // Cierre S4-S5: las cuentas E2E ya vieron la bienvenida y el tutorial (E2EFirstVisits).
+        E2EFirstVisits::markSeen();
     }
 }
