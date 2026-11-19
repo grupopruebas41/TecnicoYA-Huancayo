@@ -1,6 +1,8 @@
-import {api, logout} from '../../support/sprint01';
+import {api, dismissOnboarding, logout} from '../../support/sprint01';
 import {fillRegistration} from '../../support/registration';
 
+// Cierre S4-S5: desde la Fase T2 el panel muestra el estado de la verificación («Faltan 2 documentos» sin documentos), y en la
+// primera visita sale la bienvenida del técnico (T5), que se omite.
 it('S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificación al ingresar', () => {
   const email = `tecnico-${crypto.randomUUID()}@example.test`;
   cy.intercept('POST', `${api}/api/v1/auth/register`).as('registerTechnician');
@@ -19,7 +21,9 @@ it('S01-TC-072 [TC-003] registra un técnico y muestra Pendiente de verificació
     cy.get('[data-cy=login-password]').type(E2E_PASSWORD, {log: false});
   });
   cy.get('[data-cy=login-submit]').click();
-  cy.get('[data-cy=portal-technician]').should('contain', 'Pendiente de verificación');
+  cy.get('[data-cy=portal-technician]').should('be.visible');
+  dismissOnboarding();
+  cy.get('[data-cy=portal-technician]').should('contain', 'Faltan 2 documentos');
   cy.location('hash').should('eq', '#cuenta/tecnico');
   logout();
   cy.get('[data-cy=login-submit]').should('be.visible');

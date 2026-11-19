@@ -46,8 +46,10 @@ describe("Mis solicitudes completo", () => {
       cy.get("textarea[name=reason]").type("Ya lo resolví por otro medio.");
       cy.contains("button", "Cancelar solicitud").click();
     });
-    cy.wait("@cancelacion").its("response.statusCode").should("eq", 200);
+    // Cierre S4-S5: si el emparejamiento cambió la versión, el primer intento recibe 409, la app relee la solicitud y
+    // reintenta sola; lo que importa es que el último intento se acepte y el cliente no tenga que hacer nada más.
     cy.contains(/^Cancelaste la solicitud #\d+\.$/).should("be.visible");
+    cy.get("@cancelacion.all").then((calls) => expect(calls.at(-1).response.statusCode).to.eq(200));
     cy.contains("[role=tab]", /^Canceladas \(1\)$/).click();
     cy.get("article").should("have.length", 1).and("contain", "Cancelada");
   });

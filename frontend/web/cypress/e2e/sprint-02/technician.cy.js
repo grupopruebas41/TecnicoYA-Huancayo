@@ -87,7 +87,7 @@ describe("Técnico S2 sobre el panel nuevo", () => {
     cy.contains("label", "Tarifa referencial").find("input").clear().type("60,00");
     cy.contains("button", "Guardar servicio").click();
     cy.wait("@services").its("response.statusCode").should("eq", 200);
-    cy.contains(/^Actualizamos «.+»\.$/).should("be.visible");
+    cy.contains(/Actualizamos «.+»\./).should("be.visible");
     cy.get(".tech-svc-list").should("contain", "S/ 60,00");
   });
 

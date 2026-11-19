@@ -11,7 +11,7 @@ describe("Base común del técnico y del administrador", () => {
     cy.get(".panel-sidebar-foot").should("not.contain", "Cerrar sesión").and("contain", "Ir al sitio");
     cy.get("[data-cy=connection]").should("have.attr", "data-state");
     account().click();
-    cy.get('[role=dialog] [role=tab]').then(($tabs) => {
+    cy.get("dialog[open] [role=tab], [role=dialog] [role=tab]").then(($tabs) => {
       expect([...$tabs].map((tab) => tab.textContent)).to.deep.eq(["Mi cuenta", "Seguridad", "Accesibilidad", "Avisos", "Apariencia"]);
     });
   });

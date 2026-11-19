@@ -1,7 +1,7 @@
 import { openCard } from "../sprint-03/helpers";
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
-import { login, observe, offline, openMyRequests } from "./helpers";
+import { login, observe, offline, openMyRequests, historyStatus } from "./helpers";
 // DEF-59: sin red, pusher-js detecta la caída cuando vence su espera de respuesta (pongTimeout, 30 s por defecto).
 const PONG_TIMEOUT_MS = 45000;
 // Fase T1 del panel del técnico: el estado de la conexión es un solo indicador en la barra superior (data-cy=connection).
@@ -43,7 +43,7 @@ it("S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una 
   });
 });
 it("S04-TC-095 reconexión recupera por API", () => {
-  cy.task("openRoundFor", "e2e-technician-frio@example.test");
+  cy.task("openRoundFor", "e2e-technician-frio@example.test").as("round095");
   login("e2e-technician-frio");
   cy.get('[aria-label="Solicitudes entrantes"]').should("be.visible");
   cy.get("[data-cy=connection]").should("have.attr", "data-state", "live");
@@ -51,14 +51,15 @@ it("S04-TC-095 reconexión recupera por API", () => {
   cy.get("[data-cy=connection]", { timeout: PONG_TIMEOUT_MS }).should("have.attr", "data-state", "offline");
   cy.task("serverClock", "+10m");
   cy.task("runJobs");
-  observe("GET", "/offers?status=pending,accepted", "reconnect");
+  observe("GET", "/offers?status=pending", "reconnect");
   offline(false);
-  cy.contains("p", "Vencida").should("be.visible");
+  // Fase T3: al reconectar se vuelven a pedir las pendientes; la vencida ya no está y queda en el Historial.
   cy.wait("@reconnect").then(({ response }) => {
     expect(response.statusCode).to.eq(200);
     expect(response.body.data.items.every((o) => o.status !== "pending")).to.eq(
       true,
     );
   });
+  cy.get("@round095").then(({ offer_id }) => historyStatus(offer_id, "Vencida"));
 });
 afterEach(() => offline(false));

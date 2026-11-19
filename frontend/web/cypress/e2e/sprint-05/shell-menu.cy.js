@@ -18,7 +18,7 @@ describe("Barra superior, panel del avatar y menú del cliente", () => {
     observe("POST", "/client/addresses", "direccion");
     loginClient();
     cy.get('button[aria-label^="Cuenta de "]').click();
-    cy.get('[role=dialog]').within(() => {
+    cy.get("dialog[open], [role=dialog]").within(() => {
       cy.contains("[role=tab]", "Mis direcciones").click();
       cy.contains("button", "Agregar dirección").click();
       cy.get("#address-district").select(1);
@@ -27,8 +27,8 @@ describe("Barra superior, panel del avatar y menú del cliente", () => {
     });
     cy.wait("@direccion").its("response.statusCode").should("eq", 201);
     cy.contains("Dirección guardada.").should("be.visible");
-    cy.get('[role=dialog]').trigger("keydown", { key: "Escape" });
-    cy.get('[role=dialog]').should("not.exist");
+    cy.get("dialog[open], [role=dialog]").trigger("keydown", { key: "Escape" });
+    cy.get("dialog[open], [role=dialog]").should("not.exist");
     cy.get('button[aria-label^="Cuenta de "]').should("have.focus");
   });
 

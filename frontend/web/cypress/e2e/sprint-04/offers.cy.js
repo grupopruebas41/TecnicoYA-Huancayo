@@ -1,6 +1,6 @@
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
-import { login, api, observe } from "./helpers";
+import { login, api, observe, historyStatus } from "./helpers";
 describe("S4 ofertas reales", () => {
   beforeEach(() => {
     cy.task("openRoundFor", "e2e-technician-frio@example.test").as("freshRound");
@@ -13,7 +13,7 @@ describe("S4 ofertas reales", () => {
     cy.contains(
       "Aceptaste la oferta. El cliente elegirá cuando cierre la ronda.",
     ).should("be.visible");
-    cy.contains("p", "Aceptada").should("be.visible");
+    cy.get("@freshRound").then(({offer_id}) => historyStatus(offer_id, "Aceptada"));
     cy.get('[aria-label="Solicitudes entrantes"]').should(
       "not.contain",
       "Asignada",
@@ -32,7 +32,7 @@ describe("S4 ofertas reales", () => {
     cy.contains("button", "Confirmar").click();
     cy.wait("@reject").its("response.statusCode").should("eq", 200);
     cy.contains("Rechazaste la oferta.").should("be.visible");
-    cy.contains("p", "Rechazada").should("be.visible");
+    cy.get("@freshRound").then(({offer_id}) => historyStatus(offer_id, "Rechazada"));
   });
   it("S04-TC-085 vencimiento del servidor prevalece", () => {
     cy.clock(Date.now() - 300000, ["Date", "setInterval", "clearInterval"]);
@@ -44,12 +44,12 @@ describe("S4 ofertas reales", () => {
       "[role=alert]",
       "La oferta venció. Ya no puedes responderla.",
     ).should("be.visible");
-    cy.contains("p", "Vencida").should("be.visible");
+    cy.get("@freshRound").then(({offer_id}) => historyStatus(offer_id, "Vencida"));
   });
   it("S04-TC-086 reloj anclado al servidor llega a 00:01 y 00:00", () => {
     let elapsed = 0;
     cy.clock(Date.now(), ["Date", "setInterval", "clearInterval"]);
-    observe("GET", "/offers?status=pending,accepted", "clockOffers");
+    observe("GET", "/offers?status=pending", "clockOffers");
     // DEF-59: con otra URL hay recarga real: el hash solo no la provoca y no se volvía a pedir la bandeja.
     cy.visit("/?reloj=1#cuenta", {onBeforeLoad(win) {
       cy.stub(win.performance, "now").callsFake(() => elapsed);
