@@ -9,7 +9,9 @@ describe("Plan Premium: Mi hogar / Mi negocio", () => {
     loginClient();
     nav().contains("button", "Sensores IoT").click();
     cy.contains("h2", "Plan Premium").should("be.visible");
-    cy.request({ url: Cypress.expose("apiUrl") + "/api/v1/client/iot/devices", failOnStatusCode: false })
+    // Cierre S4-S5: con las cabeceras de la SPA (Origin y Accept), Sanctum usa la sesión del cliente free y la API responde 403.
+    cy.request({ url: Cypress.expose("apiUrl") + "/api/v1/client/iot/devices", failOnStatusCode: false,
+      headers: { Accept: "application/json", Origin: new URL(Cypress.config("baseUrl")).origin } })
       .its("status").should("eq", 403);
   });
 

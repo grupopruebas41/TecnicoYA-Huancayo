@@ -10,7 +10,8 @@ describe("Landing S2", () => {
       cy.document().then((d) => expect(d.documentElement.scrollWidth).to.be.at.most(width));
       cy.get("#empezar a").first().click();
       cy.location("hash").should("match", /^#cuenta/);
-      cy.get("[data-cy=login-submit], [data-cy=register-submit]").first().should("be.visible");
+      // El camino del cliente abre el registro en su primer paso («Crea tu cuenta», ¿Quién eres?).
+      cy.contains("Crea tu cuenta").should("be.visible");
     }
   });
 
@@ -25,7 +26,8 @@ describe("Landing S2", () => {
     });
     cy.get("#servicios .current h3").first().should("be.visible").and("not.be.empty");
     cy.get("#servicios .ty-product-progress span").first().should("not.have.class", "is-running");
-    cy.get('#servicios button[aria-label="Subcategoría siguiente"]').first().focus()
+    // El encabezado es fijo: se deja el control por debajo de él antes de usar el teclado.
+    cy.get('#servicios button[aria-label="Subcategoría siguiente"]').first().scrollIntoView({ offset: { top: -200, left: 0 } }).focus()
       .trigger("keydown", { key: "ArrowRight" }).should("have.focus");
     cy.get("#servicios .current h3").first().should("not.be.empty");
   });

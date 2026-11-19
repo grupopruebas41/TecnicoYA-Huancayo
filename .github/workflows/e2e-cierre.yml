@@ -43,6 +43,8 @@ jobs:
       PHP_CLI_SERVER_WORKERS: '4'
       LOG_CHANNEL: stderr
       LOG_LEVEL: debug
+      # Solo para el vigía de scripts/run-e2e.mjs (SHOW FULL PROCESSLIST si la API deja de responder); servicio efímero.
+      E2E_MYSQL_ROOT_PASSWORD: ci-root-ephemeral-only
     services:
       mysql:
         image: mysql:8.4
