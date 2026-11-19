@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\ApiPaths;
 use App\Modules\ARequests\Http\Controllers\ServiceOrderController;
 use App\Modules\ARequests\Http\Controllers\ServiceRequestController;
 use App\Modules\BMatching\Http\Controllers\OfferController;
@@ -66,7 +67,7 @@ Route::prefix('v1')->group(function () {
         Route::get('technicians/{technician}', [TechnicianProfileController::class, 'show'])->whereNumber('technician');
 
         // Solicitudes: el detalle valida la relación con la solicitud (titular; técnico notificado desde S4).
-        Route::get('requests/{serviceRequest}', [ServiceRequestController::class, 'show'])->whereNumber('serviceRequest');
+        Route::get(ApiPaths::SERVICE_REQUEST, [ServiceRequestController::class, 'show'])->whereNumber('serviceRequest');
         Route::middleware('role:client')->group(function () {
             // Inicio del cliente (revisión del PR #39): zona, precios de referencia y subcategorías para los atajos.
             Route::get('client/home', [App\Modules\BMatching\Http\Controllers\ClientHomeController::class, 'show']);
@@ -87,9 +88,9 @@ Route::prefix('v1')->group(function () {
             Route::prefix('client')->middleware('premium')->group(function () {
                 Route::get('equipment', [App\Modules\Premium\PremiumController::class, 'equipment']);
                 Route::post('equipment', [App\Modules\Premium\PremiumController::class, 'storeEquipment']);
-                Route::get('equipment/{equipment}', [App\Modules\Premium\PremiumController::class, 'showEquipment'])->whereNumber('equipment');
-                Route::patch('equipment/{equipment}', [App\Modules\Premium\PremiumController::class, 'updateEquipment'])->whereNumber('equipment');
-                Route::delete('equipment/{equipment}', [App\Modules\Premium\PremiumController::class, 'destroyEquipment'])->whereNumber('equipment');
+                Route::get(ApiPaths::EQUIPMENT, [App\Modules\Premium\PremiumController::class, 'showEquipment'])->whereNumber('equipment');
+                Route::patch(ApiPaths::EQUIPMENT, [App\Modules\Premium\PremiumController::class, 'updateEquipment'])->whereNumber('equipment');
+                Route::delete(ApiPaths::EQUIPMENT, [App\Modules\Premium\PremiumController::class, 'destroyEquipment'])->whereNumber('equipment');
                 Route::get('iot/devices', [App\Modules\Premium\PremiumController::class, 'devices']);
                 Route::get('iot/alerts', [App\Modules\Premium\PremiumController::class, 'alerts']);
                 Route::post('iot/alerts/{alert}/request', [App\Modules\Premium\PremiumController::class, 'requestFromAlert'])->whereNumber('alert');
@@ -105,7 +106,7 @@ Route::prefix('v1')->group(function () {
             Route::post('orders', [ServiceOrderController::class, 'store']);
             Route::get('requests', [ServiceRequestController::class, 'index']);
             Route::post('requests', [ServiceRequestController::class, 'store']);
-            Route::patch('requests/{serviceRequest}', [ServiceRequestController::class, 'update'])->whereNumber('serviceRequest');
+            Route::patch(ApiPaths::SERVICE_REQUEST, [ServiceRequestController::class, 'update'])->whereNumber('serviceRequest');
             Route::post('requests/{serviceRequest}/attachments', [ServiceRequestController::class, 'attach'])->whereNumber('serviceRequest');
             Route::delete('requests/{serviceRequest}/attachments/{media}', [ServiceRequestController::class, 'detach'])
                 ->whereNumber(['serviceRequest', 'media']);
@@ -156,7 +157,7 @@ Route::prefix('v1')->group(function () {
             Route::middleware('permission:dashboard.view')->group(function () {
                 Route::get('statistics', [AdminInsightsController::class, 'statistics']);
                 Route::get('requests', [AdminInsightsController::class, 'requests']);
-                Route::get('requests/{serviceRequest}', [AdminInsightsController::class, 'request'])->whereNumber('serviceRequest');
+                Route::get(ApiPaths::SERVICE_REQUEST, [AdminInsightsController::class, 'request'])->whereNumber('serviceRequest');
             });
             Route::middleware('permission:catalog.manage')->group(function () {
                 Route::get('specialties', [AdminCatalogController::class, 'specialties']);
@@ -198,9 +199,9 @@ Route::prefix('v1')->group(function () {
             Route::prefix('users')->middleware('permission:users.manage')->group(function () {
                 Route::get('/', [AdminUserController::class, 'index']);
                 Route::post('/', [AdminUserController::class, 'store']);
-                Route::get('{user}', [AdminUserController::class, 'show'])->whereNumber('user');
-                Route::patch('{user}', [AdminUserController::class, 'update'])->whereNumber('user');
-                Route::delete('{user}', [AdminUserController::class, 'destroy'])->whereNumber('user');
+                Route::get(ApiPaths::USER, [AdminUserController::class, 'show'])->whereNumber('user');
+                Route::patch(ApiPaths::USER, [AdminUserController::class, 'update'])->whereNumber('user');
+                Route::delete(ApiPaths::USER, [AdminUserController::class, 'destroy'])->whereNumber('user');
                 Route::post('{user}/block', [AdminUserController::class, 'block'])->whereNumber('user');
                 // Fase 6 (D-98): plan del cliente, con motivo y auditoría.
                 Route::patch('{user}/plan', [AdminUserController::class, 'plan'])->whereNumber('user');

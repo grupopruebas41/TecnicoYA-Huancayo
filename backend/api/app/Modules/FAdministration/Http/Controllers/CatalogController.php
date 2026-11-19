@@ -9,15 +9,19 @@ use Illuminate\Support\Facades\DB;
 
 final class CatalogController
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const SPECIALTIES_P = 'specialties as p';
+    private const SUBCATEGORIES_S = 'subcategories as s';
+
     /** La foto (hero_media_id) solo se expone si es pública, revisada y no retirada, como en el carrusel (S04-TC-133). */
     public function specialties(): JsonResponse
     {
-        $items = DB::table('specialties as p')
+        $items = DB::table(self::SPECIALTIES_P)
             ->leftJoin('media_files as m', fn ($join) => $join->on('m.id', '=', 'p.hero_media_id')
                 ->where('m.visibility', 'public')->where('m.scan_status', 'clean')->whereNull('m.retired_at'))
             ->where('p.active', 1)->orderBy('p.display_order')->orderBy('p.id')
             // D-92: el asistente muestra cuántas subcategorías activas tiene cada especialidad.
-            ->selectSub(fn ($q) => $q->from('subcategories as s')->whereColumn('s.specialty_id', 'p.id')->where('s.active', 1)->selectRaw('count(*)'), 'subcategory_count')
+            ->selectSub(fn ($q) => $q->from(self::SUBCATEGORIES_S)->whereColumn('s.specialty_id', 'p.id')->where('s.active', 1)->selectRaw('count(*)'), 'subcategory_count')
             ->addSelect(['p.id', 'p.code', 'p.name', 'p.description', 'm.id as media_id'])->get();
 
         return ApiResponse::data($items->map(fn (object $item) => [
@@ -30,7 +34,7 @@ final class CatalogController
     public function subcategories(Request $request): JsonResponse
     {
         $filter = $request->validate(['specialty_id' => ['required', 'integer', 'exists:specialties,id']]);
-        $items = DB::table('subcategories as s')->join('specialties as p', 'p.id', '=', 's.specialty_id')
+        $items = DB::table(self::SUBCATEGORIES_S)->join(self::SPECIALTIES_P, 'p.id', '=', 's.specialty_id')
             ->where('p.active', 1)->where('s.active', 1)->where('s.specialty_id', $filter['specialty_id'])
             ->orderBy('s.display_order')->orderBy('s.id')
             ->get(['s.id', 's.specialty_id', 's.code', 's.name', 's.description', 's.carousel_media_id', 's.reference_fee']);
@@ -48,7 +52,7 @@ final class CatalogController
     /** D-92: problemas frecuentes activos de una subcategoría activa, en su orden. */
     public function symptoms(int $subcategory): JsonResponse
     {
-        $active = DB::table('subcategories as s')->join('specialties as p', 'p.id', '=', 's.specialty_id')
+        $active = DB::table(self::SUBCATEGORIES_S)->join(self::SPECIALTIES_P, 'p.id', '=', 's.specialty_id')
             ->where('s.id', $subcategory)->where('s.active', 1)->where('p.active', 1)->exists();
         abort_unless($active, 404);
 
@@ -59,7 +63,7 @@ final class CatalogController
     /** Carrusel de la landing (HU-S02-01): solo lo activo con imagen pública, revisada y no retirada. */
     public function carousel(): JsonResponse
     {
-        $items = DB::table('subcategories as s')->join('specialties as p', 'p.id', '=', 's.specialty_id')
+        $items = DB::table(self::SUBCATEGORIES_S)->join(self::SPECIALTIES_P, 'p.id', '=', 's.specialty_id')
             ->join('media_files as m', 'm.id', '=', 's.carousel_media_id')
             ->where('s.active', 1)->where('p.active', 1)
             ->where('m.visibility', 'public')->where('m.scan_status', 'clean')->whereNull('m.retired_at')

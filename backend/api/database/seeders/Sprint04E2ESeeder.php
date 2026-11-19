@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\DB;
  */
 final class Sprint04E2ESeeder extends Seeder
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const LIMA = 'America/Lima';
+
     private const CLIENTS = ['match', 'direct', 'pending', 'agenda'];
 
     public function run(MatchingFlow $flow, OfferResponses $responses, RuleBook $rules): void
@@ -39,17 +42,17 @@ final class Sprint04E2ESeeder extends Seeder
             $busy = $this->technician('busy', 'Técnico E2E con agenda ocupada', 'frio-camaras', '95.00', $huancayo);
             $electro = $this->technician('electro', 'Técnico E2E de electricidad', 'electricidad-tableros', '100.00', $huancayo);
 
-            $tomorrow = CarbonImmutable::now('America/Lima')->addDay()->toDateString();
+            $tomorrow = CarbonImmutable::now(self::LIMA)->addDay()->toDateString();
             $match = $this->request($clients['match'], 'frio-camaras', $huancayo, $rules, [
-                'mode' => 'scheduled', 'preferred_start_at' => CarbonImmutable::parse("$tomorrow 15:00", 'America/Lima')->utc(),
-                'preferred_end_at' => CarbonImmutable::parse("$tomorrow 17:00", 'America/Lima')->utc(),
+                'mode' => 'scheduled', 'preferred_start_at' => CarbonImmutable::parse("$tomorrow 15:00", self::LIMA)->utc(),
+                'preferred_end_at' => CarbonImmutable::parse("$tomorrow 17:00", self::LIMA)->utc(),
             ]);
             $flow->prepare($match, 1);
             foreach ([$frio, $busy] as $technician) {
                 $offer = DB::table('offers')->where('request_id', $match)->where('technician_id', $technician->id)->first();
                 $responses->respond(User::query()->findOrFail($technician->user_id), $offer->id, ['decision' => 'accept', 'expected_version' => 1]);
             }
-            $this->appointment($clients['agenda'], $busy, CarbonImmutable::parse("$tomorrow 16:00", 'America/Lima')->utc(), $rules, $huancayo);
+            $this->appointment($clients['agenda'], $busy, CarbonImmutable::parse("$tomorrow 16:00", self::LIMA)->utc(), $rules, $huancayo);
 
             $flow->prepare($this->request($clients['match'], 'frio-camaras', $huancayo, $rules), 1);
             $flow->prepare($this->request($clients['direct'], 'electricidad-tableros', $huancayo, $rules,
@@ -99,7 +102,7 @@ final class Sprint04E2ESeeder extends Seeder
         if (! DB::table('availability_slots')->where('technician_id', $technician->id)->exists()) {
             foreach (range(1, 7) as $weekday) {
                 DB::table('availability_slots')->insert(['technician_id' => $technician->id, 'kind' => 'weekly', 'weekday' => $weekday,
-                    'local_start' => '00:00:00', 'local_end' => '23:59:59', 'valid_from' => '2026-01-01', 'timezone' => 'America/Lima']);
+                    'local_start' => '00:00:00', 'local_end' => '23:59:59', 'valid_from' => '2026-01-01', 'timezone' => self::LIMA]);
             }
         }
 

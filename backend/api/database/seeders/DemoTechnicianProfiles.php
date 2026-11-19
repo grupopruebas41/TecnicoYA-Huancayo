@@ -10,6 +10,12 @@ namespace Database\Seeders;
  */
 final class DemoTechnicianProfiles
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const AT_08 = '08:00';
+    private const AT_09 = '09:00';
+    private const AT_18 = '18:00';
+    private const AT_20 = '20:00';
+
     public const PROFILES = [
         'refrigeracion' => [
             'given' => 'Rosa', 'family' => 'Quispe', 'name' => 'Rosa Quispe', 'years' => 9, 'base' => 'EL-TAMBO',
@@ -25,7 +31,7 @@ final class DemoTechnicianProfiles
                 'frio-camaras' => ['150.00', 'Diagnóstico de la cámara, revisión de burletes y puertas, y regulación del sistema de frío.'],
                 'frio-compresores' => ['180.00', 'Pruebas de arranque y consumo, cambio de relé o protector y prueba de funcionamiento.'],
             ],
-            'slots' => [[1, '08:00', '18:00'], [2, '08:00', '18:00'], [3, '08:00', '18:00'], [4, '08:00', '18:00'], [5, '08:00', '18:00'], [6, '08:00', '13:00']],
+            'slots' => [[1, self::AT_08, self::AT_18], [2, self::AT_08, self::AT_18], [3, self::AT_08, self::AT_18], [4, self::AT_08, self::AT_18], [5, self::AT_08, self::AT_18], [6, self::AT_08, '13:00']],
             'portfolio' => [
                 ['Vitrina de lácteos recuperada', 'frio-vitrinas', 'La vitrina no bajaba de 12 °C; se cambió el ventilador del condensador y quedó en 4 °C.', 12],
                 ['Mantenimiento de cámara de carnes', 'frio-camaras', 'Limpieza completa, cambio de burletes y ajuste del termostato digital.', 25],
@@ -55,7 +61,7 @@ final class DemoTechnicianProfiles
                 'computo-redes' => ['80.00', 'Instalación o ajuste del router, cobertura wifi en la casa u oficina y prueba de velocidad.'],
                 'computo-software' => ['50.00', 'Instalación del sistema y programas con licencia, controladores y respaldo de archivos.'],
             ],
-            'slots' => [[1, '09:00', '20:00'], [2, '09:00', '20:00'], [3, '09:00', '20:00'], [4, '09:00', '20:00'], [5, '09:00', '20:00'], [6, '09:00', '13:00']],
+            'slots' => [[1, self::AT_09, self::AT_20], [2, self::AT_09, self::AT_20], [3, self::AT_09, self::AT_20], [4, self::AT_09, self::AT_20], [5, self::AT_09, self::AT_20], [6, self::AT_09, '13:00']],
             'portfolio' => [
                 ['Laptop que se apagaba sola', 'computo-hardware', 'Ventilador obstruido y pasta térmica seca; tras la limpieza la temperatura bajó 25 °C.', 9],
                 ['Red wifi para un estudio contable', 'computo-redes', 'Router nuevo y un repetidor para cubrir dos pisos con seis equipos.', 21],
