@@ -131,35 +131,46 @@ export function itemErrors(item) {
   return errors;
 }
 
-export function validateOrderStep(step, state, specialties = [], now = serverNow()) {
-  const errors = {};
-  if (step === 1 && !state.specialtyIds.length) errors.specialty_ids = "Marca al menos una especialidad.";
-  if (step === 2) {
+// Cierre S4-S5 (Sonar S3776): una función por paso del asistente; mismos mensajes, claves y orden que antes.
+const STEP_RULES = {
+  1: (errors, state) => {
+    if (!state.specialtyIds.length) errors.specialty_ids = "Marca al menos una especialidad.";
+  },
+  2: (errors, state, specialties) => {
     if (!state.items.length) errors.subcategory_ids = "Elige al menos una subcategoría.";
     const empty = state.specialtyIds.filter((id) => !state.items.some((item) => item.specialty_id === id));
     if (state.items.length && empty.length) {
       const names = empty.map((id) => specialties.find((s) => s.id === id)?.name).filter(Boolean).join(", ");
       errors.subcategory_ids = `Elige al menos una subcategoría de ${names} o desmarca esa especialidad.`;
     }
-  }
-  if (step === 3) {
+  },
+  3: (errors, state) => {
     state.items.forEach((item) => {
       const found = itemErrors(item);
       if (Object.keys(found).length) errors[item.specialty_id] = found;
     });
-  }
-  if (step === 4) {
+  },
+  4: (errors, state, specialties, now) => {
     if (!state.district_id) errors.district_id = "Selecciona un distrito dentro de cobertura.";
     if (size(state.address) < 5 || size(state.address) > 255) errors.address = "La dirección debe tener de 5 a 255 caracteres.";
     if (size(state.address_reference) > 120) errors.address_reference = "La referencia admite hasta 120 caracteres.";
-    if (state.mode === "scheduled") {
-      if (!state.scheduled_date || state.scheduled_date < limaNow(now).date) errors.scheduled_date = "Elige una fecha desde hoy.";
-      if (!state.time_slot) errors.time_slot = "Elige una franja.";
-      else if (state.scheduled_date && slotStarted(state.scheduled_date, state.time_slot, now))
-        errors.time_slot = "Esa franja ya empezó. Elige una franja que aún no empiece.";
-    }
-  }
-  if (step === 5 && !state.confirmed) errors.confirmed = "Confirma que el resumen es correcto.";
+    if (state.mode === "scheduled") scheduleErrors(errors, state, now);
+  },
+  5: (errors, state) => {
+    if (!state.confirmed) errors.confirmed = "Confirma que el resumen es correcto.";
+  },
+};
+
+function scheduleErrors(errors, state, now) {
+  if (!state.scheduled_date || state.scheduled_date < limaNow(now).date) errors.scheduled_date = "Elige una fecha desde hoy.";
+  if (!state.time_slot) errors.time_slot = "Elige una franja.";
+  else if (state.scheduled_date && slotStarted(state.scheduled_date, state.time_slot, now))
+    errors.time_slot = "Esa franja ya empezó. Elige una franja que aún no empiece.";
+}
+
+export function validateOrderStep(step, state, specialties = [], now = serverNow()) {
+  const errors = {};
+  STEP_RULES[step]?.(errors, state, specialties, now);
   return errors;
 }
 

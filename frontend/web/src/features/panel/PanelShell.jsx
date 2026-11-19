@@ -57,6 +57,101 @@ function AvatarMenu({user, theme, onTheme, onProfile, onLogout, busy}) {
   </div>;
 }
 
+// Cierre S4-S5 (Sonar S3776): piezas de PanelShell separadas para bajar su complejidad; el marcado es el mismo que antes.
+
+/** Tooltip con el menú contraído: el nombre y, si hay un estado en texto, su texto completo sin repetir el nombre. */
+export function navTooltip(section, badge) {
+  if (!badge?.text || badge.count) return section.label;
+  return badge.label.startsWith(section.label) ? badge.label : `${section.label} · ${badge.label}`;
+}
+
+/** Contador (con punto que late) o estado corto en texto con ícono (revisión del #63). */
+function NavBadge({badge}) {
+  if (badge?.count > 0) {
+    return <span className={'panel-nav-badge' + (badge.pulse ? ' is-pulse' : '')} aria-hidden="true">
+      {badge.pulse && <span className="panel-nav-pulse"/>}{badge.count > 99 ? '99+' : badge.count}</span>;
+  }
+  // Revisión del #63: texto corto («50 %», «Falta 1») con ícono; el completo va en title, aria-label y la descripción del ítem.
+  if (!badge?.text) return null;
+  return <span className="panel-nav-badge is-text" data-tone={badge.tone} title={badge.label} aria-label={badge.label} aria-hidden="true">
+    {badge.icon && ICONS.has(badge.icon) && <Icon name={badge.icon}/>}<span className="panel-nav-badge-text">{badge.text}</span></span>;
+}
+
+/** Ítem del menú. Lo que no está listo va con «Próximamente» (Fase 4); lo premium lleva candado y abre la presentación. */
+function NavItem({section, badge, collapsed, currentId, locked, onGo}) {
+  if (section.soon) {
+    return <button type="button" className="panel-nav-item is-soon" aria-disabled="true"
+      data-tooltip={collapsed ? `${section.label} (próximamente)` : undefined} onClick={event => event.preventDefault()}>
+      <span className="panel-nav-icon" aria-hidden="true"><Icon name={section.icon}/></span>
+      <span className="panel-label">{section.label}<small className="panel-soon">Próximamente</small></span>
+    </button>;
+  }
+  const badgeId = `panel-badge-${section.id}`;
+  const described = Boolean(badge?.count > 0 || badge?.text);
+  const go = () => (section.premium ? onGo('premium', {feature: section.label}) : onGo(section.id, null));
+  return <>
+    <button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')} data-section={section.id}
+      aria-current={section.id === currentId ? 'page' : undefined} data-tooltip={collapsed ? navTooltip(section, badge) : undefined}
+      aria-describedby={badge?.count || badge?.text ? badgeId : undefined} disabled={locked} onClick={go}>
+      <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
+      {/* Revisión del #63: texto y etiqueta juntos; si no caben lado a lado, la etiqueta baja bajo el texto (nunca se corta). */}
+      <span className="panel-nav-text">
+        <span className="panel-label">{section.label}{section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}</span>
+        <NavBadge badge={badge}/>
+      </span>
+    </button>
+    {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
+    {described && <span id={badgeId} hidden>{badge.label}</span>}
+  </>;
+}
+
+/** Fase 4: el cliente recuerda el menú contraído en su cuenta; ante un 409 relee la versión y reintenta una vez. */
+function saveCollapsed(user, next, onUserChange) {
+  const save = version => Promise.resolve().then(() => request('/me', {sidebar_collapsed: next, expected_version: version}, 'PATCH'));
+  save(user.version)
+    .catch(error => (error?.status === 409 ? request('/me').then(me => save(me.data.version)) : Promise.reject(error)))
+    .then(result => { if (result?.data) onUserChange?.(result.data); }).catch(() => {});
+}
+
+/** Fase T1: un solo indicador de conexión en la barra superior. */
+function ConnectionStatus({live}) {
+  const text = live ? 'Conexión en tiempo real activa.' : 'Sin conexión en tiempo real. Actualiza para ver cambios.';
+  return <p role="status" data-cy="connection" data-state={live ? 'live' : 'offline'} className={'panel-connection' + (live ? ' is-live' : '')} title={text}>
+    <span className="panel-connection-dot" aria-hidden="true"/>
+    <span className="panel-connection-text" aria-hidden="true">{live ? 'En vivo' : 'Sin conexión'}</span>
+    <span className="sr-only">{text}</span>
+  </p>;
+}
+
+/** Pie del menú: contraer (paneles no modernos), ir al sitio y cerrar sesión (paneles no modernos). */
+function SidebarFoot({modern, collapsed, disabled, onToggle, onLogout}) {
+  const tip = text => (collapsed ? text : undefined);
+  const toggleText = collapsed ? 'Expandir menú' : 'Contraer menú';
+  return <div className="panel-sidebar-foot">
+    {!modern && <button type="button" className="panel-nav-item panel-collapse" aria-expanded={!collapsed} onClick={onToggle}
+      data-tooltip={tip('Expandir menú')}>
+      <span className="panel-nav-icon" aria-hidden="true"><Icon name={collapsed ? 'expand' : 'collapse'}/></span>
+      <span className="panel-label">{toggleText}</span>
+    </button>}
+    <a className="panel-nav-item" href="/" data-tooltip={tip('Ir al sitio')}>
+      <span className="panel-nav-icon" aria-hidden="true"><Icon name="site"/></span><span className="panel-label">Ir al sitio</span></a>
+    {!modern && <button type="button" className="panel-nav-item" data-cy="logout" disabled={disabled} onClick={onLogout} data-tooltip={tip('Cerrar sesión')}>
+      <span className="panel-nav-icon" aria-hidden="true"><Icon name="logout"/></span><span className="panel-label">Cerrar sesión</span>
+    </button>}
+  </div>;
+}
+
+/** Avisos bajo la barra superior: accesibilidad, error, guardado en curso y tema. */
+function PanelNotices({a11yNotice, notice, locked, themeNotice}) {
+  if (!(notice || themeNotice || locked || a11yNotice)) return null;
+  return <div className="panel-notices">
+    {a11yNotice && <output className="notice">{a11yNotice}</output>}
+    {notice && <p className="error" role="alert">{notice}</p>}
+    {locked && <output className="notice">Espera a que termine de guardarse tu solicitud.</output>}
+    {themeNotice && <output className="notice">{themeNotice}</output>}
+  </div>;
+}
+
 /**
  * Base común de los paneles (Fase 1, D-73): barra lateral contraíble con secciones, barra superior con campana y
  * avatar, tema claro/oscuro (D-76) y cajón en móvil. Cada sección trae su contenido; el panel no lo cambia.
@@ -110,51 +205,13 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     setActive(id); setIntent(nextIntent); setVisit(visit + 1); store.set('sessionStorage', sectionKey, id); setDrawer(false);
     onNavigate?.(id);
   }
-  function navButton(section) {
-    const badge = badges?.[section.id];
-    const badgeId = `panel-badge-${section.id}`;
-    // Fase 4: lo que no está listo se ve desactivado con «Próximamente»; lo premium lleva candado y abre la presentación.
-    if (section.soon) {
-      return <button key={section.id} type="button" className="panel-nav-item is-soon" aria-disabled="true"
-        data-tooltip={collapsed ? `${section.label} (próximamente)` : undefined} onClick={event => event.preventDefault()}>
-        <span className="panel-nav-icon" aria-hidden="true"><Icon name={section.icon}/></span>
-        <span className="panel-label">{section.label}<small className="panel-soon">Próximamente</small></span>
-      </button>;
-    }
-    const target = section.premium ? 'premium' : section.id;
-    return <React.Fragment key={section.id}><button type="button" className={'panel-nav-item' + (section.premium ? ' is-locked' : '')} data-section={section.id}
-      aria-current={section.id === current?.id ? 'page' : undefined}
-      data-tooltip={collapsed ? (badge?.text && !badge.count ? (badge.label.startsWith(section.label) ? badge.label : `${section.label} · ${badge.label}`) : section.label) : undefined}
-      aria-describedby={badge?.count || badge?.text ? badgeId : undefined} disabled={locked}
-      onClick={() => go(target, section.premium ? {feature: section.label} : null)}>
-      <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
-      {/* Revisión del #63: texto y etiqueta juntos; si no caben lado a lado, la etiqueta baja bajo el texto (nunca se corta). */}
-      <span className="panel-nav-text">
-      <span className="panel-label">{section.label}{section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}</span>
-      {badge?.count > 0 && <span className={'panel-nav-badge' + (badge.pulse ? ' is-pulse' : '')} aria-hidden="true">
-        {badge.pulse && <span className="panel-nav-pulse"/>}{badge.count > 99 ? '99+' : badge.count}</span>}
-      {/* Fase T2 del técnico: un estado corto en texto (porcentaje del perfil, estado de la verificación). */}
-      {/* Revisión del #63: texto corto en el menú («50 %», «Falta 1») con ícono; el texto completo va en title y aria-label,
-          y en la descripción del ítem (aria-describedby, abajo) sin cambiar su nombre. Contraído, queda un punto de color sobre el ícono. */}
-      {!badge?.count && badge?.text && <span className="panel-nav-badge is-text" data-tone={badge.tone}
-        title={badge.label} aria-label={badge.label} aria-hidden="true">
-        {badge.icon && ICONS.has(badge.icon) && <Icon name={badge.icon}/>}<span className="panel-nav-badge-text">{badge.text}</span></span>}
-      </span>
-    </button>
-    {/* Fuera del botón: el contador describe el ítem sin cambiar su nombre accesible. */}
-    {(badge?.count > 0 || badge?.text) && <span id={badgeId} hidden>{badge.label}</span>}</React.Fragment>;
-  }
+  const navButton = section => <NavItem key={section.id} section={section} badge={badges?.[section.id]} collapsed={collapsed}
+    currentId={current?.id} locked={locked} onGo={go}/>;
   function toggleCollapsed() {
     const next = !collapsed;
     setCollapsed(next); store.set('localStorage', 'tecnicoya.panel.collapsed', next ? '1' : '0');
     // Fase 4: el cliente lo recuerda en su cuenta; si falla, queda en este equipo.
-    if (modern) {
-      const save = version => Promise.resolve().then(() => request('/me', {sidebar_collapsed: next, expected_version: version}, 'PATCH'));
-      // Si otra pestaña cambió la cuenta (409), se relee la versión y se reintenta una sola vez.
-      save(user.version)
-        .catch(error => error?.status === 409 ? request('/me').then(me => save(me.data.version)) : Promise.reject(error))
-        .then(result => { if (result?.data) onUserChange?.(result.data); }).catch(() => {});
-    }
+    if (modern) saveCollapsed(user, next, onUserChange);
   }
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
   const profile = sections.find(section => section.id === 'profile');
@@ -180,18 +237,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           </div>
           : group.items.map(section => navButton(section)))}
       </nav>
-      <div className="panel-sidebar-foot">
-        {!modern && <button type="button" className="panel-nav-item panel-collapse" aria-expanded={!collapsed} onClick={toggleCollapsed}
-          data-tooltip={collapsed ? 'Expandir menú' : undefined}>
-          <span className="panel-nav-icon" aria-hidden="true"><Icon name={collapsed ? 'expand' : 'collapse'}/></span>
-          <span className="panel-label">{collapsed ? 'Expandir menú' : 'Contraer menú'}</span>
-        </button>}
-        <a className="panel-nav-item" href="/" data-tooltip={collapsed ? 'Ir al sitio' : undefined}>
-          <span className="panel-nav-icon" aria-hidden="true"><Icon name="site"/></span><span className="panel-label">Ir al sitio</span></a>
-        {!modern && <button type="button" className="panel-nav-item" data-cy="logout" disabled={busy || locked} onClick={onLogout} data-tooltip={collapsed ? 'Cerrar sesión' : undefined}>
-          <span className="panel-nav-icon" aria-hidden="true"><Icon name="logout"/></span><span className="panel-label">Cerrar sesión</span>
-        </button>}
-      </div>
+      <SidebarFoot modern={modern} collapsed={collapsed} disabled={busy || locked} onToggle={toggleCollapsed} onLogout={onLogout}/>
     </aside>
     {drawer && <div className="panel-backdrop" aria-hidden="true" onClick={closeDrawer}/>}
     <div className="panel-main">
@@ -200,13 +246,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           aria-expanded={drawer} onClick={() => setDrawer(!drawer)}><Icon name="menu"/></button>
         <span className="panel-title">{current?.label}</span>
         <div className="panel-actions">
-          {modern && live !== null && <p role="status" data-cy="connection" data-state={live ? 'live' : 'offline'}
-            className={'panel-connection' + (live ? ' is-live' : '')}
-            title={live ? 'Conexión en tiempo real activa.' : 'Sin conexión en tiempo real. Actualiza para ver cambios.'}>
-            <span className="panel-connection-dot" aria-hidden="true"/>
-            <span className="panel-connection-text" aria-hidden="true">{live ? 'En vivo' : 'Sin conexión'}</span>
-            <span className="sr-only">{live ? 'Conexión en tiempo real activa.' : 'Sin conexión en tiempo real. Actualiza para ver cambios.'}</span>
-          </p>}
+          {modern && live !== null && <ConnectionStatus live={live}/>}
           <NotificationBell key={bellKey} userId={user.id} role={role} onConnection={modern ? setLive : undefined}
             onOpen={item => { const target = notificationTarget?.(item); if (target) go(target[0], target[1] || null); }}
             onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
@@ -222,12 +262,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
             : <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>}
         </div>
       </header>
-      {(notice || themeNotice || locked || a11y[2]) && <div className="panel-notices">
-        {a11y[2] && <output className="notice">{a11y[2]}</output>}
-        {notice && <p className="error" role="alert">{notice}</p>}
-        {locked && <output className="notice">Espera a que termine de guardarse tu solicitud.</output>}
-        {themeNotice && <output className="notice">{themeNotice}</output>}
-      </div>}
+      <PanelNotices a11yNotice={a11y[2]} notice={notice} locked={locked} themeNotice={themeNotice}/>
       {/* AccountApp ya está dentro del <main> de App: el contenido va en un div. */}
       <ShellConnectionContext.Provider value={modern}>
         <div className="panel-content" id="contenido" tabIndex={-1} ref={content} key={`${current?.id}-${visit}`}>{current?.render({navigate: go, intent})}</div>

@@ -183,6 +183,20 @@ function ProductImage({ src, alt, className = "", width = "720", height = "480",
   );
 }
 
+// Cierre S4-S5 (Sonar S3776): profundidad, escala, opacidad y desenfoque por distancia al centro (0, 1 y 2 o más), en una
+// tabla en vez de ternarios anidados; mismos valores que antes.
+const CARD_TIERS = [
+  { z: "70px", scale: 1, opacity: 1, blur: 0 },
+  { z: "-45px", scale: 0.88, opacity: 0.75, blur: 2 },
+  { z: "-150px", scale: 0.76, opacity: 0.4, blur: 4 },
+];
+/** Giro de una tarjeta lateral: 25° más 15° por cada posición extra, hacia el centro. */
+export function cardRotation(offset) {
+  if (offset === 0) return 0;
+  const turn = 25 + (Math.abs(offset) - 1) * 15;
+  return offset < 0 ? turn : -turn;
+}
+
 function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex = 0 }) {
   const root = useRef(null);
   const previousSpecialty = useRef(specialty?.id);
@@ -275,14 +289,15 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
   };
   const cardStyle = (offset) => {
     const distance = Math.abs(offset);
+    const tier = Math.min(distance, 2);
     return {
       "--card-offset": offset,
       "--card-x": `${offset * 42}%`,
-      "--card-z": distance === 0 ? "70px" : distance === 1 ? "-45px" : "-150px",
-      "--card-rotate": `${offset === 0 ? 0 : offset < 0 ? 25 + (distance - 1) * 15 : -25 - (distance - 1) * 15}deg`,
-      "--card-scale": distance === 0 ? 1 : distance === 1 ? 0.88 : 0.76,
-      "--card-opacity": distance === 0 ? 1 : distance === 1 ? 0.75 : 0.4,
-      "--card-blur": `${distance === 0 ? 0 : distance === 1 ? 2 : 4}px`,
+      "--card-z": CARD_TIERS[tier].z,
+      "--card-rotate": `${cardRotation(offset)}deg`,
+      "--card-scale": CARD_TIERS[tier].scale,
+      "--card-opacity": CARD_TIERS[tier].opacity,
+      "--card-blur": `${CARD_TIERS[tier].blur}px`,
       "--tilt-x": `${offset === 0 ? tilt.x : 0}deg`,
       "--tilt-y": `${offset === 0 ? tilt.y : 0}deg`,
       "--glow-x": `${tilt.glowX}%`,

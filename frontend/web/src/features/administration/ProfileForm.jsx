@@ -6,6 +6,18 @@ import {Field, Notice} from './forms';
 // D-94: las anteriores pueden completar nombres y apellidos (opcionales); con los dos, reemplazan al nombre completo
 // y el saludo del Inicio usa los nombres.
 const lengthOf = value => Array.from((value || '').trim()).length;
+/** Cierre S4-S5 (Sonar S3776): validación del formulario de perfil, fuera del envío. Mismos mensajes y orden que antes. */
+export function profileErrors({separate, givenNames, familyNames, name, phone}) {
+  const invalid = {};
+  const outside = (value, min, max) => lengthOf(value) < min || lengthOf(value) > max;
+  if (separate) {
+    if (outside(givenNames, 2, 50)) invalid.given_names = ['Los nombres deben tener entre 2 y 50 caracteres.'];
+    if (outside(familyNames, 2, 50)) invalid.family_names = ['Los apellidos deben tener entre 2 y 50 caracteres.'];
+  } else if (outside(name, 2, 100)) invalid.name = ['El nombre debe tener entre 2 y 100 caracteres.'];
+  if (phone && (phone.length > 20 || !/^\+?[0-9 ()-]+$/.test(phone))) invalid.phone = ['Ingresa un teléfono válido de hasta 20 caracteres.'];
+  return invalid;
+}
+
 export default function ProfileForm({user, onUpdate, onExpired}) {
   const split = user.given_names != null;
   const [busy, setBusy] = useState(false);
@@ -32,13 +44,8 @@ export default function ProfileForm({user, onUpdate, onExpired}) {
   async function submit(event) {
     event.preventDefault();
     if (busy || uncertain) return;
-    const invalid = {};
     const completing = !split && (lengthOf(givenNames) > 0 || lengthOf(familyNames) > 0);
-    if (split || completing) {
-      if (lengthOf(givenNames) < 2 || lengthOf(givenNames) > 50) invalid.given_names = ['Los nombres deben tener entre 2 y 50 caracteres.'];
-      if (lengthOf(familyNames) < 2 || lengthOf(familyNames) > 50) invalid.family_names = ['Los apellidos deben tener entre 2 y 50 caracteres.'];
-    } else if (lengthOf(name) < 2 || lengthOf(name) > 100) invalid.name = ['El nombre debe tener entre 2 y 100 caracteres.'];
-    if (phone && (phone.length > 20 || !/^\+?[0-9 ()-]+$/.test(phone))) invalid.phone = ['Ingresa un teléfono válido de hasta 20 caracteres.'];
+    const invalid = profileErrors({separate: split || completing, givenNames, familyNames, name, phone});
     setErrors(invalid); setError(''); setSuccess('');
     if (Object.keys(invalid).length) { setError('Revisa los campos indicados.'); event.currentTarget.elements.namedItem(Object.keys(invalid)[0])?.focus(); return; }
     setBusy(true);
