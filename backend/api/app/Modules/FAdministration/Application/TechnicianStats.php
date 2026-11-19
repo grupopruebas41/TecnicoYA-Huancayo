@@ -20,13 +20,9 @@ final class TechnicianStats
 
     private const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'dic'];
 
-    public function for(int $technicianId, string $period): array
+    /** Cierre S4-S5 (Sonar S3776): un periodo vacío por semana o mes, desde el primero. */
+    private function emptyBuckets(CarbonImmutable $first, int $count, string $period): array
     {
-        $now = CarbonImmutable::now(TechnicianHome::TIMEZONE);
-        $count = self::PERIODS[$period];
-        $first = $period === 'week'
-            ? $now->startOfWeek(CarbonImmutable::MONDAY)->subWeeks($count - 1)
-            : $now->startOfMonth()->subMonths($count - 1);
         $buckets = [];
         for ($index = 0; $index < $count; $index++) {
             $start = $period === 'week' ? $first->addWeeks($index) : $first->addMonths($index);
@@ -34,8 +30,13 @@ final class TechnicianStats
             $buckets[$key] = ['key' => $key, 'label' => $this->label($start, $period), 'start' => $start->toDateString(),
                 'accepted' => 0, 'rejected' => 0, 'expired' => 0, 'completed' => 0, 'responses' => []];
         }
-        $from = $first->utc();
 
+        return $buckets;
+    }
+
+    /** Cierre S4-S5 (Sonar S3776): ofertas respondidas o vencidas por periodo y sus tiempos de respuesta. */
+    private function countOffers(array &$buckets, int $technicianId, CarbonImmutable $from, string $period): void
+    {
         $offers = DB::table('offers')->where('technician_id', $technicianId)->where('available_at', '>=', $from)
             ->whereIn('status', ['accepted', 'rejected', 'expired'])->get(['status', 'available_at', 'responded_at']);
         foreach ($offers as $offer) {
@@ -49,6 +50,18 @@ final class TechnicianStats
                 $buckets[$key]['responses'][] = $available->diffInSeconds(CarbonImmutable::parse($offer->responded_at, 'UTC'), true);
             }
         }
+    }
+
+    public function for(int $technicianId, string $period): array
+    {
+        $now = CarbonImmutable::now(TechnicianHome::TIMEZONE);
+        $count = self::PERIODS[$period];
+        $first = $period === 'week'
+            ? $now->startOfWeek(CarbonImmutable::MONDAY)->subWeeks($count - 1)
+            : $now->startOfMonth()->subMonths($count - 1);
+        $buckets = $this->emptyBuckets($first, $count, $period);
+        $from = $first->utc();
+        $this->countOffers($buckets, $technicianId, $from, $period);
         $completed = DB::table('participations')->where('technician_id', $technicianId)->where('status', 'completed')
             ->whereNotNull('completed_at')->where('completed_at', '>=', $from)->pluck('completed_at');
         foreach ($completed as $at) {
