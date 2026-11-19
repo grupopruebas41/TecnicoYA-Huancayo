@@ -67,7 +67,9 @@ export function offerSpeech(offer, now = Date.now()) {
   const minutes = Math.max(0, Math.ceil((Date.parse(offer.expires_at) - now) / 60000));
   return [`Nueva oferta: ${work}`, request.district?.name ? `en ${request.district.name}` : '',
     offer.reference_fee?.amount ? `. Tarifa referencial: ${soles(offer.reference_fee.amount).replace('S/', '').trim()} soles` : '',
-    `. Tienes ${minutes} ${minutes === 1 ? 'minuto' : 'minutos'} para responder.`].join(' ').replace(/\s+\./g, '.').replace(/\s+/g, ' ').trim();
+    `. Tienes ${minutes} ${minutes === 1 ? 'minuto' : 'minutos'} para responder.`].join(' ')
+    // Cierre S4-S5 (Sonar S8786): primero se juntan los espacios y después se quita el que queda antes del punto (lineal).
+    .split(/\s/).filter(Boolean).join(' ').replaceAll(' .', '.');
 }
 
 /** Lee la oferta en voz alta en español del Perú. Devuelve false si el navegador no puede. */

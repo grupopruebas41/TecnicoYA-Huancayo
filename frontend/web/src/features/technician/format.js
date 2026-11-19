@@ -1,4 +1,6 @@
 // Panel del técnico, Fase T3: formatos compartidos (hora de Lima) y franjas Mañana 08–12, Tarde 12–18 y Noche 18–21.
+import {groupThousands} from '../../lib/numbers';
+
 export const TZ = 'America/Lima';
 export const FRANJAS = [
   {id: 'morning', label: 'Mañana', start: '08:00', end: '12:00'},
@@ -8,7 +10,7 @@ export const FRANJAS = [
 export const DAYS = [[1, 'Lun', 'Lunes'], [2, 'Mar', 'Martes'], [3, 'Mié', 'Miércoles'], [4, 'Jue', 'Jueves'], [5, 'Vie', 'Viernes'],
   [6, 'Sáb', 'Sábado'], [7, 'Dom', 'Domingo']];
 
-const part = (iso, options) => new Intl.DateTimeFormat('es-PE', {timeZone: TZ, ...options}).format(new Date(iso)).replace(/\./g, '');
+const part = (iso, options) => new Intl.DateTimeFormat('es-PE', {timeZone: TZ, ...options}).format(new Date(iso)).replaceAll('.', '');
 /** «08:00» en hora de Lima. */
 export const limaTime = iso => part(iso, {hour: '2-digit', minute: '2-digit', hourCycle: 'h23'});
 /** «mié 11 nov» en hora de Lima. */
@@ -72,5 +74,5 @@ export function scheduleSummary(matrix) {
 /** Tarifa en formato peruano, como en el resto de la plataforma: «S/ 120,00» y «S/ 1 200,00» (coma decimal). */
 export function soles(value) {
   const [whole, decimal] = Number(value).toFixed(2).split('.');
-  return `S/ ${whole.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')},${decimal}`;
+  return `S/ ${groupThousands(whole)},${decimal}`;
 }
