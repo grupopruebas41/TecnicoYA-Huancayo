@@ -2,6 +2,30 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-19 · Cierre común S4-S5, punto 2: workflow «e2e-cierre» con las Cypress de S01 a S05 en verde
+
+- **Rama:** `feature/pimentel/e2e-cierre/s05`, desde `main`, con `main` traído después de integrar el #64 (merge, sin `--force`).
+- **Workflow:** `.github/workflows/e2e-cierre.yml`.
+  - Un job por sprint, con MySQL 8.4, la API con 4 procesos, Vite y, desde el S4, Reverb, la cola y el scheduler.
+  - Corre `scripts/run-e2e.mjs`; deja JUnit, capturas de fallos y el log de la API como artefactos, con un resumen por sprint.
+  - Sin el JIT de opcache (DEF-73).
+  - Es manual (`workflow_dispatch`) y también corre en `feature/pimentel/e2e-cierre/**`.
+  - S07 no tiene Cypress ni siembra E2E.
+- **Resultado:** sexta ejecución (`44539805436`, `b0c0512`), **101 casos, 0 fallos**: S01 17, S02 17, S03 17, S04 18 y S05 32. La meta de Cypress (14 o más) se cumple en todos los sprints. Evidencia en `evidencias/sprint-05/cierre/e2e/`, con un puntero desde `sprint-04/cierre/e2e/`.
+- **Defectos con prueba en rojo:**
+  - DEF-71: siembras sin la bienvenida marcada (S05-TC-376);
+  - DEF-72: invitado sin JSON con 500 (S05-TC-377);
+  - DEF-73: la API caía con SIGSEGV por el JIT (S05-TC-378 para el reloj E2E);
+  - DEF-74: el carrusel con movimiento reducido tapaba sus controles (S05-TC-379).
+- **DEF-75:** Cypress desactualizadas frente a los paneles nuevos; cada cambio está explicado en el código. S02-TC-071 a 075 se reescribieron (pedido de Pimentel): la 073 prueba franjas fijas y la 075, zonas (sin pausa, D-104).
+- **`run-e2e`:**
+  - avisa si un servicio termina;
+  - vigila `/api/health` y, si no responde, registra los procesos PHP y `SHOW FULL PROCESSLIST` (solo con `E2E_MYSQL_ROOT_PASSWORD`, en la CI);
+  - en la CI guarda capturas de fallo (`CI=true`).
+- **Lección:** el JIT de opcache de `setup-php` rompe el servidor de desarrollo de PHP. En jobs que lo usen, desactivarlo.
+- **Aviso:** durante el diagnóstico corrí dos veces un script sobre el slot A mientras Pimentel tenía `artisan test` corriendo en esa base; su corrida pudo dar fallos falsos.
+- **Siguiente:** punto 3, accesibilidad automática con vitest-axe y cypress-axe.
+
 ## 2026-11-18 · Cierre común S4-S5, punto 1: SonarQube con Quality Gate aprobado
 
 - **Rama:** `feature/pimentel/cierre-sonar/s05`, desde `main` `3f359ff` (#63 integrado). Termina el modo rápido.

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="5.300" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:02" tests="0" file="cypress/e2e/sprint-05/premium.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Plan Premium: Mi hogar / Mi negocio" timestamp="2026-11-19T14:07:02" tests="3" time="5.300" failures="0">
+    <testcase name="Plan Premium: Mi hogar / Mi negocio S05-TC-272 un cliente free ve el candado y la API le responde 403" time="3.053" classname="S05-TC-272 un cliente free ve el candado y la API le responde 403">
+    </testcase>
+    <testcase name="Plan Premium: Mi hogar / Mi negocio S05-TC-273 los sensores muestran la franja de demostración y el estado de cada equipo" time="1.038" classname="S05-TC-273 los sensores muestran la franja de demostración y el estado de cada equipo">
+    </testcase>
+    <testcase name="Plan Premium: Mi hogar / Mi negocio S05-TC-274 una alerta se envía al técnico y crea la solicitud" time="1.148" classname="S05-TC-274 una alerta se envía al técnico y crea la solicitud">
+    </testcase>
+  </testsuite>
+</testsuites>

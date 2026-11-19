@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="5.959" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:55" tests="0" file="cypress/e2e/sprint-05/pedido.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Pedido por especialidades (D-95)" timestamp="2026-11-19T14:06:55" tests="2" time="5.958" failures="0">
+    <testcase name="Pedido por especialidades (D-95) S05-TC-146 las 3 especialidades con varias subcategorías crean una solicitud por especialidad y aparecen en Mis solicitudes" time="4.763" classname="S05-TC-146 las 3 especialidades con varias subcategorías crean una solicitud por especialidad y aparecen en Mis solicitudes">
+    </testcase>
+    <testcase name="Pedido por especialidades (D-95) S05-TC-147 con 3 pedidos activos el asistente bloquea y lleva a Mis solicitudes" time="1.144" classname="S05-TC-147 con 3 pedidos activos el asistente bloquea y lleva a Mis solicitudes">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="4.522" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:30" tests="0" file="cypress/e2e/sprint-05/technician-home.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Panel del técnico: menú e Inicio" timestamp="2026-11-19T14:07:30" tests="3" time="4.520" failures="0">
+    <testcase name="Panel del técnico: menú e Inicio S05-TC-307 el menú agrupa las secciones y lo no listo va desactivado con «Próximamente»" time="1.732" classname="S05-TC-307 el menú agrupa las secciones y lo no listo va desactivado con «Próximamente»">
+    </testcase>
+    <testcase name="Panel del técnico: menú e Inicio S05-TC-308 una oferta nueva aparece en el Inicio con su anillo y se acepta desde la tarjeta" time="1.467" classname="S05-TC-308 una oferta nueva aparece en el Inicio con su anillo y se acepta desde la tarjeta">
+    </testcase>
+    <testcase name="Panel del técnico: menú e Inicio S05-TC-309 los indicadores, Mi día y el progreso del perfil salen del servidor" time="1.256" classname="S05-TC-309 los indicadores, Mi día y el progreso del perfil salen del servidor">
+    </testcase>
+  </testsuite>
+</testsuites>

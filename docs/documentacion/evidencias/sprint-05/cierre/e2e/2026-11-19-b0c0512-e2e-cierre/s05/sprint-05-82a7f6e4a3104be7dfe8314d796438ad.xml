@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="7.057" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:47" tests="0" file="cypress/e2e/sprint-05/mis-solicitudes.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Mis solicitudes completo" timestamp="2026-11-19T14:06:47" tests="2" time="7.056" failures="0">
+    <testcase name="Mis solicitudes completo S05-TC-178 cuatro pestañas con contador, tarjetas con estado y búsqueda sin resultados" time="2.489" classname="S05-TC-178 cuatro pestañas con contador, tarjetas con estado y búsqueda sin resultados">
+    </testcase>
+    <testcase name="Mis solicitudes completo S05-TC-179 cancelar con motivo mueve la solicitud a Canceladas y no pide nada más" time="4.518" classname="S05-TC-179 cancelar con motivo mueve la solicitud a Canceladas y no pide nada más">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="10.274" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:44" tests="0" file="cypress/e2e/sprint-02/technician.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Técnico S2 sobre el panel nuevo" timestamp="2026-11-19T14:06:44" tests="5" time="10.272" failures="0">
+    <testcase name="Técnico S2 sobre el panel nuevo S02-TC-071 sube una foto y publica un trabajo nuevo en el portafolio" time="2.748" classname="S02-TC-071 sube una foto y publica un trabajo nuevo en el portafolio">
+    </testcase>
+    <testcase name="Técnico S2 sobre el panel nuevo S02-TC-072 cancelar no retira el trabajo y confirmar lo quita con su alerta" time="1.525" classname="S02-TC-072 cancelar no retira el trabajo y confirmar lo quita con su alerta">
+    </testcase>
+    <testcase name="Técnico S2 sobre el panel nuevo S02-TC-073 la disponibilidad pide al menos una franja y lo guardado se mantiene al recargar" time="2.276" classname="S02-TC-073 la disponibilidad pide al menos una franja y lo guardado se mantiene al recargar">
+    </testcase>
+    <testcase name="Técnico S2 sobre el panel nuevo S02-TC-074 una tarifa inválida no se envía y la tarifa corregida se guarda con su formato" time="1.763" classname="S02-TC-074 una tarifa inválida no se envía y la tarifa corregida se guarda con su formato">
+    </testcase>
+    <testcase name="Técnico S2 sobre el panel nuevo S02-TC-075 las zonas piden al menos un distrito y lo guardado se mantiene al recargar" time="1.858" classname="S02-TC-075 las zonas piden al menos un distrito y lo guardado se mantiene al recargar">
+    </testcase>
+  </testsuite>
+</testsuites>

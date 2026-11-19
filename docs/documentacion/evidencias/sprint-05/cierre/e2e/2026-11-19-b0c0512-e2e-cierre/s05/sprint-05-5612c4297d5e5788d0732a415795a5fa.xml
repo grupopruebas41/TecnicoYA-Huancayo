@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="10.426" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:19" tests="0" file="cypress/e2e/sprint-05/accesibilidad.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Accesibilidad, bienvenida y tutorial" timestamp="2026-11-19T14:06:19" tests="3" time="10.424" failures="0">
+    <testcase name="Accesibilidad, bienvenida y tutorial S05-TC-250 la bienvenida guarda las preferencias y no vuelve a aparecer al recargar" time="3.800" classname="S05-TC-250 la bienvenida guarda las preferencias y no vuelve a aparecer al recargar">
+    </testcase>
+    <testcase name="Accesibilidad, bienvenida y tutorial S05-TC-251 los ajustes vuelven en otra sesión sin la copia local" time="3.750" classname="S05-TC-251 los ajustes vuelven en otra sesión sin la copia local">
+    </testcase>
+    <testcase name="Accesibilidad, bienvenida y tutorial S05-TC-252 «Cómo funciona» repite el tutorial y «Saltar al contenido» funciona con teclado" time="2.768" classname="S05-TC-252 «Cómo funciona» repite el tutorial y «Saltar al contenido» funciona con teclado">
+    </testcase>
+  </testsuite>
+</testsuites>
