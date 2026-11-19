@@ -1,0 +1,15 @@
+# S05-TC-377 en rojo antes de redirectGuestsTo (rama feature/pimentel/e2e-cierre/s05, sobre 93f4b1a). Pest, slot A.
+   FAIL  Tests\Feature\Sprint05\ApiGuestTest
+  ⨯ it S05-TC-377 sin sesión y sin pedir JSON, la API responde 401 en JSON y nunca 500 (no hay ruta «login» a… 101.02s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ApiGuestTest > it S05-TC-377 sin sesión y sin pedir JSON, la API responde 401 en J…   
+  Expected response status code [401] but received 500.
+Failed asserting that 500 is identical to 401.
+The following exception occurred during the last request:
+Symfony\Component\Routing\Exception\RouteNotFoundException: Route [login] not defined. in C:\Users\James\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\vendor\laravel\framework\src\Illuminate\Routing\UrlGenerator.php:548
+Stack trace:
+#0 C:\Users\James\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\vendor\laravel\framework\src\Illuminate\Foundation\helpers.php(870): Illuminate\Routing\UrlGenerator->route('login', Array, true)
+#1 C:\Users\James\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\vendor\laravel\framework\src\Illuminate\Foundation\Configuration\ApplicationBuilder.php(278): route('login')
+#2 [internal function]: Illuminate\Foundation\Configuration\ApplicationBuilder->Illuminate\Foundation\Configuration\{closure}(Object(Illuminate\Http\Request))
+#3 C:\Users\James\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\vendor\laravel\framework\src\Illuminate\Auth\Middleware\Authenticate.php(117): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#4 C:\Users\James\Documents\ChatGPT\Software TecnicoYa-Huancayo\backend\api\vendor\laravel\framework\src\Illuminate\Auth\Middleware\Authenticate.php(104): Illuminate\Auth\Middleware\Authenticate->redirectTo(Object(Illuminate\Http\Request))
