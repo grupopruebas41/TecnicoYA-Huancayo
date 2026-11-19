@@ -153,6 +153,29 @@ function firstCollapsed(modern, user) {
   return store.get('localStorage', 'tecnicoya.panel.collapsed') === '1';
 }
 
+/** Clases del contenedor: contraído (salvo durante el tutorial, que lo expande) y en tutorial. */
+function shellClass(collapsed, tourMode) {
+  if (tourMode) return 'panel-shell is-touring';
+  return collapsed ? 'panel-shell is-collapsed' : 'panel-shell';
+}
+
+/** Abre una sección si el panel la tiene; si no, no hay acceso (undefined o null, como antes). */
+function sectionHandler(sections, id, go) {
+  if (!sections.some(section => section.id === id)) return id === 'profile' ? null : undefined;
+  return () => go(id);
+}
+
+/** Marca y rol; en el panel moderno, el ☰ que contrae el menú (Fase 4). */
+function BrandRow({modern, collapsed, roleLabel, onToggle}) {
+  return <div className={'panel-brand-row' + (modern ? ' is-modern' : '')}>
+    {modern && <button type="button" className="panel-icon-button panel-brand-toggle" aria-expanded={!collapsed}
+      aria-label={collapsed ? 'Expandir menú' : 'Contraer menú'} data-tooltip={collapsed ? 'Expandir menú' : undefined}
+      onClick={onToggle}><Icon name="menu"/></button>}
+    <h1 className="panel-brand"><span className="panel-monogram" aria-hidden="true">t</span>
+      <span className="panel-label">TécnicoYa<small>{roleLabel}</small></span></h1>
+  </div>;
+}
+
 /** Grupos del menú con su título (Bloque C); las secciones sin grupo van sueltas. */
 function NavGroups({sections, renderItem}) {
   return groupsOf(sections.filter(section => section.nav !== false)).map(group => (group.title
@@ -241,7 +264,8 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     const target = notificationTarget?.(item);
     if (target) go(target[0], target[1] || null);
   }
-  const hasNotificationsPage = sections.some(section => section.id === 'notifications');
+  const openAllNotifications = sectionHandler(sections, 'notifications', go);
+  const openProfile = sectionHandler(sections, 'profile', go);
   const navButton = section => <NavItem key={section.id} section={section} badge={badges?.[section.id]} collapsed={collapsed}
     currentId={current?.id} locked={locked} onGo={go}/>;
   function toggleCollapsed() {
@@ -251,21 +275,14 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     if (modern) saveCollapsed(user, next, onUserChange);
   }
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
-  const profile = sections.find(section => section.id === 'profile');
   return <AccessibilityContext.Provider value={{prefs: a11y[0], update: a11y[1]}}>
   <ShellContext.Provider value={{setTourMode, setTourDrawer, openAccount: modern ? () => openAccount() : undefined}}>
-  <div className={'panel-shell' + (collapsed && !tourMode ? ' is-collapsed' : '') + (tourMode ? ' is-touring' : '')} data-cy={`portal-${role}`}>
+  <div className={shellClass(collapsed, tourMode)} data-cy={`portal-${role}`}>
     {/* Fase 5 (WCAG 2.4.1): salta al contenido sin cambiar el hash, que usa el enrutado de la cuenta. */}
     {modern && <a className="skip-link" href="#contenido" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Saltar al contenido</a>}
     <aside ref={sidebar} className={'panel-sidebar' + (drawer || tourDrawer ? ' is-open' : '')}>
       {/* Encabezado principal de la página: la marca y el rol (la sección activa es el h2 de su contenido). */}
-      <div className={'panel-brand-row' + (modern ? ' is-modern' : '')}>
-        {modern && <button type="button" className="panel-icon-button panel-brand-toggle" aria-expanded={!collapsed}
-          aria-label={collapsed ? 'Expandir menú' : 'Contraer menú'} data-tooltip={collapsed ? 'Expandir menú' : undefined}
-          onClick={toggleCollapsed}><Icon name="menu"/></button>}
-        <h1 className="panel-brand"><span className="panel-monogram" aria-hidden="true">t</span>
-          <span className="panel-label">TécnicoYa<small>{roleLabel}</small></span></h1>
-      </div>
+      <BrandRow modern={modern} collapsed={collapsed} roleLabel={roleLabel} onToggle={toggleCollapsed}/>
       <nav ref={nav} aria-label={navLabel}>
         <NavGroups sections={sections} renderItem={navButton}/>
       </nav>
@@ -280,10 +297,10 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
         <div className="panel-actions">
           {modern && live !== null && <ConnectionStatus live={live}/>}
           <NotificationBell key={bellKey} userId={user.id} role={role} onConnection={modern ? setLive : undefined}
-            onOpen={openNotification} onOpenAll={hasNotificationsPage ? () => go('notifications') : undefined}/>
+            onOpen={openNotification} onOpenAll={openAllNotifications}/>
           {modern
             ? <ModernActions a11y={a11y} reader={reader} user={user} account={account} avatarButton={avatarButton} onAccount={openAccount}/>
-            : <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>}
+            : <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={openProfile} onLogout={onLogout} busy={busy}/>}
         </div>
       </header>
       <PanelNotices a11yNotice={a11y[2]} notice={notice} locked={locked} themeNotice={themeNotice}/>
