@@ -8,6 +8,8 @@ const env = parseEnv(readFileSync(file, 'utf8'));
 const origin = 'http://127.0.0.1:9000';
 const key = 'tecnicoya-huancayo';
 let password = env.SONAR_ADMIN_PASSWORD;
+// --renovar-token: el token de análisis dura 30 días; con esta opción se genera otro y reemplaza al vencido (QUALITY.md).
+const renew = process.argv.includes('--renovar-token');
 function save() {
   writeFileSync(file, Object.entries(env).map(([name, value]) => `${name}=${value}`).join('\n') + '\n');
 }
@@ -32,10 +34,10 @@ try {
   const project = await fetch(`${origin}/api/components/show?component=${key}`, {headers: auth});
   if (project.status === 404) await post('projects/create', {project: key, name: 'TecnicoYa Huancayo', visibility: 'private'});
   else if (!project.ok) throw new Error(`No se pudo comprobar el proyecto: HTTP ${project.status}.`);
-  if (!env.SONAR_TOKEN) {
+  if (!env.SONAR_TOKEN || renew) {
     const expirationDate = new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10);
     const result = await post('user_tokens/generate', {
-      name: `sprint01-${Date.now()}`, type: 'PROJECT_ANALYSIS_TOKEN', projectKey: key, expirationDate,
+      name: `analisis-${Date.now()}`, type: 'PROJECT_ANALYSIS_TOKEN', projectKey: key, expirationDate,
     });
     env.SONAR_TOKEN = result.token; save();
   }
