@@ -6,6 +6,7 @@
 // slot A y la conexión abierta sigue en la base real de pruebas, cuyas escrituras revierte RefreshDatabase.
 use App\Modules\CNotifications\Events\OutboxBroadcast;
 use App\Shared\Testing\E2EClock;
+use Illuminate\Support\Carbon as LaravelCarbon;
 use Illuminate\Support\Facades\Event;
 use Carbon\CarbonImmutable;
 use Database\Seeders\SeedingRefused;
@@ -102,6 +103,32 @@ it('S04-TC-131 adelanta y repone el reloj del servidor del slot', function () {
         ->and($shifted)->toBeGreaterThanOrEqual(689)->toBeLessThanOrEqual(691)
         ->and(E2EClock::offset())->toBe(0)
         ->and(fn () => E2EClock::shift('+10x'))->toThrow(InvalidArgumentException::class);
+});
+
+it('S05-TC-378 el reloj E2E fija un instante (no un closure), con el desfase, y la cola lo renueva en cada vuelta', function () {
+    // Cierre S4-S5: en el workflow e2e-cierre la API se caía (SIGSEGV, código 139). Con el closure como hora de prueba,
+    // StartSession fallaba en Carbon::rawAddUnit, el manejo del error volvía a pedir la hora y PHP se quedaba sin pila.
+    // Una hora fija es el camino que usan todas las pruebas (travelTo); la cola la renueva en cada vuelta (Looping).
+    s04Env('TECNICOYA_E2E_CLOCK', '1');
+    E2EClock::shift('+10m');
+    E2EClock::install();
+    try {
+        $real = (new DateTimeImmutable('now'))->getTimestamp();
+        expect(LaravelCarbon::getTestNow())->toBeInstanceOf(Carbon\CarbonInterface::class);
+        $mutable = LaravelCarbon::now()->addMinutes(5);
+        $immutable = CarbonImmutable::now()->addMinutes(5);
+        expect($mutable)->toBeInstanceOf(LaravelCarbon::class)
+            ->and($mutable->getTimestamp() - $real)->toBeGreaterThanOrEqual(898)->toBeLessThanOrEqual(902)
+            ->and($immutable->getTimestamp() - $real)->toBeGreaterThanOrEqual(898)->toBeLessThanOrEqual(902)
+            ->and(now()->getTimestamp() - $real)->toBeGreaterThanOrEqual(598)->toBeLessThanOrEqual(602);
+        // Un desfase nuevo (cy.task serverClock) vale para la cola desde su siguiente vuelta.
+        E2EClock::shift('+5m');
+        event(new Illuminate\Queue\Events\Looping('database', 'default'));
+        expect(now()->getTimestamp() - $real)->toBeGreaterThanOrEqual(898)->toBeLessThanOrEqual(902);
+    } finally {
+        E2EClock::shift('reset');
+        LaravelCarbon::setTestNow();
+    }
 });
 
 it('S04-TC-132 abre una ronda dirigida al técnico indicado y vacía la cola', function () {

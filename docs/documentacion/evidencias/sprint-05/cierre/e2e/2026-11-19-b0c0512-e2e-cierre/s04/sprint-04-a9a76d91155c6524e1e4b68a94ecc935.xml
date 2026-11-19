@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="69.850" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:14" tests="3" file="cypress/e2e/sprint-04/realtime.cy.js" time="69.849" failures="0">
+    <testcase name="S04-TC-093 oferta por Reverb sin recargar" time="3.106" classname="S04-TC-093 oferta por Reverb sin recargar">
+    </testcase>
+    <testcase name="S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una vez al reconectar [TC-055]" time="33.259" classname="S04-TC-094 el mismo evento publicado dos veces sin conexión se muestra una vez al reconectar [TC-055]">
+    </testcase>
+    <testcase name="S04-TC-095 reconexión recupera por API" time="32.842" classname="S04-TC-095 reconexión recupera por API">
+    </testcase>
+  </testsuite>
+</testsuites>

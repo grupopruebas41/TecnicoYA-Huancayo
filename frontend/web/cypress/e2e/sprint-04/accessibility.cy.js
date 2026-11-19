@@ -31,11 +31,12 @@ it("S04-TC-096 teclado y foco en confirmación", () => {
       },
     }),
   );
-  cy.get("dialog")
+  // Fase T2: el diálogo de rechazo pide un motivo opcional; el foco entra en ese campo y Cancelar lo cierra.
+  cy.get("dialog[open]")
     .should("be.visible")
-    .contains("button", "Cancelar")
-    .should("have.focus")
-    .click();
+    .find("textarea")
+    .should("have.focus");
+  cy.get("dialog[open]").contains("button", "Cancelar").click();
   cy.get("@freshRound").then(({offer_id}) => cy.get('[aria-label="Oferta ' + offer_id + '"]')).contains("button", "Rechazar").should("have.focus");
   cy.get("[role=timer]").first().should("have.attr", "aria-live", "off");
 });

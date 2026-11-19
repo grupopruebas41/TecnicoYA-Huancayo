@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="8.662" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:16" tests="2" file="cypress/e2e/sprint-04/evidence.cy.js" time="8.662" failures="0">
+    <testcase name="S04-TC-098 foto no adjunta solo se retira al confirmar" time="4.228" classname="S04-TC-098 foto no adjunta solo se retira al confirmar">
+    </testcase>
+    <testcase name="S04-TC-099 respuesta perdida no duplica creación" time="4.059" classname="S04-TC-099 respuesta perdida no duplica creación">
+    </testcase>
+  </testsuite>
+</testsuites>

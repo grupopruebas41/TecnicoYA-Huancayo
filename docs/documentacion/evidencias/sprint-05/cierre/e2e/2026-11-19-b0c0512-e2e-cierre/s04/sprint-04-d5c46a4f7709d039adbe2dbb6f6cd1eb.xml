@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="3.250" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:12" tests="1" file="cypress/e2e/sprint-04/direct.cy.js" time="3.248" failures="0">
+    <testcase name="S04-TC-090 directa vencida requiere autorizar alternativas" time="3.022" classname="S04-TC-090 directa vencida requiere autorizar alternativas">
+    </testcase>
+  </testsuite>
+</testsuites>

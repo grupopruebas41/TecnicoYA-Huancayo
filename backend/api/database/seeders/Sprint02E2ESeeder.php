@@ -57,6 +57,8 @@ final class Sprint02E2ESeeder extends Seeder
             $this->announcement($admin->id, 'Aviso E2E publicado', 'published');
             $this->announcement($admin->id, 'Aviso E2E en borrador', 'draft');
         });
+        // Cierre S4-S5: las cuentas E2E ya vieron la bienvenida y el tutorial (E2EFirstVisits).
+        E2EFirstVisits::markSeen();
     }
 
     private function technician(string $suffix, string $name, string $status, string $verification): object

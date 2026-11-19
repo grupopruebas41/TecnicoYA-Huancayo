@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withBroadcasting(__DIR__.'/../routes/channels.php', ['prefix' => 'api/v1', 'middleware' => ['api', 'auth:sanctum', 'account.active']])
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
+        // Cierre S4-S5 (S05-TC-377): esta API no tiene página de inicio de sesión. Sin esto, un invitado que no pide JSON
+        // hacía que Laravel buscara la ruta «login» y respondiera 500; ahora recibe 401 en JSON.
+        $middleware->redirectGuestsTo(fn () => null);
         $middleware->alias([
             'account.active' => EnsureAccountIsActive::class,
             'permission' => RequirePermission::class,

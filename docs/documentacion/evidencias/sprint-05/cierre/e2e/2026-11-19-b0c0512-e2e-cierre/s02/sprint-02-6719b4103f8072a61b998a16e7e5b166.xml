@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="7.066" tests="4" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:32" tests="0" file="cypress/e2e/sprint-02/catalog-admin.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Catálogo S2" timestamp="2026-11-19T14:06:32" tests="4" time="7.063" failures="0">
+    <testcase name="Catálogo S2 S02-TC-061 crear subcategoría con foto" time="2.291" classname="S02-TC-061 crear subcategoría con foto">
+    </testcase>
+    <testcase name="Catálogo S2 S02-TC-062 duplicado muestra error sin falso éxito" time="1.674" classname="S02-TC-062 duplicado muestra error sin falso éxito">
+    </testcase>
+    <testcase name="Catálogo S2 S02-TC-063 desactivar y activar subcategoría" time="1.607" classname="S02-TC-063 desactivar y activar subcategoría">
+    </testcase>
+    <testcase name="Catálogo S2 S02-TC-064 especialidad vacía no envía POST" time="1.421" classname="S02-TC-064 especialidad vacía no envía POST">
+    </testcase>
+  </testsuite>
+</testsuites>

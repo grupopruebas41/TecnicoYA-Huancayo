@@ -5,10 +5,15 @@ export const wizard = () => cy.get('[aria-label="Nueva solicitud"]');
 export const observe = (method, path, alias) =>
   cy.intercept(method, api() + "/api/v1" + path).as(alias);
 // Fase 2: abre el detalle desde su tarjeta, que puede estar en cualquiera de las cuatro pestañas.
-const BOARD_TABS = ["Activas", "Programadas", "Completadas", "Canceladas"];
+// Cierre S4-S5: la búsqueda empieza en «Programadas» y cada pestaña espera la respuesta del tablero. Antes se miraba el
+// texto apenas aria-busy era false, que también lo es antes de la primera carga: la tarjeta aún no estaba y la solicitud
+// «no aparecía en ninguna pestaña». «Activas» ya está elegida al entrar, así que se vuelve a ella desde otra pestaña.
+const BOARD_TABS = ["Programadas", "Activas", "Completadas", "Canceladas"];
 export function openCard(id, index = 0) {
   const label = "Ver detalle de la solicitud #" + id;
+  cy.intercept("GET", "**/api/v1/client/requests?*").as("board" + index);
   cy.contains("[role=tab]", BOARD_TABS[index]).click();
+  cy.wait("@board" + index);
   cy.get('[aria-label="Mis solicitudes"] [role=tabpanel]').should("have.attr", "aria-busy", "false");
   cy.get('[aria-label="Mis solicitudes"]').then(($page) => {
     if ($page.text().includes(label)) cy.contains("button", label).click();

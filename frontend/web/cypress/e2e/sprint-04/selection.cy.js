@@ -1,7 +1,7 @@
 import { openCard } from "../sprint-03/helpers";
 beforeEach(() => cy.task("serverClock", "reset"));
 afterEach(() => cy.task("serverClock", "reset"));
-import { login, openRequest, observe, read, apiWrite, openMyRequests } from "./helpers";
+import { login, openRequest, observe, read, apiWrite, openMyRequests, historyStatus } from "./helpers";
 import { switchAccount, loginClient, wizard, send, sendOrder } from "../sprint-03/helpers";
 describe("S4 selección", () => {
   it("S04-TC-087 cliente sigue la búsqueda hasta dos aceptaciones", () => {
@@ -95,8 +95,10 @@ describe("S4 selección", () => {
         expect(body.data.request.address).to.be.null;
         apiWrite("POST", "/offers/" + offer_id + "/response", {decision:"accept", expected_version:body.data.version});
       });
-      cy.contains("button", "Actualizar ofertas").click();
-      cy.get('[aria-label="Oferta ' + offer_id + '"]').should("contain", "Aceptada").and("not.contain", "Calle sintética E2E de tiempo real");
+      // Fase T3: la aceptada está en el Historial de Ofertas, sin la dirección.
+      cy.reload();
+      historyStatus(offer_id, "Aceptada");
+      cy.get('[aria-label="Oferta ' + offer_id + '"]').should("not.contain", "Calle sintética E2E de tiempo real");
     });
     switchAccount("e2e-client-direct@example.test");
     cy.get("@privateRound").then(({request_id, offer_id}) =>
@@ -108,7 +110,9 @@ describe("S4 selección", () => {
     cy.visit("/#cuenta");
     cy.get("@privateRound").then(({offer_id}) => {
       read("/offers/" + offer_id).its("body.data.request.address").should("eq", "Calle sintética E2E de tiempo real");
-      cy.get('[aria-label="Oferta ' + offer_id + '"]').should("contain", "Calle sintética E2E de tiempo real");
+      // Fase T3: elegido el técnico, la dirección se ve en Mis trabajos.
+      cy.get('nav[aria-label="Gestión del técnico"]').contains("button", "Mis trabajos").click();
+      cy.contains(".tech-address", "Calle sintética E2E de tiempo real").should("be.visible");
     });
   });
 });

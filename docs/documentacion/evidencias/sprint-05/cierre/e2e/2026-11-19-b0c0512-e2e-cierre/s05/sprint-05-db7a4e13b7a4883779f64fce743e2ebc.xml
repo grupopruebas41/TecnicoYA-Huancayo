@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="14.815" tests="4" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:30" tests="0" file="cypress/e2e/sprint-05/buscar-perfil.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Buscar técnicos y perfil del técnico" timestamp="2026-11-19T14:06:30" tests="4" time="14.815" failures="0">
+    <testcase name="Buscar técnicos y perfil del técnico S05-TC-211 especialidad, «Disponible hoy» y orden por precio filtran con la API real" time="3.483" classname="S05-TC-211 especialidad, «Disponible hoy» y orden por precio filtran con la API real">
+    </testcase>
+    <testcase name="Buscar técnicos y perfil del técnico S05-TC-212 el favorito se guarda en el servidor y sigue marcado al volver a entrar" time="3.581" classname="S05-TC-212 el favorito se guarda en el servidor y sigue marcado al volver a entrar">
+    </testcase>
+    <testcase name="Buscar técnicos y perfil del técnico S05-TC-213 el perfil trae las seis secciones y el visor del portafolio se maneja con teclado" time="2.855" classname="S05-TC-213 el perfil trae las seis secciones y el visor del portafolio se maneja con teclado">
+    </testcase>
+    <testcase name="Buscar técnicos y perfil del técnico S05-TC-214 lo que el técnico declara en «qué incluye» lo ve el cliente en el perfil" time="4.805" classname="S05-TC-214 lo que el técnico declara en «qué incluye» lo ve el cliente en el perfil">
+    </testcase>
+  </testsuite>
+</testsuites>

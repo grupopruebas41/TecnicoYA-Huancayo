@@ -10,7 +10,8 @@ describe("Panel del técnico: menú e Inicio", () => {
   it("S05-TC-307 el menú agrupa las secciones y lo no listo va desactivado con «Próximamente»", () => {
     login("e2e-technician-frio");
     ["Trabajo", "Mi negocio", "Mi desempeño", "Ayuda"].forEach((group) => nav().contains(".panel-nav-heading", group));
-    nav().contains(".panel-nav-item", "Mis trabajos").should("have.attr", "aria-disabled", "true").and("contain", "Próximamente");
+    // Fase T3: «Mis trabajos» ya funciona; lo que sigue en «Próximamente» es Calificaciones (S6) y Ganancias (S8).
+    nav().contains(".panel-nav-item", "Calificaciones").should("have.attr", "aria-disabled", "true").and("contain", "Próximamente");
     nav().contains("button", "Perfil profesional").click();
     cy.contains("h2", "Perfil profesional").should("be.visible");
   });
@@ -30,6 +31,8 @@ describe("Panel del técnico: menú e Inicio", () => {
     cy.intercept("GET", "**/api/v1/technicians/me/home").as("home");
     login("e2e-technician-frio");
     cy.wait("@home").its("response.statusCode").should("eq", 200);
+    // El login del S4 deja al técnico en Ofertas; los indicadores están en el Inicio.
+    nav().contains("button", "Inicio").click();
     cy.contains("h3", "Tu actividad").should("be.visible");
     cy.get(".tech-slot").should("have.length", 3);
     cy.get('[role=progressbar]').invoke("attr", "aria-valuenow").then(Number).should("be.within", 0, 100);

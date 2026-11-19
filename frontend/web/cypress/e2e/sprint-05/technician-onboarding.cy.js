@@ -20,7 +20,7 @@ describe("Panel del técnico: primera visita, avisos y tutorial", () => {
   it("S05-TC-369 la primera visita muestra la bienvenida, guarda los avisos, sigue con el tutorial y deja «Primeros pasos»", () => {
     cy.intercept("PUT", "**/api/v1/me/preferences").as("preferences");
     firstLogin("e2e-technician-nuevo");
-    cy.contains('[role="dialog"]', "¿Cómo prefieres usar TécnicoYa?").within(() => {
+    cy.contains("dialog[open], [role=dialog]", "¿Cómo prefieres usar TécnicoYa?").within(() => {
       cy.contains("button", "Avisos de ofertas más notorios").click().should("have.attr", "aria-pressed", "true");
       cy.contains("button", "Guardar y continuar").click();
     });
@@ -33,7 +33,7 @@ describe("Panel del técnico: primera visita, avisos y tutorial", () => {
     cy.wait("@preferences").its("request.body").should("deep.equal", { tour_completed: true });
     cy.get(".tech-first-steps").should("be.visible").and("contain", "0 de 4");
     cy.reload();
-    cy.contains('[role="dialog"]', "¿Cómo prefieres usar TécnicoYa?").should("not.exist");
+    cy.contains("dialog[open], [role=dialog]", "¿Cómo prefieres usar TécnicoYa?").should("not.exist");
   });
 
   it("S05-TC-370 la pestaña «Avisos» guarda un interruptor con su alerta", () => {

@@ -28,6 +28,8 @@ final class Sprint05E2ESeeder extends Seeder
             $this->demoTechnicians();
             $this->premiumClient();
             $this->verificationDocuments();
+            // Cierre S4-S5: todas las cuentas E2E ya vieron la bienvenida (D-105, en users); firstVisits() deja de cero a e2e-technician-nuevo.
+            E2EFirstVisits::markSeen();
             $this->firstVisits();
         });
     }
