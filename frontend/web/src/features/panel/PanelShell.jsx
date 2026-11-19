@@ -141,6 +141,42 @@ function SidebarFoot({modern, collapsed, disabled, onToggle, onLogout}) {
   </div>;
 }
 
+/** Sección con la que abre el panel: la pedida al entrar, la última de esta pestaña o la primera. */
+function firstSection(sections, initialSection, saved) {
+  if (sections.some(section => section.id === initialSection)) return initialSection;
+  return sections.some(section => section.id === saved) ? saved : sections[0]?.id;
+}
+
+/** Menú contraído: el cliente lo trae de su cuenta (Fase 4); si no, se recuerda en este equipo. */
+function firstCollapsed(modern, user) {
+  if (modern && typeof user.sidebar_collapsed === 'boolean') return user.sidebar_collapsed;
+  return store.get('localStorage', 'tecnicoya.panel.collapsed') === '1';
+}
+
+/** Grupos del menú con su título (Bloque C); las secciones sin grupo van sueltas. */
+function NavGroups({sections, renderItem}) {
+  return groupsOf(sections.filter(section => section.nav !== false)).map(group => (group.title
+    ? <div key={group.title} className="panel-nav-group" role="group" aria-labelledby={`panel-group-${group.key}`}>
+      <p id={`panel-group-${group.key}`} className="panel-nav-heading"><span className="panel-label">{group.title}</span></p>
+      {group.items.map(renderItem)}
+    </div>
+    : group.items.map(renderItem)));
+}
+
+/** Panel moderno: leer en voz alta (si está activo), «Aa» y el avatar que abre «Tu cuenta». */
+function ModernActions({a11y, reader, user, account, avatarButton, onAccount}) {
+  return <>
+    {a11y[0].read_aloud && canSpeak() && <button type="button" className="panel-icon-button panel-read-button"
+      aria-pressed={reader[0]} aria-label={reader[0] ? 'Detener la lectura' : 'Leer la pantalla en voz alta'} onClick={() => reader[1]()}>
+      <Icon name="announcements"/></button>}
+    <QuickAccessibility prefs={a11y[0]} onChange={a11y[1]} reader={reader} onMore={() => onAccount('accesibilidad')}/>
+    <button ref={avatarButton} type="button" className="panel-avatar-button" aria-label={`Cuenta de ${user.name}`}
+      aria-haspopup="dialog" aria-expanded={account} onClick={() => onAccount()}>
+      {user.avatar_url ? <img src={user.avatar_url} alt=""/> : <span aria-hidden="true">{initials(user)}</span>}
+    </button>
+  </>;
+}
+
 /** Avisos bajo la barra superior: accesibilidad, error, guardado en curso y tema. */
 function PanelNotices({a11yNotice, notice, locked, themeNotice}) {
   if (!(notice || themeNotice || locked || a11yNotice)) return null;
@@ -167,13 +203,8 @@ function PanelNotices({a11yNotice, notice, locked, themeNotice}) {
 export default function PanelShell({user, role, roleLabel, navLabel, sections, onLogout, onUserChange, busy, notice, badges, onNavigate,
   initialSection, initialIntent = null, locked = false, bellKey, modern = false, onExpired, notificationTarget, children}) {
   const sectionKey = `tecnicoya.panel.${user.id}.section`;
-  const [active, setActive] = useState(() => {
-    const saved = store.get('sessionStorage', sectionKey);
-    if (sections.some(section => section.id === initialSection)) return initialSection;
-    return sections.some(section => section.id === saved) ? saved : sections[0]?.id;
-  });
-  const [collapsed, setCollapsed] = useState(() => (modern && typeof user.sidebar_collapsed === 'boolean')
-    ? user.sidebar_collapsed : store.get('localStorage', 'tecnicoya.panel.collapsed') === '1');
+  const [active, setActive] = useState(() => firstSection(sections, initialSection, store.get('sessionStorage', sectionKey)));
+  const [collapsed, setCollapsed] = useState(() => firstCollapsed(modern, user));
   const [account, setAccount] = useState(false);
   // «Más ajustes en tu cuenta» del panel «Aa» abre la cuenta directamente en Accesibilidad.
   const [accountTab, setAccountTab] = useState('cuenta');
@@ -205,6 +236,12 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
     setActive(id); setIntent(nextIntent); setVisit(visit + 1); store.set('sessionStorage', sectionKey, id); setDrawer(false);
     onNavigate?.(id);
   }
+  // Un aviso de la campana lleva a su sección (y a lo que debe abrir); «Ver todas» va a Notificaciones si existe.
+  function openNotification(item) {
+    const target = notificationTarget?.(item);
+    if (target) go(target[0], target[1] || null);
+  }
+  const hasNotificationsPage = sections.some(section => section.id === 'notifications');
   const navButton = section => <NavItem key={section.id} section={section} badge={badges?.[section.id]} collapsed={collapsed}
     currentId={current?.id} locked={locked} onGo={go}/>;
   function toggleCollapsed() {
@@ -230,12 +267,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
           <span className="panel-label">TécnicoYa<small>{roleLabel}</small></span></h1>
       </div>
       <nav ref={nav} aria-label={navLabel}>
-        {groupsOf(sections.filter(section => section.nav !== false)).map(group => group.title
-          ? <div key={group.title} className="panel-nav-group" role="group" aria-labelledby={`panel-group-${group.key}`}>
-            <p id={`panel-group-${group.key}`} className="panel-nav-heading"><span className="panel-label">{group.title}</span></p>
-            {group.items.map(section => navButton(section))}
-          </div>
-          : group.items.map(section => navButton(section)))}
+        <NavGroups sections={sections} renderItem={navButton}/>
       </nav>
       <SidebarFoot modern={modern} collapsed={collapsed} disabled={busy || locked} onToggle={toggleCollapsed} onLogout={onLogout}/>
     </aside>
@@ -248,17 +280,9 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
         <div className="panel-actions">
           {modern && live !== null && <ConnectionStatus live={live}/>}
           <NotificationBell key={bellKey} userId={user.id} role={role} onConnection={modern ? setLive : undefined}
-            onOpen={item => { const target = notificationTarget?.(item); if (target) go(target[0], target[1] || null); }}
-            onOpenAll={sections.some(section => section.id === 'notifications') ? () => go('notifications') : undefined}/>
-          {modern && a11y[0].read_aloud && canSpeak() && <button type="button" className="panel-icon-button panel-read-button"
-            aria-pressed={reader[0]} aria-label={reader[0] ? 'Detener la lectura' : 'Leer la pantalla en voz alta'} onClick={() => reader[1]()}>
-            <Icon name="announcements"/></button>}
-          {modern && <QuickAccessibility prefs={a11y[0]} onChange={a11y[1]} reader={reader} onMore={() => openAccount('accesibilidad')}/>}
+            onOpen={openNotification} onOpenAll={hasNotificationsPage ? () => go('notifications') : undefined}/>
           {modern
-            ? <button ref={avatarButton} type="button" className="panel-avatar-button" aria-label={`Cuenta de ${user.name}`}
-              aria-haspopup="dialog" aria-expanded={account} onClick={() => openAccount()}>
-              {user.avatar_url ? <img src={user.avatar_url} alt=""/> : <span aria-hidden="true">{initials(user)}</span>}
-            </button>
+            ? <ModernActions a11y={a11y} reader={reader} user={user} account={account} avatarButton={avatarButton} onAccount={openAccount}/>
             : <AvatarMenu user={user} theme={theme} onTheme={toggle} onProfile={profile ? () => go('profile') : null} onLogout={onLogout} busy={busy}/>}
         </div>
       </header>
