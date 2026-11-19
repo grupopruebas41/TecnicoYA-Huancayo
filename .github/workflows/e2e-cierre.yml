@@ -69,6 +69,10 @@ jobs:
           php-version: '8.2'
           extensions: pdo_mysql, pcntl
           coverage: none
+          # setup-php activa el JIT de opcache por defecto. Con el JIT, el servidor de desarrollo de PHP rechazaba objetos
+          # de su propia clase («must be of type Carbon\CarbonImmutable, Carbon\CarbonImmutable given») y terminaba
+          # con SIGSEGV (código 139) a mitad de las Cypress del S4 y del S5. En local (XAMPP) el JIT no está activo.
+          ini-values: opcache.jit=disable, opcache.jit_buffer_size=0
           tools: composer:v2
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
