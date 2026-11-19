@@ -1220,6 +1220,10 @@
     translate: none !important;
   }
   .about-page .ty-coverflow-card.is-current { transform: translateX(0) !important; }
+  /* Cierre S4-S5 (S05-TC-379): las tarjetas del carrusel de subcategorías tienen posición absoluta y se centran con
+     translate(-50%, -50%); sin esto, la regla general las corría y la central tapaba los controles. Sin rotación ni 3D. */
+  .landing-page .ty-product-stage.is-reduced .ty-product-card { transform: translate(-50%, -50%) translateX(var(--card-x)) scale(var(--card-scale)) !important; }
+  .landing-page .ty-product-stage.is-reduced .ty-product-card.is-center { transform: translate(-50%, -50%) translateX(var(--card-x)) scale(1) !important; }
   .about-page .ty-coverflow-card.side--1 { transform: translateX(-65%) scale(.78) !important; }
   .about-page .ty-coverflow-card.side-1 { transform: translateX(65%) scale(.78) !important; }
 }
