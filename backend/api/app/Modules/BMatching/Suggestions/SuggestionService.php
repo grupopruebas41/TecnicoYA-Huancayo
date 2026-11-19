@@ -41,7 +41,7 @@ final class SuggestionService
     {
         $catalog = $this->catalog();
         try {
-            $ids = Cache::remember('suggestions:ai:'.sha1($normalized), now()->addHours((int) config('ai.cache_hours')),
+            $ids = Cache::remember('suggestions:ai:'.hash('sha256', $normalized), now()->addHours((int) config('ai.cache_hours')),
                 fn () => $this->ai->suggest($problem, array_values(array_map(fn (object $row) => ['id' => $row->id,
                     'name' => $row->specialty_name.' › '.$row->name], $catalog))));
         } catch (Throwable $error) {

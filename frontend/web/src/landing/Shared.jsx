@@ -207,14 +207,15 @@ function LegalDialog({ kind, onClose }) {
     close.current?.focus();
   }, [kind]);
   return (
-    <div className="ty-legal-backdrop" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    // Cierre S4-S5 (Sonar S1082): Esc se escucha en el mismo fondo que cierra con el clic; el panel solo atrapa Tab.
+    <div className="ty-legal-backdrop" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
+      onKeyDown={(event) => { if (event.key === "Escape") onClose(); }}>
       <div
         className="ty-legal-panel"
         role="dialog"
         aria-modal="true"
         aria-labelledby="ty-legal-title"
         onKeyDown={(event) => {
-          if (event.key === "Escape") onClose();
           // Con un solo control enfocable, Tab no debe salir del panel.
           if (event.key === "Tab") {
             event.preventDefault();

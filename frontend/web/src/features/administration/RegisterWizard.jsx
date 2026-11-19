@@ -14,9 +14,11 @@ const roles = [
 function TermsDialog({onClose}) {
   const close = useRef(null);
   useEffect(() => { close.current?.focus(); }, []);
-  return <div className="auth-dialog-backdrop" onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
+  // Cierre S4-S5 (Sonar S1082): Esc se escucha en el mismo fondo que cierra con el clic; el diálogo solo atrapa Tab.
+  return <div className="auth-dialog-backdrop" onClick={event => { if (event.target === event.currentTarget) onClose(); }}
+    onKeyDown={event => { if (event.key === 'Escape') onClose(); }}>
     <div className="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="terms-title"
-      onKeyDown={event => { if (event.key === 'Escape') onClose(); if (event.key === 'Tab') { event.preventDefault(); close.current?.focus(); } }}>
+      onKeyDown={event => { if (event.key === 'Tab') { event.preventDefault(); close.current?.focus(); } }}>
       <h2 id="terms-title">Términos y Privacidad</h2>
       {Object.values(legalTexts).map(([title, body]) => <section key={title}><h3>{title}</h3><p>{body}</p></section>)}
       <button ref={close} type="button" className="button outline" onClick={onClose}>Cerrar</button>
