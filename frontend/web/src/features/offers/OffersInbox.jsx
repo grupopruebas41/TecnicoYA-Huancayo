@@ -149,7 +149,7 @@ function OfferCard({ offer, serverTime, onChange }) {
           onConfirm={() => respond("reject")}
         >
           <label className="offer-reason">
-            Motivo del rechazo (opcional)
+            Motivo del rechazo (opcional){" "}
             <textarea
               value={reason}
               onChange={(e) => setReason(e.target.value)}

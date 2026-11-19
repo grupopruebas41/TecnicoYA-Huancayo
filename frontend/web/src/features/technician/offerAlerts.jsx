@@ -152,7 +152,7 @@ export function OfferAlertsTab() {
     request: {subcategories: [{id: 0, name: 'Mantenimiento preventivo (ejemplo)'}], district: {name: 'Huancayo'}}};
   return <section className="account-card tech-alerts-tab">
     {ALERT_OPTIONS.map(([key, label, help, icon]) => <label key={key} className="a11y-switch">
-      <input type="checkbox" role="switch" checked={prefs[key]} aria-describedby={`aviso-${key}`} onChange={event => change(key, event.target.checked)}/>
+      <input type="checkbox" role="switch" checked={prefs[key]} aria-label={label} aria-describedby={`aviso-${key}`} onChange={event => change(key, event.target.checked)}/>
       <span><span className="tech-alert-label"><Icon name={icon}/> {label}</span>
         <small id={`aviso-${key}`} className="muted">{help}{unavailable[key] ? ` ${unavailable[key]}` : ''}</small></span>
     </label>)}

@@ -92,11 +92,14 @@ function visibleTarget(selectors) {
 }
 
 const MARGIN = 12;
+// Cierre S4-S5 (Sonar S7737): el tamaño de la ventana se lee con una función, no con un objeto literal por omisión.
+const currentViewport = () => ({width: window.innerWidth, height: window.innerHeight});
+
 /**
  * Coloca la burbuja junto a la zona sin salir de la pantalla: abajo si cabe, si no arriba, si no a la derecha o a la
  * izquierda; en el último caso, centrada en la parte visible.
  */
-export function placeBubble(box, size, viewport = {width: window.innerWidth, height: window.innerHeight}) {
+export function placeBubble(box, size, viewport = currentViewport()) {
   const {width: w, height: h} = size;
   const clampLeft = left => Math.max(MARGIN, Math.min(left, viewport.width - w - MARGIN));
   const clampTop = top => Math.max(MARGIN, Math.min(top, viewport.height - h - MARGIN));

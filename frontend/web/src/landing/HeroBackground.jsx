@@ -119,7 +119,7 @@ export default function HeroBackground({
       style={{ position: "fixed", inset: 0, zIndex: -1 }}
       aria-hidden="true"
     >
-      <img src={POSTER} alt="" fetchpriority="high" />
+      <img src={POSTER} alt="" fetchPriority="high" />
       <video
         ref={ref}
         src="/media/habitacion.mp4"

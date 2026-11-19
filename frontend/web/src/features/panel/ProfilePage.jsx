@@ -49,7 +49,7 @@ function AvatarCard({user, onUpdate, onExpired}) {
       {user.avatar_url ? <img className="profile-avatar-image" src={user.avatar_url} alt={`Foto de ${user.name}`}/>
         : <span className="profile-avatar-image" role="img" aria-label={`Iniciales de ${user.name}`}>{initials(user)}</span>}
       <div>
-        <label className="button outline profile-avatar-pick">Elegir foto
+        <label className="button outline profile-avatar-pick">Elegir foto{' '}
           <input type="file" accept={AVATAR_TYPES.join(',')} disabled={busy} onChange={choose}/></label>
         {user.avatar_url && <button type="button" className="text-button" disabled={busy} onClick={remove}>Quitar foto</button>}
         <p className="muted">JPG, PNG o WebP de hasta 5 MB. Se revisa y se quitan sus datos ocultos (EXIF).</p>

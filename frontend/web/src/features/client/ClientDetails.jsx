@@ -44,14 +44,14 @@ export default function ClientDetails({user, onUpdate, onExpired}) {
     <p className="muted">Tu distrito principal se usa para precargar tus solicitudes y ordenar a los técnicos por cercanía.</p>
     {districts.error && <p className="error" role="alert">No pudimos cargar los distritos. <button type="button" className="text-button" onClick={districts.reload}>Reintentar</button></p>}
     {!districts.data && !districts.error && <p className="muted">Cargando distritos…</p>}
-    {districts.data && <label>Distrito principal
+    {districts.data && <label>Distrito principal{' '}
       <select name="district_id" value={values.district_id} onChange={set('district_id')} disabled={busy} {...field('district_id')}>
         <option value="">Elige un distrito</option>
         {(Array.isArray(districts.data) ? districts.data : []).map(district => <option key={district.id} value={district.id}>{district.name}</option>)}
       </select>
     </label>}
     {errors.district_id && <p id="client-district_id-error" className="field-error">{errors.district_id}</p>}
-    <label>Dirección de referencia (privada)
+    <label>Dirección de referencia (privada){' '}
       <textarea name="reference_address" rows={2} value={values.reference_address}
         onChange={set('reference_address')} disabled={busy} {...field('reference_address')}/>
     </label>
