@@ -1,14 +1,13 @@
 {
   "fuente": "issues.json",
-  "generado": "2026-11-19T03:48:23.810Z",
+  "generado": "2026-11-19T04:12:54.501Z",
   "nota": "Resumen anonimizado: sin autores, asignados ni usuarios del exporte original.",
-  "total": 372,
+  "total": 371,
   "porTipo": {
-    "CODE_SMELL": 371,
-    "VULNERABILITY": 1
+    "CODE_SMELL": 371
   },
   "porSeveridad": {
-    "MAJOR": 271,
+    "MAJOR": 270,
     "MINOR": 91,
     "INFO": 7,
     "CRITICAL": 3
@@ -35,7 +34,6 @@
     "javascript:S6479": 5,
     "javascript:S7776": 5,
     "php:S1448": 2,
-    "php:S5693": 1,
     "javascript:S1481": 2,
     "javascript:S6772": 7,
     "javascript:S6749": 1,
@@ -133,7 +131,6 @@
     "frontend/web/src/features/announcements/AnnouncementCarousel.jsx": 2,
     "frontend/web/src/features/announcements/CarouselOrder.jsx": 1,
     "backend/api/app/Modules/FAdministration/Domain/GeniallyUrl.php": 1,
-    "backend/api/app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php": 1,
     "frontend/web/src/features/administration/CatalogAdmin.jsx": 3,
     "frontend/web/src/features/administration/VerificationAdmin.jsx": 4,
     "frontend/web/src/features/panel/ProfilePage.jsx": 3,
@@ -4987,27 +4984,6 @@
       "effort": "5min",
       "tags": [
         "unused"
-      ]
-    },
-    {
-      "rule": "php:S5693",
-      "type": "VULNERABILITY",
-      "severity": "MAJOR",
-      "impacts": [
-        {
-          "softwareQuality": "SECURITY",
-          "severity": "MEDIUM"
-        }
-      ],
-      "cleanCodeAttribute": "TRUSTWORTHY",
-      "status": "OPEN",
-      "file": "backend/api/app/Modules/FAdministration/Http/Requests/StoreMediaRequest.php",
-      "line": 44,
-      "message": "Make sure the content length limit is safe here.",
-      "effort": "5min",
-      "tags": [
-        "cwe",
-        "former-hotspot"
       ]
     },
     {

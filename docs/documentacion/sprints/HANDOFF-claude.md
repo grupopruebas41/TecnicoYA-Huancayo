@@ -2,6 +2,31 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-18 · Cierre común S4-S5, punto 1: SonarQube con Quality Gate aprobado
+
+- **Rama:** `feature/pimentel/cierre-sonar/s05`, desde `main` `3f359ff` (#63 integrado). Termina el modo rápido.
+- **Resultado:** análisis `sprint-05` (código nuevo desde `sprint-03`, cubre S4 y S5). Gate «TecnicoYa» **aprobado**:
+  - fiabilidad, seguridad y mantenibilidad A;
+  - cobertura nueva 89,8 %;
+  - duplicación 0,33 %.
+- **Antes y después:** 49 → 0 hallazgos de fiabilidad y 45 → 0 de mantenibilidad High. Detalle en `evidencias/sprint-05/cierre/sonar/README.md`.
+- **Pedido de Pimentel:** corregir de verdad, sin marcar falsos positivos. Solo S5693 (`StoreMediaRequest`, 5 MB, D-46) lo aceptó Pimentel en la interfaz.
+- **Cambios con efecto visible mínimo:**
+  - fondos de diálogo como botón nativo «Cerrar al tocar fuera»;
+  - `<dialog>` nativo en los diálogos de técnico, registro, panel legal y fotos;
+  - tarjeta de comunicado con botón estirado;
+  - menú «⋯» con flechas;
+  - carruseles sin parada de tabulación en el contenedor.
+- **Pruebas:**
+  - S05-TC-374 (expresiones regulares) y S05-TC-375 (piezas separadas por complejidad);
+  - tres pruebas ajustadas con explicación en el código;
+  - Pest 514/514 (96,1 %), Vitest 501/501 (85,8 %), lint 0 y build correcto.
+- **Pendiente:**
+  - 332 hallazgos de mantenibilidad Medium, Low o Info, en `calidad/DEUDA-TECNICA.md`;
+  - la captura del panel real de SonarQube, que exige la sesión del administrador. Se guardó un resumen generado desde la API.
+- **Nota:** `scripts/initialize-quality.mjs --renovar-token` renueva el token de análisis (dura 30 días).
+- **Siguiente:** punto 2, el workflow `e2e-cierre`, con la reescritura de S02-TC-071 a 075.
+
 ## 2026-11-18 · Revisión del #63 (antes de integrar): etiquetas del menú sin cortes
 
 - **Rama:** la misma, `feature/pimentel/tecnico/t5-accesibilidad`. Pedido de Pimentel en la revisión del #63.

@@ -6,6 +6,7 @@
 - **Cobertura importada:**
   - Pest con PCOV: 514/514, 96,1 % en total (`backend/api/test-results/clover.xml`);
   - Vitest con V8: 501/501, 85,8 % de sentencias (`frontend/web/coverage/lcov.info`).
+- **Resultado:** Quality Gate **APROBADO** (`gate.json`, `OK` en sus 5 condiciones), análisis de las 23:12 (`sonar-scanner.txt`: `QUALITY GATE STATUS: PASSED`).
 - **Pedido de Pimentel:** corregir de verdad, sin marcar falsos positivos. Solo S5693 (límite de subida de 5 MB, D-46) queda aceptado por Pimentel en la interfaz.
 
 ## Antes y después
@@ -15,13 +16,13 @@
 | Medida (código nuevo desde sprint-03) | Antes | Después |
 |---|---|---|
 | Fiabilidad (hallazgos) | 49 | 0 |
-| Seguridad (hallazgos) | 1 | 1 (S5693, aceptado) |
+| Seguridad (hallazgos) | 1 | 0 (S5693 aceptado por Pimentel, D-46) |
 | Mantenibilidad · High | 45 | 0 |
 | Mantenibilidad · Medium | 310 | 265 |
 | Mantenibilidad · Low | 95 | 59 |
 | Mantenibilidad · Info | 7 | 7 |
 | Calificación de fiabilidad | B | A |
-| Calificación de seguridad | C | C, hasta que S5693 quede aceptado |
+| Calificación de seguridad | C | A |
 | Calificación de mantenibilidad | A | A |
 | Cobertura del código nuevo | 89,7 % | 89,8 % |
 | Duplicación del código nuevo | 0,49 % | 0,33 % |
@@ -37,6 +38,8 @@ Lo que queda está en [DEUDA-TECNICA.md](../../../../calidad/DEUDA-TECNICA.md), 
 | `measures.json` | Medidas del proyecto y del código nuevo |
 | `issues-anonimo.json` | Hallazgos abiertos, anonimizados con `scripts/exportar-sonar-anonimo.mjs` |
 | `antes-measures.json` y `antes-issues-anonimo.json` | Lo mismo en el análisis de «antes» |
+| `2026-11-18-gate-resumen-1366.png` y `-390.png` | Resumen del Gate armado desde `gate.json` y `measures.json` (no es una captura del panel de SonarQube: verlo exige iniciar sesión como administrador) |
+| `../sonar-scanner.txt` | Salida del scanner, con la ruta de usuario anonimizada y sin líneas de token |
 
 ## Qué se corrigió, por tipo de regla
 

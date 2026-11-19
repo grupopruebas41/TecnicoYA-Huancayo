@@ -1,6 +1,6 @@
 {
   "projectStatus": {
-    "status": "ERROR",
+    "status": "OK",
     "conditions": [
       {
         "status": "OK",
@@ -10,11 +10,11 @@
         "actualValue": "1"
       },
       {
-        "status": "ERROR",
+        "status": "OK",
         "metricKey": "new_security_rating",
         "comparator": "GT",
         "errorThreshold": "1",
-        "actualValue": "3"
+        "actualValue": "1"
       },
       {
         "status": "OK",

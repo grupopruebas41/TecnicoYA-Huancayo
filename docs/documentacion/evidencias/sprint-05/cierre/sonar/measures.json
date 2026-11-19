@@ -41,8 +41,8 @@
       },
       {
         "metric": "security_rating",
-        "value": "3.0",
-        "bestValue": false
+        "value": "1.0",
+        "bestValue": true
       },
       {
         "metric": "new_coverage",
@@ -56,8 +56,8 @@
         "metric": "new_security_rating",
         "period": {
           "index": 1,
-          "value": "3.0",
-          "bestValue": false
+          "value": "1.0",
+          "bestValue": true
         }
       },
       {
@@ -82,7 +82,7 @@
       },
       {
         "metric": "alert_status",
-        "value": "ERROR"
+        "value": "OK"
       },
       {
         "metric": "ncloc",
@@ -90,8 +90,8 @@
       },
       {
         "metric": "vulnerabilities",
-        "value": "1",
-        "bestValue": false
+        "value": "0",
+        "bestValue": true
       },
       {
         "metric": "new_maintainability_rating",
