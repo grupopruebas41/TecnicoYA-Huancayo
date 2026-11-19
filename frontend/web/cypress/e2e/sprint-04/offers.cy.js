@@ -44,6 +44,8 @@ describe("S4 ofertas reales", () => {
       "[role=alert]",
       "La oferta venció. Ya no puedes responderla.",
     ).should("be.visible");
+    // El 409 no cambia el estado guardado: lo marca «vencida» el barrido programado, que aquí se ejecuta una vez.
+    cy.task("runJobs");
     cy.get("@freshRound").then(({offer_id}) => historyStatus(offer_id, "Vencida"));
   });
   it("S04-TC-086 reloj anclado al servidor llega a 00:01 y 00:00", () => {

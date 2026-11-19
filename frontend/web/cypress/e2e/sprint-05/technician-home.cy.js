@@ -31,6 +31,8 @@ describe("Panel del técnico: menú e Inicio", () => {
     cy.intercept("GET", "**/api/v1/technicians/me/home").as("home");
     login("e2e-technician-frio");
     cy.wait("@home").its("response.statusCode").should("eq", 200);
+    // El login del S4 deja al técnico en Ofertas; los indicadores están en el Inicio.
+    nav().contains("button", "Inicio").click();
     cy.contains("h3", "Tu actividad").should("be.visible");
     cy.get(".tech-slot").should("have.length", 3);
     cy.get('[role=progressbar]').invoke("attr", "aria-valuenow").then(Number).should("be.within", 0, 100);
