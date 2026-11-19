@@ -38,6 +38,11 @@ jobs:
       CI: 'true'
       E2E_BROWSER: chrome
       PHP_BINARY: php
+      # La API atiende peticiones en paralelo, como un servidor real: con un solo proceso (php -S), una petición trabada
+      # dejaba sin respuesta a todas las siguientes (primera ejecución, S5). Los errores de Laravel van al log de la API.
+      PHP_CLI_SERVER_WORKERS: '4'
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: debug
     services:
       mysql:
         image: mysql:8.4
