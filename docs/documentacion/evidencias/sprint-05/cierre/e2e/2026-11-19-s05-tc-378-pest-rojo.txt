@@ -1,0 +1,15 @@
+# S05-TC-378 en rojo antes del reloj E2E fijo (rama feature/pimentel/e2e-cierre/s05, sobre 0ad6593). En la CI la API terminaba con código 139 (SIGSEGV) tras el error de Carbon::rawAddUnit en StartSession; ver cypress-sNN/sprint-NN-salida.txt de la tercera ejecución.
+   FAIL  Tests\Feature\Sprint04\E2ESupportTest
+  ⨯ it S05-TC-378 el reloj E2E fija un instante (no un closure), con el desfase, y la cola lo renueva en cada…  91.67s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint04\E2ESupportTest > it S05-TC-378 el reloj E2E fija un instante (no un closure), con…    
+  Failed asserting that an instance of class Closure is an instance of interface Carbon\CarbonInterface.
+  at tests\Feature\Sprint04\E2ESupportTest.php:117
+    113▕     E2EClock::shift('+10m');
+    114▕     E2EClock::install();
+    115▕     try {
+    116▕         $real = (new DateTimeImmutable('now'))->getTimestamp();
+  ➜ 117▕         expect(LaravelCarbon::getTestNow())->toBeInstanceOf(Carbon\CarbonInterface::class);
+    118▕         $mutable = LaravelCarbon::now()->addMinutes(5);
+    119▕         $immutable = CarbonImmutable::now()->addMinutes(5);
+    120▕         expect($mutable)->toBeInstanceOf(LaravelCarbon::class)
