@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { setAuthIntent } from "./config";
 import DismissBackdrop from "../components/DismissBackdrop";
+import useEvents from "../lib/useEvents";
 import { contactItems } from "./contact";
 import { navigateToPath, navigateToSection, scrollToSection, scrollToTop } from "./navigation";
 export function AuthLink({
@@ -69,6 +70,9 @@ export function Header() {
       }
     }
   }
+  // Cierre S4-S5 (Sonar S6847): el teclado del menú móvil (Esc y Tab) se escucha como evento nativo del nav y cada enlace
+  // cierra el menú al elegirse (antes lo hacía un clic en el propio nav).
+  useEvents(nav, { keydown: keys });
   return (
     <header
       id="encabezado"
@@ -107,8 +111,6 @@ export function Header() {
         id="principal"
         aria-label="Principal"
         className={open ? "is-open" : ""}
-        onKeyDown={keys}
-        onClick={() => setOpen(false)}
       >
         {links.map(([id, name]) => (
           <a
@@ -117,6 +119,7 @@ export function Header() {
             aria-current={activeLink === id ? "location" : undefined}
             onClick={(event) => {
               event.preventDefault();
+              setOpen(false);
               if (id === "nosotros") navigateToPath("/nosotros");
               else navigateToSection(id);
             }}
