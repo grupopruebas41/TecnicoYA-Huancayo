@@ -20,6 +20,13 @@ use Illuminate\Validation\Rule;
  */
 final class PremiumController
 {
+    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
+    private const SUBCATEGORIES_C = 'subcategories as c';
+    private const DEVICES_D = 'iot_devices as d';
+    private const EQUIPMENT_E = 'client_equipment as e';
+    private const EQUIPMENT_ID = 'e.id as equipment_id';
+    private const EQUIPMENT_NAME = 'e.name as equipment';
+
     public const WARRANTY_DAYS = 30;
 
     public function equipment(Request $request): JsonResponse
@@ -30,7 +37,7 @@ final class PremiumController
     public function showEquipment(Request $request, int $equipment): JsonResponse
     {
         $row = $this->own($request, $equipment);
-        $history = DB::table('service_requests as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')
+        $history = DB::table('service_requests as s')->join(self::SUBCATEGORIES_C, 'c.id', '=', 's.subcategory_id')
             ->where('s.equipment_id', $row->id)->orderByDesc('s.id')->limit(20)
             ->get(['s.id', 's.status', 's.created_at', 'c.name as subcategory'])
             ->map(fn (object $r) => ['id' => (int) $r->id, 'status' => $r->status, 'subcategory' => $r->subcategory,
@@ -74,8 +81,8 @@ final class PremiumController
     public function devices(Request $request): JsonResponse
     {
         $since = CarbonImmutable::now()->subDay();
-        $devices = DB::table('iot_devices as d')->join('client_equipment as e', 'e.id', '=', 'd.equipment_id')
-            ->where('e.user_id', $request->user()->id)->orderBy('e.name')->get(['d.*', 'e.name as equipment', 'e.id as equipment_id']);
+        $devices = DB::table(self::DEVICES_D)->join(self::EQUIPMENT_E, 'e.id', '=', 'd.equipment_id')
+            ->where('e.user_id', $request->user()->id)->orderBy('e.name')->get(['d.*', self::EQUIPMENT_NAME, self::EQUIPMENT_ID]);
 
         return ApiResponse::data(['simulated' => true, 'items' => $devices->map(function (object $device) use ($since) {
             $readings = DB::table('iot_readings')->where('device_id', $device->id)->where('measured_at', '>=', $since)
@@ -97,12 +104,12 @@ final class PremiumController
 
     public function alerts(Request $request): JsonResponse
     {
-        $rows = DB::table('iot_alerts as a')->join('iot_devices as d', 'd.id', '=', 'a.device_id')
-            ->join('client_equipment as e', 'e.id', '=', 'd.equipment_id')->where('a.user_id', $request->user()->id)
+        $rows = DB::table('iot_alerts as a')->join(self::DEVICES_D, 'd.id', '=', 'a.device_id')
+            ->join(self::EQUIPMENT_E, 'e.id', '=', 'd.equipment_id')->where('a.user_id', $request->user()->id)
             // Primero las activas; dentro de ellas, fallas, luego atención y al final los recordatorios.
             ->orderByRaw('CASE WHEN a.resolved_at IS NULL THEN 0 ELSE 1 END')
             ->orderByRaw("CASE a.severity WHEN 'failure' THEN 0 WHEN 'attention' THEN 1 ELSE 2 END")->orderByDesc('a.started_at')->limit(50)
-            ->get(['a.*', 'e.name as equipment', 'e.id as equipment_id']);
+            ->get(['a.*', self::EQUIPMENT_NAME, self::EQUIPMENT_ID]);
 
         return ApiResponse::data(['simulated' => true, 'items' => $rows->map(fn (object $a) => [
             'id' => (int) $a->id, 'kind' => $a->kind, 'severity' => $a->severity, 'message' => $a->message,
@@ -121,9 +128,9 @@ final class PremiumController
     public function requestFromAlert(Request $request, int $alert, ManageServiceRequests $requests, Idempotency $idempotency): JsonResponse
     {
         $user = $request->user();
-        $row = DB::table('iot_alerts as a')->join('iot_devices as d', 'd.id', '=', 'a.device_id')
-            ->join('client_equipment as e', 'e.id', '=', 'd.equipment_id')->where('a.id', $alert)->where('a.user_id', $user->id)
-            ->first(['a.*', 'e.id as equipment_id', 'e.name as equipment', 'e.subcategory_id', 'e.address_id', 'e.brand', 'e.model']);
+        $row = DB::table('iot_alerts as a')->join(self::DEVICES_D, 'd.id', '=', 'a.device_id')
+            ->join(self::EQUIPMENT_E, 'e.id', '=', 'd.equipment_id')->where('a.id', $alert)->where('a.user_id', $user->id)
+            ->first(['a.*', self::EQUIPMENT_ID, self::EQUIPMENT_NAME, 'e.subcategory_id', 'e.address_id', 'e.brand', 'e.model']);
         abort_unless($row, 404);
         $key = (string) $request->header('Idempotency-Key');
         abort_if($key === '', 422, __('api.idempotency_required'));
@@ -159,7 +166,7 @@ final class PremiumController
     public function warranties(Request $request): JsonResponse
     {
         $clientId = DB::table('client_profiles')->where('user_id', $request->user()->id)->value('id');
-        $rows = DB::table('service_requests as s')->join('subcategories as c', 'c.id', '=', 's.subcategory_id')
+        $rows = DB::table('service_requests as s')->join(self::SUBCATEGORIES_C, 'c.id', '=', 's.subcategory_id')
             ->where('s.client_id', $clientId)->whereIn('s.status', ['completed', 'closed', 'unrated'])->orderByDesc('s.id')->limit(20)
             ->get(['s.id', 's.closed_at', 's.updated_at', 'c.name as subcategory']);
 
@@ -227,7 +234,7 @@ final class PremiumController
 
     private function presentEquipment(object $row): array
     {
-        $sub = DB::table('subcategories as c')->join('specialties as p', 'p.id', '=', 'c.specialty_id')->where('c.id', $row->subcategory_id)
+        $sub = DB::table(self::SUBCATEGORIES_C)->join('specialties as p', 'p.id', '=', 'c.specialty_id')->where('c.id', $row->subcategory_id)
             ->first(['c.name', 'p.id as specialty_id', 'p.name as specialty']);
         $address = $row->address_id ? DB::table('client_addresses')->where('id', $row->address_id)->first(['label', 'address']) : null;
 

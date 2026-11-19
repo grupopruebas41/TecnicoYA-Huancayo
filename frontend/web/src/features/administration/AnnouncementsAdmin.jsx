@@ -8,7 +8,7 @@ import CarouselOrder from "../announcements/CarouselOrder";
 import "../announcements/announcements.css";
 
 // Comunicados en carrusel (D-83): listado en cuadrícula, orden del carrusel por audiencia y editor en dos columnas.
-export default function AnnouncementsAdmin({ intent = null }) {
+export default function AnnouncementsAdmin({ intent }) {
   const r = useResource("/admin/announcements");
   const [tab, setTab] = useState("list");
   // Bloque C: el acceso rápido «Crear comunicado» del Inicio abre el editor vacío.

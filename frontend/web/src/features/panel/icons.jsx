@@ -16,18 +16,18 @@ const PATHS = {
   search: <><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4.5 4.5"/></>,
   bell: <><path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></>,
   // D-94: una sola familia de íconos de línea en todo el panel (sin emojis de colores).
-  check: <><path d="m5 12.5 4.5 4.5L19 7.5"/></>,
+  check: <path d="m5 12.5 4.5 4.5L19 7.5"/>,
   clock: <><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/></>,
   alert: <><path d="M12 4 21 19.5H3z"/><path d="M12 10v4.5"/><path d="M12 17.5v.1"/></>,
   close: <><path d="m6.5 6.5 11 11"/><path d="m17.5 6.5-11 11"/></>,
   image: <><rect x="4" y="5" width="16" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m5 17 4.5-4.5 3 3 2.5-2.5 4 4"/></>,
-  star: <><path d="m12 4.5 2.3 4.7 5.2.8-3.8 3.6.9 5.1-4.6-2.4-4.6 2.4.9-5.1L4.5 10l5.2-.8z"/></>,
+  star: <path d="m12 4.5 2.3 4.7 5.2.8-3.8 3.6.9 5.1-4.6-2.4-4.6 2.4.9-5.1L4.5 10l5.2-.8z"/>,
   menu: <><path d="M4.5 7h15"/><path d="M4.5 12h15"/><path d="M4.5 17h15"/></>,
   // Especialidades del buscador (D-94) y flecha de sus filas.
   monitor: <><rect x="3.5" y="4.5" width="17" height="11.5" rx="2"/><path d="M9 20h6"/><path d="M12 16v4"/></>,
   snow: <><path d="M12 3.5v17"/><path d="m4.6 7.75 14.8 8.5"/><path d="m4.6 16.25 14.8-8.5"/><path d="m9.5 5 2.5 2.5L14.5 5"/><path d="m9.5 19 2.5-2.5 2.5 2.5"/></>,
-  bolt: <><path d="M13 3.5 5.5 13.5h6l-1 7 7.5-10h-6z"/></>,
-  chevron: <><path d="m9.5 6.5 5.5 5.5-5.5 5.5"/></>,
+  bolt: <path d="M13 3.5 5.5 13.5h6l-1 7 7.5-10h-6z"/>,
+  chevron: <path d="m9.5 6.5 5.5 5.5-5.5 5.5"/>,
   // Asistente del pedido (D-92): subir fotos, quitar y editar.
   upload: <><path d="M12 15.5V5"/><path d="m7.5 9.5 4.5-4.5 4.5 4.5"/><path d="M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></>,
   trash: <><path d="M5 7h14"/><path d="M9.5 7V5h5v2"/><path d="M7 7l1 12.5h8L17 7"/></>,
@@ -54,7 +54,7 @@ const PATHS = {
   flag: <><path d="M6 20V4.5"/><path d="M6 5h11l-2 4 2 4H6"/></>,
   news: <><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M7.5 9h9"/><path d="M7.5 12.5h9"/><path d="M7.5 16h5"/></>,
   // Fase 3 (D-101): favoritos.
-  heart: <><path d="M12 19.5s-7-4.3-7-9.6A3.9 3.9 0 0 1 12 7.6a3.9 3.9 0 0 1 7 2.3c0 5.3-7 9.6-7 9.6z"/></>,
+  heart: <path d="M12 19.5s-7-4.3-7-9.6A3.9 3.9 0 0 1 12 7.6a3.9 3.9 0 0 1 7 2.3c0 5.3-7 9.6-7 9.6z"/>,
 };
 
 // raw: solo los trazos, para dibujarlos dentro de otro SVG (ilustraciones del portafolio, D-101).

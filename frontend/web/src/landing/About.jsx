@@ -3,6 +3,7 @@ import { CONTACT, contactItems, isContactConfigured } from "./contact";
 import { navigateToSection, scrollToSection } from "./navigation";
 import { Zones } from "./Shared";
 import { SpecialtyCards } from "../ServiceCarousel";
+import useEvents from "../lib/useEvents";
 const testimonials = [
   {
     id: 1,
@@ -320,6 +321,9 @@ const purposeStops = [
 ];
 function PurposeMap() {
   const [active, setActive] = useState(0);
+  const map = useRef(null);
+  // Cierre S4-S5 (Sonar S6845/S6847): la región ya no es una parada de tabulación; las flechas llegan desde sus botones nativos.
+  useEvents(map, { keydown: (event) => handleKeys(event) });
   function handleKeys(event) {
     if (event.key === "ArrowRight" || event.key === "ArrowDown") {
       event.preventDefault();
@@ -332,7 +336,7 @@ function PurposeMap() {
   }
   const [title, description] = purposeStops[active];
   return (
-    <div className="ty-purpose-map" role="region" aria-label="Nuestro propósito" tabIndex={0} onKeyDown={handleKeys}>
+    <div ref={map} className="ty-purpose-map" role="region" aria-label="Nuestro propósito">
       <div className="ty-purpose-route" aria-hidden="true">
         <svg className="route-desktop" viewBox="0 0 900 220" preserveAspectRatio="none">
           <path className="route-base" d="M80 118 C210 15 330 15 450 118 S690 220 820 118" />
@@ -521,12 +525,14 @@ function TestimonialCoverflow() {
   const selected = testimonials[index];
   const [name, district, specialty] = selected.name.split(" · ");
   const quote = selected.description.replace(/^★★★★★ · Valoración ficticia\. /, "").replace(/[«»]/g, "");
+  // Cierre S4-S5 (Sonar S6845/S6848): el carrusel ya no es una parada de tabulación; las flechas llegan desde sus botones nativos.
+  useEvents(region, { keydown: (event) => handleKeys(event) });
   return (
     <section id="testimonios" data-about="Testimonios" className="ty-section ty-testimonials ty-frame" data-reveal aria-labelledby="testimonials-title">
       <span className="ty-eyebrow">LO QUE BUSCAMOS HACER POSIBLE</span>
       <h2 id="testimonials-title">Testimonios</h2>
       <p className="ty-testimonial-note">Historias ilustrativas con personajes ficticios.</p>
-      <div className="ty-coverflow" ref={region} aria-roledescription="carrusel" tabIndex={0} onKeyDown={handleKeys}>
+      <div className="ty-coverflow" ref={region} aria-roledescription="carrusel">
         <div className="ty-coverflow-stage" aria-live="off" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onPointerDown={(event) => { pointerStart.current = event.clientX; event.currentTarget.setPointerCapture?.(event.pointerId); }} onPointerUp={handlePointerUp} onPointerCancel={() => { pointerStart.current = null; }}>
           {visibleItems.map((item) => (
             <article key={item.id} className={"ty-coverflow-card " + item.positionClass} aria-hidden={item.position !== 0}>

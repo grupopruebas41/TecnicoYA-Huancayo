@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {KIND_LABELS} from './announcementRules';
+import useEvents from '../../lib/useEvents';
 import './announcements.css';
 
 // Carrusel de comunicados del Inicio de cliente y técnico (D-83), también usado como vista previa en el editor.
@@ -98,6 +99,14 @@ export default function AnnouncementCarousel({items = [], preview = false, viewp
       document.removeEventListener('fullscreenchange', screenChange);
     };
   }, []);
+  // Cierre S4-S5 (Sonar S6845/S6847): el carrusel ya no es una parada de tabulación; las flechas llegan desde sus botones
+  // y la pausa por puntero o foco y el deslizamiento se escuchan como eventos nativos del contenedor.
+  useEvents(root, {
+    keydown: keys, mouseenter: () => setHovered(true), mouseleave: () => setHovered(false),
+    focusCapture: () => setFocused(true), blurCapture: event => { if (!root.current?.contains(event.relatedTarget)) setFocused(false); },
+    touchstart: event => { const point = event.changedTouches?.[0]; touch.current = point ? {x: point.clientX, y: point.clientY} : null; },
+    touchend: touchEnd,
+  }, count > 0);
   if (!count) return null;
 
   function keys(event) {
@@ -116,11 +125,7 @@ export default function AnnouncementCarousel({items = [], preview = false, viewp
     else root.current?.requestFullscreen?.()?.catch?.(() => {});
   }
   const classes = ['carousel', viewport === 'mobile' && 'is-mobile', item?.mobile_image_url && 'has-mobile', preview && 'is-preview', fullscreen && 'is-fullscreen'];
-  return <section ref={root} className={classes.filter(Boolean).join(' ')} aria-roledescription="carrusel" aria-label={label} tabIndex={0}
-    onKeyDown={keys} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-    onFocus={() => setFocused(true)} onBlur={event => { if (!root.current?.contains(event.relatedTarget)) setFocused(false); }}
-    onTouchStart={event => { const point = event.changedTouches?.[0]; touch.current = point ? {x: point.clientX, y: point.clientY} : null; }}
-    onTouchEnd={touchEnd}>
+  return <section ref={root} className={classes.filter(Boolean).join(' ')} aria-roledescription="carrusel" aria-label={label}>
     <div className="carousel-stage">
       {items.map((slide, position) => {
         const active = position === current;

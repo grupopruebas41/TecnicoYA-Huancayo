@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { request } from "./features/administration/http";
+import useEvents from "./lib/useEvents";
 import { AuthLink } from "./landing/Shared";
 import { getSubcategoryImage, serviceCategory, slugify, specialtyImages } from "./service-media";
 import "./service-carousel.css";
@@ -182,10 +183,25 @@ function ProductImage({ src, alt, className = "", width = "720", height = "480",
   );
 }
 
+// Cierre S4-S5 (Sonar S3776): profundidad, escala, opacidad y desenfoque por distancia al centro (0, 1 y 2 o más), en una
+// tabla en vez de ternarios anidados; mismos valores que antes.
+const CARD_TIERS = [
+  { z: "70px", scale: 1, opacity: 1, blur: 0 },
+  { z: "-45px", scale: 0.88, opacity: 0.75, blur: 2 },
+  { z: "-150px", scale: 0.76, opacity: 0.4, blur: 4 },
+];
+/** Giro de una tarjeta lateral: 25° más 15° por cada posición extra, hacia el centro. */
+export function cardRotation(offset) {
+  if (offset === 0) return 0;
+  const turn = 25 + (Math.abs(offset) - 1) * 15;
+  return offset < 0 ? turn : -turn;
+}
+
 function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex = 0 }) {
   const root = useRef(null);
   const previousSpecialty = useRef(specialty?.id);
   const dragStart = useRef(null);
+  const stage = useRef(null);
   const suppressClick = useRef(false);
   const [displayItems, setDisplayItems] = useState(items);
   const [shufflePhase, setShufflePhase] = useState("");
@@ -263,9 +279,9 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
     image.src = nextImage;
     return () => { image.src = ""; };
   }, [nextImage]);
-  const tiltCard = (event) => {
+  const tiltCard = (event, card) => {
     if (reduced || mobile) return;
-    const rect = event.currentTarget.getBoundingClientRect();
+    const rect = card.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
@@ -273,14 +289,15 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
   };
   const cardStyle = (offset) => {
     const distance = Math.abs(offset);
+    const tier = Math.min(distance, 2);
     return {
       "--card-offset": offset,
       "--card-x": `${offset * 42}%`,
-      "--card-z": distance === 0 ? "70px" : distance === 1 ? "-45px" : "-150px",
-      "--card-rotate": `${offset === 0 ? 0 : offset < 0 ? 25 + (distance - 1) * 15 : -25 - (distance - 1) * 15}deg`,
-      "--card-scale": distance === 0 ? 1 : distance === 1 ? 0.88 : 0.76,
-      "--card-opacity": distance === 0 ? 1 : distance === 1 ? 0.75 : 0.4,
-      "--card-blur": `${distance === 0 ? 0 : distance === 1 ? 2 : 4}px`,
+      "--card-z": CARD_TIERS[tier].z,
+      "--card-rotate": `${cardRotation(offset)}deg`,
+      "--card-scale": CARD_TIERS[tier].scale,
+      "--card-opacity": CARD_TIERS[tier].opacity,
+      "--card-blur": `${CARD_TIERS[tier].blur}px`,
       "--tilt-x": `${offset === 0 ? tilt.x : 0}deg`,
       "--tilt-y": `${offset === 0 ? tilt.y : 0}deg`,
       "--glow-x": `${tilt.glowX}%`,
@@ -289,42 +306,56 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
       "--shuffle-delay": `${distance * 55}ms`,
     };
   };
+  // Cierre S4-S5 (Sonar S6845/S6847/S6848): el carrusel no es una parada de tabulación; las flechas llegan desde sus botones
+  // nativos y la pausa, el arrastre y la inclinación de la tarjeta central se escuchan como eventos nativos.
+  useEvents(root, {
+    focusCapture: () => setFocused(true),
+    blurCapture: (event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); },
+    mouseenter: () => setHovered(true),
+    mouseleave: () => setHovered(false),
+    pointerdown: (event) => { dragStart.current = event.clientX; },
+    pointerup: (event) => {
+      if (dragStart.current === null) return;
+      const delta = event.clientX - dragStart.current;
+      dragStart.current = null;
+      if (Math.abs(delta) > 45) { suppressClick.current = true; move(delta < 0 ? 1 : -1); }
+    },
+    clickCapture: (event) => {
+      if (suppressClick.current) { event.preventDefault(); event.stopPropagation(); suppressClick.current = false; }
+    },
+    keydown: (event) => {
+      if (event.key === "ArrowRight") { event.preventDefault(); move(1); }
+      if (event.key === "ArrowLeft") { event.preventDefault(); move(-1); }
+    },
+  });
+  useEvents(stage, {
+    pointermove: (event) => {
+      const card = event.target.closest?.(".ty-product-card.current");
+      if (card) tiltCard(event, card);
+      else setTilt((value) => (value.x || value.y ? { x: 0, y: 0, glowX: 50, glowY: 50 } : value));
+    },
+    pointerleave: () => setTilt({ x: 0, y: 0, glowX: 50, glowY: 50 }),
+  });
+  // Las tarjetas laterales son botones: Enter o Espacio la traen al centro, igual que el clic.
+  const sideCardProps = (itemIndex) => ({
+    role: "button",
+    tabIndex: 0,
+    onClick: () => select(itemIndex),
+    onKeyDown: (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(itemIndex); } },
+  });
   return (
     <div
       className="ty-product-carousel"
       ref={root}
       role="group"
-      tabIndex={0}
       aria-roledescription="carrusel"
       aria-label={`Subespecialidades de ${specialty?.name || "la especialidad"}`}
-      onFocusCapture={() => setFocused(true)}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) {
-          setFocused(false);
-        }
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onPointerDown={(event) => { dragStart.current = event.clientX; }}
-      onPointerUp={(event) => {
-        if (dragStart.current === null) return;
-        const delta = event.clientX - dragStart.current;
-        dragStart.current = null;
-        if (Math.abs(delta) > 45) { suppressClick.current = true; move(delta < 0 ? 1 : -1); }
-      }}
-      onClickCapture={(event) => {
-        if (suppressClick.current) { event.preventDefault(); event.stopPropagation(); suppressClick.current = false; }
-      }}
-      onKeyDown={(event) => {
-        if (event.key === "ArrowRight") { event.preventDefault(); move(1); }
-        if (event.key === "ArrowLeft") { event.preventDefault(); move(-1); }
-      }}
     >
       <div className="ty-product-heading">
         <p className="ty-product-kicker"><span aria-hidden="true" /><span>SUBESPECIALIDADES</span><span aria-hidden="true" /></p>
         {visibleItems[index] && <h3 className="ty-product-title" key={visibleItems[index].id || visibleItems[index].subcategory_id} aria-live="polite">{visibleItems[index].name}</h3>}
       </div>
-      <div className={`ty-product-stage subcategory-deck${reduced ? " is-reduced" : ""}${shufflePhase ? ` is-shuffling-${shufflePhase}` : ""}`} style={{ height: mobile ? "360px" : "380px" }} aria-live="polite">
+      <div ref={stage} className={`ty-product-stage subcategory-deck${reduced ? " is-reduced" : ""}${shufflePhase ? ` is-shuffling-${shufflePhase}` : ""}`} style={{ height: mobile ? "360px" : "380px" }} aria-live="polite">
         {visibleCards.map(({ itemIndex, offset }) => {
           const item = visibleItems[itemIndex];
           const distance = Math.abs(offset);
@@ -334,19 +365,8 @@ function MiniCarousel({ items, specialty, carouselItems, reduced, initialIndex =
               key={item.id || item.subcategory_id}
               className={`ty-product-card subcategory-card ${current ? "is-center current" : `is-side ${offset < 0 ? "is-previous" : "is-next"}`} distance-${distance}`}
               style={cardStyle(offset)}
-              role={current ? "group" : "button"}
-              tabIndex={0}
+              {...(current ? { role: "group", "aria-current": "true" } : sideCardProps(itemIndex))}
               aria-label={current ? `${item.name}, activa` : `Mostrar ${item.name}`}
-              aria-current={current ? "true" : undefined}
-              onPointerMove={current ? tiltCard : undefined}
-              onPointerLeave={current ? () => setTilt({ x: 0, y: 0, glowX: 50, glowY: 50 }) : undefined}
-              onKeyDown={(event) => {
-                if (!current && (event.key === "Enter" || event.key === " ")) {
-                  event.preventDefault();
-                  select(itemIndex);
-                }
-              }}
-              onClick={() => { if (!current) select(itemIndex); }}
             >
               <ProductImage src={itemImage(item)} alt={`${item.name} — ${specialty?.name}`} width="720" height="960" loading={distance <= 1 ? "eager" : "lazy"} />
               <span className="ty-product-glare" aria-hidden="true" />
@@ -452,6 +472,18 @@ export default function ServiceCarousel() {
   const setActive = (index) => setActiveIndex(index);
   const active = specialties?.[activeIndex];
   const selectedItems = active ? details[active.id] || [] : [];
+  // Cierre S4-S5 (Sonar S6847): pausa por puntero o foco y flechas como eventos nativos de la sección.
+  useEvents(root, {
+    mouseenter: () => { setHovered(true); setPaused(true); },
+    mouseleave: () => { setHovered(false); setPaused(false); },
+    focusCapture: () => { setFocused(true); setPaused(true); },
+    blurCapture: (event) => { if (!event.currentTarget.contains(event.relatedTarget)) { setFocused(false); setPaused(false); } },
+    keydown: (event) => {
+      if (event.defaultPrevented) return;
+      if (event.key === "ArrowRight") { event.preventDefault(); change(1); }
+      if (event.key === "ArrowLeft") { event.preventDefault(); change(-1); }
+    },
+  });
   return (
     <section
       id="servicios"
@@ -459,15 +491,6 @@ export default function ServiceCarousel() {
       className="service-carousel ty-vitrine ty-frame"
       aria-label="Especialidades de TécnicoYa"
       ref={root}
-      onMouseEnter={() => { setHovered(true); setPaused(true); }}
-      onMouseLeave={() => { setHovered(false); setPaused(false); }}
-      onFocusCapture={() => { setFocused(true); setPaused(true); }}
-      onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) { setFocused(false); setPaused(false); } }}
-      onKeyDown={(event) => {
-        if (event.defaultPrevented) return;
-        if (event.key === "ArrowRight") { event.preventDefault(); change(1); }
-        if (event.key === "ArrowLeft") { event.preventDefault(); change(-1); }
-      }}
     >
       <div className="service-carousel-heading">
         <div><span className="ty-eyebrow">ESPECIALISTAS EN CADA DETALLE</span><h2>¿Qué necesitas <em>resolver?</em></h2></div>

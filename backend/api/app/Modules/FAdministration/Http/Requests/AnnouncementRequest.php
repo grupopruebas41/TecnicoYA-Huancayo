@@ -29,6 +29,36 @@ final class AnnouncementRequest extends FormRequest
         }
     }
 
+    // Cierre S4-S5 (Sonar S3776): reglas condicionales y validadores fuera de rules(); mismas reglas y mensajes.
+
+    /** Obligatorio al crear o al cambiar de origen; si se edita sin cambiar el origen, solo cuando viene. */
+    private static function needs(bool $condition, bool $changing): array
+    {
+        if (! $condition) {
+            return [];
+        }
+
+        return $changing ? ['required'] : ['sometimes', 'required'];
+    }
+
+    private static function mobileImageRule(string $source): Closure
+    {
+        return function (string $attribute, mixed $value, Closure $fail) use ($source) {
+            if ($source !== 'image' || ! app(AnnouncementImages::class)->valid($value, 'mobile')) {
+                $fail(__('api.announcement_mobile_image'));
+            }
+        };
+    }
+
+    private static function geniallyRule(): Closure
+    {
+        return function (string $attribute, mixed $value, Closure $fail) {
+            if (GeniallyUrl::normalize($value) !== $value) {
+                $fail(__('api.genially_url'));
+            }
+        };
+    }
+
     public function rules(): array
     {
         $editing = $this->isMethod('patch');
@@ -37,7 +67,7 @@ final class AnnouncementRequest extends FormRequest
         $changing = ! $editing || $this->has('source');
         $source = $this->input('source', $editing ? $this->storedSource() : 'text');
         $rich = in_array($source, ['image', 'genially'], true);
-        $needs = fn (bool $condition) => $condition ? ($changing ? ['required'] : ['sometimes', 'required']) : [];
+        $needs = fn (bool $condition) => self::needs($condition, $changing);
 
         return [
             'source' => ['sometimes', 'string', Rule::in(['text', 'image', 'genially'])],
@@ -47,16 +77,8 @@ final class AnnouncementRequest extends FormRequest
             'body' => $source === 'text' ? [...$required, 'string', 'max:5000'] : ['sometimes', 'nullable', 'string', 'max:5000'],
             'alt_text' => [...$needs($rich), 'nullable', 'string', 'min:5', 'max:250'],
             'image_media_id' => [...$needs($source === 'image'), 'nullable', 'integer', $this->image('main', 'api.announcement_image')],
-            'mobile_media_id' => ['nullable', 'integer', function (string $attribute, mixed $value, Closure $fail) use ($source) {
-                if ($source !== 'image' || ! app(AnnouncementImages::class)->valid($value, 'mobile')) {
-                    $fail(__('api.announcement_mobile_image'));
-                }
-            }],
-            'genially_url' => [...$needs($source === 'genially'), 'nullable', 'string', function (string $attribute, mixed $value, Closure $fail) {
-                if (GeniallyUrl::normalize($value) !== $value) {
-                    $fail(__('api.genially_url'));
-                }
-            }],
+            'mobile_media_id' => ['nullable', 'integer', self::mobileImageRule($source)],
+            'genially_url' => [...$needs($source === 'genially'), 'nullable', 'string', self::geniallyRule()],
             'audiences' => [...$required, 'array', 'min:1', 'max:2'],
             'audiences.*' => ['required', 'string', 'distinct', Rule::in(['client', 'technician'])],
             'starts_at' => [...$required, 'date'],

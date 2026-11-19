@@ -55,7 +55,7 @@ export default function UserDetail({id, currentUserId, onBack, onChanged}) {
     const spec = ACTIONS[action];
     setBusy(true); setError('');
     try {
-      const body = {reason, ...(spec.noVersion ? {} : {expected_version: data.user.version}), ...(spec.word ? {confirmation: spec.word} : {}), ...(spec.extra || {})};
+      const body = {reason, ...(!spec.noVersion && {expected_version: data.user.version}), ...(spec.word ? {confirmation: spec.word} : {}), ...(spec.extra || {})};
       await request(`/admin/users/${id}${spec.path ? `/${spec.path}` : ''}`, body, spec.method);
       setAction(null); setNotice(spec.done);
       await load(); onChanged?.();

@@ -63,10 +63,12 @@ function useAvailability(onSaved) {
 }
 
 /** Semana visual: 7 columnas (Lun a Dom) × 3 franjas. Editable, cada casilla es un botón grande que se activa con un clic. */
-export function WeekGrid({matrix, editable = false, onToggle, visits = [], dates = null, today = null}) {
+export function WeekGrid({matrix, editable = false, onToggle, visits = [], dates, today}) {
+  // Cierre S4-S5 (Sonar S3403): sin valores por omisión null, la comparación con «hoy» no parece siempre falsa.
+  const isToday = index => Boolean(dates && today) && dates[index] === today;
   return <div className={'tech-week' + (editable ? ' is-editable' : '')} role="group" aria-label={editable ? 'Disponibilidad por franja' : 'Semana'}>
     <span className="tech-week-corner" aria-hidden="true"/>
-    {DAYS.map(([day, short], index) => <span key={day} className={'tech-week-day' + (dates?.[index] === today ? ' is-today' : '')} aria-hidden="true">
+    {DAYS.map(([day, short], index) => <span key={day} className={'tech-week-day' + (isToday(index) ? ' is-today' : '')} aria-hidden="true">
       {short}{dates && <small>{Number(dates[index].slice(8))}</small>}
     </span>)}
     {FRANJAS.map(franja => <React.Fragment key={franja.id}>

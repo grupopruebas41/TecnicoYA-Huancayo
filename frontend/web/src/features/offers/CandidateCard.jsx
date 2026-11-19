@@ -1,7 +1,8 @@
 import React from "react";
+import { groupThousands } from "../../lib/numbers";
 export function feeLabel(amount) {
   const [whole, decimal] = Number(amount).toFixed(2).split(".");
-  return `S/ ${whole.replace(/\B(?=(\d{3})+(?!\d))/g, " ")},${decimal} (referencial)`;
+  return `S/ ${groupThousands(whole)},${decimal} (referencial)`;
 }
 export default function CandidateCard({
   candidate,

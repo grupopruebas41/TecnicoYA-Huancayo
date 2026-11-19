@@ -56,23 +56,29 @@ final class StoreServiceOrderRequest extends FormRequest
                 return;
             }
             foreach ($this->input('items', []) as $index => $item) {
-                foreach (array_values($item['subcategory_ids']) as $position => $subcategoryId) {
-                    if (! DB::table('subcategories')->where('id', $subcategoryId)->where('specialty_id', $item['specialty_id'])->exists()) {
-                        $validator->errors()->add("items.$index.subcategory_ids.$position", __('api.order_subcategory_specialty'));
-                    }
-                }
-                foreach (array_values($item['symptom_ids'] ?? []) as $position => $symptomId) {
-                    $valid = DB::table('subcategory_symptoms')->where('id', $symptomId)
-                        ->whereIn('subcategory_id', $item['subcategory_ids'])->where('active', 1)->exists();
-                    if (! $valid) {
-                        $validator->errors()->add("items.$index.symptom_ids.$position", __('api.order_symptom'));
-                    }
-                }
+                $this->validateItem($validator, $index, $item);
             }
             if ($this->input('mode') === 'scheduled' && ServiceOrders::slotStart($this->input('scheduled_date'), $this->input('time_slot'))->lt(CarbonImmutable::now())) {
                 $validator->errors()->add('time_slot', __('api.order_time_slot_past'));
             }
         }];
+    }
+
+    /** Cierre S4-S5 (Sonar S3776): subcategorías y síntomas de un ítem; mismos mensajes y claves que antes. */
+    private function validateItem(Validator $validator, int|string $index, array $item): void
+    {
+        foreach (array_values($item['subcategory_ids']) as $position => $subcategoryId) {
+            if (! DB::table('subcategories')->where('id', $subcategoryId)->where('specialty_id', $item['specialty_id'])->exists()) {
+                $validator->errors()->add("items.$index.subcategory_ids.$position", __('api.order_subcategory_specialty'));
+            }
+        }
+        foreach (array_values($item['symptom_ids'] ?? []) as $position => $symptomId) {
+            $valid = DB::table('subcategory_symptoms')->where('id', $symptomId)
+                ->whereIn('subcategory_id', $item['subcategory_ids'])->where('active', 1)->exists();
+            if (! $valid) {
+                $validator->errors()->add("items.$index.symptom_ids.$position", __('api.order_symptom'));
+            }
+        }
     }
 
     public function messages(): array

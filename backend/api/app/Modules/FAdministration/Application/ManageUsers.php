@@ -96,17 +96,29 @@ final class ManageUsers
         return $this->find($user->id);
     }
 
+    /** Cierre S4-S5 (Sonar S3776): datos de la cuenta antes del cambio, para la auditoría y para comparar. */
+    private function snapshot(object $user, ?object $client, ?object $technician): array
+    {
+        $district = match (true) {
+            $client !== null => $this->int($client->district_id),
+            $technician !== null => $this->int($technician->base_district_id),
+            default => null,
+        };
+
+        return [
+            'given_names' => $user->given_names, 'family_names' => $user->family_names, 'email' => $user->email, 'phone' => $user->phone,
+            'district_id' => $district,
+            'client_type' => $client?->client_type, 'business_name' => $client?->business_name, 'reference_address' => $client?->default_address,
+        ];
+    }
+
     public function update(User $actor, int $id, array $data): array
     {
         DB::transaction(function () use ($actor, $id, $data) {
             $user = $this->lockTarget($actor, $id, (int) $data['expected_version'], allowSelf: true);
             $client = DB::table('client_profiles')->where('user_id', $id)->first();
             $technician = DB::table('technician_profiles')->where('user_id', $id)->first();
-            $before = [
-                'given_names' => $user->given_names, 'family_names' => $user->family_names, 'email' => $user->email, 'phone' => $user->phone,
-                'district_id' => $client ? $this->int($client->district_id) : ($technician ? $this->int($technician->base_district_id) : null),
-                'client_type' => $client?->client_type, 'business_name' => $client?->business_name, 'reference_address' => $client?->default_address,
-            ];
+            $before = $this->snapshot($user, $client, $technician);
             $after = array_merge($before, array_intersect_key($data, array_flip(self::TRACKED)));
             if (isset($after['district_id'])) {
                 $after['district_id'] = (int) $after['district_id'];

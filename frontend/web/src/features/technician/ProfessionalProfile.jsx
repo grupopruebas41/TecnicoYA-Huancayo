@@ -97,7 +97,7 @@ export default function ProfessionalProfile({user, onSaved}) {
     } catch (failure) {
       if (failure?.status === 409) { const fresh = await own.reload(); setValues(fromProfile(fresh)); }
       const fields = failure?.fields || {};
-      setErrors(Object.fromEntries(Object.entries(fields).map(([key, list]) => [key, [].concat(list)[0]])));
+      setErrors(Object.fromEntries(Object.entries(fields).map(([key, list]) => [key, [list].flat()[0]])));
       setNotice({error: apiError(failure, 'No pudimos guardar tu perfil. Inténtalo de nuevo.')});
     } finally { setBusy(false); }
   }

@@ -50,7 +50,7 @@ export function CatalogSearch({ catalog }) {
     <div className="ty-catalog-search">
       <form className="ty-search" onSubmit={search}>
         <label>
-          ¿Qué necesitas?
+          ¿Qué necesitas?{" "}
           <select
             value={specialty}
             onChange={(e) => setSpecialty(e.target.value)}
@@ -64,7 +64,7 @@ export function CatalogSearch({ catalog }) {
           </select>
         </label>
         <label>
-          ¿Dónde?
+          ¿Dónde?{" "}
           <select
             value={district}
             onChange={(e) => setDistrict(e.target.value)}
