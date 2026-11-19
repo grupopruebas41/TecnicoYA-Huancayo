@@ -10,7 +10,8 @@ describe("Panel del técnico: menú e Inicio", () => {
   it("S05-TC-307 el menú agrupa las secciones y lo no listo va desactivado con «Próximamente»", () => {
     login("e2e-technician-frio");
     ["Trabajo", "Mi negocio", "Mi desempeño", "Ayuda"].forEach((group) => nav().contains(".panel-nav-heading", group));
-    nav().contains(".panel-nav-item", "Mis trabajos").should("have.attr", "aria-disabled", "true").and("contain", "Próximamente");
+    // Fase T3: «Mis trabajos» ya funciona; lo que sigue en «Próximamente» es Calificaciones (S6) y Ganancias (S8).
+    nav().contains(".panel-nav-item", "Calificaciones").should("have.attr", "aria-disabled", "true").and("contain", "Próximamente");
     nav().contains("button", "Perfil profesional").click();
     cy.contains("h2", "Perfil profesional").should("be.visible");
   });

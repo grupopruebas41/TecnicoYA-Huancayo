@@ -25,7 +25,9 @@ describe("Base común del técnico y del administrador", () => {
     cy.contains("button", "Sí, cerrarlas").click();
     cy.wait("@revoke").its("response.statusCode").should("eq", 200);
     cy.contains(/No había otras sesiones abiertas|Cerramos \d+ sesi/).should("be.visible");
-    cy.request(Cypress.expose("apiUrl") + "/api/v1/me").its("status").should("eq", 200);
+    // Con las cabeceras de la SPA, Sanctum usa la sesión de esta pestaña (sin Origin la consulta es de un invitado).
+    cy.request({ url: Cypress.expose("apiUrl") + "/api/v1/me",
+      headers: { Accept: "application/json", Origin: new URL(Cypress.config("baseUrl")).origin } }).its("status").should("eq", 200);
   });
 
   it("S05-TC-290 el administrador guarda la accesibilidad en su cuenta y no tiene Mi perfil en el menú", () => {

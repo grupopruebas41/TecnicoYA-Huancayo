@@ -4,7 +4,8 @@ import { loginClient, observe, switchAccount } from "../sprint-03/helpers";
 // persisten entre sesiones (otra sesión limpia equivale a otro equipo: sin localStorage).
 describe("Accesibilidad, bienvenida y tutorial", () => {
   it("S05-TC-250 la bienvenida guarda las preferencias y no vuelve a aparecer al recargar", () => {
-    observe("PUT", "/client/me/preferences", "preferencias");
+    // D-105: los tres roles guardan sus ajustes en /me/preferences (la ruta del cliente queda por compatibilidad).
+    observe("PUT", "/me/preferences", "preferencias");
     loginClient("fresh", { keepOnboarding: true });
     cy.get("dialog[open], [role=dialog]").contains("h2", "¿Cómo prefieres usar TécnicoYa?");
     cy.contains("button", "Letra grande y alto contraste").click();

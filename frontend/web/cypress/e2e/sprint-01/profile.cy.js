@@ -37,8 +37,9 @@ it('S01-TC-074 red interrumpida: resultado incierto y consulta del estado real',
 it('S01-TC-077 sesión vencida al guardar vuelve al formulario de acceso', () => {
   login();
   openProfile();
-  cy.clearCookie(Cypress.expose('sessionCookie'), {log: false});
-  // Cierre S4-S5: la cookie de sesión debe desaparecer de verdad (en la primera ejecución en Linux, el PATCH siguió autenticado).
+  // Cierre S4-S5: cy.clearCookie no borraba la cookie de sesión de la API (otro puerto del mismo host) y el PATCH seguía
+  // autenticado; se borran todas, que es lo que deja una sesión vencida, y se comprueba que la de sesión ya no está.
+  cy.clearAllCookies({log: false});
   cy.getCookies().then(cookies => expect(cookies.map(cookie => `${cookie.name}@${cookie.domain}`), 'cookies tras borrar la de sesión')
     .not.to.include(`${Cypress.expose('sessionCookie')}@127.0.0.1`));
   cy.intercept('PATCH', `${api}/api/v1/me`).as('expiredSave');
