@@ -19,7 +19,10 @@ function TermsDialog({onClose}) {
   return <div className="auth-dialog-backdrop">
     <DismissBackdrop onClose={onClose}/>
     <dialog open className="auth-dialog" aria-modal="true" aria-labelledby="terms-title"
-      onKeyDown={event => { if (event.key === 'Escape') onClose(); if (event.key === 'Tab') { event.preventDefault(); close.current?.focus(); } }}>
+      onKeyDown={event => {
+        if (event.key === 'Escape') { onClose(); }
+        else if (event.key === 'Tab') { event.preventDefault(); close.current?.focus(); }
+      }}>
       <h2 id="terms-title">Términos y Privacidad</h2>
       {Object.values(legalTexts).map(([title, body]) => <section key={title}><h3>{title}</h3><p>{body}</p></section>)}
       <button ref={close} type="button" className="button outline" onClick={onClose}>Cerrar</button>

@@ -69,7 +69,7 @@ export function outputSize(rect, slot) {
 
 /** Igual que GeniallyUrl del servidor: https://view.genially.com/<código>, con un nombre legible opcional. */
 export function normalizeGenially(value) {
-  const match = /^https:\/\/view\.genially\.com\/([A-Za-z0-9]{6,64})(?:\/[A-Za-z0-9-]{1,120})?\/?(?:[?#].*)?$/i.exec(String(value ?? '').trim());
+  const match = /^https:\/\/view\.genially\.com\/([a-z0-9]{6,64})(?:\/[a-z0-9-]{1,120})?\/?(?:[?#].*)?$/i.exec(String(value ?? '').trim());
   return match ? 'https://view.genially.com/' + match[1] : null;
 }
 

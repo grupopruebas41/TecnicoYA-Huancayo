@@ -59,7 +59,11 @@ function ActionsMenu({item, onAction}) {
         const blocked = action === 'delete' && deleteBlocked(item);
         return <button key={action} type="button" role="menuitem" tabIndex={-1} aria-disabled={action === 'delete' ? String(blocked) : undefined}
           aria-describedby={blocked ? reasonId : undefined} className={action === 'delete' ? 'is-danger' : undefined}
-          onClick={() => { if (blocked) return; setOpen(false); onAction(action, item); }}>{ACTION_LABELS[action]}</button>;
+          onClick={() => {
+            if (blocked) return;
+            setOpen(false);
+            onAction(action, item);
+          }}>{ACTION_LABELS[action]}</button>;
       })}
       {deleteBlocked(item) && <small id={reasonId} className="announcement-menu-reason">{DELETE_BLOCKED}</small>}
     </div>}

@@ -127,10 +127,10 @@ export function Stepper({label, value, onChange, min = 0, max = 60, error}) {
   return <div className="tech-field">
     <label className="tech-field-label" htmlFor={id}>{label}</label>
     <div className="tech-stepper">
-      <button type="button" aria-label={`Restar un año a ${label.toLowerCase()}`} disabled={!(number > min)}
+      <button type="button" aria-label={`Restar un año a ${label.toLowerCase()}`} disabled={number <= min}
         onClick={() => set((Number.isNaN(number) ? min : number) - 1)}>−</button>
       <input id={id} type="text" inputMode="numeric" value={value} aria-invalid={Boolean(error)}
-        aria-describedby={error ? `${id}-error` : undefined} onChange={event => onChange(event.target.value.replace(/[^0-9]/g, '').slice(0, 2))}/>
+        aria-describedby={error ? `${id}-error` : undefined} onChange={event => onChange(event.target.value.replace(/\D/g, '').slice(0, 2))}/>
       <button type="button" aria-label={`Sumar un año a ${label.toLowerCase()}`} disabled={number >= max}
         onClick={() => set((Number.isNaN(number) ? min : number) + 1)}>+</button>
     </div>
@@ -176,11 +176,15 @@ export function TechDialog({title, icon = 'plus', onClose, footer, children, bus
     return () => { document.body.classList.remove('tech-dialog-open'); opener?.focus?.(); };
   }, [opener]);
   function keys(event) {
-    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); if (!busy) onClose(); return; }
+    if (event.key === 'Escape') {
+      event.preventDefault(); event.stopPropagation();
+      if (!busy) { onClose(); }
+      return;
+    }
     if (event.key !== 'Tab') return;
     const focusable = [...root.current.querySelectorAll(FOCUSABLE)].filter(element => !element.closest('[hidden]'));
     if (!focusable.length) return;
-    const first = focusable[0], last = focusable[focusable.length - 1];
+    const first = focusable[0], last = focusable.at(-1);
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }

@@ -109,7 +109,7 @@ function AddressesTab() {
       setNotice({success: form.id ? 'Dirección actualizada.' : 'Dirección guardada.'});
       setForm(null); await load();
     } catch (error) {
-      setErrors(Object.fromEntries(Object.entries(error.fields || {}).map(([key, value]) => [key, [].concat(value)[0]])));
+      setErrors(Object.fromEntries(Object.entries(error.fields || {}).map(([key, value]) => [key, [value].flat()[0]])));
       setNotice({error: error.message});
     } finally { setBusy(false); }
   }
@@ -274,7 +274,7 @@ export default function AccountPanel({user, onUpdate, onExpired, onClose, onLogo
     if (event.key !== 'Tab') return;
     const focusable = [...root.current.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href]')]
       .filter(el => el.tabIndex !== -1);
-    const first = focusable[0], last = focusable[focusable.length - 1];
+    const first = focusable[0], last = focusable.at(-1);
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }

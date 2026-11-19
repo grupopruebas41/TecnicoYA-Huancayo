@@ -206,7 +206,7 @@ function EquipmentForm({initial, onCancel, onSaved}) {
       else await request('/client/equipment', body);
       onSaved(initial?.id ? 'Equipo actualizado.' : 'Equipo registrado.');
     } catch (e) {
-      setErrors(Object.fromEntries(Object.entries(e.fields || {}).map(([k, v]) => [k, [].concat(v)[0]])));
+      setErrors(Object.fromEntries(Object.entries(e.fields || {}).map(([k, v]) => [k, [v].flat()[0]])));
       setError(e.message);
     } finally { setBusy(false); }
   }

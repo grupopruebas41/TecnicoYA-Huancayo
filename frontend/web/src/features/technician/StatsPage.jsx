@@ -44,7 +44,11 @@ export const segments = points => points.reduce((all, point) => {
   return all;
 }, [[]]).filter(segment => segment.length);
 
-const niceMax = value => { if (value <= 4) return 4; const step = 10 ** Math.floor(Math.log10(value)); return Math.ceil(value / step) * step; };
+const niceMax = value => {
+  if (value <= 4) return 4;
+  const step = 10 ** Math.floor(Math.log10(value));
+  return Math.ceil(value / step) * step;
+};
 
 /**
  * Gráfico de barras en SVG (simples o apiladas), con un solo eje, cuadrícula suave, tooltip al pasar o al enfocar cada

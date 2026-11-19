@@ -41,7 +41,7 @@ export function slotsFrom(matrix) {
     let open = null;
     FRANJAS.forEach(franja => {
       if (matrix[day]?.[franja.id]) {
-        if (open && open.end === franja.start) open.end = franja.end;
+        if (open?.end === franja.start) open.end = franja.end;
         else { open = {weekday: day, start: franja.start, end: franja.end}; slots.push(open); }
       } else open = null;
     });
@@ -65,7 +65,7 @@ export function scheduleSummary(matrix) {
     if (!names.length) return;
     const key = names.join(' y ');
     const last = groups.at(-1);
-    if (last && last.key === key && last.lastDay === day - 1) { last.to = short; last.lastDay = day; }
+    if (last?.key === key && last.lastDay === day - 1) { last.to = short; last.lastDay = day; }
     else groups.push({key, from: short, to: null, lastDay: day});
   });
   return groups.map(group => `${group.to ? `${group.from} a ${group.to}` : group.from} · ${group.key}`).join('; ');
