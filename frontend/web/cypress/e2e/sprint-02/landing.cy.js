@@ -26,9 +26,9 @@ describe("Landing S2", () => {
     });
     cy.get("#servicios .current h3").first().should("be.visible").and("not.be.empty");
     cy.get("#servicios .ty-product-progress span").first().should("not.have.class", "is-running");
-    // El encabezado es fijo: se deja el control por debajo de él antes de usar el teclado.
+    // El encabezado es fijo: el control se lleva al centro de la pantalla (no al borde superior, bajo el encabezado).
     cy.get('#servicios button[aria-label="Subcategoría siguiente"]').first().scrollIntoView({ offset: { top: -200, left: 0 } }).focus()
-      .trigger("keydown", { key: "ArrowRight" }).should("have.focus");
+      .trigger("keydown", { key: "ArrowRight", scrollBehavior: "center" }).should("have.focus");
     cy.get("#servicios .current h3").first().should("not.be.empty");
   });
 });
