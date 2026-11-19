@@ -8,6 +8,7 @@ use Database\Factories\ClientProfileFactory;
 use Database\Factories\TechnicianDocumentFactory;
 use Database\Factories\TechnicianProfileFactory;
 use Database\Seeders\DemoSeeder;
+use Database\Seeders\Sprint04E2ESeeder;
 use Database\Seeders\Sprint05E2ESeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -101,4 +102,24 @@ it('S05-TC-356 demo-tecnico-pendiente empieza sin bienvenida ni tutorial; los t�
         ->where('u.email', 'e2e-technician-nuevo@example.test')->value('t.id');
     expect(DB::table('technician_profiles')->where('id', $nuevo)->value('verification_status'))->toBe('pending')
         ->and(DB::table('technician_services')->where('technician_id', $nuevo)->exists())->toBeFalse();
+});
+
+it('S05-TC-376 las cuentas E2E sembradas de S01 a S04 ya vieron la bienvenida y el tutorial (Cypress de S01 a S04)', function () {
+    // Cierre S4-S5: el workflow e2e-cierre mostró la bienvenida del técnico (T5) y la del cliente (Fase 5) tapando la pantalla
+    // en las Cypress de S01 a S04, cuyas siembras no la marcaban. Solo las cuentas que la prueban empiezan de cero
+    // (e2e-technician-nuevo en el S5, y los clientes que cada prueba registra).
+    expect(DB::connection()->getDatabaseName())->toEndWith('_testing');
+    config(['database.connections.mysql.database' => 'tecnicoya_testing']);
+    $password = 'e2e-'.bin2hex(random_bytes(16));
+    putenv("TECNICOYA_E2E_PASSWORD=$password");
+    $_ENV['TECNICOYA_E2E_PASSWORD'] = $_SERVER['TECNICOYA_E2E_PASSWORD'] = $password;
+    try {
+        $this->seed(Sprint04E2ESeeder::class);
+    } finally {
+        putenv('TECNICOYA_E2E_PASSWORD');
+        unset($_ENV['TECNICOYA_E2E_PASSWORD'], $_SERVER['TECNICOYA_E2E_PASSWORD']);
+    }
+    $accounts = DB::table('users')->where('email', 'like', 'e2e-%')->get(['email', 'onboarding_completed_at', 'tour_completed_at']);
+    expect($accounts->pluck('email'))->toContain('e2e-client@example.test', 'e2e-technician@example.test', 'e2e-admin@example.test', 'e2e-technician-active@example.test')
+        ->and($accounts->filter(fn ($row) => $row->onboarding_completed_at === null || $row->tour_completed_at === null)->pluck('email')->all())->toBe([]);
 });
