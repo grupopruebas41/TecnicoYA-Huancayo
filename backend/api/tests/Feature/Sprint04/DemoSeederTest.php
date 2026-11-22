@@ -139,3 +139,18 @@ it('S05-TC-195 DemoSeeder deja a Rosa Quispe y Diego Huamán con perfil completo
     $files = is_dir(database_path('seeders/demo-media')) ? preg_grep('/\.(webp|png|jpe?g)$/i', scandir(database_path('seeders/demo-media'))) : [];
     expect(DB::table('portfolio_images')->count())->toBe(count($files));
 });
+
+it('S05-TC-387 el comunicado demo para clientes no muestra el texto de desarrollo, tampoco en una base ya sembrada [DEF-78]', function () {
+    s04Demo(Str::password(20));
+    $this->app['env'] = 'local';
+    $this->seed(DemoSeeder::class);
+    // Base sembrada antes del arreglo: el comunicado conserva el texto viejo hasta la próxima siembra.
+    DB::table('announcements')->where('title', 'Bienvenido a TécnicoYa (demostración)')
+        ->update(['body' => 'Comunicado de ejemplo para desarrollo: así se ve el carrusel con imagen principal y móvil.']);
+
+    $this->seed(DemoSeeder::class);
+
+    $bodies = DB::table('announcements')->pluck('body');
+    expect($bodies->filter(fn ($body) => str_contains(mb_strtolower((string) $body), 'para desarrollo')))->toBeEmpty()
+        ->and(DB::table('announcements')->where('title', 'Bienvenido a TécnicoYa (demostración)')->count())->toBe(1);
+});
