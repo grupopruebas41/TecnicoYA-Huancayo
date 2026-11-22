@@ -127,11 +127,12 @@ test('S05-TC-200 la tarjeta trae portada por especialidad, verificado, «Nuevo»
   const {container, rerender} = render(<TechnicianCard technician={card()}/>);
   const article = screen.getByRole('article', {name: 'Rosa Quispe'});
 
-  expect(container.querySelector('.tech-cover')).toHaveAttribute('data-specialty', 'refrigeracion');
+  // Pulido final del cliente (2026-11-22): la tarjeta usa clases propias «tcard-» (DEF-77) y el tono de la especialidad va en data-tone; precio con coma decimal.
+  expect(container.querySelector('.tcard-cover')).toHaveAttribute('data-tone', 'refrigeracion');
   expect(within(article).getByText('Verificado')).toBeInTheDocument();
   expect(within(article).getByText('Nuevo')).toBeInTheDocument();
   expect(within(article).getByText('9 años de experiencia')).toBeInTheDocument();
-  expect(within(article).getByText('Desde S/ 90.00')).toBeInTheDocument();
+  expect(within(article).getByText('Desde S/ 90,00')).toBeInTheDocument();
   expect(within(article).getByText('Atiende en Huancayo, El Tambo')).toBeInTheDocument();
   expect(within(article).getByText('A 3,5 km · aproximada por zona')).toBeInTheDocument();
 
@@ -222,8 +223,9 @@ test('S05-TC-204 «Sobre mí» muestra forma de trabajo y garantía solo si se d
   const services = screen.getByRole('region', {name: 'Servicios'});
   const items = within(services).getAllByRole('listitem');
   expect(items[0]).toHaveTextContent('Vitrinas');
-  expect(items[0]).toHaveTextContent('Referencial S/ 120.00');
-  expect(items[0]).toHaveTextContent('Qué incluye: Limpieza del condensador.');
+  // Pulido final del cliente (2026-11-22): tarifa con coma decimal y «Qué incluye» como rótulo sobre el texto completo (sin los dos puntos en línea).
+  expect(items[0]).toHaveTextContent('Referencial S/ 120,00');
+  expect(items[0]).toHaveTextContent('Qué incluyeLimpieza del condensador.');
   expect(items[1]).not.toHaveTextContent('Qué incluye');
   unmount();
 

@@ -293,7 +293,8 @@ test("S03-TC-079 complemento: búsqueda, privacidad y solicitud dirigida", async
   });
   const choose = vi.fn();
   render(<TechnicianSearch onRequest={choose} />);
-  fireEvent.click(await screen.findByText("Ver perfil de Técnico sintético"));
+  // Pulido final del cliente (2026-11-22): el botón muestra «Ver perfil» y el nombre va en texto para lectores de pantalla; se busca por su nombre accesible.
+  fireEvent.click(await screen.findByRole("button", { name: "Ver perfil de Técnico sintético" }));
   await screen.findByText("Experiencia sintética");
   expect(screen.queryByText(/DATO PRIVADO/)).toBeNull();
   expect(screen.getByText("Sin reseñas publicadas todavía.")).toBeVisible();

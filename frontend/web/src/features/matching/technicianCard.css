@@ -1,0 +1,141 @@
+/* Pulido final del panel del cliente: tarjeta de técnico (Buscar técnicos y Técnicos favoritos). Clases «tcard-» propias:
+   DEF-77, .tech-card y .tech-badges de technician.css (grilla de 2 columnas) partían el nombre y las insignias letra por letra. */
+.tcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--ty-border);
+  border-radius: 20px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.tcard:hover { transform: translateY(-3px); box-shadow: 0 12px 28px color-mix(in srgb, var(--ty-text) 12%, transparent); }
+.tcard-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  padding: 0 22px;
+  color: hsl(0 0% 100%);
+  background: linear-gradient(120deg, var(--tone-a), var(--tone-b));
+}
+.tcard-cover .panel-svg-icon { width: 52px; height: 52px; margin: 0; opacity: 0.9; }
+.tcard-favorite {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ty-surface) 92%, transparent);
+  color: var(--ty-muted);
+  box-shadow: 0 2px 8px color-mix(in srgb, black 18%, transparent);
+  cursor: pointer;
+}
+.tcard-favorite .panel-svg-icon { width: 22px; height: 22px; margin: 0; }
+.tcard-favorite.is-on { color: hsl(350 70% 46%); }
+.tcard-favorite.is-on .panel-svg-icon { fill: currentColor; }
+[data-theme="dark"] .tcard-favorite.is-on { color: hsl(350 85% 72%); }
+.tcard-avatar {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 18px;
+  border: 4px solid var(--ty-surface);
+  border-radius: 50%;
+  background: var(--ty-accent);
+  color: var(--ty-on-accent, white);
+  font-size: 1.5rem;
+  font-weight: 700;
+  position: relative;
+}
+.tcard-body { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; padding: 10px 18px 18px; }
+.tcard-name {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  overflow-wrap: normal;
+  word-break: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tcard-badges { gap: 6px; }
+.tcard-experience, .tcard-distance { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 0.92rem; }
+.tcard-experience .panel-svg-icon, .tcard-distance .panel-svg-icon { width: 18px; height: 18px; margin: 0; flex: none; }
+.tcard-distance { color: var(--ty-text); font-weight: 600; }
+.tcard-fee { margin: 0; font-size: 1.35rem; font-weight: 800; color: var(--ty-accent); letter-spacing: -0.01em; }
+.tcard-districts { margin: 0; font-size: 0.88rem; }
+.tcard-foot { display: grid; gap: 8px; margin-top: auto; padding-top: 6px; }
+.tcard-foot .button { width: 100%; min-height: 44px; }
+.tcard-confirm { display: grid; gap: 8px; padding: 10px; border-radius: 12px; background: var(--ty-raised); }
+.tcard-confirm p { margin: 0; font-weight: 600; }
+.tcard-confirm div { display: flex; flex-wrap: wrap; gap: 8px; }
+.tcard-confirm .button { width: auto; flex: 1 1 auto; }
+
+/* Cuadrícula que llena el ancho (Buscar técnicos y favoritos). */
+.panel-content .client-technician-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+@media (prefers-reduced-motion: reduce) { .tcard { transition: none; } .tcard:hover { transform: none; } }
+html[data-motion="reduce"] .tcard:hover { transform: none; }
+.tcard-rating .panel-svg-icon { fill: currentColor; }
+
+/* Perfil público: barra fija con el resumen a la izquierda y las acciones a la derecha. */
+.panel-content .profile-cta-bar { justify-content: flex-end; align-items: center; padding: 10px 14px; border-radius: 16px; }
+.profile-cta-summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; flex: 1 1 auto; min-width: 0; margin: 0 auto 0 0; }
+.profile-cta-summary strong { font-size: 1.2rem; color: var(--ty-accent); }
+.profile-badges { margin: 6px 0 4px; }
+.profile-block-title { display: flex; align-items: center; gap: 10px; }
+.profile-block-title .panel-svg-icon { width: 22px; height: 22px; margin: 0; color: var(--ty-accent); flex: none; }
+.profile-about { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 14px; }
+.profile-about-item { display: flex; gap: 12px; padding: 14px; border-radius: 14px; background: var(--ty-raised); }
+.profile-about-item h4 { margin: 0 0 4px; }
+.profile-about-item p { margin: 0; }
+/* Servicios: tarjetas iguales con la tarifa alineada en la misma fila. */
+.profile-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.profile-service {
+  display: grid;
+  grid-template-rows: minmax(2.6em, auto) auto 1fr;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--ty-border);
+  border-radius: 16px;
+  background: var(--ty-surface);
+}
+.profile-service h4 { margin: 0; align-self: start; }
+.profile-service-fee { display: flex; align-items: baseline; gap: 6px; margin: 0; }
+.profile-service-fee small { color: var(--ty-muted); font-size: 0.82rem; }
+.profile-service-fee strong { font-size: 1.4rem; color: var(--ty-accent); }
+.profile-includes { display: grid; gap: 4px; align-content: start; }
+.profile-includes .kicker { margin: 0; }
+.profile-includes p { margin: 0; }
+.profile-includes p.is-clamped { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.profile-includes .text-button { justify-self: start; min-height: 44px; }
+@media (max-width: 720px) {
+  .panel-content .profile-cta-bar { flex-wrap: wrap; }
+  .profile-cta-summary { flex-basis: 100%; }
+}
+/* DEF-79: technician.css define .tech-week como grilla de 8 columnas (agenda del técnico) y desarmaba la tabla del perfil. */
+.tech-profile table.tech-week { display: table; width: 100%; gap: 0; border-collapse: collapse; }
+.tech-profile table.tech-week caption { display: table-caption; }
+.tech-profile table.tech-week thead { display: table-header-group; }
+.tech-profile table.tech-week tbody { display: table-row-group; }
+.tech-profile table.tech-week tr { display: table-row; }
+.tech-profile table.tech-week :is(th, td) { display: table-cell; }
+/* «Confianza»: el ícono junto al texto (.panel-svg-icon trae margin: 0 auto). */
+.tech-profile .tech-trust { justify-content: flex-start; }
+.tech-profile .tech-trust .panel-svg-icon { margin: 0; flex: none; width: 22px; height: 22px; }
+.profile-includes .kicker, .detail-summary-head .kicker { color: var(--ty-muted); font-weight: 700; opacity: 1; }

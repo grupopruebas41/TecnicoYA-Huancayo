@@ -193,8 +193,8 @@ export default function TechnicianSearch({ onRequest, onNewRequest, initialFilte
         </div>
       )}
       <div className="s02-list client-technician-list">
-        {result?.items.map((t) => (
-          <TechnicianCard key={t.id} technician={t} favorite={isFavorite(t)} onFavorite={toggleFavorite}
+        {result?.items.map((t, index) => (
+          <TechnicianCard key={t.id} index={index} technician={t} favorite={isFavorite(t)} onFavorite={toggleFavorite}
             onOpen={() => setSelected(t)} />
         ))}
       </div>
