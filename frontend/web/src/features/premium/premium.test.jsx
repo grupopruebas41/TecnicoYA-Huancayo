@@ -133,7 +133,8 @@ test('S05-TC-270 promociones y garantías van rotuladas como ejemplo y «Usar ga
     ? {data: {sample: true, items: [{id: 'a', title: 'Mantenimiento preventivo', body: 'Ejemplo de promoción.'}]}}
     : {data: {sample: true, items: [{request_id: 8, subcategory: 'Vitrinas', days: 30, active: true, valid_until: '2026-12-01T15:00:00Z', can_claim: false}]}}));
   render(<><PromotionsPage/><WarrantiesPage/></>);
-  await waitFor(() => expect(screen.getAllByText('Ejemplo · datos de demostración')).toHaveLength(3));
+  // Pulido final del cliente (2026-11-22): un solo rótulo «Ejemplo · datos de demostración» por página (antes también uno por tarjeta de promoción).
+  await waitFor(() => expect(screen.getAllByText('Ejemplo · datos de demostración')).toHaveLength(2));
   const use = await screen.findByRole('button', {name: 'Usar garantía'});
   expect(use).toBeDisabled();
   expect(use).toHaveAccessibleDescription('Disponible en el Sprint 6.');
