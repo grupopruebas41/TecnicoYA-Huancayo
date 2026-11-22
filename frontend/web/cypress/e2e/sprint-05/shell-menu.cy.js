@@ -41,6 +41,7 @@ describe("Barra superior, panel del avatar y menú del cliente", () => {
     cy.contains("h2", "Plan Premium").should("be.visible");
     cy.contains("Por definir").should("be.visible");
     nav().contains("button", "Preguntas frecuentes").click();
-    cy.get("details").first().click().should("have.attr", "open");
+    // Pulido final del cliente (2026-11-22): el acordeón usa botones con aria-expanded en vez de <details>.
+    cy.get(".faq-question button").first().click().should("have.attr", "aria-expanded", "true");
   });
 });
