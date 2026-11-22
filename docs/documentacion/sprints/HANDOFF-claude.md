@@ -2,6 +2,29 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-22 · Revisión del #66: límite de pedidos (DEF-80), alertas de falla fuera del límite (D-113), imágenes de equipos y CLI-09 (D-114)
+
+- **Rama:** la misma, `feature/delgado/cliente/pulido-final`. Pedido de Pimentel en la revisión del #66.
+- **Commits:** `7c84e5e` Pest en rojo, `d1d446a` backend, `d5d35af` Vitest en rojo, `1568355` frontend y `7471337` las 11 imágenes del equipo.
+- **DEF-80:**
+  - La referencia era el `request_id` de la respuesta 409. Las reglas de negocio no se registran en `laravel.log`, así que no aparece ahí y no hay datos que anonimizar.
+  - Causa: `ActiveOrders` contaba por fechas y las 14 terminadas de la demo no las tenían (15 activos).
+  - Ahora cuenta por estado vivo y además sin fechas de cierre ni de cancelación.
+  - `service_orders` no tiene estado propio: el pedido cuenta mientras le quede una solicitud viva. La cancelación real ya lo liberaba (S05-TC-408).
+- **D-113 (tomada):** la solicitud desde una alerta de falla no cuenta ni se bloquea; el recordatorio sí.
+  - La alerta se enlaza antes del envío.
+  - Se relee con bloqueo, así que una misma alerta nunca crea dos solicitudes.
+- **D-114 (CLI-09, opción A):** `response_minutes` y «Responde en ~N min» o «~N h» en la barra del perfil.
+- **Aviso del límite:** `LimitNotice` (ícono, texto y «Ver mis solicitudes») en Alertas, en el resumen del asistente dirigido y en Nueva solicitud (`OrderBlocked`). La «Referencia» queda solo para errores reales.
+- **Demo:** demo-mype con 2 activos y demo-cliente con 1; lo terminado guarda su fecha.
+- **Pruebas:**
+  - Pest S05-TC-407 a 414 (suite completa: 533/533);
+  - Vitest S05-TC-415 a 420, con 524 en verde, lint y build;
+  - adaptadas con explicación: S03-TC-077, S05-TC-138 y la Cypress `pedido.cy.js` («Ver mis solicitudes»);
+  - e2e-cierre, run 45067814350 (`03e2269`): **104 casos, 0 fallos**. Las dos corridas anteriores tuvieron un intermitente cada una, en pruebas que no se tocaron: S04-TC-087 (401 en `/me` al cambiar de cuenta) y S01-TC-077 (`cy.clearCookie` no borró la cookie). En la run 45066288268, S03-TC-068 falló por el cambio esperado y se adaptó.
+- **Siguiente (después de integrar el #66):** antes del pulido del técnico, renombrar `.tech-card`, `.tech-badges` y `.tech-week` de `technician.css` y retirar las reglas viejas de `search.css`.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-22 · Pulido final del panel del cliente (antes del pulido del técnico y los puntos 3 a 8 del cierre)
 
 - **Rama:** `feature/delgado/cliente/pulido-final`, desde `main` `c4da798` (#65 integrado); un solo PR.

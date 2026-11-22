@@ -43,3 +43,14 @@ En un Chromium limpio, sin extensiones (el que usa este script), no aparece el b
 Ninguno de los dos textos ni sus estilos existen en `frontend/web`. La lectura en voz alta del panel (`quickAccessibility.jsx`) no muestra avisos de volumen.
 
 Los dos vienen de extensiones del navegador del equipo; no se tocaron.
+
+## Revisión del #66 (2026-11-22)
+
+- **Rojo:**
+  - Pest S05-TC-407 a 414: [`2026-11-22-limite-pest-rojo.txt`](2026-11-22-limite-pest-rojo.txt);
+  - Vitest S05-TC-415 a 419: [`2026-11-22-limite-vitest-rojo.txt`](2026-11-22-limite-vitest-rojo.txt).
+- **Verde:**
+  - Pest 533/533 ([`2026-11-22-revision66-pest-verde.txt`](2026-11-22-revision66-pest-verde.txt));
+  - Vitest 524/524, lint y build;
+  - e2e-cierre, run 45067814350: 104 casos, 0 fallos.
+- **Capturas** (`2026-11-22-03e2269-revision66-*`, 24): Inicio, Perfil, Mis equipos (con las 11 imágenes del equipo) y Alertas, a 1366 y 390 px, en claro y oscuro. Sin imágenes rotas, desborde ni controles de menos de 44 px.

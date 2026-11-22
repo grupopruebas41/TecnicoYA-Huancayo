@@ -72,3 +72,18 @@ Los cambios: precio con coma decimal, subcategorías como chips, un solo rótulo
 | Herramienta y modelo | Fecha | Qué se aceptó | Qué se corrigió | Revisó |
 |---|---|---|---|---|
 | Claude Code (Claude Opus 5.5) | 2026-11-22 | Diseño, código, pruebas, capturas y documentación | Se encontraron otros 3 choques de clases CSS (mini pasos, tabla del perfil y ícono de Confianza); además, la etiqueta «kicker» con poco contraste | [PENDIENTE] |
+
+## Revisión del #66 (2026-11-22)
+
+- **DEF-80:** el límite de 3 pedidos activos ahora cuenta por estado vivo.
+- **D-113:** la solicitud desde una alerta de falla queda fuera del límite.
+- **D-114:** «Responde en ~N min» en el perfil (CLI-09, opción A).
+- **Aviso del límite:** es amable, con «Ver mis solicitudes» y sin «Referencia».
+- **Demo:** demo-mype con 2 pedidos activos y demo-cliente con 1.
+- **Imágenes:** las 11 de los equipos, verificadas por subcategoría (S05-TC-420).
+
+| Prevista | Ejecutada | Resultado |
+|---|---|---|
+| Pest S05-TC-407 a 414 (rojo) | `7c84e5e` | 7 de 8 en rojo. S05-TC-411 ya pasaba: con el cupo lleno, hoy todo choca con el límite; queda como guarda |
+| Vitest S05-TC-415 a 419 (rojo) | `d5d35af` | 3 de 5 en rojo. S05-TC-416 y 419 ya pasaban; son guardas |
+| Verde | Rama | Ver el relevo |
