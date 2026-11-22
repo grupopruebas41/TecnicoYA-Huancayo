@@ -2,6 +2,35 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-22 · Pulido final del panel del cliente (antes del pulido del técnico y los puntos 3 a 8 del cierre)
+
+- **Rama:** `feature/delgado/cliente/pulido-final`, desde `main` `c4da798` (#65 integrado); un solo PR.
+- **Commits:**
+  - TDD: `5e634fd` Pest en rojo, `ae57780` backend, `c05a030` y `2a11984` DEF-78, `385a5d0` Vitest en rojo;
+  - una pantalla o grupo por commit (`5fd2f4e` a `1b28282`);
+  - Cypress en `3a6ea02` y la S05-TC-234 adaptada.
+- **Defectos:**
+  - DEF-76: sensores en «Falla» sin lecturas (`no_data` y siembra con 24 h vigentes);
+  - DEF-77: insignias partidas en Buscar técnicos por el choque con `technician.css`;
+  - DEF-78: texto de desarrollo en el comunicado demo;
+  - DEF-79: tabla de disponibilidad del perfil desarmada por `.tech-week`.
+- **Decisión pendiente:** CLI-09, «Responde en ~N min» en el perfil (A: mediana de 30 días con 5 o más ofertas; B: no publicarla). Hoy se aplica B.
+- **Pruebas:**
+  - Pest S05-TC-380 a 387 (suite completa: 525/525, más el ajuste de S04-TC-142 explicado en el código: el titular recibe `specialty` y `from_iot_alert`);
+  - Vitest S05-TC-388 a 403 (518/518), lint y build;
+  - Cypress S05-TC-404 a 406 y e2e-cierre en la rama: e2e-cierre en la rama, run `45055447761` (`81d71b1`): **104 casos, 0 fallos** (S01 17, S02 17, S03 17, S04 18 y S05 35). La primera corrida (`45054900228`) encontró S05-TC-234, que esperaba `<details>` y se adaptó.
+- **Capturas:** `evidencias/sprint-05/pulido-cliente/`, antes (66) y después (68). Las mediciones del después no muestran desborde, texto vertical, imágenes rotas ni controles de menos de 44 px.
+- **Lecciones:**
+  - Es el cuarto choque de clases entre paneles (DEF-70, 77 y 79, y los mini pasos `request-steps`). Lo nuevo del cliente lleva el prefijo `cx-` o `tcard-`.
+  - En el pulido del técnico, conviene renombrar las clases genéricas de `technician.css` (`.tech-card`, `.tech-badges`, `.tech-week`) y retirar las viejas de `search.css`.
+  - En esta máquina Cypress se cae al arrancar con «* is not a valid URL», antes de ejecutar las pruebas. Se valida en e2e-cierre.
+- **Extensiones:** el lápiz flotante y el aviso «¿No escucha nada?» no son nuestros: no aparecen sin extensiones y no están en el código.
+- **Pendiente:**
+  - las imágenes de `public/img/equipos/`, que genera el equipo;
+  - la subida de la foto propia del equipo;
+  - el pulido del técnico y los puntos 3 a 8 del cierre.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-19 · Cierre común S4-S5, punto 2: workflow «e2e-cierre» con las Cypress de S01 a S05 en verde
 
 - **Rama:** `feature/pimentel/e2e-cierre/s05`, desde `main`, con `main` traído después de integrar el #64 (merge, sin `--force`).
