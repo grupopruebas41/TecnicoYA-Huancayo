@@ -131,6 +131,7 @@
 |---|---|---|---|---|
 | P17-S6 | Límites de comentarios de calificación y respuestas a reseñas (portafolio y documentos quedaron en D-46) | pendiente | — | — |
 | ASES-01 | Asesoría remota en el panel del cliente | pendiente, fuera de la Fase C1: cambia el modo de la solicitud, la cobertura y la distancia del matching del S4 y necesita su propio análisis (`PLAN-PANEL-CLIENTE.md` §4) | — | — |
+| CLI-09 | «Responde en ~N min» en la barra del perfil público del técnico (pulido final del cliente, 2026-11-22) | pendiente. **A (recomendada):** mediana del tiempo de respuesta a ofertas de los últimos 30 días (ya la calcula TechnicianStats para el técnico), publicada solo con 5 o más ofertas respondidas y redondeada (`~2 min`, `~15 min`, `~1 h`). **B:** no publicarla; la barra muestra «Desde S/ … · Disponible hoy / Atiende con cita» (lo aplicado hoy). Propuesta de Claude Code; nunca se muestra un valor inventado | — | [PENDIENTE] |
 
 **Para registrar una decisión:**
 1. Pasar la fila a «Decisiones tomadas».
