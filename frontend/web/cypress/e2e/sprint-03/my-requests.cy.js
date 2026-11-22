@@ -21,7 +21,10 @@ describe("S3 mis solicitudes", () => {
     loginClient("limit");
     toSummary();
     send();
-    wizard().find("[role=alert]").should("contain", "3 pedidos activos"); // D-95: la solicitud suelta cuenta como un pedido
+    // D-95: la solicitud suelta cuenta como un pedido. Revisión del #66 (2026-11-22): el límite se avisa con el aviso amable
+    // (role=status, «Ver mis solicitudes») en vez del recuadro de error con «Referencia».
+    wizard().find('[role=status][aria-label="Límite de pedidos activos"]').should("contain", "Ya tienes 3 pedidos activos.");
+    wizard().find("[role=alert]").should("not.exist");
     wizard().contains("Solicitud enviada correctamente.").should("not.exist");
     cy.get('nav[aria-label="Gestión del cliente"]')
       .contains("button", "Mis solicitudes")
