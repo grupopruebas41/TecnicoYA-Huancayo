@@ -92,7 +92,8 @@ it('S05-TC-384 cada alerta trae la unidad y el rango normal para resaltar el val
     app(IotMonitor::class)->record($device, -7.0, CarbonImmutable::now());
     $alert = $this->getJson('/api/v1/client/iot/alerts')->assertOk()->json('data.items.0');
     expect([$alert['value'], $alert['unit'], $alert['range']['min'], $alert['range']['max'], $alert['metric']])
-        ->toBe([-7.0, '°C', -21.0, -15.0, 'temperature']);
+        // JSON entrega -7 y -21 como enteros: se compara el valor numérico, no el tipo.
+        ->toEqual([-7.0, '°C', -21.0, -15.0, 'temperature']);
 });
 
 it('S05-TC-385 las garantías traen técnico, servicio y días restantes; las promociones, su vigencia', function () {
