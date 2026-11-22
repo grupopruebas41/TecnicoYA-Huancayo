@@ -1,0 +1,268 @@
+
+ RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+
+ ✓ src/features/panel/panel.test.jsx (15 tests) 6077ms
+   ✓ S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa 1914ms
+   ✓ S07-TC-058 la barra lateral se contrae, conserva nombres accesibles y recuerda el estado 464ms
+   ✓ S07-TC-059 en móvil el menú es un cajón que se cierra con Escape y devuelve el foco 391ms
+   ✓ S07-TC-060 la campana cuenta las notificaciones sin leer y las lista 698ms
+   ✓ S07-TC-062 el tema claro u oscuro se aplica con data-theme y se guarda en /me 613ms
+   ✓ S07-TC-071 la campana y el menú del avatar se cierran con Escape desde su botón o con un clic fuera 453ms
+ ✓ src/features/panel/staffShell.test.jsx (8 tests) 6347ms
+   ✓ S05-TC-282 el técnico tiene la barra del cliente: ☰ junto al logo, campana, «Aa» y avatar, y abajo solo «Ir al sitio» 1391ms
+   ✓ S05-TC-283 el panel de la cuenta del técnico tiene sus 5 pestañas, su rol y «Avisos» con sus interruptores 740ms
+   ✓ S05-TC-284 Seguridad cambia la contraseña y cierra las otras sesiones con confirmación y alertas de éxito y error 1752ms
+   ✓ S05-TC-285 hay un solo indicador de conexión, en la barra superior, con texto y no solo color 477ms
+   ✓ S05-TC-286 el administrador tiene sus 4 pestañas y guarda la accesibilidad en /me/preferences [D-105] 384ms
+   ✓ S05-TC-287 la campana del técnico abre la página completa de Notificaciones y cada aviso lleva a su sección 717ms
+   ✓ S05-TC-311 la campana, «Aa» y el avatar quedan activos (aria-expanded) mientras su panel está abierto 408ms
+   ✓ S05-TC-312 «Aa» tiene un botón real para leer en voz alta, alto contraste como interruptor y el enlace abre la cuenta en Accesibilidad 475ms
+ ✓ src/features/technician/technicianHome.test.jsx (10 tests) 6823ms
+   ✓ S05-TC-299 el menú del técnico agrupa Trabajo, Mi negocio, Mi desempeño y Ayuda, y lo no listo dice «Próximamente» 2057ms
+   ✓ S05-TC-300 el menú muestra las ofertas pendientes con su punto que late, el avance del perfil y el estado de la verificación 651ms
+   ✓ S05-TC-373 la etiqueta de Verificación del menú es corta y lleva el texto completo en title, aria-label y descripción 520ms
+   ✓ S05-TC-304 el Inicio saluda, destaca la oferta que vence primero, lista las demás y sin ofertas muestra su estado vacío 681ms
+   ✓ S05-TC-305 indicadores, Mi día por franja, progreso con tareas que llevan a su sección e insignias con texto 1690ms
+   ✓ S05-TC-306 la Ayuda del técnico explica el flujo de la oferta y responde sus dudas 481ms
+ ✓ src/features/admin/admin.test.jsx (13 tests) 6720ms
+   ✓ S07-TC-129 el menú agrupa las secciones con título, muestra contadores accesibles y tooltips con el menú contraído 1761ms
+   ✓ S07-TC-130 el Inicio ofrece accesos rápidos según permisos y lista los últimos eventos 974ms
+   ✓ S07-TC-131 las estadísticas cambian de período, dibujan con equivalente en tabla y formatean tasa y tiempo 840ms
+   ✓ S07-TC-134 el alta valida en el cliente, no pide contraseña y envía solo los datos del tipo de cuenta 678ms
+   ✓ S07-TC-136 el detalle muestra datos, historial y auditoría, con acciones según el estado y sin acciones sobre la propia cuenta 332ms
+   ✓ S07-TC-137 bloquear exige motivo y confirmación, envía la versión y muestra el éxito o el error del servidor 542ms
+   ✓ S07-TC-138 eliminar pide motivo y escribir ELIMINAR; editar envía solo lo que cambió con motivo y versión 483ms
+   ✓ S07-TC-143 crear un administrador pide reingresar tu contraseña, la envía solo en ese caso y la borra si falla 339ms
+ ✓ src/features/client/clientPanel.test.jsx (12 tests) 8940ms
+   ✓ S05-TC-025 la campana usa la forma real de la bandeja: unread_count e items [DEF-49] 525ms
+   ✓ S05-TC-026 el panel del cliente agrupa su menú y conserva los selectores de Cypress 2077ms
+   ✓ S05-TC-030 la búsqueda ordena por cercanía, filtra por tarifa máxima y muestra distancia y tarifa 898ms
+   ✓ S05-TC-031 sin distrito principal la búsqueda ordena por nombre y lo explica 327ms
+   ✓ S05-TC-032 Mis solicitudes abre con sus pestañas y contador, y el estado en texto 526ms
+   ✓ S05-TC-035 la bandeja filtra por estado y tipo y marca una notificación como leída con alerta [TC-106] 1065ms
+   ✓ S05-TC-036 marcar todas como leídas actualiza el contador y muestra el error si falla 1414ms
+   ✓ S05-TC-037 Mi perfil guarda el distrito y la dirección del cliente con doble validación y alertas 589ms
+   ✓ S05-TC-039 «Solicitar servicio» desde un perfil abre el asistente dirigido en Nueva solicitud 1070ms
+ ✓ src/features/administration/RegisterWizard.test.jsx (22 tests) 9625ms
+   ✓ S07-TC-017 el paso 1 pregunta quién eres con dos tarjetas y un indicador 1 de 2 820ms
+   ✓ S07-TC-018 el cliente ve distrito del catálogo, tipo y razón social solo si es MYPE 513ms
+   ✓ S07-TC-019 el técnico declara distrito base, distritos que atiende, especialidades y experiencia 535ms
+   ✓ S07-TC-022 volver al paso 1 no pierde lo escrito 480ms
+   ✓ S07-TC-023 la casilla de Términos es obligatoria y abre el texto vigente 337ms
+   ✓ S07-TC-024 el cliente envía solo sus campos y queda listo para iniciar sesión 537ms
+   ✓ S07-TC-025 el técnico envía distritos con el base, especialidades y años, y queda pendiente de verificación 751ms
+   ✓ S07-TC-026 sin especialidad el técnico no envía y los errores del servidor se muestran en su campo 663ms
+   ✓ S07-TC-036 marcar una especialidad despliega sus rubros reales y enfoca el primero 395ms
+   ✓ S07-TC-037 el buscador filtra los rubros por nombre sin perder los elegidos 607ms
+   ✓ S07-TC-038 «Seleccionar todas» y «Quitar todas» actualizan el contador 314ms
+   ✓ S07-TC-039 una especialidad sin rubros muestra su error y no deja enviar 829ms
+   ✓ S07-TC-040 desmarcar una especialidad con rubros pide confirmación y luego los limpia 568ms
+   ✓ S07-TC-041 el resumen cuenta rubros y especialidades y el envío incluye los rubros 689ms
+   ✓ S07-TC-042 volver con «Atrás» conserva especialidades y rubros elegidos 429ms
+   ✓ S07-TC-043 si no cargan los rubros se informa el error y se puede reintentar 304ms
+ ✓ src/features/requests/order/orderWizard.test.jsx (24 tests) 12942ms
+   ✓ S05-TC-103 paso 1: especialidades como casillas accesibles de selección múltiple, sin fotos y con su número de subcategorías 685ms
+   ✓ S05-TC-104 se pueden marcar las 3 especialidades y todas las subcategorías: ninguna se deshabilita y no hay contador [D-95] 2190ms
+   ✓ S05-TC-105 desmarcar una especialidad con subcategorías elegidas pide confirmación y las quita 774ms
+   ✓ S05-TC-106 paso 2: subcategorías agrupadas por especialidad, con tarifa desde, filtro y validación por especialidad 665ms
+   ✓ S05-TC-107 paso 3: una pestaña por especialidad con indicador, síntomas de todos sus trabajos, validación y misma descripción 1220ms
+   ✓ S05-TC-108 fotos por especialidad: arrastrar y soltar, vista previa, máximo 5 y quitar con confirmación 584ms
+   ✓ S05-TC-109 paso 4: distrito del perfil, «Lo antes posible» o fecha y franja de Lima, sin franjas que ya empezaron 844ms
+   ✓ S05-TC-110 resumen: una tarjeta por especialidad con sus subcategorías y «Editar», y el aviso de cuántas solicitudes se crearán 1034ms
+   ✓ S05-TC-111 envío: POST /orders por especialidad con sus subcategorías y una clave que se reutiliza al reintentar; confirma con N seguimientos 976ms
+   ✓ S05-TC-112 si al enviar ya tiene 3 pedidos activos, el pedido se rechaza con su mensaje y el asistente pasa al bloqueo 744ms
+   ✓ S05-TC-114 barra inferior con resumen vivo, stepper con pasos completados y transición que respeta movimiento reducido 387ms
+   ✓ S05-TC-136 el filtro no pierde lo marcado: el pie sigue contando las subcategorías que quedan ocultas 373ms
+   ✓ S05-TC-137 al desmarcar una subcategoría se quitan sus síntomas y se conserva lo demás de la especialidad 734ms
+   ✓ S05-TC-140 la sugerencia del buscador agrega el trabajo a su especialidad sin límite y no lo repite 559ms
+   ✓ S05-TC-142 la confirmación con una sola solicitud lo dice en singular y nombra su especialidad 413ms
+stderr | src/LandingRedesign.test.jsx > S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape
+Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at img
+    at div
+    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+    at div
+    at PublicSite (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:31:23)
+    at App (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:122:57)
+
+ ✓ src/features/technician/technicianBusiness.test.jsx (11 tests) 4083ms
+   ✓ S05-TC-340 Perfil profesional: una tarjeta por sección, contador de caracteres y vista previa en vivo sin llamar al perfil público 609ms
+   ✓ S05-TC-341 Perfil profesional valida en el cliente, guarda con PATCH y muestra alertas de éxito y de error 311ms
+   ✓ S05-TC-343 «Añadir servicio» filtra por especialidad, agrupa tarjetas, marca «Ya lo ofreces», elige con el teclado y valida la tarifa 675ms
+   ✓ S05-TC-344 Portafolio: antes y después con su etiqueta, cambia el orden con Subir y Bajar y quita con confirmación 364ms
+   ✓ S05-TC-345 un trabajo nuevo pide el texto alternativo de cada foto antes de guardarlo y envía etapas y textos 727ms
+ ✓ src/features/announcements/announcements.test.jsx (8 tests) 4328ms
+   ✓ S07-TC-090 el editor tiene secciones plegables, origen en tarjetas, audiencia y tipo seleccionables y atajos de vigencia 974ms
+   ✓ S07-TC-091 el selector de imagen muestra las medidas, rechaza las menores al mínimo y recorta a 3:1 con encuadre ajustable 425ms
+   ✓ S07-TC-092 guarda el borrador o publica con doble validación y conserva el formulario ante un error 500 1098ms
+   ✓ S07-TC-093 la vista previa en vivo muestra el carrusel como en el panel, con escritorio o móvil y la zona segura 316ms
+   ✓ S07-TC-094 el listado es una cuadrícula con miniatura, etiquetas, estado de color, fechas, menú de acciones y filtros 877ms
+ ✓ src/features/requests/myRequests.test.jsx (25 tests) 4624ms
+   ✓ S05-TC-162 cuatro pestañas con contador, Activas por defecto; cambiar de pestaña pide esa pestaña y se maneja con flechas 638ms
+   ✓ S05-TC-169 cancelar abre un diálogo accesible con la lista cerrada de motivos en opciones grandes; «Otro motivo» exige texto [D-100] 340ms
+   ✓ S05-TC-173 la búsqueda consulta tras dejar de escribir y vuelve a la página 1; si no hay resultados ofrece limpiarla 868ms
+   ✓ S05-TC-177 «Ver detalle» abre el seguimiento; desde el Inicio se abre directo; un borrador ofrece continuar; cancelar la abierta la cierra 374ms
+   ✓ S05-TC-180 si la búsqueda avanzó mientras estaba abierta la lista, cancelar relee la versión y reintenta una sola vez 347ms
+ ✓ src/features/client/problemSearch.test.jsx (11 tests) 5099ms
+   ✓ S05-TC-077 el buscador espera 300 ms, sugiere hasta 3 con «Más probable» y se maneja con el teclado 543ms
+   ✓ S05-TC-078 sin coincidencias ofrece elegir la categoría y con menos de 3 letras no consulta 779ms
+   ✓ S05-TC-080 en el paso 1 del asistente, elegir una sugerencia agrega ese rubro sin reemplazar y avisa «Agregado» 1007ms
+   ✓ S05-TC-081 Palabras clave: alta con doble validación, edición con versión y desactivación con confirmación 600ms
+   ✓ S05-TC-086 las sugerencias se abren en un panel propio justo debajo del campo, en el flujo y antes de los chips 374ms
+   ✓ S05-TC-087 el panel muestra filas de carga, se recorre con el teclado y se cierra con clic fuera o al vaciar el campo 1213ms
+ ✓ src/LandingRedesign.test.jsx (17 tests) 3786ms
+   ✓ S02-TC-089 rediseño: menú móvil atrapa foco y cierra con Escape 671ms
+   ✓ S02-TC-089 rediseño: Nosotros completo y testimonios rotulados 414ms
+   ✓ S02-TC-090 navegar a Nosotros usa la ruta propia y empieza arriba 392ms
+   ✓ S02-TC-090 desde Nosotros el menú vuelve a servicios sin hash 320ms
+   ✓ S02-TC-089 rediseño: contacto sin destinatario no simula envío 329ms
+ ✓ src/features/administration/AccountApp.test.jsx (5 tests) 5022ms
+   ✓ S01-TC-016 [TC-005] complemento unitario: portal client desde identidad del servidor 2030ms
+   ✓ S01-TC-017 [TC-005] complemento unitario: portal technician desde identidad del servidor 1089ms
+   ✓ S01-TC-018 [TC-005] complemento unitario: portal admin desde identidad del servidor 424ms
+   ✓ S01-TC-076 complemento unitario: login consulta /me y logout incierto reconcilia sin falso éxito 1437ms
+ ✓ src/features/administration/sprint02Panels.test.jsx (8 tests) 4623ms
+   ✓ S02-TC-076 complemento: catálogo guarda y cambia estado con versión 1334ms
+   ✓ S02-TC-078 complemento: comunicado borrador publicación duplicación y retiro 1405ms
+   ✓ S02-TC-081 complemento: técnico guarda bio tarifa disponibilidad y pausa 522ms
+   ✓ S02-TC-079 complemento: portafolio cancela y retira trabajo 417ms
+   ✓ S02-TC-079 complemento: el aviso de retiro persiste al desmontar el botón 457ms
+ ✓ src/features/matching/searchProfile.test.jsx (16 tests) 3825ms
+   ✓ S05-TC-197 el encabezado trae «¿Qué se malogró?» y las 3 especialidades como tarjetas que filtran y se desmarcan 704ms
+   ✓ S05-TC-198 la barra de chips filtra por zona, tarifa, calificación y «Disponible hoy» 403ms
+   ✓ S05-TC-201 el corazón guarda y quita favoritos con su alerta, y si falla vuelve atrás con un error en español 344ms
+   ✓ S05-TC-207 las calificaciones muestran promedio, barras de 5★ a 1★ y reseñas rotuladas como datos de demostración 322ms
+ ✓ src/features/technician/technicianPages.test.jsx (10 tests) 3789ms
+   ✓ S05-TC-319 Ofertas tiene Pendientes (la tarjeta del Inicio, por vencimiento) e Historial con el estado como etiqueta de color 807ms
+   ✓ S05-TC-320 Mis trabajos muestra pestañas con contador, estado con ícono, visita legible, dirección solo si es suyo y la línea de tiempo 302ms
+   ✓ S05-TC-322 Zonas y disponibilidad: casillas grandes por franja, chips de distrito, vista previa y guardado con alerta 576ms
+   ✓ S05-TC-323 Zonas valida en el cliente (al menos una franja y un distrito) y explica los errores del servidor 1056ms
+   ✓ S05-TC-324 Mi agenda muestra la semana con hoy resaltado, cuenta las visitas por franja, cambia de semana y abre el editor 467ms
+ ✓ src/features/client/onboarding.test.jsx (10 tests) 3292ms
+   ✓ S05-TC-244 la pestaña Accesibilidad trae todos los ajustes, los aplica al instante y los guarda en la cuenta 1242ms
+   ✓ S05-TC-245 la bienvenida usa tarjetas de preferencia y guarda solo los ajustes que resultan, sin la tarjeta elegida 424ms
+   ✓ S05-TC-246 «Omitir» marca la bienvenida sin ajustes, Esc omite el tutorial y ninguno vuelve a salir 377ms
+   ✓ S05-TC-247 el tutorial tiene 4 pasos con Atrás, Siguiente y «2 de 4», y repetirlo desde Ayuda no lo vuelve a marcar 586ms
+ ✓ src/features/panel/shellModern.test.jsx (10 tests) 4095ms
+   ✓ S05-TC-222 el ☰ junto al logo contrae el menú, lo guarda en la cuenta y ya no hay «Contraer menú» abajo 741ms
+   ✓ S05-TC-224 la campana marca todas como leídas y «Ver todas» abre Notificaciones 469ms
+   ✓ S05-TC-225 «Aa» cambia el tamaño de texto, el alto contraste y lee la pantalla en voz alta en es-PE 555ms
+   ✓ S05-TC-226 el avatar abre un diálogo con 5 pestañas que atrapa el foco, se cierra con Esc y devuelve el foco 306ms
+   ✓ S05-TC-227 Mis direcciones valida en el cliente, guarda con alerta y pide confirmación antes de eliminar 820ms
+   ✓ S05-TC-228 Comunicación guarda las preferencias con su alerta y Apariencia cambia el tema 587ms
+stderr | src/Sprint02Landing.test.jsx > S02-TC-089 diez secciones de landing en orden
+Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at img
+    at div
+    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+    at div
+    at PublicSite (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:31:23)
+    at App (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:122:57)
+
+ ✓ src/features/announcements/announcementLifecycle.test.jsx (4 tests) 3294ms
+   ✓ S07-TC-105 el menú ofrece Editar en todo estado y Eliminar solo en borrador, vencido y retirado; la tarjeta abre el editor 1738ms
+   ✓ S07-TC-106 eliminar muestra miniatura y título, exige escribir ELIMINAR y borra con su versión 624ms
+   ✓ S07-TC-107 al editar un vigente avisa que los cambios se ven de inmediato y guarda con su versión 533ms
+   ✓ S07-TC-108 un retirado se ve en solo lectura hasta restaurarlo como borrador, y luego se corrige y publica 382ms
+ ✓ src/Sprint02Landing.test.jsx (25 tests) 2971ms
+   ✓ S02-TC-084 carrusel reducido y teclado 359ms
+   ✓ S02-TC-085 carrusel 3000 ms y pausas 316ms
+   ✓ S02-TC-089 diez secciones de landing en orden 361ms
+ ✓ src/features/administration/accessibility.test.jsx (6 tests) 2191ms
+   ✓ S01-TC-084 AccountApp: botones explícitos con rol client 1847ms
+ ✓ src/features/requests/requestFlows.test.jsx (13 tests) 3845ms
+   ✓ S03-TC-074 complemento: registra una vez, corrige con PATCH y conserva el servicio 1015ms
+   ✓ S03-TC-074 complemento D-60: creación incierta reintenta con la misma clave 350ms
+   ✓ S03-TC-079 complemento: búsqueda, privacidad y solicitud dirigida 450ms
+   ✓ S03-TC-080 complemento: portal abre solicitud y retoma la registrada 1145ms
+ ✓ src/features/client/pulidoCliente.test.jsx (16 tests) 2797ms
+   ✓ S05-TC-388 Buscar técnicos: cada insignia es una pieza en una sola línea que se ajusta en filas, sin clases del técnico [DEF-77] 632ms
+   ✓ S05-TC-390 Perfil público: barra con el resumen y las acciones, tarifa alineada y «Ver más» para un «Qué incluye» largo 327ms
+ ✓ src/features/client/clientHome.test.jsx (11 tests) 3223ms
+   ✓ S05-TC-046 la bienvenida saluda por nombres, muestra el distrito, los técnicos de la zona y el avance del perfil 989ms
+   ✓ S05-TC-029 elegir una sugerencia de «¿Qué se malogró?» abre Nueva solicitud con especialidad y subcategoría [D-94] 899ms
+ ✓ src/features/technician/technicianOnboarding.test.jsx (12 tests) 2339ms
+   ✓ S05-TC-357 la pestaña «Avisos» guarda cada interruptor en la cuenta con su alerta y vuelve atrás si falla [D-112] 566ms
+   ✓ S05-TC-361 la bienvenida del técnico suma «Avisos de ofertas más notorios» y guarda ajustes y avisos, nunca la tarjeta 412ms
+   ✓ S05-TC-366 con «Dictar por voz», el perfil profesional muestra el micrófono (es-PE) y agrega lo dictado al texto 345ms
+ ✓ src/landing/AboutExperience.test.jsx (13 tests) 2462ms
+   ✓ S02-TC-089 Nosotros: navegación y portada presentan la propuesta renovada 573ms
+ ✓ src/features/premium/premium.test.jsx (6 tests) 2623ms
+   ✓ S05-TC-266 con plan free lo premium lleva candado y abre el plan; con Premium abre sus pantallas 1122ms
+   ✓ S05-TC-267 «Mis equipos» valida, registra, confirma antes de eliminar y pide servicio con el tipo del equipo 817ms
+stderr | src/landing/Intro.test.jsx > S02-TC-089 intro muestra solo video y después transición y contenido
+Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at img
+    at div
+    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+    at div
+    at PublicSite (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:31:23)
+    at App (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:122:57)
+
+ ✓ src/features/administration/CatalogEdit.test.jsx (4 tests) 1228ms
+   ✓ S02-TC-076 complemento DEF-47: PATCH conserva foto y versión sin enviar specialty_id 639ms
+ ✓ src/features/offers/sprint04Flows.test.jsx (11 tests) 1163ms
+ ✓ src/features/administration/SessionForm.test.jsx (3 tests) 1818ms
+   ✓ S01-TC-083 429 en español sin éxito y botón habilitado nuevamente 575ms
+   ✓ S01-TC-083 contrato D-43: registro rechazado por sesión activa conserva el formulario y no afirma creación 589ms
+   ✓ S01-TC-072 [TC-003] complemento unitario: registro técnico sin client_type, creación confirmada sin iniciar sesión 650ms
+ ✓ src/landing/Intro.test.jsx (4 tests) 1039ms
+   ✓ S02-TC-089 intro muestra solo video y después transición y contenido 566ms
+ ✓ src/features/client/clientDesign.test.jsx (8 tests) 2024ms
+   ✓ S05-TC-042 la búsqueda pagina con números, página actual marcada y extremos deshabilitados 833ms
+ ✓ src/landing/Polish.test.jsx (13 tests) 1354ms
+   ✓ S02-TC-089 complemento: el pie tiene cuatro columnas y la barra académica 335ms
+   ✓ S02-TC-089 complemento: el submenú de Nosotros se oculta sobre la portada y aparece al salir de ella 303ms
+ ✓ src/features/administration/ProfileForm.test.jsx (5 tests) 1018ms
+   ✓ S01-TC-081 teléfono inválido sin petición: 111111111111111111111 572ms
+ ✓ src/features/panel/notificationPanel.test.jsx (4 tests) 1343ms
+   ✓ S05-TC-236 el panel trae «N nuevas», marcar todas, pestañas Todas y No leídas, y Esc devuelve el foco a la campana 1030ms
+ ✓ src/features/administration/catalogList.test.jsx (4 tests) 1919ms
+   ✓ S07-TC-073 subcategorías en lista compacta con miniatura o marcador, especialidad, tarifa y estado de color 678ms
+   ✓ S07-TC-074 filtra las subcategorías por especialidad y busca por nombre sin distinguir tildes 491ms
+   ✓ S07-TC-075 el interruptor de estado pide confirmación: cancelar no envía y confirmar guarda con versión 523ms
+ ✓ src/features/offers/sprint04.test.jsx (14 tests) 875ms
+ ✓ src/features/administration/AuthLayout.test.jsx (7 tests) 1571ms
+   ✓ S01-TC-084 complemento: el error de conexión y Reintentar quedan dentro de la tarjeta, sobre el formulario 740ms
+ ✓ src/features/requests/sprint03.test.jsx (13 tests) 1506ms
+   ✓ S03-TC-070 cambiar de rubro limpia subcategoría y catálogo 966ms
+ ✓ src/VideoExperience.test.jsx (4 tests) 491ms
+ ✓ src/features/administration/Catalog.test.jsx (2 tests) 537ms
+   ✓ S01-TC-085 [TC-012] error, reintento real y subcategorías desde API 464ms
+ ✓ src/features/administration/sprint02.test.jsx (12 tests) 647ms
+ ✓ src/landing/navigation.test.jsx (6 tests) 476ms
+   ✓ S02-TC-092 el menú móvil se cierra después de navegar a una sección 358ms
+ ✓ src/features/administration/ServicesEditor.test.jsx (1 test) 393ms
+   ✓ S07-TC-044 «Servicios y tarifas» muestra los rubros declarados pendientes de tarifa 391ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 309ms
+ ✓ src/features/offers/channelIdentity.test.jsx (2 tests) 263ms
+stderr | src/landing/HeroBackground.test.jsx > S02-TC-089 video pausa al salir y reanuda sin reiniciar el zoom
+Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at img
+    at div
+    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+
+ ✓ src/landing/HeroBackground.test.jsx (6 tests) 154ms
+ ✓ src/features/administration/validateAccount.test.js (8 tests) 10ms
+ ✓ src/features/administration/http.test.js (4 tests) 43ms
+ ✓ src/lib/numbers.test.js (1 test) 26ms
+ ✓ src/features/announcements/announcementRules.test.js (2 tests) 13ms
+ ✓ src/features/realtime/Realtime.test.jsx (3 tests) 284ms
+ ✓ src/features/administration/forms.test.jsx (16 tests) 147ms
+ ✓ src/features/administration/sprint025.test.js (2 tests) 13ms
+ ✓ src/features/requests/defaultDistrict.test.js (1 test) 8ms
+ ✓ src/styles/palette.test.js (1 test) 10ms
+ ✓ src/features/administration/labels.test.js (9 tests) 9ms
+ ✓ src/landing/reducedMotion.test.js (1 test) 7ms
+ ✓ src/lib/refactors.test.js (1 test) 5ms
+
+ Test Files  59 passed (59)
+      Tests  518 passed (518)
+   Start at  13:48:23
+   Duration  50.97s (tests 47%, environment 31%, import 10%, setup 6%, transform 5%)
+
+Environment  jsdom was created 59 times · 100.32s total, 31% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+JUNIT report written to C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/test-results/junit.xml

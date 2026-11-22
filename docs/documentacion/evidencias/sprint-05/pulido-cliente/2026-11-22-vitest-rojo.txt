@@ -1,0 +1,34 @@
+
+ RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+
+ ❯ src/features/client/pulidoCliente.test.jsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/client/pulidoCliente.test.jsx [ src/features/client/pulidoCliente.test.jsx ]
+Error: Failed to resolve import "../../lib/format" from "src/features/client/pulidoCliente.test.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/features/client/pulidoCliente.test.jsx:13:0
+  15 |  const __vi_import_9__ = await import("./ClientPages");
+  16 |  const __vi_import_10__ = await import("../premium/PremiumPages");
+  17 |  const __vi_import_11__ = await import("../../lib/format");
+     |                                        ^
+  18 |  const __vi_import_12__ = await import("./homeContent");
+  19 |  const __vi_import_13__ = await import("../administration/http");
+ ❯ TransformPluginContext._formatLog ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  13:10:37
+   Duration  984ms (environment 82%, setup 15%, transform 3%, worker 1%)
+
+JUNIT report written to C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/test-results/junit.xml

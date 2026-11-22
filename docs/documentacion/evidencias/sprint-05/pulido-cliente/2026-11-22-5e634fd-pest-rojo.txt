@@ -1,0 +1,116 @@
+
+   FAIL  Tests\Feature\Sprint05\ClientPolishTest
+  ⨯ it S05-TC-380 un sensor sin lecturas en las últimas 24 h queda «Sin datos» (no_data) y no en falla         122.55s  
+  ⨯ it S05-TC-381 la siembra demo repetida días después deja 24 h de lecturas relativas a la hora de la siembra… 4.29s  
+  ✓ it S05-TC-382 tecnicoya:iot-simulate a mano (sin --at) registra una lectura actual en cada equipo demo       2.01s  
+  ⨯ it S05-TC-383 Mis equipos trae el código del tipo de equipo, el estado de su sensor y la fecha del último s… 1.43s  
+  ⨯ it S05-TC-384 cada alerta trae la unidad y el rango normal para resaltar el valor fuera de rango             1.35s  
+  ⨯ it S05-TC-385 las garantías traen técnico, servicio y días restantes; las promociones, su vigencia           1.72s  
+  ⨯ it S05-TC-386 el detalle de una solicitud propia trae la especialidad y si nació de una alerta del sensor    1.30s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ClientPolishTest > it S05-TC-380 un sensor sin lecturas en las últimas 24 h queda…    
+  Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => 'no_data',
++    0 => 'failure',
+     1 => null,
+     2 => null,
+     3 => Array &1 [],
+ ]
+
+  at tests\Feature\Sprint05\ClientPolishTest.php:42
+     38▕     [, $device] = s05PolishFreezer($this->user->id);
+     39▕     // Una lectura vieja (hace 3 días) no cuenta: en las últimas 24 h no hay datos.
+     40▕     DB::table('iot_readings')->insert(['device_id' => $device, 'value' => -18, 'measured_at' => CarbonImmutable::now()->subDays(3)]);
+     41▕     $card = $this->getJson('/api/v1/client/iot/devices')->assertOk()->json('data.items.0');
+  ➜  42▕     expect([$card['status'], $card['value'], $card['measured_at'], $card['readings']])->toBe(['no_data', null, null, []])
+     43▕         ->and(IotMonitor::status((object) ['online' => true, 'target' => -18, 'tolerance' => 3], null))->toBe('no_data');
+     44▕ });
+     45▕ 
+     46▕ it('S05-TC-381 la siembra demo repetida días después deja 24 h de lecturas relativas a la hora de la siembra, sin duplicar equipos', function () {
+
+  1   tests\Feature\Sprint05\ClientPolishTest.php:42
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ClientPolishTest > it S05-TC-381 la siembra demo repetida días después deja 24 h d…   
+  Failed asserting that 0 is equal to 24 or is greater than 24.
+
+  at tests\Feature\Sprint05\ClientPolishTest.php:55
+     51▕ 
+     52▕     expect(DB::table('client_equipment')->where('user_id', $this->user->id)->count())->toBe(3);
+     53▕     $items = collect($this->getJson('/api/v1/client/iot/devices')->assertOk()->json('data.items'))->keyBy(fn ($item) => $item['equipment']['name']);
+     54▕     foreach ($items as $item) {
+  ➜  55▕         expect(count($item['readings']))->toBeGreaterThanOrEqual(24)
+     56▕             ->and($item['status'])->not->toBe('no_data')
+     57▕             ->and(CarbonImmutable::parse($item['measured_at'])->greaterThan(now()->subHour()))->toBeTrue();
+     58▕     }
+     59▕     // La congeladora demo sigue mostrando su falla en la última hora para la demostración de alertas.
+
+  1   tests\Feature\Sprint05\ClientPolishTest.php:55
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ClientPolishTest > it S05-TC-383 Mis equipos trae el código del ti…  ErrorException   
+  Undefined array key "subcategory_code"
+
+  at tests\Feature\Sprint05\ClientPolishTest.php:79
+     75▕     [$equipment, $device] = s05PolishFreezer($this->user->id);
+     76▕     $plain = DB::table('client_equipment')->insertGetId(['user_id' => $this->user->id, 'name' => 'Laptop de caja',
+     77▕         'subcategory_id' => Sprint04::subcategory('computo-hardware')]);
+     78▕     $items = collect($this->getJson('/api/v1/client/equipment')->assertOk()->json('data.items'))->keyBy('id');
+  ➜  79▕     expect([$items[$equipment]['subcategory_code'], $items[$equipment]['sensor_status'], $items[$equipment]['last_service_at']])
+     80▕         ->toBe(['frio-congeladores', 'no_data', null])
+     81▕         ->and([$items[$plain]['subcategory_code'], $items[$plain]['sensor_status']])->toBe(['computo-hardware', null]);
+     82▕ 
+     83▕     app(IotMonitor::class)->record($device, -19.0, CarbonImmutable::now()->subMinutes(10));
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ClientPolishTest > it S05-TC-384 cada alerta trae la unidad y el r…  ErrorException   
+  Undefined array key "unit"
+
+  at tests\Feature\Sprint05\ClientPolishTest.php:94
+     90▕ it('S05-TC-384 cada alerta trae la unidad y el rango normal para resaltar el valor fuera de rango', function () {
+     91▕     [, $device] = s05PolishFreezer($this->user->id);
+     92▕     app(IotMonitor::class)->record($device, -7.0, CarbonImmutable::now());
+     93▕     $alert = $this->getJson('/api/v1/client/iot/alerts')->assertOk()->json('data.items.0');
+  ➜  94▕     expect([$alert['value'], $alert['unit'], $alert['range']['min'], $alert['range']['max'], $alert['metric']])
+     95▕         ->toBe([-7.0, '°C', -21.0, -15.0, 'temperature']);
+     96▕ });
+     97▕ 
+     98▕ it('S05-TC-385 las garantías traen técnico, servicio y días restantes; las promociones, su vigencia', function () {
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ClientPolishTest > it S05-TC-385 las garantías traen técnico, serv…  ErrorException   
+  Undefined array key "technician"
+
+  at tests\Feature\Sprint05\ClientPolishTest.php:106
+    102▕     DB::table('participations')->insert(['request_id' => $request->id, 'technician_id' => $technician->id, 'slot' => 'primary', 'status' => 'completed',
+    103▕         'reference_fee_snapshot' => '80.00', 'currency' => 'PEN', 'assigned_at' => now()->subDays(19), 'completed_at' => now()->subDays(18)]);
+    104▕     $old = Sprint04::sentRequest(['client_id' => $this->profile->id, 'status' => 'completed', 'closed_at' => now()->subDays(40)]);
+    105▕     $items = collect($this->getJson('/api/v1/client/warranties')->assertOk()->json('data.items'))->keyBy('request_id');
+  ➜ 106▕     expect([$items[$request->id]['technician'], $items[$request->id]['days_left'], $items[$request->id]['active']])->toBe(['Rosa Quispe', 12, true])
+    107▕         ->and([$items[$old->id]['technician'], $items[$old->id]['days_left'], $items[$old->id]['active']])->toBe([null, 0, false]);
+    108▕ 
+    109▕     AnnouncementFactory::new()->forRoles(['client'])->create(['title' => 'Promoción de ejemplo', 'kind' => 'promotion',
+    110▕         'starts_at' => now()->subDay(), 'ends_at' => CarbonImmutable::parse('2026-11-30 23:00:00', 'UTC')]);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ClientPolishTest > it S05-TC-386 el detalle de una solicitud propi…  ErrorException   
+  Undefined array key "from_iot_alert"
+
+  at tests\Feature\Sprint05\ClientPolishTest.php:123
+    119▕     app(IotMonitor::class)->record($device, -7.0, CarbonImmutable::now());
+    120▕     DB::table('iot_alerts')->update(['request_id' => $request->id]);
+    121▕ 
+    122▕     $detail = $this->getJson("/api/v1/requests/{$request->id}")->assertOk()->json('data');
+  ➜ 123▕     expect([$detail['from_iot_alert'], $detail['specialty']['name']])->toBe([true, 'Refrigeración comercial'])
+    124▕         ->and($this->getJson("/api/v1/requests/{$plain->id}")->json('data.from_iot_alert'))->toBeFalse();
+    125▕ });
+    126▕
+
+
+  Tests:    6 failed, 1 passed (14 assertions)
+  Duration: 152.17s
+

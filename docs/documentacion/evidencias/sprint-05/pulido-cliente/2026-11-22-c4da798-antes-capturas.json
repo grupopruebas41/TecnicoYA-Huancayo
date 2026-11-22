@@ -1,0 +1,558 @@
+{
+  "demo-mype-1366-light-inicio": {
+    "overflowX": true,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-mype-1366-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [
+      "Ejemplo",
+      "Ejemplo",
+      "Nuevo"
+    ],
+    "imagenesRotas": [],
+    "menos44": [
+      "Página anterior",
+      "Página 1",
+      "Página siguiente"
+    ]
+  },
+  "demo-mype-1366-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Activas (0)",
+      "Programadas (2)",
+      "Completadas (9)",
+      "Canceladas (5)"
+    ]
+  },
+  "demo-mype-1366-light-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Activas (0)",
+      "Programadas (2)",
+      "Completadas (9)",
+      "Canceladas (5)"
+    ]
+  },
+  "demo-mype-1366-light-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-light-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-inicio": {
+    "overflowX": true,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-mype-1366-dark-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [
+      "Ejemplo",
+      "Ejemplo",
+      "Nuevo"
+    ],
+    "imagenesRotas": [],
+    "menos44": [
+      "Página anterior",
+      "Página 1",
+      "Página siguiente"
+    ]
+  },
+  "demo-mype-1366-dark-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Activas (0)",
+      "Programadas (2)",
+      "Completadas (9)",
+      "Canceladas (5)"
+    ]
+  },
+  "demo-mype-1366-dark-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Activas (0)",
+      "Programadas (2)",
+      "Completadas (9)",
+      "Canceladas (5)"
+    ]
+  },
+  "demo-mype-1366-dark-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-1366-dark-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-mype-390-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Página anterior",
+      "Página 1",
+      "Página siguiente"
+    ]
+  },
+  "demo-mype-390-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-light-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-mype-390-dark-buscar": {
+    "fallo": "TimeoutError: locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=technician-card]').first() to be visible\u001b[22m\n"
+  },
+  "demo-mype-390-dark-perfil": {
+    "fallo": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=technician-card]').first().getByRole('button', { name: /^Ver perfil/ })\u001b[22m\n"
+  },
+  "demo-mype-390-dark-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-mype-390-dark-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-cliente-1366-light-inicio": {
+    "overflowX": true,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-cliente-1366-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [
+      "Ejemplo",
+      "Nuevo",
+      "Ejemplo"
+    ],
+    "imagenesRotas": [],
+    "menos44": [
+      "Página anterior",
+      "Página 1",
+      "Página siguiente"
+    ]
+  },
+  "demo-cliente-1366-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-cliente-1366-dark-inicio": {
+    "overflowX": true,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-cliente-1366-dark-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [
+      "Ejemplo",
+      "Nuevo",
+      "Ejemplo"
+    ],
+    "imagenesRotas": [],
+    "menos44": [
+      "Página anterior",
+      "Página 1",
+      "Página siguiente"
+    ]
+  },
+  "demo-cliente-1366-dark-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-cliente-390-light-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-cliente-390-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Página anterior",
+      "Página 1",
+      "Página siguiente"
+    ]
+  },
+  "demo-cliente-390-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  },
+  "demo-cliente-390-dark-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Completar mi perfil",
+      "Ver todos"
+    ]
+  },
+  "demo-cliente-390-dark-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Página anterior",
+      "Página 1",
+      "Página siguiente"
+    ]
+  },
+  "demo-cliente-390-dark-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": []
+  }
+}
