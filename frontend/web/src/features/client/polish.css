@@ -1,0 +1,397 @@
+/* Pulido final del panel del cliente: dirección visual común. Prefijo «cx-» para no chocar con otras hojas (DEF-70, DEF-77). */
+
+/* Contenido centrado con el mismo ancho en todas las secciones del cliente. */
+.panel-shell[data-role="client"] .panel-content { margin-inline: auto; }
+.panel-shell[data-role="client"] .panel-notices { width: 100%; max-width: 1200px; margin-inline: auto; }
+
+/* Tonos: especialidades y acentos de página. Se usan en degradados, íconos y bordes (nunca como único portador de información). */
+[data-tone] { --tone-a: hsl(174 58% 32%); --tone-b: hsl(190 62% 38%); }
+[data-tone="computo"], [data-tone="blue"] { --tone-a: hsl(212 72% 46%); --tone-b: hsl(190 70% 40%); }
+[data-tone="refrigeracion"], [data-tone="teal"] { --tone-a: hsl(196 78% 38%); --tone-b: hsl(168 60% 34%); }
+[data-tone="electricidad"], [data-tone="orange"] { --tone-a: hsl(32 92% 44%); --tone-b: hsl(14 80% 48%); }
+[data-tone="violet"] { --tone-a: hsl(258 46% 50%); --tone-b: hsl(286 42% 46%); }
+[data-tone="green"] { --tone-a: hsl(152 52% 34%); --tone-b: hsl(170 52% 32%); }
+[data-tone="rose"] { --tone-a: hsl(346 62% 48%); --tone-b: hsl(16 70% 50%); }
+[data-tone="amber"] { --tone-a: hsl(42 90% 44%); --tone-b: hsl(28 88% 48%); }
+[data-tone="slate"] { --tone-a: hsl(210 14% 46%); --tone-b: hsl(210 12% 38%); }
+
+.cx-page { display: grid; gap: 18px; min-width: 0; }
+.cx-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cx-head-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  color: hsl(0 0% 100%);
+  background: linear-gradient(135deg, var(--tone-a), var(--tone-b));
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--tone-a) 30%, transparent);
+}
+.cx-head-icon .panel-svg-icon { width: 26px; height: 26px; margin: 0; }
+.cx-head-text { flex: 1 1 260px; min-width: 0; }
+.cx-head h2 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 1.75rem); }
+.cx-head h2:focus { outline: none; }
+.cx-head-text p { margin: 4px 0 0; max-width: 70ch; }
+.cx-head-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.cx-head-actions .button { min-height: 44px; }
+
+/* Tarjeta base: borde suave, sombra ligera, radio 18 px y elevación al pasar el mouse. */
+.cx-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--ty-border);
+  border-radius: 18px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.cx-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px color-mix(in srgb, var(--ty-text) 12%, transparent); }
+.cx-card h3 { margin: 0; font-size: 1.08rem; line-height: 1.3; overflow-wrap: break-word; }
+.cx-card p { margin: 0; }
+.cx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 16px; align-items: stretch; }
+.cx-grid.is-wide { grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+
+/* Ícono en círculo de color. */
+.cx-dot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--tone-a);
+  background: color-mix(in srgb, var(--tone-a) 15%, var(--ty-surface));
+}
+.cx-dot .panel-svg-icon { width: 22px; height: 22px; margin: 0; }
+.cx-dot.is-large { width: 56px; height: 56px; }
+.cx-dot.is-large .panel-svg-icon { width: 28px; height: 28px; }
+[data-theme="dark"] .cx-dot { color: color-mix(in srgb, var(--tone-a) 55%, white); }
+
+/* Etiquetas de estado: color + ícono + texto. Cada etiqueta queda en una sola línea. */
+.cx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  max-width: 100%;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: var(--ty-raised);
+  color: var(--ty-text);
+}
+.cx-badge .panel-svg-icon { width: 14px; height: 14px; margin: 0; flex: none; }
+.cx-badge.is-success { background: var(--ty-success-bg); color: var(--ty-success-text); }
+.cx-badge.is-warning { background: var(--ty-warning-bg); color: var(--ty-warning-text); }
+.cx-badge.is-danger { background: var(--ty-error-bg); color: var(--ty-error); }
+[data-theme="light"] .cx-badge.is-danger { background: hsl(4 70% 95%); color: hsl(4 65% 36%); }
+.cx-badge.is-info { background: color-mix(in srgb, hsl(212 72% 46%) 14%, var(--ty-surface)); color: color-mix(in srgb, hsl(212 72% 36%) 85%, var(--ty-text)); }
+[data-theme="dark"] .cx-badge.is-info { color: hsl(205 80% 80%); }
+.cx-badge.is-muted { background: var(--ty-neutral-bg, var(--ty-raised)); color: var(--ty-muted); }
+.cx-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 0; list-style: none; min-width: 0; }
+
+.cx-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.cx-chips li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--ty-raised);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cx-chips li.is-more { background: transparent; border: 1px dashed var(--ty-border); color: var(--ty-muted); }
+
+/* Rótulo único de demostración. */
+.cx-sample {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ty-warning-bg);
+  color: var(--ty-warning-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.cx-sample .panel-svg-icon { width: 16px; height: 16px; margin: 0; }
+
+/* Estado vacío con ilustración. */
+.cx-empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px dashed var(--ty-border);
+  border-radius: 20px;
+  background: var(--ty-surface);
+}
+.cx-empty h3 { margin: 4px 0 0; font-size: 1.15rem; }
+.cx-empty p { margin: 0; max-width: 48ch; }
+.cx-empty .button { min-height: 44px; margin-top: 6px; }
+.cx-art { width: 160px; height: 120px; }
+
+/* Entrada escalonada de las tarjetas. */
+.cx-rise { animation: cx-rise 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 45ms); }
+@keyframes cx-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes cx-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.35; } }
+@keyframes cx-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cx-pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+
+/* Botón de ícono con tooltip (texto también en aria-label). */
+.cx-icon-button {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--ty-border);
+  border-radius: 12px;
+  background: var(--ty-surface);
+  color: var(--ty-text);
+  cursor: pointer;
+}
+.cx-icon-button .panel-svg-icon { width: 20px; height: 20px; margin: 0; }
+.cx-icon-button:hover, .cx-icon-button:focus-visible { border-color: var(--ty-accent); color: var(--ty-accent); }
+.cx-icon-button.is-danger:hover, .cx-icon-button.is-danger:focus-visible { border-color: var(--ty-error); color: var(--ty-error); }
+.cx-icon-button[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  z-index: 5;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--ty-text);
+  color: var(--ty-bg);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.cx-icon-button[data-tip]:hover::after, .cx-icon-button[data-tip]:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+
+/* Pestañas sencillas (Vigentes / Vencidas, Activas / Atendidas). */
+.cx-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.cx-tabs [role="tab"] {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--ty-border);
+  border-radius: 999px;
+  background: var(--ty-surface);
+  color: var(--ty-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cx-tabs [role="tab"][aria-selected="true"] { border-color: var(--ty-accent); background: var(--ty-accent); color: var(--ty-on-accent, white); }
+
+/* Movimiento reducido: sin entradas, pulsos ni elevación (preferencia del sistema o «Reducir animaciones»). */
+@media (prefers-reduced-motion: reduce) {
+  .cx-rise, .cx-card { animation: none; transition: none; }
+  .cx-card:hover { transform: none; }
+}
+html[data-motion="reduce"] :is(.cx-rise, .cx-card) { animation: none !important; }
+html[data-motion="reduce"] .cx-card:hover { transform: none; }
+
+/* Diálogo común del cliente (novedades, detalle de sensores): centrado, con fondo oscurecido; pantalla completa en el celular. */
+.cx-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, black 45%, transparent);
+  backdrop-filter: blur(6px);
+  animation: cx-fade 0.18s ease-out;
+}
+.cx-dialog {
+  position: relative;
+  margin: 0;
+  width: min(720px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid var(--ty-border);
+  border-radius: 22px;
+  background: var(--ty-bg);
+  color: var(--ty-text);
+  animation: cx-pop 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cx-dialog h2 { margin: 0; font-size: 1.4rem; }
+.cx-dialog p { margin: 0; }
+.cx-dialog-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+@media (max-width: 720px) {
+  .cx-overlay { padding: 0; }
+  .cx-dialog { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; align-content: start; }
+}
+@media (prefers-reduced-motion: reduce) { .cx-overlay, .cx-dialog { animation: none; } }
+
+/* Inicio: «Consejo del mes» y «Tu seguridad» como tarjetas vistosas (ícono grande en círculo y degradado suave). */
+.client-home .home-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border-color: color-mix(in srgb, var(--feature) 30%, var(--ty-border));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--feature) 16%, var(--ty-surface)) 0%, var(--ty-surface) 70%);
+}
+.home-tip { --feature: hsl(42 92% 48%); }
+.home-safety { --feature: hsl(152 55% 38%); }
+.home-feature-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  color: hsl(0 0% 100%);
+  background: linear-gradient(135deg, var(--feature), color-mix(in srgb, var(--feature) 70%, black));
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--feature) 35%, transparent);
+}
+.home-feature-icon .panel-svg-icon { width: 30px; height: 30px; margin: 0; }
+.home-feature-body { display: grid; gap: 10px; flex: 1; min-width: 0; }
+.home-feature-body h3 { font-size: 1.15rem; font-weight: 800; }
+.home-tip-text { display: grid; gap: 8px; justify-items: start; animation: cx-fade 0.25s ease-out; }
+.home-tip-text .cx-badge[data-tone] { background: color-mix(in srgb, var(--tone-a) 14%, var(--ty-surface)); }
+.home-tip-text p { line-height: 1.55; }
+.home-tip-next { justify-self: start; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.home-tip-next .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+.client-home .client-safety { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.client-home .client-safety li { display: flex; align-items: flex-start; gap: 10px; padding-left: 0; line-height: 1.45; }
+.client-home .client-safety li::before { content: none; }
+.home-check {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: hsl(152 52% 34%);
+  color: hsl(0 0% 100%);
+}
+.home-check .panel-svg-icon { width: 15px; height: 15px; margin: 0; stroke-width: 2.6; }
+@media (prefers-reduced-motion: reduce) { .home-tip-text { animation: none; } }
+html[data-motion="reduce"] .home-tip-text { animation: none !important; }
+
+/* Mis solicitudes: cuadrícula que llena el ancho y tarjeta con franja de color, ícono, chips y mini pasos. */
+.panel-content .client-request-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+.panel-shell .client-request-card { display: flex; flex-direction: column; gap: 10px; padding-top: 22px; overflow: hidden; }
+.request-stripe { position: absolute; inset: 0 0 auto 0; height: 6px; background: linear-gradient(90deg, var(--tone-a), var(--tone-b)); }
+.client-request-card .client-card-head { flex-wrap: nowrap; align-items: flex-start; justify-content: flex-start; gap: 12px; }
+.request-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  color: hsl(0 0% 100%);
+  background: linear-gradient(135deg, var(--tone-a), var(--tone-b));
+}
+.request-icon .panel-svg-icon { width: 22px; height: 22px; margin: 0; }
+.request-title { flex: 1; min-width: 0; }
+.client-request-card .client-card-head .client-status { flex: none; white-space: nowrap; }
+.request-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 0.9rem; }
+.request-meta .panel-svg-icon, .client-next-line .panel-svg-icon { width: 16px; height: 16px; margin: 0; flex: none; }
+.client-request-card .client-next-line { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.request-pulse { position: relative; flex: none; width: 10px; height: 10px; border-radius: 50%; background: hsl(38 90% 45%); }
+.request-pulse::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; animation: cx-pulse 1.8s ease-in-out infinite; }
+.cx-steps { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin: 4px 0 0; padding: 0; list-style: none; }
+.cx-steps li { position: relative; display: grid; justify-items: center; gap: 4px; text-align: center; }
+.cx-steps li + li::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 50%;
+  left: -50%;
+  height: 2px;
+  background: var(--ty-border);
+}
+.cx-steps li.is-done::before, .cx-steps li.is-current::before { background: var(--tone-a); }
+.cx-step-dot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ty-border);
+  border-radius: 50%;
+  background: var(--ty-surface);
+  color: hsl(0 0% 100%);
+}
+.cx-step-dot .panel-svg-icon { width: 11px; height: 11px; margin: 0; stroke-width: 3; }
+.cx-steps .is-done .cx-step-dot { border-color: var(--tone-a); background: var(--tone-a); }
+.cx-steps .is-current .cx-step-dot { border-color: var(--tone-a); box-shadow: 0 0 0 4px color-mix(in srgb, var(--tone-a) 22%, transparent); }
+.cx-step-label { font-size: 0.7rem; line-height: 1.2; color: var(--ty-muted); }
+/* La etiqueta va por CSS: los pasos son decorativos (la lista ya dice el paso actual) y así el texto no se repite. */
+.cx-step-label::after { content: attr(data-label); }
+.cx-steps .is-current .cx-step-label { color: var(--ty-text); font-weight: 700; }
+.client-request-card .client-mini-timeline { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 0 0; list-style: none; }
+.client-request-card .client-mini-timeline li { display: grid; gap: 0; padding-left: 12px; border-left: 3px solid color-mix(in srgb, var(--tone-a) 50%, var(--ty-border)); }
+.client-request-card .client-card-actions { margin-top: auto; }
+@media (prefers-reduced-motion: reduce) { .request-pulse::after { animation: none; } }
+html[data-motion="reduce"] .request-pulse::after { animation: none !important; }
+
+/* Detalle de la solicitud: resumen como tarjeta con filas ícono + etiqueta + valor. */
+.detail-summary { gap: 14px; border-top: 6px solid var(--tone-a); }
+.detail-summary-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.detail-summary-head > div:nth-child(2) { flex: 1 1 160px; }
+.detail-summary-head .kicker { margin: 0; }
+.detail-summary-head h3 { font-size: 1.3rem; }
+.detail-summary-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  color: hsl(0 0% 100%);
+  background: linear-gradient(135deg, var(--tone-a), var(--tone-b));
+}
+.detail-summary-icon .panel-svg-icon { width: 26px; height: 26px; margin: 0; }
+.detail-rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 4px 20px; margin: 0; }
+.detail-row { display: grid; grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1.2fr); gap: 12px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--ty-border); }
+.detail-row dt { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ty-muted); font-size: 0.9rem; }
+.detail-row dt .cx-dot { width: 34px; height: 34px; }
+.detail-row dt .cx-dot .panel-svg-icon { width: 17px; height: 17px; }
+.detail-row dd { margin: 0; padding-top: 6px; min-width: 0; overflow-wrap: anywhere; }
+.detail-sub { display: block; margin-top: 2px; }
+.detail-description { white-space: pre-line; }
+@media (max-width: 520px) { .detail-row { grid-template-columns: minmax(0, 1fr); gap: 2px; } .detail-row dd { padding: 0 0 0 44px; } }
+.tracking-refresh { display: inline-flex; align-items: center; gap: 8px; justify-self: start; width: fit-content; min-height: 44px; }
+.tracking-refresh .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+
+/* Objetivos de 44 px en el panel del cliente: enlaces de texto, paginación y pestañas. */
+.panel-shell[data-role="client"] .panel-content .text-button { display: inline-flex; align-items: center; min-height: 44px; }
+.panel-shell[data-role="client"] .client-pagination button { min-width: 44px; min-height: 44px; }
+.panel-shell[data-role="client"] .client-tabs [role="tab"] { min-height: 44px; }
+/* Inicio: controles del carrusel y atajos de «¿Qué se malogró?» de 44 px (como el panel del técnico en la T5). */
+.panel-shell[data-role="client"] :is(.carousel-controls, .carousel-actions) button { min-width: 44px; min-height: 44px; }
+.panel-shell[data-role="client"] .problem-chips .client-filter-chip { min-height: 44px; }
+/* Mini pasos: solo se rotula el paso actual (los demás quedan como puntos); en el último, la etiqueta se alinea a la derecha. */
+.cx-steps li:not(.is-current) .cx-step-label { visibility: hidden; }
+.cx-steps li.is-current .cx-step-label { white-space: nowrap; }
+.cx-steps li.is-current:last-child .cx-step-label { justify-self: end; }
+.cx-steps li.is-current:first-child .cx-step-label { justify-self: start; }
+/* Contraste AA de los rótulos «kicker» dentro del panel del cliente (la regla global usa un dorado tenue). */
+.panel-shell[data-role="client"] .panel-content .kicker { color: var(--ty-muted); opacity: 1; font-weight: 700; }

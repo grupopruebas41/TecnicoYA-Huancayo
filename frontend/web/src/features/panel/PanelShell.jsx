@@ -277,7 +277,7 @@ export default function PanelShell({user, role, roleLabel, navLabel, sections, o
   function closeDrawer() { setDrawer(false); drawerButton.current?.focus(); }
   return <AccessibilityContext.Provider value={{prefs: a11y[0], update: a11y[1]}}>
   <ShellContext.Provider value={{setTourMode, setTourDrawer, openAccount: modern ? () => openAccount() : undefined}}>
-  <div className={shellClass(collapsed, tourMode)} data-cy={`portal-${role}`}>
+  <div className={shellClass(collapsed, tourMode)} data-cy={`portal-${role}`} data-role={role}>
     {/* Fase 5 (WCAG 2.4.1): salta al contenido sin cambiar el hash, que usa el enrutado de la cuenta. */}
     {modern && <a className="skip-link" href="#contenido" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Saltar al contenido</a>}
     <aside ref={sidebar} className={'panel-sidebar' + (drawer || tourDrawer ? ' is-open' : '')}>

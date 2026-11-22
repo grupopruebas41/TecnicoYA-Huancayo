@@ -1,3 +1,4 @@
+import { soles } from "../../../lib/format";
 import { serverNow } from "../../administration/http";
 
 // D-92 y D-95 (PEDIDO-02): pedido por especialidades. Estado del asistente, validación por paso (la misma que aplica el
@@ -214,4 +215,4 @@ export function liveSummary(state, specialties = []) {
 /** D-95: con el máximo de pedidos activos el asistente no deja empezar otro. Sin cupo legible decide el servidor. */
 export const orderBlocked = (quota) => quota?.available === 0;
 
-export const formatFee = (fee) => (fee == null ? "" : `Desde S/ ${Number(fee).toFixed(2)}`);
+export const formatFee = (fee) => (fee == null ? "" : `Desde ${soles(fee)}`);

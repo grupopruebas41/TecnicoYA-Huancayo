@@ -1,5 +1,4 @@
 // Panel del técnico, Fase T3: formatos compartidos (hora de Lima) y franjas Mañana 08–12, Tarde 12–18 y Noche 18–21.
-import {groupThousands} from '../../lib/numbers';
 
 export const TZ = 'America/Lima';
 export const FRANJAS = [
@@ -72,7 +71,4 @@ export function scheduleSummary(matrix) {
 }
 
 /** Tarifa en formato peruano, como en el resto de la plataforma: «S/ 120,00» y «S/ 1 200,00» (coma decimal). */
-export function soles(value) {
-  const [whole, decimal] = Number(value).toFixed(2).split('.');
-  return `S/ ${groupThousands(whole)},${decimal}`;
-}
+export {soles} from '../../lib/format';

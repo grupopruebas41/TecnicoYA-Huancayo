@@ -55,6 +55,14 @@ const PATHS = {
   news: <><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M7.5 9h9"/><path d="M7.5 12.5h9"/><path d="M7.5 16h5"/></>,
   // Fase 3 (D-101): favoritos.
   heart: <path d="M12 19.5s-7-4.3-7-9.6A3.9 3.9 0 0 1 12 7.6a3.9 3.9 0 0 1 7 2.3c0 5.3-7 9.6-7 9.6z"/>,
+  // Pulido final del cliente: sensores, alertas, consejos, ubicación y promociones.
+  thermo: <><path d="M10 13.5V5.5a2 2 0 0 1 4 0v8a4 4 0 1 1-4 0z"/><path d="M12 9v7"/></>,
+  battery: <><rect x="3.5" y="7.5" width="15" height="9" rx="2"/><path d="M20.5 10.5v3"/><path d="M6.5 10.5v3"/><path d="M9.5 10.5v3"/></>,
+  wrench: <path d="M14.5 5.5a4 4 0 0 0-5 5L4.5 15.5a2 2 0 0 0 3 3l5-5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>,
+  bulb: <><path d="M9 17.5h6"/><path d="M10 20.5h4"/><path d="M8.5 14.5a5.5 5.5 0 1 1 7 0c-.8.7-1 1.5-1 3h-5c0-1.5-.2-2.3-1-3z"/></>,
+  pin: <><path d="M12 20.5s-6-5.3-6-10.5a6 6 0 0 1 12 0c0 5.2-6 10.5-6 10.5z"/><circle cx="12" cy="10" r="2.2"/></>,
+  tag: <><path d="M4 12.5V5a1 1 0 0 1 1-1h7.5L20 11.5 12.5 19z"/><circle cx="8.5" cy="8.5" r="1.4"/></>,
+  info: <><circle cx="12" cy="12" r="8"/><path d="M12 11v5"/><path d="M12 8v.1"/></>,
 };
 
 // raw: solo los trazos, para dibujarlos dentro de otro SVG (ilustraciones del portafolio, D-101).

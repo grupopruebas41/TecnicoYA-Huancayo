@@ -128,7 +128,8 @@ test('S05-TC-030 la búsqueda ordena por cercanía, filtra por tarifa máxima y 
   cards.forEach(card => expect(card).toHaveAttribute('data-cy', 'technician-card'));
   expect(within(cards[0]).getByText('En tu distrito')).toBeInTheDocument();
   expect(within(cards[2]).getByText('Distancia no disponible')).toBeInTheDocument();
-  expect(within(cards[2]).getByText('Desde S/ 45.50')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): precio en formato peruano con coma decimal.
+  expect(within(cards[2]).getByText('Desde S/ 45,50')).toBeInTheDocument();
   // D-101 (Fase 3): la tarjeta suma el corazón de favoritos junto a «Ver perfil».
   expect(within(cards[0]).getAllByRole('button').map(button => button.getAttribute('aria-label') || button.textContent))
     .toEqual([expect.stringMatching(/^Guardar a .+ en favoritos$/), expect.stringMatching(/^Ver perfil de /)]);

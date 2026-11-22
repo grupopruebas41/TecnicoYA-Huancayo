@@ -151,7 +151,8 @@ test('S05-TC-106 paso 2: subcategorías agrupadas por especialidad, con tarifa d
   const computo = await screen.findByRole('region', {name: 'Cómputo'});
   const electricidad = screen.getByRole('region', {name: 'Electricidad'});
 
-  expect(await within(computo).findByText('Desde S/ 50.00')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): precio en formato peruano con coma decimal.
+  expect(await within(computo).findByText('Desde S/ 50,00')).toBeInTheDocument();
   expect((await checkbox('Redes e infraestructura')).closest('label')).not.toHaveTextContent('Desde');
   expect(within(electricidad).getByText('Tableros eléctricos')).toBeInTheDocument();
   fireEvent.click(await checkbox('Reparación de hardware'));
@@ -347,7 +348,9 @@ test('S05-TC-113 Mis solicitudes agrupa las solicitudes del mismo pedido y muest
 
   const order = await screen.findByRole('region', {name: 'Pedido del 4 nov · 2 servicios'});
   expect(within(order).getAllByRole('button', {name: /Ver detalle/}).map(button => button.textContent)).toEqual(['Ver detalle de la solicitud #42', 'Ver detalle de la solicitud #41']);
-  expect(within(order).getByText('Reparación de hardware, Redes e infraestructura')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): las subcategorías son chips (una por elemento) en vez de una línea separada por comas.
+  expect(within(order).getAllByRole('list', {name: 'Servicios'}).flatMap(list => within(list).getAllByRole('listitem').map(item => item.textContent)))
+    .toEqual(expect.arrayContaining(['Reparación de hardware', 'Redes e infraestructura']));
   expect(within(order).queryByText('Iluminación')).toBeNull();
 });
 
