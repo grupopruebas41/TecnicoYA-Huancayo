@@ -1,0 +1,159 @@
+
+   FAIL  Tests\Feature\Sprint05\ActiveOrderLimitTest
+  ⨯ it S05-TC-407 solo cuentan las solicitudes vivas: las terminadas no cuentan aunque les falte la fecha de c… 73.68s  
+  ⨯ it S05-TC-408 al cancelar la única solicitud viva de un pedido, el pedido deja de contar; si le queda otra,… 0.79s  
+  ⨯ it S05-TC-409 el límite, las pestañas de Mis solicitudes y el menú usan la misma lista de estados vivos [DE… 0.38s  
+  ⨯ it S05-TC-410 con 3 pedidos activos, «Enviar a mi técnico» desde una alerta de falla crea la solicitud y no… 0.55s  
+  ✓ it S05-TC-411 con 3 pedidos activos, un recordatorio de mantenimiento sí choca con el límite [D-113]         0.57s  
+  ⨯ it S05-TC-412 la misma alerta de falla no crea dos solicitudes, aunque se envíe con otra clave [D-113]       0.48s  
+  ⨯ it S05-TC-413 DemoSeeder deja a demo-mype con 2 pedidos activos como máximo y a demo-cliente con 1, y lo te… 3.53s  
+  ⨯ it S05-TC-414 el perfil público dice «Responde en ~N min» con la mediana de 30 días y solo con 5 o más resp… 0.76s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ActiveOrderLimitTest > it S05-TC-407 solo cuentan las solicitudes vivas: las termi…   
+  Failed asserting that 5 is identical to 0.
+
+  at tests\Feature\Sprint05\ActiveOrderLimitTest.php:60
+     56▕ it('S05-TC-407 solo cuentan las solicitudes vivas: las terminadas no cuentan aunque les falte la fecha de cierre [DEF-80]', function () {
+     57▕     foreach (S05_ENDED as $status) {
+     58▕         s05Request($this, $status);
+     59▕     }
+  ➜  60▕     expect(app(ActiveOrders::class)->count($this->profile->id))->toBe(0);
+     61▕     $this->getJson('/api/v1/orders/quota')->assertOk()->assertJsonPath('data.active', 0)->assertJsonPath('data.available', 3);
+     62▕ 
+     63▕     // Las programadas sí cuentan (asignada con franja).
+     64▕     s05Request($this, 'assigned', ['mode' => 'scheduled', 'preferred_start_at' => now()->addDay(), 'preferred_end_at' => now()->addDay()->addHours(2)]);
+
+  1   tests\Feature\Sprint05\ActiveOrderLimitTest.php:60
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ActiveOrderLimitTest > it S05-TC-408 al cancelar la única solicitud viva de un ped…   
+  Failed asserting that 2 is identical to 3.
+
+  at tests\Feature\Sprint05\ActiveOrderLimitTest.php:86
+     82▕     $cancel($second);
+     83▕     expect(app(ActiveOrders::class)->count($this->profile->id))->toBe(0);
+     84▕     // Una vencida sin closed_at (dato viejo) tampoco cuenta.
+     85▕     s05Request($this, 'expired');
+  ➜  86▕     $this->getJson('/api/v1/orders/quota')->assertJsonPath('data.available', 3);
+     87▕ });
+     88▕ 
+     89▕ it('S05-TC-409 el límite, las pestañas de Mis solicitudes y el menú usan la misma lista de estados vivos [DEF-80]', function () {
+     90▕     expect(ActiveOrders::LIVE_STATUSES)->toEqualCanonicalizing(S05_LIVE);
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ActiveOrderLimitTest > it S05-TC-409 el límite, las pestañas de Mis solicit…  Error   
+  Undefined constant App\Modules\ARequests\Application\ActiveOrders::LIVE_STATUSES
+
+  at tests\Feature\Sprint05\ActiveOrderLimitTest.php:90
+     86▕     $this->getJson('/api/v1/orders/quota')->assertJsonPath('data.available', 3);
+     87▕ });
+     88▕ 
+     89▕ it('S05-TC-409 el límite, las pestañas de Mis solicitudes y el menú usan la misma lista de estados vivos [DEF-80]', function () {
+  ➜  90▕     expect(ActiveOrders::LIVE_STATUSES)->toEqualCanonicalizing(S05_LIVE);
+     91▕     foreach ([...S05_LIVE, ...S05_ENDED] as $status) {
+     92▕         $tab = ClientRequestBoard::tabOf((object) ['status' => $status, 'mode' => 'asap']);
+     93▕         $live = in_array($status, ActiveOrders::LIVE_STATUSES, true);
+     94▕         // Vivas: Activas o Programadas; terminadas: Completadas o Canceladas (el borrador va en Activas sin contar).
+
+  1   tests\Feature\Sprint05\ActiveOrderLimitTest.php:90
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ActiveOrderLimitTest > it S05-TC-410 con 3 pedidos activos, «Enviar a mi técnico»…    
+  Expected response status code [201] but received 409.
+Failed asserting that 409 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Ya tienes 3 pedidos activos, el máximo permitido. Podrás hacer otro cuando alguno se cierre.",
+    "errors": [],
+    "error": {
+        "code": "ACTIVE_REQUEST_LIMIT",
+        "message": "Ya tienes 3 pedidos activos, el máximo permitido. Podrás hacer otro cuando alguno se cierre.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "912e80b8-eaef-4418-a445-e0f5238ad88a",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint05\ActiveOrderLimitTest.php:109
+    105▕ it('S05-TC-410 con 3 pedidos activos, «Enviar a mi técnico» desde una alerta de falla crea la solicitud y no cuenta para el límite [D-113]', function () {
+    106▕     foreach (range(1, 3) as $n) {
+    107▕         s05Request($this, 'sent');
+    108▕     }
+  ➜ 109▕     $created = s05FromAlert($this, s05Alert($this, 'failure'))->assertCreated()->json('data');
+    110▕     expect(DB::table('service_requests')->where('id', $created['request_id'])->value('status'))->not->toBe('registered')
+    111▕         ->and(app(ActiveOrders::class)->count($this->profile->id))->toBe(3);
+    112▕ });
+    113▕
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ActiveOrderLimitTest > it S05-TC-412 la misma alerta de falla no crea dos solicitu…   
+  Expected response status code [201] but received 409.
+Failed asserting that 409 is identical to 201.
+
+The following errors occurred during the last request:
+
+{
+    "message": "Ya tienes 3 pedidos activos, el máximo permitido. Podrás hacer otro cuando alguno se cierre.",
+    "errors": [],
+    "error": {
+        "code": "ACTIVE_REQUEST_LIMIT",
+        "message": "Ya tienes 3 pedidos activos, el máximo permitido. Podrás hacer otro cuando alguno se cierre.",
+        "fields": []
+    },
+    "meta": {
+        "request_id": "7ba34cae-7ac2-427d-9855-ddc779f9fcc9",
+        "server_time": "2026-10-20T14:00:00.000000Z"
+    }
+}
+
+  at tests\Feature\Sprint05\ActiveOrderLimitTest.php:129
+    125▕     foreach (range(1, 3) as $n) {
+    126▕         s05Request($this, 'sent');
+    127▕     }
+    128▕     $alert = s05Alert($this, 'failure');
+  ➜ 129▕     s05FromAlert($this, $alert)->assertCreated();
+    130▕     s05FromAlert($this, $alert)->assertStatus(409);
+    131▕     expect(DB::table('iot_alerts')->where('id', $alert)->value('request_id'))->not->toBeNull()
+    132▕         ->and(DB::table('service_requests')->where('client_id', $this->profile->id)->count())->toBe(4);
+    133▕ });
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ActiveOrderLimitTest > it S05-TC-413 DemoSeeder deja a demo-mype con 2 pedidos act…   
+  Failed asserting that 15 is equal to 2 or is less than 2.
+
+  at tests\Feature\Sprint05\ActiveOrderLimitTest.php:146
+    142▕     $this->seed(DemoSeeder::class);
+    143▕ 
+    144▕     $client = fn (string $alias) => (int) DB::table('client_profiles as c')->join('users as u', 'u.id', '=', 'c.user_id')
+    145▕         ->where('u.email', "$alias@example.test")->value('c.id');
+  ➜ 146▕     expect(app(ActiveOrders::class)->count($client('demo-mype')))->toBeLessThanOrEqual(2)
+    147▕         ->and(app(ActiveOrders::class)->count($client('demo-cliente')))->toBeLessThanOrEqual(1)
+    148▕         ->and(DB::table('service_requests')->whereIn('status', ['completed', 'closed', 'unrated', 'expired'])->whereNull('closed_at')->count())->toBe(0)
+    149▕         ->and(DB::table('service_requests')->where('status', 'cancelled')->whereNull('cancelled_at')->count())->toBe(0);
+    150▕ });
+
+  1   tests\Feature\Sprint05\ActiveOrderLimitTest.php:146
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\ActiveOrderLimitTest > it S05-TC-414 el perfil público dice «Responde en ~N min» c…   
+  Failed asserting that null is identical to 3.
+
+  at tests\Feature\Sprint05\ActiveOrderLimitTest.php:177
+    173▕     s05Offer($technician->id, 30, 'accepted', 40);
+    174▕     expect($this->getJson("/api/v1/technicians/{$technician->id}")->assertOk()->json('data.response_minutes'))->toBeNull();
+    175▕ 
+    176▕     s05Offer($technician->id, 600, 'rejected');
+  ➜ 177▕     expect($this->getJson("/api/v1/technicians/{$technician->id}")->json('data.response_minutes'))->toBe(3);
+    178▕ });
+    179▕
+
+  1   tests\Feature\Sprint05\ActiveOrderLimitTest.php:177
+
+
+  Tests:    7 failed, 1 passed (19 assertions)
+  Duration: 81.76s
+
