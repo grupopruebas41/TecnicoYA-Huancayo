@@ -3,13 +3,17 @@ import RequestTracking from "../offers/RequestTracking";
 import { phases } from "./RequestPhase";
 import { request, serverNow } from "../administration/http";
 import { Notice } from "../administration/forms";
-import RequestSummary from "./RequestSummary";
+import RequestDetailSummary from "../client/RequestDetailSummary";
 import RequestTimeline from "../client/RequestTimeline";
 import RequestProgress from "../client/RequestProgress";
 import PhotoGallery from "../client/PhotoGallery";
 import Pagination from "../client/Pagination";
 import Icon from "../panel/icons";
-import { BOARD_TABS, elapsedLabel, formatDate, nextStep, orderLabel, phaseIcon, statusTone, whenLabel } from "../client/clientRules";
+import { BOARD_TABS, nextStep, orderLabel, phaseIcon, statusTone, whenLabel } from "../client/clientRules";
+import { specialtyIcon } from "../client/specialtyIcon";
+import { specialtySlug } from "../matching/technicianView";
+import { relativeTime, shortDateTime } from "../../lib/format";
+import { EmptyState, rise } from "../client/ui";
 import CancelRequestDialog from "./CancelRequestDialog";
 
 const SEARCH_DELAY_MS = 300;
@@ -128,8 +132,19 @@ export default function MyRequests({ onContinue = () => {}, openId = null, navig
   const items = board?.items || [];
   const total = counts ? Object.values(counts).reduce((sum, value) => sum + value, 0) : 0;
   return (
-    <section aria-label="Mis solicitudes" className="client-requests-page">
-      <h2 ref={title} tabIndex={-1}>Mis solicitudes</h2>
+    <section aria-label="Mis solicitudes" className="client-requests-page cx-page">
+      <header className="cx-head" data-tone="blue">
+        <span className="cx-head-icon" aria-hidden="true"><Icon name="requests" /></span>
+        <div className="cx-head-text">
+          <h2 ref={title} tabIndex={-1}>Mis solicitudes</h2>
+          <p className="muted">Sigue cada pedido, elige a tu técnico y revisa el historial.</p>
+        </div>
+        {total > 0 && (
+          <div className="cx-head-actions">
+            <button type="button" className="button primary" onClick={() => navigate("new")}>Nueva solicitud</button>
+          </div>
+        )}
+      </header>
       <Notice error={error} success={success} />
       <div className="form-field client-board-search">
         <label htmlFor="client-board-search">Buscar en tus solicitudes</label>
@@ -150,12 +165,12 @@ export default function MyRequests({ onContinue = () => {}, openId = null, navig
         )}
         {loading && !board && <BoardSkeleton />}
         {board && !items.length && (
-          <EmptyState query={query} total={total} onClear={() => setText("")} onNew={() => navigate("new")} />
+          <BoardEmpty query={query} total={total} onClear={() => setText("")} onNew={() => navigate("new")} />
         )}
         <div className="client-request-list">
           {items.map((entry) => (entry.order && entry.order.total > 1
             ? <OrderGroup key={"pedido-" + entry.order.id} entry={entry} onOpen={open} onCancel={setCancelling} />
-            : entry.requests.map((row) => <RequestCard key={row.id} row={row} onOpen={open} onCancel={setCancelling} />)))}
+            : entry.requests.map((row) => <RequestCard key={row.id} row={row} index={entry.requests.indexOf(row)} onOpen={open} onCancel={setCancelling} />)))}
         </div>
         {board?.pagination.last_page > 1 && (
           <Pagination label="Páginas de solicitudes" page={board.pagination.page} lastPage={board.pagination.last_page} disabled={loading} onChange={setPage} />
@@ -163,7 +178,7 @@ export default function MyRequests({ onContinue = () => {}, openId = null, navig
       </div>
       {detail && (
         <div className="client-request-detail" ref={detailRef} tabIndex={-1}>
-          <RequestSummary record={detail} disabled />
+          <RequestDetailSummary record={detail} />
           <PhotoGallery photos={detail.attachments} requestId={detail.id} />
           {detail.status === "registered" ? (
             <>
@@ -199,7 +214,7 @@ function BoardSkeleton() {
   );
 }
 
-function EmptyState({ query, total, onClear, onNew }) {
+function BoardEmpty({ query, total, onClear, onNew }) {
   if (query) {
     return (
       <div className="client-board-empty">
@@ -209,11 +224,10 @@ function EmptyState({ query, total, onClear, onNew }) {
     );
   }
   return (
-    <div className="client-board-empty">
-      {total === 0 ? <h3>Aún no tienes solicitudes</h3> : <p>No tienes solicitudes en esta pestaña.</p>}
-      {total === 0 && <p className="muted">Cuéntanos qué se malogró y buscamos un técnico cerca de ti.</p>}
-      <button type="button" className="button primary" onClick={onNew}>Nueva solicitud</button>
-    </div>
+    <EmptyState icon="requests" tone="blue" title={total === 0 ? "Aún no tienes solicitudes" : "No tienes solicitudes en esta pestaña."}
+      text={total === 0 ? "Cuéntanos qué se malogró y buscamos un técnico cerca de ti." : "Usa «Nueva solicitud» arriba o revisa las otras pestañas."}>
+      {total === 0 && <button type="button" className="button primary" onClick={onNew}>Nueva solicitud</button>}
+    </EmptyState>
   );
 }
 
@@ -229,31 +243,64 @@ function OrderGroup({ entry, onOpen, onCancel }) {
   );
 }
 
-function RequestCard({ row, onOpen, onCancel }) {
+// Pasos del avance que muestra cada tarjeta (el borrador y las canceladas no los muestran).
+const MINI_STEPS = ["Enviada", "Buscando", "Ofertas", "Elige técnico", "Asignada", "Completada"];
+const MINI_CURRENT = { sent: 0, matching: 1, pending_availability: 1, awaiting_responses: 2, direct_declined: 2, awaiting_choice: 3,
+  assigned: 4, in_progress: 4, completed: 5, closed: 5, unrated: 5 };
+
+function MiniSteps({ phase, id }) {
+  const current = MINI_CURRENT[phase];
+  if (current === undefined) return null;
+  return (
+    <ol className="cx-steps" aria-label={`Avance de la solicitud #${id}: paso ${current + 1} de ${MINI_STEPS.length}, ${MINI_STEPS[current]}`}>
+      {MINI_STEPS.map((step, index) => (
+        <li key={step} className={index < current ? "is-done" : index === current ? "is-current" : ""} aria-hidden="true">
+          <span className="cx-step-dot">{index < current && <Icon name="check" />}</span>
+          <span className="cx-step-label" data-label={step} />
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/**
+ * Tarjeta de «Mis solicitudes». Pulido final: franja con el color de la especialidad, ícono, estado como etiqueta (color +
+ * ícono + texto), subcategorías como chips, «Buscando técnico · hace 12 días» con un indicador animado suave (quieto con
+ * «Reducir animaciones»), mini pasos horizontales y los últimos avances.
+ */
+function RequestCard({ row, onOpen, onCancel, index = 0 }) {
   const phase = row.phase || row.status;
   const completed = ["completed", "closed", "unrated"].includes(row.status);
   const finished = completed || ["cancelled", "expired"].includes(row.status);
   const searching = row.status !== "registered" && SEARCHING.has(phase) && !row.technician;
+  const tone = specialtySlug(row.specialty.name);
   return (
-    <article className="s02-card client-request-card" aria-label={`Solicitud #${row.id}`}>
+    <article className="cx-card client-request-card cx-rise" data-tone={tone} style={rise(index)} aria-label={`Solicitud #${row.id}`}>
+      <span className="request-stripe" aria-hidden="true" />
       <header className="client-card-head">
-        <h3>{row.specialty.name}</h3>
+        <span className="request-icon" aria-hidden="true"><Icon name={specialtyIcon(row.specialty.name)} /></span>
+        <div className="request-title">
+          <h3>{row.specialty.name}</h3>
+          <small className="muted">Solicitud #{row.id}</small>
+        </div>
         <p className={"client-status " + statusTone(row)}>
           <Icon name={phaseIcon(phase)} /> <span>{phases[phase] || "Estado pendiente de consulta"}</span>
         </p>
       </header>
-      <p className="client-card-works">{row.subcategories.map((subcategory) => subcategory.name).join(", ")}</p>
-      <small className="muted">Solicitud #{row.id}</small>
-      <p className="muted">{whenLabel(row)} · {row.district.name}</p>
+      <ul className="cx-chips client-card-works" aria-label="Servicios">
+        {row.subcategories.map((subcategory) => <li key={subcategory.id ?? subcategory.name}>{subcategory.name}</li>)}
+      </ul>
+      <p className="request-meta muted"><Icon name="calendar" /> {whenLabel(row)} · <Icon name="pin" /> {row.district.name}</p>
       {row.technician
-        ? <p className="client-next-line">Técnico: {row.technician.display_name}</p>
+        ? <p className="client-next-line"><Icon name="profile" /> Técnico: {row.technician.display_name}</p>
         : searching
-          ? <p className="client-next-line">Buscando técnico · {elapsedLabel(row.submitted_at || row.created_at, serverNow())}</p>
+          ? <p className="client-next-line is-searching"><span className="request-pulse" aria-hidden="true" />Buscando técnico{(row.submitted_at || row.created_at) ? ` · ${relativeTime(row.submitted_at || row.created_at, serverNow())}` : ""}</p>
           : !finished && <p className="client-next-line">{nextStep(row)}</p>}
+      {row.status !== "registered" && <MiniSteps phase={phase} id={row.id} />}
       {row.recent_events.length > 0 && (
         <ol className="client-mini-timeline" aria-label={`Últimos avances de la solicitud #${row.id}`}>
-          {row.recent_events.map((event, index) => (
-            <li key={event.type + index}><strong>{event.label}</strong> <small className="muted">{formatDate(event.occurred_at)}</small></li>
+          {row.recent_events.map((event, eventIndex) => (
+            <li key={event.type + eventIndex}><strong>{event.label}</strong> <small className="muted">{shortDateTime(event.occurred_at)}</small></li>
           ))}
         </ol>
       )}

@@ -72,7 +72,8 @@ test('S05-TC-164 la tarjeta muestra especialidad, subcategorías y el estado con
 
   const item = await screen.findByRole('article');
   expect(within(item).getByRole('heading', {name: 'Cómputo'})).toBeInTheDocument();
-  expect(within(item).getByText('Reparación de hardware, Redes')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): las subcategorías son chips (una por elemento) en vez de una línea separada por comas.
+  expect(within(within(item).getByRole('list', {name: 'Servicios'})).getAllByRole('listitem').map(chip => chip.textContent)).toEqual(['Reparación de hardware', 'Redes']);
   expect(within(item).getByText('Solicitud #41')).toBeInTheDocument();
   const status = within(item).getByText('Elige a tu técnico').closest('.client-status');
   expect(status).toHaveClass('is-choice');
