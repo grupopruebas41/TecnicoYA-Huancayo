@@ -85,6 +85,9 @@ final class DemoTechnicianActivity
                 'preferred_start_at' => $start, 'preferred_end_at' => $end, 'urgency' => 'normal',
                 'source' => 'profile', 'target_technician_id' => $technicianId, 'status' => $status,
                 'rule_version_id' => $rule, 'submitted_at' => $available, 'search_generation' => 1, 'version' => 3,
+                // DEF-80: lo terminado guarda su fecha, como en los flujos reales (cierre o vencimiento y cancelación).
+                'closed_at' => match ($status) { 'completed' => $end, 'expired' => $available->addMinutes(10), default => null },
+                'cancelled_at' => $status === 'cancelled' ? $available->addHours(2) : null,
                 'created_at' => $available, 'updated_at' => $available,
             ]);
             $run = DB::table('matching_runs')->insertGetId([

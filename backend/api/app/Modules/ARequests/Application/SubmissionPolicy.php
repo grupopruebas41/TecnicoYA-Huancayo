@@ -36,7 +36,7 @@ final class SubmissionPolicy
         DB::table('client_profiles')->where('id', $request->client_id)->lockForUpdate()->first();
         $versionId = $this->rules->currentVersionId();
         $max = $this->orders->max($versionId);
-        if ($this->orders->count((int) $request->client_id, $request->order_id === null ? null : (int) $request->order_id) >= $max) {
+        if (! ActiveOrders::exempt((int) $request->id) && $this->orders->count((int) $request->client_id, $request->order_id === null ? null : (int) $request->order_id) >= $max) {
             throw new HttpResponseException(ApiResponse::error('ACTIVE_REQUEST_LIMIT', __('api.active_request_limit', ['max' => $max]), 409));
         }
 

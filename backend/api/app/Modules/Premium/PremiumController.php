@@ -138,14 +138,17 @@ final class PremiumController
         $key = (string) $request->header('Idempotency-Key');
         abort_if($key === '', 422, __('api.idempotency_required'));
         [$status, $data] = $idempotency->run($user, "iot.alert.request:$alert", $key, ['alert' => $alert], function () use ($user, $row, $requests) {
-            abort_if($row->request_id !== null, 409, __('api.alert_already_sent'));
+            // D-113: la alerta se relee bloqueada; con otra clave, la misma alerta nunca crea una segunda solicitud.
+            abort_if(DB::table('iot_alerts')->where('id', $row->id)->lockForUpdate()->value('request_id') !== null, 409, __('api.alert_already_sent'));
             $payload = $this->requestPayload($user->id, $row);
             $form = StoreServiceRequestRequest::create('/', 'POST', $payload);
             $validated = Validator::make($payload, $form->rules(), $form->messages())->validate();
             $id = $requests->register($user, $validated);
             DB::table('service_requests')->where('id', $id)->update(['equipment_id' => $row->equipment_id]);
-            $requests->submit($user, $id, 1);
+            // D-113: se enlaza antes de enviar para que SubmissionPolicy deje fuera del límite la de una falla; si el envío
+            // falla (un recordatorio con el cupo lleno), la transacción deshace la solicitud y el enlace.
             DB::table('iot_alerts')->where('id', $row->id)->update(['request_id' => $id]);
+            $requests->submit($user, $id, 1);
             $technician = $payload['source'] === 'profile'
                 ? DB::table('technician_profiles')->where('id', $payload['target_technician_id'])->value('display_name') : null;
 
