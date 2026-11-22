@@ -32,6 +32,21 @@ export const TIPS = [
   'Antes de las fiestas, revisa luces y extensiones: cambia las que tengan cables pelados.',
 ];
 
+/**
+ * Pulido final: «Otro consejo» rota por estos consejos de ejemplo por especialidad (después del consejo del mes).
+ * Contenido revisable por el equipo; cambiarlo no requiere tocar componentes.
+ */
+export const SPECIALTY_TIPS = [
+  {specialty: 'Refrigeración', tone: 'refrigeracion', icon: 'snow', text: 'Revisa que el burlete de la puerta cierre bien: si pasa una hoja de papel, el frío se escapa.'},
+  {specialty: 'Cómputo', tone: 'computo', icon: 'monitor', text: 'Limpia el polvo de las rejillas de tu computadora cada 3 meses para evitar que se caliente.'},
+  {specialty: 'Electricidad', tone: 'electricidad', icon: 'bolt', text: 'Si el interruptor diferencial salta seguido, no lo fuerces: es una señal de fuga a tierra.'},
+  {specialty: 'Refrigeración', tone: 'refrigeracion', icon: 'snow', text: 'No metas alimentos calientes a la vitrina: el motor trabaja el doble y gasta más energía.'},
+  {specialty: 'Cómputo', tone: 'computo', icon: 'monitor', text: 'Usa un estabilizador para la computadora de caja: los picos de tensión dañan la fuente.'},
+  {specialty: 'Electricidad', tone: 'electricidad', icon: 'bolt', text: 'Rotula cada interruptor del tablero: en una emergencia sabrás qué cortar sin dudar.'},
+  {specialty: 'Refrigeración', tone: 'refrigeracion', icon: 'snow', text: 'Anota la temperatura de la congeladora cada mañana: un cambio brusco avisa de una falla.'},
+  {specialty: 'Cómputo', tone: 'computo', icon: 'monitor', text: 'Cambia la contraseña del wifi del negocio cada cierto tiempo y no la compartas con clientes.'},
+];
+
 /** «Tu seguridad»: avisos fijos del equipo. */
 export const SAFETY = [
   'Tu dirección solo la ve el técnico asignado.',

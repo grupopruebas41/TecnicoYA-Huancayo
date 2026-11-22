@@ -153,7 +153,8 @@ test('S05-TC-028 «Técnicos cerca de ti» muestra 3 por cercanía con distancia
   expect(request).toHaveBeenCalledWith('/technicians?sort=proximity&per_page=3');
   expect(within(nearby).getByText('En tu distrito')).toBeInTheDocument();
   expect(within(nearby).getByText('A 3,5 km · aproximada por zona')).toBeInTheDocument();
-  expect(within(nearby).getAllByText('Desde S/ 60.00')).toHaveLength(3);
+  // Pulido final del cliente (2026-11-22): precio en formato peruano con coma decimal.
+  expect(within(nearby).getAllByText('Desde S/ 60,00')).toHaveLength(3);
   fireEvent.click(within(nearby).getByRole('button', {name: 'Ver perfil de Técnico Dos'}));
   expect(navigate).toHaveBeenCalledWith('search', {technician: near[1]});
   cleanup();
@@ -171,8 +172,9 @@ test('S05-TC-057 «Precios de referencia» lista el desde S/ X por especialidad 
   const prices = await screen.findByRole('region', {name: 'Precios de referencia'});
 
   expect(await within(prices).findByText('Cómputo')).toBeInTheDocument();
-  expect(within(prices).getByText('desde S/ 60.00')).toBeInTheDocument();
-  expect(within(prices).getByText('desde S/ 120.00')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): precios en formato peruano con coma decimal («S/ 60,00»).
+  expect(within(prices).getByText('desde S/ 60,00')).toBeInTheDocument();
+  expect(within(prices).getByText('desde S/ 120,00')).toBeInTheDocument();
   expect(within(prices).getByText('Orientativos, no son un cobro.')).toBeInTheDocument();
 });
 
@@ -202,7 +204,7 @@ test('S05-TC-059 cada sección carga con su esqueleto y falla por su cuenta con 
 
   routes({rows: [row(41, 'matching')]});
   fireEvent.click(within(prices).getByRole('button', {name: 'Reintentar'}));
-  expect(await within(prices).findByText('desde S/ 60.00')).toBeInTheDocument();
+  expect(await within(prices).findByText('desde S/ 60,00')).toBeInTheDocument();
 });
 
 test('S05-TC-060 sin distrito principal la bienvenida invita a registrarlo y no pide técnicos cercanos', async () => {

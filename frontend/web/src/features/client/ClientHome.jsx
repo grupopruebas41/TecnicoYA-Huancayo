@@ -2,7 +2,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {request} from '../administration/http';
 import RoleAnnouncements from '../administration/RoleAnnouncements';
 import {NEXT_TEXT} from './RequestProgress';
-import {PROBLEMS, SAFETY, TIPS} from './homeContent';
+import {PROBLEMS, SAFETY, SPECIALTY_TIPS, TIPS} from './homeContent';
+import Icon from '../panel/icons';
+import {soles} from '../../lib/format';
+import './polish.css';
 import ProblemSearch from './ProblemSearch';
 import {distanceLabel, feeLabel, initialsOf, isActive, requestGroup} from './clientRules';
 
@@ -123,7 +126,7 @@ function Prices({home, onRetry}) {
     {home.error && <BlockError message="No pudimos cargar los precios de referencia." onRetry={onRetry}/>}
     {home.data && !prices.length && <p className="muted">Aún no hay tarifas publicadas.</p>}
     {prices.length > 0 && <ul className="client-prices">
-      {prices.map(price => <li key={price.specialty_id}><span>{price.name}</span><strong>desde S/ {price.from_fee}</strong></li>)}
+      {prices.map(price => <li key={price.specialty_id}><span>{price.name}</span><strong>desde {soles(price.from_fee)}</strong></li>)}
     </ul>}
     <p className="muted client-note">Orientativos, no son un cobro.</p>
   </Section>;
@@ -154,6 +157,24 @@ function Nearby({district, nearby, onRetry, navigate}) {
   </Section>;
 }
 
+/** Consejo del mes con «Otro consejo»: rota por los consejos de ejemplo por especialidad; el cambio se anuncia con aria-live. */
+function Tip() {
+  const [index, setIndex] = useState(-1);
+  const tip = index < 0 ? {text: TIPS[limaMonth()], specialty: null, tone: 'amber', icon: 'bulb'} : SPECIALTY_TIPS[index];
+  return <Section label="Consejo del mes" index={5} className="home-feature home-tip">
+    <span className="home-feature-icon" aria-hidden="true"><Icon name="bulb"/></span>
+    <div className="home-feature-body">
+      <h3>Consejo del mes</h3>
+      <div aria-live="polite" className="home-tip-text" key={index}>
+        {tip.specialty && <span className="cx-badge" data-tone={tip.tone}><Icon name={tip.icon}/> {tip.specialty}</span>}
+        <p>{tip.text}</p>
+      </div>
+      <button type="button" className="button outline home-tip-next" onClick={() => setIndex(current => (current + 1) % SPECIALTY_TIPS.length)}>
+        <Icon name="bulb"/> Otro consejo</button>
+    </div>
+  </Section>;
+}
+
 /**
  * Inicio del cliente aprobado en la revisión del PR #39 (D-87, D-93): bienvenida, «¿Qué se malogró?», pedido en curso,
  * precios de referencia, técnicos cerca, consejo del mes y seguridad. GET /client/home da la zona, los precios y las
@@ -174,9 +195,14 @@ export default function ClientHome({user, navigate}) {
     </div>
     <Nearby district={district} nearby={nearby} onRetry={reloadNearby} navigate={navigate}/>
     <div className="client-home-row">
-      <Section label="Consejo del mes" index={5}><h3>Consejo del mes</h3><p>{TIPS[limaMonth()]}</p></Section>
-      <Section label="Tu seguridad" index={6}><h3>Tu seguridad</h3>
-        <ul className="client-safety">{SAFETY.map(text => <li key={text}>{text}</li>)}</ul></Section>
+      <Tip/>
+      <Section label="Tu seguridad" index={6} className="home-feature home-safety">
+        <span className="home-feature-icon" aria-hidden="true"><Icon name="verify"/></span>
+        <div className="home-feature-body">
+          <h3>Tu seguridad</h3>
+          <ul className="client-safety">{SAFETY.map(text => <li key={text}><span className="home-check" aria-hidden="true"><Icon name="check"/></span>{text}</li>)}</ul>
+        </div>
+      </Section>
     </div>
   </div>;
 }
