@@ -71,6 +71,7 @@ describe("Buscar técnicos y perfil del técnico", () => {
     cy.get("@clientEmail").then((email) => switchAccount(email));
     openSearch();
     cardOf(NAME).contains("button", `Ver perfil de ${NAME}`).click();
-    cy.get('section[aria-labelledby="perfil-servicios"]').should("contain", "Qué incluye: " + includes);
+    // Pulido final del cliente (2026-11-22): «Qué incluye» es un rótulo sobre el texto completo, sin los dos puntos en línea.
+    cy.get('section[aria-labelledby="perfil-servicios"]').should("contain", "Qué incluye").and("contain", includes);
   });
 });

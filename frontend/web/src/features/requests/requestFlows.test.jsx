@@ -178,7 +178,9 @@ test("S03-TC-077 complemento: límite del servidor y 500 no dan falso éxito", a
   render(<StatefulSummary />);
   fireEvent.click(screen.getByLabelText("Confirmo que el resumen es correcto"));
   fireEvent.click(screen.getByText("Enviar solicitud"));
-  await screen.findByText(/máximo de 3/);
+  // Revisión del #66 (2026-11-22): el límite se avisa con el aviso amable (sin recuadro de error ni «Referencia»).
+  expect(await screen.findByRole("status", { name: "Límite de pedidos activos" })).toHaveTextContent("Ya tienes 3 pedidos activos.");
+  expect(screen.queryByRole("alert")).toBeNull();
   await waitFor(() =>
     expect(screen.getByText("Enviar solicitud")).toBeEnabled(),
   );
@@ -293,7 +295,8 @@ test("S03-TC-079 complemento: búsqueda, privacidad y solicitud dirigida", async
   });
   const choose = vi.fn();
   render(<TechnicianSearch onRequest={choose} />);
-  fireEvent.click(await screen.findByText("Ver perfil de Técnico sintético"));
+  // Pulido final del cliente (2026-11-22): el botón muestra «Ver perfil» y el nombre va en texto para lectores de pantalla; se busca por su nombre accesible.
+  fireEvent.click(await screen.findByRole("button", { name: "Ver perfil de Técnico sintético" }));
   await screen.findByText("Experiencia sintética");
   expect(screen.queryByText(/DATO PRIVADO/)).toBeNull();
   expect(screen.getByText("Sin reseñas publicadas todavía.")).toBeVisible();

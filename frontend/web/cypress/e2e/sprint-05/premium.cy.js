@@ -19,7 +19,9 @@ describe("Plan Premium: Mi hogar / Mi negocio", () => {
     loginClient("premium");
     nav().contains("button", "Sensores IoT").click();
     cy.contains("Modo demostración: lecturas simuladas").should("be.visible");
-    cy.get(".sensor-card").should("have.length", 3).first().find(".premium-status").invoke("text").should("match", /Normal|Atención|Falla/);
+    cy.get(".sensor-card").should("have.length", 3).first().find(".premium-status").invoke("text")
+      // Pulido final del cliente (DEF-76): sin lecturas en 24 h el estado es «Sin datos», no «Falla».
+      .should("match", /Normal|Atención|Falla|Sin datos/);
   });
 
   it("S05-TC-274 una alerta se envía al técnico y crea la solicitud", () => {

@@ -1,3 +1,4 @@
+import {soles} from '../../lib/format';
 // Reglas de presentación del panel del cliente (adelanto del S5, D-87 a D-91). Sin llamadas a la API.
 
 // Pestañas de «Mis solicitudes»: la fase de búsqueda (S4) manda sobre el estado guardado.
@@ -98,7 +99,7 @@ export function initialsOf(name = '') {
 export function feeLabel(services = []) {
   const fees = services.map(service => Number(service.reference_fee)).filter(Number.isFinite);
   if (!fees.length) return 'Sin tarifa publicada';
-  return `Desde S/ ${Math.min(...fees).toFixed(2)}`;
+  return `Desde ${soles(Math.min(...fees))}`;
 }
 
 // Tarifa máxima del filtro (D-88): valores fijos, así el cliente no puede enviar un monto inválido.

@@ -376,3 +376,26 @@ Campos nuevos: `verified`, `work_style`, `warranty_text`, `specialties[]`, `dist
 | `portfolio_images` | `stage` (`before` o `after`) |
 | `client_favorite_technicians` | **Nueva:** `client_user_id`, `technician_id` y `created_at`; clave primaria compuesta |
 | `technician_review_samples` | **Nueva:** reseñas de ejemplo (`rating` de 1 a 5, `comment` de 500, `author_label` de 60 y `reviewed_on`). Solo el `DemoSeeder` las siembra |
+
+## 12. Pulido final del panel del cliente (versión 1.7 del 2026-11-22)
+
+Solo agrega campos; nada se quita ni cambia de tipo.
+
+| Ruta | Cambio |
+|---|---|
+| `GET /client/iot/devices` | `status` admite `no_data` («Sin datos»): sin lecturas en las últimas 24 h ya no es `failure` (DEF-76). |
+| `GET /client/equipment` y `GET /client/equipment/{id}` | `subcategory_code` (elige la imagen del tipo de equipo), `sensor_status` (`null` sin sensor) y `last_service_at` (ISO o `null`). |
+| `GET /client/iot/alerts` | `metric`, `unit` y `range` (`{min, max}`) para resaltar el valor fuera de rango. |
+| `GET /client/warranties` | `technician` (nombre visible o `null`) y `days_left` (entero, 0 si venció). |
+| `GET /client/promotions` | `ends_at` (ISO o `null`). |
+| `GET /requests/{id}` (solo el titular) | `specialty` (`{id, name}`) y `from_iot_alert` (booleano). |
+
+Datos: `DemoPremium` completa en cada siembra las 25 lecturas horarias de las últimas 24 h; el comunicado demo de bienvenida lleva un texto para clientes (DEF-78).
+
+### 12.1 Revisión del #66 (2026-11-22)
+
+| Ruta | Cambio |
+|---|---|
+| `GET /orders/quota`, `POST /orders` y envío de solicitudes | `active` cuenta solo pedidos con alguna solicitud viva: estado `sent`, `pending_availability`, `assigned` o `in_progress`, sin `closed_at` ni `cancelled_at` (DEF-80). La solicitud creada desde una alerta de falla no cuenta (D-113). El 409 `ACTIVE_REQUEST_LIMIT` no cambia. |
+| `POST /client/iot/alerts/{id}/request` | Con una alerta de falla, se crea aunque el cliente tenga 3 pedidos activos; con un recordatorio, responde 409 `ACTIVE_REQUEST_LIMIT`. La misma alerta responde 409 si ya creó su solicitud, con cualquier clave (D-113). |
+| `GET /technicians/{id}` | `response_minutes` (entero o `null`): mediana de 30 días con 5 o más respuestas (D-114). |

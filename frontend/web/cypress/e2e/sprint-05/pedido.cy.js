@@ -54,7 +54,8 @@ describe("Pedido por especialidades (D-95)", () => {
     nueva();
     wizard().contains("h2", "Ya tienes 3 pedidos activos").should("be.visible");
     wizard().find("input[name=specialty_ids]").should("not.exist");
-    wizard().contains("button", "Ver Mis solicitudes").click();
+    // Revisión del #66 (2026-11-22): el botón del aviso del límite dice «Ver mis solicitudes», igual en todo el cliente.
+    wizard().contains("button", "Ver mis solicitudes").click();
     cy.get('[aria-label="Mis solicitudes"]').should("be.visible");
   });
 });

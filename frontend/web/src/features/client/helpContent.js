@@ -12,21 +12,23 @@ export const HOW_IT_WORKS = [
 ];
 
 export const FAQ = [
-  ['¿Cuánto cuesta usar TécnicoYa?', 'Publicar una solicitud es gratis. La tarifa que ves es referencial: el monto final lo acuerdas con el técnico.'],
-  ['¿Cómo sé que el técnico es confiable?', 'Todos los técnicos que ves pasaron la verificación de identidad que hace el administrador.'],
-  ['¿Cuántos pedidos puedo tener a la vez?', 'Hasta 3 pedidos activos. Cada pedido puede incluir varias especialidades.'],
-  ['¿Puedo cancelar una solicitud?', 'Sí, mientras el técnico no haya empezado la atención. Te pedimos el motivo para mejorar el servicio.'],
-  ['¿Qué pasa si nadie acepta mi solicitud?', 'Seguimos buscando hasta 24 horas y te avisamos. También puedes buscar técnicos y elegir uno.'],
-  ['¿Quién ve mi dirección y mi teléfono?', 'Solo el técnico que atiende tu solicitud. El perfil público de los técnicos tampoco muestra sus datos de contacto.'],
+  ['¿Cuánto cuesta usar TécnicoYa?', 'Publicar una solicitud es gratis. La tarifa que ves es referencial: el monto final lo acuerdas con el técnico.', 'wallet'],
+  ['¿Cómo sé que el técnico es confiable?', 'Todos los técnicos que ves pasaron la verificación de identidad que hace el administrador.', 'verify'],
+  ['¿Cuántos pedidos puedo tener a la vez?', 'Hasta 3 pedidos activos. Cada pedido puede incluir varias especialidades.', 'requests'],
+  ['¿Puedo cancelar una solicitud?', 'Sí, mientras el técnico no haya empezado la atención. Te pedimos el motivo para mejorar el servicio.', 'close'],
+  ['¿Qué pasa si nadie acepta mi solicitud?', 'Seguimos buscando hasta 24 horas y te avisamos. También puedes buscar técnicos y elegir uno.', 'clock'],
+  ['¿Quién ve mi dirección y mi teléfono?', 'Solo el técnico que atiende tu solicitud. El perfil público de los técnicos tampoco muestra sus datos de contacto.', 'lock'],
 ];
 
 // Borrador basado en la Ley N.° 29733 de Protección de Datos Personales; lo revisa el equipo antes de publicarlo.
+// Pulido final: cada bloque lleva su ícono y la página muestra la fecha de esta versión.
+export const PRIVACY_VERSION = '2026-11-22';
 export const PRIVACY = [
-  ['Qué datos usamos', 'Tus nombres, correo, teléfono, distrito y las direcciones que guardes, para atender tus solicitudes. No pedimos datos de salud ni de discapacidad.'],
-  ['Para qué los usamos', 'Para conectar tu solicitud con técnicos de tu zona, avisarte del avance y mejorar el servicio.'],
-  ['Con quién los compartimos', 'Solo con el técnico que atiende tu solicitud, y únicamente lo necesario para atenderla.'],
-  ['Tus derechos', 'Puedes acceder, rectificar, cancelar u oponerte al uso de tus datos (derechos ARCO) desde tu cuenta o escribiendo al equipo.'],
-  ['Cuánto tiempo los guardamos', 'Mientras tu cuenta esté activa y el tiempo que exija la ley para el historial de las atenciones.'],
+  ['Qué datos usamos', 'Tus nombres, correo, teléfono, distrito y las direcciones que guardes, para atender tus solicitudes. No pedimos datos de salud ni de discapacidad.', 'profile'],
+  ['Para qué los usamos', 'Para conectar tu solicitud con técnicos de tu zona, avisarte del avance y mejorar el servicio.', 'check'],
+  ['Con quién los compartimos', 'Solo con el técnico que atiende tu solicitud, y únicamente lo necesario para atenderla.', 'users'],
+  ['Tus derechos', 'Puedes acceder, rectificar, cancelar u oponerte al uso de tus datos (derechos ARCO) desde tu cuenta o escribiendo al equipo.', 'verify'],
+  ['Cuánto tiempo los guardamos', 'Mientras tu cuenta esté activa y el tiempo que exija la ley para el historial de las atenciones.', 'clock'],
 ];
 
 export const PREMIUM_FEATURES = [

@@ -207,7 +207,8 @@ test('S05-TC-229 Especialidades, Cómo funciona, Preguntas frecuentes y Privacid
   const navigate = vi.fn();
   const {unmount} = render(<SpecialtiesPage navigate={navigate}/>);
   const card = await screen.findByRole('article', {name: 'Refrigeración comercial'});
-  expect(await within(card).findByText('Desde S/ 90.00')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): precio en formato peruano con coma decimal.
+  expect(await within(card).findByText('Desde S/ 90,00')).toBeInTheDocument();
   expect(await within(card).findByText('Cámaras de frío')).toBeInTheDocument();
   fireEvent.click(within(card).getByRole('button', {name: 'Ver técnicos de Refrigeración comercial'}));
   expect(navigate).toHaveBeenCalledWith('search', {filters: {specialty_id: '2'}});
@@ -215,7 +216,8 @@ test('S05-TC-229 Especialidades, Cómo funciona, Preguntas frecuentes y Privacid
 
   render(<><HowItWorksPage navigate={navigate}/><FaqPage/><PrivacyPage/></>);
   expect(screen.getAllByText(/^Paso \d$/)).toHaveLength(4);
-  expect(screen.getAllByRole('group').length).toBeGreaterThanOrEqual(6);
+  // Pulido final del cliente (2026-11-22): el acordeón usa botones con aria-expanded en vez de <details> (rol group).
+  expect(screen.getAllByRole('button', {expanded: false}).length).toBeGreaterThanOrEqual(6);
   expect(screen.getByText('Borrador para revisión del equipo: este texto todavía no es la versión final.')).toBeInTheDocument();
   expect(screen.getByRole('region', {name: 'Privacidad y términos'})).toHaveTextContent('Ley N.° 29733');
 });
@@ -231,6 +233,9 @@ test('S05-TC-230 Técnicos favoritos lista los guardados, quita uno con alerta y
   const navigate = vi.fn();
   render(<FavoritesPage navigate={navigate}/>);
   fireEvent.click(await screen.findByRole('button', {name: 'Quitar a Rosa Quispe de favoritos'}));
+  // Pulido final del cliente (2026-11-22): en «Técnicos favoritos» quitar pide confirmación antes de llamar a la API.
+  expect(request).not.toHaveBeenCalledWith('/client/favorites/7', null, 'DELETE');
+  fireEvent.click(within(screen.getByRole('group', {name: 'Confirmar: quitar a Rosa Quispe de favoritos'})).getByRole('button', {name: 'Sí, quitar'}));
   expect(await screen.findByText('Quitaste a Rosa Quispe de tus favoritos.')).toBeInTheDocument();
   expect(request).toHaveBeenCalledWith('/client/favorites/7', null, 'DELETE');
   fireEvent.click(screen.getByRole('button', {name: 'Buscar técnicos'}));

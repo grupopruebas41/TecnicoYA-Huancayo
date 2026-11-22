@@ -4,6 +4,7 @@ import { Notice } from "../administration/forms";
 import { createSubmissionAttempt } from "./requestsApi";
 import { fieldErrors } from "./requestValidation";
 import { formatDate } from "../client/clientRules";
+import { LimitNotice, isLimitError } from "../client/ui";
 // La API devuelve la franja tal como está en la base (UTC, «2026-10-29 20:00:00.000000») o en ISO; se muestra en Lima.
 const formatSlot = (value) =>
   value ? formatDate(String(value).includes("T") ? value : String(value).replace(" ", "T") + "Z") : "";
@@ -26,6 +27,7 @@ export default function RequestSummary({
   targetName,
   disabled = false,
   onBusy = () => {},
+  onRequests = null,
 }) {
   const attempt = useRef(null),
     sending = useRef(false);
@@ -43,7 +45,8 @@ export default function RequestSummary({
     [error, setError] = useState(""),
     [success, setSuccess] = useState(""),
     [uncertain, setUncertain] = useState(false),
-    [fields, setFields] = useState({});
+    [fields, setFields] = useState({}),
+    [limit, setLimit] = useState(false);
   const notice = useRef(null);
   useEffect(() => {
     onBusy(busy || uncertain);
@@ -81,7 +84,9 @@ export default function RequestSummary({
       setSuccess("Solicitud enviada correctamente.");
     } catch (error) {
       setFields(fieldErrors(error));
-      setError("Solicitud #" + record.id + ": " + error.message);
+      // Revisión del #66: el máximo de pedidos activos se avisa sin el recuadro de error ni la «Referencia».
+      setLimit(isLimitError(error));
+      if (!isLimitError(error)) setError("Solicitud #" + record.id + ": " + error.message);
       if (error.status === 0) {
         setUncertain(true);
         await recover();
@@ -122,6 +127,7 @@ export default function RequestSummary({
       <ReferenceFee fee={record.reference_fee} />
       <div ref={notice} tabIndex={-1}>
         <Notice error={error} success={success} />
+        {limit && <LimitNotice onList={onRequests} />}
       </div>
       {Object.entries(fields).map(([key, value]) => (
         <p className="field-error" key={key}>

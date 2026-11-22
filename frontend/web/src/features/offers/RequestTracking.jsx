@@ -7,6 +7,7 @@ import SelectionDialog from "./SelectionDialog";
 import { ConnectionStatus, useRealtimeResource } from "../realtime/Realtime";
 import RequestTimeline from "../client/RequestTimeline";
 import RequestProgress from "../client/RequestProgress";
+import Icon from "../panel/icons";
 export default function RequestTracking({ requestId }) {
   const [record, setRecord] = useState(null),
     [candidates, setCandidates] = useState(null),
@@ -92,12 +93,13 @@ export default function RequestTracking({ requestId }) {
       <ConnectionStatus connected={connected} />
       <button
         type="button"
+        className="button primary tracking-refresh"
         onClick={() => {
           setError(null);
           refresh();
         }}
       >
-        Actualizar seguimiento
+        <Icon name="clock" /> Actualizar seguimiento
       </button>
       <OfferError error={error} />
       {notice && <p role="status">{notice}</p>}

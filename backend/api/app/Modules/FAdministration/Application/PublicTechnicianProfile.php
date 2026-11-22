@@ -52,7 +52,29 @@ final class PublicTechnicianProfile
             'rating' => ['average' => null, 'count' => 0],
             'sample_rating' => SampleReviews::profileSummary($profile->id),
             'reviews' => SampleReviews::list($profile->id),
+            'response_minutes' => self::responseMinutes($profile->id),
         ];
+    }
+
+    /** D-114 (CLI-09, opción A): mínimo de ofertas respondidas en 30 días para publicar el tiempo de respuesta. */
+    public const MIN_RESPONSES = 5;
+
+    /**
+     * Mediana del tiempo de respuesta (aceptadas y rechazadas de los últimos 30 días, responded_at − available_at), en
+     * minutos redondeados y al menos 1. Con menos de 5 respuestas es null: el perfil no muestra un valor poco representativo.
+     */
+    public static function responseMinutes(int $technicianId): ?int
+    {
+        $seconds = DB::table('offers')->where('technician_id', $technicianId)->whereIn('status', ['accepted', 'rejected'])
+            ->whereNotNull('responded_at')->where('available_at', '>=', now()->subDays(30))->get(['available_at', 'responded_at'])
+            ->map(fn (object $o) => max(0, strtotime($o->responded_at) - strtotime($o->available_at)))->sort()->values();
+        if ($seconds->count() < self::MIN_RESPONSES) {
+            return null;
+        }
+        $middle = intdiv($seconds->count(), 2);
+        $median = $seconds->count() % 2 ? $seconds[$middle] : ($seconds[$middle - 1] + $seconds[$middle]) / 2;
+
+        return max(1, (int) round($median / 60));
     }
 
     private function services(int $technicianId): array

@@ -27,7 +27,11 @@ final class IotMonitor
 
     public static function status(object $device, ?float $value): string
     {
-        if ($value === null || ! $device->online) {
+        // DEF-76: sin lecturas en las últimas 24 h no hay base para decir «Falla»; el estado es «Sin datos».
+        if ($value === null) {
+            return 'no_data';
+        }
+        if (! $device->online) {
             return 'failure';
         }
         $gap = abs($value - (float) $device->target);

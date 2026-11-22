@@ -109,7 +109,7 @@ final class PremiumController
             // Primero las activas; dentro de ellas, fallas, luego atención y al final los recordatorios.
             ->orderByRaw('CASE WHEN a.resolved_at IS NULL THEN 0 ELSE 1 END')
             ->orderByRaw("CASE a.severity WHEN 'failure' THEN 0 WHEN 'attention' THEN 1 ELSE 2 END")->orderByDesc('a.started_at')->limit(50)
-            ->get(['a.*', self::EQUIPMENT_NAME, self::EQUIPMENT_ID]);
+            ->get(['a.*', self::EQUIPMENT_NAME, self::EQUIPMENT_ID, 'd.unit', 'd.metric', 'd.target', 'd.tolerance']);
 
         return ApiResponse::data(['simulated' => true, 'items' => $rows->map(fn (object $a) => [
             'id' => (int) $a->id, 'kind' => $a->kind, 'severity' => $a->severity, 'message' => $a->message,
@@ -117,6 +117,9 @@ final class PremiumController
             'started_at' => CarbonImmutable::parse($a->started_at)->toISOString(),
             'resolved_at' => $a->resolved_at ? CarbonImmutable::parse($a->resolved_at)->toISOString() : null,
             'request_id' => $a->request_id === null ? null : (int) $a->request_id,
+            // Pulido del cliente: unidad, métrica y rango normal para resaltar el valor fuera de rango.
+            'metric' => $a->metric, 'unit' => $a->unit,
+            'range' => ['min' => (float) $a->target - (float) $a->tolerance, 'max' => (float) $a->target + (float) $a->tolerance],
         ])->all()]);
     }
 
@@ -135,14 +138,17 @@ final class PremiumController
         $key = (string) $request->header('Idempotency-Key');
         abort_if($key === '', 422, __('api.idempotency_required'));
         [$status, $data] = $idempotency->run($user, "iot.alert.request:$alert", $key, ['alert' => $alert], function () use ($user, $row, $requests) {
-            abort_if($row->request_id !== null, 409, __('api.alert_already_sent'));
+            // D-113: la alerta se relee bloqueada; con otra clave, la misma alerta nunca crea una segunda solicitud.
+            abort_if(DB::table('iot_alerts')->where('id', $row->id)->lockForUpdate()->value('request_id') !== null, 409, __('api.alert_already_sent'));
             $payload = $this->requestPayload($user->id, $row);
             $form = StoreServiceRequestRequest::create('/', 'POST', $payload);
             $validated = Validator::make($payload, $form->rules(), $form->messages())->validate();
             $id = $requests->register($user, $validated);
             DB::table('service_requests')->where('id', $id)->update(['equipment_id' => $row->equipment_id]);
-            $requests->submit($user, $id, 1);
+            // D-113: se enlaza antes de enviar para que SubmissionPolicy deje fuera del límite la de una falla; si el envío
+            // falla (un recordatorio con el cupo lleno), la transacción deshace la solicitud y el enlace.
             DB::table('iot_alerts')->where('id', $row->id)->update(['request_id' => $id]);
+            $requests->submit($user, $id, 1);
             $technician = $payload['source'] === 'profile'
                 ? DB::table('technician_profiles')->where('id', $payload['target_technician_id'])->value('display_name') : null;
 
@@ -157,9 +163,10 @@ final class PremiumController
     {
         $rows = DB::table('announcements')->where('status', 'published')->where('kind', 'promotion')
             ->where(fn ($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>', now()))->orderByDesc('starts_at')->limit(10)
-            ->get(['id', 'title', 'body']);
+            ->get(['id', 'title', 'body', 'ends_at']);
 
-        return ApiResponse::data(['sample' => true, 'items' => $rows->map(fn (object $r) => ['id' => $r->id, 'title' => $r->title, 'body' => $r->body])->all()]);
+        return ApiResponse::data(['sample' => true, 'items' => $rows->map(fn (object $r) => ['id' => $r->id, 'title' => $r->title, 'body' => $r->body,
+            'ends_at' => $r->ends_at ? CarbonImmutable::parse($r->ends_at)->toISOString() : null])->all()]);
     }
 
     /** Garantías de demostración: solicitudes cerradas del cliente con 30 días; «Usar garantía» llega en el Sprint 6. */
@@ -169,13 +176,18 @@ final class PremiumController
         $rows = DB::table('service_requests as s')->join(self::SUBCATEGORIES_C, 'c.id', '=', 's.subcategory_id')
             ->where('s.client_id', $clientId)->whereIn('s.status', ['completed', 'closed', 'unrated'])->orderByDesc('s.id')->limit(20)
             ->get(['s.id', 's.closed_at', 's.updated_at', 'c.name as subcategory']);
+        $technicians = DB::table('participations as p')->join('technician_profiles as t', 't.id', '=', 'p.technician_id')
+            ->whereIn('p.request_id', $rows->pluck('id'))->where('p.status', 'completed')->pluck('t.display_name', 'p.request_id');
+        $now = CarbonImmutable::now();
 
-        return ApiResponse::data(['sample' => true, 'items' => $rows->map(function (object $r) {
+        return ApiResponse::data(['sample' => true, 'items' => $rows->map(function (object $r) use ($technicians, $now) {
             $closed = CarbonImmutable::parse($r->closed_at ?? $r->updated_at);
             $until = $closed->addDays(self::WARRANTY_DAYS);
 
             return ['request_id' => (int) $r->id, 'subcategory' => $r->subcategory, 'days' => self::WARRANTY_DAYS,
-                'closed_at' => $closed->toISOString(), 'valid_until' => $until->toISOString(), 'active' => $until->isFuture(), 'can_claim' => false];
+                'closed_at' => $closed->toISOString(), 'valid_until' => $until->toISOString(), 'active' => $until->isFuture(), 'can_claim' => false,
+                // Pulido del cliente: quién lo atendió y cuántos días de garantía quedan (para la barra de progreso).
+                'technician' => $technicians[$r->id] ?? null, 'days_left' => $until->isFuture() ? (int) ceil($now->diffInHours($until) / 24) : 0];
         })->all()]);
     }
 
@@ -235,15 +247,36 @@ final class PremiumController
     private function presentEquipment(object $row): array
     {
         $sub = DB::table(self::SUBCATEGORIES_C)->join('specialties as p', 'p.id', '=', 'c.specialty_id')->where('c.id', $row->subcategory_id)
-            ->first(['c.name', 'p.id as specialty_id', 'p.name as specialty']);
+            ->first(['c.name', 'c.code', 'p.id as specialty_id', 'p.name as specialty']);
         $address = $row->address_id ? DB::table('client_addresses')->where('id', $row->address_id)->first(['label', 'address']) : null;
+        $device = DB::table('iot_devices')->where('equipment_id', $row->id)->first();
 
         return [
             'id' => (int) $row->id, 'name' => $row->name, 'subcategory_id' => (int) $row->subcategory_id, 'subcategory' => $sub?->name,
             'specialty_id' => $sub ? (int) $sub->specialty_id : null, 'specialty' => $sub?->specialty, 'brand' => $row->brand, 'model' => $row->model,
             'year' => $row->year === null ? null : (int) $row->year, 'address_id' => $row->address_id === null ? null : (int) $row->address_id,
             'address' => $address ? "{$address->label} · {$address->address}" : null, 'notes' => $row->notes, 'is_demo' => (bool) $row->is_demo,
-            'has_sensor' => DB::table('iot_devices')->where('equipment_id', $row->id)->exists(), 'version' => (int) $row->version,
+            'has_sensor' => $device !== null, 'version' => (int) $row->version,
+            // Pulido del cliente: el tipo de equipo elige la imagen; el sensor, su estado; y la fecha del último servicio.
+            'subcategory_code' => $sub?->code, 'sensor_status' => $device ? $this->sensorStatus($device) : null,
+            'last_service_at' => $this->lastService((int) $row->id),
         ];
+    }
+
+    /** Estado del sensor con su lectura más reciente de las últimas 24 h (sin lecturas: «no_data»). */
+    private function sensorStatus(object $device): string
+    {
+        $value = DB::table('iot_readings')->where('device_id', $device->id)->where('measured_at', '>=', CarbonImmutable::now()->subDay())
+            ->orderByDesc('measured_at')->value('value');
+
+        return IotMonitor::status($device, $value === null ? null : (float) $value);
+    }
+
+    private function lastService(int $equipmentId): ?string
+    {
+        $last = DB::table('service_requests')->where('equipment_id', $equipmentId)->whereIn('status', ['completed', 'closed', 'unrated'])
+            ->max(DB::raw('COALESCE(closed_at, updated_at)'));
+
+        return $last ? CarbonImmutable::parse($last)->toISOString() : null;
     }
 }

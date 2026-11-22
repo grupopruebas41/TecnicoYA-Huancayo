@@ -128,7 +128,9 @@ it('S04-TC-142 el detalle de la solicitud del titular tiene la forma completa de
         'search' => ['current_round' => ['id' => 'int', 'round_no' => 'int', 'kind' => 'string', 'status' => 'string', 'opened_at' => 'string',
             'expires_at' => 'string', 'offers_total' => 'int', 'accepted_count' => 'int'],
             'pending_since' => 'null', 'pending_expires_at' => 'null', 'alternatives_available' => 'bool'],
-        'assignment' => 'null'])
+        'assignment' => 'null',
+        // Pulido final del cliente (2026-11-22): el titular recibe la especialidad y si la solicitud nació de una alerta del sensor.
+        'specialty' => S04_REF, 'from_iot_alert' => 'bool'])
         ->and([$detail['phase'], $detail['search_generation'], $detail['search']['current_round']['offers_total'],
             $detail['search']['current_round']['accepted_count'], $detail['search']['current_round']['status'], $detail['search']['alternatives_available']])
             ->toBe(['awaiting_responses', 1, 2, 0, 'open', false])

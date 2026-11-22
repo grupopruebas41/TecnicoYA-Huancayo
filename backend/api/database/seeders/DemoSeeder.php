@@ -42,7 +42,7 @@ final class DemoSeeder extends Seeder
 
     private const ANNOUNCEMENTS = [
         'bienvenida' => ['title' => 'Bienvenido a TécnicoYa (demostración)', 'kind' => 'news', 'audiences' => ['client', 'technician'],
-            'body' => 'Comunicado de ejemplo para desarrollo: así se ve el carrusel con imagen principal y móvil.',
+            'body' => 'Ejemplo de comunicado para clientes: aquí verás las novedades del servicio, horarios especiales y consejos del equipo de TécnicoYa.',
             'alt' => 'Técnico revisando el cableado de una red'],
         'refrigeracion' => ['title' => 'Mantenimiento preventivo de refrigeración (demostración)', 'kind' => 'promotion', 'audiences' => ['client'],
             'body' => 'Ejemplo de promoción para clientes. No es una oferta real.', 'alt' => 'Técnico limpiando el condensador de un equipo de frío'],
@@ -275,6 +275,9 @@ final class DemoSeeder extends Seeder
     private function announcement(int $adminId, string $slug, array $data): void
     {
         if (DB::table('announcements')->where('title', $data['title'])->exists()) {
+            // DEF-78: una base sembrada antes conserva el texto viejo; se actualiza solo el cuerpo.
+            DB::table('announcements')->where('title', $data['title'])->update(['body' => $data['body']]);
+
             return;
         }
         $images = database_path('seeders/data/demo');

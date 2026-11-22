@@ -387,7 +387,7 @@ export function OrderBlocked({ max, onList, titleRef }) {
       <span className="order-done-icon" aria-hidden="true"><Icon name="clock" /></span>
       <h2 ref={titleRef} tabIndex={-1}>Ya tienes {max} pedidos activos</h2>
       <p>Podrás hacer otro cuando alguno se cierre.</p>
-      <button type="button" className="button primary" onClick={onList}>Ver Mis solicitudes</button>
+      <button type="button" className="button primary" onClick={onList}>Ver mis solicitudes</button>
     </div>
   );
 }

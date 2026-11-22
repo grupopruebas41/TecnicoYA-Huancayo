@@ -51,7 +51,7 @@ final class ServiceRequestView
         abort_unless($row, 404);
         if ((int) $row->owner_user_id === $user->id) {
             return $this->detail($row, $row->address) + $this->candidates->searchSummary($row)
-                + ['timeline' => $this->timeline->forOwner($row->id)];
+                + ['timeline' => $this->timeline->forOwner($row->id)] + $this->ownerExtras($row);
         }
         $technicianId = DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
         abort_unless($technicianId && DB::table('offers')->where('request_id', $id)->where('technician_id', $technicianId)->exists(), 404);
@@ -59,6 +59,18 @@ final class ServiceRequestView
             ->whereIn('status', ['assigned', 'in_progress', 'completed'])->exists();
 
         return $this->detail($row, $assigned ? $row->address : null);
+    }
+
+    /** Pulido del cliente: el resumen muestra la especialidad y la insignia «Desde alerta IoT» si la creó una alerta del sensor. */
+    private function ownerExtras(object $row): array
+    {
+        $specialty = DB::table('subcategories as s')->join('specialties as p', 'p.id', '=', 's.specialty_id')
+            ->where('s.id', $row->subcategory_id)->first(['p.id', 'p.name']);
+
+        return [
+            'specialty' => $specialty ? ['id' => (int) $specialty->id, 'name' => $specialty->name] : null,
+            'from_iot_alert' => DB::table('iot_alerts')->where('request_id', $row->id)->exists(),
+        ];
     }
 
     private function detail(object $row, ?string $address): array

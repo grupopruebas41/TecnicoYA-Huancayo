@@ -1,0 +1,602 @@
+{
+  "demo-mype-1366-light-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-light-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-1366-dark-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "label.search-chip",
+      "select.",
+      "label.search-chip",
+      "span.",
+      "select.",
+      "button.search-chip.search-toggle"
+    ]
+  },
+  "demo-mype-390-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.tech-week",
+      "caption.",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody."
+    ]
+  },
+  "demo-mype-390-light-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-light-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "label.search-chip",
+      "select.",
+      "label.search-chip",
+      "span.",
+      "select.",
+      "button.search-chip.search-toggle"
+    ]
+  },
+  "demo-mype-390-dark-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.tech-week",
+      "caption.",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody."
+    ]
+  },
+  "demo-mype-390-dark-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-solicitud-detalle": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-favoritos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-equipos": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-sensores": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-alertas": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-promociones": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-garantias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-novedades": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-faq": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-mype-390-dark-privacidad": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-1366-light-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-1366-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-1366-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-1366-dark-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-1366-dark-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-1366-dark-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-390-light-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-390-light-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "label.search-chip",
+      "select.",
+      "label.search-chip",
+      "span.",
+      "select.",
+      "button.search-chip.search-toggle"
+    ]
+  },
+  "demo-cliente-390-light-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.tech-week",
+      "caption.",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody."
+    ]
+  },
+  "demo-cliente-390-dark-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "demo-cliente-390-dark-buscar": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "label.search-chip",
+      "select.",
+      "label.search-chip",
+      "span.",
+      "select.",
+      "button.search-chip.search-toggle"
+    ]
+  },
+  "demo-cliente-390-dark-perfil": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.tech-week",
+      "caption.",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody."
+    ]
+  }
+}

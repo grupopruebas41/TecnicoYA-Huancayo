@@ -154,6 +154,7 @@ export default function RequestWizard({
             onUpdate={setRecord}
             targetName={target?.display_name}
             onBusy={setSubmitting}
+            onRequests={onExit}
             disabled={busy || uploading || uncertain || pending}
           />
           {pending && (

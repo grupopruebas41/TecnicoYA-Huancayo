@@ -2,6 +2,58 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-22 · Revisión del #66: límite de pedidos (DEF-80), alertas de falla fuera del límite (D-113), imágenes de equipos y CLI-09 (D-114)
+
+- **Rama:** la misma, `feature/delgado/cliente/pulido-final`. Pedido de Pimentel en la revisión del #66.
+- **Commits:** `7c84e5e` Pest en rojo, `d1d446a` backend, `d5d35af` Vitest en rojo, `1568355` frontend y `7471337` las 11 imágenes del equipo.
+- **DEF-80:**
+  - La referencia era el `request_id` de la respuesta 409. Las reglas de negocio no se registran en `laravel.log`, así que no aparece ahí y no hay datos que anonimizar.
+  - Causa: `ActiveOrders` contaba por fechas y las 14 terminadas de la demo no las tenían (15 activos).
+  - Ahora cuenta por estado vivo y además sin fechas de cierre ni de cancelación.
+  - `service_orders` no tiene estado propio: el pedido cuenta mientras le quede una solicitud viva. La cancelación real ya lo liberaba (S05-TC-408).
+- **D-113 (tomada):** la solicitud desde una alerta de falla no cuenta ni se bloquea; el recordatorio sí.
+  - La alerta se enlaza antes del envío.
+  - Se relee con bloqueo, así que una misma alerta nunca crea dos solicitudes.
+- **D-114 (CLI-09, opción A):** `response_minutes` y «Responde en ~N min» o «~N h» en la barra del perfil.
+- **Aviso del límite:** `LimitNotice` (ícono, texto y «Ver mis solicitudes») en Alertas, en el resumen del asistente dirigido y en Nueva solicitud (`OrderBlocked`). La «Referencia» queda solo para errores reales.
+- **Demo:** demo-mype con 2 activos y demo-cliente con 1; lo terminado guarda su fecha.
+- **Pruebas:**
+  - Pest S05-TC-407 a 414 (suite completa: 533/533);
+  - Vitest S05-TC-415 a 420, con 524 en verde, lint y build;
+  - adaptadas con explicación: S03-TC-077, S05-TC-138 y la Cypress `pedido.cy.js` («Ver mis solicitudes»);
+  - e2e-cierre, run 45067814350 (`03e2269`): **104 casos, 0 fallos**. Las dos corridas anteriores tuvieron un intermitente cada una, en pruebas que no se tocaron: S04-TC-087 (401 en `/me` al cambiar de cuenta) y S01-TC-077 (`cy.clearCookie` no borró la cookie). En la run 45066288268, S03-TC-068 falló por el cambio esperado y se adaptó.
+- **Siguiente (después de integrar el #66):** antes del pulido del técnico, renombrar `.tech-card`, `.tech-badges` y `.tech-week` de `technician.css` y retirar las reglas viejas de `search.css`.
+- **Pedidos a Codex:** ninguno.
+
+## 2026-11-22 · Pulido final del panel del cliente (antes del pulido del técnico y los puntos 3 a 8 del cierre)
+
+- **Rama:** `feature/delgado/cliente/pulido-final`, desde `main` `c4da798` (#65 integrado); un solo PR.
+- **Commits:**
+  - TDD: `5e634fd` Pest en rojo, `ae57780` backend, `c05a030` y `2a11984` DEF-78, `385a5d0` Vitest en rojo;
+  - una pantalla o grupo por commit (`5fd2f4e` a `1b28282`);
+  - Cypress en `3a6ea02` y la S05-TC-234 adaptada.
+- **Defectos:**
+  - DEF-76: sensores en «Falla» sin lecturas (`no_data` y siembra con 24 h vigentes);
+  - DEF-77: insignias partidas en Buscar técnicos por el choque con `technician.css`;
+  - DEF-78: texto de desarrollo en el comunicado demo;
+  - DEF-79: tabla de disponibilidad del perfil desarmada por `.tech-week`.
+- **Decisión pendiente:** CLI-09, «Responde en ~N min» en el perfil (A: mediana de 30 días con 5 o más ofertas; B: no publicarla). Hoy se aplica B.
+- **Pruebas:**
+  - Pest S05-TC-380 a 387 (suite completa: 525/525, más el ajuste de S04-TC-142 explicado en el código: el titular recibe `specialty` y `from_iot_alert`);
+  - Vitest S05-TC-388 a 403 (518/518), lint y build;
+  - Cypress S05-TC-404 a 406 y e2e-cierre en la rama: e2e-cierre en la rama, run `45055447761` (`81d71b1`): **104 casos, 0 fallos** (S01 17, S02 17, S03 17, S04 18 y S05 35). La primera corrida (`45054900228`) encontró S05-TC-234, que esperaba `<details>` y se adaptó.
+- **Capturas:** `evidencias/sprint-05/pulido-cliente/`, antes (66) y después (68). Las mediciones del después no muestran desborde, texto vertical, imágenes rotas ni controles de menos de 44 px.
+- **Lecciones:**
+  - Es el cuarto choque de clases entre paneles (DEF-70, 77 y 79, y los mini pasos `request-steps`). Lo nuevo del cliente lleva el prefijo `cx-` o `tcard-`.
+  - En el pulido del técnico, conviene renombrar las clases genéricas de `technician.css` (`.tech-card`, `.tech-badges`, `.tech-week`) y retirar las viejas de `search.css`.
+  - En esta máquina Cypress se cae al arrancar con «* is not a valid URL», antes de ejecutar las pruebas. Se valida en e2e-cierre.
+- **Extensiones:** el lápiz flotante y el aviso «¿No escucha nada?» no son nuestros: no aparecen sin extensiones y no están en el código.
+- **Pendiente:**
+  - las imágenes de `public/img/equipos/`, que genera el equipo;
+  - la subida de la foto propia del equipo;
+  - el pulido del técnico y los puntos 3 a 8 del cierre.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-19 · Cierre común S4-S5, punto 2: workflow «e2e-cierre» con las Cypress de S01 a S05 en verde
 
 - **Rama:** `feature/pimentel/e2e-cierre/s05`, desde `main`, con `main` traído después de integrar el #64 (merge, sin `--force`).

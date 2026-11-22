@@ -151,7 +151,8 @@ test('S05-TC-106 paso 2: subcategorías agrupadas por especialidad, con tarifa d
   const computo = await screen.findByRole('region', {name: 'Cómputo'});
   const electricidad = screen.getByRole('region', {name: 'Electricidad'});
 
-  expect(await within(computo).findByText('Desde S/ 50.00')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): precio en formato peruano con coma decimal.
+  expect(await within(computo).findByText('Desde S/ 50,00')).toBeInTheDocument();
   expect((await checkbox('Redes e infraestructura')).closest('label')).not.toHaveTextContent('Desde');
   expect(within(electricidad).getByText('Tableros eléctricos')).toBeInTheDocument();
   fireEvent.click(await checkbox('Reparación de hardware'));
@@ -347,7 +348,9 @@ test('S05-TC-113 Mis solicitudes agrupa las solicitudes del mismo pedido y muest
 
   const order = await screen.findByRole('region', {name: 'Pedido del 4 nov · 2 servicios'});
   expect(within(order).getAllByRole('button', {name: /Ver detalle/}).map(button => button.textContent)).toEqual(['Ver detalle de la solicitud #42', 'Ver detalle de la solicitud #41']);
-  expect(within(order).getByText('Reparación de hardware, Redes e infraestructura')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): las subcategorías son chips (una por elemento) en vez de una línea separada por comas.
+  expect(within(order).getAllByRole('list', {name: 'Servicios'}).flatMap(list => within(list).getAllByRole('listitem').map(item => item.textContent)))
+    .toEqual(expect.arrayContaining(['Reparación de hardware', 'Redes e infraestructura']));
   expect(within(order).queryByText('Iluminación')).toBeNull();
 });
 
@@ -446,7 +449,8 @@ test('S05-TC-138 con 3 pedidos activos el asistente bloquea desde el inicio, con
   expect(screen.getByText('Podrás hacer otro cuando alguno se cierre.')).toBeInTheDocument();
   expect(screen.queryByRole('checkbox')).toBeNull();
   expect(screen.queryByRole('button', {name: 'Siguiente'})).toBeNull();
-  fireEvent.click(screen.getByRole('button', {name: 'Ver Mis solicitudes'}));
+  // Revisión del #66 (2026-11-22): el botón del aviso del límite dice «Ver mis solicitudes», igual en todo el cliente.
+  fireEvent.click(screen.getByRole('button', {name: 'Ver mis solicitudes'}));
   expect(navigate).toHaveBeenCalledWith('requests');
   // Visto en las capturas: sin esta regla, el botón primario queda con texto claro sobre fondo gris en el tema claro.
   const css = readFileSync(resolve('src/features/requests/order/order.css'), 'utf8').replace(/\r\n/g, '\n');
