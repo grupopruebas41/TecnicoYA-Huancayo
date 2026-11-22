@@ -1,13 +1,35 @@
 import React, { useState } from "react";
 import { useResource, ResourceState } from "../administration/Sprint02Common";
 import { Notice } from "../administration/forms";
-import { initialsOf } from "../client/clientRules";
+import { feeLabel, initialsOf } from "../client/clientRules";
+import { soles } from "../../lib/format";
 import { specialtyIcon } from "../client/specialtyIcon";
 import Icon from "../panel/icons";
 import { RatingBadge } from "./TechnicianCard";
 import PortfolioViewer, { WorkIllustration } from "./PortfolioViewer";
 import { BANDS, SAMPLE_TAG, STAGES, decimal, favoriteLabel, saveFavorite, specialtySlug } from "./technicianView";
 import "./search.css";
+import "../client/polish.css";
+import "./technicianCard.css";
+
+const LONG_INCLUDES = 140;
+
+/** «Qué incluye» completo; si es largo, «Ver más» lo despliega (sin cortar el texto a mitad de palabra en el DOM). */
+function Includes({ text, id }) {
+  const [open, setOpen] = useState(false);
+  const long = text.length > LONG_INCLUDES;
+  return (
+    <div className="profile-includes">
+      <p className="kicker">Qué incluye</p>
+      <p id={id} className={long && !open ? "is-clamped" : ""}>{text}</p>
+      {long && (
+        <button type="button" className="text-button" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
+          {open ? "Ver menos" : "Ver más"}
+        </button>
+      )}
+    </div>
+  );
+}
 
 const plural = (count, one, many) => `${count} ${count === 1 ? one : many}`;
 
@@ -55,12 +77,12 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
               <span className="client-avatar is-large tech-avatar" aria-hidden="true">{initialsOf(name)}</span>
               <div className="client-profile-title">
                 <h2 id="technician-profile-name">{name}</h2>
-                <p className="client-chips-inline">
-                  {(profile.verified ?? !!preview) && <span className="client-chip is-verified"><Icon name="verify" /> Verificado</span>}
-                  <span className="client-chip">{profile.experience_years} años de experiencia</span>
-                  {profile.availability?.available_today && <span className="client-chip is-today">Disponible hoy</span>}
+                <div className="cx-badges profile-badges">
+                  {(profile.verified ?? !!preview) && <span className="cx-badge is-success"><Icon name="verify" /> Verificado</span>}
                   <RatingBadge technician={profile} />
-                </p>
+                  <span className="cx-badge"><Icon name="briefcase" /> {profile.experience_years} años de experiencia</span>
+                  {profile.availability?.available_today && <span className="cx-badge is-info"><Icon name="clock" /> Disponible hoy</span>}
+                </div>
                 {profile.specialties?.length > 0 && <p className="muted">{profile.specialties.map((s) => s.name).join(" · ")}</p>}
                 {districts.length > 0 && <p className="muted">Atiende en <span>{districts.map((d) => d.name).join(", ")}</span></p>}
               </div>
@@ -68,6 +90,10 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
           </section>
           {(onRequest || onFavorite) && (
             <div className="profile-cta-bar">
+              <p className="profile-cta-summary">
+                <strong>{feeLabel(profile.services)}</strong>
+                <span className="muted">{profile.availability?.available_today ? "Disponible hoy" : "Atiende con cita"}</span>
+              </p>
               {onRequest && (
                 <button type="button" className="button primary client-profile-cta" disabled={!profile.services?.length}
                   onClick={() => onRequest(profile)}>
@@ -84,27 +110,45 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
           )}
           <Notice error={notice.error} success={notice.success} />
 
-          <Block id="sobre-mi" title="Sobre mí">
-            {profile.bio ? <p className="client-profile-bio">{profile.bio}</p>
-              : <p className="client-profile-bio muted">Este técnico aún no agregó una descripción.</p>}
-            {profile.work_style && <><h4>Forma de trabajo</h4><p>{profile.work_style}</p></>}
-            {profile.warranty_text && <><h4>Garantía</h4><p>{profile.warranty_text}</p></>}
+          <Block id="sobre-mi" title="Sobre mí" icon="profile">
+            <div className="profile-about">
+              <div className="profile-about-item" data-tone="blue">
+                <span className="cx-dot" aria-hidden="true"><Icon name="profile" /></span>
+                <div>
+                  <h4>Quién es</h4>
+                  {profile.bio ? <p className="client-profile-bio">{profile.bio}</p>
+                    : <p className="client-profile-bio muted">Este técnico aún no agregó una descripción.</p>}
+                </div>
+              </div>
+              {profile.work_style && (
+                <div className="profile-about-item" data-tone="violet">
+                  <span className="cx-dot" aria-hidden="true"><Icon name="wrench" /></span>
+                  <div><h4>Forma de trabajo</h4><p>{profile.work_style}</p></div>
+                </div>
+              )}
+              {profile.warranty_text && (
+                <div className="profile-about-item" data-tone="green">
+                  <span className="cx-dot" aria-hidden="true"><Icon name="verify" /></span>
+                  <div><h4>Garantía</h4><p>{profile.warranty_text}</p></div>
+                </div>
+              )}
+            </div>
           </Block>
 
-          <Block id="servicios" title="Servicios">
-            <ul className="client-services tech-services">
+          <Block id="servicios" title="Servicios" icon="wrench">
+            <ul className="profile-services">
               {profile.services?.map((s) => (
-                <li key={s.subcategory_id}>
+                <li key={s.subcategory_id} className="profile-service">
                   <h4>{s.subcategory_name}</h4>
-                  <strong>Referencial S/ {s.reference_fee}</strong>
-                  {s.includes && <p className="muted">Qué incluye: {s.includes}</p>}
+                  <p className="profile-service-fee"><small>Referencial</small> <strong>{soles(s.reference_fee)}</strong></p>
+                  {s.includes && <Includes text={s.includes} id={"incluye-" + s.subcategory_id} />}
                 </li>
               ))}
             </ul>
             <p className="muted">Tarifa orientativa: el monto final se acuerda con el técnico; no es un cobro.</p>
           </Block>
 
-          <Block id="disponibilidad" title="Disponibilidad">
+          <Block id="disponibilidad" title="Disponibilidad" icon="calendar">
             <div className="tech-week-wrap">
               <table className="tech-week" aria-label="Disponibilidad semanal">
                 <caption>Disponibilidad semanal</caption>
@@ -127,7 +171,7 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
             {districts.length > 0 && <p className="muted">Atiende en {districts.map((d) => d.name).join(", ")}</p>}
           </Block>
 
-          <Block id="portafolio" title="Portafolio">
+          <Block id="portafolio" title="Portafolio" icon="image">
             {!profile.portfolio?.length && (
               <div className="client-empty">
                 <span aria-hidden="true"><Icon name="image" /></span>
@@ -153,11 +197,11 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
             </div>
           </Block>
 
-          <Block id="calificaciones" title="Calificaciones">
+          <Block id="calificaciones" title="Calificaciones" icon="star">
             <Ratings profile={profile} />
           </Block>
 
-          <Block id="confianza" title="Confianza">
+          <Block id="confianza" title="Confianza" icon="verify">
             <p className="tech-trust">
               <Icon name="verify" />
               <strong>{profile.verified ? "Identidad verificada por el administrador" : "Verificación pendiente"}</strong>
@@ -175,10 +219,10 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
   );
 }
 
-function Block({ id, title, children }) {
+function Block({ id, title, icon = null, children }) {
   return (
     <section className="panel-card client-block" aria-labelledby={"perfil-" + id}>
-      <h3 id={"perfil-" + id}>{title}</h3>
+      <h3 id={"perfil-" + id} className="profile-block-title">{icon && <Icon name={icon} />}{title}</h3>
       {children}
     </section>
   );

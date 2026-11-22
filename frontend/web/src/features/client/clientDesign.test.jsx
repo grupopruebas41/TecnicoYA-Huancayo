@@ -177,7 +177,8 @@ test('S05-TC-049 el perfil del técnico muestra cabecera verificada, servicios r
   // D-101 (Fase 3): «Solicitar servicio» pasa de la cabecera a la barra fija (abajo en el celular).
   expect(screen.getByRole('button', {name: 'Solicitar servicio'})).toHaveClass('primary');
   expect(screen.getByRole('button', {name: 'Solicitar servicio'}).closest('.profile-cta-bar')).not.toBeNull();
-  expect(screen.getByText('Referencial S/ 80.00')).toBeInTheDocument();
+  // Pulido final del cliente (2026-11-22): tarifa en formato peruano con coma decimal y la palabra «Referencial» aparte, sobre el monto.
+  expect(screen.getByText('S/ 80,00').closest('.profile-service-fee')).toHaveTextContent('Referencial S/ 80,00');
   expect(screen.getByText(/orientativa/)).toBeInTheDocument();
   expect(screen.getByText('Este técnico aún no publicó trabajos.')).toBeInTheDocument();
   expect(screen.getByText('Este técnico aún no tiene reseñas')).toBeInTheDocument();
