@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="4.739" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:24" tests="0" file="cypress/e2e/sprint-05/technician-business.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Panel del técnico: Mi negocio y Estadísticas" timestamp="2026-11-19T14:07:24" tests="3" time="4.738" failures="0">
+    <testcase name="Panel del técnico: Mi negocio y Estadísticas S05-TC-350 la Verificación coincide con el menú «Aprobado» y muestra los 2 documentos obligatorios aprobados" time="1.700" classname="S05-TC-350 la Verificación coincide con el menú «Aprobado» y muestra los 2 documentos obligatorios aprobados">
+    </testcase>
+    <testcase name="Panel del técnico: Mi negocio y Estadísticas S05-TC-351 Perfil profesional actualiza la vista previa mientras se escribe y guarda con su alerta" time="1.648" classname="S05-TC-351 Perfil profesional actualiza la vista previa mientras se escribe y guarda con su alerta">
+    </testcase>
+    <testcase name="Panel del técnico: Mi negocio y Estadísticas S05-TC-352 Estadísticas muestra los indicadores, el resumen en texto y cambia de semana a mes" time="1.322" classname="S05-TC-352 Estadísticas muestra los indicadores, el resumen en texto y cambia de semana a mes">
+    </testcase>
+  </testsuite>
+</testsuites>

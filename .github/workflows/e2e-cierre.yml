@@ -1,0 +1,113 @@
+name: e2e-cierre
+
+# Cierre común S4-S5 (punto 2): Cypress por sprint en GitHub Actions, sin depender de la memoria del PC del equipo.
+# Cada sprint corre en su propio job con MySQL 8.4, la API (Laravel), el frontend (Vite) y, desde el S4, Reverb, la cola
+# y el scheduler, con el mismo arrancador que se usa en local (scripts/run-e2e.mjs, slot A). Los JUnit, las capturas de
+# fallo y el log de la API quedan como artefactos.
+# - Manual: Actions › e2e-cierre › Run workflow (por defecto, todos los sprints con Cypress).
+# - También corre en las ramas feature/pimentel/e2e-cierre/** para probar el propio workflow antes de integrarlo
+#   (workflow_dispatch solo existe cuando el archivo ya está en main).
+on:
+  workflow_dispatch:
+    inputs:
+      sprints:
+        description: 'Sprints a ejecutar, en JSON (por ejemplo ["02","05"])'
+        required: false
+        default: '["01","02","03","04","05"]'
+  push:
+    branches: ['feature/pimentel/e2e-cierre/**']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-cierre-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cypress:
+    name: Cypress S${{ matrix.sprint }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        sprint: ${{ fromJSON(github.event.inputs.sprints || '["01","02","03","04","05"]') }}
+    env:
+      TECNICOYA_SLOT: A
+      CI: 'true'
+      E2E_BROWSER: chrome
+      PHP_BINARY: php
+      # La API atiende peticiones en paralelo, como un servidor real: con un solo proceso (php -S), una petición trabada
+      # dejaba sin respuesta a todas las siguientes (primera ejecución, S5). Los errores de Laravel van al log de la API.
+      PHP_CLI_SERVER_WORKERS: '4'
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: debug
+      # Solo para el vigía de scripts/run-e2e.mjs (SHOW FULL PROCESSLIST si la API deja de responder); servicio efímero.
+      E2E_MYSQL_ROOT_PASSWORD: ci-root-ephemeral-only
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          # Base del slot A: E2EDatabaseGuard solo acepta las bases de los slots.
+          MYSQL_DATABASE: tecnicoya_testing
+          MYSQL_USER: tecnicoya_test
+          # Exclusivas del servicio efímero de este job; no son credenciales reales.
+          MYSQL_PASSWORD: ci-ephemeral-only
+          MYSQL_ROOT_PASSWORD: ci-root-ephemeral-only
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci-root-ephemeral-only --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql, pcntl
+          coverage: none
+          # setup-php activa el JIT de opcache por defecto. Con el JIT, el servidor de desarrollo de PHP rechazaba objetos
+          # de su propia clase («must be of type Carbon\CarbonImmutable, Carbon\CarbonImmutable given») y terminaba
+          # con SIGSEGV (código 139) a mitad de las Cypress del S4 y del S5. En local (XAMPP) el JIT no está activo.
+          ini-values: opcache.jit=disable, opcache.jit_buffer_size=0
+          tools: composer:v2
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/web/package-lock.json
+      - name: Instalar dependencias del backend
+        working-directory: backend/api
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Instalar dependencias del frontend (con el binario de Cypress)
+        working-directory: frontend/web
+        run: npm ci
+      - name: Preparar el entorno de pruebas del slot A
+        working-directory: backend/api
+        shell: bash
+        run: |
+          mkdir -p storage/framework/{cache/data,sessions,views} storage/app/private bootstrap/cache ../../tmp
+          printf 'APP_ENV=testing\nAPP_DEBUG=false\nCACHE_STORE=array\nSESSION_DRIVER=database\nDB_PASSWORD=ci-ephemeral-only\nTECNICOYA_SLOT=A\n' > .env.testing
+      - name: Cypress del Sprint ${{ matrix.sprint }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p frontend/web/test-results/cypress
+          node scripts/run-e2e.mjs --sprint "${{ matrix.sprint }}" --slot A --junit | tee "frontend/web/test-results/cypress/sprint-${{ matrix.sprint }}-salida.txt"
+      - name: Resumen del sprint
+        if: always()
+        shell: bash
+        run: node scripts/resumen-junit-cypress.mjs frontend/web/test-results/cypress "${{ matrix.sprint }}" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: cypress-s${{ matrix.sprint }}
+          path: |
+            frontend/web/test-results/cypress/
+            frontend/web/cypress/screenshots/
+            tmp/e2e-api-A.log
+          if-no-files-found: warn
+          retention-days: 30

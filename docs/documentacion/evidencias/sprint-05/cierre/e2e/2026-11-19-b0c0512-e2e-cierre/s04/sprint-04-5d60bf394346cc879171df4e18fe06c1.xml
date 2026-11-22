@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="40.657" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:06:26" tests="0" file="cypress/e2e/sprint-04/offers.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S4 ofertas reales" timestamp="2026-11-19T14:06:26" tests="5" time="40.656" failures="0">
+    <testcase name="S4 ofertas reales S04-TC-083 aceptar no asigna" time="2.360" classname="S04-TC-083 aceptar no asigna">
+    </testcase>
+    <testcase name="S4 ofertas reales S04-TC-084 rechazo requiere confirmación" time="2.057" classname="S04-TC-084 rechazo requiere confirmación">
+    </testcase>
+    <testcase name="S4 ofertas reales S04-TC-085 vencimiento del servidor prevalece" time="2.261" classname="S04-TC-085 vencimiento del servidor prevalece">
+    </testcase>
+    <testcase name="S4 ofertas reales S04-TC-086 reloj anclado al servidor llega a 00:01 y 00:00" time="31.087" classname="S04-TC-086 reloj anclado al servidor llega a 00:01 y 00:00">
+    </testcase>
+    <testcase name="S4 ofertas reales S04-TC-097 error de red recupera oferta sin falso éxito" time="1.881" classname="S04-TC-097 error de red recupera oferta sin falso éxito">
+    </testcase>
+  </testsuite>
+</testsuites>

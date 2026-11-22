@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="4.987" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:08" tests="2" file="cypress/e2e/sprint-04/pending.cy.js" time="4.987" failures="0">
+    <testcase name="S04-TC-091 pendiente muestra límite en Lima" time="2.202" classname="S04-TC-091 pendiente muestra límite en Lima">
+    </testcase>
+    <testcase name="S04-TC-092 expiración libera cupo" time="2.424" classname="S04-TC-092 expiración libera cupo">
+    </testcase>
+  </testsuite>
+</testsuites>

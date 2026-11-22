@@ -1,0 +1,31 @@
+# S05-TC-376 en rojo antes de E2EFirstVisits (rama feature/pimentel/e2e-cierre/s05, sobre 702087a). Pest, slot A.
+   FAIL  Tests\Feature\Sprint05\TechnicianOnboardingTest
+  ⨯ it S05-TC-376 las cuentas E2E sembradas de S01 a S04 ya vieron la bienvenida y el tutorial (Cypress de S01… 90.67s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Sprint05\TechnicianOnboardingTest > it S05-TC-376 las cuentas E2E sembradas de S01 a S04 ya…   
+  Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+-Array &0 []
++Array &0 [
++    0 => 'e2e-client@example.test',
++    1 => 'e2e-technician@example.test',
++    2 => 'e2e-admin@example.test',
++    3 => 'e2e-technician-ready@example.test',
++    4 => 'e2e-technician-reject@example.test',
++    5 => 'e2e-technician-active@example.test',
++    6 => 'e2e-technician-frio@example.test',
++    7 => 'e2e-technician-paused@example.test',
++    8 => 'e2e-client-limit@example.test',
++    9 => 'e2e-client-mixed@example.test',
++    10 => 'e2e-client-match@example.test',
++    11 => 'e2e-client-direct@example.test',
++    12 => 'e2e-client-pending@example.test',
++    13 => 'e2e-client-agenda@example.test',
++    14 => 'e2e-technician-busy@example.test',
++    15 => 'e2e-technician-electro@example.test',
++]
+  at tests\Feature\Sprint05\TechnicianOnboardingTest.php:124
+    120▕         unset($_ENV['TECNICOYA_E2E_PASSWORD'], $_SERVER['TECNICOYA_E2E_PASSWORD']);
+    121▕     }

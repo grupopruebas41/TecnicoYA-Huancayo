@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="4.171" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:19" tests="0" file="cypress/e2e/sprint-05/staff-shell.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Base común del técnico y del administrador" timestamp="2026-11-19T14:07:19" tests="3" time="4.171" failures="0">
+    <testcase name="Base común del técnico y del administrador S05-TC-288 el técnico ve ☰ junto al logo, el indicador de conexión arriba y su panel de la cuenta con 5 pestañas" time="1.506" classname="S05-TC-288 el técnico ve ☰ junto al logo, el indicador de conexión arriba y su panel de la cuenta con 5 pestañas">
+    </testcase>
+    <testcase name="Base común del técnico y del administrador S05-TC-289 «Cerrar las otras sesiones» pide confirmación y deja abierta esta sesión" time="1.340" classname="S05-TC-289 «Cerrar las otras sesiones» pide confirmación y deja abierta esta sesión">
+    </testcase>
+    <testcase name="Base común del técnico y del administrador S05-TC-290 el administrador guarda la accesibilidad en su cuenta y no tiene Mi perfil en el menú" time="1.258" classname="S05-TC-290 el administrador guarda la accesibilidad en su cuenta y no tiene Mi perfil en el menú">
+    </testcase>
+  </testsuite>
+</testsuites>

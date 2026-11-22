@@ -49,6 +49,8 @@ final class Sprint03E2ESeeder extends Seeder
             $this->client('limit', ['sent', 'sent', 'sent'], $huancayo);
             $this->client('mixed', ['registered', 'sent'], $huancayo);
         });
+        // Cierre S4-S5: las cuentas E2E ya vieron la bienvenida y el tutorial (E2EFirstVisits).
+        E2EFirstVisits::markSeen();
     }
 
     private function technician(string $suffix, string $name, ?string $whatsapp): object

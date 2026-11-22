@@ -1,0 +1,17 @@
+# S05-TC-379 en rojo antes de la excepción del carrusel (rama feature/pimentel/e2e-cierre/s05, sobre 1b78ec4). Medición previa con Playwright: con movimiento reducido el botón «Subcategoría siguiente» quedaba bajo la tarjeta central a 1000×660, 1366×900 y 390×844.
+ RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+ ❯ src/landing/reducedMotion.test.js (1 test | 1 failed) 9ms
+   × S05-TC-379 con movimiento reducido, las tarjetas del carrusel conservan su centrado sobre la regla general 8ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/landing/reducedMotion.test.js > S05-TC-379 con movimiento reducido, las tarjetas del carrusel conservan su centrado sobre la regla general
+AssertionError: expected ' .about-page [data-about], .about-pag…' to match /\.landing-page \.ty-product-stage\.is…/
+- Expected:
+/\.landing-page \.ty-product-stage\.is-reduced \.ty-product-card \{[^}]*transform: translate\(-50%, -50%\) translateX\(var\(--card-x\)\) scale\(var\(--card-scale\)\) !important/
++ Received:
+" .about-page [data-about], .about-page .ty-purpose-card { animation: none; } .ty-coverflow-card, .ty-purpose-route .route-progress, .ty-route-marker { transition: none;   html:has(.landing-page) { scroll-behavior: auto; } .landing-page *, .landing-page *:before { animation: none !important; transition: none !important; transform: none !important; translate: none !important; } .about-page .ty-coverflow-card.is-current { transform: translateX(0) !important; } .about-page .ty-coverflow-card.side--1 { transform: translateX(-65%) scale(.78) !important; } .about-page .ty-coverflow-card.side-1 { transform: translateX(65%) scale(.78) !important;   .ty-header, .ty-about-nav, .ty-about-nav a { transition: none !important;   .ty-fixed-background video { display: none;   .ty-map-zone, .ty-map-zone .ty-map-face, .ty-map-zone text { transition: none !important; animation: none !important; } .ty-map-zone:hover, .ty-map-zone:focus-visible, .ty-map-zone.selected { transform: none; filter: none;   .ty-map-zone, .ty-map-zone .ty-map-face, .ty-map-zone text { transition: none !important; animation: none !important; } .ty-map-zone:hover, .ty-map-zone:focus-visible, .ty-map-zone.selected { transform: none; filter: none; "
+ ❯ src/landing/reducedMotion.test.js:13:19
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  01:30:04
+   Duration  1.01s (environment 70%, setup 21%, transform 7%, worker 1%, tests 1%, import 1%)

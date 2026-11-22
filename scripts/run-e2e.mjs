@@ -134,8 +134,35 @@ async function lockOrWait(file, label, minutes) {
 }
 
 const services = [];
+let stopping = false;
 function command(binary, args, cwd, stdio = 'inherit') {
-  return spawn(binary, args, {cwd, env, stdio, windowsHide: true});
+  const child = spawn(binary, args, {cwd, env, stdio, windowsHide: true});
+  // Cierre S4-S5: si un servicio (API, Reverb, cola o scheduler) termina antes de tiempo, se avisa con su código o señal.
+  child.on('exit', (code, signal) => {
+    if (!stopping && services.includes(child)) console.log(`[e2e] ${new Date().toISOString()} el servicio «${args.slice(0, 2).join(' ')}» terminó (código ${code}, señal ${signal}).`);
+  });
+  return child;
+}
+// Cierre S4-S5: vigía de la API. Si /api/health deja de responder, se registra la hora y, en Linux, los procesos PHP.
+function watchApi() {
+  let down = false;
+  const timer = setInterval(async () => {
+    try {
+      const response = await fetch(`${apiUrl}/api/health`, {signal: AbortSignal.timeout(5000)});
+      if (down && response.ok) { down = false; console.log(`[e2e] ${new Date().toISOString()} la API volvió a responder.`); }
+    } catch (error) {
+      if (down) return;
+      down = true;
+      console.log(`[e2e] ${new Date().toISOString()} la API no responde a /api/health (${error.name}).`);
+      if (process.platform !== 'win32') console.log(spawnSync('ps', ['-eo', 'pid,ppid,stat,etime,args'], {encoding: 'utf8'}).stdout
+        .split('\n').filter(line => /php|PID/.test(line)).join('\n'));
+      // En el workflow e2e-cierre (MySQL efímero), qué consultas están corriendo o esperando un bloqueo.
+      if (process.env.E2E_MYSQL_ROOT_PASSWORD) console.log(spawnSync('mysql', ['-h127.0.0.1', '-uroot',
+        `-p${process.env.E2E_MYSQL_ROOT_PASSWORD}`, '-e', 'SHOW FULL PROCESSLIST'], {encoding: 'utf8'}).stdout);
+    }
+  }, 15000);
+  timer.unref();
+  return timer;
 }
 function run(binary, args, cwd, label) {
   return new Promise((resolve, reject) => {
@@ -174,6 +201,7 @@ async function ensurePortsFree() {
   }
 }
 function stopServices() {
+  stopping = true;
   for (const child of services.splice(0).reverse()) {
     if (process.platform === 'win32') spawnSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], {windowsHide: true, stdio: 'ignore'});
     else child.kill('SIGTERM');
@@ -210,6 +238,7 @@ try {
   await waitReady(`${apiUrl}/api/health`);
   await waitReady(webUrl);
   if (realtime) await waitPort(slot.reverb);
+  watchApi();
 
   // Un único Cypress a la vez en todo el PC, sea cual sea el slot (memoria limitada).
   const cypressLock = path.join(tmp, 'e2e-cypress.lock');

@@ -35,6 +35,12 @@ export function openRequest(phase) {
     cy.wrap(row).as("currentRequest");
   });
 }
+// Fase T3: una oferta respondida o vencida pasa a la pestaña «Historial» de Ofertas, con su estado como etiqueta.
+export function historyStatus(offerId, text) {
+  cy.get('nav[aria-label="Gestión del técnico"]').contains("button", "Ofertas").click();
+  cy.contains("[role=tab]", "Historial").click();
+  cy.get('[aria-label="Oferta ' + offerId + '"] .tech-status').should("contain", text);
+}
 export function pendingOffer() {
   return cy.get('[aria-label^="Oferta "]').filter(":has(button)").first();
 }

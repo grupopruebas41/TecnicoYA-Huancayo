@@ -11,7 +11,8 @@ const cardOf = (name) => cy.contains("article h3", name).closest("article");
 
 describe("Buscar técnicos y perfil del técnico", () => {
   it("S05-TC-211 especialidad, «Disponible hoy» y orden por precio filtran con la API real", () => {
-    observe("GET", "/technicians?*", "busqueda");
+    // Cierre S4-S5: el alias atrapaba la consulta del Inicio («Técnicos cerca de ti»); se espera la de los filtros.
+    cy.intercept({ method: "GET", pathname: "/api/v1/technicians", query: { available_today: "1", sort: "price" } }).as("busqueda");
     loginClient();
     openSearch();
     cy.get('[role=group][aria-label="Especialidades"]').contains("button", "Refrigeración comercial").click()
@@ -49,7 +50,7 @@ describe("Buscar técnicos y perfil del técnico", () => {
     cy.get('table[aria-label="Disponibilidad semanal"] tbody tr').should("have.length", 7);
     cy.contains("Ejemplo · datos de demostración").should("be.visible");
     cy.contains("Identidad verificada por el administrador").should("be.visible");
-    cy.get('[aria-label="Portafolio"] button[aria-label^="Ver el trabajo"]').first().as("opener").click();
+    cy.get('section[aria-labelledby="perfil-portafolio"] button[aria-label^="Ver el trabajo"]').first().as("opener").click();
     cy.get('dialog[aria-modal="true"]').should("contain", "Trabajo 1 de 2").trigger("keydown", { key: "ArrowRight" });
     cy.get('dialog[aria-modal="true"]').should("contain", "Trabajo 2 de 2").trigger("keydown", { key: "Escape" });
     cy.get('dialog[aria-modal="true"]').should("not.exist");
@@ -62,13 +63,14 @@ describe("Buscar técnicos y perfil del técnico", () => {
     loginClient();
     switchAccount("e2e-technician-perfil@example.test");
     cy.get("[data-cy=portal-technician]").should("be.visible");
-    cy.contains("button", "Servicios y tarifas").click();
-    cy.get('[id^="includes-"]').first().clear().type(includes);
-    cy.get('[id^="includes-"]').first().closest("form").contains("button", "Guardar").click();
-    cy.contains("Cambios guardados.").should("be.visible");
+    cy.get('nav[aria-label="Gestión del técnico"]').contains("button", "Servicios y tarifas").click();
+    cy.get('.tech-svc-list button[aria-label^="Editar "]').first().click();
+    cy.contains(".tech-service-form label", "Qué incluye").find("textarea").clear().type(includes);
+    cy.contains(".tech-service-form button", "Guardar servicio").click();
+    cy.contains(/Actualizamos «.+»\./).should("be.visible");
     cy.get("@clientEmail").then((email) => switchAccount(email));
     openSearch();
     cardOf(NAME).contains("button", `Ver perfil de ${NAME}`).click();
-    cy.get('[aria-label="Servicios"]').should("contain", "Qué incluye: " + includes);
+    cy.get('section[aria-labelledby="perfil-servicios"]').should("contain", "Qué incluye: " + includes);
   });
 });

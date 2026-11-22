@@ -3,7 +3,9 @@
 namespace App\Shared\Testing;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Queue\Events\Looping;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 
 /**
  * Reloj del servidor para Cypress (contrato S4 §9, tarea serverClock). Solo se activa con TECNICOYA_E2E_CLOCK=1, que
@@ -47,11 +49,22 @@ final class E2EClock
         return $offset;
     }
 
-    /** Hace que now() devuelva la hora real más el desfase vigente, leído en cada llamada. */
+    /**
+     * Hace que now() devuelva la hora real más el desfase vigente. Cierre S4-S5 (S05-TC-378): se fija un instante, como
+     * travelTo en las pruebas, en vez de un closure. Con el closure, StartSession fallaba en Carbon::rawAddUnit, el manejo
+     * del error volvía a pedir la hora y la API caía con SIGSEGV en Linux. Cada petición HTTP y cada comando arrancan en
+     * un proceso nuevo y toman el desfase al iniciar; la cola, que vive mucho, lo renueva en cada vuelta del worker
+     * (Looping), así los trabajos con demora siguen avanzando y un desfase nuevo vale desde la vuelta siguiente.
+     */
     public static function install(): void
     {
-        // Carbon llama al closure con la hora real en cada now(); en Carbon 3 el reloj de prueba es común a
-        // Carbon y CarbonImmutable.
-        Carbon::setTestNow(fn (CarbonImmutable $real) => $real->addSeconds(self::offset()));
+        self::freeze();
+        Event::listen(Looping::class, fn () => self::freeze());
+    }
+
+    private static function freeze(): void
+    {
+        Carbon::setTestNow();
+        Carbon::setTestNow(CarbonImmutable::now()->addSeconds(self::offset()));
     }
 }

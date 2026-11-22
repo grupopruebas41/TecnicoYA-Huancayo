@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="9.581" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:08" tests="0" file="cypress/e2e/sprint-05/shell-menu.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Barra superior, panel del avatar y menú del cliente" timestamp="2026-11-19T14:07:08" tests="3" time="9.580" failures="0">
+    <testcase name="Barra superior, panel del avatar y menú del cliente S05-TC-232 el ☰ contrae el menú y lo recuerda al volver a entrar" time="3.433" classname="S05-TC-232 el ☰ contrae el menú y lo recuerda al volver a entrar">
+    </testcase>
+    <testcase name="Barra superior, panel del avatar y menú del cliente S05-TC-233 el panel del avatar guarda una dirección y el asistente la ofrece en el paso 4" time="3.080" classname="S05-TC-233 el panel del avatar guarda una dirección y el asistente la ofrece en el paso 4">
+    </testcase>
+    <testcase name="Barra superior, panel del avatar y menú del cliente S05-TC-234 el menú no tiene CUENTA, lo premium abre el plan y lo que no está listo no navega" time="3.001" classname="S05-TC-234 el menú no tiene CUENTA, lo premium abre el plan y lo que no está listo no navega">
+    </testcase>
+  </testsuite>
+</testsuites>

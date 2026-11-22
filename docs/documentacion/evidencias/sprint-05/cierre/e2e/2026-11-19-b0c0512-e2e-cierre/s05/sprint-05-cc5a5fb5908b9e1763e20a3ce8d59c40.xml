@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="4.947" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:42" tests="0" file="cypress/e2e/sprint-05/technician-work.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Panel del técnico: Ofertas, Mis trabajos, Agenda y Zonas" timestamp="2026-11-19T14:07:42" tests="3" time="4.946" failures="0">
+    <testcase name="Panel del técnico: Ofertas, Mis trabajos, Agenda y Zonas S05-TC-326 Ofertas separa Pendientes e Historial y el historial muestra el estado como etiqueta" time="1.668" classname="S05-TC-326 Ofertas separa Pendientes e Historial y el historial muestra el estado como etiqueta">
+    </testcase>
+    <testcase name="Panel del técnico: Ofertas, Mis trabajos, Agenda y Zonas S05-TC-327 Mis trabajos cambia de pestaña y busca sin recargar la página" time="1.762" classname="S05-TC-327 Mis trabajos cambia de pestaña y busca sin recargar la página">
+    </testcase>
+    <testcase name="Panel del técnico: Ofertas, Mis trabajos, Agenda y Zonas S05-TC-328 Zonas y disponibilidad guarda una franja con un clic y lo confirma" time="1.413" classname="S05-TC-328 Zonas y disponibilidad guarda una franja con un clic y lo confirma">
+    </testcase>
+  </testsuite>
+</testsuites>

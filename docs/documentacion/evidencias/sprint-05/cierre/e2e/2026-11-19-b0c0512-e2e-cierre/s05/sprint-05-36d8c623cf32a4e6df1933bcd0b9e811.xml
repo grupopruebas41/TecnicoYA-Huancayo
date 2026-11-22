@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="5.679" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:07:35" tests="0" file="cypress/e2e/sprint-05/technician-onboarding.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Panel del técnico: primera visita, avisos y tutorial" timestamp="2026-11-19T14:07:35" tests="3" time="5.679" failures="0">
+    <testcase name="Panel del técnico: primera visita, avisos y tutorial S05-TC-369 la primera visita muestra la bienvenida, guarda los avisos, sigue con el tutorial y deja «Primeros pasos»" time="2.154" classname="S05-TC-369 la primera visita muestra la bienvenida, guarda los avisos, sigue con el tutorial y deja «Primeros pasos»">
+    </testcase>
+    <testcase name="Panel del técnico: primera visita, avisos y tutorial S05-TC-370 la pestaña «Avisos» guarda un interruptor con su alerta" time="1.464" classname="S05-TC-370 la pestaña «Avisos» guarda un interruptor con su alerta">
+    </testcase>
+    <testcase name="Panel del técnico: primera visita, avisos y tutorial S05-TC-371 «Cómo funciona» repite el tutorial de 5 pasos sin volver a marcarlo" time="1.952" classname="S05-TC-371 «Cómo funciona» repite el tutorial de 5 pasos sin volver a marcarlo">
+    </testcase>
+  </testsuite>
+</testsuites>

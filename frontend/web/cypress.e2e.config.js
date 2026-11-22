@@ -6,7 +6,8 @@ import {tareasSprint04} from '../../scripts/e2e-tareas-s04.mjs';
 // La contraseña sintética va en env (secreta, se lee con cy.env); las URL en expose (públicas).
 export default defineConfig({
   video: false,
-  screenshotOnRunFailure: false,
+  // Cierre S4-S5: en GitHub Actions (CI=true) se guardan capturas de los fallos como artefacto; en el PC no, por memoria.
+  screenshotOnRunFailure: process.env.CI === 'true',
   defaultCommandTimeout: 20000,
   requestTimeout: 20000,
   env: {E2E_PASSWORD: process.env.TECNICOYA_E2E_PASSWORD},

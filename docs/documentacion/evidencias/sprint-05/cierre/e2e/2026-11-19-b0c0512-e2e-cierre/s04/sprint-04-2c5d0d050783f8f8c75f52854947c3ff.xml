@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="18.278" tests="4" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-19T14:08:25" tests="0" file="cypress/e2e/sprint-04/selection.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="S4 selección" timestamp="2026-11-19T14:08:25" tests="4" time="18.278" failures="0">
+    <testcase name="S4 selección S04-TC-087 cliente sigue la búsqueda hasta dos aceptaciones" time="8.633" classname="S04-TC-087 cliente sigue la búsqueda hasta dos aceptaciones">
+    </testcase>
+    <testcase name="S4 selección S04-TC-088 elegir confirma asignación real" time="3.099" classname="S04-TC-088 elegir confirma asignación real">
+    </testcase>
+    <testcase name="S4 selección S04-TC-089 una elección rechazada recarga candidatos sin falso éxito" time="1.756" classname="S04-TC-089 una elección rechazada recarga candidatos sin falso éxito">
+    </testcase>
+    <testcase name="S4 selección S04-TC-100 dirección visible solo después de la elección real" time="4.030" classname="S04-TC-100 dirección visible solo después de la elección real">
+    </testcase>
+  </testsuite>
+</testsuites>
