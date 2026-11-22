@@ -391,3 +391,11 @@ Solo agrega campos; nada se quita ni cambia de tipo.
 | `GET /requests/{id}` (solo el titular) | `specialty` (`{id, name}`) y `from_iot_alert` (booleano). |
 
 Datos: `DemoPremium` completa en cada siembra las 25 lecturas horarias de las últimas 24 h; el comunicado demo de bienvenida lleva un texto para clientes (DEF-78).
+
+### 12.1 Revisión del #66 (2026-11-22)
+
+| Ruta | Cambio |
+|---|---|
+| `GET /orders/quota`, `POST /orders` y envío de solicitudes | `active` cuenta solo pedidos con alguna solicitud viva: estado `sent`, `pending_availability`, `assigned` o `in_progress`, sin `closed_at` ni `cancelled_at` (DEF-80). La solicitud creada desde una alerta de falla no cuenta (D-113). El 409 `ACTIVE_REQUEST_LIMIT` no cambia. |
+| `POST /client/iot/alerts/{id}/request` | Con una alerta de falla, se crea aunque el cliente tenga 3 pedidos activos; con un recordatorio, responde 409 `ACTIVE_REQUEST_LIMIT`. La misma alerta responde 409 si ya creó su solicitud, con cualquier clave (D-113). |
+| `GET /technicians/{id}` | `response_minutes` (entero o `null`): mediana de 30 días con 5 o más respuestas (D-114). |
