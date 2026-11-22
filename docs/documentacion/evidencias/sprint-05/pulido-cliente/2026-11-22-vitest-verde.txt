@@ -1,5 +1,5 @@
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+ RUN  v5.0.3 <repo>/frontend/web
 
  ✓ src/features/panel/panel.test.jsx (15 tests) 6077ms
    ✓ S07-TC-057 el panel del administrador muestra su menú según permisos y marca la sección activa 1914ms
@@ -80,10 +80,10 @@ stderr | src/LandingRedesign.test.jsx > S02-TC-089 rediseño: menú móvil atrap
 Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
     at img
     at div
-    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+    at HeroBackground (<repo>/frontend/web/src/landing/HeroBackground.jsx:12:27)
     at div
-    at PublicSite (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:31:23)
-    at App (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:122:57)
+    at PublicSite (<repo>/frontend/web/src/App.jsx:31:23)
+    at App (<repo>/frontend/web/src/App.jsx:122:57)
 
  ✓ src/features/technician/technicianBusiness.test.jsx (11 tests) 4083ms
    ✓ S05-TC-340 Perfil profesional: una tarjeta por sección, contador de caracteres y vista previa en vivo sin llamar al perfil público 609ms
@@ -154,10 +154,10 @@ stderr | src/Sprint02Landing.test.jsx > S02-TC-089 diez secciones de landing en 
 Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
     at img
     at div
-    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+    at HeroBackground (<repo>/frontend/web/src/landing/HeroBackground.jsx:12:27)
     at div
-    at PublicSite (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:31:23)
-    at App (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:122:57)
+    at PublicSite (<repo>/frontend/web/src/App.jsx:31:23)
+    at App (<repo>/frontend/web/src/App.jsx:122:57)
 
  ✓ src/features/announcements/announcementLifecycle.test.jsx (4 tests) 3294ms
    ✓ S07-TC-105 el menú ofrece Editar en todo estado y Eliminar solo en borrador, vencido y retirado; la tarjeta abre el editor 1738ms
@@ -194,10 +194,10 @@ stderr | src/landing/Intro.test.jsx > S02-TC-089 intro muestra solo video y desp
 Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
     at img
     at div
-    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+    at HeroBackground (<repo>/frontend/web/src/landing/HeroBackground.jsx:12:27)
     at div
-    at PublicSite (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:31:23)
-    at App (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/App.jsx:122:57)
+    at PublicSite (<repo>/frontend/web/src/App.jsx:31:23)
+    at App (<repo>/frontend/web/src/App.jsx:122:57)
 
  ✓ src/features/administration/CatalogEdit.test.jsx (4 tests) 1228ms
    ✓ S02-TC-076 complemento DEF-47: PATCH conserva foto y versión sin enviar specialty_id 639ms
@@ -240,7 +240,7 @@ stderr | src/landing/HeroBackground.test.jsx > S02-TC-089 video pausa al salir y
 Warning: React does not recognize the `fetchPriority` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `fetchpriority` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
     at img
     at div
-    at HeroBackground (C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/landing/HeroBackground.jsx:12:27)
+    at HeroBackground (<repo>/frontend/web/src/landing/HeroBackground.jsx:12:27)
 
  ✓ src/landing/HeroBackground.test.jsx (6 tests) 154ms
  ✓ src/features/administration/validateAccount.test.js (8 tests) 10ms
@@ -265,4 +265,4 @@ Environment  jsdom was created 59 times · 100.32s total, 31% of tracked time
              create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
              learn more: https://vitest.dev/guide/improving-performance#test-environments
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/test-results/junit.xml
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml

@@ -1,5 +1,5 @@
 
- RUN  v5.0.3 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+ RUN  v5.0.3 <repo>/frontend/web
 
  ❯ src/features/client/pulidoCliente.test.jsx (0 test)
 
@@ -8,7 +8,7 @@
  FAIL  src/features/client/pulidoCliente.test.jsx [ src/features/client/pulidoCliente.test.jsx ]
 Error: Failed to resolve import "../../lib/format" from "src/features/client/pulidoCliente.test.jsx". Does the file exist?
   Plugin: vite:import-analysis
-  File: C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/features/client/pulidoCliente.test.jsx:13:0
+  File: <repo>/frontend/web/src/features/client/pulidoCliente.test.jsx:13:0
   15 |  const __vi_import_9__ = await import("./ClientPages");
   16 |  const __vi_import_10__ = await import("../premium/PremiumPages");
   17 |  const __vi_import_11__ = await import("../../lib/format");
@@ -31,4 +31,4 @@ Error: Failed to resolve import "../../lib/format" from "src/features/client/pul
    Start at  13:10:37
    Duration  984ms (environment 82%, setup 15%, transform 3%, worker 1%)
 
-JUNIT report written to C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/test-results/junit.xml
+JUNIT report written to <repo>/frontend/web/test-results/junit.xml
