@@ -80,3 +80,16 @@ test('S05-TC-419 el contador del menú cuenta como activas solo las solicitudes 
   expect(live.map(isActive)).toEqual(live.map(() => true));
   expect(ended.map(isActive)).toEqual(ended.map(() => false));
 });
+
+test('S05-TC-420 cada subcategoría del catálogo tiene su imagen de equipo en public/img/equipos y se usan las 11 imágenes', async () => {
+  const {readFileSync, readdirSync} = await import('node:fs');
+  const {resolve} = await import('node:path');
+  const {equipmentImage} = await import('../premium/PremiumPages');
+  const codes = readFileSync(resolve('../../backend/api/database/seeders/data/catalog.csv'), 'utf8').split(/\r?\n/).slice(1).filter(Boolean).map(line => line.split(',')[1]);
+  const files = readdirSync(resolve('public/img/equipos')).filter(name => name.endsWith('.webp')).map(name => name.replace('.webp', ''));
+  expect(files).toHaveLength(11);
+  const used = new Set();
+  codes.forEach(code => { const image = equipmentImage({subcategory_code: code, name: 'Equipo'}); expect(files, code).toContain(image); used.add(image); });
+  used.add(equipmentImage({subcategory_code: 'computo-hardware', name: 'Laptop de caja'}));
+  expect([...used].sort()).toEqual([...files].sort());
+});

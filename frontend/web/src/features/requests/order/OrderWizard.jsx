@@ -191,7 +191,9 @@ export default function OrderWizard({ navigate = () => {}, onBusy = () => {}, de
       onBusy(false);
     } catch (failure) {
       if (failure.status === 0) setUncertain(true);
-      setError(failure.message);
+      // Revisión del #66: con el límite, el asistente pasa al aviso amable (OrderBlocked) sin el error con «Referencia».
+      if (failure.code !== "ACTIVE_REQUEST_LIMIT") setError(failure.message);
+      else setCatalog((c) => ({ ...c, quota: { ...(c.quota || {}), max: c.quota?.max ?? 3, available: 0 } }));
       if (failure.code === "ACTIVE_REQUEST_LIMIT") request("/orders/quota").then((r) => setCatalog((c) => ({ ...c, quota: r.data }))).catch(() => {});
     } finally {
       setSending(false);

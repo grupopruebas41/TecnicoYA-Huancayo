@@ -58,3 +58,15 @@ export function EmptyState({icon, tone = 'teal', title, text = null, children = 
 
 /** Retraso de la entrada escalonada de una tarjeta (máximo 8 pasos, para no demorar listas largas). */
 export const rise = index => ({'--i': Math.min(index, 8)});
+
+/** Revisión del #66: el 409 ACTIVE_REQUEST_LIMIT (D-95) no es un error del servidor; se avisa sin «Referencia». */
+export const isLimitError = error => error?.code === 'ACTIVE_REQUEST_LIMIT';
+
+/** Aviso amable del máximo de pedidos activos, con un acceso a Mis solicitudes. */
+export function LimitNotice({max = 3, onList = null}) {
+  return <div className="cx-limit" role="status" aria-label="Límite de pedidos activos">
+    <span className="cx-dot" data-tone="blue" aria-hidden="true"><Icon name="clock"/></span>
+    <p><strong>Ya tienes {max} pedidos activos.</strong> Podrás hacer otro cuando alguno se cierre.</p>
+    {onList && <button type="button" className="button outline" onClick={onList}>Ver mis solicitudes</button>}
+  </div>;
+}

@@ -3,7 +3,7 @@ import {request} from '../administration/http';
 import {Notice} from '../administration/forms';
 import DismissBackdrop from '../../components/DismissBackdrop';
 import Icon from '../panel/icons';
-import {ClientPage, EmptyState, Illustration, SampleTag, rise} from '../client/ui';
+import {ClientPage, EmptyState, Illustration, LimitNotice, SampleTag, isLimitError, rise} from '../client/ui';
 import {relativeTime, shortDate, shortDateTime} from '../../lib/format';
 import './premium.css';
 
@@ -188,7 +188,7 @@ export function AlertsPage({navigate}) {
         ? `Enviamos la solicitud #${r.data.request_id} a ${r.data.technician}, tu técnico de confianza.`
         : `Creamos la solicitud #${r.data.request_id} y estamos buscando técnicos disponibles.`});
       await refresh();
-    } catch (e) { setNotice({error: e.message}); } finally { setBusy(null); }
+    } catch (e) { setNotice(isLimitError(e) ? {limit: true} : {error: e.message}); } finally { setBusy(null); }
   }
   const items = data?.items || [];
   const groups = [['activas', 'Activas', items.filter(a => !a.resolved_at).sort(bySeverity)],
@@ -197,6 +197,7 @@ export function AlertsPage({navigate}) {
     intro="Avisos de tus sensores y recordatorios de mantenimiento. También llegan a la campana.">
     <DemoStripe/>
     <Notice error={notice.error} success={notice.success}/>
+    {notice.limit && <LimitNotice onList={() => navigate('requests')}/>}
     {data && !items.length && <EmptyState icon="check" tone="green" title="No hay alertas" text="Tus equipos están bien. Te avisaremos si una lectura sale de lo normal."/>}
     {groups.map(([id, title, rows]) => rows.length > 0 && <section key={id} className="alert-group" aria-labelledby={`alertas-${id}`}>
       <h3 id={`alertas-${id}`} className="alert-group-title">{title} <span className="cx-badge is-muted">{rows.length}</span></h3>

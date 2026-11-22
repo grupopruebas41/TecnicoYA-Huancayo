@@ -14,6 +14,9 @@ import "./technicianCard.css";
 
 const LONG_INCLUDES = 140;
 
+/** D-114: «Responde en ~3 min» o, desde una hora, «Responde en ~2 h» (mediana de 30 días que calcula el servidor). */
+const responseLabel = (minutes) => (minutes < 60 ? `Responde en ~${minutes} min` : `Responde en ~${Math.round(minutes / 60)} h`);
+
 /** «Qué incluye» completo; si es largo, «Ver más» lo despliega (sin cortar el texto a mitad de palabra en el DOM). */
 function Includes({ text, id }) {
   const [open, setOpen] = useState(false);
@@ -93,6 +96,7 @@ export default function TechnicianProfile({ id, preview = null, onRequest, onBac
               <p className="profile-cta-summary">
                 <strong>{feeLabel(profile.services)}</strong>
                 <span className="muted">{profile.availability?.available_today ? "Disponible hoy" : "Atiende con cita"}</span>
+                {profile.response_minutes != null && <span className="muted">{responseLabel(profile.response_minutes)}</span>}
               </p>
               {onRequest && (
                 <button type="button" className="button primary client-profile-cta" disabled={!profile.services?.length}

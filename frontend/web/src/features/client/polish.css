@@ -395,3 +395,18 @@ html[data-motion="reduce"] .request-pulse::after { animation: none !important; }
 .cx-steps li.is-current:first-child .cx-step-label { justify-self: start; }
 /* Contraste AA de los rótulos «kicker» dentro del panel del cliente (la regla global usa un dorado tenue). */
 .panel-shell[data-role="client"] .panel-content .kicker { color: var(--ty-muted); opacity: 1; font-weight: 700; }
+
+/* Aviso amable del límite de pedidos activos (no es un error: sin rojo ni «Referencia»). */
+.cx-limit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, hsl(212 72% 46%) 35%, var(--ty-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, hsl(212 72% 46%) 9%, var(--ty-surface));
+  color: var(--ty-text);
+}
+.cx-limit p { flex: 1 1 240px; margin: 0; }
+.cx-limit .button { min-height: 44px; }

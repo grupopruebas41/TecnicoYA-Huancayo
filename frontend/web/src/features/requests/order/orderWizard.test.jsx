@@ -449,7 +449,8 @@ test('S05-TC-138 con 3 pedidos activos el asistente bloquea desde el inicio, con
   expect(screen.getByText('Podrás hacer otro cuando alguno se cierre.')).toBeInTheDocument();
   expect(screen.queryByRole('checkbox')).toBeNull();
   expect(screen.queryByRole('button', {name: 'Siguiente'})).toBeNull();
-  fireEvent.click(screen.getByRole('button', {name: 'Ver Mis solicitudes'}));
+  // Revisión del #66 (2026-11-22): el botón del aviso del límite dice «Ver mis solicitudes», igual en todo el cliente.
+  fireEvent.click(screen.getByRole('button', {name: 'Ver mis solicitudes'}));
   expect(navigate).toHaveBeenCalledWith('requests');
   // Visto en las capturas: sin esta regla, el botón primario queda con texto claro sobre fondo gris en el tema claro.
   const css = readFileSync(resolve('src/features/requests/order/order.css'), 'utf8').replace(/\r\n/g, '\n');
