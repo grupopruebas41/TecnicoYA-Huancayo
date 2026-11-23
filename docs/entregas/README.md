@@ -62,6 +62,9 @@ php artisan schedule:work
 | `demo-tecnico-refrigeracion@example.test` | Técnico verificado (Refrigeración) |
 | `demo-tecnico-electricidad@example.test` | Técnico verificado (Electricidad) |
 | `demo-tecnico-pendiente@example.test` | Técnico por verificar |
+| `demo-expo-cliente@example.test` | Exposición: cliente Premium con equipos, sensores, alertas, garantías, 1 pedido activo y favoritos. Cada siembra lo devuelve a su primera visita |
+| `demo-expo-tecnico@example.test` | Exposición: técnico verificado con agenda, historial y estadísticas. Cada siembra lo devuelve a su primera visita |
+| `demo-expo-apoyo@example.test` | Cuenta de apoyo: recibe las otras visitas del técnico de la exposición; no se usa en la presentación |
 
 **Recorrido sugerido:**
 1. Landing en `/` y `/nosotros`.
