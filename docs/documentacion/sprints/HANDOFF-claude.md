@@ -26,6 +26,7 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - run `45450004938` (`76f54a9`): S01 17, S02 17, S03 17, S05 35 y S07 6, 0 fallos; S04 falló en S04-TC-087 (mismo intermitente);
   - run `45451490535` (solo S04, misma rama): 18 de 18; y la de `main` `45451496479` también pasa;
   - registrado como **DEF-82** (abierto): el login que falla responde en 0,08 ms, se rechaza antes de autenticar; se descartó el limitador.
+- **CI del #69:** S07-TC-173 falló dos veces (52 frente a 51 consultas): la consulta de más venía de la sesión o del middleware de la petición HTTP, no del Inicio. Ahora cuenta solo `AdminDashboard::snapshot`; la CI está en verde.
 - **Lecciones:**
   - un SVG con viewBox fijo se encoge en el celular: medir el ancho real del contenedor;
   - el reloj de `Sprint04::boot` es el 2026-10-20: las pruebas que usan la v4 de las reglas viajan después del 2026-11-24.
