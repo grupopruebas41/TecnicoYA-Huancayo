@@ -4,13 +4,13 @@
 // solicitud, intervención de D-116 con las reglas de D-120 (cancelar con motivo y reenviar al emparejamiento), CSV de la
 // vista filtrada, tablero de emparejamiento en vivo con su canal privado y alertas operativas priorizadas (D-118).
 // Datos sintéticos; el reloj se fija con travelTo después de la versión 4 de las reglas.
+use App\Models\TechnicianProfile;
 use App\Models\User;
 use App\Modules\BMatching\Jobs\PrepareMatching;
 use App\Modules\CNotifications\Events\OutboxBroadcast;
 use App\Shared\Rules\RuleBook;
 use Carbon\CarbonImmutable;
 use Database\Factories\ClientProfileFactory;
-use Database\Factories\UserFactory;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -47,6 +47,11 @@ function s07a3Assigned(object $test): array
     Sprint04::prepare($request->id);
     $offer = Sprint04::offerTo($request->id, $technician->id);
     Sprint04::respond($test, $technician, $offer, 'accept')->assertOk();
+    // Los técnicos de otras solicitudes del mismo caso también recibieron oferta: la rechazan para que la ronda quede por elegir.
+    foreach (DB::table('offers')->where('request_id', $request->id)->where('status', 'pending')->get() as $other) {
+        Sprint01::forgetSession();
+        Sprint04::respond($test, TechnicianProfile::query()->findOrFail($other->technician_id), $other, 'reject')->assertOk();
+    }
     Sprint01::forgetSession();
     Sanctum::actingAs(Sprint04::clientUser($request));
     Sprint04::select($test, DB::table('service_requests')->find($request->id), $offer->id)->assertOk();
@@ -133,7 +138,8 @@ describe('Intervención (D-116 y D-120)', function () {
         Sprint01::assertSpanishValidation(s07a3Intervene($this, $request, 'cancellation', ['reason' => 'Muy corto']), ['reason']);
         Sprint01::assertSpanishValidation(s07a3Intervene($this, $request, 'cancellation', ['reason' => str_repeat('a', 501)]), ['reason']);
         s07a3Intervene($this, $request, 'cancellation', ['expected_version' => 1])->assertConflict()->assertJsonPath('error.code', 'STALE_VERSION');
-        $this->postJson("/api/v1/admin/requests/{$request->id}/cancellation", ['reason' => S07A3_REASON, 'expected_version' => (int) $request->version])
+        // Sin Idempotency-Key (withHeader de las llamadas anteriores se conserva: se vacía antes).
+        $this->flushHeaders()->postJson("/api/v1/admin/requests/{$request->id}/cancellation", ['reason' => S07A3_REASON, 'expected_version' => (int) $request->version])
             ->assertUnprocessable();
 
         $key = (string) Str::uuid();

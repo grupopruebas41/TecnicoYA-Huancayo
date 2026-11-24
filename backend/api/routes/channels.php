@@ -17,3 +17,7 @@ Broadcast::channel('technicians.{technicianId}', fn (User $user, int $technician
     ->where('id', $technicianId)->where('user_id', $user->id)->where('status', '<>', 'suspended')->exists());
 
 Broadcast::channel('users.{userId}', fn (User $user, int $userId) => $user->id === $userId && ! $suspended($user));
+
+// Fase A3 del panel del administrador: señal del emparejamiento en vivo, solo para quien ve el Inicio (dashboard.view).
+// Lleva solo el número de la solicitud; el panel vuelve a pedir el tablero por la API.
+Broadcast::channel('admin.matching', fn (User $user) => app(App\Shared\Auth\EffectivePermissions::class)->allows($user, 'dashboard.view'));

@@ -189,4 +189,7 @@ return [
     'image_captions_count' => 'Escribe el texto alternativo de cada imagen.',
     // Fase T5 del panel del técnico.
     'offer_alerts_role' => 'Los avisos de oferta solo existen en la cuenta de un técnico.',
+    // Fase A3 del panel del administrador (D-116 y D-120).
+    'intervention_not_allowed' => 'Esta solicitud no admite esa acción en su estado actual.',
+    'intervention_reason' => 'Escribe el motivo: debe tener de 10 a 500 caracteres.',
 ];

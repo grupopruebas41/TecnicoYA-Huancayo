@@ -13,6 +13,7 @@ use App\Modules\FAdministration\Http\Controllers\AdminTechnicianController;
 use App\Modules\FAdministration\Http\Controllers\AdminUserController;
 use App\Modules\FAdministration\Http\Controllers\AdminDashboardController;
 use App\Modules\FAdministration\Http\Controllers\AdminInsightsController;
+use App\Modules\FAdministration\Http\Controllers\AdminOperationsController;
 use App\Modules\FAdministration\Http\Controllers\AnnouncementController;
 use App\Modules\FAdministration\Http\Controllers\CatalogController;
 use App\Modules\FAdministration\Http\Controllers\MediaController;
@@ -157,7 +158,16 @@ Route::prefix('v1')->group(function () {
             Route::middleware('permission:dashboard.view')->group(function () {
                 Route::get('statistics', [AdminInsightsController::class, 'statistics']);
                 Route::get('requests', [AdminInsightsController::class, 'requests']);
-                Route::get(ApiPaths::SERVICE_REQUEST, [AdminInsightsController::class, 'request'])->whereNumber('serviceRequest');
+                // Fase A3: detalle con las acciones de D-120, CSV de la vista filtrada, emparejamiento en vivo y alertas.
+                Route::get(ApiPaths::SERVICE_REQUEST, [AdminOperationsController::class, 'request'])->whereNumber('serviceRequest');
+                Route::get('requests/export', [AdminOperationsController::class, 'export']);
+                Route::get('matching/live', [AdminOperationsController::class, 'live']);
+                Route::get('alerts', [AdminOperationsController::class, 'alerts']);
+            });
+            // D-116 y D-120: cancelar con motivo y reenviar al emparejamiento. No existe la asignación manual.
+            Route::middleware('permission:requests.intervene')->group(function () {
+                Route::post('requests/{serviceRequest}/cancellation', [AdminOperationsController::class, 'cancel'])->whereNumber('serviceRequest');
+                Route::post('requests/{serviceRequest}/rematch', [AdminOperationsController::class, 'rematch'])->whereNumber('serviceRequest');
             });
             Route::middleware('permission:catalog.manage')->group(function () {
                 Route::get('specialties', [AdminCatalogController::class, 'specialties']);

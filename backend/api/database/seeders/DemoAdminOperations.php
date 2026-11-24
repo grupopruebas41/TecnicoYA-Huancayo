@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
  * Panel del administrador, Fase A2 (solo DemoSeeder, APP_ENV=local): datos para que el Inicio tenga contenido en cada
  * parte, todos sintéticos y rotulados «(demostración)». Sobre la cuenta demo-operacion deja:
  * - una solicitud enviada hace 45 minutos sin técnico, con 2 rondas vencidas (alerta y tarea);
- * - una enviada hace 8 minutos (buscando técnico, de hoy);
+ * - una enviada hace 8 minutos (buscando técnico, de hoy), con una ronda abierta y dos ofertas pendientes (Fase A3);
  * - una en el pendiente de 24 h a la que le quedan 90 minutos;
  * - el historial de demo-tecnico-ocupado en los últimos 5 días: 1 aceptada, 1 rechazada y 3 vencidas (desempeño bajo);
  * y además dos búsquedas sin resultado recientes y 10 entradas de auditoría de demo-admin (source_code demo-seeder).
@@ -64,7 +64,9 @@ final class DemoAdminOperations
         $chain = $request(1, 'sent', $now->subMinutes(45));
         $this->round($chain, 1, $busyTechnicianId, 'expired', $now->subMinutes(45), $rule, $service->reference_fee);
         $this->round($chain, 2, $otherTechnicianId, 'expired', $now->subMinutes(30), $rule, $service->reference_fee);
-        $request(2, 'sent', $now->subMinutes(8));
+        // Fase A3: buscando ahora, con una ronda abierta y dos ofertas pendientes (cuenta regresiva del emparejamiento en vivo).
+        $live = $request(2, 'sent', $now->subMinutes(8));
+        $this->openRound($live, [$busyTechnicianId, $otherTechnicianId], $now->subMinutes(1), $rule, $service->reference_fee);
         $expires = $now->addMinutes(90);
         $request(3, 'pending_availability', $now->subHours(23), ['pending_since' => $expires->subDay(), 'pending_expires_at' => $expires]);
 
@@ -107,6 +109,26 @@ final class DemoAdminOperations
             'responded_at' => in_array($status, ['accepted', 'rejected'], true) ? $at->addMinutes(4) : null,
             'reference_fee_snapshot' => $fee, 'currency' => 'PEN', 'version' => 2, 'created_at' => $at, 'updated_at' => $at,
         ]);
+    }
+
+    /** Ronda abierta con una oferta pendiente por técnico, que vence 10 minutos después de abrirse. */
+    private function openRound(int $requestId, array $technicians, CarbonImmutable $at, int $rule, string $fee): void
+    {
+        $run = DB::table('matching_runs')->insertGetId([
+            'request_id' => $requestId, 'search_generation' => 1, 'attempt_no' => 1, 'run_trigger' => 'submission', 'rule_version_id' => $rule,
+            'algorithm_version' => Matcher::ALGORITHM, 'status' => 'completed', 'eligible_count' => count($technicians), 'started_at' => $at, 'finished_at' => $at,
+        ]);
+        $round = DB::table('offer_rounds')->insertGetId([
+            'request_id' => $requestId, 'matching_run_id' => $run, 'search_generation' => 1, 'round_no' => 1, 'kind' => 'automatic',
+            'status' => 'open', 'opened_at' => $at, 'expires_at' => $at->addMinutes(10),
+        ]);
+        foreach ($technicians as $technicianId) {
+            DB::table('offers')->insert([
+                'round_id' => $round, 'request_id' => $requestId, 'technician_id' => $technicianId, 'status' => 'pending',
+                'available_at' => $at, 'expires_at' => $at->addMinutes(10), 'reference_fee_snapshot' => $fee, 'currency' => 'PEN',
+                'version' => 1, 'created_at' => $at, 'updated_at' => $at,
+            ]);
+        }
     }
 
     /** Actividad reciente de demostración: 10 acciones de demo-admin, la última hace 20 minutos. */

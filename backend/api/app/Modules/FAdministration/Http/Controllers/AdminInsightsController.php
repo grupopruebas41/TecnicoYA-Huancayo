@@ -22,7 +22,13 @@ final class AdminInsightsController
 
     public function requests(Request $request, AdminRequests $requests): JsonResponse
     {
-        $filters = $request->validate([
+        return ApiResponse::data($requests->list(self::requestFilters($request)));
+    }
+
+    /** Filtros de Solicitudes: los usan el listado y, en la Fase A3, el CSV de la vista filtrada. */
+    public static function requestFilters(Request $request): array
+    {
+        return $request->validate([
             'status' => ['nullable', Rule::in(AdminDashboard::REQUEST_STATUSES)],
             'district_id' => ['nullable', 'integer', 'min:1'],
             'specialty_id' => ['nullable', 'integer', 'min:1'],
@@ -32,12 +38,5 @@ final class AdminInsightsController
             'page' => ['nullable', 'integer', 'min:1'],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
         ]);
-
-        return ApiResponse::data($requests->list($filters));
-    }
-
-    public function request(int $serviceRequest, AdminRequests $requests): JsonResponse
-    {
-        return ApiResponse::data($requests->detail($serviceRequest));
     }
 }
