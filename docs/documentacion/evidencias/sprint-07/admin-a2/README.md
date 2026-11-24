@@ -12,7 +12,8 @@
 | Pest de la fase (S07-TC-167 a 178) | 12 de 12, más las adaptadas S07-TC-128, S04-TC-139 y S07-TC-173 | `4fd7f0a` |
 | Vitest completa | 542 de 542; lint sin avisos y build correcto | `fd0616c`; la de la fase se repitió en `afe0bf1` |
 | Vitest de la fase (S07-TC-179 a 186) | 8 de 8, más las adaptadas S07-TC-064, 065, 071 y 130 | `afe0bf1` |
-| e2e-cierre en la rama | Ver el PR: run sobre el último commit | — |
+| e2e-cierre en la rama, run `45450004938` | S01 17, S02 17, S03 17, S05 35 y **S07 6** (S07-TC-163 a 165 y 187 a 189), 0 fallos. S04: 17 de 18; S04-TC-087 falló en el cambio de cuenta (DEF-82, intermitente) | `76f54a9` |
+| e2e-cierre, solo S04, run `45451490535` | **18 de 18**. La de `main`, `45451496479`, también pasa: no es una regresión de la fase | `76f54a9` |
 
 ## Rojo
 

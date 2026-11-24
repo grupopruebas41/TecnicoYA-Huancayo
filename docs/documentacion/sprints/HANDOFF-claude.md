@@ -22,7 +22,10 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Cypress S07-TC-187 a 189.
 - **e2e-cierre:**
   - run `45425981779` (`ff39f25`): S07 en verde (6 casos);
-  - S04-TC-088 falló en `switchAccount`: no llegó al panel tras cambiar de cuenta. Es el mismo intermitente de cambio de cuenta que ya se vio en S04-TC-087 y S01-TC-077; esta fase no toca ese flujo. Se repite sobre el último commit.
+  - S04-TC-088 falló en `switchAccount`: no llegó al panel tras cambiar de cuenta. Es el mismo intermitente de cambio de cuenta que ya se vio en S04-TC-087 y S01-TC-077; esta fase no toca ese flujo;
+  - run `45450004938` (`76f54a9`): S01 17, S02 17, S03 17, S05 35 y S07 6, 0 fallos; S04 falló en S04-TC-087 (mismo intermitente);
+  - run `45451490535` (solo S04, misma rama): 18 de 18; y la de `main` `45451496479` también pasa;
+  - registrado como **DEF-82** (abierto): el login que falla responde en 0,08 ms, se rechaza antes de autenticar; se descartó el limitador.
 - **Lecciones:**
   - un SVG con viewBox fijo se encoge en el celular: medir el ancho real del contenedor;
   - el reloj de `Sprint04::boot` es el 2026-10-20: las pruebas que usan la v4 de las reglas viajan después del 2026-11-24.
