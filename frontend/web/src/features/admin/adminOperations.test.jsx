@@ -1,4 +1,4 @@
-// S07-TC-211 a 220 · Panel del administrador, Fase A3 (Operación): Solicitudes con detalle completo, intervención de D-116
+// S07-TC-211 a 220 y 224 · Panel del administrador, Fase A3 (Operación): Solicitudes con detalle completo, intervención de D-116
 // con las reglas de D-120 (motivo de 10 caracteres o más, confirmación, Idempotency-Key y versión), CSV de la vista
 // filtrada; Emparejamiento en vivo con cuenta regresiva, indicador de conexión y respaldo de 30 s; Alertas operativas
 // priorizadas con su acción directa.
@@ -234,6 +234,22 @@ test('S07-TC-219 la búsqueda por número y el orden por columna funcionan en la
   expect(screen.getByText('Página 1 de 3 · 45 solicitudes')).toBeInTheDocument();
   fireEvent.change(screen.getByLabelText('N.º de solicitud'), {target: {value: '49'}});
   await waitFor(() => expect(request).toHaveBeenCalledWith(expect.stringContaining('q=49')));
+});
+
+test('S07-TC-224 una respuesta vieja que llega tarde no pisa la lista del filtro vigente [DEF-84]', async () => {
+  // e2e-cierre: al escribir «13», la respuesta de «q=1» llegó después que la de «q=13» y la lista mostró la solicitud 1.
+  let release;
+  routes['GET /admin/requests'] = (body, path) => (path.includes('q=1&')
+    ? new Promise(resolve => { release = () => resolve({data: {items: [item({id: 1})], page: 1, per_page: 20, total: 1}}); })
+    : {data: {items: [item({id: path.includes('q=13') ? 13 : 41})], page: 1, per_page: 20, total: 1}});
+  render(<RequestsAdmin/>);
+  await screen.findByRole('button', {name: 'Ver la solicitud 41'});
+  fireEvent.change(screen.getByLabelText('N.º de solicitud'), {target: {value: '1'}});
+  fireEvent.change(screen.getByLabelText('N.º de solicitud'), {target: {value: '13'}});
+  expect(await screen.findByRole('button', {name: 'Ver la solicitud 13'})).toBeInTheDocument();
+  await act(async () => { release(); await Promise.resolve(); });
+  expect(screen.getByRole('button', {name: 'Ver la solicitud 13'})).toBeInTheDocument();
+  expect(screen.queryByRole('button', {name: 'Ver la solicitud 1'})).not.toBeInTheDocument();
 });
 
 test('S07-TC-220 abrir una solicitud desde otra sección muestra su detalle y «Volver» regresa a la lista', async () => {
