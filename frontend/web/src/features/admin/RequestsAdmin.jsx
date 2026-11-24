@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {download, request} from '../administration/http';
 import {REQUEST_STATUS_LABELS, formatDateTime, toQuery} from './adminRules';
 import {INTERVENTIONS, INTERVENTION_MIN, OfferStatus, RequestStatus, intervene, secondsLabel} from './operations';
@@ -145,11 +145,14 @@ export default function RequestsAdmin({intent = null}) {
   const [state, setState] = useState({loading: true, data: null, error: ''});
   const [exporting, setExporting] = useState({busy: false, message: '', error: ''});
   const [catalog, setCatalog] = useState({districts: [], specialties: []});
+  // DEF-84: se pide la lista en cada tecla; solo se aplica la respuesta de la última consulta (las anteriores se descartan).
+  const latest = useRef(0);
   const load = useCallback(() => {
+    const ticket = ++latest.current;
     setState(current => ({...current, loading: true, error: ''}));
     request(`/admin/requests${toQuery({...filters, page, per_page: PER_PAGE})}`)
-      .then(result => setState({loading: false, data: result.data, error: ''}))
-      .catch(failure => setState({loading: false, data: null, error: failure.message}));
+      .then(result => { if (ticket === latest.current) setState({loading: false, data: result.data, error: ''}); })
+      .catch(failure => { if (ticket === latest.current) setState({loading: false, data: null, error: failure.message}); });
   }, [filters, page]);
   useEffect(() => { if (!detail) load(); }, [load, detail]);
   useEffect(() => {
