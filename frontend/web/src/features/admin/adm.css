@@ -1,0 +1,64 @@
+/*
+ * Panel del administrador, Fase A1 (PLAN-PANEL-ADMIN.md). Clases nuevas con el prefijo «adm-» para no chocar con las del
+ * técnico ni del cliente (DEF-70, DEF-77 y DEF-79). Las piezas comunes (encabezado, estado vacío e ilustración) son las
+ * «cx-» del cliente, reutilizadas sin cambiarlas.
+ */
+
+/* Contenido centrado de unos 1200 px, como en el cliente y el técnico. */
+.panel-shell[data-role="admin"] .panel-content,
+.panel-shell[data-role="admin"] .panel-notices { margin-inline: auto; }
+
+.adm-page { width: 100%; }
+
+/* Cómo funciona el panel: pasos en tarjetas con ícono en círculo que llenan el ancho. */
+.adm-how {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.adm-how-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--ty-border);
+  border-radius: 18px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
+  animation: adm-rise 0.35s ease both;
+}
+.adm-how-item:nth-child(2) { animation-delay: 0.05s; }
+.adm-how-item:nth-child(3) { animation-delay: 0.1s; }
+.adm-how-item:nth-child(4) { animation-delay: 0.15s; }
+.adm-how-item h3 { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.3; overflow-wrap: break-word; }
+.adm-how-item p { margin: 0; }
+.adm-how-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ty-accent) 14%, var(--ty-surface));
+  color: var(--ty-accent);
+}
+.adm-how-icon .panel-svg-icon { width: 24px; height: 24px; margin: 0; }
+.adm-how-kicker { margin: 0 0 2px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ty-muted); }
+.adm-how-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.adm-how-actions .button { display: inline-flex; gap: 8px; align-items: center; min-height: 44px; }
+.adm-how-actions .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+
+@keyframes adm-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Movimiento reducido: preferencia del sistema o «Reducir animaciones» en la cuenta. */
+@media (prefers-reduced-motion: reduce) {
+  .adm-how-item { animation: none; }
+}
+html[data-motion="reduce"] .adm-how-item { animation: none !important; }

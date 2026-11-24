@@ -80,10 +80,12 @@ function NavBadge({badge}) {
 /** Ítem del menú. Lo que no está listo va con «Próximamente» (Fase 4); lo premium lleva candado y abre la presentación. */
 function NavItem({section, badge, collapsed, currentId, locked, onGo}) {
   if (section.soon) {
-    return <button type="button" className="panel-nav-item is-soon" aria-disabled="true"
-      data-tooltip={collapsed ? `${section.label} (próximamente)` : undefined} onClick={event => event.preventDefault()}>
+    // Fase A1 del administrador: soon puede traer su propio rótulo («Sprint 6»); si no, «Próximamente».
+    const note = typeof section.soon === 'string' ? section.soon : 'Próximamente';
+    return <button type="button" className="panel-nav-item is-soon" aria-disabled="true" data-section={section.id}
+      data-tooltip={collapsed ? `${section.label} (${typeof section.soon === 'string' ? note : 'próximamente'})` : undefined} onClick={event => event.preventDefault()}>
       <span className="panel-nav-icon" aria-hidden="true"><Icon name={section.icon}/></span>
-      <span className="panel-label">{section.label}<small className="panel-soon">Próximamente</small></span>
+      <span className="panel-label">{section.label}<small className="panel-soon">{note}</small></span>
     </button>;
   }
   const badgeId = `panel-badge-${section.id}`;

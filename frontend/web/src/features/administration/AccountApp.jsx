@@ -2,15 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {request} from './http';
 import SessionForm from './SessionForm';
 import {ResetPassword} from './PasswordRecovery';
-import PanelShell from '../panel/PanelShell';
-import AdminHome from '../panel/AdminHome';
 import ProfilePage from '../panel/ProfilePage';
-import VerificationAdmin from './VerificationAdmin';
-import AnnouncementsAdmin from './AnnouncementsAdmin';
-import StatisticsPage from '../admin/StatisticsPage';
-import UsersAdmin from '../admin/UsersAdmin';
-import RequestsAdmin from '../admin/RequestsAdmin';
-import CatalogSection from '../admin/CatalogSection';
+import AdminApp from '../admin/AdminApp';
 import {Notice} from './forms';
 import ClientPanel from '../client/ClientPanel';
 import TechnicianApp, {technicianTarget} from '../technician/TechnicianApp';
@@ -34,7 +27,6 @@ export default function AccountApp() {
   const [busy, setBusy] = useState(false);
   const [reload, setReload] = useState(0);
   const [hash, setHash] = useState(() => window.location.hash);
-  const [badges, refreshBadges] = useAdminBadges(user);
   useEffect(() => {
     const update = () => setHash(window.location.hash);
     window.addEventListener('hashchange', update);
@@ -95,7 +87,6 @@ export default function AccountApp() {
   const role = user.role?.code;
   if (!roles[role]) return <section className="session-page"><Notice error="Tu cuenta no tiene un rol habilitado."/><Notice error={error}/><button type="button" className="button primary" disabled={busy} onClick={logout}>Cerrar sesión</button></section>;
   const expire = failure => { clearSession(); setBlocked(failure.status === 403); setError(failure.status === 403 ? failure.message : 'Tu sesión venció. Inicia sesión nuevamente.'); };
-  const can = code => user.permissions?.includes(code);
   // Panel del cliente (D-87): su propio menú agrupado sobre PanelShell.
   if (role === 'client') return <ClientPanel key={user.id} user={user} roleLabel={roles.client} onLogout={logout} onUserChange={setUser}
     busy={busy} notice={error} onExpired={expire}/>;
@@ -107,51 +98,14 @@ export default function AccountApp() {
   const notifications = {id: 'notifications', nav: false, label: 'Notificaciones', icon: 'bell',
     render: ({navigate}) => <NotificationsPage userId={user.id} role={role} onChange={() => {}}
       onOpen={item => { const target = staffTarget(role, item); if (target) navigate(...target); }}/>};
-  // Bloque C (D-85): menú del administrador agrupado por secciones y filtrado por permisos (sin enlaces vacíos).
-  const sections = [
-    can('dashboard.view') && {id: 'home', group: 'General', label: 'Inicio', icon: 'home', render: ({navigate}) => <AdminHome navigate={navigate} permissions={user.permissions}/>},
-    can('dashboard.view') && {id: 'statistics', group: 'General', label: 'Estadísticas', icon: 'chart', render: () => <StatisticsPage/>},
-    can('users.manage') && {id: 'users', group: 'Gestión', label: 'Usuarios', icon: 'users', render: ({intent}) => <UsersAdmin currentUserId={user.id} intent={intent}/>},
-    can('technicians.verify') && {id: 'verification', group: 'Gestión', label: 'Verificación', icon: 'verify', render: () => <VerificationAdmin/>},
-    can('dashboard.view') && {id: 'requests', group: 'Gestión', label: 'Solicitudes', icon: 'requests', render: () => <RequestsAdmin/>},
-    can('catalog.manage') && {id: 'catalog', group: 'Contenido', label: 'Catálogo', icon: 'catalog', render: () => <CatalogSection/>},
-    can('announcements.manage') && {id: 'announcements', group: 'Contenido', label: 'Comunicados', icon: 'announcements', render: ({intent}) => <AnnouncementsAdmin intent={intent}/>},
-    profile, notifications,
-  ].filter(Boolean);
-  // Fase T1: el técnico y el administrador usan la misma base moderna del cliente (☰, campana, «Aa» y panel de la cuenta).
-  return <RealtimeProvider><PanelShell key={user.id} user={user} role={role} roleLabel={roles[role]} navLabel="Administración"
-    sections={sections} onLogout={logout} onUserChange={setUser} busy={busy} notice={error} modern onExpired={expire}
-    notificationTarget={item => staffTarget(role, item)}
-    badges={badges} onNavigate={refreshBadges}/></RealtimeProvider>;
+  // Fase A1 del panel del administrador (PLAN-PANEL-ADMIN.md): menú, contadores, bienvenida y tutorial en AdminApp.
+  return <RealtimeProvider><AdminApp key={user.id} user={user} roleLabel={roles[role]} extraSections={[profile, notifications]}
+    notificationTarget={item => staffTarget(role, item)} onLogout={logout} onUserChange={setUser} busy={busy} notice={error}
+    onExpired={expire}/></RealtimeProvider>;
 }
 
 /** Fase T1: a dónde lleva un aviso del administrador; los del técnico van en TechnicianApp (technicianTarget, Fase T2). */
 export function staffTarget(role, item) {
   if (role === 'admin') return item.type?.startsWith('announcement') ? ['announcements'] : null;
   return technicianTarget(item);
-}
-
-/**
- * Bloque C (D-85): contadores del menú del administrador (técnicos por verificar y comunicados vigentes), desde
- * GET /admin/dashboard. Se recargan al cambiar de sección; si fallan, el menú sigue sin contadores.
- */
-function useAdminBadges(user) {
-  const [badges, setBadges] = useState({});
-  const [tick, setTick] = useState(0);
-  const enabled = user?.role?.code === 'admin' && user.permissions?.includes('dashboard.view');
-  useEffect(() => {
-    if (!enabled) return undefined;
-    let active = true;
-    request('/admin/dashboard').then(result => {
-      if (!active) return;
-      const pending = result.data.technicians_pending_verification;
-      const live = result.data.announcements_active ?? 0;
-      setBadges({
-        verification: {count: pending, label: `${pending} ${pending === 1 ? 'técnico por verificar' : 'técnicos por verificar'}`},
-        announcements: {count: live, label: `${live} ${live === 1 ? 'comunicado vigente' : 'comunicados vigentes'}`},
-      });
-    }).catch(() => { if (active) setBadges({}); });
-    return () => { active = false; };
-  }, [enabled, tick]);
-  return [badges, () => setTick(value => value + 1)];
 }
