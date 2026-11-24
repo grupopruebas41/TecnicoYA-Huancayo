@@ -17,16 +17,25 @@ final class AdminDashboard
 
     private const ROLES = ['client', 'technician', 'admin'];
 
+    public function __construct(private readonly OperationalAlerts $alerts) {}
+
     public function snapshot(): array
     {
         $now = CarbonImmutable::now();
         $counts = DB::table('service_requests')->groupBy('status')->selectRaw('status, COUNT(*) as total')->pluck('total', 'status');
         $byStatus = collect(self::REQUEST_STATUSES)->mapWithKeys(fn (string $status) => [$status => (int) ($counts[$status] ?? 0)])->all();
+        $pending = DB::table('technician_profiles')->where('verification_status', 'pending')->count();
 
         return [
             'requests_by_status' => $byStatus,
             'requests_total' => array_sum($byStatus),
-            'technicians_pending_verification' => DB::table('technician_profiles')->where('verification_status', 'pending')->count(),
+            'technicians_pending_verification' => $pending,
+            // Fase A1 (D-118): contadores del menú; las alertas son null sin umbrales en la versión vigente de las reglas.
+            'badges' => [
+                'verification_pending' => $pending,
+                'requests_unassigned' => array_sum(array_intersect_key($byStatus, array_flip(OperationalAlerts::UNASSIGNED))),
+                'operational_alerts' => $this->alerts->counts()['total'] ?? null,
+            ],
             // Bloque C (D-85): contador del menú «Comunicados» y últimos eventos para el Inicio.
             'announcements_active' => DB::table('announcements')->where('status', 'published')->whereNull('retired_at')
                 ->where('starts_at', '<=', $now)->where('ends_at', '>', $now)->count(),

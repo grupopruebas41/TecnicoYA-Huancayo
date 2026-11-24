@@ -27,6 +27,10 @@ class AuthorizationSeeder extends Seeder
                 // D-74 (PERM-01): Inicio del panel y gestión de usuarios (Fase 2).
                 'dashboard.view' => 'Ver el inicio del panel de administración',
                 'users.manage' => 'Administrar usuarios',
+                // D-119 (ADM-14): intervenir solicitudes (D-116), ver la auditoría y gestionar la ayuda (D-123).
+                'requests.intervene' => 'Cancelar o reenviar al emparejamiento una solicitud',
+                'audit.view' => 'Ver y exportar el registro de auditoría',
+                'content.manage' => 'Administrar las preguntas frecuentes y los consejos',
             ];
             foreach ($permissions as $code => $description) {
                 $this->grantToAdmin($code, $description);

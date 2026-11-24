@@ -64,6 +64,8 @@ final class DemoSeeder extends Seeder
 
         DB::transaction(function () use ($password) {
             $admin = $this->account('demo-admin', 'admin', 'Administración', 'Demo', '900000101', $password);
+            // D-117 (Fase A1 del panel del administrador): en cada siembra vuelve a la bienvenida y al tutorial.
+            $this->firstVisit($admin->id, true);
             $cliente = $this->account('demo-cliente', 'client', 'Cliente', 'Demo Hogar', '900000102', $password);
             $this->client($cliente, 'household', 'HUANCAYO');
             $mype = $this->account('demo-mype', 'client', 'Cliente', 'Demo MYPE', '900000103', $password);
