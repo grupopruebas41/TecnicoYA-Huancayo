@@ -97,8 +97,10 @@ test('S07-TC-130 el Inicio ofrece accesos rápidos según permisos y lista los �
   routes['/admin/users'] = () => ({data: {items: [], page: 1, per_page: 20, total: 0}});
   await openAdmin();
   const quick = await screen.findByRole('navigation', {name: 'Accesos rápidos'});
-  expect(within(quick).getAllByRole('button').map(button => button.textContent)).toEqual(['Verificar técnicos', 'Crear comunicado', 'Crear usuario']);
-  const events = await screen.findByRole('region', {name: 'Últimos eventos'});
+  // Fase A2 (2026-11-25): los accesos rápidos son «Crear comunicado», «Crear usuario» y «Revisar verificación», y los
+  // eventos pasan a «Actividad reciente» (detalle en S07-TC-185 y 186). Se sigue probando lo mismo.
+  expect(within(quick).getAllByRole('button').map(button => button.textContent)).toEqual(['Crear comunicado', 'Crear usuario', 'Revisar verificación']);
+  const events = await screen.findByRole('region', {name: 'Actividad reciente'});
   expect(within(events).getByText('Cuenta bloqueada')).toBeInTheDocument();
   expect(within(events).getByText('Reportes repetidos.')).toBeInTheDocument();
   expect(within(events).getByText('Comunicado publicado')).toBeInTheDocument();
@@ -113,8 +115,8 @@ test('S07-TC-130 el Inicio ofrece accesos rápidos según permisos y lista los �
 
   dashboard.recent_events = [];
   await openAdmin({...admin, permissions: ['dashboard.view']});
-  expect(await screen.findByText('Todavía no hay acciones registradas en el panel.')).toBeInTheDocument();
-  expect(screen.queryByRole('navigation', {name: 'Accesos rápidos'})).toBeEmptyDOMElement();
+  expect(await screen.findByText('Todavía no hay acciones registradas.')).toBeInTheDocument();
+  expect(screen.queryByRole('navigation', {name: 'Accesos rápidos'})).not.toBeInTheDocument();
   dashboard.recent_events = [{action: 'user.blocked', reason: 'Reportes repetidos.', actor: 'Ana Quispe', occurred_at: '2026-10-27T14:00:00.000000Z'}];
 });
 

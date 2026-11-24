@@ -18,7 +18,10 @@ const admin = {id: '7', name: 'Ana Quispe', given_names: 'Ana', family_names: 'Q
 const dashboard = {requests_by_status: {registered: 0, sent: 2, pending_availability: 1, assigned: 1, in_progress: 0, completed: 0,
   closed: 0, unrated: 0, cancelled: 1, expired: 0}, requests_total: 5, technicians_pending_verification: 3,
   new_users: {last_7_days: {client: 2, technician: 1, admin: 0, total: 3}, last_30_days: {client: 4, technician: 2, admin: 1, total: 7}},
-  ratings: {available: false, average: null, count: 0, available_from: 'Sprint 6'}, generated_at: '2026-10-26T15:00:00.000000Z'};
+  ratings: {available: false, average: null, count: 0, available_from: 'Sprint 6'}, generated_at: '2026-10-26T15:00:00.000000Z',
+  // Fase A2: indicadores, serie y tareas del Inicio tipo panel de control.
+  kpis: {requests_today: 2, searching_now: 3, technicians_verified: 9, avg_assignment_minutes: 18, premium_clients: 4, iot_open_alerts: 1},
+  series: {days: 30, items: []}, tasks: [{key: 'documents_to_review', section: 'verification', count: 3, limit: null}], recent_events: []};
 // DEF-49: la bandeja tiene la forma real del contrato S4 §7.1 más unread_count (D-90); antes se simulaba un arreglo.
 const inbox = (items, unread) => ({items, pagination: {page: 1, per_page: 20, total: items.length, last_page: 1}, unread_count: unread});
 const notifications = inbox([{id: 1, title: 'Nuevo técnico por verificar', body: '', read_at: null},
@@ -171,24 +174,24 @@ test('S07-TC-063 sin /me ni almacenamiento el tema funciona igual y avisa que no
   expect(await screen.findByText('Usamos el tema claro en este equipo, pero no pudimos guardarlo en tu cuenta.')).toBeInTheDocument();
 });
 
+// Fase A2 (PLAN-PANEL-ADMIN.md, 2026-11-25): el Inicio pasa a panel de control (indicadores, gráfico, tareas y actividad;
+// el detalle lo prueban S07-TC-179 a 186). Este caso sigue probando que muestra cifras reales del dashboard, ahora las
+// de kpis y la tarea de documentos por revisar.
 test('S07-TC-064 el Inicio muestra los indicadores reales del dashboard', async () => {
+  document.documentElement.dataset.motion = 'reduce';
   routes(admin);
-  render(<AdminHome/>);
+  render(<AdminHome user={admin} permissions={admin.permissions}/>);
 
-  expect(await screen.findByRole('heading', {name: 'Inicio'})).toBeInTheDocument();
-  const requests = screen.getByRole('region', {name: 'Solicitudes'});
-  expect(within(requests).getByText('5')).toBeInTheDocument();
-  expect(within(requests).getByText('Enviadas').nextSibling).toHaveTextContent('2');
-  expect(within(requests).getByText('Pendientes de disponibilidad').nextSibling).toHaveTextContent('1');
-  expect(within(screen.getByRole('region', {name: 'Técnicos por verificar'})).getByText('3')).toBeInTheDocument();
-  const users = screen.getByRole('region', {name: 'Usuarios nuevos'});
-  expect(users).toHaveTextContent('3 en los últimos 7 días');
-  expect(users).toHaveTextContent('7 en los últimos 30 días');
-  expect(screen.getByRole('region', {name: 'Calificaciones'})).toHaveTextContent('No disponible hasta el Sprint 6');
+  const kpis = await screen.findByRole('region', {name: 'Indicadores'});
+  expect(within(kpis).getByRole('listitem', {name: 'Buscando técnico ahora: 3'})).toBeInTheDocument();
+  expect(within(kpis).getByRole('listitem', {name: 'Técnicos activos y verificados: 9'})).toBeInTheDocument();
+  expect(within(kpis).getByRole('listitem', {name: 'Tiempo medio de asignación: 18 min'})).toBeInTheDocument();
+  expect(within(screen.getByRole('region', {name: /Tareas pendientes/})).getByText('Documentos por revisar')).toBeInTheDocument();
+  delete document.documentElement.dataset.motion;
 });
 
 test('S07-TC-065 el Inicio informa con honestidad cuando no hay datos o falla la consulta', async () => {
-  const empty = {...dashboard, requests_total: 0, technicians_pending_verification: 0,
+  const empty = {...dashboard, requests_total: 0, technicians_pending_verification: 0, tasks: [], recent_events: [],
     requests_by_status: Object.fromEntries(Object.keys(dashboard.requests_by_status).map(k => [k, 0]))};
   let fail = true;
   request.mockImplementation(async () => { if (fail) throw {status: 0, message: 'No pudimos conectar.'}; return {data: empty}; });
@@ -198,8 +201,9 @@ test('S07-TC-065 el Inicio informa con honestidad cuando no hay datos o falla la
   fail = false;
   fireEvent.click(screen.getByRole('button', {name: 'Reintentar'}));
 
-  expect(await screen.findByText('Aún no hay solicitudes registradas.')).toBeInTheDocument();
-  expect(screen.getByText('No hay técnicos esperando verificación.')).toBeInTheDocument();
+  // Fase A2: los estados vacíos honestos del Inicio nuevo (sin datos, nunca cifras inventadas).
+  expect(await screen.findByText('Todo al día')).toBeInTheDocument();
+  expect(screen.getByText('Todavía no hay acciones registradas.')).toBeInTheDocument();
 });
 
 test('S07-TC-066 Verificación permite suspender con motivo y confirmación, y reactivar', async () => {
