@@ -25,7 +25,8 @@ Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más recien
   - Pest S07-TC-144 a 152 y 166;
   - Vitest S07-TC-153 a 162 (534/534, lint y build). S07-TC-161 pasó desde el inicio: fija lo que ya existía;
   - Cypress S07-TC-163 a 165;
-  - e2e-cierre en la rama, run `45399494547` (`12263e4`): **107 casos, 0 fallos** (S01 17, S02 17, S03 17, S04 18, S05 35 y S07 3);
+  - e2e-cierre en la rama, run `45399494547` (`12263e4`): **107 casos, 0 fallos** (S01 17, S02 17, S03 17, S04 18, S05 35 y S07 3); segunda corrida sobre `e905f96` (tras el fix del tutorial), run `45402755609`: también 107 y 0;
+  - CI del #68: la primera falló por dos pruebas (S07-TC-166 con la guarda E2E y la simulación de S07-TC-157); corregidas en `43bccdf`, CI en verde;
   - Pest completa: 546/546 después de adaptar S01-TC-063 (lista exacta de permisos del administrador);
   - adaptadas con explicación: S02-TC-020, S04-TC-136, S07-TC-057, S07-TC-129 y S01-TC-063.
 - **Capturas:** 23 en `evidencias/sprint-07/admin-a1/` (`b36bd42`). DEF-81: Solicitudes (bloque C) desborda a 390 px y tiene botones de menos de 44 px; se corrige en A3.
