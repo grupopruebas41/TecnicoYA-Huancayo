@@ -80,15 +80,19 @@ test('S07-TC-181 los contadores suben con animación y, con «Reducir animacione
   const frames = [];
   vi.stubGlobal('requestAnimationFrame', callback => { frames.push(callback); return frames.length; });
   vi.stubGlobal('cancelAnimationFrame', vi.fn());
-  const start = performance.now();
   await open();
   const value = () => within(screen.getByRole('region', {name: 'Indicadores'})).getByText('Técnicos activos y verificados')
     .closest('.adm-kpi').querySelector('.adm-kpi-value');
   expect(value()).toHaveTextContent('0');
   // El nombre accesible ya trae el valor final: el lector de pantalla no oye la cuenta.
   expect(value().closest('.adm-kpi')).toHaveAccessibleName(/14/);
-  act(() => { frames.splice(0).forEach(callback => callback(start + 2000)); });
-  expect(value()).toHaveTextContent('14');
+  // Revisión del #69: el cuadro final se da con el reloj del momento más 60 s. Con «inicio de la prueba + 2 s», si el montaje
+  // tardaba más de 1,3 s (equipo cargado), la animación aún no terminaba y la prueba fallaba sin que el producto cambiara.
+  // Se avanza dentro de waitFor: si el efecto registra su cuadro un instante después del montaje, el siguiente intento lo toma.
+  await waitFor(() => {
+    act(() => { frames.splice(0).forEach(callback => callback(performance.now() + 60000)); });
+    expect(value()).toHaveTextContent('14');
+  });
   cleanup();
   vi.unstubAllGlobals();
 

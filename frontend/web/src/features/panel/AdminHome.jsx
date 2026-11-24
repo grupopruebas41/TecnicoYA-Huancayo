@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {request} from '../administration/http';
-import {eventLabel} from '../admin/adminRules';
+import AdmActivity from '../admin/AdmActivity';
 import AdmTrendChart from '../admin/AdmTrendChart';
-import {clock, greeting, longDate, minutesLabel, shortDateTime} from '../admin/homeFormat';
+import {clock, greeting, longDate, minutesLabel} from '../admin/homeFormat';
 import {ClientPage, EmptyState} from '../client/ui';
 import Icon from './icons';
 
@@ -36,7 +36,6 @@ const QUICK_LINKS = [
   ['technicians.verify', 'verification', null, 'Revisar verificación', 'verify'],
 ];
 
-const SUBJECT_ICONS = {technician: 'verify', announcement: 'announcements', user: 'users'};
 
 const reducedMotion = () => document.documentElement.dataset.motion === 'reduce'
   || (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -110,22 +109,6 @@ function Tasks({tasks = [], navigate}) {
   </section>;
 }
 
-function Activity({events = []}) {
-  return <section className="adm-card adm-activity" aria-labelledby="adm-activity-title">
-    <header className="adm-card-head"><h3 id="adm-activity-title">Actividad reciente</h3></header>
-    {events.length === 0
-      ? <EmptyState icon="clock" tone="slate" title="Todavía no hay acciones registradas." text="Aquí verás lo último que se hizo en el panel."/>
-      : <ol className="adm-activity-list">{events.map(event => <li key={`${event.occurred_at}-${event.action}-${event.reason}`}>
-        <span className="adm-activity-icon" aria-hidden="true"><Icon name={SUBJECT_ICONS[event.subject_type] || 'info'}/></span>
-        <span className="adm-activity-text">
-          <strong>{eventLabel(event.action)}</strong>
-          {event.reason && <span>{event.reason}</span>}
-          <small className="muted">{event.actor ? `${event.actor} · ` : ''}{shortDateTime(event.occurred_at)}</small>
-        </span>
-      </li>)}</ol>}
-  </section>;
-}
-
 export default function AdminHome({navigate, permissions = [], user = null}) {
   const [state, setState] = useState({loading: true, data: null, error: ''});
   const [attempt, setAttempt] = useState(0);
@@ -154,17 +137,18 @@ export default function AdminHome({navigate, permissions = [], user = null}) {
       <Part name="kpis" title="Indicadores" data={data} attempt={attempt} onRetry={load}>
         <Kpis kpis={data.kpis}/>
       </Part>
-      <div className="adm-home-main">
-        <Part name="series" title="Solicitudes por día" data={data} attempt={attempt} onRetry={load}>
-          <AdmTrendChart items={data.series?.items}/>
-        </Part>
+      <Part name="series" title="Solicitudes por día" data={data} attempt={attempt} onRetry={load}>
+        <AdmTrendChart items={data.series?.items}/>
+      </Part>
+      {/* Revisión del #69: Tareas y Actividad lado a lado en escritorio (1200 px o más); en el celular, una debajo de otra. */}
+      <div className="adm-home-pair">
         <Part name="tasks" title="Tareas pendientes" data={data} attempt={attempt} onRetry={load}>
           <Tasks tasks={data.tasks} navigate={navigate}/>
         </Part>
+        <Part name="recent_events" title="Actividad reciente" data={data} attempt={attempt} onRetry={load}>
+          <AdmActivity events={data.recent_events} navigate={navigate} canSeeAll={permissions.includes('audit.view')}/>
+        </Part>
       </div>
-      <Part name="recent_events" title="Actividad reciente" data={data} attempt={attempt} onRetry={load}>
-        <Activity events={data.recent_events}/>
-      </Part>
     </>}
   </ClientPage>;
 }

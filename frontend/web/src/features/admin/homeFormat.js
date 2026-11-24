@@ -45,5 +45,24 @@ export function minutesLabel(minutes) {
   return minutes % 60 ? `${hours} h ${minutes % 60} min` : `${hours} h`;
 }
 
+/** Día de calendario de Lima («2026-11-25») de un instante. */
+export function limaDay(date) {
+  const {year, month, day} = parts(date, {year: 'numeric', month: '2-digit', day: '2-digit'});
+  return `${year}-${month}-${day}`;
+}
+
+/** «hace un momento», «hace 12 min», «hace 2 h», «hace 2 h 30 min», «hace 1 día» o «hace 3 días». */
+export function relativeTime(value, now = new Date()) {
+  const minutes = Math.max(0, Math.floor((now.getTime() - new Date(value).getTime()) / 60000));
+  if (minutes < 1) return 'hace un momento';
+  if (minutes < 60) return `hace ${minutes} min`;
+  if (minutes < 1440) {
+    const hours = Math.floor(minutes / 60);
+    return minutes % 60 ? `hace ${hours} h ${minutes % 60} min` : `hace ${hours} h`;
+  }
+  const days = Math.floor(minutes / 1440);
+  return days === 1 ? 'hace 1 día' : `hace ${days} días`;
+}
+
 /** «1 creada» y «3 creadas»: el sustantivo en singular o plural según el número. */
 export const counted = (count, one, many) => `${count} ${count === 1 ? one : many}`;

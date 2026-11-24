@@ -137,8 +137,9 @@ html[data-motion="reduce"] .adm-how-item { animation: none !important; }
   color: var(--ty-on-accent, #fff);
   font-size: 0.85rem;
 }
-.adm-home-main { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 16px; align-items: start; }
-@media (max-width: 1080px) { .adm-home-main { grid-template-columns: minmax(0, 1fr); } }
+/* Revisión del #69: Tareas pendientes y Actividad reciente lado a lado desde 1200 px; en pantallas menores, apiladas. */
+.adm-home-pair { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (min-width: 1200px) { .adm-home-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); } }
 
 /* Gráfico. */
 .adm-segmented { display: inline-flex; padding: 3px; border: 1px solid var(--ty-border); border-radius: 999px; }
@@ -194,7 +195,7 @@ html[data-motion="reduce"] .adm-how-item { animation: none !important; }
 .adm-table th:first-child { text-align: left; }
 
 /* Tareas pendientes y actividad reciente. */
-.adm-task-list, .adm-activity-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.adm-task-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .adm-task {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
@@ -204,7 +205,7 @@ html[data-motion="reduce"] .adm-how-item { animation: none !important; }
   border-radius: 14px;
   background: var(--ty-raised);
 }
-.adm-task-icon, .adm-activity-icon {
+.adm-task-icon {
   display: inline-grid;
   flex: 0 0 auto;
   place-items: center;
@@ -214,7 +215,7 @@ html[data-motion="reduce"] .adm-how-item { animation: none !important; }
   background: color-mix(in srgb, var(--ty-accent) 16%, var(--ty-surface));
   color: var(--ty-accent);
 }
-.adm-task-icon .panel-svg-icon, .adm-activity-icon .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+.adm-task-icon .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
 .adm-task-label { overflow-wrap: break-word; }
 .adm-task-count { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
 .adm-task-go { min-height: 44px; }
@@ -222,11 +223,101 @@ html[data-motion="reduce"] .adm-how-item { animation: none !important; }
   .adm-task { grid-template-columns: auto minmax(0, 1fr) auto; }
   .adm-task-go { grid-column: 1 / -1; justify-self: stretch; }
 }
-.adm-activity-list li { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--ty-border); }
-.adm-activity-list li:last-child { border-bottom: 0; }
-.adm-activity-text { display: grid; gap: 2px; min-width: 0; overflow-wrap: break-word; }
+/* Actividad reciente como línea de tiempo (revisión del #69). Tonos por tipo de acción, siempre con texto además del color.
+   Tema oscuro (por omisión): fondo del tono mezclado con la superficie y texto claro del tono. Tema claro: fondo suave y
+   texto oscuro del tono. Cada par de texto y fondo supera 4,5:1 (AA). */
+.adm-activity {
+  --adm-danger-ink: #f6a7a7; --adm-success-ink: #7fd8a9; --adm-info-ink: #9cc4f4; --adm-warning-ink: #f2c879; --adm-slate-ink: #c3ced1;
+  --adm-tone-mix: 22%;
+}
+[data-theme="light"] .adm-activity {
+  --adm-danger-ink: #a61b1b; --adm-success-ink: #1b6542; --adm-info-ink: #1d5aa6; --adm-warning-ink: #7a4f0d; --adm-slate-ink: #44555b;
+  --adm-tone-mix: 13%;
+}
+.adm-event[data-tone="danger"] { --adm-ink: var(--adm-danger-ink); }
+.adm-event[data-tone="success"] { --adm-ink: var(--adm-success-ink); }
+.adm-event[data-tone="info"] { --adm-ink: var(--adm-info-ink); }
+.adm-event[data-tone="warning"] { --adm-ink: var(--adm-warning-ink); }
+.adm-event[data-tone="slate"] { --adm-ink: var(--adm-slate-ink); }
+
+.adm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.adm-chips button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--ty-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ty-text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.adm-chips button[aria-pressed="true"] { border-color: var(--ty-accent); background: var(--ty-accent); color: var(--ty-on-accent, #fff); }
+.adm-chips button:focus-visible, .adm-activity-foot button:focus-visible { outline: 3px solid var(--ty-accent); outline-offset: 2px; }
+
+.adm-timeline { display: grid; gap: 14px; }
+.adm-day-label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0 0 6px;
+  color: var(--ty-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.adm-day-label::after { content: ""; flex: 1; height: 1px; background: var(--ty-border); }
+.adm-day-events { position: relative; }
+/* Línea continua que une los puntos: pasa por el centro de la columna del punto (hora 52 px + separación 10 + mitad 16). */
+.adm-timeline-line { position: absolute; top: 18px; bottom: 18px; left: 78px; width: 2px; border-radius: 1px; background: var(--ty-border); }
+.adm-timeline-list { position: relative; display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.adm-event {
+  display: grid;
+  grid-template-columns: 52px 32px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 6px 0;
+  animation: adm-rise 0.3s ease both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.adm-event-time { padding-top: 7px; color: var(--ty-muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; text-align: right; }
+.adm-event-dot {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--ty-surface);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--adm-ink) var(--adm-tone-mix), var(--ty-surface));
+  color: var(--adm-ink);
+}
+.adm-event-dot .panel-svg-icon { width: 16px; height: 16px; margin: 0; }
+.adm-event-body { display: grid; gap: 2px; min-width: 0; padding-top: 4px; }
+.adm-event-head { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.adm-event-title { font-weight: 700; overflow-wrap: break-word; }
+.adm-event-type {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--adm-ink) var(--adm-tone-mix), var(--ty-surface));
+  color: var(--adm-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.adm-event-reason { overflow: hidden; color: var(--ty-text); text-overflow: ellipsis; white-space: nowrap; }
+.adm-event-actor { color: var(--ty-muted); font-size: 0.8rem; }
+.adm-activity-none { margin: 0; }
+.adm-activity-foot { display: flex; justify-content: flex-end; padding-top: 8px; border-top: 1px solid var(--ty-border); }
+.adm-activity-foot button { display: inline-flex; gap: 6px; align-items: center; min-height: 44px; font-weight: 600; }
+.adm-activity-foot .panel-svg-icon { width: 16px; height: 16px; margin: 0; }
+@media (max-width: 480px) {
+  .adm-event { grid-template-columns: 44px 32px minmax(0, 1fr); gap: 8px; }
+  .adm-timeline-line { left: 68px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .adm-kpi { animation: none; }
+  .adm-kpi, .adm-event { animation: none; }
 }
-html[data-motion="reduce"] .adm-kpi { animation: none !important; }
+html[data-motion="reduce"] :is(.adm-kpi, .adm-event) { animation: none !important; }
