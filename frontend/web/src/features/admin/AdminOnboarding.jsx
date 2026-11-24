@@ -11,7 +11,8 @@ const item = id => `.panel-sidebar nav .panel-nav-item[data-section="${id}"]`;
 
 export const ADMIN_TOUR_STEPS = [
   {title: 'El menú', text: 'El menú agrupa el panel por tareas: Operación, Personas, Negocio, Contenido y Control.',
-    targets: ['.panel-sidebar nav [role=group]'], menu: true},
+    // Visto en las capturas: con [role=group] se resaltaba solo «General»; el paso habla del menú completo.
+    targets: ['.panel-sidebar nav'], menu: true},
   {title: 'Inicio y tareas pendientes', text: 'En Inicio ves los indicadores del día y las tareas que esperan una acción tuya.',
     targets: [item('home'), '.panel-sidebar nav [role=group]'], menu: true},
   {title: 'Solicitudes y emparejamiento', text: 'Sigue cada solicitud y su búsqueda de técnico. Los números del menú te avisan de lo pendiente.',
