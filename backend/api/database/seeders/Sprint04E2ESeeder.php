@@ -136,7 +136,7 @@ final class Sprint04E2ESeeder extends Seeder
     }
 
     /** Borra las solicitudes del S4 de siembras anteriores con todo lo que cuelga de ellas, en orden de claves foráneas. */
-    private function reset(array $clientIds): void
+    public function reset(array $clientIds): void
     {
         $requests = DB::table('service_requests')->whereIn('client_id', $clientIds)->pluck('id');
         $offers = DB::table('offers')->whereIn('request_id', $requests)->pluck('id');
