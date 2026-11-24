@@ -6,6 +6,7 @@ use App\Modules\ARequests\Application\ManageServiceRequests;
 use App\Modules\ARequests\Http\Requests\StoreServiceRequestRequest;
 use App\Shared\Http\ApiResponse;
 use App\Shared\Http\Idempotency;
+use App\Shared\Rules\RuleBook;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,6 @@ final class PremiumController
     private const EQUIPMENT_ID = 'e.id as equipment_id';
     private const EQUIPMENT_NAME = 'e.name as equipment';
 
-    public const WARRANTY_DAYS = 30;
 
     public function equipment(Request $request): JsonResponse
     {
@@ -84,7 +84,10 @@ final class PremiumController
         $devices = DB::table(self::DEVICES_D)->join(self::EQUIPMENT_E, 'e.id', '=', 'd.equipment_id')
             ->where('e.user_id', $request->user()->id)->orderBy('e.name')->get(['d.*', self::EQUIPMENT_NAME, self::EQUIPMENT_ID]);
 
-        return ApiResponse::data(['simulated' => true, 'items' => $devices->map(function (object $device) use ($since) {
+        // D-121: el factor de atención se lee una vez de las reglas para todos los sensores.
+        $factor = (float) app(RuleBook::class)->formalized('iot_attention_tolerance_factor');
+
+        return ApiResponse::data(['simulated' => true, 'items' => $devices->map(function (object $device) use ($since, $factor) {
             $readings = DB::table('iot_readings')->where('device_id', $device->id)->where('measured_at', '>=', $since)
                 ->orderBy('measured_at')->get(['value', 'measured_at']);
             $current = $readings->last();
@@ -95,7 +98,7 @@ final class PremiumController
                 'metric' => $device->metric, 'metric_label' => IotMonitor::METRICS[$device->metric]['label'], 'unit' => $device->unit,
                 'target' => (float) $device->target, 'tolerance' => (float) $device->tolerance, 'threshold_label' => IotMonitor::threshold($device),
                 'online' => (bool) $device->online, 'battery' => (int) $device->battery,
-                'status' => IotMonitor::status($device, $value), 'value' => $value,
+                'status' => IotMonitor::status($device, $value, $factor), 'value' => $value,
                 'measured_at' => $current ? CarbonImmutable::parse($current->measured_at)->toISOString() : null,
                 'readings' => $readings->map(fn (object $r) => ['value' => (float) $r->value, 'at' => CarbonImmutable::parse($r->measured_at)->toISOString()])->all(),
             ];
@@ -179,12 +182,14 @@ final class PremiumController
         $technicians = DB::table('participations as p')->join('technician_profiles as t', 't.id', '=', 'p.technician_id')
             ->whereIn('p.request_id', $rows->pluck('id'))->where('p.status', 'completed')->pluck('t.display_name', 'p.request_id');
         $now = CarbonImmutable::now();
+        // D-121: los días de garantía salen de las reglas (warranty_days), ya no de una constante.
+        $days = (int) app(RuleBook::class)->formalized('warranty_days');
 
-        return ApiResponse::data(['sample' => true, 'items' => $rows->map(function (object $r) use ($technicians, $now) {
+        return ApiResponse::data(['sample' => true, 'items' => $rows->map(function (object $r) use ($technicians, $now, $days) {
             $closed = CarbonImmutable::parse($r->closed_at ?? $r->updated_at);
-            $until = $closed->addDays(self::WARRANTY_DAYS);
+            $until = $closed->addDays($days);
 
-            return ['request_id' => (int) $r->id, 'subcategory' => $r->subcategory, 'days' => self::WARRANTY_DAYS,
+            return ['request_id' => (int) $r->id, 'subcategory' => $r->subcategory, 'days' => $days,
                 'closed_at' => $closed->toISOString(), 'valid_until' => $until->toISOString(), 'active' => $until->isFuture(), 'can_claim' => false,
                 // Pulido del cliente: quién lo atendió y cuántos días de garantía quedan (para la barra de progreso).
                 'technician' => $technicians[$r->id] ?? null, 'days_left' => $until->isFuture() ? (int) ceil($now->diffInHours($until) / 24) : 0];

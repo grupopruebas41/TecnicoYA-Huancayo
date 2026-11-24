@@ -106,6 +106,7 @@ final class DemoSeeder extends Seeder
                 $this->announcement($admin->id, $slug, $data);
             }
             $this->expo($password);
+            $this->adminOperations($admin->id, $password);
         });
     }
 
@@ -283,6 +284,26 @@ final class DemoSeeder extends Seeder
         }
         $this->firstVisit($client->id, true);
         $this->firstVisit($user->id, true);
+    }
+
+    /**
+     * Fase A2 del panel del administrador: demo-operacion (cliente de Chilca que solo alimenta el Inicio del administrador)
+     * y demo-tecnico-ocupado (técnico verificado con desempeño bajo), con los datos de DemoAdminOperations.
+     */
+    private function adminOperations(int $adminId, string $password): void
+    {
+        $client = $this->account('demo-operacion', 'client', 'Cliente', 'Operación Demo', '900000140', $password);
+        $this->client($client, 'household', 'CHILCA');
+        $this->firstVisit($client->id, false);
+        $busy = $this->account('demo-tecnico-ocupado', 'technician', 'Técnico', 'Ocupado Demo', '900000141', $password);
+        $this->technician($busy, ['name' => 'Técnico Ocupado Demo', 'base' => 'CHILCA', 'districts' => ['CHILCA', 'HUANCAYO'],
+            'services' => ['electricidad-residencial' => '65.00']], 'active', 'approved');
+        $busyId = (int) DB::table('technician_profiles')->where('user_id', $busy->id)->value('id');
+        $this->verificationDocuments($busyId, $busy->id, 'approved');
+        $this->firstVisit($busy->id, false);
+        $other = (int) DB::table('technician_profiles as t')->join('users as u', 'u.id', '=', 't.user_id')
+            ->where('u.email', 'demo-tecnico-electricidad@example.test')->value('t.id');
+        app(DemoAdminOperations::class)->run($adminId, (int) DB::table('client_profiles')->where('user_id', $client->id)->value('id'), $busyId, $other);
     }
 
     /** D-101: reseñas de ejemplo, solo en local; no son calificaciones y el panel las rotula como demostración. */

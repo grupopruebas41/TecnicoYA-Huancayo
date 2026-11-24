@@ -25,6 +25,31 @@ final class RuleBook
         return array_key_exists($code, $values) ? (int) $values[$code] : throw new RulesUnavailable("Falta el parámetro $code.");
     }
 
+    /**
+     * D-121: parámetros que eran constantes del código (D-103) y se formalizaron en la versión 4 de las reglas.
+     */
+    public const FORMALIZED = ['warranty_days', 'maintenance_reminder_days', 'iot_attention_tolerance_factor'];
+
+    /**
+     * Valor vigente de un parámetro formalizado (D-121): el de la versión publicada y vigente más reciente que lo trae.
+     * Antes de su primera versión regía el mismo valor como constante (D-103), así que, si ninguna versión vigente lo
+     * trae, vale el de la primera versión publicada que lo definió. Nunca un valor fijo en el código.
+     */
+    public function formalized(string $code): int|float
+    {
+        if (! in_array($code, self::FORMALIZED, true)) {
+            throw new RulesUnavailable("$code no es un parámetro formalizado.");
+        }
+        $base = fn () => DB::table('rule_values as v')->join('rule_versions as r', 'r.id', '=', 'v.rule_version_id')
+            ->join('rule_parameters as p', 'p.id', '=', 'v.parameter_id')->where('p.code', $code)->where('r.status', 'published');
+        $row = $base()->where('r.effective_at', '<=', now())->orderByDesc('r.effective_at')->orderByDesc('r.version_no')
+            ->first(['p.value_type', 'v.value_json'])
+            ?? $base()->orderBy('r.version_no')->first(['p.value_type', 'v.value_json'])
+            ?? throw new RulesUnavailable("Falta el parámetro $code.");
+
+        return $this->cast($row->value_type, json_decode($row->value_json, flags: JSON_THROW_ON_ERROR));
+    }
+
     /** @return array<string, int|float|bool|string> valores de la versión, con el tipo de su parámetro */
     public function values(int $versionId): array
     {

@@ -33,7 +33,7 @@ function s07a2Dashboard(object $test, User $admin): array
 }
 
 /** Técnico asignado a una solicitud en el momento indicado (participación primaria). */
-function s07a2Assign(object $request, CarbonImmutable $at, string $status = 'assigned'): void
+function s07a2Assign(object $request, DateTimeInterface $at, string $status = 'assigned'): void
 {
     DB::table('participations')->insert(['request_id' => $request->id, 'technician_id' => Sprint04::technician()->id, 'slot' => 'primary',
         'status' => $status, 'reference_fee_snapshot' => '80.00', 'assigned_at' => $at]);
@@ -298,7 +298,9 @@ it('S07-TC-177 el DemoSeeder deja contenido en cada parte del Inicio del adminis
     putenv("$name=$password");
     $_ENV[$name] = $_SERVER[$name] = $password;
     $this->app['env'] = 'local';
-    $this->travelTo(CarbonImmutable::parse(S07A2_NOW, 'UTC'));
+    // La falla demo de la congeladora (DemoPremium) empieza al inicio de la hora anterior a la siembra: a una hora en punto
+    // llevaría justo 60 minutos y no sería «más de 60» (D-118). Una siembra real cae en cualquier minuto; aquí, a las :07.
+    $this->travelTo(CarbonImmutable::parse(S07A2_NOW, 'UTC')->addMinutes(7));
     $this->seed(DemoSeeder::class);
     $this->seed(DemoSeeder::class); // idempotente
 
