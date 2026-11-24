@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-uses(RefreshDatabase::class);
+// DEF-83: grupo «sqlite», que la CI corre también en un paso propio junto con el Inicio del administrador sobre SQLite.
+uses(RefreshDatabase::class)->group('sqlite');
 
 const S05_SQLITE = 'sqlite_migraciones';
 
