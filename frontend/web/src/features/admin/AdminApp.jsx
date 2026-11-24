@@ -113,7 +113,7 @@ function adminSections(user, onTour) {
     render: ({navigate}) => <UpcomingPage id={id} label={label} sections={list} navigate={navigate}/>};
   list = [
     can('dashboard.view') && {id: 'home', group: 'General', label: 'Inicio', icon: 'home',
-      render: ({navigate}) => <AdminHome navigate={navigate} permissions={user.permissions}/>},
+      render: ({navigate}) => <AdminHome navigate={navigate} permissions={user.permissions} user={user}/>},
     can('dashboard.view') && {id: 'requests', group: 'Operación', label: 'Solicitudes', icon: 'requests', render: () => <RequestsAdmin/>},
     upcoming('live', 'Operación', 'Emparejamiento en vivo', 'dashboard.view'),
     upcoming('alerts', 'Operación', 'Alertas operativas', 'dashboard.view'),

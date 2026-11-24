@@ -62,3 +62,165 @@
   .adm-how-item { animation: none; }
 }
 html[data-motion="reduce"] .adm-how-item { animation: none !important; }
+
+/* ── Fase A2 · Inicio tipo panel de control ─────────────────────────────────────────────────────────────────────── */
+
+/* Colores de las 4 series del gráfico: paleta categórica validada (validador de dataviz). Tema oscuro sobre #152a2d:
+   todo PASS. Tema claro sobre #ffffff: PASS con aviso de contraste en aqua y amarillo, por eso el gráfico lleva
+   etiquetas directas, leyenda y la tabla equivalente. */
+.adm-home { --adm-s-created: #3987e5; --adm-s-assigned: #d95926; --adm-s-cancelled: #199e70; --adm-s-expired: #c98500; }
+[data-theme="light"] .adm-home { --adm-s-created: #2a78d6; --adm-s-assigned: #eb6834; --adm-s-cancelled: #1baf7a; --adm-s-expired: #eda100; }
+.adm-home [data-series="created"] { --adm-s: var(--adm-s-created); }
+.adm-home [data-series="assigned"] { --adm-s: var(--adm-s-assigned); }
+.adm-home [data-series="cancelled"] { --adm-s: var(--adm-s-cancelled); }
+.adm-home [data-series="expired"] { --adm-s: var(--adm-s-expired); }
+
+.adm-home { gap: 20px; }
+.adm-quick { display: flex; flex-wrap: wrap; gap: 8px; }
+.adm-quick .button { display: inline-flex; gap: 8px; align-items: center; min-height: 44px; }
+.adm-quick .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+
+/* Indicadores: tarjetas con ícono en círculo que llenan el ancho. */
+.adm-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.adm-kpi {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--ty-border);
+  border-radius: 18px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
+  animation: adm-rise 0.35s ease both;
+}
+.adm-kpi-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tone-a), var(--tone-b));
+  color: #fff;
+}
+.adm-kpi-icon .panel-svg-icon { width: 22px; height: 22px; margin: 0; }
+.adm-kpi-text { display: grid; gap: 2px; min-width: 0; }
+.adm-kpi-value { font-size: clamp(1.6rem, 2.6vw, 2rem); font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.adm-kpi-label { font-weight: 600; overflow-wrap: break-word; }
+
+/* Tarjetas del Inicio (gráfico, tareas y actividad). */
+.adm-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--ty-border);
+  border-radius: 18px;
+  background: var(--ty-surface);
+  box-shadow: var(--ty-card-shadow);
+}
+.adm-card-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.adm-card-head h3 { display: flex; gap: 8px; align-items: center; margin: 0; font-size: 1.1rem; }
+.adm-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 13px;
+  background: var(--ty-accent);
+  color: var(--ty-on-accent, #fff);
+  font-size: 0.85rem;
+}
+.adm-home-main { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 1080px) { .adm-home-main { grid-template-columns: minmax(0, 1fr); } }
+
+/* Gráfico. */
+.adm-segmented { display: inline-flex; padding: 3px; border: 1px solid var(--ty-border); border-radius: 999px; }
+.adm-segmented button {
+  min-height: 44px;
+  min-width: 72px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ty-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.adm-segmented button[aria-pressed="true"] { background: var(--ty-accent); color: var(--ty-on-accent, #fff); }
+.adm-trend-summary { margin: 0; color: var(--ty-muted); }
+.adm-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; padding: 0; list-style: none; font-size: 0.9rem; }
+.adm-legend li, .adm-tooltip dt { display: inline-flex; gap: 6px; align-items: center; }
+.adm-swatch { display: inline-block; width: 14px; height: 4px; border-radius: 2px; background: var(--adm-s); }
+.adm-trend-plot { position: relative; }
+.adm-trend-plot svg { display: block; width: 100%; height: auto; overflow: visible; border-radius: 8px; }
+.adm-trend-plot svg:focus-visible { outline: 3px solid var(--ty-accent); outline-offset: 4px; }
+.adm-grid line { stroke: var(--ty-border); stroke-width: 1; }
+.adm-grid text, .adm-axis { fill: var(--ty-muted); font-size: 11px; }
+.adm-line { stroke: var(--adm-s); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.adm-dot { fill: var(--adm-s); stroke: var(--ty-surface); stroke-width: 2; }
+.adm-crosshair { stroke: var(--ty-muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.adm-end-label { fill: var(--ty-text); font-size: 11px; font-weight: 600; }
+.adm-tooltip {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  min-width: 150px;
+  padding: 10px 12px;
+  border: 1px solid var(--ty-border);
+  border-radius: 12px;
+  background: var(--ty-surface);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--ty-text) 16%, transparent);
+  pointer-events: none;
+}
+.adm-tooltip[data-side="right"] { transform: translateX(12px); }
+.adm-tooltip[data-side="left"] { transform: translateX(calc(-100% - 12px)); }
+.adm-tooltip dl { display: grid; gap: 2px; margin: 6px 0 0; }
+.adm-tooltip dl div { display: flex; gap: 12px; justify-content: space-between; }
+.adm-tooltip dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.adm-table-toggle summary { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; color: var(--ty-accent); }
+.adm-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.adm-table th, .adm-table td { padding: 6px 8px; border-bottom: 1px solid var(--ty-border); text-align: right; }
+.adm-table th:first-child { text-align: left; }
+
+/* Tareas pendientes y actividad reciente. */
+.adm-task-list, .adm-activity-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.adm-task {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--ty-raised);
+}
+.adm-task-icon, .adm-activity-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ty-accent) 16%, var(--ty-surface));
+  color: var(--ty-accent);
+}
+.adm-task-icon .panel-svg-icon, .adm-activity-icon .panel-svg-icon { width: 18px; height: 18px; margin: 0; }
+.adm-task-label { overflow-wrap: break-word; }
+.adm-task-count { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.adm-task-go { min-height: 44px; }
+@media (max-width: 480px) {
+  .adm-task { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .adm-task-go { grid-column: 1 / -1; justify-self: stretch; }
+}
+.adm-activity-list li { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--ty-border); }
+.adm-activity-list li:last-child { border-bottom: 0; }
+.adm-activity-text { display: grid; gap: 2px; min-width: 0; overflow-wrap: break-word; }
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-kpi { animation: none; }
+}
+html[data-motion="reduce"] .adm-kpi { animation: none !important; }

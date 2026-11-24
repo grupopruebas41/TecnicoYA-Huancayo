@@ -318,7 +318,8 @@ test('S07-TC-071 la campana y el menú del avatar se cierran con Escape desde su
   expect(bell).toHaveFocus();
 
   fireEvent.click(bell);
-  fireEvent.pointerDown(screen.getByRole('heading', {name: 'Inicio'}));
+  // Fase A2: el encabezado del Inicio es el saludo («Buenos días, Ana»); el caso solo necesita un clic fuera de la campana.
+  fireEvent.pointerDown(screen.getByRole('heading', {level: 2, name: /^Buen/}));
   expect(screen.queryByRole('region', {name: 'Notificaciones recientes'})).not.toBeInTheDocument();
 
   // Fase T1 (D-104): el avatar abre el panel de la cuenta; un clic dentro no lo cierra y un clic en el fondo sí.

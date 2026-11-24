@@ -18,23 +18,45 @@ final class AdminTasks
 
     public function __construct(private readonly RuleBook $rules, private readonly OperationalAlerts $alerts) {}
 
-    /** @return list<array{key: string, count: ?int, section: string}> */
+    /**
+     * Cada tarea lleva su umbral en limit (minutos o días, según la tarea; null si no tiene) para que el panel lo muestre
+     * sin fijarlo en el frontend.
+     *
+     * @return list<array{key: string, count: ?int, section: string, limit: ?int}>
+     */
     public function list(): array
     {
         $limits = $this->limits();
+        $alertLimits = $this->alertLimits();
         $alerts = $this->alerts->counts();
         $now = CarbonImmutable::now();
 
         return [
             ['key' => 'documents_to_review', 'section' => 'verification',
-                'count' => DB::table('technician_documents')->where('review_status', 'pending')->count()],
-            ['key' => 'unassigned_requests', 'section' => 'alerts', 'count' => $alerts['unassigned'] ?? null],
-            ['key' => 'pending_expiring', 'section' => 'alerts', 'count' => $alerts['pending_expiring'] ?? null],
+                'count' => DB::table('technician_documents')->where('review_status', 'pending')->count(), 'limit' => null],
+            ['key' => 'unassigned_requests', 'section' => 'alerts', 'count' => $alerts['unassigned'] ?? null,
+                'limit' => $alertLimits['unassigned_alert_minutes'] ?? null],
+            ['key' => 'pending_expiring', 'section' => 'alerts', 'count' => $alerts['pending_expiring'] ?? null,
+                'limit' => $alertLimits['pending_expiring_alert_minutes'] ?? null],
             ['key' => 'keyword_misses', 'section' => 'keywords', 'count' => $limits === null ? null
-                : DB::table('keyword_misses')->where('last_seen_at', '>=', $now->subDays($limits['keyword_misses_recent_days']))->count()],
-            ['key' => 'iot_unattended', 'section' => 'iot', 'count' => $alerts['iot_unattended'] ?? null],
-            ['key' => 'low_performance', 'section' => 'performance', 'count' => $limits === null ? null : $this->lowPerformance($limits, $now)],
+                : DB::table('keyword_misses')->where('last_seen_at', '>=', $now->subDays($limits['keyword_misses_recent_days']))->count(), 'limit' => $limits['keyword_misses_recent_days'] ?? null],
+            ['key' => 'iot_unattended', 'section' => 'iot', 'count' => $alerts['iot_unattended'] ?? null,
+                'limit' => $alertLimits['iot_failure_alert_minutes'] ?? null],
+            ['key' => 'low_performance', 'section' => 'performance', 'count' => $limits === null ? null : $this->lowPerformance($limits, $now),
+                'limit' => self::PERFORMANCE_DAYS],
         ];
+    }
+
+    /** Umbrales de las alertas operativas (D-118) para mostrarlos junto a su tarea; vacío antes de la v4. */
+    private function alertLimits(): array
+    {
+        try {
+            $values = $this->rules->values($this->rules->currentVersionId());
+        } catch (RulesUnavailable) {
+            return [];
+        }
+
+        return array_intersect_key($values, array_flip(['unassigned_alert_minutes', 'pending_expiring_alert_minutes', 'iot_failure_alert_minutes']));
     }
 
     /** Umbrales de D-118 de la versión vigente, o null si no los trae (antes de la v4). */
