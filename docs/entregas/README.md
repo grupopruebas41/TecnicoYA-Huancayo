@@ -55,7 +55,7 @@ php artisan schedule:work
 
 | Cuenta | Rol |
 |---|---|
-| `demo-admin@example.test` | Administrador |
+| `demo-admin@example.test` | Administrador. Cada siembra lo devuelve a su primera visita (bienvenida y tutorial de 5 pasos) |
 | `demo-cliente@example.test` | Cliente hogar |
 | `demo-mype@example.test` | Cliente MYPE |
 | `demo-tecnico-computo@example.test` | Técnico verificado (Cómputo) |

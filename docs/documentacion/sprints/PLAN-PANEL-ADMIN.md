@@ -4,7 +4,7 @@
 - **Autor:** Claude Code (Fase A0, sin código de producto).
 - **Base revisada:** `main` en `90a2a62` (#67 integrado).
 - **Decisiones tomadas al empezar:** D-115 (reglas visibles, no editables), D-116 (intervenir solo con «Cancelar con motivo» y «Reenviar al emparejamiento») y D-117 (bienvenida y tutorial de 5 pasos).
-- **Decisiones pendientes:** ADM-13 a ADM-19, en el §5. Cada una tiene dos opciones y la recomendada va primero.
+- **Decisiones del plan:** ADM-13 a ADM-19 (§5), **tomadas el 2026-11-24** como D-118 a D-124: opción A en todas; en ADM-19, las 5 zonas del informe (Pilcomayo y Huancán se suman al seeder).
 - **Dónde cuenta:** adelanto del Sprint 7 (D-73), con IDs **S07-TC** desde **S07-TC-144** (la última usada es S07-TC-143).
 - **Versión anterior:** el plan del 2026-10-26 (Fases 1 a 4: base de paneles, usuarios, comunicados y correo) ya está ejecutado. Queda en el historial de Git, en `90a2a62`.
 
@@ -102,8 +102,8 @@ Las cifras de pruebas son **estimaciones**. Los IDs se asignan en orden desde S0
 - **Accesibilidad:** se fija con una prueba que el administrador tiene los 8 ajustes.
 - **Demo:** `demo-admin` vuelve a su primera visita en cada siembra.
 - **E2E:** `Sprint07E2ESeeder`, `cypress/e2e/sprint-07/` y `07` en el workflow `e2e-cierre`.
-- **Migración:** la de los permisos de ADM-14 (idempotente, como en `AuthorizationSeeder`).
-- **Pruebas (S07-TC-144 a 163 aprox.):** Pest 6 (contadores, permisos nuevos, preferencias del administrador y primera visita de la demo), Vitest 11 (grupos, Próximamente con `aria-disabled`, contadores, bienvenida, 5 pasos, repetir desde Ayuda y los 8 ajustes) y Cypress 3 (bienvenida y tutorial, navegación por grupos con teclado y contadores).
+- **Permisos y datos (hecho en A1):** los 3 permisos de D-119 en `AuthorizationSeeder` (idempotente, el mismo mecanismo de D-74), Pilcomayo y Huancán en `DistrictSeeder` (D-124) y la versión 4 de las reglas (D-121), adelantada desde A2 porque los contadores del menú necesitan los umbrales de D-118.
+- **Pruebas (hecho):** Pest S07-TC-144 a 152 y 166 (10), Vitest S07-TC-153 a 162 (10) y Cypress S07-TC-163 a 165 (3). Las fases siguientes empiezan en S07-TC-167.
 
 ### Fase A2 · Inicio
 
@@ -114,7 +114,7 @@ Las cifras de pruebas son **estimaciones**. Los IDs se asignan en orden desde S0
   - **`tasks`:** cada tarea con su contador y su sección de destino: documentos por revisar, sin técnico más de 30 minutos, pendientes de 24 h por vencer, búsquedas sin resultado nuevas, fallas IoT sin solicitud y técnicos con desempeño bajo (umbrales de ADM-13);
   - **`recent_events`:** pasa de 5 a 10 entradas.
 - **Pantalla:** saludo con la fecha, 6 indicadores con conteo animado, gráfico de barras apiladas (7 o 30 días) con su resumen en texto y tabla oculta para lectores, Tareas pendientes con acceso directo, Actividad reciente y accesos rápidos (crear comunicado, crear usuario y revisar verificación, según permisos).
-- **Migración:** la versión 4 de las reglas, si ADM-16 sale A.
+- **Reglas:** garantía, mantenimiento y factor IoT pasan a leerse del `RuleBook` (la versión 4 ya existe desde A1).
 - **Pruebas (S07-TC-164 a 183 aprox.):** Pest 9 (cada indicador con `travel`, series con ceros explícitos, cada tarea en su borde, 10 eventos y número de consultas acotado), Vitest 8 y Cypress 3.
 
 ### Fase A3 · Operación
@@ -200,9 +200,9 @@ Las cifras de pruebas son **estimaciones**. Los IDs se asignan en orden desde S0
 | Quality Gate (fiabilidad y seguridad A en código nuevo) | Componentes pequeños, sin ternarios anidados nuevos y SonarQube solo al cierre (regla 12b). Revisión con la lista de `DEUDA-TECNICA.md` |
 | Una corrida de `artisan test` a la vez | Pest solo en el slot A y nunca en paralelo con Cypress u otra corrida |
 
-## 5. Decisiones pendientes
+## 5. Decisiones del plan
 
-Cada una con dos opciones; la recomendada va primero. Al decidirse se registran como D-118 en adelante.
+**Tomadas el 2026-11-24 por Pimentel (D-118 a D-124):** opción A en ADM-13 a ADM-18. En ADM-19 se siembran las 5 zonas del informe (Huancayo, El Tambo, Chilca, Pilcomayo y Huancán), sin inventar técnicos, solicitudes, estadísticas ni distancias entre distritos. Se conserva la tabla con las opciones que se evaluaron.
 
 | ID | Decisión | Opción A (recomendada) | Opción B | Antes de |
 |---|---|---|---|---|

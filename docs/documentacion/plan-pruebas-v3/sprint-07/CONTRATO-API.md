@@ -323,3 +323,27 @@ Nueva finalidad `avatar`. Pasa por `ImageSanitizer` como el portafolio: JPG, PNG
 
 - **Migración `2026_10_27_000028_add_activation_to_users`:** `users.invited_at` y `users.activated_at`. Las cuentas existentes quedan activas. En una base existente basta `php artisan migrate`.
 - **Configuración:** broker `activations` en `config/auth.php`, con la misma tabla `password_reset_tokens` y 4320 minutos. No hay permisos nuevos.
+
+## 10. Cambios de la versión 1.6 (2026-11-24): panel del administrador, Fase A1 (PLAN-PANEL-ADMIN.md)
+
+### 10.1 `GET /admin/dashboard` **[cambia, aditivo]**
+
+Agrega `badges`, los contadores del menú (D-118), en un número fijo de consultas y sin datos personales:
+
+| Campo | Qué cuenta |
+|---|---|
+| `verification_pending` | Técnicos con verificación pendiente (igual a `technicians_pending_verification`) |
+| `requests_unassigned` | Solicitudes en `sent` o `pending_availability` |
+| `operational_alerts` | Alertas operativas: sin técnico más de 30 minutos desde el envío, pendiente de 24 h con 2 horas o menos, 2 rondas seguidas de la búsqueda vigente cerradas sin oferta aceptada y fallas IoT abiertas más de 60 minutos sin solicitud. Los umbrales salen de la versión vigente de las reglas; si no los trae (antes de la v4), es `null` y el menú no muestra el contador |
+
+Los demás campos no cambian.
+
+### 10.2 `GET /me` **[cambia, aditivo]**
+
+`permissions` puede traer los permisos nuevos de D-119: `requests.intervene`, `audit.view` y `content.manage`. Todavía ninguna ruta los usa; llegan con las Fases A3, A5 y A6.
+
+### 10.3 Datos
+
+- **Migración `2026_11_24_000039_publish_rules_v4`:** versión 4 de las reglas, vigente desde el 2026-11-24 00:00 UTC (D-121). Copia los valores y los pesos de la v3 y suma 11 parámetros con `editable = 0`: `warranty_days` (30), `maintenance_reminder_days` (180), `iot_attention_tolerance_factor` (2), `unassigned_alert_minutes` (30), `pending_expiring_alert_minutes` (120), `expired_rounds_alert_count` (2), `iot_failure_alert_minutes` (60), `low_performance_min_offers` (5), `low_performance_acceptance_percent` (40), `low_performance_expired_offers` (3) y `keyword_misses_recent_days` (7). Garantía, mantenimiento y factor IoT se leen del `RuleBook` desde la Fase A2.
+- **`AuthorizationSeeder`:** los 3 permisos de D-119 para el rol `admin`. En una base existente, `php artisan db:seed --class=AuthorizationSeeder`.
+- **`DistrictSeeder`:** Pilcomayo y Huancán (D-124), con su par de 1 km. En una base existente, `php artisan db:seed --class=DistrictSeeder`.
