@@ -2,6 +2,33 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-25 · Panel del administrador, Fase A2: Inicio tipo panel de control
+
+- **Rama:** `feature/pimentel/admin/a2-inicio`, desde `main` `475d471` (#68 integrado).
+- **Commits:**
+  - `a17c772` Pest en rojo y `0c37d47` backend;
+  - `d97d076` Vitest en rojo y `fd0616c` frontend;
+  - `ff39f25` Cypress y `4fd7f0a` pruebas adaptadas;
+  - `864c646` y `afe0bf1` ajustes de las capturas.
+- **Cambios:**
+  - `/admin/dashboard` con `kpis`, `series` (30 días de Lima) y `tasks` (`AdminTasks`, con su `limit`), y 10 eventos;
+  - `RuleBook::formalized` (D-121): garantía, factor IoT y mantenimiento ya no son constantes;
+  - `DemoAdminOperations`, con demo-operacion y demo-tecnico-ocupado;
+  - `data/district-distances.php`, donde se cargan los km de D-124;
+  - `AdminHome` y `AdmTrendChart`, con paleta validada con dataviz.
+- **Pruebas:**
+  - Pest S07-TC-167 a 178; la suite completa quedó en verde después de adaptar S04-TC-139 y S07-TC-173;
+  - Vitest S07-TC-179 a 186 (542/542, lint y build);
+  - Cypress S07-TC-187 a 189.
+- **e2e-cierre:**
+  - run `45425981779` (`ff39f25`): S07 en verde (6 casos);
+  - S04-TC-088 falló en `switchAccount`: no llegó al panel tras cambiar de cuenta. Es el mismo intermitente de cambio de cuenta que ya se vio en S04-TC-087 y S01-TC-077; esta fase no toca ese flujo. Se repite sobre el último commit.
+- **Lecciones:**
+  - un SVG con viewBox fijo se encoge en el celular: medir el ancho real del contenedor;
+  - el reloj de `Sprint04::boot` es el 2026-10-20: las pruebas que usan la v4 de las reglas viajan después del 2026-11-24.
+- **Siguiente:** Fase A3 (Operación), desde S07-TC-190, con DEF-81.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-24 · Panel del administrador, Fase A1: base y menú (con el plan de la A0 en el mismo PR)
 
 - **Rama:** `feature/pimentel/admin/a1-base`, desde `main` `90a2a62`. Era `a0-plan`; se renombró antes de publicarla, porque el plan entra con la A1 (pedido de Pimentel).

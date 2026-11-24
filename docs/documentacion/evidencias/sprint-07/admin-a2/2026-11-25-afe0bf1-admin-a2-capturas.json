@@ -1,0 +1,140 @@
+{
+  "1366-claro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-claro-grafico-30-dias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-claro-tabla": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-grafico-30-dias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-tabla": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-claro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.adm-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody.",
+      "tr."
+    ]
+  },
+  "390-claro-grafico-30-dias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.adm-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody.",
+      "tr."
+    ]
+  },
+  "390-claro-tabla": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.adm-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody.",
+      "tr."
+    ]
+  },
+  "390-oscuro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.adm-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody.",
+      "tr."
+    ]
+  },
+  "390-oscuro-grafico-30-dias": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.adm-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody.",
+      "tr."
+    ]
+  },
+  "390-oscuro-tabla": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": [
+      "table.adm-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "tbody.",
+      "tr."
+    ]
+  }
+}
