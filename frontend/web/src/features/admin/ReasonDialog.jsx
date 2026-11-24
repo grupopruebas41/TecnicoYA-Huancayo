@@ -5,7 +5,7 @@ import {validateReason} from './adminRules';
  * Confirmación de una acción sensible con motivo obligatorio (D-85). Con `word`, además hay que escribir esa palabra
  * (ELIMINAR). Atrapa el foco, Escape cancela y el foco vuelve al botón que lo abrió.
  */
-export default function ReasonDialog({title, description, confirmLabel, danger = false, word = null, busy = false, error = '', onCancel, onConfirm}) {
+export default function ReasonDialog({title, description, confirmLabel, danger = false, word = null, busy = false, error = '', minLength = 5, onCancel, onConfirm}) {
   const [reason, setReason] = useState('');
   const [typed, setTyped] = useState('');
   const [errors, setErrors] = useState({});
@@ -26,7 +26,7 @@ export default function ReasonDialog({title, description, confirmLabel, danger =
   function submit(event) {
     event.preventDefault();
     if (busy) return;
-    const invalid = validateReason(reason);
+    const invalid = validateReason(reason, minLength);
     setErrors(invalid);
     if (Object.keys(invalid).length || (word && typed !== word)) return;
     onConfirm(reason.trim());

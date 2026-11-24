@@ -111,16 +111,18 @@ test('S07-TC-156 los contadores de Verificación, Solicitudes sin técnico y Ale
 });
 
 test('S07-TC-157 una sección en preparación tiene encabezado, estado vacío con ilustración y un camino a una sección disponible', async () => {
+  // Fase A3 (2026-11-25): «Emparejamiento en vivo» ya es una pantalla real; el caso usa «Desempeño de técnicos», que sigue en
+  // preparación hasta la Fase A4.
   const nav = await openAdmin();
-  fireEvent.click(within(nav).getByRole('button', {name: 'Emparejamiento en vivo'}));
-  const page = await screen.findByRole('region', {name: 'Emparejamiento en vivo'});
+  fireEvent.click(within(nav).getByRole('button', {name: 'Desempeño de técnicos'}));
+  const page = await screen.findByRole('region', {name: 'Desempeño de técnicos'});
   expect(page.querySelector('.cx-head-icon svg')).not.toBeNull();
   expect(within(page).getByText('Estamos preparando esta sección.')).toBeInTheDocument();
   expect(page.querySelector('svg.cx-art')).not.toBeNull();
   // Nada de texto de desarrollo para el usuario (DEF-78).
   expect(page.textContent).not.toMatch(/Fase|Sprint|TODO|desarrollo/);
-  fireEvent.click(within(page).getByRole('button', {name: 'Ir a Solicitudes'}));
-  expect(within(nav).getByRole('button', {name: 'Solicitudes'})).toHaveAttribute('aria-current', 'page');
+  fireEvent.click(within(page).getByRole('button', {name: 'Ir a Verificación de técnicos'}));
+  expect(within(nav).getByRole('button', {name: 'Verificación de técnicos'})).toHaveAttribute('aria-current', 'page');
 });
 
 test('S07-TC-158 la primera vez el administrador ve la bienvenida y luego el tutorial; después ya no [D-117]', async () => {

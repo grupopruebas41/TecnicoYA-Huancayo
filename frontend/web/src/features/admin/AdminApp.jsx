@@ -8,6 +8,8 @@ import CatalogAdmin from '../administration/CatalogAdmin';
 import StatisticsPage from './StatisticsPage';
 import UsersAdmin from './UsersAdmin';
 import RequestsAdmin from './RequestsAdmin';
+import AdmLive from './AdmLive';
+import AdmAlerts from './AdmAlerts';
 import KeywordsAdmin from './KeywordsAdmin';
 import AdminOnboarding from './AdminOnboarding';
 import {ClientPage, EmptyState} from '../client/ui';
@@ -23,8 +25,6 @@ import './adm.css';
 
 /** Secciones en preparación: ícono, tono, qué mostrarán y a qué sección disponible llevar mientras tanto. */
 const UPCOMING = {
-  live: ['bolt', 'blue', 'Verás las solicitudes que buscan técnico, su ronda y las ofertas abiertas con su cuenta regresiva.', 'requests'],
-  alerts: ['alert', 'rose', 'Verás las solicitudes sin técnico, los pendientes por vencer y las fallas de sensores sin atender, con su acción directa.', 'requests'],
   performance: ['star', 'violet', 'Verás la aceptación, el tiempo de respuesta y los trabajos completados de cada técnico en los últimos 30 días.', 'verification'],
   zones: ['map', 'green', 'Verás los técnicos activos por zona y especialidad y las tarifas de referencia mínima, media y máxima.', 'catalog'],
   plans: ['wallet', 'amber', 'Verás los clientes Premium y Free y podrás activar o retirar Premium con motivo.', 'users'],
@@ -114,9 +114,13 @@ function adminSections(user, onTour) {
   list = [
     can('dashboard.view') && {id: 'home', group: 'General', label: 'Inicio', icon: 'home',
       render: ({navigate}) => <AdminHome navigate={navigate} permissions={user.permissions} user={user}/>},
-    can('dashboard.view') && {id: 'requests', group: 'Operación', label: 'Solicitudes', icon: 'requests', render: () => <RequestsAdmin/>},
-    upcoming('live', 'Operación', 'Emparejamiento en vivo', 'dashboard.view'),
-    upcoming('alerts', 'Operación', 'Alertas operativas', 'dashboard.view'),
+    // Fase A3: Solicitudes con detalle e intervención, Emparejamiento en vivo y Alertas operativas.
+    can('dashboard.view') && {id: 'requests', group: 'Operación', label: 'Solicitudes', icon: 'requests',
+      render: ({intent}) => <RequestsAdmin key={intent?.request ?? 'lista'} intent={intent}/>},
+    can('dashboard.view') && {id: 'live', group: 'Operación', label: 'Emparejamiento en vivo', icon: 'bolt',
+      render: ({navigate}) => <AdmLive navigate={navigate}/>},
+    can('dashboard.view') && {id: 'alerts', group: 'Operación', label: 'Alertas operativas', icon: 'alert',
+      render: ({navigate}) => <AdmAlerts navigate={navigate}/>},
     can('users.manage') && {id: 'users', group: 'Personas', label: 'Usuarios', icon: 'users',
       render: ({intent}) => <UsersAdmin currentUserId={user.id} intent={intent}/>},
     can('technicians.verify') && {id: 'verification', group: 'Personas', label: 'Verificación de técnicos', icon: 'verify',

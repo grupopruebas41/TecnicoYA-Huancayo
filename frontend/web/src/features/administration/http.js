@@ -60,6 +60,32 @@ export async function request(path, body, method = body ? 'POST' : 'GET', option
 }
 
 /**
+ * Fase A3 del panel del administrador: descarga un archivo de la API (por ejemplo el CSV de Solicitudes) con la sesión y
+ * lo guarda con el nombre que manda el servidor. Devuelve {truncated} cuando el servidor avisa que cortó el archivo.
+ */
+export async function download(path, fallbackName) {
+  let response;
+  try {
+    response = await fetch(`${origin}/api/v1${path}`, {credentials: 'include', signal: AbortSignal.timeout(30000), headers: {Accept: 'text/csv, application/json'}});
+  } catch {
+    throw new ApiError('No pudimos descargar el archivo. Revisa tu conexión e inténtalo nuevamente.', 0);
+  }
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    const reference = body?.meta?.request_id;
+    throw new ApiError(apiMessage(body?.error?.message || body?.message || statusMessage(response.status)) + (reference ? ' Referencia: ' + reference : ''), response.status);
+  }
+  const name = /filename="?([^";]+)"?/.exec(response.headers.get('Content-Disposition') || '')?.[1] || fallbackName;
+  const url = URL.createObjectURL(await response.blob());
+  const link = Object.assign(document.createElement('a'), {href: url, download: name});
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  return {truncated: response.headers.get('X-Export-Truncated') === '1'};
+}
+
+/**
  * Fase T4: sube un archivo a POST /media informando el avance (0 a 100) para la barra de progreso. Usa XMLHttpRequest
  * porque fetch no informa el avance de la subida. Misma sesión, la misma cookie CSRF y los mismos mensajes que request().
  */

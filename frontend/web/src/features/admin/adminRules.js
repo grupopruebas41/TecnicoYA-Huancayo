@@ -53,8 +53,9 @@ export function toQuery(filters) {
   return text ? `?${text}` : '';
 }
 
-export function validateReason(reason) {
-  return String(reason || '').trim().length >= 5 ? {} : {reason: ['Escribe el motivo (al menos 5 caracteres).']};
+/** Motivo obligatorio de una acción sensible; la intervención de D-116 pide 10 caracteres o más (Fase A3). */
+export function validateReason(reason, min = 5) {
+  return String(reason || '').trim().length >= min ? {} : {reason: [`Escribe el motivo (al menos ${min} caracteres).`]};
 }
 
 export const emptyUser = {
