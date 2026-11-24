@@ -68,14 +68,19 @@ const fill = (label, value) => fireEvent.change(screen.getByLabelText(label), {t
 
 test('S07-TC-129 el menú agrupa las secciones con título, muestra contadores accesibles y tooltips con el menú contraído', async () => {
   const nav = await openAdmin();
+  // Fase A1 del panel (PLAN-PANEL-ADMIN.md, 2026-11-24): el menú pasa a los grupos General, Operación, Personas, Negocio,
+  // Contenido, Control, Próximamente y Ayuda (el detalle lo prueba S07-TC-153). Este caso conserva lo que probaba: grupos con
+  // título, contadores accesibles y tooltips. Este administrador no tiene audit.view ni content.manage (D-119).
   const groups = within(nav).getAllByRole('group').map(group => [group.querySelector('.panel-nav-heading').textContent,
-    within(group).getAllByRole('button').map(button => button.querySelector('.panel-label').textContent)]);
-  expect(groups).toEqual([['General', ['Inicio', 'Estadísticas']], ['Gestión', ['Usuarios', 'Verificación', 'Solicitudes']],
-    ['Contenido', ['Catálogo', 'Comunicados']]]); // Fase T1 (D-104): Mi perfil pasa al panel de la cuenta.
-  const verification = await within(nav).findByRole('button', {name: 'Verificación'});
+    within(group).getAllByRole('button').map(button => button.querySelector('.panel-label').firstChild.textContent)]);
+  expect(groups.map(([title]) => title)).toEqual(['General', 'Operación', 'Personas', 'Negocio', 'Contenido', 'Control', 'Próximamente', 'Ayuda']);
+  expect(groups[2]).toEqual(['Personas', ['Usuarios', 'Verificación de técnicos', 'Desempeño de técnicos']]);
+  expect(groups[4]).toEqual(['Contenido', ['Comunicados', 'Palabras clave del buscador']]);
+  const verification = await within(nav).findByRole('button', {name: 'Verificación de técnicos'});
   await waitFor(() => expect(verification).toHaveAccessibleDescription('3 técnicos por verificar'));
   expect(within(nav).getByRole('button', {name: 'Comunicados'})).toHaveAccessibleDescription('1 comunicado vigente');
-  expect(nav.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(7); // un ícono por sección (sin Mi perfil desde la T1)
+  // Un ícono por sección (sin Mi perfil desde la T1): 20 ítems sin Auditoría ni Preguntas frecuentes.
+  expect(nav.querySelectorAll('.panel-nav-item .panel-nav-icon svg')).toHaveLength(20);
 
   fireEvent.click(screen.getByRole('button', {name: 'Contraer menú'}));
   expect(within(nav).getByRole('button', {name: 'Usuarios'})).toHaveAttribute('data-tooltip', 'Usuarios');
@@ -84,7 +89,7 @@ test('S07-TC-129 el menú agrupa las secciones con título, muestra contadores a
 
   // Sin permisos de Usuarios ni del Inicio: no hay grupos vacíos ni enlaces sin destino.
   const limited = await openAdmin({...admin, permissions: ['catalog.manage']});
-  expect(within(limited).getAllByRole('group').map(group => group.querySelector('.panel-nav-heading').textContent)).toEqual(['Contenido']);
+  expect(within(limited).getAllByRole('group').map(group => group.querySelector('.panel-nav-heading').textContent)).toEqual(['Negocio', 'Contenido', 'Ayuda']);
   expect(within(limited).queryByRole('button', {name: 'Usuarios'})).not.toBeInTheDocument();
 });
 
