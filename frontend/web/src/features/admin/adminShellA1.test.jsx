@@ -32,6 +32,8 @@ beforeEach(() => {
   request.mockImplementation(async (path, body, method = 'GET') => {
     if (path === '/me') return {data: state.user};
     if (path === '/admin/dashboard') return {data: state.dashboard};
+    // S07-TC-157 abre Solicitudes: su lista paginada vacía (sin ella, RequestsAdmin fallaba fuera de la prueba).
+    if (path.startsWith('/admin/requests')) return {data: {items: [], page: 1, per_page: 20, total: 0}};
     if (path === '/me/preferences' && method === 'PUT') return {data: {...SEEN}};
     if (path.startsWith('/notifications')) return {data: {items: [], unread_count: 0}};
     return {data: []};

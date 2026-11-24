@@ -239,6 +239,10 @@ it('S07-TC-152 demo-admin vuelve a su primera visita en cada siembra, sin duplic
 it('S07-TC-166 Sprint07E2ESeeder deja a e2e-admin-nuevo en su primera visita y una solicitud sin técnico que es alerta [D-117, D-118]', function () {
     Sprint04::boot($this);
     $this->travelTo(CarbonImmutable::parse(S07A1_NOW, 'UTC'));
+    // Como S03-TC-085 y S05-TC-376: la guarda E2E solo lee la configuración (en la CI la base de pruebas tiene otro nombre);
+    // la conexión abierta sigue en la base de pruebas real.
+    expect(DB::connection()->getDatabaseName())->toEndWith('_testing');
+    config(['database.connections.mysql.database' => 'tecnicoya_testing']);
     // Contraseña sintética y aleatoria solo para esta siembra (las de S01 a S05 la exigen de 24 caracteres o más).
     $password = 'e2e-'.bin2hex(random_bytes(16));
     putenv("TECNICOYA_E2E_PASSWORD=$password");
