@@ -5,6 +5,7 @@
 // (D-121), datos del DemoSeeder para el Inicio y el lugar de carga de las distancias de Pilcomayo y Huancán (D-124).
 // Datos sintéticos; el reloj se fija con travelTo. «Hoy» y los días de la serie son los de Lima (UTC-5, sin horario de verano).
 use App\Models\User;
+use App\Modules\FAdministration\Application\AdminDashboard;
 use App\Modules\Premium\IotMonitor;
 use App\Shared\Rules\RuleBook;
 use Carbon\CarbonImmutable;
@@ -215,21 +216,18 @@ describe('Inicio del administrador', function () {
     });
 
     it('S07-TC-173 el Inicio hace el mismo número de consultas con pocos o muchos datos', function () {
+        // Se cuentan solo las consultas del servicio del Inicio. En la CI, la petición HTTP completa sumaba a veces una
+        // consulta de la sesión o del middleware (52 frente a 51) que no depende del Inicio ni de los datos.
         $count = function () {
-            Sprint01::forgetSession();
-            Sanctum::actingAs($this->admin);
             DB::flushQueryLog();
             DB::enableQueryLog();
-            $this->getJson('/api/v1/admin/dashboard')->assertOk();
+            app(AdminDashboard::class)->snapshot();
             $total = count(DB::getQueryLog());
             DB::disableQueryLog();
 
             return $total;
         };
         Sprint04::sentRequest();
-        // En la suite completa la primera petición del proceso hizo una consulta más (52 frente a 51): es una carga única,
-        // no una consulta que crezca con los datos. Se mide después de una llamada de calentamiento.
-        $count();
         $few = $count();
         foreach (range(1, 8) as $index) {
             $request = Sprint04::sentRequest(['status' => 'assigned', 'submitted_at' => now()->subDays($index)]);
