@@ -74,3 +74,36 @@ it('S07-TC-209 Solicitudes, intervención, CSV, tablero en vivo y alertas respon
         ['reason' => 'Cancelación sintética para la prueba.', 'expected_version' => (int) $other->version])->assertOk()
         ->assertJsonPath('data.status', 'cancelled');
 });
+
+it('S07-TC-229 el tablero sin pendientes vencidos, las alertas con nivel y desempeño bajo y el motivo en la línea de tiempo responden sobre SQLite [DEF-83]', function () {
+    expect(DB::connection()->getDriverName())->toBe('sqlite');
+    Queue::fake();
+    $this->actingAs(Sprint02::admin());
+    $searching = s07a3SqliteSearching(26 * 60);
+    $overdue = Sprint04::sentRequest(['status' => 'pending_availability', 'pending_since' => now()->subDay()->subMinutes(5),
+        'pending_expires_at' => now()->subMinutes(5)]);
+    $weak = Sprint04::technician();
+    foreach (['accepted', 'expired', 'expired', 'expired', 'rejected'] as $index => $status) {
+        $request = Sprint04::sentRequest(['status' => 'expired']);
+        $run = DB::table('matching_runs')->insertGetId(['request_id' => $request->id, 'search_generation' => 1, 'attempt_no' => 1,
+            'run_trigger' => 'submission', 'rule_version_id' => $request->rule_version_id, 'algorithm_version' => 'test', 'status' => 'completed',
+            'started_at' => now()->subDays($index + 1)]);
+        $round = DB::table('offer_rounds')->insertGetId(['request_id' => $request->id, 'matching_run_id' => $run, 'search_generation' => 1,
+            'round_no' => 1, 'kind' => 'automatic', 'status' => 'closed', 'opened_at' => now()->subDays($index + 1), 'expires_at' => now()->subDays($index + 1)->addMinutes(10)]);
+        DB::table('offers')->insert(['round_id' => $round, 'request_id' => $request->id, 'technician_id' => $weak->id, 'status' => $status,
+            'available_at' => now()->subDays($index + 1), 'expires_at' => now()->subDays($index + 1)->addMinutes(10), 'reference_fee_snapshot' => '80.00']);
+    }
+
+    $live = $this->getJson('/api/v1/admin/matching/live')->assertOk()->json('data');
+    expect($live['pending'])->toBe([])
+        ->and(collect($live['pending_overdue'])->pluck('id')->all())->toBe([(int) $overdue->id])
+        ->and(collect($live['searching'])->firstWhere('id', $searching->id)['round'])->toMatchArray(['open_count' => 1, 'expired_count' => 0]);
+    $alerts = collect($this->getJson('/api/v1/admin/alerts')->assertOk()->json('data.items'));
+    expect($alerts->first(fn ($item) => $item['type'] === 'unassigned' && $item['request_id'] === (int) $searching->id)['level'])->toBe('urgent')
+        ->and($alerts->firstWhere('type', 'low_performance'))->toMatchArray(['level' => 'follow_up', 'offers' => 5, 'expired' => 3]);
+
+    $this->withHeader('Idempotency-Key', (string) Str::uuid())->postJson("/api/v1/admin/requests/{$searching->id}/rematch",
+        ['reason' => 'Reenvío sintético para la prueba.', 'expected_version' => (int) $searching->version])->assertOk();
+    $timeline = collect($this->getJson("/api/v1/admin/requests/{$searching->id}")->assertOk()->json('data.timeline'));
+    expect($timeline->firstWhere('event_type', 'request.admin_rematched')['reason'])->toBe('Reenvío sintético para la prueba.');
+});
