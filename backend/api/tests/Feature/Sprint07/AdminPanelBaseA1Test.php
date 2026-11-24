@@ -1,6 +1,6 @@
 <?php
 
-// S07-TC-144 a 152 · Panel del administrador, Fase A1 (PLAN-PANEL-ADMIN.md): permisos nuevos (D-119), 5 zonas (D-124),
+// S07-TC-144 a 152 y 166 · Panel del administrador, Fase A1 (PLAN-PANEL-ADMIN.md): permisos nuevos (D-119), 5 zonas (D-124),
 // versión 4 de las reglas con los umbrales de D-118 (D-121), contadores del menú (GET /admin/dashboard › badges) y
 // primera visita de demo-admin en cada siembra (D-117). Datos sintéticos; el reloj se fija con travelTo.
 use App\Models\User;
@@ -9,6 +9,7 @@ use Carbon\CarbonImmutable;
 use Database\Seeders\AuthorizationSeeder;
 use Database\Seeders\DemoSeeder;
 use Database\Seeders\DistrictSeeder;
+use Database\Seeders\Sprint07E2ESeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -233,4 +234,32 @@ it('S07-TC-152 demo-admin vuelve a su primera visita en cada siembra, sin duplic
     expect($row)->toHaveCount(1)
         ->and([$row[0]->onboarding_completed_at, $row[0]->tour_completed_at, $row[0]->accessibility_prefs, $row[0]->theme_preference])
         ->toBe([null, null, null, null]);
+});
+
+it('S07-TC-166 Sprint07E2ESeeder deja a e2e-admin-nuevo en su primera visita y una solicitud sin técnico que es alerta [D-117, D-118]', function () {
+    Sprint04::boot($this);
+    $this->travelTo(CarbonImmutable::parse(S07A1_NOW, 'UTC'));
+    // Contraseña sintética y aleatoria solo para esta siembra (las de S01 a S05 la exigen de 24 caracteres o más).
+    $password = 'e2e-'.bin2hex(random_bytes(16));
+    putenv("TECNICOYA_E2E_PASSWORD=$password");
+    $_ENV['TECNICOYA_E2E_PASSWORD'] = $_SERVER['TECNICOYA_E2E_PASSWORD'] = $password;
+    try {
+        $this->seed(Sprint07E2ESeeder::class);
+        $this->seed(Sprint07E2ESeeder::class); // idempotente: no duplica cuentas ni la solicitud
+    } finally {
+        putenv('TECNICOYA_E2E_PASSWORD');
+        unset($_ENV['TECNICOYA_E2E_PASSWORD'], $_SERVER['TECNICOYA_E2E_PASSWORD']);
+    }
+
+    $nuevo = DB::table('users')->where('email', 'e2e-admin-nuevo@example.test')->get();
+    expect($nuevo)->toHaveCount(1)
+        ->and([$nuevo[0]->onboarding_completed_at, $nuevo[0]->tour_completed_at])->toBe([null, null])
+        ->and(DB::table('users')->where('email', 'e2e-admin@example.test')->value('tour_completed_at'))->not->toBeNull();
+    $client = DB::table('client_profiles as c')->join('users as u', 'u.id', '=', 'c.user_id')
+        ->where('u.email', 'e2e-client-alertas@example.test')->value('c.id');
+    expect(DB::table('service_requests')->where('client_id', $client)->where('status', 'sent')->count())->toBe(1);
+
+    $badges = s07a1Badges($this, User::query()->where('email', 'e2e-admin-nuevo@example.test')->sole());
+    expect($badges['requests_unassigned'])->toBeGreaterThanOrEqual(1)
+        ->and($badges['operational_alerts'])->toBeGreaterThanOrEqual(1);
 });
