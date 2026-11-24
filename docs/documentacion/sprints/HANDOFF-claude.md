@@ -2,6 +2,20 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-25 · Revisión del #69: DEF-83 (Inicio sobre SQLite y partes aisladas)
+
+- **Rama:** la misma, `feature/pimentel/admin/a2-inicio`. Pedido de Pimentel antes de integrar el #69.
+- **Causa** (laravel.log, referencia `ff1281f6…`): `Illuminate\Database\QueryException`, «no such column: SECOND», en `AdminDashboard.php:68` (`TIMESTAMPDIFF`). La serie usaba `DATE_SUB` y `AdminStatistics.php:81` también `TIMESTAMPDIFF`: SQL propio de MySQL. La base local de Pimentel es SQLite; la CI y el E2E, MySQL.
+- **Commits:** `4eb33f7` (rojo) y `a685d57` (corrección).
+- **Corrección:**
+  - `App\Shared\Database\SqlDates` (MySQL y SQLite);
+  - partes del Inicio aisladas en el backend (`failed_parts`, registro con referencia) y en el panel (aviso y «Reintentar» por sección, también si falla al dibujarse);
+  - paso «Pest sobre SQLite (grupo sqlite)» en `ci.yml`, con el Inicio, las Estadísticas y las migraciones.
+- **Pruebas:** Pest S07-TC-190 a 192 (grupo `sqlite`: 6/6) y Vitest S07-TC-193 y 194.
+- **Nota:** en este equipo, con la carga del navegador y del servidor local, S01-TC-016 y S07-TC-057 rozaron el límite de 5 s de Vitest. Solas pasan.
+- **Lección:** cualquier SQL nuevo de fechas va por `SqlDates` y se prueba en el grupo `sqlite`. La Fase A3 empieza en S07-TC-195.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-25 · Panel del administrador, Fase A2: Inicio tipo panel de control
 
 - **Rama:** `feature/pimentel/admin/a2-inicio`, desde `main` `475d471` (#68 integrado).

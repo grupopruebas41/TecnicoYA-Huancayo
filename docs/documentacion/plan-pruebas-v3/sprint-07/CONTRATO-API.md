@@ -380,3 +380,10 @@ Suma tres bloques. «Hoy» y los días de la serie son los de **Lima** (UTC-5, s
   - **Pares existentes:** la siembra solo inserta pares nuevos y nunca pisa uno existente.
 - **`DemoSeeder`:** (solo `APP_ENV=local`) agrega `demo-operacion@example.test` (cliente) y `demo-tecnico-ocupado@example.test` (técnico con desempeño bajo).
   - `DemoAdminOperations` deja las solicitudes, rondas, búsquedas sin resultado y 10 entradas de auditoría de demo-admin (`source_code = demo-seeder`), todo rotulado «(demostración)».
+
+### 11.4 Corrección DEF-83 (2026-11-25)
+
+- **Motores:** `GET /admin/dashboard` y `GET /admin/statistics` dan el mismo resultado sobre MySQL y SQLite (base local). Las diferencias de fecha y los días de Lima se arman con `App\Shared\Database\SqlDates`.
+- **Partes del Inicio:** `kpis`, `series`, `tasks` y `recent_events` se calculan por separado.
+  - Si una falla, se registra en `laravel.log` con la referencia de la petición, va en `null` y su nombre aparece en el campo nuevo `failed_parts` (lista; vacía si todo salió bien). El resto responde con 200.
+  - El panel muestra «No pudimos cargar esta parte» con «Reintentar» solo en esa sección.
