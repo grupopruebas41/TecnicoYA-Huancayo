@@ -35,10 +35,15 @@ function useWidth() {
 }
 const LABEL_GAP = 14;
 
-/** Etiquetas al final de cada línea sin encimarse: ordenadas por altura y separadas al menos LABEL_GAP. */
-function endLabels(ends) {
+/**
+ * Etiquetas al final de cada línea sin encimarse: ordenadas por altura y separadas al menos LABEL_GAP. Visto en las
+ * capturas: con varias series en 0 la última bajaba hasta las fechas; si se pasan de bottom, el grupo sube.
+ */
+function endLabels(ends, bottom) {
   const sorted = [...ends].sort((a, b) => a.y - b.y);
   sorted.forEach((label, index) => { if (index && label.y - sorted[index - 1].y < LABEL_GAP) label.y = sorted[index - 1].y + LABEL_GAP; });
+  const overflow = (sorted.at(-1)?.y ?? 0) - bottom;
+  if (overflow > 0) sorted.forEach(label => { label.y -= overflow; });
   return sorted;
 }
 
@@ -76,7 +81,7 @@ export default function AdmTrendChart({items: all = []}) {
   // En pantallas angostas, con 7 días, una etiqueta cada 2.
   const every = range === 30 ? 5 : W < NARROW ? 2 : 1;
   const showTick = index => (items.length - 1 - index) % every === 0;
-  const ends = items.length && W >= NARROW ? endLabels(SERIES.map(([key, label]) => ({key, label, value: items.at(-1)[key], y: y(items.at(-1)[key])}))) : [];
+  const ends = items.length && W >= NARROW ? endLabels(SERIES.map(([key, label]) => ({key, label, value: items.at(-1)[key], y: y(items.at(-1)[key])})), H - PAD.bottom) : [];
   const day = active === null ? null : items[active];
   return <section className="adm-card adm-trend" aria-labelledby="adm-trend-title">
     <header className="adm-card-head">
@@ -98,7 +103,8 @@ export default function AdmTrendChart({items: all = []}) {
           <text x={PAD.left - 8} y={y(tick)} dy="0.32em" textAnchor="end">{tick}</text>
         </g>)}
         {items.map((item, index) => (showTick(index)
-          ? <text key={item.date} className="adm-axis" x={x(index)} y={H - 8} textAnchor="middle">{shortDay(item.date)}</text> : null))}
+          ? <text key={item.date} className="adm-axis" x={x(index)} y={H - 8}
+            textAnchor={index === items.length - 1 ? 'end' : 'middle'}>{shortDay(item.date)}</text> : null))}
         {day && <line className="adm-crosshair" x1={x(active)} x2={x(active)} y1={PAD.top} y2={H - PAD.bottom}/>}
         {SERIES.map(([key]) => <polyline key={key} className="adm-line" data-series={key} fill="none"
           points={items.map((item, index) => `${x(index)},${y(item[key])}`).join(' ')}/>)}
