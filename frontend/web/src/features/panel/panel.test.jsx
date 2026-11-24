@@ -203,7 +203,8 @@ test('S07-TC-065 el Inicio informa con honestidad cuando no hay datos o falla la
 
   // Fase A2: los estados vacíos honestos del Inicio nuevo (sin datos, nunca cifras inventadas).
   expect(await screen.findByText('Todo al día')).toBeInTheDocument();
-  expect(screen.getByText('Todavía no hay acciones registradas.')).toBeInTheDocument();
+  // Rediseño de la actividad (revisión del #69): el vacío dice «Todavía no hay actividad».
+  expect(screen.getByText('Todavía no hay actividad')).toBeInTheDocument();
 });
 
 test('S07-TC-066 Verificación permite suspender con motivo y confirmación, y reactivar', async () => {

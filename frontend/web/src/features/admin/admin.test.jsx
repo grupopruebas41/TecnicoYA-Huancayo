@@ -115,7 +115,8 @@ test('S07-TC-130 el Inicio ofrece accesos rápidos según permisos y lista los �
 
   dashboard.recent_events = [];
   await openAdmin({...admin, permissions: ['dashboard.view']});
-  expect(await screen.findByText('Todavía no hay acciones registradas.')).toBeInTheDocument();
+  // Rediseño de la actividad (revisión del #69): el vacío dice «Todavía no hay actividad».
+  expect(await screen.findByText('Todavía no hay actividad')).toBeInTheDocument();
   expect(screen.queryByRole('navigation', {name: 'Accesos rápidos'})).not.toBeInTheDocument();
   dashboard.recent_events = [{action: 'user.blocked', reason: 'Reportes repetidos.', actor: 'Ana Quispe', occurred_at: '2026-10-27T14:00:00.000000Z'}];
 });

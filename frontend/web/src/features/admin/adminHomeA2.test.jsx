@@ -152,19 +152,24 @@ test('S07-TC-184 «Tareas pendientes» muestra solo las que tienen algo, con su 
   expect(within(done).queryByRole('listitem')).not.toBeInTheDocument();
 });
 
-test('S07-TC-185 la actividad reciente lista las 10 acciones con su nombre, motivo, autor y fecha «25 nov · 09:00»', async () => {
+// Rediseño de la línea de tiempo (revisión del #69, 2026-11-25): la hora va en su columna («09:00»), el día en un
+// separador («Hoy») y el vacío dice «Todavía no hay actividad». El caso sigue probando las 10 acciones con nombre, motivo
+// y autor; el detalle del diseño nuevo lo prueban S07-TC-195 a 198.
+test('S07-TC-185 la actividad reciente lista las 10 acciones con su nombre, motivo, autor y hora de Lima', async () => {
   await open();
   const activity = screen.getByRole('region', {name: 'Actividad reciente'});
   const items = within(activity).getAllByRole('listitem');
   expect(items).toHaveLength(10);
+  expect(within(activity).getByRole('heading', {name: 'Hoy'})).toBeInTheDocument();
   expect(items[0]).toHaveTextContent('Técnico revisado');
   expect(items[0]).toHaveTextContent('Motivo 1.');
-  expect(items[0]).toHaveTextContent('Ana Quispe · 25 nov · 09:00');
+  expect(items[0]).toHaveTextContent('Ana Quispe');
+  expect(items[0].querySelector('time')).toHaveTextContent('09:00');
   cleanup();
 
   data = dashboard({recent_events: []});
   await open();
-  expect(within(screen.getByRole('region', {name: 'Actividad reciente'})).getByText('Todavía no hay acciones registradas.')).toBeInTheDocument();
+  expect(within(screen.getByRole('region', {name: 'Actividad reciente'})).getByText('Todavía no hay actividad')).toBeInTheDocument();
 });
 
 test('S07-TC-186 los accesos rápidos dependen de los permisos y un error se puede reintentar', async () => {
