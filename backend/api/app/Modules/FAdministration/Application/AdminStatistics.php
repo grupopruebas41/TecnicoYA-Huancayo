@@ -2,6 +2,7 @@
 
 namespace App\Modules\FAdministration\Application;
 
+use App\Shared\Database\SqlDates;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
@@ -75,10 +76,12 @@ final class AdminStatistics
     /** Tasa de aceptación sobre las ofertas respondidas o vencidas y tiempo medio hasta la respuesta, en segundos. */
     private function offers(CarbonImmutable $from): array
     {
+        // DEF-83: la diferencia en segundos se arma según el motor (MySQL o SQLite).
+        $seconds = SqlDates::secondsBetween('available_at', 'responded_at');
         $row = DB::table('offers')->where('created_at', '>=', $from)->selectRaw(
             "COUNT(*) as total, COALESCE(SUM(status = 'accepted'), 0) as accepted, COALESCE(SUM(status = 'rejected'), 0) as rejected,
              COALESCE(SUM(status = 'expired'), 0) as expired,
-             AVG(CASE WHEN responded_at IS NOT NULL AND status IN ('accepted', 'rejected') THEN TIMESTAMPDIFF(SECOND, available_at, responded_at) END) as avg_response")->first();
+             AVG(CASE WHEN responded_at IS NOT NULL AND status IN ('accepted', 'rejected') THEN $seconds END) as avg_response")->first();
         $decided = (int) $row->accepted + (int) $row->rejected + (int) $row->expired;
 
         return [

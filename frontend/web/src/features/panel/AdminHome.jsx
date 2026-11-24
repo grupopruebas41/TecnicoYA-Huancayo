@@ -128,7 +128,9 @@ function Activity({events = []}) {
 
 export default function AdminHome({navigate, permissions = [], user = null}) {
   const [state, setState] = useState({loading: true, data: null, error: ''});
+  const [attempt, setAttempt] = useState(0);
   const load = useCallback(() => {
+    setAttempt(value => value + 1);
     setState(current => ({...current, loading: true, error: ''}));
     Promise.resolve().then(() => request('/admin/dashboard'))
       .then(result => setState({loading: false, data: result.data, error: ''}))
@@ -149,12 +151,45 @@ export default function AdminHome({navigate, permissions = [], user = null}) {
     {state.loading && !data && <p className="muted" aria-live="polite">Cargando el Inicio…</p>}
     {state.error && <div className="error" role="alert">{state.error} <button type="button" className="text-button" onClick={load}>Reintentar</button></div>}
     {data && <>
-      <Kpis kpis={data.kpis}/>
+      <Part name="kpis" title="Indicadores" data={data} attempt={attempt} onRetry={load}>
+        <Kpis kpis={data.kpis}/>
+      </Part>
       <div className="adm-home-main">
-        <AdmTrendChart items={data.series?.items}/>
-        <Tasks tasks={data.tasks} navigate={navigate}/>
+        <Part name="series" title="Solicitudes por día" data={data} attempt={attempt} onRetry={load}>
+          <AdmTrendChart items={data.series?.items}/>
+        </Part>
+        <Part name="tasks" title="Tareas pendientes" data={data} attempt={attempt} onRetry={load}>
+          <Tasks tasks={data.tasks} navigate={navigate}/>
+        </Part>
       </div>
-      <Activity events={data.recent_events}/>
+      <Part name="recent_events" title="Actividad reciente" data={data} attempt={attempt} onRetry={load}>
+        <Activity events={data.recent_events}/>
+      </Part>
     </>}
   </ClientPage>;
+}
+
+/** DEF-83: aviso de una sección que no se pudo cargar, con «Reintentar»; el resto del Inicio sigue visible. */
+function PartFallback({name, title, onRetry}) {
+  const id = `adm-part-${name}`;
+  return <section className="adm-card adm-part-error" aria-labelledby={id}>
+    <header className="adm-card-head"><h3 id={id}>{title}</h3></header>
+    <p className="adm-part-message"><Icon name="alert"/>No pudimos cargar esta parte.</p>
+    <button type="button" className="button outline" onClick={onRetry}>Reintentar</button>
+  </section>;
+}
+
+/** DEF-83: si la sección falla al dibujarse (datos con otra forma), muestra su aviso en lugar de tumbar el Inicio. */
+class SectionBoundary extends React.Component {
+  constructor(props) { super(props); this.state = {failed: false}; }
+  static getDerivedStateFromError() { return {failed: true}; }
+  render() { return this.state.failed ? this.props.fallback : this.props.children; }
+}
+
+/** Una parte del Inicio: si el servidor la informó como fallida (failed_parts) o falla al dibujarse, su aviso. */
+function Part({name, title, data, attempt, onRetry, children}) {
+  const fallback = <PartFallback name={name} title={title} onRetry={onRetry}/>;
+  if ((data.failed_parts || []).includes(name)) return fallback;
+  // La clave con el intento vuelve a montar la sección al reintentar.
+  return <SectionBoundary key={`${name}-${attempt}`} fallback={fallback}>{children}</SectionBoundary>;
 }

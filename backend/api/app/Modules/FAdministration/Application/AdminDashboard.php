@@ -2,8 +2,10 @@
 
 namespace App\Modules\FAdministration\Application;
 
+use App\Shared\Database\SqlDates;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Indicadores del Inicio del administrador (Fase 1 del panel, adelanto parcial de HU-S07-01 / TC-087, D-73).
@@ -31,25 +33,31 @@ final class AdminDashboard
         $counts = DB::table('service_requests')->groupBy('status')->selectRaw('status, COUNT(*) as total')->pluck('total', 'status');
         $byStatus = collect(self::REQUEST_STATUSES)->mapWithKeys(fn (string $status) => [$status => (int) ($counts[$status] ?? 0)])->all();
         $pending = DB::table('technician_profiles')->where('verification_status', 'pending')->count();
+        $searching = array_sum(array_intersect_key($byStatus, array_flip(OperationalAlerts::UNASSIGNED)));
+        // DEF-83: cada parte del Inicio se calcula por separado; si una falla, se registra y el resto responde.
+        $failed = [];
+        $parts = [
+            'recent_events' => $this->part('recent_events', fn () => $this->recentEvents(), $failed),
+            'kpis' => $this->part('kpis', fn () => $this->kpis($now, $searching), $failed),
+            'series' => $this->part('series', fn () => $this->series($now), $failed),
+            'tasks' => $this->part('tasks', fn () => $this->tasks->list(), $failed),
+        ];
 
-        return [
+        return $parts + [
             'requests_by_status' => $byStatus,
             'requests_total' => array_sum($byStatus),
             'technicians_pending_verification' => $pending,
             // Fase A1 (D-118): contadores del menú; las alertas son null sin umbrales en la versión vigente de las reglas.
             'badges' => [
                 'verification_pending' => $pending,
-                'requests_unassigned' => array_sum(array_intersect_key($byStatus, array_flip(OperationalAlerts::UNASSIGNED))),
+                'requests_unassigned' => $searching,
                 'operational_alerts' => $this->alerts->counts()['total'] ?? null,
             ],
             // Bloque C (D-85): contador del menú «Comunicados» y últimos eventos para el Inicio.
             'announcements_active' => DB::table('announcements')->where('status', 'published')->whereNull('retired_at')
                 ->where('starts_at', '<=', $now)->where('ends_at', '>', $now)->count(),
-            'recent_events' => $this->recentEvents(),
-            // Fase A2 (panel de control): indicadores, serie de 30 días y tareas pendientes de D-118.
-            'kpis' => $this->kpis($now, array_sum(array_intersect_key($byStatus, array_flip(OperationalAlerts::UNASSIGNED)))),
-            'series' => $this->series($now),
-            'tasks' => $this->tasks->list(),
+            // Fase A2: partes del Inicio que no se pudieron calcular (van en null).
+            'failed_parts' => $failed,
             'new_users' => ['last_7_days' => $this->newUsers($now->subDays(7)), 'last_30_days' => $this->newUsers($now->subDays(30))],
             // Las calificaciones llegan en el Sprint 6: no hay datos que promediar.
             'ratings' => ['available' => false, 'average' => null, 'count' => 0, 'available_from' => 'Sprint 6'],
@@ -65,7 +73,7 @@ final class AdminDashboard
     {
         $average = DB::table('participations as p')->join('service_requests as s', 's.id', '=', 'p.request_id')
             ->where('p.slot', 'primary')->where('p.assigned_at', '>=', $now->subDays(self::SERIES_DAYS))->whereNotNull('s.submitted_at')
-            ->value(DB::raw('AVG(TIMESTAMPDIFF(SECOND, s.submitted_at, p.assigned_at))'));
+            ->value(DB::raw('AVG('.SqlDates::secondsBetween('s.submitted_at', 'p.assigned_at').')'));
 
         return [
             'requests_today' => DB::table('service_requests')->where('submitted_at', '>=', $this->limaDayStart($now))->count(),
@@ -82,7 +90,7 @@ final class AdminDashboard
     private function series(CarbonImmutable $now): array
     {
         $from = $this->limaDayStart($now)->subDays(self::SERIES_DAYS - 1);
-        $day = fn (string $column) => 'DATE(DATE_SUB('.$column.', INTERVAL '.self::LIMA_OFFSET_HOURS.' HOUR))';
+        $day = fn (string $column) => SqlDates::dayShifted($column, self::LIMA_OFFSET_HOURS);
         $count = fn ($query, string $column) => $query->where($column, '>=', $from)->groupByRaw($day($column))
             ->selectRaw($day($column).' as day, COUNT(*) as total')->pluck('total', 'day');
         $created = $count(DB::table('service_requests'), 'submitted_at');
@@ -96,6 +104,22 @@ final class AdminDashboard
             return ['date' => $date, 'created' => (int) ($created[$date] ?? 0), 'assigned' => (int) ($assigned[$date] ?? 0),
                 'cancelled' => (int) ($cancelled[$date] ?? 0), 'expired' => (int) ($expired[$date] ?? 0)];
         })->all()];
+    }
+
+    /**
+     * DEF-83: calcula una parte del Inicio; si falla, la registra (con la referencia de la petición en el contexto del
+     * registro), anota su nombre en $failed y devuelve null, sin tumbar el resto.
+     */
+    private function part(string $name, callable $compute, array &$failed): mixed
+    {
+        try {
+            return $compute();
+        } catch (Throwable $error) {
+            report($error);
+            $failed[] = $name;
+
+            return null;
+        }
     }
 
     /** Inicio del día de hoy en Lima, en UTC. */
