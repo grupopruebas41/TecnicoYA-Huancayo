@@ -347,3 +347,43 @@ Los demás campos no cambian.
 - **Migración `2026_11_24_000039_publish_rules_v4`:** versión 4 de las reglas, vigente desde el 2026-11-24 00:00 UTC (D-121). Copia los valores y los pesos de la v3 y suma 11 parámetros con `editable = 0`: `warranty_days` (30), `maintenance_reminder_days` (180), `iot_attention_tolerance_factor` (2), `unassigned_alert_minutes` (30), `pending_expiring_alert_minutes` (120), `expired_rounds_alert_count` (2), `iot_failure_alert_minutes` (60), `low_performance_min_offers` (5), `low_performance_acceptance_percent` (40), `low_performance_expired_offers` (3) y `keyword_misses_recent_days` (7). Garantía, mantenimiento y factor IoT se leen del `RuleBook` desde la Fase A2.
 - **`AuthorizationSeeder`:** los 3 permisos de D-119 para el rol `admin`. En una base existente, `php artisan db:seed --class=AuthorizationSeeder`.
 - **`DistrictSeeder`:** Pilcomayo y Huancán (D-124), con su par de 1 km. En una base existente, `php artisan db:seed --class=DistrictSeeder`.
+
+## 11. Cambios de la versión 1.7 (2026-11-25): panel del administrador, Fase A2 (Inicio)
+
+### 11.1 `GET /admin/dashboard` **[cambia, aditivo]**
+
+Suma tres bloques. «Hoy» y los días de la serie son los de **Lima** (UTC-5, sin horario de verano), no los de UTC que usa `GET /admin/statistics`. El número de consultas es fijo.
+
+| Campo | Contenido |
+|---|---|
+| `kpis.requests_today` | Solicitudes enviadas (`submitted_at`) desde las 00:00 de hoy en Lima |
+| `kpis.searching_now` | Solicitudes en `sent` o `pending_availability` |
+| `kpis.technicians_verified` | Técnicos `active` con verificación `approved` |
+| `kpis.avg_assignment_minutes` | Promedio, en minutos redondeados, del envío a la asignación (participación primaria) de las asignaciones de los últimos 30 días; `null` sin datos |
+| `kpis.premium_clients` | Clientes con plan `premium` y cuenta no anonimizada |
+| `kpis.iot_open_alerts` | Alertas IoT de umbral abiertas (sin los recordatorios de mantenimiento) |
+| `series` | `{days: 30, items: [{date, created, assigned, cancelled, expired}]}`, de hace 29 días a hoy, con ceros explícitos. `created` usa `submitted_at`; `assigned`, la asignación primaria; `cancelled`, `cancelled_at`; y `expired`, el cierre de las vencidas |
+| `tasks` | Lista fija en este orden: `documents_to_review` (`verification`), `unassigned_requests` (`alerts`), `pending_expiring` (`alerts`), `keyword_misses` (`keywords`), `iot_unattended` (`iot`) y `low_performance` (`performance`). Cada una trae `{key, count, section, limit}`. `limit` es el umbral de D-118 en minutos o días (null en documentos). Sin umbrales en la versión vigente de las reglas, `count` es null |
+
+**`recent_events`:** pasa de 5 a 10 entradas.
+
+### 11.2 Reglas formalizadas (D-121)
+
+- **Fuente:** `warranty_days` (garantía de `GET /client/warranties`), `iot_attention_tolerance_factor` (estado del sensor y severidad de la alerta) y `maintenance_reminder_days` (sensores demo nuevos) se leen con `RuleBook::formalized`.
+- **Qué valor se usa:** el de la versión publicada y vigente más reciente que trae el parámetro.
+- **Antes de la v4:** se usa el valor con que se formalizó (D-103), que era el que regía como constante.
+
+### 11.3 Datos
+
+- **`DistrictSeeder`:** lee la matriz de `database/seeders/data/district-distances.php`. Los 7 pares de Pilcomayo y Huancán con otros distritos están en `null` y no se siembran (D-124).
+  - **Para cargarlos:** poner los km, la fuente y la fecha de consulta en ese archivo y ejecutar `php artisan db:seed --class=DistrictSeeder`.
+  - **Pares existentes:** la siembra solo inserta pares nuevos y nunca pisa uno existente.
+- **`DemoSeeder`:** (solo `APP_ENV=local`) agrega `demo-operacion@example.test` (cliente) y `demo-tecnico-ocupado@example.test` (técnico con desempeño bajo).
+  - `DemoAdminOperations` deja las solicitudes, rondas, búsquedas sin resultado y 10 entradas de auditoría de demo-admin (`source_code = demo-seeder`), todo rotulado «(demostración)».
+
+### 11.4 Corrección DEF-83 (2026-11-25)
+
+- **Motores:** `GET /admin/dashboard` y `GET /admin/statistics` dan el mismo resultado sobre MySQL y SQLite (base local). Las diferencias de fecha y los días de Lima se arman con `App\Shared\Database\SqlDates`.
+- **Partes del Inicio:** `kpis`, `series`, `tasks` y `recent_events` se calculan por separado.
+  - Si una falla, se registra en `laravel.log` con la referencia de la petición, va en `null` y su nombre aparece en el campo nuevo `failed_parts` (lista; vacía si todo salió bien). El resto responde con 200.
+  - El panel muestra «No pudimos cargar esta parte» con «Reintentar» solo en esa sección.

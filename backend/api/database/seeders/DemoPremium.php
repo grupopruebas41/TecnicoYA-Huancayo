@@ -32,6 +32,8 @@ final class DemoPremium
         }
         $address = (int) DB::table('client_addresses')->where('user_id', $userId)->orderByDesc('is_default')->value('id');
         $now = CarbonImmutable::now()->startOfHour();
+        // D-121: cada cuántos días toca el mantenimiento preventivo, de las reglas (maintenance_reminder_days).
+        $maintenance = (int) app(RuleBook::class)->formalized('maintenance_reminder_days');
         foreach (self::EQUIPMENT as [$name, $code, $brand, $model, $year, $metric, $sensor, $target, $tolerance, $notes, $maintenanceDaysAgo]) {
             $device = DB::table('iot_devices as d')->join('client_equipment as e', 'e.id', '=', 'd.equipment_id')
                 ->where('e.user_id', $userId)->where('e.name', $name)->value('d.id');
@@ -41,7 +43,7 @@ final class DemoPremium
                     'year' => $year, 'address_id' => $address, 'notes' => $notes, 'is_demo' => true]);
                 $device = DB::table('iot_devices')->insertGetId(['equipment_id' => $equipment, 'name' => $sensor, 'metric' => $metric,
                     'unit' => IotMonitor::METRICS[$metric]['unit'], 'target' => $target, 'tolerance' => $tolerance, 'battery' => 86,
-                    'maintenance_every_days' => 180, 'last_maintenance_at' => $now->subDays($maintenanceDaysAgo)]);
+                    'maintenance_every_days' => $maintenance, 'last_maintenance_at' => $now->subDays($maintenanceDaysAgo)]);
             }
             $this->readings((int) $device, $target, $tolerance, $notes !== null, $now);
         }

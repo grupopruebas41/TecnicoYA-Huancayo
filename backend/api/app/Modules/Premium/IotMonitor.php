@@ -3,13 +3,14 @@
 namespace App\Modules\Premium;
 
 use App\Modules\CNotifications\Application\Inbox;
+use App\Shared\Rules\RuleBook;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Fase 6 (D-99): lecturas SIMULADAS de los sensores y sus alertas. Una lectura está:
  * - normal si |valor − objetivo| ≤ tolerancia (justo en el borde sigue normal);
- * - en atención si se aleja hasta el doble de la tolerancia;
+ * - en atención si se aleja hasta iot_attention_tolerance_factor veces la tolerancia (2 en la v4 de las reglas, D-121);
  * - en falla si se aleja más.
  * Al salir del rango se abre una alerta (una por dispositivo hasta volver al rango) con su aviso en la campana; al volver
  * se cierra. El recordatorio de mantenimiento se abre cuando vence el plazo desde el último mantenimiento.
@@ -25,7 +26,11 @@ final class IotMonitor
 
     public function __construct(private readonly Inbox $inbox) {}
 
-    public static function status(object $device, ?float $value): string
+    /**
+     * D-121: el límite de «atención» es iot_attention_tolerance_factor veces la tolerancia, leído de las reglas. Quien
+     * evalúa muchos sensores lo lee una vez y lo pasa en $factor.
+     */
+    public static function status(object $device, ?float $value, ?float $factor = null): string
     {
         // DEF-76: sin lecturas en las últimas 24 h no hay base para decir «Falla»; el estado es «Sin datos».
         if ($value === null) {
@@ -37,7 +42,12 @@ final class IotMonitor
         $gap = abs($value - (float) $device->target);
         $tolerance = (float) $device->tolerance;
 
-        return $gap <= $tolerance ? 'normal' : ($gap <= 2 * $tolerance ? 'attention' : 'failure');
+        if ($gap <= $tolerance) {
+            return 'normal';
+        }
+        $factor ??= (float) app(RuleBook::class)->formalized('iot_attention_tolerance_factor');
+
+        return $gap <= $factor * $tolerance ? 'attention' : 'failure';
     }
 
     public static function number(float $value): string

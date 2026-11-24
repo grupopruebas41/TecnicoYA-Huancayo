@@ -65,6 +65,8 @@ php artisan schedule:work
 | `demo-expo-cliente@example.test` | Exposición: cliente Premium con equipos, sensores, alertas, garantías, 1 pedido activo y favoritos. Cada siembra lo devuelve a su primera visita |
 | `demo-expo-tecnico@example.test` | Exposición: técnico verificado con agenda, historial y estadísticas. Cada siembra lo devuelve a su primera visita |
 | `demo-expo-apoyo@example.test` | Cuenta de apoyo: recibe las otras visitas del técnico de la exposición; no se usa en la presentación |
+| `demo-operacion@example.test` | Cliente de apoyo del Inicio del administrador: solicitudes buscando técnico, una por vencer y rondas vencidas (demostración) |
+| `demo-tecnico-ocupado@example.test` | Técnico verificado con desempeño bajo en 30 días, para las Tareas pendientes del administrador (demostración) |
 
 **Recorrido sugerido:**
 1. Landing en `/` y `/nosotros`.

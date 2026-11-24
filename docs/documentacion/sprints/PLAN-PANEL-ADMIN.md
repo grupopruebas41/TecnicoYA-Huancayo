@@ -115,7 +115,8 @@ Las cifras de pruebas son **estimaciones**. Los IDs se asignan en orden desde S0
   - **`recent_events`:** pasa de 5 a 10 entradas.
 - **Pantalla:** saludo con la fecha, 6 indicadores con conteo animado, gráfico de barras apiladas (7 o 30 días) con su resumen en texto y tabla oculta para lectores, Tareas pendientes con acceso directo, Actividad reciente y accesos rápidos (crear comunicado, crear usuario y revisar verificación, según permisos).
 - **Reglas:** garantía, mantenimiento y factor IoT pasan a leerse del `RuleBook` (la versión 4 ya existe desde A1).
-- **Pruebas (S07-TC-164 a 183 aprox.):** Pest 9 (cada indicador con `travel`, series con ceros explícitos, cada tarea en su borde, 10 eventos y número de consultas acotado), Vitest 8 y Cypress 3.
+- **Hecho (2026-11-25):** además, la demo del Inicio (`DemoAdminOperations`) y el lugar de carga de las distancias de D-124 (`data/district-distances.php`). `RuleBook::formalized` lee los parámetros formalizados y, antes de la v4, usa el valor con que se formalizaron.
+- **Pruebas (hecho):** Pest S07-TC-167 a 178 (12), Vitest S07-TC-179 a 186 (8) y Cypress S07-TC-187 a 189 (3). Después, DEF-83 (Inicio y Estadísticas sobre SQLite y partes del Inicio aisladas) sumó S07-TC-190 a 194. El rediseño de «Actividad reciente» sumó S07-TC-195 a 198. La Fase A3 empieza en S07-TC-199.
 
 ### Fase A3 · Operación
 

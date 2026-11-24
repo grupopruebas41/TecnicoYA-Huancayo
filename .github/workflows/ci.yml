@@ -99,6 +99,13 @@ jobs:
           set -o pipefail
           php artisan config:clear
           php -d pcov.enabled=1 -d pcov.directory=. -d 'pcov.exclude=~(vendor|storage|bootstrap/cache)~' vendor/bin/pest --log-junit test-results/junit.xml --coverage-clover test-results/clover.xml --coverage --display-warnings --fail-on-warning | tee test-results/pest.txt
+      # DEF-83: la base local de desarrollo es SQLite; el Inicio y Estadísticas del administrador, y las migraciones, se
+      # vuelven a correr sobre SQLite en un paso propio para que una consulta propia de MySQL no pase desapercibida.
+      - name: Pest sobre SQLite (grupo sqlite)
+        if: always() && steps.install.outcome == 'success'
+        run: |
+          set -o pipefail
+          vendor/bin/pest --group=sqlite --display-warnings --fail-on-warning | tee test-results/pest-sqlite.txt
       - name: Auditoría Composer
         if: always() && steps.install.outcome == 'success'
         run: |

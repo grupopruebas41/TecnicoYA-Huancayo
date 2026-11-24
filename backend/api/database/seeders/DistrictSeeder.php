@@ -6,41 +6,45 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Distritos semilla de D-15 y su matriz de distancias de D-64. Idempotente: no vuelve a crear ni pisa los cambios
- * del administrador.
+ * Distritos de D-15 y D-124 (las 5 zonas del proyecto) y su matriz de distancias de D-64, que vive en
+ * data/district-distances.php: ahí se cargan los km de Pilcomayo y Huancán cuando el equipo los consulte (D-124).
+ * Idempotente: no vuelve a crear ni pisa los cambios del administrador.
  */
 class DistrictSeeder extends Seeder
 {
-    // Cierre S4-S5 (Sonar S1192): literales que se repetían.
-    private const SAME_DISTRICT_KM = '1.000';
-
     /** D-15 y D-124: las 5 zonas del proyecto (Pilcomayo y Huancán desde el 2026-11-24). */
     private const DISTRICTS = ['HUANCAYO' => 'Huancayo', 'EL-TAMBO' => 'El Tambo', 'CHILCA' => 'Chilca', 'PILCOMAYO' => 'Pilcomayo',
         'HUANCAN' => 'Huancán'];
 
-    /**
-     * D-64: km por ruta en auto entre plazas principales (Google Maps), aprobados por el equipo; mismo distrito, 1 km.
-     * D-124: los pares de Pilcomayo y Huancán con otros distritos no se inventan; faltan hasta que el equipo los consulte
-     * y, mientras tanto, la cercanía no aporta al puntaje (C = 0, como en D-86).
-     */
-    private const DISTANCES = [
-        ['HUANCAYO', 'EL-TAMBO', '3.500'], ['HUANCAYO', 'CHILCA', '2.500'], ['EL-TAMBO', 'CHILCA', '5.500'],
-        ['HUANCAYO', 'HUANCAYO', self::SAME_DISTRICT_KM], ['EL-TAMBO', 'EL-TAMBO', self::SAME_DISTRICT_KM], ['CHILCA', 'CHILCA', self::SAME_DISTRICT_KM],
-        ['PILCOMAYO', 'PILCOMAYO', self::SAME_DISTRICT_KM], ['HUANCAN', 'HUANCAN', self::SAME_DISTRICT_KM],
-    ];
-
-    private const SOURCE = 'Google Maps, ruta en auto entre plazas principales (D-64)';
+    /** @return list<array{from: string, to: string, km: ?string, source: ?string, consulted_on: ?string}> */
+    public static function distances(): array
+    {
+        return require __DIR__.'/data/district-distances.php';
+    }
 
     public function run(): void
     {
         foreach (self::DISTRICTS as $code => $name) {
             DB::table('districts')->insertOrIgnore(['code' => $code, 'name' => $name]);
         }
+        $this->seedDistances(self::distances());
+    }
+
+    /**
+     * Inserta los pares con km (los pendientes, en null, se saltan) en orden canónico, sin pisar un par existente.
+     * La fecha de consulta, si la hay, queda junto a la fuente.
+     */
+    public function seedDistances(array $rows): void
+    {
         $ids = DB::table('districts')->whereIn('code', array_keys(self::DISTRICTS))->pluck('id', 'code');
-        foreach (self::DISTANCES as [$from, $to, $km]) {
+        foreach ($rows as $row) {
+            if ($row['km'] === null || ! isset($ids[$row['from']], $ids[$row['to']])) {
+                continue;
+            }
+            $source = $row['source'].(($row['consulted_on'] ?? null) ? " ({$row['consulted_on']})" : '');
             DB::table('district_distances')->insertOrIgnore([
-                'from_district_id' => min($ids[$from], $ids[$to]), 'to_district_id' => max($ids[$from], $ids[$to]),
-                'km' => $km, 'source' => self::SOURCE,
+                'from_district_id' => min($ids[$row['from']], $ids[$row['to']]), 'to_district_id' => max($ids[$row['from']], $ids[$row['to']]),
+                'km' => $row['km'], 'source' => $source,
             ]);
         }
     }

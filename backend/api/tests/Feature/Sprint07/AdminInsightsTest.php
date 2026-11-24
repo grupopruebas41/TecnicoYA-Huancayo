@@ -209,7 +209,10 @@ it('S07-TC-128 el Inicio entrega los contadores del menú y los últimos 5 event
     $data = $response->json('data');
     expect($data['technicians_pending_verification'])->toBe(3)
         ->and($data['announcements_active'])->toBe(1)
-        ->and(collect($data['recent_events'])->pluck('reason')->all())->toBe(['Evento sintético 7', 'Evento sintético 6', 'Evento sintético 5', 'Evento sintético 4', 'Evento sintético 3'])
+        // Fase A2 (PLAN-PANEL-ADMIN.md, 2026-11-25): la actividad reciente pasa de 5 a 10 entradas (el tope lo prueba
+        // S07-TC-172); aquí entran las 7 sintéticas, de la más nueva a la más antigua, y sigue sin entrar el acceso.
+        ->and(collect($data['recent_events'])->pluck('reason')->all())->toBe(['Evento sintético 7', 'Evento sintético 6', 'Evento sintético 5',
+            'Evento sintético 4', 'Evento sintético 3', 'Evento sintético 2', 'Evento sintético 1'])
         ->and($data['recent_events'][0])->toMatchArray(['action' => 'user.blocked', 'actor' => 'Administración de prueba']);
     expect($response->getContent())->not->toContain('@example');
 });

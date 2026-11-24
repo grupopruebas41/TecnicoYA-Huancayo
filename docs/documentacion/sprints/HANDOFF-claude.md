@@ -2,6 +2,69 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-25 · Revisión del #69: «Actividad reciente» como línea de tiempo
+
+- **Rama:** la misma. Pedido de Pimentel antes de integrar el #69.
+- **Commits:** `c15aede` (Vitest en rojo), `d00307c` (implementación) y `357058b` (ajuste visto en las capturas).
+- **Cambios:**
+  - `AdmActivity`: hora de Lima con «hace N h» en el title, días «Hoy», «Ayer» o «22 nov», línea continua y punto con ícono;
+  - tonos AA por tipo (rojo suave, verde, azul y ámbar), siempre con una etiqueta de tipo en texto;
+  - motivo en una línea con el texto completo en el title;
+  - chips en el cliente y pie hacia Auditoría (con `audit.view`);
+  - vacío con ilustración y entrada escalonada que respeta «Reducir animaciones»;
+  - Tareas y Actividad en dos columnas desde 1200 px;
+  - nombres en español de `technician.review`, `client.plan.changed` y `catalog.*`.
+- **Pruebas:**
+  - Vitest S07-TC-195 a 198 (548/548, lint y build);
+  - adaptadas: S07-TC-065, 130 y 185, y S07-TC-181 (avanza la animación dentro de `waitFor`; fallaba con el equipo cargado).
+- **Capturas:** `evidencias/sprint-07/admin-a2/` (`357058b`), 12, sin problemas medidos.
+- **IDs:** la Fase A3 empieza en S07-TC-199.
+
+## 2026-11-25 · Revisión del #69: DEF-83 (Inicio sobre SQLite y partes aisladas)
+
+- **Rama:** la misma, `feature/pimentel/admin/a2-inicio`. Pedido de Pimentel antes de integrar el #69.
+- **Causa** (laravel.log, referencia `ff1281f6…`): `Illuminate\Database\QueryException`, «no such column: SECOND», en `AdminDashboard.php:68` (`TIMESTAMPDIFF`). La serie usaba `DATE_SUB` y `AdminStatistics.php:81` también `TIMESTAMPDIFF`: SQL propio de MySQL. La base local de Pimentel es SQLite; la CI y el E2E, MySQL.
+- **Commits:** `4eb33f7` (rojo) y `a685d57` (corrección).
+- **Corrección:**
+  - `App\Shared\Database\SqlDates` (MySQL y SQLite);
+  - partes del Inicio aisladas en el backend (`failed_parts`, registro con referencia) y en el panel (aviso y «Reintentar» por sección, también si falla al dibujarse);
+  - paso «Pest sobre SQLite (grupo sqlite)» en `ci.yml`, con el Inicio, las Estadísticas y las migraciones.
+- **Pruebas:** Pest S07-TC-190 a 192 (grupo `sqlite`: 6/6) y Vitest S07-TC-193 y 194.
+- **Nota:** en este equipo, con la carga del navegador y del servidor local, S01-TC-016 y S07-TC-057 rozaron el límite de 5 s de Vitest. Solas pasan.
+- **Lección:** cualquier SQL nuevo de fechas va por `SqlDates` y se prueba en el grupo `sqlite`. La Fase A3 empieza en S07-TC-195.
+- **Pedidos a Codex:** ninguno.
+
+## 2026-11-25 · Panel del administrador, Fase A2: Inicio tipo panel de control
+
+- **Rama:** `feature/pimentel/admin/a2-inicio`, desde `main` `475d471` (#68 integrado).
+- **Commits:**
+  - `a17c772` Pest en rojo y `0c37d47` backend;
+  - `d97d076` Vitest en rojo y `fd0616c` frontend;
+  - `ff39f25` Cypress y `4fd7f0a` pruebas adaptadas;
+  - `864c646` y `afe0bf1` ajustes de las capturas.
+- **Cambios:**
+  - `/admin/dashboard` con `kpis`, `series` (30 días de Lima) y `tasks` (`AdminTasks`, con su `limit`), y 10 eventos;
+  - `RuleBook::formalized` (D-121): garantía, factor IoT y mantenimiento ya no son constantes;
+  - `DemoAdminOperations`, con demo-operacion y demo-tecnico-ocupado;
+  - `data/district-distances.php`, donde se cargan los km de D-124;
+  - `AdminHome` y `AdmTrendChart`, con paleta validada con dataviz.
+- **Pruebas:**
+  - Pest S07-TC-167 a 178; la suite completa quedó en verde después de adaptar S04-TC-139 y S07-TC-173;
+  - Vitest S07-TC-179 a 186 (542/542, lint y build);
+  - Cypress S07-TC-187 a 189.
+- **e2e-cierre:**
+  - run `45425981779` (`ff39f25`): S07 en verde (6 casos);
+  - S04-TC-088 falló en `switchAccount`: no llegó al panel tras cambiar de cuenta. Es el mismo intermitente de cambio de cuenta que ya se vio en S04-TC-087 y S01-TC-077; esta fase no toca ese flujo;
+  - run `45450004938` (`76f54a9`): S01 17, S02 17, S03 17, S05 35 y S07 6, 0 fallos; S04 falló en S04-TC-087 (mismo intermitente);
+  - run `45451490535` (solo S04, misma rama): 18 de 18; y la de `main` `45451496479` también pasa;
+  - registrado como **DEF-82** (abierto): el login que falla responde en 0,08 ms, se rechaza antes de autenticar; se descartó el limitador.
+- **CI del #69:** S07-TC-173 falló dos veces (52 frente a 51 consultas): la consulta de más venía de la sesión o del middleware de la petición HTTP, no del Inicio. Ahora cuenta solo `AdminDashboard::snapshot`; la CI está en verde.
+- **Lecciones:**
+  - un SVG con viewBox fijo se encoge en el celular: medir el ancho real del contenedor;
+  - el reloj de `Sprint04::boot` es el 2026-10-20: las pruebas que usan la v4 de las reglas viajan después del 2026-11-24.
+- **Siguiente:** Fase A3 (Operación), desde S07-TC-190, con DEF-81.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-24 · Panel del administrador, Fase A1: base y menú (con el plan de la A0 en el mismo PR)
 
 - **Rama:** `feature/pimentel/admin/a1-base`, desde `main` `90a2a62`. Era `a0-plan`; se renombró antes de publicarla, porque el plan entra con la A1 (pedido de Pimentel).

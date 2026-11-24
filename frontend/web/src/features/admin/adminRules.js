@@ -18,6 +18,14 @@ export const EVENT_LABELS = {
   'announcement.published_edited': 'Comunicado vigente editado', 'announcement.unpublished': 'Comunicado despublicado',
   'announcement.retired': 'Comunicado retirado', 'announcement.restored': 'Comunicado restaurado', 'announcement.deleted': 'Comunicado eliminado',
   'announcement.reordered': 'Orden del carrusel cambiado',
+  // Revisión del #69: acciones reales del registro que no tenían su nombre en español.
+  'technician.review': 'Técnico revisado', 'technician.verification.approved': 'Verificación aprobada',
+  'technician.verification.rejected': 'Verificación observada', 'technician.verification_requested': 'Verificación solicitada',
+  'client.plan.changed': 'Plan del cliente cambiado', 'catalog.keyword_created': 'Palabra clave creada',
+  'catalog.keyword_updated': 'Palabra clave editada', 'catalog.keyword_suggestion_approved': 'Sugerencia de búsqueda aprobada',
+  'catalog.keyword_suggestion_discarded': 'Sugerencia de búsqueda descartada', 'catalog.specialty.created': 'Especialidad creada',
+  'catalog.specialty.updated': 'Especialidad editada', 'catalog.subcategory.created': 'Subcategoría creada',
+  'catalog.subcategory.updated': 'Subcategoría editada', 'catalog.district.created': 'Distrito creado', 'catalog.district.updated': 'Distrito editado',
 };
 export const eventLabel = action => EVENT_LABELS[action] || action;
 
