@@ -99,7 +99,7 @@ export default function AdmActivity({events = [], navigate = null, canSeeAll = f
       </div>)}
     </div>}
     {events.length > 0 && canSeeAll && navigate && <footer className="adm-activity-foot">
-      <button type="button" className="text-button" onClick={() => navigate('audit')}>Ver toda la actividad <Icon name="chevron"/></button>
+      <button type="button" className="adm-see-all" onClick={() => navigate('audit')}>Ver toda la actividad <Icon name="chevron"/></button>
     </footer>}
   </section>;
 }

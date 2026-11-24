@@ -310,8 +310,24 @@ html[data-motion="reduce"] .adm-how-item { animation: none !important; }
 .adm-event-actor { color: var(--ty-muted); font-size: 0.8rem; }
 .adm-activity-none { margin: 0; }
 .adm-activity-foot { display: flex; justify-content: flex-end; padding-top: 8px; border-top: 1px solid var(--ty-border); }
-.adm-activity-foot button { display: inline-flex; gap: 6px; align-items: center; min-height: 44px; font-weight: 600; }
-.adm-activity-foot .panel-svg-icon { width: 16px; height: 16px; margin: 0; }
+/* Visto en las capturas: con los estilos genéricos del botón de texto la flecha bajaba de línea. */
+.adm-see-all {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--ty-accent);
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.adm-see-all:hover { text-decoration: underline; }
+.adm-see-all .panel-svg-icon { flex: 0 0 auto; width: 16px; height: 16px; margin: 0; }
 @media (max-width: 480px) {
   .adm-event { grid-template-columns: 44px 32px minmax(0, 1fr); gap: 8px; }
   .adm-timeline-line { left: 68px; }
