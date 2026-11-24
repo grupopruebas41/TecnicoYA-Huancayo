@@ -77,7 +77,8 @@ it('S04-TC-139 DemoSeeder solo en desarrollo, con contraseña por variable, foto
             'demo-tecnico-computo@example.test', 'demo-tecnico-pendiente@example.test')
         ->and($accounts->where('email', '!=', 'admin-previo@example.test')->every(fn (User $user) => Hash::check($password, $user->password)))->toBeTrue()
         ->and(DB::table('users')->where('password', $password)->exists())->toBeFalse()
-        ->and(DB::table('technician_profiles')->where('verification_status', 'approved')->whereNotNull('base_district_id')->count())->toBe(3)
+        // Cuentas de la exposición (2026-11-23): demo-expo-tecnico suma un cuarto técnico verificado.
+        ->and(DB::table('technician_profiles')->where('verification_status', 'approved')->whereNotNull('base_district_id')->count())->toBe(4)
         ->and(DB::table('technician_profiles')->where('verification_status', 'pending')->count())->toBe(1);
 
     expect(DB::table('subcategories')->whereNull('carousel_media_id')->count())->toBe(0)

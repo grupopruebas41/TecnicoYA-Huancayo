@@ -103,6 +103,7 @@ final class DemoSeeder extends Seeder
             foreach (self::ANNOUNCEMENTS as $slug => $data) {
                 $this->announcement($admin->id, $slug, $data);
             }
+            $this->expo($password);
         });
     }
 
@@ -238,12 +239,48 @@ final class DemoSeeder extends Seeder
     {
         if ($fresh) {
             DB::table('users')->where('id', $userId)->update(['onboarding_completed_at' => null, 'tour_completed_at' => null,
-                'accessibility_prefs' => null, 'offer_alert_prefs' => null]);
+                'accessibility_prefs' => null, 'offer_alert_prefs' => null, 'theme_preference' => null]);
 
             return;
         }
         DB::table('users')->where('id', $userId)->whereNull('onboarding_completed_at')->update(['onboarding_completed_at' => now()]);
         DB::table('users')->where('id', $userId)->whereNull('tour_completed_at')->update(['tour_completed_at' => now()]);
+    }
+
+    /**
+     * Cuentas de la exposición: demo-expo-cliente (Premium con equipos, sensores, alertas, garantías, 1 pedido activo y
+     * favoritos) y demo-expo-tecnico (verificado, con servicios, portafolio, agenda, historial y estadísticas). En cada siembra
+     * vuelven a su primera visita; los datos no se duplican. demo-expo-apoyo recibe las otras visitas del técnico para que el
+     * cliente de la exposición quede con un solo pedido activo (D-95) y no entra a la presentación.
+     */
+    private function expo(string $password): void
+    {
+        $client = $this->account('demo-expo-cliente', 'client', 'Cliente', 'Expo', '900000130', $password);
+        $this->client($client, 'mype', 'HUANCAYO', 'Minimarket Expo S. A. C.');
+        $clientId = (int) DB::table('client_profiles')->where('user_id', $client->id)->value('id');
+        app(DemoPremium::class)->run($client->id, $clientId, $this->district('HUANCAYO'));
+        $support = $this->account('demo-expo-apoyo', 'client', 'Cliente', 'Apoyo Expo', '900000132', $password);
+        $this->client($support, 'household', 'EL-TAMBO');
+        $supportId = (int) DB::table('client_profiles')->where('user_id', $support->id)->value('id');
+
+        $data = ['given' => 'Técnico', 'family' => 'Expo', 'name' => 'Técnico Expo Demo', 'base' => 'HUANCAYO'] + DemoTechnicianProfiles::PROFILES['refrigeracion'];
+        $user = $this->account('demo-expo-tecnico', 'technician', $data['given'], $data['family'], '900000131', $password);
+        $this->technician($user, $data, 'active', 'approved');
+        $technician = (int) DB::table('technician_profiles')->where('user_id', $user->id)->value('id');
+        $this->portfolio($technician, $user->id, 'demo-expo-tecnico', $data['portfolio']);
+        $this->reviews($technician, $data['reviews']);
+        $this->verificationDocuments($technician, $user->id, 'approved');
+        // Agenda, ofertas y trabajos de los últimos días e historial de meses para las estadísticas.
+        app(DemoTechnicianActivity::class)->run($technician, [$clientId, $supportId]);
+        app(DemoTechnicianActivity::class)->history($technician, [$clientId, $supportId]);
+
+        $favorites = DB::table('technician_profiles as t')->join('users as u', 'u.id', '=', 't.user_id')
+            ->whereIn('u.email', ['demo-expo-tecnico@example.test', 'demo-tecnico-refrigeracion@example.test', 'demo-tecnico-computo@example.test'])->pluck('t.id');
+        foreach ($favorites as $favorite) {
+            DB::table('client_favorite_technicians')->insertOrIgnore(['client_user_id' => $client->id, 'technician_id' => $favorite]);
+        }
+        $this->firstVisit($client->id, true);
+        $this->firstVisit($user->id, true);
     }
 
     /** D-101: reseñas de ejemplo, solo en local; no son calificaciones y el panel las rotula como demostración. */

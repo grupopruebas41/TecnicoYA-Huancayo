@@ -2,6 +2,22 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-23 · Cuentas de la exposición en el DemoSeeder
+
+- **Rama:** `feature/pimentel/demo/expo-cuentas/s05`, desde `main` `f526c7d` (#66 integrado). PR pequeño.
+- **Commits:** `c891d51` Pest en rojo y `84c44a7` implementación.
+- **Cambio (solo APP_ENV=local):**
+  - **`demo-expo-cliente`:** cliente Premium con DemoPremium (3 equipos, sensores con 24 h de lecturas, una falla abierta y un recordatorio), la garantía de ejemplo y las del historial del técnico, 1 pedido activo y 3 favoritos.
+  - **`demo-expo-tecnico`:** verificado con la ficha de refrigeración, 2 documentos aprobados, servicios con tarifa, portafolio, reseñas de ejemplo, agenda, ofertas, trabajos e historial de meses. Tiene «Responde en ~N min».
+  - **`demo-expo-apoyo`:** recibe las otras visitas del técnico para que el cliente quede con un solo pedido activo.
+  - **Primera visita:** en cada siembra las dos cuentas vuelven a ella (`firstVisit` también limpia `theme_preference`) y los datos no se duplican.
+  - **Contraseña:** la de `TECNICOYA_DEMO_PASSWORD`; no se guarda en el código.
+- **Pruebas:**
+  - S05-TC-421 a 423;
+  - S04-TC-139 ajustada (4 técnicos verificados) con la explicación en el código;
+  - suite completa 536/536.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-22 · Revisión del #66: límite de pedidos (DEF-80), alertas de falla fuera del límite (D-113), imágenes de equipos y CLI-09 (D-114)
 
 - **Rama:** la misma, `feature/delgado/cliente/pulido-final`. Pedido de Pimentel en la revisión del #66.
