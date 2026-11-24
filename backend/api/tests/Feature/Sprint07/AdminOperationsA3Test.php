@@ -7,6 +7,7 @@
 use App\Models\TechnicianProfile;
 use App\Models\User;
 use App\Modules\BMatching\Jobs\PrepareMatching;
+use App\Modules\CNotifications\Events\AdminMatchingSignal;
 use App\Modules\CNotifications\Events\OutboxBroadcast;
 use App\Shared\Rules\RuleBook;
 use Carbon\CarbonImmutable;
@@ -288,11 +289,13 @@ it('S07-TC-208 el canal privado admin.matching solo autoriza a administradores c
         $post()->assertForbidden();
     }
 
-    Event::fake([OutboxBroadcast::class]);
+    // La señal es un evento propio (AdminMatchingSignal) para que cada fila del outbox se difunda una sola vez (S04-TC-068).
+    Event::fake([OutboxBroadcast::class, AdminMatchingSignal::class]);
     $request = s07a3Searching();
     $this->artisan('tecnicoya:sweep')->assertSuccessful();
-    $signals = collect(Event::dispatched(OutboxBroadcast::class))->map(fn ($call) => $call[0])
-        ->filter(fn (OutboxBroadcast $event) => $event->broadcastOn()[0]->name === $channel);
+    $signals = collect(Event::dispatched(AdminMatchingSignal::class))->map(fn ($call) => $call[0]);
+    expect($signals->every(fn (AdminMatchingSignal $event) => $event->broadcastOn()[0]->name === $channel))->toBeTrue()
+        ->and(collect(Event::dispatched(OutboxBroadcast::class))->filter(fn ($call) => str_contains($call[0]->broadcastOn()[0]->name, 'admin.matching')))->toBeEmpty();
     expect($signals)->not->toBeEmpty()
         ->and($signals->first()->broadcastAs())->toBe('matching.changed')
         ->and(array_keys($signals->first()->broadcastWith()))->toEqualCanonicalizing(['event_id', 'request_id'])

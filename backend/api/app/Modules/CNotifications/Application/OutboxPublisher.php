@@ -2,6 +2,7 @@
 
 namespace App\Modules\CNotifications\Application;
 
+use App\Modules\CNotifications\Events\AdminMatchingSignal;
 use App\Modules\CNotifications\Events\OutboxBroadcast;
 use App\Shared\Rules\RuleBook;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,7 @@ final class OutboxPublisher
             return;
         }
         try {
-            event(new OutboxBroadcast('admin.matching', 'matching.changed', ['event_id' => (string) Str::uuid(), 'request_id' => (int) $requestId]));
+            event(new AdminMatchingSignal(['event_id' => (string) Str::uuid(), 'request_id' => (int) $requestId]));
         } catch (Throwable) {
             // Sin Reverb no hay señal: el tablero se actualiza por consulta periódica.
         }
