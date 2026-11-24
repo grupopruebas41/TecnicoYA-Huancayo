@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {counted, shortDay} from './homeFormat';
 
 /**
@@ -13,9 +13,26 @@ export const SERIES = [
   ['expired', 'Vencidas', 'vencida', 'vencidas'],
 ];
 const RANGES = [7, 30];
-const W = 640;
 const H = 220;
-const PAD = {top: 12, right: 92, bottom: 28, left: 32};
+// Visto en las capturas a 390 px: con un viewBox fijo el texto se encogía y las etiquetas finales se encimaban. El ancho
+// del dibujo es el real del contenedor (texto a tamaño real) y, por debajo de NARROW, sin etiquetas finales: quedan la
+// leyenda, el detalle del día y la tabla.
+const DEFAULT_WIDTH = 640;
+const NARROW = 480;
+const padding = width => ({top: 12, right: width < NARROW ? 12 : 92, bottom: 28, left: 32});
+
+/** Ancho del contenedor con ResizeObserver; sin él (pruebas), el ancho por omisión. */
+function useWidth() {
+  const ref = useRef(null);
+  const [width, setWidth] = useState(DEFAULT_WIDTH);
+  useEffect(() => {
+    if (!ref.current || typeof ResizeObserver !== 'function') return undefined;
+    const observer = new ResizeObserver(([entry]) => { if (entry.contentRect.width) setWidth(Math.round(entry.contentRect.width)); });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, width];
+}
 const LABEL_GAP = 14;
 
 /** Etiquetas al final de cada línea sin encimarse: ordenadas por altura y separadas al menos LABEL_GAP. */
@@ -34,6 +51,8 @@ export function summary(items) {
 export default function AdmTrendChart({items: all = []}) {
   const [range, setRange] = useState(7);
   const [active, setActive] = useState(null);
+  const [plotRef, W] = useWidth();
+  const PAD = padding(W);
   const items = all.slice(-range);
   const max = Math.max(1, ...items.flatMap(item => SERIES.map(([key]) => item[key])));
   const top = Math.ceil(max / 2) * 2;
@@ -54,8 +73,10 @@ export default function AdmTrendChart({items: all = []}) {
     pick(Math.round(((svgX - PAD.left) / (W - PAD.left - PAD.right)) * (items.length - 1)));
   }
   // Con 30 días, una etiqueta cada 5 contando desde hoy, para que no se encimen.
-  const showTick = index => range === 7 || (items.length - 1 - index) % 5 === 0;
-  const ends = items.length ? endLabels(SERIES.map(([key, label]) => ({key, label, value: items.at(-1)[key], y: y(items.at(-1)[key])}))) : [];
+  // En pantallas angostas, con 7 días, una etiqueta cada 2.
+  const every = range === 30 ? 5 : W < NARROW ? 2 : 1;
+  const showTick = index => (items.length - 1 - index) % every === 0;
+  const ends = items.length && W >= NARROW ? endLabels(SERIES.map(([key, label]) => ({key, label, value: items.at(-1)[key], y: y(items.at(-1)[key])}))) : [];
   const day = active === null ? null : items[active];
   return <section className="adm-card adm-trend" aria-labelledby="adm-trend-title">
     <header className="adm-card-head">
@@ -69,7 +90,7 @@ export default function AdmTrendChart({items: all = []}) {
     <ul className="adm-legend" aria-label="Leyenda">
       {SERIES.map(([key, label]) => <li key={key}><span className="adm-swatch" data-series={key} aria-hidden="true"/>{label}</li>)}
     </ul>
-    <div className="adm-trend-plot">
+    <div className="adm-trend-plot" ref={plotRef}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Solicitudes por día en los últimos ${range} días. ${summary(items)}`} tabIndex={0}
         onKeyDown={onKey} onMouseMove={onMove} onMouseLeave={() => setActive(null)} onBlur={() => setActive(null)}>
         {[0, top / 2, top].map(tick => <g key={tick} className="adm-grid">
@@ -94,12 +115,14 @@ export default function AdmTrendChart({items: all = []}) {
     </div>
     <details className="adm-table-toggle">
       <summary>Ver como tabla</summary>
+      <div className="adm-table-scroll">
       <table className="adm-table">
         <caption className="sr-only">Solicitudes por día en los últimos {range} días</caption>
         <thead><tr><th scope="col">Día</th>{SERIES.map(([key, label]) => <th key={key} scope="col">{label}</th>)}</tr></thead>
         <tbody>{items.map(item => <tr key={item.date}><th scope="row">{shortDay(item.date)}</th>
           {SERIES.map(([key]) => <td key={key}>{item[key]}</td>)}</tr>)}</tbody>
       </table>
+      </div>
     </details>
   </section>;
 }
