@@ -227,6 +227,9 @@ describe('Inicio del administrador', function () {
             return $total;
         };
         Sprint04::sentRequest();
+        // En la suite completa la primera petición del proceso hizo una consulta más (52 frente a 51): es una carga única,
+        // no una consulta que crezca con los datos. Se mide después de una llamada de calentamiento.
+        $count();
         $few = $count();
         foreach (range(1, 8) as $index) {
             $request = Sprint04::sentRequest(['status' => 'assigned', 'submitted_at' => now()->subDays($index)]);
