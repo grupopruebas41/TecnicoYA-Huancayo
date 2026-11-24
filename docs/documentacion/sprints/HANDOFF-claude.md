@@ -2,6 +2,22 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-24 · Panel del administrador, Fase A0: plan (sin código de producto)
+
+- **Rama:** `feature/pimentel/admin/a0-plan`, desde `main` `90a2a62` (#67 integrado).
+- **Cambios:**
+  - `PLAN-PANEL-ADMIN.md` reescrito: inventario real, lenguaje visual (`adm-`), fases A1 a A6 con endpoints, migraciones, permisos, IDs estimados desde S07-TC-144 y riesgos. El plan del 2026-10-26 queda en el historial.
+  - `DECISIONES.md`: D-115, D-116 y D-117 tomadas; ADM-13 a ADM-19 pendientes.
+- **Hallazgos del inventario:**
+  - el administrador ya tiene los 8 ajustes de accesibilidad;
+  - no hay Cypress ni siembra E2E del S07;
+  - solo hay 3 distritos sembrados (el prompt dice 5; ADM-19);
+  - la garantía, el mantenimiento y el umbral IoT están en el código, no en las reglas (ADM-16);
+  - las promociones son comunicados `kind = promotion` y solo las ve el Premium (ADM-17).
+- **Pruebas:** ninguna (solo documentación).
+- **Siguiente:** esperar ADM-13 a ADM-19 (ADM-14 bloquea A1) y empezar la Fase A1.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-23 · Cuentas de la exposición en el DemoSeeder
 
 - **Rama:** `feature/pimentel/demo/expo-cuentas/s05`, desde `main` `f526c7d` (#66 integrado). PR pequeño.

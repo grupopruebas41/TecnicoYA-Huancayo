@@ -126,6 +126,9 @@
 | D-112 | TEC-08 · Valores por omisión de los avisos de oferta (Fase T5) | **Opción A.** Sonido, vibración y voz apagados y destello encendido (fijo, sin parpadeo, con «Reducir animaciones»); la tarjeta «Avisos de ofertas más notorios» de la bienvenida enciende sonido, vibración y destello. **B:** los cuatro apagados hasta que el técnico los encienda. En las dos, el plazo de 10 minutos no cambia y solo el técnico puede guardar avisos. | 2026-11-18 | Pimentel (opción A propuesta por Claude Code en la Fase T5) |
 | D-113 | PREM-03 · Solicitudes desde alertas de sensor y el límite de 3 pedidos activos (D-95) | Una solicitud creada con «Enviar a mi técnico de confianza» desde una alerta de **falla** (umbral, severidad failure) de un sensor de un cliente Premium **no cuenta** para el límite ni la bloquea: es una urgencia del equipo. Los **recordatorios de mantenimiento** (y las alertas de atención) sí cuentan. Idempotencia: la alerta se relee bloqueada y una misma alerta nunca crea dos solicitudes, aunque se envíe con otra clave. Pruebas S05-TC-410 a 412 | 2026-11-22 | Pimentel (revisión del #66) |
 | D-114 | CLI-09 · «Responde en ~N min» en el perfil público del técnico | **Opción A.** Mediana de responded_at − available_at de las ofertas aceptadas y rechazadas de los últimos 30 días, publicada solo con 5 o más respuestas, en minutos redondeados (mínimo 1) y como «~N h» desde una hora. Sin datos suficientes no se muestra (nunca un valor inventado). Campo response_minutes de GET /technicians/{id}. Pruebas S05-TC-414 y 418 | 2026-11-22 | Pimentel (revisión del #66); propuesta de Claude Code |
+| D-115 | ADM-10 · Reglas del negocio en el panel del administrador | Las reglas del negocio (límite de 3 pedidos activos, 10 minutos por oferta, pesos del puntaje de D-20, 24 horas de pendiente, días de garantía y umbrales IoT) **se muestran** en el panel con su versión vigente y su fecha. **Por ahora no se editan** desde el panel. Plan: `PLAN-PANEL-ADMIN.md` (Fase A6) | 2026-11-24 | Equipo (prompt del panel del administrador, Pimentel) |
+| D-116 | ADM-11 · Intervención del administrador en una solicitud | El administrador solo puede **«Cancelar con motivo»** y **«Reenviar al emparejamiento»** (una ronda nueva con las reglas vigentes). **No puede asignar un técnico a mano.** Cada intervención queda auditada y se notifica al cliente. Plan: `PLAN-PANEL-ADMIN.md` (Fase A3) | 2026-11-24 | Equipo (prompt del panel del administrador, Pimentel) |
+| D-117 | ADM-12 · Bienvenida y tutorial del administrador | **Reemplaza a D-104 (d)** en lo que toca a la bienvenida y el tutorial. El administrador tiene una bienvenida corta y un tutorial de 5 pasos con el mismo motor del cliente y del técnico, solo la primera vez, que se puede omitir y repetir desde Ayuda. Plan: `PLAN-PANEL-ADMIN.md` (Fase A1) | 2026-11-24 | Equipo (prompt del panel del administrador, Pimentel) |
 
 ## Decisiones pendientes
 
@@ -133,6 +136,13 @@
 |---|---|---|---|---|
 | P17-S6 | Límites de comentarios de calificación y respuestas a reseñas (portafolio y documentos quedaron en D-46) | pendiente | — | — |
 | ASES-01 | Asesoría remota en el panel del cliente | pendiente, fuera de la Fase C1: cambia el modo de la solicitud, la cobertura y la distancia del matching del S4 y necesita su propio análisis (`PLAN-PANEL-CLIENTE.md` §4) | — | — |
+| ADM-13 | Umbrales de las alertas operativas y de las tareas pendientes del administrador | pendiente; opciones en `PLAN-PANEL-ADMIN.md` §5 (antes de A2) | — | — |
+| ADM-14 | Permisos nuevos del panel del administrador | pendiente; opciones en `PLAN-PANEL-ADMIN.md` §5 (antes de A1) | — | — |
+| ADM-15 | Estados en los que se puede intervenir una solicitud (D-116) y a quién se avisa | pendiente; opciones en `PLAN-PANEL-ADMIN.md` §5 (antes de A3) | — | — |
+| ADM-16 | Garantía, mantenimiento y umbrales IoT que hoy están en el código (D-115) | pendiente; opciones en `PLAN-PANEL-ADMIN.md` §5 (antes de A2) | — | — |
+| ADM-17 | Promociones: dónde se guardan y qué cliente las ve | pendiente; opciones en `PLAN-PANEL-ADMIN.md` §5 (antes de A5) | — | — |
+| ADM-18 | Preguntas frecuentes y consejos: origen de los datos | pendiente; opciones en `PLAN-PANEL-ADMIN.md` §5 (antes de A5) | — | — |
+| ADM-19 | Zonas y tarifas: 3 distritos sembrados frente a los 5 pedidos | pendiente; opciones en `PLAN-PANEL-ADMIN.md` §5 (antes de A5) | — | — |
 
 **Para registrar una decisión:**
 1. Pasar la fila a «Decisiones tomadas».
