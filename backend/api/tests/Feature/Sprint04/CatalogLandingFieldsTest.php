@@ -70,8 +70,9 @@ it('S04-TC-136 DatabaseSeeder siembra permisos, catálogo y los distritos activo
     $this->seed(DatabaseSeeder::class);
 
     $districts = $this->getJson('/api/v1/catalog/districts')->assertOk()->json('data');
-    expect(array_column($districts, 'code'))->toEqualCanonicalizing(['HUANCAYO', 'EL-TAMBO', 'CHILCA'])
-        ->and(DB::table('district_distances')->count())->toBe(6)
+    // D-124 (2026-11-24): 5 zonas. Pilcomayo y Huancán entran solo con su par de 1 km: los km entre distritos no se inventan.
+    expect(array_column($districts, 'code'))->toEqualCanonicalizing(['HUANCAYO', 'EL-TAMBO', 'CHILCA', 'PILCOMAYO', 'HUANCAN'])
+        ->and(DB::table('district_distances')->count())->toBe(8)
         ->and(DB::table('specialties')->where('active', 1)->count())->toBe(3)
         ->and(DB::table('permissions')->pluck('code')->all())->toContain('catalog.manage', 'technicians.verify')
         ->and(DB::table('users')->count())->toBe(0);
@@ -85,5 +86,5 @@ it('S04-TC-136 DatabaseSeeder siembra permisos, catálogo y los distritos activo
     $this->seed(DatabaseSeeder::class);
 
     expect($counts())->toBe($before)
-        ->and(array_column($this->getJson('/api/v1/catalog/districts')->json('data'), 'code'))->toEqualCanonicalizing(['HUANCAYO', 'EL-TAMBO']);
+        ->and(array_column($this->getJson('/api/v1/catalog/districts')->json('data'), 'code'))->toEqualCanonicalizing(['HUANCAYO', 'EL-TAMBO', 'PILCOMAYO', 'HUANCAN']);
 });

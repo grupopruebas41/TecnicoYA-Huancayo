@@ -120,8 +120,11 @@ it('S01-TC-063 devuelve en GET /me del administrador los permisos del rol y sus 
     ]);
     Sanctum::actingAs($admin);
 
+    // D-119 (2026-11-24): el rol admin suma audit.view, content.manage y requests.intervene; el caso sigue probando la
+    // unión ordenada de los permisos del rol y la concesión individual (reports.read).
     $this->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.role.code', 'admin')
-        ->assertJsonPath('data.permissions', ['announcements.manage', 'catalog.manage', 'dashboard.view', 'reports.read', 'technicians.verify', 'users.manage']);
+        ->assertJsonPath('data.permissions', ['announcements.manage', 'audit.view', 'catalog.manage', 'content.manage', 'dashboard.view',
+            'reports.read', 'requests.intervene', 'technicians.verify', 'users.manage']);
 });
 
 it('S01-TC-071 sirve el mismo catálogo público a anónimo, cliente, técnico, administrador y cuenta suspendida [TC-012]', function () {

@@ -1,0 +1,222 @@
+{
+  "1366-primera-visita-bienvenida": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-primera-visita-tutorial-1": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-primera-visita-tutorial-5": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-claro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-claro-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-claro-en-preparacion": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-claro-ayuda": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-claro-menu": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-en-preparacion": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-ayuda": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "1366-oscuro-menu": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-claro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-claro-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Ver la solicitud 44",
+      "Ver la solicitud 13",
+      "Ver la solicitud 32",
+      "Ver la solicitud 1",
+      "Ver la solicitud 43",
+      "Ver la solicitud 12",
+      "Ver la solicitud 42",
+      "Ver la solicitud 11",
+      "Ver la solicitud 40",
+      "Ver la solicitud 9"
+    ],
+    "desbordan": [
+      "table.admin-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "th.",
+      "th."
+    ]
+  },
+  "390-claro-en-preparacion": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-claro-ayuda": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-claro-menu": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-oscuro-inicio": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-oscuro-solicitudes": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [
+      "Ver la solicitud 44",
+      "Ver la solicitud 13",
+      "Ver la solicitud 32",
+      "Ver la solicitud 1",
+      "Ver la solicitud 43",
+      "Ver la solicitud 12",
+      "Ver la solicitud 42",
+      "Ver la solicitud 11",
+      "Ver la solicitud 40",
+      "Ver la solicitud 9"
+    ],
+    "desbordan": [
+      "table.admin-table",
+      "thead.",
+      "tr.",
+      "th.",
+      "th.",
+      "th."
+    ]
+  },
+  "390-oscuro-en-preparacion": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-oscuro-ayuda": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  },
+  "390-oscuro-menu": {
+    "overflowX": false,
+    "centrado": true,
+    "vertical": [],
+    "imagenesRotas": [],
+    "menos44": [],
+    "desbordan": []
+  }
+}

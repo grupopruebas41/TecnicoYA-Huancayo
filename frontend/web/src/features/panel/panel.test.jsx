@@ -48,8 +48,12 @@ test('S07-TC-057 el panel del administrador muestra su menú según permisos y m
 
   // Bloque C (D-85): el menú se agrupa en General, Gestión y Contenido (detalle en S07-TC-129). Fase T1 del panel del
   // técnico (D-104): Mi perfil y «Cerrar sesión» pasan al panel de la cuenta, como en el cliente; el menú ya no los lista.
-  expect(within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent))
-    .toEqual(['Inicio', 'Estadísticas', 'Usuarios', 'Verificación', 'Solicitudes', 'Catálogo', 'Comunicados']);
+  // Fase A1 del panel (2026-11-24): el menú suma secciones y grupos (detalle en S07-TC-153); las 7 de antes siguen, en su
+  // grupo nuevo, con los nombres de la Fase A1 («Verificación de técnicos» y «Estadísticas e informes»).
+  const labels = within(nav).getAllByRole('button').map(b => b.querySelector('.panel-label').firstChild.textContent);
+  expect(labels).toEqual(expect.arrayContaining(['Inicio', 'Estadísticas e informes', 'Usuarios', 'Verificación de técnicos', 'Solicitudes',
+    'Catálogo', 'Comunicados']));
+  expect(labels[0]).toBe('Inicio');
   expect(within(nav).getByRole('button', {name: 'Inicio'})).toHaveAttribute('aria-current', 'page');
   expect(document.querySelector('[data-cy=portal-admin]')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', {name: 'Cuenta de Ana Quispe'}));
@@ -63,8 +67,8 @@ test('S07-TC-057 el panel del administrador muestra su menú según permisos y m
   cleanup();
 
   await openAdmin({...admin, permissions: ['catalog.manage']});
-  expect(within(screen.getByRole('navigation', {name: 'Administración'})).getAllByRole('button').map(b => b.querySelector('.panel-label').textContent))
-    .toEqual(['Catálogo']);
+  expect(within(screen.getByRole('navigation', {name: 'Administración'})).getAllByRole('button').map(b => b.querySelector('.panel-label').firstChild.textContent))
+    .toEqual(['Catálogo', 'Palabras clave del buscador', 'Cómo funciona el panel']);
 });
 
 test('S07-TC-058 la barra lateral se contrae, conserva nombres accesibles y recuerda el estado', async () => {

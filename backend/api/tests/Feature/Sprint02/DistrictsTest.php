@@ -22,9 +22,12 @@ it('S02-TC-020 siembra Huancayo, El Tambo y Chilca una sola vez y no pisa lo que
 
     $this->seed(DistrictSeeder::class);
 
-    expect(DB::table('districts')->orderBy('id')->pluck('name')->all())->toBe(['Huancayo', 'El Tambo', 'Chilca'])
-        ->and(DB::table('districts')->orderBy('id')->pluck('active')->all())->toBe([1, 0, 1]);
-    expect(array_column($this->getJson('/api/v1/catalog/districts')->assertOk()->json('data'), 'name'))->toBe(['Huancayo', 'Chilca']);
+    // D-124 (2026-11-24): las zonas del proyecto son 5 y el seeder suma Pilcomayo y Huancán. Se mantiene lo que prueba el
+    // caso (una sola siembra que no pisa los cambios del administrador) con la lista nueva.
+    expect(DB::table('districts')->orderBy('id')->pluck('name')->all())->toBe(['Huancayo', 'El Tambo', 'Chilca', 'Pilcomayo', 'Huancán'])
+        ->and(DB::table('districts')->orderBy('id')->pluck('active')->all())->toBe([1, 0, 1, 1, 1]);
+    expect(array_column($this->getJson('/api/v1/catalog/districts')->assertOk()->json('data'), 'name'))
+        ->toBe(['Huancayo', 'Chilca', 'Pilcomayo', 'Huancán']);
 });
 
 it('S02-TC-021 CRUD-01 crea y desactiva un distrito con auditoría; el inactivo sale del catálogo público', function () {

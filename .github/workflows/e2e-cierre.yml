@@ -4,7 +4,8 @@ name: e2e-cierre
 # Cada sprint corre en su propio job con MySQL 8.4, la API (Laravel), el frontend (Vite) y, desde el S4, Reverb, la cola
 # y el scheduler, con el mismo arrancador que se usa en local (scripts/run-e2e.mjs, slot A). Los JUnit, las capturas de
 # fallo y el log de la API quedan como artefactos.
-# - Manual: Actions › e2e-cierre › Run workflow (por defecto, todos los sprints con Cypress).
+# - Manual: Actions › e2e-cierre › Run workflow (por defecto, todos los sprints con Cypress; el S07 desde la Fase A1 del
+#   panel del administrador, con Sprint07E2ESeeder).
 # - También corre en las ramas feature/pimentel/e2e-cierre/** para probar el propio workflow antes de integrarlo
 #   (workflow_dispatch solo existe cuando el archivo ya está en main).
 on:
@@ -13,7 +14,7 @@ on:
       sprints:
         description: 'Sprints a ejecutar, en JSON (por ejemplo ["02","05"])'
         required: false
-        default: '["01","02","03","04","05"]'
+        default: '["01","02","03","04","05","07"]'
   push:
     branches: ['feature/pimentel/e2e-cierre/**']
 
@@ -32,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sprint: ${{ fromJSON(github.event.inputs.sprints || '["01","02","03","04","05"]') }}
+        sprint: ${{ fromJSON(github.event.inputs.sprints || '["01","02","03","04","05","07"]') }}
     env:
       TECNICOYA_SLOT: A
       CI: 'true'

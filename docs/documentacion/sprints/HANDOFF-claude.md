@@ -2,6 +2,56 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-24 · Panel del administrador, Fase A1: base y menú (con el plan de la A0 en el mismo PR)
+
+- **Rama:** `feature/pimentel/admin/a1-base`, desde `main` `90a2a62`. Era `a0-plan`; se renombró antes de publicarla, porque el plan entra con la A1 (pedido de Pimentel).
+- **Decisiones:** D-118 a D-124 tomadas (ADM-13 a ADM-19: opción A; en ADM-19, las 5 zonas del informe).
+- **Commits:**
+  - `2d74b51` Pest en rojo y `dee78c3` Vitest en rojo;
+  - `6d2b1ba` backend y `6e5069d` frontend;
+  - `db92077` siembra E2E con su Pest y las Cypress;
+  - `12263e4` workflow.
+- **Cambios:**
+  - permisos `requests.intervene`, `audit.view` y `content.manage`;
+  - Pilcomayo y Huancán, sin km entre distritos (pendiente de consultarlos como en D-64);
+  - reglas v4, adelantada desde A2 porque los contadores necesitan los umbrales;
+  - `badges` en `/admin/dashboard`;
+  - menú en 8 grupos, Próximamente con su sprint y secciones «en preparación» sin enlaces rotos;
+  - bienvenida y tutorial de 5 pasos;
+  - Ayuda › «Cómo funciona el panel»;
+  - Catálogo y Palabras clave separados;
+  - demo-admin vuelve a su primera visita en cada siembra.
+- **Pruebas:**
+  - Pest S07-TC-144 a 152 y 166;
+  - Vitest S07-TC-153 a 162 (534/534, lint y build). S07-TC-161 pasó desde el inicio: fija lo que ya existía;
+  - Cypress S07-TC-163 a 165;
+  - e2e-cierre en la rama, run `45399494547` (`12263e4`): **107 casos, 0 fallos** (S01 17, S02 17, S03 17, S04 18, S05 35 y S07 3); segunda corrida sobre `e905f96` (tras el fix del tutorial), run `45402755609`: también 107 y 0;
+  - CI del #68: la primera falló por dos pruebas (S07-TC-166 con la guarda E2E y la simulación de S07-TC-157); corregidas en `43bccdf`, CI en verde;
+  - Pest completa: 546/546 después de adaptar S01-TC-063 (lista exacta de permisos del administrador);
+  - adaptadas con explicación: S02-TC-020, S04-TC-136, S07-TC-057, S07-TC-129 y S01-TC-063.
+- **Capturas:** 23 en `evidencias/sprint-07/admin-a1/` (`b36bd42`). DEF-81: Solicitudes (bloque C) desborda a 390 px y tiene botones de menos de 44 px; se corrige en A3.
+- **Lecciones:**
+  - con `git add` de una ruta ya eliminada falla todo el `add`, y lo que estaba en el índice entra al commit siguiente. Antes de publicar, revisar con `git show --stat`;
+  - `Sprint04::boot` viaja al 2026-10-20: para probar la v4 de las reglas hay que viajar después del 2026-11-24.
+- **Siguiente:** Fase A2 (Inicio), desde S07-TC-167; garantía, mantenimiento y factor IoT pasan a leerse del `RuleBook`.
+- **Pedidos a Codex:** ninguno.
+
+## 2026-11-24 · Panel del administrador, Fase A0: plan (sin código de producto)
+
+- **Rama:** `feature/pimentel/admin/a0-plan` (después, `a1-base`), desde `main` `90a2a62` (#67 integrado).
+- **Cambios:**
+  - `PLAN-PANEL-ADMIN.md` reescrito: inventario real, lenguaje visual (`adm-`), fases A1 a A6 con endpoints, migraciones, permisos, IDs estimados desde S07-TC-144 y riesgos. El plan del 2026-10-26 queda en el historial.
+  - `DECISIONES.md`: D-115, D-116 y D-117 tomadas; ADM-13 a ADM-19 pendientes.
+- **Hallazgos del inventario:**
+  - el administrador ya tiene los 8 ajustes de accesibilidad;
+  - no hay Cypress ni siembra E2E del S07;
+  - solo hay 3 distritos sembrados (el prompt dice 5; ADM-19);
+  - la garantía, el mantenimiento y el umbral IoT están en el código, no en las reglas (ADM-16);
+  - las promociones son comunicados `kind = promotion` y solo las ve el Premium (ADM-17).
+- **Pruebas:** ninguna (solo documentación).
+- **Siguiente:** esperar ADM-13 a ADM-19 (ADM-14 bloquea A1) y empezar la Fase A1.
+- **Pedidos a Codex:** ninguno.
+
 ## 2026-11-23 · Cuentas de la exposición en el DemoSeeder
 
 - **Rama:** `feature/pimentel/demo/expo-cuentas/s05`, desde `main` `f526c7d` (#66 integrado). PR pequeño.

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="5.263" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-24T13:05:42" tests="0" file="cypress/e2e/sprint-07/admin-base.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Panel del administrador: base y menú (Fase A1)" timestamp="2026-11-24T13:05:42" tests="3" time="5.262" failures="0">
+    <testcase name="Panel del administrador: base y menú (Fase A1) S07-TC-163 la primera visita muestra la bienvenida, guarda la preferencia y recorre el tutorial de 5 pasos una sola vez" time="2.872" classname="S07-TC-163 la primera visita muestra la bienvenida, guarda la preferencia y recorre el tutorial de 5 pasos una sola vez">
+    </testcase>
+    <testcase name="Panel del administrador: base y menú (Fase A1) S07-TC-164 el menú agrupa las secciones, «Próximamente» no navega y una sección en preparación lleva a una disponible" time="1.258" classname="S07-TC-164 el menú agrupa las secciones, «Próximamente» no navega y una sección en preparación lleva a una disponible">
+    </testcase>
+    <testcase name="Panel del administrador: base y menú (Fase A1) S07-TC-165 los contadores del menú muestran lo que informa el servidor: verificación, solicitudes sin técnico y alertas" time="1.052" classname="S07-TC-165 los contadores del menú muestran lo que informa el servidor: verificación, solicitudes sin técnico y alertas">
+    </testcase>
+  </testsuite>
+</testsuites>
