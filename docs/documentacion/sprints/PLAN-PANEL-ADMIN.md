@@ -121,6 +121,7 @@ Las cifras de pruebas son **estimaciones**. Los IDs se asignan en orden desde S0
 ### Fase A3 · Operación
 
 - **Rama:** `feature/pimentel/admin/a3-operacion`.
+- **Hecho (2026-11-25):** todo lo de abajo, más DEF-81 (Solicitudes sin desborde a 390 px) y DEF-84 (respuestas fuera de orden). Pruebas: Pest S07-TC-199 a 210, Vitest S07-TC-211 a 220 y 224, y Cypress S07-TC-221 a 223. La Fase A4 empieza en S07-TC-225.
 - **Solicitudes:**
   - **Detalle ampliado:** cliente con id, nombre para mostrar, distrito y plan (sin correo, teléfono ni dirección); especialidad y subcategorías; línea de tiempo con textos fijos; cada oferta con su técnico, ronda, estado, enviada, respondida o vencida, y minutos de respuesta; y técnico asignado.
   - **`POST /admin/requests/{id}/cancellation`:** motivo obligatorio de 10 a 500 caracteres y `expected_version`. Pasa a `cancelled` con el código nuevo `admin_intervention`, retira las ofertas abiertas, audita `request.admin_cancelled` y avisa al cliente (y al técnico según ADM-15).

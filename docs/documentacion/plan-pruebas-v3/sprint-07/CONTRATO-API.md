@@ -387,3 +387,86 @@ Suma tres bloques. «Hoy» y los días de la serie son los de **Lima** (UTC-5, s
 - **Partes del Inicio:** `kpis`, `series`, `tasks` y `recent_events` se calculan por separado.
   - Si una falla, se registra en `laravel.log` con la referencia de la petición, va en `null` y su nombre aparece en el campo nuevo `failed_parts` (lista; vacía si todo salió bien). El resto responde con 200.
   - El panel muestra «No pudimos cargar esta parte» con «Reintentar» solo en esa sección.
+
+## 12. Cambios de la versión 1.8 (2026-11-25): panel del administrador, Fase A3 (Operación)
+
+Todo funciona igual sobre MySQL y SQLite (los tiempos se calculan en PHP); las pruebas de SQLite están en el grupo `sqlite`.
+
+### 12.1 `GET /admin/requests/{id}` **[cambia, aditivo]** (`dashboard.view`)
+
+- **`client`:** trae `{id, name, district, plan}`. Nunca el correo, el teléfono ni la dirección.
+- **`request`:** suma `version` y `subcategories`, con las del pedido o la principal.
+- **`offer_list`:** cada oferta con `{id, technician: {id, name}, round_no, search_generation, status, available_at, expires_at, responded_at, response_seconds}`.
+- **`actions`:** `{cancel, rematch}`, según D-120 y el permiso `requests.intervene`.
+
+### 12.2 Intervención (D-116 y D-120) **[nuevo]** (`requests.intervene`)
+
+**Rutas:** `POST /admin/requests/{id}/cancellation` y `POST /admin/requests/{id}/rematch`.
+
+**Petición:**
+- cuerpo `{reason (10 a 500), expected_version}`;
+- cabecera `Idempotency-Key` obligatoria.
+
+**Respuestas:**
+- 200 con `{id, status, version}`;
+- 409 con `STALE_VERSION` o `INTERVENTION_NOT_ALLOWED`;
+- 422 por el motivo o por la clave;
+- 403 sin el permiso.
+
+**Cancelar:**
+- **Estados:** `sent`, `pending_availability` y `assigned`.
+- **Qué hace:** cierra las rondas, retira las ofertas, libera la participación y la cita, guarda `cancellation_reason_code = admin_intervention` y el motivo, y sube la generación.
+- **Avisos:** al cliente, `request.admin_cancelled`; al técnico, `request.cancelled`, sin el motivo.
+
+**Reenviar:**
+- **Estados:** `sent` sin técnico asignado y `pending_availability`.
+- **Qué hace:** cierra las rondas, retira las ofertas, deja `status = sent`, sube la generación, toma la versión vigente de las reglas y encola `PrepareMatching`.
+- **Pendiente de 24 h:** conserva su plazo (D-21).
+- **Avisos:** al cliente, `request.admin_rematched`; a los técnicos, `offer.withdrawn`.
+
+**Trazabilidad de las dos acciones:**
+- línea de tiempo: `request.admin_cancelled` o `request.admin_rematched`;
+- auditoría: la misma acción, con el motivo.
+
+**Asignación manual:** no existe; la ruta da 404.
+
+### 12.3 `GET /admin/requests/export` **[nuevo]** (`dashboard.view`)
+
+- **Filtros:** los mismos del listado.
+- **Formato del CSV:**
+  - UTF-8 con BOM, separador `;` y fin de línea CRLF;
+  - columnas: Número, Estado, Especialidad, Subcategoría, Distrito, Técnico, Creada y Enviada;
+  - sin datos del cliente;
+  - celdas que empiezan con `=`, `+`, `-`, `@`, tabulador o retorno van con `'` delante.
+- **Tope:** 5000 filas; la cabecera `X-Export-Truncated` vale 1 si se cortó.
+- **Auditoría:** `requests.exported`, con los filtros y la cantidad de filas.
+- **CORS:** expone `Content-Disposition` y `X-Export-Truncated`.
+
+### 12.4 `GET /admin/matching/live` **[nuevo]** (`dashboard.view`)
+
+Responde `{searching, pending, expired_offers, server_time}`:
+- **`searching` y `pending`:** cada solicitud trae `{id, status, specialty, subcategory, district, submitted_at, pending_expires_at, round, open_offers}`.
+- **`expired_offers`:** las ofertas vencidas de las últimas 24 h, hasta 50.
+- **Datos personales:** no incluye ninguno.
+
+**Canal privado `admin.matching`:**
+- **Autorización:** `dashboard.view`.
+- **Evento:** `matching.changed`, con `{event_id, request_id}`, cada vez que se publica un cambio de una solicitud o de una oferta.
+
+### 12.5 `GET /admin/alerts` **[nuevo]** (`dashboard.view`)
+
+- **Respuesta:** `{available, items, generated_at}`. Sin umbrales en las reglas vigentes, `available` es `false` e `items` va vacío.
+- **Cada alerta:** `{type, priority, request_id, alert_id, minutes, rounds?, actions}`.
+- **Orden:**
+  1. `pending_expiring`, de lo que menos le queda a lo que más;
+  2. `unassigned`, de lo que más espera a lo que menos;
+  3. `expired_chain`;
+  4. `iot_unattended`.
+- **`actions`:** `open`, `rematch` (solo con `requests.intervene` y si D-120 lo permite) e `iot`.
+- **Contador del menú:** usa la misma fuente.
+
+### 12.6 Datos
+
+- **Migración `2026_11_25_000040_add_admin_cancellation_code`:** `admin_intervention` en la restricción CHECK de MySQL.
+- **`DemoAdminOperations`:** suma una ronda abierta con dos ofertas pendientes.
+- **`Sprint07E2ESeeder`:** suma e2e-client-intervencion, con una solicitud para cancelar.
