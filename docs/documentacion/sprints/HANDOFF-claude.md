@@ -2,6 +2,24 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-25 · Revisión del #69: «Actividad reciente» como línea de tiempo
+
+- **Rama:** la misma. Pedido de Pimentel antes de integrar el #69.
+- **Commits:** `c15aede` (Vitest en rojo), `d00307c` (implementación) y `357058b` (ajuste visto en las capturas).
+- **Cambios:**
+  - `AdmActivity`: hora de Lima con «hace N h» en el title, días «Hoy», «Ayer» o «22 nov», línea continua y punto con ícono;
+  - tonos AA por tipo (rojo suave, verde, azul y ámbar), siempre con una etiqueta de tipo en texto;
+  - motivo en una línea con el texto completo en el title;
+  - chips en el cliente y pie hacia Auditoría (con `audit.view`);
+  - vacío con ilustración y entrada escalonada que respeta «Reducir animaciones»;
+  - Tareas y Actividad en dos columnas desde 1200 px;
+  - nombres en español de `technician.review`, `client.plan.changed` y `catalog.*`.
+- **Pruebas:**
+  - Vitest S07-TC-195 a 198 (548/548, lint y build);
+  - adaptadas: S07-TC-065, 130 y 185, y S07-TC-181 (avanza la animación dentro de `waitFor`; fallaba con el equipo cargado).
+- **Capturas:** `evidencias/sprint-07/admin-a2/` (`357058b`), 12, sin problemas medidos.
+- **IDs:** la Fase A3 empieza en S07-TC-199.
+
 ## 2026-11-25 · Revisión del #69: DEF-83 (Inicio sobre SQLite y partes aisladas)
 
 - **Rama:** la misma, `feature/pimentel/admin/a2-inicio`. Pedido de Pimentel antes de integrar el #69.

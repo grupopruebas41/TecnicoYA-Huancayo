@@ -27,7 +27,7 @@
   - **tema claro**, sobre `#ffffff`: PASS, con aviso de contraste (< 3:1) en aqua y amarillo. Por eso el gráfico lleva leyenda, etiquetas directas al final de cada línea, el detalle del día y la tabla equivalente.
 - **Forma:** líneas de 2 px en una sola escala, con el detalle del día al pasar el mouse o con las flechas (`End`, `Home` y `Escape`) y un resumen en texto.
 
-## Capturas (`afe0bf1`)
+## Capturas (`357058b`)
 
 Hay 12 capturas con demo-admin a 1366 y 390 px, en tema claro y oscuro: el Inicio, el gráfico de 30 días con el detalle de un día y la tabla abierta.
 
@@ -36,5 +36,12 @@ Hay 12 capturas con demo-admin a 1366 y 390 px, en tema claro y oscuro: el Inici
 **Vistos en las capturas y corregidos:**
 - **`864c646`:** a 390 px el gráfico se encogía (letra diminuta y etiquetas encimadas) y la tabla desbordaba la página. Ahora el dibujo usa el ancho real del contenedor y la tabla se desplaza dentro de su tarjeta;
 - **`afe0bf1`:** a 1366 px las etiquetas «Canceladas 0» y «Vencidas 0» se encimaban con la fecha del último día, y los indicadores quedaban en 4 + 2. Ahora están en 3 + 3.
+
+**Rediseño de «Actividad reciente» (revisión del #69):**
+- es una línea de tiempo por día con la hora de Lima;
+- cada acción tiene su color y su ícono, siempre con una etiqueta de tipo en texto;
+- lleva chips de filtro y el pie «Ver toda la actividad»;
+- en escritorio va al lado de Tareas pendientes;
+- en las capturas se corrigió la flecha del pie, que bajaba de línea (`357058b`).
 
 **Script:** `capturas.mjs`. Usa el slot A y no se ejecuta a la vez que Pest ni Cypress.
