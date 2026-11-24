@@ -390,6 +390,7 @@ html[data-motion="reduce"] :is(.adm-kpi, .adm-event) { animation: none !importan
 .adm-sort {
   display: inline-flex;
   align-items: center;
+  min-width: 44px;
   min-height: 44px;
   padding: 0;
   border: 0;
@@ -416,7 +417,8 @@ html[data-motion="reduce"] :is(.adm-kpi, .adm-event) { animation: none !importan
     border-radius: 14px;
     background: var(--ty-surface);
   }
-  .adm-responsive td { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px; padding: 2px 0; border: 0; overflow-wrap: anywhere; }
+  /* Visto en las capturas: una regla global deja las celdas en nowrap y el servicio empujaba la tarjeta a 469 px. */
+  .adm-responsive td { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px; padding: 2px 0; border: 0; overflow-wrap: anywhere; white-space: normal; }
   .adm-responsive td::before { content: attr(data-label); color: var(--ty-muted); font-size: 0.85rem; font-weight: 600; }
   .adm-responsive td[data-label="Acciones"]::before { content: none; }
   .adm-responsive td[data-label="Acciones"] { grid-template-columns: minmax(0, 1fr); }
@@ -444,7 +446,7 @@ html[data-motion="reduce"] :is(.adm-kpi, .adm-event) { animation: none !importan
   .adm-offers thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .adm-offers, .adm-offers tbody { display: block; }
   .adm-offers tr { display: grid; gap: 4px; margin-bottom: 10px; padding: 10px; border: 1px solid var(--ty-border); border-radius: 12px; }
-  .adm-offers td { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px; padding: 2px 0; border: 0; text-align: left; }
+  .adm-offers td { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px; padding: 2px 0; border: 0; text-align: left; white-space: normal; overflow-wrap: anywhere; }
   .adm-offers td::before { content: attr(data-label); color: var(--ty-muted); font-size: 0.85rem; font-weight: 600; }
 }
 
