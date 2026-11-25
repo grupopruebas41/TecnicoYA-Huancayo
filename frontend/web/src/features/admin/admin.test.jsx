@@ -326,11 +326,14 @@ test('S07-TC-139 las solicitudes se filtran y su detalle muestra la línea de ti
 
   fireEvent.click(screen.getByRole('button', {name: 'Ver la solicitud 5'}));
   const timeline = await screen.findByRole('region', {name: 'Línea de tiempo'});
-  expect(within(timeline).getAllByRole('listitem').map(item => item.querySelector('strong').textContent)).toEqual(['Solicitud enviada.', 'Técnico asignado.']);
-  expect(within(timeline).getAllByRole('listitem')[1]).toHaveTextContent('Asignada');
-  expect(screen.getByRole('region', {name: 'Datos'})).toHaveTextContent('1 aceptadas · 1 rechazadas');
-  expect(screen.getByText('Solo lectura')).toBeInTheDocument();
-  expect(screen.getAllByRole('button').map(button => button.textContent)).toEqual(['← Volver a solicitudes']);
+  // Revisión del #70: cada evento se titula por su tipo (como Actividad reciente) y el resumen del servidor va debajo.
+  expect(within(timeline).getAllByRole('listitem').map(item => item.querySelector('strong').textContent)).toEqual(['Solicitud enviada', 'Técnico asignado']);
+  expect(within(timeline).getAllByRole('listitem')[0]).toHaveTextContent('Solicitud enviada.');
+  // Fase A3 (2026-11-25): el detalle deja de ser de solo lectura (D-116), pero sin acciones permitidas por el servidor (esta
+  // respuesta no trae actions) no ofrece cancelar ni reenviar. El detalle completo lo prueban S07-TC-211 a 214.
+  expect(screen.getByRole('region', {name: 'Técnico asignado'})).toHaveTextContent('Técnico ABCDE');
+  expect(screen.queryByRole('button', {name: 'Cancelar con motivo'})).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', {name: 'Reenviar al emparejamiento'})).not.toBeInTheDocument();
 });
 
 test('S07-TC-140 la activación de una cuenta creada por un administrador define la contraseña desde #cuenta/activar', async () => {

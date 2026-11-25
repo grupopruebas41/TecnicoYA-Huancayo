@@ -8,11 +8,11 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Datos E2E del adelanto del Sprint 7, panel del administrador (PLAN-PANEL-ADMIN.md). Sobre los del Sprint 5 deja, en la
- * Fase A1:
- * - e2e-admin-nuevo: administrador que vuelve a su primera visita en cada siembra (bienvenida y tutorial, D-117).
- * - e2e-client-alertas: cliente con una solicitud enviada hace 45 minutos y sin técnico, que cuenta como «Solicitud sin
- *   técnico» y como alerta operativa (más de 30 minutos, D-118). No pasa por el matching: no hay job que la cambie.
+ * Datos E2E del adelanto del Sprint 7, panel del administrador (PLAN-PANEL-ADMIN.md). Sobre los del Sprint 5 deja:
+ * - e2e-admin-nuevo (Fase A1): administrador que vuelve a su primera visita en cada siembra (bienvenida y tutorial, D-117).
+ * - e2e-client-alertas (Fase A1): cliente con una solicitud enviada hace 45 minutos y sin técnico, que cuenta como
+ *   «Solicitud sin técnico» y como alerta operativa (más de 30 minutos, D-118). No pasa por el matching al sembrarse.
+ * - e2e-client-intervencion (Fase A3): cliente con una solicitud enviada hace 10 minutos, para cancelarla con motivo.
  * e2e-admin (S1) sigue con la bienvenida vista (E2EFirstVisits). Datos sintéticos; la contraseña es TECNICOYA_E2E_PASSWORD.
  */
 final class Sprint07E2ESeeder extends Seeder
@@ -23,7 +23,8 @@ final class Sprint07E2ESeeder extends Seeder
         $this->call(Sprint05E2ESeeder::class);
         DB::transaction(function () use ($rules) {
             $this->newAdmin();
-            $this->unassignedRequest($rules);
+            $this->sentRequest('e2e-client-alertas', 'Cliente E2E alertas', 45, 'Solicitud sintética E2E del Sprint 7 sin técnico asignado.', $rules);
+            $this->sentRequest('e2e-client-intervencion', 'Cliente E2E intervención', 10, 'Solicitud sintética E2E del Sprint 7 para cancelar.', $rules);
         });
     }
 
@@ -40,26 +41,30 @@ final class Sprint07E2ESeeder extends Seeder
         DB::table('users')->where('id', $user->id)->update(['theme_preference' => 'light']);
     }
 
-    private function unassignedRequest(RuleBook $rules): void
+    /**
+     * Cliente de Chilca con una sola solicitud enviada hace $minutes minutos. Cada siembra borra lo anterior del cliente con
+     * la limpieza completa del S4 (ofertas, rondas, avisos y eventos que hayan creado las Cypress, como el reenvío).
+     */
+    private function sentRequest(string $alias, string $name, int $minutes, string $description, RuleBook $rules): void
     {
-        $user = User::firstOrNew(['email' => 'e2e-client-alertas@example.test']);
+        $user = User::firstOrNew(['email' => "$alias@example.test"]);
         $user->forceFill([
-            'name' => 'Cliente E2E alertas', 'is_active' => true, 'role_id' => DB::table('roles')->where('code', 'client')->value('id'),
+            'name' => $name, 'is_active' => true, 'role_id' => DB::table('roles')->where('code', 'client')->value('id'),
             'password' => env('TECNICOYA_E2E_PASSWORD'), 'onboarding_completed_at' => now(), 'tour_completed_at' => now(),
         ])->save();
         $district = (int) DB::table('districts')->where('code', 'CHILCA')->value('id');
         DB::table('client_profiles')->updateOrInsert(['user_id' => $user->id], ['client_type' => 'household', 'district_id' => $district,
             'updated_at' => now()]);
         $clientId = (int) DB::table('client_profiles')->where('user_id', $user->id)->value('id');
-        $previous = DB::table('service_requests')->where('client_id', $clientId)->pluck('id');
-        DB::table('request_events')->whereIn('request_id', $previous)->delete();
-        DB::table('service_requests')->whereIn('id', $previous)->delete();
+        app(Sprint04E2ESeeder::class)->reset([$clientId]);
         $subcategory = DB::table('subcategories')->where('code', 'electricidad-tableros')->first(['id', 'reference_fee']);
         DB::table('service_requests')->insert([
             'client_id' => $clientId, 'subcategory_id' => $subcategory->id, 'district_id' => $district,
-            'description' => 'Solicitud sintética E2E del Sprint 7 sin técnico asignado.', 'address' => 'Avenida sintética E2E 707',
+            'description' => $description, 'address' => 'Avenida sintética E2E 707',
             'mode' => 'asap', 'source' => 'automatic', 'status' => 'sent', 'reference_fee_snapshot' => $subcategory->reference_fee,
-            'rule_version_id' => $rules->currentVersionId(), 'submitted_at' => now()->subMinutes(45), 'search_generation' => 1, 'version' => 2,
+            'rule_version_id' => $rules->currentVersionId(), 'submitted_at' => now()->subMinutes($minutes), 'search_generation' => 1, 'version' => 2,
         ]);
+        // DEF-85: registrada y enviada en la línea de tiempo, como las crea el flujo real (S07-TC-237).
+        app(DemoTimeline::class)->backfill([$clientId]);
     }
 }

@@ -1571,5 +1571,18 @@ html[data-motion="reduce"] .panel-shell.is-touring .panel-sidebar { scroll-behav
 .panel-nav-text { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .panel-nav-text > .panel-label { flex: 1 1 auto; min-width: 0; white-space: normal; overflow-wrap: break-word; line-height: 1.25; }
 .panel-nav-text > .panel-nav-badge { flex-shrink: 0; }
+/* DEF-87 (revisión del #70): con contador numérico no se baja de línea; el texto se parte y el número queda centrado a la derecha. */
+.panel-nav-text.has-count {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.panel-nav-text.has-count > .panel-label {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.panel-nav-text.has-count > .panel-nav-badge {
+  flex-shrink: 0;
+  align-self: center;
+}
 /* Contraído en escritorio: el contenedor desaparece y el texto y el punto vuelven a colgar del ítem, como antes. */
 @media (min-width: 761px) { .panel-shell.is-collapsed .panel-nav-text { display: contents; } }

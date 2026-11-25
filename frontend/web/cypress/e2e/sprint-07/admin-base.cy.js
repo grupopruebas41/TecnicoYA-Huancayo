@@ -53,10 +53,11 @@ describe("Panel del administrador: base y menú (Fase A1)", () => {
       nav().contains(".panel-nav-item", "Pagos").click();
       cy.get(".panel-content h2").first().should("have.text", before);
     });
-    nav().contains("button", "Emparejamiento en vivo").click();
+    // Fase A3 (2026-11-25): «Emparejamiento en vivo» ya es una pantalla real; «Desempeño de técnicos» sigue en preparación.
+    nav().contains("button", "Desempeño de técnicos").click();
     cy.contains(".panel-content", "Estamos preparando esta sección.").should("be.visible");
-    cy.contains(".panel-content button", "Ir a Solicitudes").click();
-    nav().contains("button", "Solicitudes").should("have.attr", "aria-current", "page");
+    cy.contains(".panel-content button", "Ir a Verificación de técnicos").click();
+    nav().contains("button", "Verificación de técnicos").should("have.attr", "aria-current", "page");
   });
 
   it("S07-TC-165 los contadores del menú muestran lo que informa el servidor: verificación, solicitudes sin técnico y alertas", () => {

@@ -2,9 +2,11 @@
 
 namespace App\Modules\CNotifications\Application;
 
+use App\Modules\CNotifications\Events\AdminMatchingSignal;
 use App\Modules\CNotifications\Events\OutboxBroadcast;
 use App\Shared\Rules\RuleBook;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Throwable;
 
 /**
@@ -35,8 +37,27 @@ final class OutboxPublisher
             ]);
             if ($status === 'sent') {
                 DB::table('outbox_events')->where('id', $outboxId)->update(['published_at' => now()]);
+                $this->signalAdmin($event);
             }
         });
+    }
+
+    /**
+     * Fase A3 del panel del administrador: cada cambio publicado de una solicitud o de una oferta avisa al canal
+     * admin.matching con el número de la solicitud y nada más. Si Reverb no responde, el tablero se actualiza cada 30 s.
+     */
+    private function signalAdmin(object $event): void
+    {
+        $payload = json_decode($event->payload, true) ?: [];
+        $requestId = $payload['request_id'] ?? ($event->aggregate_type === 'service_request' ? $event->aggregate_id : null);
+        if (! in_array($event->aggregate_type, ['service_request', 'offer'], true) || $requestId === null) {
+            return;
+        }
+        try {
+            event(new AdminMatchingSignal(['event_id' => (string) Str::uuid(), 'request_id' => (int) $requestId]));
+        } catch (Throwable) {
+            // Sin Reverb no hay señal: el tablero se actualiza por consulta periódica.
+        }
     }
 
     public function maxAttempts(): int

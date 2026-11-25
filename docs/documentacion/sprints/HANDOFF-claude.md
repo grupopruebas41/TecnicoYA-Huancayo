@@ -2,6 +2,15 @@
 
 Archivo de relevo de Claude Code (regla 12 de AGENTS.md). La entrada más reciente va primero. Al empezar, leer también [HANDOFF-codex.md](HANDOFF-codex.md).
 
+## 2026-11-25 · Fase A3 del panel del administrador (Operación)
+
+- **Rama:** `feature/pimentel/admin/a3-operacion`.
+- **Commits:** `2c07a38` y `19cdf9f` (Pest rojo y backend), `6e76f08` y `605da32` (Vitest rojo y frontend), `89c8613` (Cypress), `929da5e` (DEF-81), `2f70c54` y `dd04618` (DEF-84), `ba3cce7` (docs), `08f1093` (señal en `AdminMatchingSignal`).
+- **Hecho:** detalle completo, cancelar y reenviar (D-116 y D-120) con motivo, versión, clave, auditoría y avisos; CSV de la vista filtrada; Emparejamiento en vivo (canal `admin.matching` o cada 30 s); Alertas operativas priorizadas (D-118); demo y siembra E2E.
+- **Pruebas:** Pest completa 572/573 antes de `08f1093` (S04-TC-068, corregida en el código); grupo `sqlite` 7/7; e2e-cierre `45485928414` todo verde salvo S04-TC-088 (DEF-82, 419), y S04 sola `45486976649` 18/18.
+- **Lección:** las señales nuevas por Reverb van en su propio evento; `OutboxBroadcast` es una difusión por fila.
+- **Pendiente:** DEF-82 (propuesta en el registro), distancias de D-124. La Fase A4 empieza en S07-TC-225.
+
 ## 2026-11-25 · Revisión del #69: «Actividad reciente» como línea de tiempo
 
 - **Rama:** la misma. Pedido de Pimentel antes de integrar el #69.
