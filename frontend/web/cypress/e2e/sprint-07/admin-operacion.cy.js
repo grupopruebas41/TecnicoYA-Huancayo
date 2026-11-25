@@ -11,10 +11,10 @@ const nav = () => cy.get('nav[aria-label="Administración"]');
 const MOTIVE = "Anulación de prueba E2E con motivo suficiente.";
 
 /** Número de la solicitud enviada del cliente E2E indicado (el listado del administrador trae el nombre del cliente). */
-function requestOf(client) {
-  return read("/admin/requests?status=sent&per_page=100").then(({ body }) => {
+function requestOf(client, status = "sent") {
+  return read(`/admin/requests?${status ? `status=${status}&` : ""}per_page=100`).then(({ body }) => {
     const item = body.data.items.find((row) => row.client === client);
-    expect(item, `solicitud enviada de ${client}`).to.exist;
+    expect(item, `solicitud ${status || ""} de ${client}`).to.exist;
     return item.id;
   });
 }
@@ -91,7 +91,8 @@ describe("Panel del administrador: Operación (Fase A3)", () => {
 
   it("S07-TC-237 el detalle tiene franja del estado, barra de acciones de 44 px y la línea de tiempo de la solicitud por día", () => {
     login("admin");
-    requestOf("Cliente E2E alertas").then((id) => {
+    // Sin filtrar por estado: si S07-TC-222 la reenvió, el emparejamiento pudo dejarla buscando o en el pendiente.
+    requestOf("Cliente E2E alertas", "").then((id) => {
       nav().contains("button", "Solicitudes").click();
       cy.get("label").contains("N.º de solicitud").parent().find("input").type(String(id));
       cy.get(`button[aria-label="Ver la solicitud ${id}"]`).should("have.length", 1).click();
@@ -139,13 +140,13 @@ describe("Panel del administrador: Operación (Fase A3)", () => {
     login("admin");
     nav().contains("button", "Alertas operativas").click();
     cy.get('[role="group"][aria-label="Filtrar alertas"]').within(() => {
-      cy.contains("button", /^Todas (d+)$/).should("have.attr", "aria-pressed", "true");
-      cy.contains("button", /^Sin técnico asignado (d+)$/).click().should("have.attr", "aria-pressed", "true");
+      cy.contains("button", /^Todas \(\d+\)$/).should("have.attr", "aria-pressed", "true");
+      cy.contains("button", /^Sin técnico asignado \(\d+\)$/).click().should("have.attr", "aria-pressed", "true");
     });
     cy.get(".adm-alert-group").should("have.length", 1).and("have.attr", "aria-label", "Sin técnico asignado");
     cy.get(".adm-alert").each(($alert) => {
       expect($alert.find(".adm-level").text()).to.match(/^(Urgente|Atención)$/);
-      expect($alert.text()).not.to.match(/d{3,} h/);
+      expect($alert.text()).not.to.match(/\d{3,} h/);
     });
     cy.get(".adm-alert").first().find('button[aria-label^="Ver la solicitud"]').should("have.class", "adm-btn-secondary");
     // DEF-87: con el ítem activo, el contador queda a la derecha y a la misma altura que el texto.
