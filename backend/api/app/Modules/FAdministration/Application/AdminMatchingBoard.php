@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
  * Sin datos personales: servicio, distrito y nombres públicos de los técnicos. Número fijo de consultas y nada de SQL
  * propio de un motor (DEF-83). La hora del servidor va en server_time para que el panel calcule la cuenta regresiva.
  * Revisión del #70 (DEF-86): un pendiente cuyo plazo ya pasó no está en el pendiente (las reglas lo vencen en el
- * siguiente barrido); va aparte en pending_overdue. La ronda trae cuántas ofertas siguen abiertas y cuántas vencieron.
+ * siguiente barrido); va aparte en pending_overdue. DEF-88: las vencidas de 24 h se cuentan por expires_at (las siembras
+ * dejaban updated_at con la hora de la siembra y salían ofertas vencidas hace meses). La ronda trae cuántas ofertas siguen abiertas y cuántas vencieron.
  */
 final class AdminMatchingBoard
 {
@@ -38,8 +39,8 @@ final class AdminMatchingBoard
             ->get(['o.id', 'o.request_id', 'o.available_at', 'o.expires_at', 't.id as technician_id', 't.display_name'])->groupBy('request_id');
         $expired = DB::table('offers as o')->join('technician_profiles as t', 't.id', '=', 'o.technician_id')
             ->join('service_requests as s', 's.id', '=', 'o.request_id')->join('subcategories as sc', 'sc.id', '=', 's.subcategory_id')
-            ->where('o.status', 'expired')->where('o.updated_at', '>=', $now->subHours(self::EXPIRED_WINDOW_HOURS))
-            ->orderByDesc('o.updated_at')->orderByDesc('o.id')->limit(50)
+            ->where('o.status', 'expired')->where('o.expires_at', '>=', $now->subHours(self::EXPIRED_WINDOW_HOURS))
+            ->orderByDesc('o.expires_at')->orderByDesc('o.id')->limit(50)
             ->get(['o.id', 'o.request_id', 'o.expires_at', 't.id as technician_id', 't.display_name', 'sc.name as subcategory']);
 
         $present = function (object $row) use ($rounds, $byRound, $open, $iso) {

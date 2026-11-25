@@ -484,6 +484,7 @@ Todo es aditivo y funciona igual sobre MySQL y SQLite (grupo `sqlite`, S07-TC-22
 
 - **`pending`:** solo los pendientes cuyo plazo todavía no pasó.
 - **`pending_overdue`:** los pendientes cuyo plazo ya pasó y que el barrido todavía no venció, con `{id, specialty, specialty_code, subcategory, district, pending_expires_at}`.
+- **`expired_offers` (DEF-88):** la ventana de 24 h se cuenta por `expires_at`, no por la última escritura de la oferta.
 - **Cada solicitud:** suma `specialty_code`; la ronda suma `open_count` y `expired_count`; cada oferta abierta suma `available_at`.
 
 ### 13.3 `GET /admin/alerts` **[cambia, aditivo]**
