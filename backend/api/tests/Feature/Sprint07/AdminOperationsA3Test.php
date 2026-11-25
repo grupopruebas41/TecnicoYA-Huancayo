@@ -319,6 +319,7 @@ it('S07-TC-210 el DemoSeeder deja contenido en Solicitudes, el tablero en vivo y
     expect(collect($live['searching'])->filter(fn ($item) => count($item['open_offers']) > 0))->not->toBeEmpty()
         ->and($live['pending'])->not->toBeEmpty()
         ->and($live['expired_offers'])->not->toBeEmpty()
+        // Revisión del #70: el desempeño bajo de demo-tecnico-ocupado también es una alerta (de seguimiento).
         ->and(collect($alerts)->pluck('type')->unique()->sort()->values()->all())
-            ->toBe(['expired_chain', 'iot_unattended', 'pending_expiring', 'unassigned']);
+            ->toBe(['expired_chain', 'iot_unattended', 'low_performance', 'pending_expiring', 'unassigned']);
 });

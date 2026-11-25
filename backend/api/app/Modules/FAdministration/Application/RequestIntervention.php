@@ -43,6 +43,32 @@ final class RequestIntervention
         ];
     }
 
+    /**
+     * Revisión del #70: por qué una acción no aplica según D-120 (para el title del botón desactivado). Null si aplica;
+     * null también para todo sin el permiso, porque entonces el panel no muestra los botones.
+     *
+     * @return array{cancel: ?string, rematch: ?string}|null
+     */
+    public static function reasons(object $request, bool $assigned, bool $allowed): ?array
+    {
+        if (! $allowed) {
+            return null;
+        }
+        $state = match ($request->status) {
+            'registered' => __('api.intervention_blocked.registered'),
+            'in_progress' => __('api.intervention_blocked.in_progress'),
+            'completed', 'closed', 'unrated' => __('api.intervention_blocked.finished'),
+            'cancelled' => __('api.intervention_blocked.cancelled'),
+            'expired' => __('api.intervention_blocked.expired'),
+            default => null,
+        };
+
+        return [
+            'cancel' => in_array($request->status, RequestCancellation::ADMIN_CANCELLABLE, true) ? null : $state,
+            'rematch' => self::canRematch($request, $assigned) ? null : ($state ?? __('api.intervention_blocked.assigned')),
+        ];
+    }
+
     public static function canRematch(object $request, bool $assigned): bool
     {
         return $request->status === 'pending_availability' || ($request->status === 'sent' && ! $assigned);
@@ -82,7 +108,7 @@ final class RequestIntervention
         $generation = (int) $request->search_generation + 1;
         $updated = $this->progress->advance($request, [
             'status' => 'sent', 'search_generation' => $generation, 'rule_version_id' => $this->rules->currentVersionId(),
-        ], 'request.admin_rematched', 'Un administrador reenvió la solicitud al emparejamiento.', [], $admin->id);
+        ], 'request.admin_rematched', 'Un administrador reenvió la solicitud al emparejamiento.', ['reason' => $data['reason']], $admin->id);
         PrepareMatching::dispatch($requestId, $generation)->afterCommit();
 
         foreach (DB::table('technician_profiles')->whereIn('id', array_unique($technicians))->pluck('user_id') as $technicianUser) {

@@ -56,7 +56,11 @@ final class AdminRequests
         $offers = DB::table('offers')->where('request_id', $id)->groupBy('status')->selectRaw('status, COUNT(*) as total')->pluck('total', 'status');
         $timeline = DB::table('request_events as e')->leftJoin('users as actor', 'actor.id', '=', 'e.actor_id')->where('e.request_id', $id)
             ->orderBy('e.occurred_at')->orderBy('e.id')
-            ->get(['e.event_type', 'e.from_status', 'e.to_status', 'e.summary', 'e.occurred_at', 'actor.name as actor']);
+            ->get(['e.event_type', 'e.from_status', 'e.to_status', 'e.summary', 'e.metadata', 'e.occurred_at', 'actor.name as actor']);
+        // Revisión del #70: el motivo de la intervención (en los metadatos del reenvío o en la solicitud cancelada).
+        $reason = fn (object $event) => json_decode((string) $event->metadata, true)['reason']
+            ?? (in_array($event->event_type, ['request.admin_cancelled', 'request.cancelled'], true) ? $row->cancellation_reason : null);
+        $assigned = in_array($row->participation_status, ['assigned', 'in_progress'], true);
         $iso = fn (?string $value) => $value === null ? null : Carbon::parse($value)->toISOString();
 
         return [
@@ -73,10 +77,12 @@ final class AdminRequests
             'offers' => ['total' => (int) $offers->sum()] + collect(['pending', 'accepted', 'rejected', 'expired', 'withdrawn'])
                 ->mapWithKeys(fn (string $status) => [$status => (int) ($offers[$status] ?? 0)])->all(),
             'timeline' => $timeline->map(fn (object $event) => ['event_type' => $event->event_type, 'from_status' => $event->from_status,
-                'to_status' => $event->to_status, 'summary' => $event->summary, 'actor' => $event->actor, 'occurred_at' => $iso($event->occurred_at)])->all(),
+                'to_status' => $event->to_status, 'summary' => $event->summary, 'reason' => $reason($event), 'actor' => $event->actor,
+                'occurred_at' => $iso($event->occurred_at)])->all(),
             // Fase A3: cada oferta enviada con su técnico, ronda, estado y tiempos; y las acciones de D-120.
             'offer_list' => $this->offerList($id),
-            'actions' => RequestIntervention::actions($row, in_array($row->participation_status, ['assigned', 'in_progress'], true), $canIntervene),
+            'actions' => RequestIntervention::actions($row, $assigned, $canIntervene),
+            'action_reasons' => RequestIntervention::reasons($row, $assigned, $canIntervene),
         ];
     }
 

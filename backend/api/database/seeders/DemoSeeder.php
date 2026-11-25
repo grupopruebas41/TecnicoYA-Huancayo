@@ -107,6 +107,10 @@ final class DemoSeeder extends Seeder
             }
             $this->expo($password);
             $this->adminOperations($admin->id, $password);
+            // DEF-85: línea de tiempo de todas las solicitudes de demostración que todavía no la tengan (también las de
+            // siembras anteriores), con los clientes rotulados @example.test de la demo.
+            app(DemoTimeline::class)->backfill(DB::table('client_profiles as c')->join('users as u', 'u.id', '=', 'c.user_id')
+                ->where('u.email', 'like', 'demo-%@example.test')->pluck('c.id')->map(fn ($id) => (int) $id)->all());
         });
     }
 

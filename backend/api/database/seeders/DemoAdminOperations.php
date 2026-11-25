@@ -60,15 +60,20 @@ final class DemoAdminOperations
             'search_generation' => 1, 'version' => 2, 'created_at' => $submitted, 'updated_at' => $submitted,
         ]);
 
-        // Sin técnico hace 45 minutos, con 2 rondas vencidas en la búsqueda vigente.
-        $chain = $request(1, 'sent', $now->subMinutes(45));
+        // Sin técnico hace 45 minutos, con 2 rondas vencidas en la búsqueda vigente. Revisión del #70: sin más técnicos
+        // elegibles, el flujo real la deja en el pendiente de 24 h (antes quedaba «buscando» sin ronda abierta y el barrido
+        // nunca la vencía, así que envejecía semanas en una base local).
+        $since = $now->subMinutes(20);
+        $chain = $request(1, 'pending_availability', $now->subMinutes(45), ['pending_since' => $since, 'pending_expires_at' => $since->addDay()]);
         $this->round($chain, 1, $busyTechnicianId, 'expired', $now->subMinutes(45), $rule, $service->reference_fee);
         $this->round($chain, 2, $otherTechnicianId, 'expired', $now->subMinutes(30), $rule, $service->reference_fee);
         // Fase A3: buscando ahora, con una ronda abierta y dos ofertas pendientes (cuenta regresiva del emparejamiento en vivo).
         $live = $request(2, 'sent', $now->subMinutes(8));
         $this->openRound($live, [$busyTechnicianId, $otherTechnicianId], $now->subMinutes(1), $rule, $service->reference_fee);
+        // En el pendiente desde hace 22 h 30 min tras una ronda vencida: le quedan 90 minutos (alerta «por vencer»).
         $expires = $now->addMinutes(90);
-        $request(3, 'pending_availability', $now->subHours(23), ['pending_since' => $expires->subDay(), 'pending_expires_at' => $expires]);
+        $pending = $request(3, 'pending_availability', $now->subHours(23), ['pending_since' => $expires->subDay(), 'pending_expires_at' => $expires]);
+        $this->round($pending, 1, $otherTechnicianId, 'expired', $now->subHours(23), $rule, $service->reference_fee);
 
         foreach (self::HISTORY as $index => [$days, $offer, $status]) {
             $submitted = $now->subDays($days)->setTime(15, 0);

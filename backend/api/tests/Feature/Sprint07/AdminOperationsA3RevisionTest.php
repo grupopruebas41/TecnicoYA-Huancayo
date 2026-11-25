@@ -5,6 +5,7 @@
 // desempeño bajo (D-118). Las demás pruebas de la fase están en AdminOperationsA3Test.php.
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,9 @@ const S07A3R_NOW = '2026-11-25 15:00:00';
 const S07A3R_REASON = 'Se liberó un técnico en la zona y conviene volver a buscar (sintético).';
 
 /** Ronda cerrada o abierta armada a mano con una oferta por técnico en el estado pedido. */
-function s07a3rRound(object $request, int $roundNo, array $offers, string $status = 'closed', ?CarbonImmutable $at = null): int
+function s07a3rRound(object $request, int $roundNo, array $offers, string $status = 'closed', ?CarbonInterface $at = null): int
 {
-    $at ??= CarbonImmutable::now()->subMinutes(20);
+    $at = CarbonImmutable::instance($at ?? now()->subMinutes(20));
     $run = DB::table('matching_runs')->where('request_id', $request->id)->value('id') ?? DB::table('matching_runs')->insertGetId([
         'request_id' => $request->id, 'search_generation' => (int) $request->search_generation, 'attempt_no' => 1, 'run_trigger' => 'submission',
         'rule_version_id' => $request->rule_version_id, 'algorithm_version' => 'test', 'status' => 'completed', 'started_at' => $at]);

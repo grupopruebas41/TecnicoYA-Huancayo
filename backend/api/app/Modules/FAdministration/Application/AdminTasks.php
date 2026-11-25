@@ -79,13 +79,6 @@ final class AdminTasks
      */
     private function lowPerformance(array $limits, CarbonImmutable $now): int
     {
-        $rows = DB::table('offers')->where('available_at', '>=', $now->subDays(self::PERFORMANCE_DAYS))
-            ->whereIn('status', ['accepted', 'rejected', 'expired'])->groupBy('technician_id')
-            ->get(['technician_id', DB::raw('COUNT(*) as decided'), DB::raw("SUM(status = 'accepted') as accepted"),
-                DB::raw("SUM(status = 'expired') as expired")]);
-
-        return $rows->filter(fn (object $row) => (int) $row->decided >= $limits['low_performance_min_offers']
-            && ((int) $row->accepted * 100 < $limits['low_performance_acceptance_percent'] * (int) $row->decided
-                || (int) $row->expired >= $limits['low_performance_expired_offers']))->count();
+        return app(LowPerformance::class)->technicians($limits, $now)->count();
     }
 }
