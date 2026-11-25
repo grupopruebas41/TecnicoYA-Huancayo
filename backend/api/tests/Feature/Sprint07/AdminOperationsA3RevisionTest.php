@@ -157,3 +157,17 @@ it('S07-TC-228 cada alerta trae su nivel y el detalle del servicio, y el desempe
         ->and($items->pluck('type')->unique()->values()->all())->toBe(['pending_expiring', 'unassigned', 'expired_chain', 'low_performance'])
         ->and($items->count())->toBe($this->getJson('/api/v1/admin/dashboard')->json('data.badges.operational_alerts'));
 });
+
+it('S07-TC-240 «Ofertas vencidas (24 h)» cuenta por el vencimiento de la oferta, no por la fecha de la última escritura [DEF-88]', function () {
+    // Visto en las capturas: las siembras guardan updated_at con la hora de la siembra y salían ofertas vencidas hace meses.
+    $old = Sprint04::sentRequest(['status' => 'expired']);
+    s07a3rRound($old, 1, [[Sprint04::technician()->id, 'expired']], 'closed', now()->subDays(90));
+    DB::table('offers')->where('request_id', $old->id)->update(['updated_at' => now()]);
+    $recent = Sprint04::sentRequest(['submitted_at' => now()->subHours(3)]);
+    s07a3rRound($recent, 1, [[Sprint04::technician()->id, 'expired']], 'closed', now()->subHours(2));
+    Sanctum::actingAs($this->admin);
+
+    $expired = $this->getJson('/api/v1/admin/matching/live')->assertOk()->json('data.expired_offers');
+
+    expect(collect($expired)->pluck('request_id')->all())->toBe([(int) $recent->id]);
+});
