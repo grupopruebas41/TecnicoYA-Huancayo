@@ -64,5 +64,7 @@ final class Sprint07E2ESeeder extends Seeder
             'mode' => 'asap', 'source' => 'automatic', 'status' => 'sent', 'reference_fee_snapshot' => $subcategory->reference_fee,
             'rule_version_id' => $rules->currentVersionId(), 'submitted_at' => now()->subMinutes($minutes), 'search_generation' => 1, 'version' => 2,
         ]);
+        // DEF-85: registrada y enviada en la línea de tiempo, como las crea el flujo real (S07-TC-237).
+        app(DemoTimeline::class)->backfill([$clientId]);
     }
 }
