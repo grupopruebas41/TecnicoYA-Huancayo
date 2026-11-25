@@ -19,10 +19,29 @@ const OFFER_TONES = {pending: ['info', 'clock'], accepted: ['success', 'check'],
 /** Mínimo de caracteres del motivo de una intervención (el servidor pide de 10 a 500). */
 export const INTERVENTION_MIN = 10;
 
-export function RequestStatus({status}) {
+/** Tono (color) del estado de una solicitud: lo usan la etiqueta y la franja del detalle. */
+export const requestTone = status => (REQUEST_TONES[status] || ['slate'])[0];
+
+export function RequestStatus({status, large = false}) {
   const [tone, icon] = REQUEST_TONES[status] || ['slate', 'info'];
-  return <span className="adm-status" data-tone={tone}><Icon name={icon}/>{REQUEST_STATUS_LABELS[status] || status}</span>;
+  return <span className={'adm-status' + (large ? ' is-large' : '')} data-tone={tone}><Icon name={icon}/>{REQUEST_STATUS_LABELS[status] || status}</span>;
 }
+
+/** Ícono de cada especialidad (por su código del catálogo). */
+export const SPECIALTY_ICONS = {computo: 'monitor', refrigeracion: 'snow', electricidad: 'bolt'};
+
+/** Revisión del #70: minutos transcurridos legibles: «hace 12 min», «hace 3 h 20 min», «hace 1 día» o «hace 27 días». */
+export function agoLabel(minutes) {
+  if (minutes === null || minutes === undefined) return '—';
+  if (minutes < 1) return 'hace un momento';
+  if (minutes < 60) return `hace ${minutes} min`;
+  if (minutes < 1440) return `hace ${Math.floor(minutes / 60)} h${minutes % 60 ? ` ${minutes % 60} min` : ''}`;
+  const days = Math.floor(minutes / 1440);
+  return days === 1 ? 'hace 1 día' : `hace ${days} días`;
+}
+
+/** «1 oferta abierta» y «2 ofertas abiertas». */
+export const plural = (count, one, many) => `${count} ${count === 1 ? one : many}`;
 
 export function OfferStatus({status}) {
   const [tone, icon] = OFFER_TONES[status] || ['slate', 'info'];

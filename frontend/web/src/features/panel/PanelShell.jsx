@@ -97,7 +97,8 @@ function NavItem({section, badge, collapsed, currentId, locked, onGo}) {
       aria-describedby={badge?.count || badge?.text ? badgeId : undefined} disabled={locked} onClick={go}>
       <span className="panel-nav-icon" aria-hidden="true">{ICONS.has(section.icon) ? <Icon name={section.icon}/> : section.icon}</span>
       {/* Revisión del #63: texto y etiqueta juntos; si no caben lado a lado, la etiqueta baja bajo el texto (nunca se corta). */}
-      <span className="panel-nav-text">
+      {/* DEF-87: con contador numérico, el número se queda a la derecha en la misma línea y el texto se parte en dos. */}
+      <span className={'panel-nav-text' + (badge?.count > 0 ? ' has-count' : '')}>
         <span className="panel-label">{section.label}{section.premium && <span className="panel-lock" aria-label="Solo Premium" role="img"><Icon name="lock"/></span>}</span>
         <NavBadge badge={badge}/>
       </span>

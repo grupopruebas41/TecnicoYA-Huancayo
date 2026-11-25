@@ -41,10 +41,10 @@ const live = () => ({
   expired_offers: [{id: 7, request_id: 40, subcategory: 'Tableros', technician: {id: 3, name: 'Técnico Ocupado Demo'}, expires_at: '2026-11-25T14:30:00.000Z'}],
 });
 const alerts = (overrides = {}) => ({available: true, generated_at: NOW, items: [
-  {type: 'pending_expiring', priority: 1, request_id: 43, alert_id: null, minutes: 40, actions: ['open', 'rematch']},
-  {type: 'unassigned', priority: 2, request_id: 41, alert_id: null, minutes: 90, actions: ['open', 'rematch']},
-  {type: 'expired_chain', priority: 3, request_id: 40, alert_id: null, minutes: null, rounds: 2, actions: ['open']},
-  {type: 'iot_unattended', priority: 4, request_id: null, alert_id: 8, minutes: 125, actions: ['iot']},
+  {type: 'pending_expiring', level: 'attention', priority: 1, request_id: 43, alert_id: null, minutes: 40, actions: ['open', 'rematch']},
+  {type: 'unassigned', level: 'attention', priority: 2, request_id: 41, alert_id: null, minutes: 90, actions: ['open', 'rematch']},
+  {type: 'expired_chain', level: 'attention', priority: 3, request_id: 40, alert_id: null, minutes: null, rounds: 2, actions: ['open']},
+  {type: 'iot_unattended', level: 'urgent', priority: 4, request_id: null, alert_id: 8, minutes: 125, actions: ['iot']},
 ], ...overrides});
 
 let routes;
@@ -189,12 +189,13 @@ test('S07-TC-217 las alertas salen en orden de prioridad con color, ícono y tex
   routes['GET /admin/requests/43'] = () => ({data: {...detail(), request: {...detail().request, id: 43, version: 7}}});
   routes['POST /admin/requests/43/rematch'] = body => { posted.push(body); return {data: {id: 43, status: 'sent', version: 8}}; };
   render(<AdmAlerts navigate={navigate}/>);
-  const list = await screen.findByRole('list', {name: 'Alertas operativas'});
-  const items = within(list).getAllByRole('listitem');
+  // Revisión del #70: las alertas van agrupadas por tipo (en el mismo orden de prioridad), el color sale del nivel que
+  // manda el servidor (urgente rojo, atención ámbar) y el plazo del pendiente va en el título.
+  await screen.findByRole('group', {name: 'Filtrar alertas'});
+  const items = [...document.querySelectorAll('.adm-alert')];
   expect(items.map(li => li.querySelector('.adm-alert-title').textContent)).toEqual([
-    'Pendiente de 24 h por vencer', 'Sin técnico hace 1 h 30 min', '2 rondas seguidas sin aceptación', 'Falla de sensor sin atender hace 2 h 5 min']);
-  expect(items[0]).toHaveTextContent('Vence en 40 min');
-  expect(items.map(li => li.getAttribute('data-tone'))).toEqual(['danger', 'warning', 'warning', 'info']);
+    'Pendiente de 24 h: vence en 40 min', 'Sin técnico hace 1 h 30 min', '2 rondas seguidas sin aceptación', 'Falla de sensor sin atender hace 2 h 5 min']);
+  expect(items.map(li => li.getAttribute('data-tone'))).toEqual(['warning', 'warning', 'warning', 'danger']);
   expect(items[0].querySelector('.adm-alert-icon svg')).not.toBeNull();
 
   fireEvent.click(within(items[1]).getByRole('button', {name: 'Ver la solicitud 41'}));
