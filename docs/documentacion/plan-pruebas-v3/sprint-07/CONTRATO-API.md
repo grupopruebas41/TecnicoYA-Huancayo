@@ -470,3 +470,31 @@ Responde `{searching, pending, expired_offers, server_time}`:
 - **Migración `2026_11_25_000040_add_admin_cancellation_code`:** `admin_intervention` en la restricción CHECK de MySQL.
 - **`DemoAdminOperations`:** suma una ronda abierta con dos ofertas pendientes.
 - **`Sprint07E2ESeeder`:** suma e2e-client-intervencion, con una solicitud para cancelar.
+
+## 13. Cambios de la versión 1.9 (2026-11-25): revisión del #70 (Fase A3)
+
+Todo es aditivo y funciona igual sobre MySQL y SQLite (grupo `sqlite`, S07-TC-229).
+
+### 13.1 `GET /admin/requests/{id}` **[cambia, aditivo]**
+
+- **`timeline[].reason`:** el motivo de la intervención. El reenvío lo guarda en los metadatos del evento; la cancelación lo toma de la solicitud. Es null en los demás eventos.
+- **`action_reasons`:** `{cancel, rematch}` con el texto de por qué la acción no aplica según D-120, o null si aplica. Llega null entero sin el permiso `requests.intervene`; entonces el panel no muestra los botones.
+
+### 13.2 `GET /admin/matching/live` **[cambia, aditivo]** (DEF-86)
+
+- **`pending`:** solo los pendientes cuyo plazo todavía no pasó.
+- **`pending_overdue`:** los pendientes cuyo plazo ya pasó y que el barrido todavía no venció, con `{id, specialty, specialty_code, subcategory, district, pending_expires_at}`.
+- **Cada solicitud:** suma `specialty_code`; la ronda suma `open_count` y `expired_count`; cada oferta abierta suma `available_at`.
+
+### 13.3 `GET /admin/alerts` **[cambia, aditivo]**
+
+- **`level`:** `urgent` (sin técnico desde hace 24 h o más y fallas IoT), `attention` (sin técnico, pendiente por vencer y rondas vencidas en cadena) o `follow_up` (desempeño bajo).
+- **Alertas de una solicitud:** suman `request: {specialty, subcategory, district}` y `rounds_without_acceptance` (rondas de la búsqueda vigente cerradas sin aceptación).
+- **IoT:** suma `device` y `message`.
+- **Tipo nuevo `low_performance`** (D-118, últimos 30 días): `{technician: {id, name}, offers, accepted, expired, days, actions: ['review']}`. Va después de los demás tipos y cuenta en el contador del menú.
+
+### 13.4 Datos
+
+- **`DemoTimeline`:** la demo y la siembra E2E del S7 crean la línea de tiempo de sus solicitudes (DEF-85).
+- **`DemoAdminOperations`:** la solicitud con 2 rondas vencidas queda en el pendiente de 24 h (antes quedaba buscando sin ronda y nunca vencía) y la que está por vencer suma su ronda vencida.
+
